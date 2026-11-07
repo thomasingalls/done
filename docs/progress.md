@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase492 existing timing reviewed;fresh growth trace next
+status: in flight # phase493 publication-proposal cliff confirmed;safe fixture preconditioning next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: bounded growth trace, safe fixture preparation,3072report
+blocks_on: guarded producer reduction and full3072setup within1800s, thenreaderreport
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** The operator resumes fixture-growth diagnosis after491. Saved timestamps show an acceptance-interval cliff near additional edit300; the32MiBindex fallback is only a hypothesis. Next trace Window admission/durability/publication plus native ledger/index observations on a fresh2048copy, without changing any bound. Explore genuine producer local maintenance only if supported. Prior36blocking passes,9validreports and unexposed3072result stay unchanged. No release preparation or publication.
-[Record](./development-evidence/2026-11-02-release-hardening/492-fixture-growth-existing-evidence/README.md).
+**Active bounded outcome.** Phase493passes298diagnostic positions plus full archive checks. A detached publication proposal crosses32MiBat additional294; publication wait rises1.22sto3.34s. Liveindex remains24.3MBeligible and main full verification stays1. Use real automatic producer local reduction on a fresh2048copy, prove archive/serverpositions/oldreaders unchanged and reopen, then growall1024within the same1800ssetup clock. No app/guard/limit/deadline changes or gate credit.
+[Record](./development-evidence/2026-11-02-release-hardening/493-publication-proposal-cliff/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

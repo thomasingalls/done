@@ -1,0 +1,253 @@
+{
+  "diagnosticAppRuns": 1,
+  "allFunctionalChecksPassed": true,
+  "newAppSourceChanges": false,
+  "gateCredit": false,
+  "allGuardsAndDeadlinesPreserved": true,
+  "phase": 493,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86",
+      "bytes": 22390
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountDelivery.ts",
+      "sha256": "638d9d134846692d46390e7512dd8124eed91a4f6baf64dfa73f8563bf70c521",
+      "bytes": 22628
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountLedgerMetrics.ts",
+      "sha256": "2643afc21a77f521f428286861f5d9ca9c98038f0ca44084f8a4d32a54e1c2b8",
+      "bytes": 5814
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-growth-trace-493-20261106/493-private-files.json",
+      "sha256": "0e5b34dde7d0c7fba86447239fc326d7d54260895b7dcf7eb185d69a90497e93",
+      "bytes": 541891
+    },
+    {
+      "localPath": "/private/tmp/done-growth-trace-493-20261106/493-summary.json",
+      "sha256": "e1fd8df9edc9b383363e7d360b2b0a6b374633ebb6e91950fbe304b6f2160e82",
+      "bytes": 2470
+    },
+    {
+      "localPath": "/private/tmp/done-growth-trace-493-20261106/493-declaration.json",
+      "sha256": "7e665265d007a2a511c159a71737270b952ef20f0afdfb4a45e0b885cef9e11c",
+      "bytes": 1179
+    },
+    {
+      "localPath": "/private/tmp/done-growth-trace-493-20261106/493-build-proof.json",
+      "sha256": "29206839d5dc8723bc8122cd9671635c5c3c306b8c2b1c6b014e8d978acc3a06",
+      "bytes": 10721
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/child.log",
+      "sha256": "75ea45fb61017fde03056a69cb70d991b7ff56c376725284416a978025f3a076",
+      "bytes": 9562
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/host-load.jsonl",
+      "sha256": "5b66ad348845f9adb9a58ba4ed299abc61a1044cb81bb4286675b23e92669a05",
+      "bytes": 1531
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/power-assertions-before.txt",
+      "sha256": "b837ca12eb07b8270dae583fbdacca8feed0cfb1b03a53114604a580d790c31d",
+      "bytes": 1681
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/power-log-after.meta.json",
+      "sha256": "a01cdf25b725d03e9a158c864afec4dbb55688524b8f5fec8cf64e574283383c",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/power-log-after.txt",
+      "sha256": "5e002db732b560e6c9d7cadb0cd02b7e9d27e95d053ac43370d42a2b1d592eb9",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/power-log-before.meta.json",
+      "sha256": "41af1b546619d0a2793b0eef9cfe307f3076f188a2413ea5cc7db41a80605cdd",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-profile-index-build/run.json",
+      "sha256": "b55642d18f597582ca7b5381c2f94b5be47aab560782845a8609a873990e0250",
+      "bytes": 1248
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/child.log",
+      "sha256": "2d64e0d44eb245c6481f8eab7b79b8c4a21b041609897e1301998b47508e13d2",
+      "bytes": 728
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/host-load.jsonl",
+      "sha256": "d414a815539038acded2182ee9af3d7ce715580c1898b03c316844e29e0da569",
+      "bytes": 122112
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/power-assertions-before.txt",
+      "sha256": "2eec41e1df316cb3fd0a499566e960993773d5dd2a960c6f65d7a49d9229d6f9",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/power-log-after.meta.json",
+      "sha256": "05f88ccb1a9eec450891571ddc27d567e806587cf0d0a19588f536f52defc962",
+      "bytes": 486
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/power-log-after.txt",
+      "sha256": "65bfb0ca4b4f78979de74b3a08b1019422b08c092cda36546fda0cecbb6daf8d",
+      "bytes": 2764
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/power-log-before.meta.json",
+      "sha256": "e042cadab0ae7eeefde825c5ceda44232ec3e5e2bef66f0c058fdea526bd0635",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/493-growth-threshold-trace/run.json",
+      "sha256": "04f37a78902be4c88480aecfe9b5b94f9cd39e9aee9e7fdc95cf3169b85a096f",
+      "bytes": 1784
+    }
+  ],
+  "summary": {
+    "diagnosticPositions": 298,
+    "firstProposalByteRefusal": {
+      "site": "usage",
+      "logicalRows": 16523,
+      "ownedBytes": 33559042,
+      "eligible": false,
+      "indexed": true,
+      "nativeSeq": 16523,
+      "limit": 33554432,
+      "sourceOrigin": 1794003757659.7,
+      "sourceOrdinal": "4113",
+      "additional": 294,
+      "at": 1794004106200
+    },
+    "before32Means": {
+      "admissionMs": 0.981249988079071,
+      "durableMs": 46.47187489271164,
+      "publicationWaitMs": 1221.53125,
+      "totalMs": 1271.375
+    },
+    "after4Means": {
+      "admissionMs": 0.9250001907348633,
+      "durableMs": 49.94999980926514,
+      "publicationWaitMs": 3338.25,
+      "totalMs": 3391
+    },
+    "actualIndexDrops": 0,
+    "mainFullVerifications": 1,
+    "liveLastUsage": {
+      "site": "usage",
+      "logicalRows": 16552,
+      "ownedBytes": 24298359,
+      "eligible": true,
+      "indexed": true,
+      "nativeSeq": 16552,
+      "limit": 33554432,
+      "sourceOrigin": 1794003757659.7,
+      "sourceOrdinal": "4184",
+      "additional": 298,
+      "at": 1794004122473
+    },
+    "incrementalCounts": [
+      {
+        "additional": 294,
+        "label": "progress",
+        "full": 1,
+        "incremental": 2350,
+        "sourceParses": 790109
+      },
+      {
+        "additional": 295,
+        "label": "progress",
+        "full": 1,
+        "incremental": 2356,
+        "sourceParses": 797276
+      },
+      {
+        "additional": 296,
+        "label": "progress",
+        "full": 1,
+        "incremental": 2362,
+        "sourceParses": 804446
+      },
+      {
+        "additional": 297,
+        "label": "progress",
+        "full": 1,
+        "incremental": 2368,
+        "sourceParses": 814007
+      },
+      {
+        "additional": 298,
+        "label": "progress",
+        "full": 1,
+        "incremental": 2374,
+        "sourceParses": 821183
+      },
+      {
+        "additional": 298,
+        "label": "after",
+        "full": 1,
+        "incremental": 2374,
+        "sourceParses": 821183
+      }
+    ],
+    "sourceAttribution": "detached prior in verifyProposed crosses owned-byte guard; false selects full inspect/verifyDelivery fallback for submission and response. Livecache remains indexed. This is source-bound attribution, not a sampled CPU stack.",
+    "allArchiveChecksPassed": true,
+    "limitsChanged": false,
+    "profileFlag": "LEDGER_PROFILE=1diagnostic only; not acceptance/perf credit",
+    "next": "fresh unobserved fixture; genuine automatic local reduction onproducer before growth; preserve service acceptance set and oldreaders; keepone1800ssetup budget for reduction plusall1024edits"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

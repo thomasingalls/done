@@ -20380,3 +20380,13 @@ The saved690confirmation timestamps show a threshold-shaped cost increase: rough
 [Record](./development-evidence/2026-11-02-release-hardening/492-fixture-growth-existing-evidence/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Trace the publication proposal fallback at the growth cliff
+
+**Date:** 2026-11-06 · **Phase:** 493.
+
+The fresh bounded trace passes298positions and full archive checks. Detached proposal index accounting first exceeds32MiBat additional294; publication waits jump from1.22sto3.34swhile admission/durability remain small. The live graph remains24.3MBeligible and main full replay stays1. Source-bound attribution identifies the safe full-delivery fallback in submission/response persistence, not live-index loss. Next prepare a fresh producer through real automatic local reduction within the same overall setup budget.
+[Record](./development-evidence/2026-11-02-release-hardening/493-publication-proposal-cliff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

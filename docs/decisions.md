@@ -8203,3 +8203,10 @@ Keep report-only unavailability open: it is not a pass, gate waiver or evidence 
 **Date:** 2026-11-06 · **Phase:** 492.
 
 Use component times and actual index-refusal evidence before attributing growth cost. If genuine producer maintenance can remove redundant retained work, it must run through existing APIs and preserve server positions, writing and old readers; do not replace validation or fabricate fixture rows.
+
+
+### Reduce settled producer history through existing checks
+
+**Date:** 2026-11-06 · **Phase:** 493.
+
+Keep the proposal byte guard and full fallback. For the fixture, use genuine existing local maintenance to remove settled producer rows while leaving server envelopes and old readers intact. Verify unchanged data/positions and reduced-owner reopen before any new writing. Count this preparation inside the30-minute setup ceiling; do not hide it in a separate reset clock.
