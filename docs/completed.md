@@ -20510,3 +20510,13 @@ The private six-file source/scheduler observation build passes with exact invers
 [Record](./development-evidence/2026-11-02-release-hardening/505-source-scheduler-probe/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Locate the stalled edit in stale source selection
+
+**Date:** 2026-11-06 · **Phase:** 506.
+
+The exact localcapsuleispersistedat18907–18908 andbothnotification/retryreachtheWorker. Sendrunsafterdurabilitybutselectsnone:113-source semanticviewmissesthe capsulethatnative114-capsulecataloguecontains. Thislocates theknownfailureinstaleselectionratherthanmissingwakeup. Nexttestthe interruptedbaselineview handoff deterministicallybeforeeditingappcode.
+[Record](./development-evidence/2026-11-02-release-hardening/506-stale-source-selection/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

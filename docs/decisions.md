@@ -8294,3 +8294,10 @@ Treat saved-state recovery as evidence against loss of this captured edit, while
 **Date:** 2026-11-06 · **Phase:** 505.
 
 Observe only the real canonical pipeline and keep everyauthority,crypto,commit,erasure,limit and scheduling operation byte-identical after removing the log calls. Trace IDs/counts can explain the failure but cannot authorize anything or earn performance credit.
+
+
+### Test the baseline-view publication boundary before fixing
+
+**Date:** 2026-11-06 · **Phase:** 506.
+
+Keep exact-evidence validation and allfresh authority checks. Testwhether baselinecontinuation publication can get ahead of carrierlogicalpublication on interruption; prefer conservativecacheinvalidation to publishing any view beforefresh checks ifthatcounterexample confirms. Nofix ismadeinthis phase.
