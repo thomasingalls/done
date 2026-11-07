@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase463 old maintenance fixture ready; grow2048next
+status: in flight # phase464 grown2048ready; joined-writer preparation next
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: old/grown maintenance writer fixtures, remaining timed blocks and report-only cells
 updated: 2026-11-06
@@ -199,17 +199,18 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase463 prepares the original1,024maintenance
-writer through real current-app sync. H2fully matches the archive and remains
-unreduced at counter2; original checks/deadlines pass. Other actors/archives/dates/
-backlogs stay exact. Private SQL copies observe1,335accepted rows before/after.
-[Record](./development-evidence/2026-11-02-release-hardening/463-old-maintenance-fixture/README.md).
-Grow2,048through real accepted edits next, then prepare its writer. No timed
-credit for setup. Stage5remains15/36blocking journeys complete: native cells3/3,
-normal/withheld late cells3/3. Late input p953.21–3.62ms, normal peer0.95–0.99s,
-withheld1.80–1.88s; every marker/archive/cold passes. Twenty-one blocking journeys
-and report-only work remain. Obtain a new tight-cell host handshake before the
-next timed block. No app change, release prep, commit, push or deployment.
+**Active bounded outcome.** Phase464 grows the workload to2,048through1,024
+real durable individually accepted edits: prefix1,030→2,054. Public export changes
+only by the target append; Goals stays13,407bytes. Original readers and other
+accounts remain exact, including the expected seed boundary. [Record](./development-evidence/2026-11-02-release-hardening/464-grown-real-writing/README.md).
+Setup passes under30minutes; wrapper1,307.25s is preparation only, without timing
+credit or prep-cost diagnosis. A new bookkeeping-prefix mistake and premature
+freeze are preserved and fixed without changing an app test or rerunning it.
+The original1,024writer fixture from463is ready, with1,335accepted service rows
+unchanged. Prepare the2,048joined writer next with original assertions/deadlines.
+Stage5remains15/36blocking journeys complete;21plus report-only work remain.
+Obtain the next tight-cell host handshake before timed runs. No app change,
+release prep, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

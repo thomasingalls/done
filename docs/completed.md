@@ -19908,3 +19908,19 @@ rows before/after: no accepted writing added. [Record](./development-evidence/20
 Outcome precedes advancing the seat. Stage5still15/36blocking journeys complete;
 this is setup only. Grow2,048through real edits next, then prepare its writer.
 No app source, gate, limit, deadline, commit, push or deployment change.
+
+
+### Grow the larger maintenance cohort through real accepted writing
+
+**Date:** 2026-11-06 · **Phase:** 464 · **Scope:** untimed fixture growth.
+
+Add1,024real inputs, each durable and accepted at an exact+1prefix:1,030→2,054.
+Full target text/export are exact; only the target append changes the archive.
+Goals remains13,407bytes. Reader snapshots and other accounts stay exact. Backlog
+becomes2,048, retaining its seed-boundary prefix. [Record](./development-evidence/2026-11-02-release-hardening/464-grown-real-writing/README.md).
+
+Setup passes under the unchanged30-minute bound, wrapper1,307.25s; no performance
+credit or prep-cost diagnosis. Keep the new bookkeeping-prefix error and failed
+premature freeze; fix records only, without an app rerun or test change. Outcome
+precedes advancing the seat. Prepare the joined writer next. Stage5still15/36
+blocking journeys complete. No app source, guard, limit, commit, push or deployment.

@@ -7870,3 +7870,16 @@ current app. Refresh only H2by real sync; retain H1behind and keep all other act
 snapshots. SQL observations open private copies only. Remove inert lab metadata,
 retain current local automation and the approved writer-on build. Setup has no
 performance credit; grow the larger workload through actual accepted edits.
+
+
+### Grow through admissions and preserve the existing expected boundary
+
+**Date:** 2026-11-06 · **Phase:** 464.
+
+Reuse real admission/durability/send/exact-prefix checks on a fresh clone. Preserve
+readers; derive expected/archive/backlog metadata only after checking real writing
+and public export. Fixture construction may retry the real send lane, as in460;
+it does not change sender defaults or qualify timing. Keep the slow setup without
+starting the deferred prep-cost diagnosis. A bookkeeping check must include the
+existing seed boundary, not mistake expected text for digits alone; keep its failed
+attempt and correct only that new record check.
