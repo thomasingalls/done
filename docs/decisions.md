@@ -7566,3 +7566,40 @@ sources instead of gzipped copies. Display and acceptance checks do not change.
 **Date:**2026-11-05 · **Commit:**pending patch444
 
 Record the two operator additions without treating them as measured performance or changing a guard. The encoded record determines usable capacity; any binary representation or altered ceiling needs a separate operator decision. Capacity is keyed to the current authenticated hint, so later writing can permit another costly refusal after the retry and quiet clocks; leave that cost unmeasured. Use the existing Stage6debt home rather than adding a competing active-state document. [Evidence](development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
+
+
+### Resume the frozen hardened Stage 5 matrix
+
+**Date:** 2026-11-05 · **Phase:** 445 preparation.
+
+The operator resumes Stage 5 after the signed335–443rebuild and documentation-only444debt additions. First require the full83-command functional checkpoint on the current hardened bytes. Predeclare36blocking journeys (three per original/grown cell) and10report-only journeys; preserve every gate, deadline, stop and failure. Use fresh civil-date fixtures, pinned Chrome, shipping assets without lab/observation modules, the existing native test-only composition entry where required, and the slimmer evidence capture policy. No new speed experiment, publication or deployment. Stage6will report the retained outcomes and debts, then stop.
+
+
+### Narrow the resumed Stage 5 preflight and fix the host-noise rule
+
+**Date:** 2026-11-05 · **Phase:** 445 operator amendment before timed results.
+
+Accept the 432–436 application checkpoint and the 437/441 spec evidence. Run only
+the operator's narrowed checks before the frozen Stage 5 matrix; count the
+already completed typecheck and 137.46-second unit pass. The broader launcher was
+paused at the active command and then interrupted after it finished, preserving
+all outputs; that interruption is operator-directed, not an app failure. The
+operator works lightly between blocks. Ask for a clear machine before tight
+cells, and apply exactly one retained rerun when a failed replicate meets the
+predeclared CPU/swap noise rule. Existing gates and functional stops remain.
+
+
+### Preserve the failed fairness precondition without a noise rerun
+
+**Date:** 2026-11-05 · **Phase:** 445.
+
+Apply only the operator-approved three lint exclusions; retain the original lint
+result and passing proposal/default retry. Treat the pnpm context auto-install
+prompt as a build-harness precondition and retain it before executing the exact
+package build script against existing pinned dependencies. Do not reclassify the
+positive fairness sparse-marker failure as a pass or invoke the noise exception:
+its host log has neither sustained non-test CPU above one core nor swap growth.
+Stop before the timing matrix and past-index preflight. No functional assertion,
+wait, limit, trust or runtime code changes. A next bounded diagnosis must resolve
+why marker60was not visible while hot writing continued; later archive/cold
+results are still unobserved, not successes or inferred data loss.

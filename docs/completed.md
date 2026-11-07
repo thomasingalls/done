@@ -19538,3 +19538,28 @@ remain unchanged. Stage 5 is still paused; no push, publication or deployment.
 **Exit.** The Stage6debt home now records effective snapshot capacity below2MiBafter overhead and possible repeated capacity-refused attempts behind the60sretry clock. Both are source-derived mechanisms; per-attempt costs remain unmeasured alongside438/439preparation and production-index time/RAM. Prior frozen evidence stays unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
 
 **Limits.** Per-attempt wall/CPU cost, repeated-attempt cadence,438/439preparation attribution and real-scale32MiBindex time/RAM remain unmeasured. The74.4s442journey is not an individual-attempt measurement. Binary encoding or a different limit requires an operator format/limit decision. No code/test/guard/format/limit/retry change, fix, Stage5run, commit, push, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Stage 5 preflight held on native sparse-publisher liveness
+
+**Date:** 2026-11-05 · **Phase:** 445 · **Scope:** narrowed Stage 5 preflight.
+
+The operator accepts the 432–436 app checkpoint and narrows preflight. Typecheck,
+lint after the explicitly approved three archival-path exclusions, the 330-file /
+3,210-test unit pass (137.46s; existing one skip), inventory/policy checks, the
+windowed-capture dry run and frozen release-profile build pass. The initial lint
+failure and copied-context pnpm precondition failure are retained. The normal
+package build script passes unchanged with pinned existing tools, without pnpm's
+attempted context reinstall. Shipping assets have no lab/observation markers.
+
+The fresh three-device seed passes. The first positive fairness case fails:
+continuous known-backlog normal receives sparse markers20and40but not60before the
+hot writer stops. Its scheduled45s writing phase contains90hot edits and sparse offers at
+keys20/40/60. Four remaining fairness cases and past-index do not run. The host
+log has no noise-triggered retry: Firefox111.3%occurs at one sample only; swap
+falls16,520.31→16,512.31MiBwith no increases. Preserve the failed predicate.
+Archive/Undo/cold assertions after that point were not reached; durable loss or
+owner closure is not established. No app/test-body repair or timed Stage5journey
+occurs. Stop for the next bounded liveness diagnosis/decision. Stage6landing
+results remain unavailable. All earlier results, original roots and object bytes
+remain intact. Outcome precedes advancing this seat.

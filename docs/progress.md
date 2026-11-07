@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked # signed checkpoint complete; Stage5 awaits operator resumption
-scope: approved Stage3.2 format and owned-page hardening
-blocks_on: operator resumption of Stage5 after the commit pause
+status: blocked # Stage 5 preflight: native sparse-publisher liveness failure
+scope: Stage 5 hardened gates, then Stage 6 landing report
+blocks_on: sparse-publisher liveness diagnosis/decision before preflight and timed matrix resume
 updated: 2026-11-05
 ```
 
@@ -172,7 +172,7 @@ updated: 2026-11-05
 its November3 unit amendment and [approved writer-on format](./account-inbound-page-receipts.md).
 Bounded sequential patches; no new lab or unlisted speed experiments. All other
 checks, gates, limits, budgets and deadlines stay. No computer use, push, publication or deployment. The operator authorized the
-signed patch sequence on November5; Stage5remains paused after commits. Latest operator direction: continue after every phase;
+signed patch sequence on November5 and resumed Stage 5 afterward. Latest operator direction: continue after every phase;
 stop only for format/trust/limit/deadline decisions or failures unfixable within
 existing guards. All failed attempts remain evidence.
 
@@ -199,7 +199,20 @@ commands have passing segments, not a final all-target-stack check. Earlier reds
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase444records the operator additions to the442Stage6debts, with exact committed source references and no new measurement or implementation. Prepare its documentation-only patch after rebuilt443; do not commit or push. The original rebuilt history/local evidence guarantees remain intact. Stage5and actual Stage6reporting remain paused for explicit operator resumption.
+**Active bounded outcome.** Phase 445 stops on the first positive fairness
+preflight case: sparse markers20/40arrive, but60is absent before90hot edits finish.
+The genuine fresh seed passed. The fixed host-noise condition is false (one
+Firefox111.3%sample, no sustained>100%interval; swap decreases). No rerun is credited.
+Four remaining fairness cases and past-index are unrun. No timed matrix journey
+started, and the failed case did not reach later archive/Undo/cold checks.
+Durable data loss and owner closure are not established. Typecheck, approved lint,
+unit (330files/3,210tests,137.46s,existing skip), inventory/policy, six-second
+windowed-log dry run and frozen release-profile build pass. The pnpm copied-context
+failure is retained before the unchanged script's successful direct execution.
+Shipping code is unchanged since the prior app checkpoint; runtime flags remain
+as declared. Prepare this bounded patch and stop for the next liveness diagnosis.
+Do not start further app runs, timing cells, commits, push or deployment.
+Stage6will need the completed matrix; no landing verdict exists yet.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
@@ -209,7 +222,7 @@ Full/native/reduced loads and new continuations own syntax. Reduced/unreduced
 full-oracle pressure feeds the guarded idle lane, with the genuine mixed stale-turn
 closure/cold control in425; G8/range4 and combined originals
 caps are covered in418/419. The native multi-request partial-prefix repair passes
-in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Past-index fallback passes in441using the operator-approved1MiBWorker fixture, with separate32MiBproduction binding in440. Actual later dense positions3–19, full verification, Undo and ordinary offline cold are exact.438/439failed setups remain real-scale debt; these functional proofs do not grant Stage5credit. Later Stage5fairness/3,072cells remain separate. The requested commit pause is complete; Stage5still awaits operator resumption. Binary retained-reading installation with writer-off/on
+in422. The428 marked-reading Joined rotation counterexample is repaired in429 by carrying its existing authenticated floor; all six ordinary/marked-reading native progress and removal lifecycles, cold/Undo and the full unit checkpoint pass. Continuous native B fairness with/without backlog and withheld hints, actual productive batches, a sensitive turn control and exact Undo/cold pass in437. Past-index fallback passes in441using the operator-approved1MiBWorker fixture, with separate32MiBproduction binding in440. Actual later dense positions3–19, full verification, Undo and ordinary offline cold are exact.438/439failed setups remain real-scale debt; these functional proofs do not grant Stage5credit. Later Stage5fairness/3,072cells remain separate. The requested commit pause is complete and the operator has resumed Stage 5. Binary retained-reading installation with writer-off/on
 is covered in423; native floor acknowledgment follows all existing authentication
 and precedes installation effects.
 Ordinary builds stay writer-off; Docker/Vite forwarding is covered in420.
@@ -217,7 +230,7 @@ Genuine frozen old Page/Worker active and cold app refusals, queued old native-r
 
 **Lifecycle and finish.** Prove every floor rewriter/first native write/lost reply/
 pending-writing path and genuine frozen old Page/Worker artifacts. Existing genuine
-Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy and its genuine stale-turn control pass in425; the broader coherent functional checkpoint has passing source-pinned segments for all83commands in436. After the completed functional checkpoint and B proofs, the requested commit pause is now complete. Do not start Stage5cells or fixture/timing runs until the operator resumes after commits. Stage5and Stage6remain later work.
+Worker tests do not isolate first floor write task mode. The same-tree writer-off image opens dense data from a preloaded tab and passes exact offline disk-cold/Undo in430; pre-release rollback still locks out marked devices and must be stated plainly. Stage4 core idle-audit policy and its genuine stale-turn control pass in425; the broader coherent functional checkpoint has passing source-pinned segments for all83commands in436. After the completed functional checkpoint and B proofs, the requested commit pause is now complete. The operator has now resumed Stage 5 after commits; finish the required preflight/checkpoint before timings, then write Stage 6 and stop.
 Binary native cold is observed on the forced-cut fixture in421. The430same-tree ARM64image/rollback component evidence is established for its recorded tree; final signed-source artifacts, RAM and performance acceptance remain unestablished. Service automation stays off.
 
 This seat replaces only its own document; the other seat above is unchanged.

@@ -262,3 +262,27 @@ failures alongside the unresolved 438/439 preparation cost and production
 32 MiB index build-up/fallback time and RAM. The 74.4-second phase 442 journey
 is not a measurement of an individual failed attempt. No new timing, retry-policy,
 format, limit, guard or code change is included in these additions.
+
+
+## Operator amendment — Stage 5 preflight and host noise, 2026-11-05
+
+The 432–436 full pass stands for the unchanged application source. Since 436,
+changes are confined to tests, two test-only build configurations, policy and
+bookkeeping; the new specs passed in 437 and 441. Before timed runs require only:
+typecheck, lint, one complete unit-suite pass, release-validation inventory/policy
+checks, fairness.spec and past-index.spec once each, the frozen release-profile
+build, and one short dry run of windowed power-log capture. Retain any broader
+checkpoint work already performed; do not repeat its remaining commands.
+
+The operator may work lightly in the editor, Firefox and terminal; the Lima VM
+stays idle. Builds, other test suites and benchmarks pause during timed blocks,
+not between blocks. Before goals-desktop/mobile4x and any cell near the 16 ms
+input or 2.5 s peer/marker gate, pause and ask the operator to clear the machine.
+
+Fixed before any timed result: if a failed replicate's five-second host log
+shows a non-test process above one full core for more than ten seconds, or swap
+growth, rerun that replicate once and retain both results. Operationally inspect
+consecutive samples of the same non-test PID above 100% spanning more than ten
+seconds, and any increase in recorded swap usedMiB. Preserve the original failed
+predicates and noise qualification; no silent regrading or repeated rerun-to-green.
+All gates, other stop rules and deadlines remain unchanged.
