@@ -20097,3 +20097,19 @@ Outcome precedes advancing the seat. Twelve of36 blocking journeys now pass
 on this repaired source;24 remain plus report-only/Stage6 work. Continue with
 native gates, subject to the requested next host handshake. No commit, push,
 release preparation or deployment.
+
+
+### Rebind the standalone native delegate to the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 473 · **Scope:** apparatus readiness only.
+
+The native test entry rebuild passes with only root bindings changed from its
+corrected phase 461 form. All125ordinary shipping files remain exact;42tool-only
+assets are separate. Native cases/config/seed helper are byte-identical and all
+three tests collect. No app/source/assertion/gate/deadline change and no native
+execution credit yet. [Record](./development-evidence/2026-11-02-release-hardening/473-native-delegate-refresh/README.md).
+
+Outcome precedes advancing the seat. Twelve of36 blocking journeys pass.
+Next run the nine declared native journeys after the requested quiet-host
+readiness, then other frozen cells if unblocked. No commit, push, release
+preparation or deployment.

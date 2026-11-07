@@ -8002,3 +8002,14 @@ unavailability. Mandatory live assertions and live errors remain unchanged.
 Retain the ungraded failed attempt and four repair controls, then rerun in a
 fresh root. All six valid journeys pass. This grants only their source-bound
 cell evidence, not generalized qualification or permission to release.
+
+
+### Keep native tooling separate from source-bound ordinary assets
+
+**Date:** 2026-11-06 · **Phase:** 473.**
+
+Rebuild the existing native delegate against the repaired application without
+replacing any ordinary shipping file. Retain byte-identical native assertions,
+config and seed ownership, with separate tool assets and fresh future output
+roots. Collection/build success provides no journey credit. Await the explicit
+next-block host readiness before timed work; elapsed time is not a reply.

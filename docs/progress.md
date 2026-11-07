@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase472 both grown-maintenance cells3/3; native gates next
+status: in flight # phase473 native delegate ready; next timed-block host handshake pending
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: 24 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6; next-block host handshake
 updated: 2026-11-06
@@ -199,25 +199,22 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 472 passes grown-normal and grown-withheld
-3/3 each on the exact ordinary phase 470 assets. All runs exercise saved
-preparation and 112–120 overlapping keys; no old-fixture amendment is applied.
-Both owners complete in every run, uncensored within the original observation:
-writers31.712–38.321s and readers38.175–62.404s after the last key. Worst input
-p95 5.079ms, peer p95 1,600.451ms, marker1,952.412ms. Archive,Undo and cold checks
-pass; maximum inclusive cold3.309s. No capacity status is observed; native
-journal bytes and exact job/retry-clock data remain unavailable.
+**Active bounded outcome.** Phase 472 closes both grown cells3/3 with
+112–120 overlap, saved preparation and both owners completing uncensored.
+Worst input p955.079ms, peer p951,600.451ms and marker1,952.412ms; cold maximum
+3.309s. The closed-page optional-observer harness failure is retained without
+credit, its four-control repair is test-only, and the fresh retry passes.
 [Record](./development-evidence/2026-11-02-release-hardening/472-grown-maintenance-gates/README.md).
-Preserve one ungraded harness failure after exact cold: optional final status
-capture used a closed page. The private helper repair passes four controls,
-keeps live errors and every case assertion/wait, then a fresh retry passes.
-Also keep the pre-app driver-generation error. No app/source/build, guard or
-deadline change. Twelve of36 blocking journeys pass on this repaired source;
-24 remain (native9,late6,fairness3,Goals6), then report-only work andStage6.
-The operator authorizes continuing through the remaining journeys if unblocked.
-Next rebuild the separate native test delegate against unchanged source, run
-native gates and obtain the next tight-block host handshake. No commit, push,
-release preparation or deployment.
+Phase 473 now rebuilds the standalone native delegate on exact phase470source:
+125ordinary assets stay byte-identical,42tool assets remain separate, native
+cases/config/seed helper are exact, and all three tests collect. No journey
+credit from readiness. [Record](./development-evidence/2026-11-02-release-hardening/473-native-delegate-refresh/README.md).
+Twelve of36 blocking journeys pass;24 remain(native9,late6,fairness3,Goals6),
+then report-only andStage6work. The operator permits continuing if unblocked.
+The requested next-block quiet-host readiness is still pending; do not infer
+it from elapsed time. Next run the nine declared native cases in fresh output
+roots using phase473assets, then remaining cells, with separate Goals handshake.
+No app/source/assertion/gate/deadline change, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
