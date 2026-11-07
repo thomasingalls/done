@@ -1,0 +1,670 @@
+{
+  "phase": 447,
+  "date": "2026-11-05",
+  "sourceRevision": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+  "scope": "one bounded publication-to-receive-to-Window diagnostic; no hardening repair or acceptance credit",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/server.mjs",
+      "sha256": "22930b1e10b0866e2f96ab4ec8ad8d4e5dbf649d48c0eb33acd35b64747d6dd2",
+      "bytes": 5479
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/driver.ts",
+      "sha256": "da5ffc6c3458d9c93f4fe31dfac43c48814ae3bb0bf67a9bbc44f30971174e85",
+      "bytes": 7474
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-continuation.config.ts",
+      "sha256": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "bytes": 446
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f",
+      "bytes": 11736
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receivePageTransport.ts",
+      "sha256": "381659b70f376d44fba18da534236ae07119263100cb637b544512ed89225c58",
+      "bytes": 6489
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerWorkspaceQueues.ts",
+      "sha256": "ed5713f4d2a9538d57af03d2081fa71329e6a01369e80cf78d312c281ec74761",
+      "bytes": 7839
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/windowWorkspaceQueues.ts",
+      "sha256": "f5250ac61f6a844342238ff6c713e996868cdaed014fa8bae5770059eade3ae3",
+      "bytes": 5064
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/acknowledgedReceive.ts",
+      "sha256": "19566444ee9310b6e3e191a5b590f7d129df80ad3102229b11c1916bbcddcb86",
+      "bytes": 2023
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerChannel.ts",
+      "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+      "bytes": 9454
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23",
+      "bytes": 1852
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/scoped-http.ts",
+      "sha256": "c90b2fdba69422becf9d0c310e6e186062c0e13dcccf57f0829a63608b8113fb",
+      "bytes": 15703
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-protocol/deliveryTransport.ts",
+      "sha256": "408cdbf44daf186131108849308e6e1886bd143b92531fa375c6e0b63c81141b",
+      "bytes": 6620
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    }
+  ],
+  "declaration": {
+    "phase": 447,
+    "declaredEpoch": 1793886498.276737,
+    "question": "Locate third sparse write between offer, accepted publication, receipt and Window application",
+    "scope": "one observation-only diagnostic; no acceptance credit",
+    "source": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "sourcePins": {
+      "test/inbound-continuation/fairness.spec.ts": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "test/inbound-index/past-index.spec.ts": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "playwright.inbound-continuation.config.ts": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "playwright.inbound-index.config.ts": "9f7ae060eff3538ef31af56b2d20fb5d27d7f0bebc2218b50cc884fec028b2ee"
+    },
+    "observationPins": {
+      "trace447.spec.ts": "85c3d24fc821611417e91079c4e5336d2028196cab2675eee4793fc4aba5028b",
+      "observe447.ts": "ec7729d0c5bd0eaa062510ea9d517af79edfa4de6794594257e01b5651d9000c",
+      "playwright447.config.ts": "91bfa9f6ec5c8fe9c10a39594b8e5e0124d690a6d81655974dc3681f681be7ff"
+    },
+    "originalSpecInverseProof": {
+      "originalSha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "privateCopySha256": "85c3d24fc821611417e91079c4e5336d2028196cab2675eee4793fc4aba5028b",
+      "inverseEditsRestoreFullOriginalBytes": true,
+      "originalAssertionsWaitsAndDeadlineUnchanged": true,
+      "onlyAdditions": "pre-open observers, synchronous timestamps, post-cutoff trace harvest",
+      "appAssetsUnmodified": true
+    },
+    "browser": "same installed Playwright Chromium151 as445/446",
+    "frozenBuild": "/private/tmp/done-stage5-hardening-20261105/build-r2",
+    "seedOriginal": "/private/tmp/done-stage5-hardening-20261105/preflight-fairness/seed",
+    "seedClone": "/private/tmp/done-sparse-trace-447-20261105/fixture/seed",
+    "maximumAppRuns": 1,
+    "allGatesLimitsBudgetsAndSecurityChecksUnchanged": true,
+    "networkObserver": "copies syntax/header metadata only; no signature authority, extra fetch or response mutation",
+    "WindowObserver": "existing MessagePort callbacks/post plus pure cached mirror read; no extra RPC/flush/retry",
+    "hostLogSeconds": 5,
+    "noProfiler": true,
+    "powerStorage": "window lines plus raw stdout SHA256/size",
+    "argv": [
+      "env",
+      "INBOUND_CONTINUATION_ROOT=/private/tmp/done-sparse-trace-447-20261105/fixture",
+      "INBOUND_CONTINUATION_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-positive",
+      "INBOUND_CONTINUATION_NEGATIVE_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-negative",
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-sparse-trace-447-20261105/playwright447.config.ts",
+      "--grep",
+      "continuous native fairness known-backlog normal$",
+      "--max-failures",
+      "1"
+    ],
+    "stop": "new functional failures stop; known original sparse assertion retained as diagnostic outcome"
+  },
+  "review": {
+    "phase": 447,
+    "actualAppRuns": 1,
+    "harnessCollectionFailureRetained": true,
+    "case": {
+      "title": "continuous native fairness known-backlog normal",
+      "status": "failed",
+      "durationMs": 68418,
+      "errorLocation": {
+        "file": "/private/tmp/done-sparse-trace-447-20261105/trace447.spec.ts",
+        "column": 62,
+        "line": 267
+      },
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    20,\u001b[22m\n\u001b[2m    40,\u001b[22m\n\u001b[32m-   60,\u001b[39m\n\u001b[2m  ]\u001b[22m"
+    },
+    "credit": "diagnosis only; original failure stays red; no Stage5 timing credit",
+    "originalCutoffMs": 55687,
+    "firstWindow60AfterCutoffMs": 41.4,
+    "markers": [
+      {
+        "marker": 20,
+        "position": 18,
+        "offeredAtMs": 10005,
+        "submitObservedAtMs": 10386,
+        "acceptedDecisionObservedAtMs": 10403,
+        "receiveRequestObservedAtMs": 10415,
+        "responseHeadersObservedAtMs": 10436,
+        "responseBodyObservedAtMs": 10440,
+        "postCommitPrepareAtMs": 10860.8,
+        "WindowApplyAtMs": 10862.9,
+        "WindowApplyReplyAtMs": 10863.2,
+        "firstWindowVisibleAtMs": 10863.2,
+        "offerToWindowMs": 858.2,
+        "prepareToApplyReplyMs": 2.4,
+        "matchesSavedAcceptedTuple": true,
+        "digest": "f2ce908e095bf772a690cc4cdc448bc220dd4249c9ad5e6056c888742fc8dd98",
+        "requestId": 340,
+        "commitTimestamp": "not directly observed; native commit and authenticated readback precede workspacePrepare by source contract"
+      },
+      {
+        "marker": 40,
+        "position": 19,
+        "offeredAtMs": 20009,
+        "submitObservedAtMs": 20957,
+        "acceptedDecisionObservedAtMs": 20991,
+        "receiveRequestObservedAtMs": 20997,
+        "responseHeadersObservedAtMs": 21449,
+        "responseBodyObservedAtMs": 21455,
+        "postCommitPrepareAtMs": 21484.2,
+        "WindowApplyAtMs": 21486.8,
+        "WindowApplyReplyAtMs": 21487.3,
+        "firstWindowVisibleAtMs": 21487.3,
+        "offerToWindowMs": 1478.3,
+        "prepareToApplyReplyMs": 3.1,
+        "matchesSavedAcceptedTuple": true,
+        "digest": "318f0d68090fe54b40cfd45b0b619de714117a188d4de734f2a787a4261d1752",
+        "requestId": 498,
+        "commitTimestamp": "not directly observed; native commit and authenticated readback precede workspacePrepare by source contract"
+      },
+      {
+        "marker": 60,
+        "position": 20,
+        "offeredAtMs": 31473,
+        "submitObservedAtMs": 35496,
+        "acceptedDecisionObservedAtMs": 36174,
+        "receiveRequestObservedAtMs": 44847,
+        "responseHeadersObservedAtMs": 53834,
+        "responseBodyObservedAtMs": 54763,
+        "postCommitPrepareAtMs": 55725,
+        "WindowApplyAtMs": 55728,
+        "WindowApplyReplyAtMs": 55728.4,
+        "firstWindowVisibleAtMs": 55728.4,
+        "offerToWindowMs": 24255.4,
+        "prepareToApplyReplyMs": 3.4,
+        "matchesSavedAcceptedTuple": true,
+        "digest": "06cfd49c7c10cf2a92db3622a8e4693b85de93051008eac72feb314aa46945ad",
+        "requestId": 545,
+        "commitTimestamp": "not directly observed; native commit and authenticated readback precede workspacePrepare by source contract"
+      }
+    ],
+    "partialHotFirstReplies": [
+      {
+        "requestId": 513,
+        "after": 62,
+        "hotPositions": [
+          63
+        ],
+        "sparseAfter": 19,
+        "requestAtMs": 25346,
+        "headersAtMs": 26376,
+        "observedBodyBytes": 1718,
+        "decodedPages": 1,
+        "signedRequests": 2
+      },
+      {
+        "requestId": 517,
+        "after": 63,
+        "hotPositions": [
+          64,
+          65
+        ],
+        "sparseAfter": 19,
+        "requestAtMs": 26922,
+        "headersAtMs": 29618,
+        "observedBodyBytes": 3504,
+        "decodedPages": 1,
+        "signedRequests": 2
+      },
+      {
+        "requestId": 543,
+        "after": 68,
+        "hotPositions": [
+          69,
+          70
+        ],
+        "sparseAfter": 19,
+        "requestAtMs": 42319,
+        "headersAtMs": 43964,
+        "observedBodyBytes": 3232,
+        "decodedPages": 1,
+        "signedRequests": 2
+      }
+    ],
+    "censoring": [
+      {
+        "id": 525,
+        "atMs": 32106,
+        "bodyUnavailable": true
+      },
+      {
+        "id": 530,
+        "atMs": 35496,
+        "bodyUnavailable": true
+      }
+    ],
+    "allResponseStatus200": true,
+    "hotOwnerCloseMessages": [],
+    "finalWindowAllThreeMarkers": [
+      [
+        20,
+        40,
+        60
+      ],
+      [
+        20,
+        40,
+        60
+      ],
+      [
+        20,
+        40,
+        60
+      ]
+    ],
+    "bridgeOverflows": [
+      0,
+      0,
+      0
+    ],
+    "host": {
+      "samples": 14,
+      "swapFirstMiB": 15824.31,
+      "swapLastMiB": 15824.31,
+      "swapIncreases": [],
+      "above100PercentSpans": [
+        {
+          "pid": 55680,
+          "process": "node",
+          "first": 1793886500.341633,
+          "last": 1793886500.341633,
+          "maxCpu": 100.8,
+          "testProcess": true,
+          "seconds": 0.0
+        },
+        {
+          "pid": 55698,
+          "process": "node",
+          "first": 1793886535.342031,
+          "last": 1793886535.342031,
+          "maxCpu": 101.2,
+          "testProcess": true,
+          "seconds": 0.0
+        },
+        {
+          "pid": 52553,
+          "process": "Codex (Renderer)",
+          "first": 1793886540.351089,
+          "last": 1793886540.351089,
+          "maxCpu": 142.1,
+          "testProcess": false,
+          "seconds": 0.0
+        },
+        {
+          "pid": 55698,
+          "process": "node",
+          "first": 1793886545.3497658,
+          "last": 1793886545.3497658,
+          "maxCpu": 100.4,
+          "testProcess": true,
+          "seconds": 0.0
+        },
+        {
+          "pid": 55698,
+          "process": "node",
+          "first": 1793886555.343894,
+          "last": 1793886555.343894,
+          "maxCpu": 100.2,
+          "testProcess": true,
+          "seconds": 0.0
+        }
+      ],
+      "automaticNoiseRetryTriggered": false
+    },
+    "boundaries": {
+      "serviceWorkMs": 250,
+      "serviceResponseBytes": 10485760,
+      "notChanged": true,
+      "partialReplies": "request513: A63 only;517:A64/65 only;543:A69/70 only; sparse signed suffix not returned",
+      "nonresponseBodies": "525/530 aborted bodies are unknown, not counted as partial",
+      "lateResponse": "Request545 included self then sparse; signed page carried saved sparse position20/digest",
+      "commit": "source-bound before workspacePrepare; no independent timestamp or cold proof",
+      "browserObservation": "Node network timestamps can lag actual browser events while shared service/test process is busy",
+      "performance": "observation overhead unmeasured; not gate data",
+      "binaryRequest": "Chromium postDataBuffer failed81 binary submission decodes; accepted decision position plus saved tuple and receive digest used instead",
+      "remainingCause": "Shared Node service/test process stays busy; no CPU attribution yet. Client native turns are logical, so no violation of eight-position fairness is established."
+    },
+    "nextBoundedDiagnosis": "Separate shared service/test process cost from receive selection when a partial batch omits quiet suffix; retain250ms cap and native fairness/verification"
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/child.log",
+      "sha256": "0fe70a0e7b3fec94d0419419ac1472fcc70e1bf9c56bfa3cb96f9538963fc725",
+      "bytes": 2253,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/host-load.jsonl",
+      "sha256": "37f91d2e334a6493b0ab1fc3a7ae62e37a545aef6a2d0b5c8cbcd8b3c8ea8aec",
+      "bytes": 21681,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/power-assertions-before.txt",
+      "sha256": "9ee2f65114ca7ec752c57b2e6d5dc73dcdab2c3bbb48330c3aa020a337bc06db",
+      "bytes": 1389,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/power-log-after.meta.json",
+      "sha256": "9b0640a3d1bb27fdea6554f8ad20e97bb4fe6691afde4f89ea10c006dc56e046",
+      "bytes": 483,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/power-log-after.txt",
+      "sha256": "8e7c15a1b12663afcb9821f6af68fdaaca412304e52042c2809817320a993c8f",
+      "bytes": 832,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/power-log-before.meta.json",
+      "sha256": "a294266c71a45e67b3fb93a15db894b3faca9460b15b447ef1605e593b0eea95",
+      "bytes": 481,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/447-sparse-publication-mirror-trace/run.json",
+      "sha256": "358e03482fb83ff8ca16ebac6c2a332c2616179a0b5baee4a8fe84acb714e109",
+      "bytes": 1953,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-accepted-census.json",
+      "sha256": "bddc61322fb258284461023c2481eb3a7b343b263c5a2dbc252c3c240ead61cc",
+      "bytes": 16470,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-declaration.json",
+      "sha256": "09d848e8a8a30c14390f11471e36319bdf13adc4bc058f54d02eacbbcb2002fa",
+      "bytes": 3068,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-harness-attempts.json",
+      "sha256": "e3e9eb812fb839f3e4798286d86e32110a6f3d11f0f51aab0e6c8b9c9717b4b4",
+      "bytes": 406,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-list.log",
+      "sha256": "71473c8fc190fb02fe88f237778ad402db5e29fbf75e48f5ff8732e7758b34cb",
+      "bytes": 1788,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-r2-declaration.json",
+      "sha256": "6264fe49fc4185e172c76576693bf2af176e368cf4e7686b39997724fd7ab095",
+      "bytes": 3068,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-r2-list.log",
+      "sha256": "b143dc39a4ed9ac47f5eb2031d01e6947f6016903ccf4de2c59782a5c6fadfe4",
+      "bytes": 441,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-retained-census.json",
+      "sha256": "f7b637fb7063a147b818b01d5baca0d69057e02418e954d07572c216feda669b",
+      "bytes": 1050,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-review.json",
+      "sha256": "704c6f0b0e87613c70360478607a72661ad81d10d7d51c202a6531fbda159d06",
+      "bytes": 7161,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-run-result.json",
+      "sha256": "e9a22f045fba8aa89f5198acaa41ae4d3d2ee715f598cfc3288136fa44c26e16",
+      "bytes": 2174,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-seed-inventory.json",
+      "sha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+      "bytes": 105480,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-source-equivalence.json",
+      "sha256": "e10185f264ae2e2896f2f126c41a7c2623145f79607d77b3922de331c9bcd28c",
+      "bytes": 408,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/accepted447.mjs",
+      "sha256": "c595107bc88a64bac90813c29497c0e321c0e1e57ff3a36a3d7f3ce9e3607d5c",
+      "bytes": 1766,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/fixture/continuous-native-fairness-known-backlog-normal/evidence.json",
+      "sha256": "29a9be04454e1de98a3fb119610d6cd7a546390ca5d65ba9fc7abfac9184badf",
+      "bytes": 1494,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/network447.jsonl",
+      "sha256": "d562bee9173462ba13c818d0284b0969e3881341da69fa818382d81999b9e139",
+      "bytes": 324981,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/observation447.json",
+      "sha256": "e1840c99c3b4d7006f6a0cead31da430417e4b535ea6f107f0b4df08cfd3a5bf",
+      "bytes": 7151135,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/observe447.ts",
+      "sha256": "ec7729d0c5bd0eaa062510ea9d517af79edfa4de6794594257e01b5651d9000c",
+      "bytes": 6676,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/package.json",
+      "sha256": "a90fc33418afa2b9cbf4768524b021135b965ecdf993457505bfae3ac44a8428",
+      "bytes": 33,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/playwright447.config.ts",
+      "sha256": "91bfa9f6ec5c8fe9c10a39594b8e5e0124d690a6d81655974dc3681f681be7ff",
+      "bytes": 490,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/prepare447.py",
+      "sha256": "6ddd01f32a0268b00ba462c6eac558ff02d15839c1ce3264129352c31c2b7ec4",
+      "bytes": 3998,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/record447.py",
+      "sha256": "3b2a87ef59f70132c20a5a89cfa89e86af1a373265341a1bf93eefbc1ad695cb",
+      "bytes": 14173,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/results447.json",
+      "sha256": "8f53010d9381df6a79254979107256f22be3145e96a185f8eee1f971ae30860c",
+      "bytes": 9010,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/review447-attempt1.py",
+      "sha256": "8f7497f660ef4f4252de0b21cf2579f234538243523cdc7a282ed4b6274c59e8",
+      "bytes": 8812,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/review447.py",
+      "sha256": "5e438db03498777c2f56e5a1f0e186abbc629ec87027a4d08d9b9dc1cd87381a",
+      "bytes": 8842,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/run447-r2.py",
+      "sha256": "3131ada3bf70db683b55bdc352f978f5a72644659b9f330449c97683a2804be1",
+      "bytes": 5766,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/run447.py",
+      "sha256": "5e883d8850d4b9bd1d7e2a0ca3204f23ed43d800d60d7300187d1f349592353d",
+      "bytes": 5825,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/trace447.spec.ts",
+      "sha256": "85c3d24fc821611417e91079c4e5336d2028196cab2675eee4793fc4aba5028b",
+      "bytes": 18822,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-inventory-policy.log",
+      "sha256": "b6b99e07fe818b26113e5d7b180fc8cbc576f542231d9b9fd4ac9cbe1742e0c7",
+      "bytes": 323,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-debts.log",
+      "sha256": "2b3efda64e4d16264b5d487dac55740d775c1918ea5b9b46e07f9456ca247817",
+      "bytes": 313,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/447-check-results.json",
+      "sha256": "0dc90c901498505b1f6fbce99766d93df3c2ee7899af5c7358c9da559a93c583",
+      "bytes": 580,
+      "stored": "original local artifact only; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-trace-447-20261105/freeze447.py",
+      "sha256": "6195c3f75304fc2b33026455cc45640ac83ed10b60839782b7e4359898743efd",
+      "bytes": 4741,
+      "stored": "original local artifact only; no duplicate copy"
+    }
+  ],
+  "testBodyInverseProof": {
+    "originalSha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+    "privateCopySha256": "85c3d24fc821611417e91079c4e5336d2028196cab2675eee4793fc4aba5028b",
+    "inverseEditsRestoreFullOriginalBytes": true,
+    "originalAssertionsWaitsAndDeadlineUnchanged": true,
+    "onlyAdditions": "pre-open observers, synchronous timestamps, post-cutoff trace harvest",
+    "appAssetsUnmodified": true
+  },
+  "earlierFailuresUnchanged": true,
+  "applicationAssetOrGuardChanges": false,
+  "oldTestChanges": false,
+  "allLimitsBudgetsAndDeadlinesUnchanged": true,
+  "commitTimeIsSourceBoundNotDirectlyObserved": true,
+  "laterArchiveUndoCold": "unreached after original liveness failure",
+  "timedStage5MatrixJourneys": 0,
+  "committed": false,
+  "pushed": false,
+  "bookkeepingChecks": [
+    {
+      "name": "release-validation inventory/policy",
+      "exit": 0
+    },
+    {
+      "name": "debt bookkeeping",
+      "exit": 0
+    },
+    {
+      "name": "git diff --check",
+      "exit": 0
+    }
+  ]
+}

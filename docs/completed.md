@@ -19578,3 +19578,30 @@ and one review-field failure are retained separately; exactly one app test ran.
 Later archive/Undo/cold remain unobserved. No code, case, assertion, deadline,
 guard or limit change; no tracing or timed matrix starts. [Record](./development-evidence/2026-11-02-release-hardening/446-fairness-retry/README.md).
 Outcome precedes advancing this seat. No commit, push or deployment.
+
+
+### Trace the third sparse write through receiving and the Window mirror
+
+**Date:** 2026-11-05 · **Phase:** 447 · **Scope:** observation-only diagnosis.
+
+One exact-fixture/frozen-asset diagnostic again fails the original sparse cutoff
+(68.418 s). Sparse position 20 is accepted and its returned envelope digest matches
+the saved service tuple. It reaches every final Window view; the receiver's first
+visibility is 24.255 s after the offer and 41.4 ms after the original cutoff.
+Its final prepare/apply/reply takes 3.4 ms. Native commit/readback precedes prepare
+by the unchanged code contract, without a direct commit timestamp or cold proof.
+
+The receiver repeatedly asks for sparse writing after a hot primary. Three
+complete replies return only hot pages, omitting the quiet suffix; two other
+bodies remain unknown. This is consistent with the unchanged 250 ms batch work
+cap. The shared test/service Node process becomes busy and response latency grows,
+but CPU attribution is still open. No native eight-position violation or durable
+loss is established. All response statuses are 200; no hot-interval owner-close
+message occurs. Swap is flat; the noise retry does not trigger.
+
+Preserve the collection-only ESM failure, observer binary-body limitations and
+review classification correction. All guards, assertions, waits, budgets and
+deadlines stay. Earlier failures remain red; archive/Undo/cold stay unreached.
+[Record](./development-evidence/2026-11-02-release-hardening/447-sparse-publication-mirror-trace/README.md).
+Outcome precedes advancing this seat. Documentation-only sequential patch; no app
+repair, Stage 5 timing credit, commit, push or deployment.

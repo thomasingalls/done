@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked # unchanged fairness retry reproduces sparse-publisher failure
+status: blocked # sparse trace complete; shared service/test cost and partial-batch scheduling unresolved
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: sparse-publisher liveness diagnosis/decision before preflight and timed matrix resume
 updated: 2026-11-05
@@ -191,26 +191,29 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Phase 446 unchanged fairness retry](./development-evidence/2026-11-02-release-hardening/446-fairness-retry/README.md)
-reproduces the same line261failure in67.987s: sparse20/40visible,60absent before hot
-writing ends. Exactly one app attempt, unchanged source/assets/closed seeds.
-The collection/base-directory preconditions and review-schema error are retained
-as separate harness failures. Swap is flat; no sustained non-test CPU trigger.
-No later archive/Undo/cold result or new instrumentation is claimed.
+**Latest checks.** [Phase 447 sparse publication-to-mirror trace](./development-evidence/2026-11-02-release-hardening/447-sparse-publication-mirror-trace/README.md)
+again fails the original sparse cutoff in 68.418 s. The third sparse position is
+accepted and eventually visible in every Window; receiver visibility misses the
+cutoff by 41.4 ms after a 24.255 s offer-to-Window interval. Its final Window
+prepare/apply/reply takes 3.4 ms. Three complete hot-first replies omit sparse
+suffixes; two other bodies remain unknown. Repeated requests rule out a simple
+idle-poll-only account. Shared Node CPU attribution remains open. Frozen source,
+assets and both closed seeds are unchanged; no app repair or new timing credit.
+Earlier 445/446 failures, all diagnostics and observer limitations remain.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase 446 completes the operator-requested single
-retry before tracing. It fails the same sparse-liveness assertion as445 with
-unchanged inputs. Both failures and host logs remain; no noise retry or regrading.
-Later archive/Undo/cold checks remain unreached. Stage5preflight is still held;
-four other fairness cases, past-index and all36blocking/10report-only matrix
-journeys remain unrun. Prepare the documentation-only446patch. No app/test-body,
-assertion, guard, deadline or limit repair; tracing has not started. Wait for the
-next bounded sparse-publication/receiving diagnosis. No commit, push or deploy.
+**Active bounded outcome.** Phase 447 closes the authorized one-case diagnosis
+and prepares its documentation-only sequential patch after 446. The next bounded
+step should distinguish shared service/test process cost from partial-batch quiet
+suffix scheduling, retaining the 250 ms work cap and native logical fairness.
+No new functional failure is claimed beyond the original liveness cutoff; later
+archive/Undo/cold assertions stay unreached. Four other fairness cases, past-index
+and all 36 blocking / 10 report-only Stage 5 journeys remain unrun. No app fix,
+commit, push, publication or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

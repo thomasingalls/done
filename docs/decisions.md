@@ -7616,3 +7616,22 @@ Collection/controller failures before execution are harness attempts, not app
 retries; preserve and fix them before the one actual attempt. The same assertion
 fails again. Keep the functional stop, both results and the existing noise rule;
 do not start tracing or additional app runs in this phase.
+
+
+### Separate sparse publication, truncated receive work and Window application
+
+**Date:** 2026-11-05 · **Phase:** 447.
+
+The operator authorizes the bounded third-sparse-write trace after two unchanged
+failures. Use one observation-only spec copy and exact frozen inputs; inverse
+edits restore the original body, assertions, waits and deadline. Preserve failures
+and grant no acceptance credit to instrumented timing. Observe cached Window state
+and existing transport only, without extra RPC, retry, flush or new proof reuse.
+
+Do not infer a 20-second idle-poll gap from completed response bodies alone: the
+full request trace shows repeated sparse suffix requests, some absent from partial
+hot-first replies. Likewise, do not blame the Window mirror when its final apply
+exchange takes 3.4 ms. Distinguish source-bound commit ordering from a timestamped
+commit and the busy shared test/service process from measured CPU attribution.
+Keep the work cap and native logical allowance unchanged. Freeze this evidence
+before deciding the next bounded repair or resuming Stage 5.
