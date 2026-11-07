@@ -20700,3 +20700,13 @@ OutsideStage5, declared six standalone A/B probes on plain510 with frozen522prel
 [Record](./development-evidence/2026-11-02-release-hardening/524-undo-diagnostic-trigger-hold/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Undo pending-queue diagnostic: eventual application, immediate-read race
+
+**Date:** 2026-11-07 · **Phase:** 525.
+
+Completed operator-amended outsideStage5diagnostic,3busyA/3idleB onplain510, no trafficinjection ornewgatecredit. Correctionretainedwith524: Windowcarrierhasno compactContent; localappendLocalissynchronous; remoteownedreceiveholdsheadthroughcommit, countedinpendingItems. All3Ausefirstpositivepublicsampleaftersyncwithin20swindow,andremainbusy atactualkeydown. Depth781each; immediatefalse3/3A; textfirstobserved57.4/61.9/29.6msafterkey, afterpending0. IdleBfirstobserved241.3/56.0/30.4ms; B3alsoimmediatefalsewithpending0butdurablebecamefalsebeforekey andWorkerverifying. All6Undoexactlyremove!, Redoexactlyrestoretext/depth; no10snonresponseorzerodepth. Conclusion(a), withpollingboundsandnoexclusiveprepresspendingcausationclaim. SavedERR_ABORTEDsourceunknown; idleclockfitqualifiedandoldrecordsunchanged. Noapp/spec/assertion/wait/gate/limitchangeorGoalsrerun. Stage5remains523incomplete; STOPoperator.
+[Record](./development-evidence/2026-11-02-release-hardening/525-undo-pending-diagnostic/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

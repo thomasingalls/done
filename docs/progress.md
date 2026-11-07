@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # Undo diagnostic held: literal busytrigger unavailable; operatorclarificationpending
+status: in flight # Undo diagnostic complete, outcome(a); stopped for operator before any fix
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: operator chooses pendingItems>0 busyarm orstop; nofurtherapp/specchangeauthorized
+blocks_on: operator disposition of immediate Undo assertion and existing incompleteStage5matrix; no fix or further runauthorized
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase524outsideStage5diagnosticheldonliteralCaseA:original522prelude/waits retained; Windowmaintenance-running unavailable(no compactContent). A1wait120s, noModZorRedo;1772publicobservations allmaintenanceabsent,pendingpeak2,Undo781. Other5plannedtriesnotrun. Operatorquestionpending:usependingItems>0 vsstop. NoABCconclusionoracceptancecredit. Readonlysavedtraffic shows22.939msbrowserabort, gaps17.045/19.538s consistenthealthyidleclock; exactabortreasonunsaved/unknown, aggregate57submits/57newacceptedpositionsnotrequestbytepairing. Stage5remains523incomplete(21carried,11rerunpass,1fail,3unrun). Noapp/spec/assertion/wait/gate/limitchange,newGoalsrunorreleasework. Sequential524docspatchprepared; realindexempty. Holdforoperatortriggerdecision.
-[Record](./development-evidence/2026-11-02-release-hardening/524-undo-diagnostic-trigger-hold/README.md).
+**Active bounded outcome.** Phase525completed3busyA/3idleB outsideStage5onplain510; all6depth781, Undoexactlyremoved!, Redoexactrestored. All3Afirstpositivesampleafterpost-resumesync/keypending>0; immediateunchanged3/3, firstchanged57.4/61.9/29.6msafterkey(afterpublicpending0). Bfirstchanged241.3/56/30.4ms; B3alsoimmediateunchangedatpending0, durablebecamefalsebeforekeywhileWorkerverificationrunning. Outcome(a): frozenimmediatereadcanraceadmission; nob/cobserved, noexclusiveprepresspendingcauseclaimed. Pollboundsreported; noStage5credit/newGoalsrun/app/spec/assertion/wait/gate/limitchange. Operatorcorrection+524preconditionpreserved. SavedERR_ABORTEDcauseunknown,idlecadencefitqualified. Stage5still523:21carried,11rerunpass,1fail,3unrun;508typingdebtretained. Sequential525docspatchprepared; realindexempty. STOPforoperatorbeforeanyfixoradditionalexperiment/releasework.
+[Record](./development-evidence/2026-11-02-release-hardening/525-undo-pending-diagnostic/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

@@ -1,0 +1,1056 @@
+{
+  "phase": 525,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/windowAccountMirror.ts",
+      "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8",
+      "bytes": 12104
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "a9d3e25464123357a3af42d8ca552ba78eab50ffedbf4b34278a850c405d9e21",
+      "bytes": 6041
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/account/scopedTransport.ts",
+      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7",
+      "bytes": 14869
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-undo-pending-525-record-20261107/525-private-files.json",
+      "sha256": "79e0acec39bb573fb0fc601e023705642c1f3b29c04e32ca2477b87aae29fe77",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-525-record-20261107/525-summary.json",
+      "sha256": "bcdbaed71c36cbbc5096bf72f35b1db516d2c42c40af5c4cbd57799964e00c90",
+      "bytes": 19064
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/525-analysis.json",
+      "sha256": "42925949ec87c1a80bf3bf9a957b1c8e16f5825770de19232ddb556b5c3d50ac",
+      "bytes": 18727
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/525-declaration.json",
+      "sha256": "53593377cbceb504e59b3cccc0d727a4bccc6f524eb1f78145dcd3a632774517",
+      "bytes": 32077
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/525-progress.json",
+      "sha256": "1d7a48f5973a19a25f01a2e94d5d02237c7e53f8d55b17c5403812d54fcf1f82",
+      "bytes": 9876
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/525-driver.log",
+      "sha256": "2cc54ace3a0247b9cd9c7dc4f2ae70b2174c1f453d704d6c55fdb909cf997142",
+      "bytes": 7036
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/probe.mjs",
+      "sha256": "f9aa56788b9a60ae7a202ae1ec76290ca88f646b47898e1e7b0697642ad1349f",
+      "bytes": 5315
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/diagnostic.mjs",
+      "sha256": "a859da7e7f68fd60dc86634308feddb4c3cc02be2d2f52029e5b61de4f4ea418",
+      "bytes": 8631
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/loader.mjs",
+      "sha256": "bc0935493387fc4430e33f22dffbdabc3599fae3e7ecdada6bf65418d828c63e",
+      "bytes": 549
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/run.py",
+      "sha256": "838fe5a3d340209e175e59d1515641984a401d5dfbf37ab86ee33d0374d63336",
+      "bytes": 2456
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/analyze.py",
+      "sha256": "7b90e32f8a9db1cc16226c7093aaf926e841cd505ad48b6df35e0a908cd59b49",
+      "bytes": 3671
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/A1-precondition-analysis.json",
+      "sha256": "e38990718eab4edffbca7755d1addeee27411719c1f51fe3fd335e888e980dd8",
+      "bytes": 1001
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-traffic-analysis.json",
+      "sha256": "b182c4241e6fac286d11039e0cd4b705f6404a0446f2f469a4ceffcc13b17064",
+      "bytes": 6695
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-publisher-positions.json",
+      "sha256": "384e694a7384c77255cbe4953c637f5955eb1cb82267d27147b57835c009e3e0",
+      "bytes": 27965
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/A1/result.json",
+      "sha256": "36e03fa78366a913dd0782667b65e3eafa51c49358e0ac71d1a21cb48705602c",
+      "bytes": 995197
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/A1-runner.log",
+      "sha256": "aac0e6e9375b207e532743921cc69ad5697440e9208a110e19c88abdfc611805",
+      "bytes": 1717
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/run.json",
+      "sha256": "b822a0c9b538a8dbf1cc47e41c4cb9837419a4cecad16de6560c505163b8bd09",
+      "bytes": 1841
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/child.log",
+      "sha256": "79d8c16ef5019523087b815a8a18afe207a05738aca79b0f894a2de7061047c3",
+      "bytes": 524
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/host-load.jsonl",
+      "sha256": "62c82279689853a3607763dd3fd9ddefec3e041f0ec4e04570db561ca9a3de25",
+      "bytes": 59867
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A1/power-log-after.txt",
+      "sha256": "9e177913a4593e849f56d42cd9ccdb746ef28ac3d8f5315c567e8bdf3bc6338b",
+      "bytes": 686
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/B1/result.json",
+      "sha256": "b94373ad8ef2cef19f9f1be8ab5af7535058a789f9d3b83c5a4cf0e8f5b80629",
+      "bytes": 992925
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/B1-runner.log",
+      "sha256": "259adbc6b199ca1b0cd47d8d72751aef06d974632ad1243b8692655c81a35106",
+      "bytes": 1717
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/run.json",
+      "sha256": "e26b41b0ed2caaf84abb018a19a4742f27c945c00dd74249156c07d2a3002820",
+      "bytes": 1841
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/child.log",
+      "sha256": "ceca4b6823c0f95b0330d35575feabcc27c6e1b250cfb64608831819cae916f2",
+      "bytes": 572
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/host-load.jsonl",
+      "sha256": "fe61a0fd37741ea12b1c17880a95f0209201b388cf1a25f8c143f8714687b760",
+      "bytes": 59913
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B1/power-log-after.txt",
+      "sha256": "d2cfef2a60ed1a5ce6ea7dc1f4df9dc7718d4d825e07c9e05fe88c8ab81b5ab6",
+      "bytes": 2347
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/B2/result.json",
+      "sha256": "df121f13858aa13538968fee46f2ef3b0ca6727e40a5b237bb964bafa1653378",
+      "bytes": 998907
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/B2-runner.log",
+      "sha256": "4b0fe18d1b8814af50a2e47748e39a90d92d4317a9191ed704df8913b05f1e8d",
+      "bytes": 1716
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/run.json",
+      "sha256": "f4fc11e9ef804779d971e2a095b623dcbd4c88ce67b5cffcc2583dc845067c7d",
+      "bytes": 1840
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/child.log",
+      "sha256": "2b594299053d7e673e31bbcbc3aab48e0c1d570c1b4bed8774c94f963e46dbc8",
+      "bytes": 557
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/host-load.jsonl",
+      "sha256": "3798ad1e90103c409b17f7c793d6f5e0640733e70afc7d02a947f1d6dadc2aea",
+      "bytes": 58131
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B2/power-log-after.txt",
+      "sha256": "a99989f6cf90d40f4ac641ac6094c652629e27e4cbcc1aac7b73227dd23146ac",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/A2/result.json",
+      "sha256": "03ffafe4311863e2abf5b15f0650a2ec2c174e4103e90ec9d96352732dba9917",
+      "bytes": 962095
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/A2-runner.log",
+      "sha256": "a31d485b3f04a3152bdbe72a29ba856a7331036e6c7fad3cee0d91d83a3b834a",
+      "bytes": 1716
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/run.json",
+      "sha256": "37c962b34e939e0c1146cf38d6e902186807f7eedd57cddfb42e561ba7731600",
+      "bytes": 1840
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/child.log",
+      "sha256": "d501a66e5042213681538b3650957881374c563704d008f4a3864487ef856d88",
+      "bytes": 523
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/host-load.jsonl",
+      "sha256": "b2e556d1a4df6bf964ea70b187642ee47f6f6de5558e07b8850dc8940781fb2c",
+      "bytes": 57704
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A2/power-log-after.txt",
+      "sha256": "a66184133696fdff1773dfe23e4b6775205290ec59e60fefe2a7cce01308d27b",
+      "bytes": 845
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/A3/result.json",
+      "sha256": "45ddda8ad25a2dff1749672d84e75b8a4d969e3095474374389503ec7ac02de8",
+      "bytes": 965222
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/A3-runner.log",
+      "sha256": "e081fc4dc1a38623b6675c54f040c7d2b05f4b8522e9861a41440d6286a074e8",
+      "bytes": 1717
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/run.json",
+      "sha256": "13a4abb7ee06f37fe3b5d43ee1815e9bf78e98fd38f9995861401a21185cd4d1",
+      "bytes": 1841
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/child.log",
+      "sha256": "19f0ac41eecb90c36d806819c00500af9b217c005643ac684748600a03b8ed28",
+      "bytes": 538
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/host-load.jsonl",
+      "sha256": "600eabe6b0bd953b83bb6e6640af891a2f0e38a41d8474e6384414af6d3e352a",
+      "bytes": 58168
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-A3/power-log-after.txt",
+      "sha256": "83afe9a4daa34e5f89842a789d510b9a41416fa34e3689c1bc1c8359031da59d",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/B3/result.json",
+      "sha256": "4c16b6a7ec56b05ed76f9585bcd4fa808050d54eb03aabb29103ecb024a353e3",
+      "bytes": 990975
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/B3-runner.log",
+      "sha256": "911d72ee23cd0fee33cd3dcc4348cce4dd2590f31d2ee038a2439eb7be654255",
+      "bytes": 1716
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/run.json",
+      "sha256": "c7b1c8b0ef04ab7870e4aa165136985d1e1ac897b9727877d820af890af368b5",
+      "bytes": 1840
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/child.log",
+      "sha256": "1e49128b9c904f6c89b60f5d4ec52e8ab2628ea63ca615f959f5abf506545624",
+      "bytes": 546
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/host-load.jsonl",
+      "sha256": "e8f2ddb90123def0e9c01d71a4d4bddb26982ec9ad5ea3f74c72ff5f1cc0c634",
+      "bytes": 59404
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/525-B3/power-log-after.txt",
+      "sha256": "312c34348ed372fa5639e05c9bfb1173aa8e9fe82c322fed44ce38c0c33fab7b",
+      "bytes": 231
+    }
+  ],
+  "summary": {
+    "phase": 525,
+    "outsideStage5": true,
+    "gateCredit": false,
+    "completedTries": 6,
+    "busyTries": 3,
+    "idleTries": 3,
+    "busyQueueNotObserved": 0,
+    "firstSampleAndActualKeyConditionsVerified": true,
+    "conclusion": "(a): Undo applies after queued admission; frozen immediate read can race it",
+    "busyUndoFirstObservedMs": [
+      57.39990234375,
+      61.89990234375,
+      29.60009765625
+    ],
+    "idleUndoFirstObservedMs": [
+      241.300048828125,
+      56,
+      30.39990234375
+    ],
+    "undoDepthBeforeEveryPress": 781,
+    "immediateUnchangedBusy": 3,
+    "immediateUnchangedIdle": 1,
+    "allUndoRemovedReturnBang": true,
+    "allRedoRestoredExactText": true,
+    "noTenSecondNonresponse": true,
+    "noZeroUndoDepth": true,
+    "historical522r2ExactQueueStateNotRecorded": true,
+    "ERR_ABORTEDCauseRemainsUnknownFromSavedEvidence": true,
+    "noAppSpecAssertionWaitGateLimitChange": true,
+    "operatorStop": true,
+    "rows": [
+      {
+        "try": "A1",
+        "case": "A",
+        "replicate": 1,
+        "result": {
+          "path": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/A1/result.json",
+          "sha256": "36e03fa78366a913dd0782667b65e3eafa51c49358e0ac71d1a21cb48705602c",
+          "bytes": 995197
+        },
+        "outcome": "diagnostic-complete",
+        "classification": "a",
+        "stage5Credit": false,
+        "selectedAt": 1794068509641.4,
+        "postResumeSync": {
+          "at": 1794068494721.853,
+          "path": "/account/delivery/submit"
+        },
+        "sampleStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 1,
+          "pendingBytes": 1,
+          "reservedBytes": 1,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "sampleWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": null,
+          "progress": {
+            "stage": "complete",
+            "attempt": 2,
+            "elapsedMs": 11924
+          }
+        },
+        "snapshotUndo": 781,
+        "publicReadUndo": 781,
+        "selectedAgeAfterResumeMs": 15423.86767578125,
+        "sampleSource": "public-status-notification",
+        "selectionToKeyMs": 6.0,
+        "keydownStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 1,
+          "pendingBytes": 1,
+          "reservedBytes": 1,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "keydownWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": null,
+          "progress": {
+            "stage": "complete",
+            "attempt": 2,
+            "elapsedMs": 11924
+          }
+        },
+        "keydownDepth": 781,
+        "conditionAtActualKeydown": true,
+        "trustedFocusedVisible": true,
+        "immediateChanged": false,
+        "immediateAfterKeyMs": 3.89990234375,
+        "firstObservedChangeMs": 57.39990234375,
+        "changeBoundsMs": [
+          15,
+          57.39990234375
+        ],
+        "firstQueueEmptyAfterKeyMs": 53.89990234375,
+        "undoChanged": true,
+        "undoExactlyRemovedReturnBang": true,
+        "undoDepthAfter": 780,
+        "redoRestored": true,
+        "redoFirstObservedMs": 14.7998046875,
+        "redoDepthAfter": 781,
+        "pollGapMaximumMs": 42.39990234375,
+        "sampleCount": 2,
+        "firstPositivePublicTransitionAfterSync": {
+          "at": 1794068509641.4,
+          "status": {
+            "state": "active",
+            "revision": 1806,
+            "pendingItems": 1,
+            "pendingBytes": 1,
+            "reservedBytes": 1,
+            "durable": false,
+            "pressure": null,
+            "maintenance": null
+          },
+          "workerLocalHistory": {
+            "phase": "idle",
+            "reason": null,
+            "progress": {
+              "stage": "complete",
+              "attempt": 2,
+              "elapsedMs": 11924
+            }
+          }
+        },
+        "firstPositiveToSelectionMs": 0.0,
+        "firstPositiveSampleProof": true
+      },
+      {
+        "try": "B1",
+        "case": "B",
+        "replicate": 1,
+        "result": {
+          "path": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/B1/result.json",
+          "sha256": "b94373ad8ef2cef19f9f1be8ab5af7535058a789f9d3b83c5a4cf0e8f5b80629",
+          "bytes": 992925
+        },
+        "outcome": "diagnostic-complete",
+        "classification": "a",
+        "stage5Credit": false,
+        "selectedAt": 1794068701503.0999,
+        "postResumeSync": {
+          "at": 1794068682096.6255,
+          "path": "/account/delivery/submit"
+        },
+        "sampleStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": true,
+          "pressure": null,
+          "maintenance": null
+        },
+        "sampleWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": "activity-or-journal",
+          "progress": {
+            "stage": "coverage",
+            "completed": 704,
+            "total": 3137,
+            "attempt": 4,
+            "elapsedMs": 8077
+          }
+        },
+        "snapshotUndo": 781,
+        "publicReadUndo": 781,
+        "selectedAgeAfterResumeMs": 20050.58349609375,
+        "sampleSource": "initial-public-status-sample",
+        "selectionToKeyMs": 13.900146484375,
+        "keydownStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": true,
+          "pressure": null,
+          "maintenance": null
+        },
+        "keydownWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": "activity-or-journal",
+          "progress": {
+            "stage": "coverage",
+            "completed": 704,
+            "total": 3137,
+            "attempt": 4,
+            "elapsedMs": 8077
+          }
+        },
+        "keydownDepth": 781,
+        "conditionAtActualKeydown": true,
+        "trustedFocusedVisible": true,
+        "immediateChanged": true,
+        "immediateAfterKeyMs": 251.699951171875,
+        "firstObservedChangeMs": 241.300048828125,
+        "changeBoundsMs": [
+          0,
+          241.300048828125
+        ],
+        "firstQueueEmptyAfterKeyMs": 237.800048828125,
+        "undoChanged": true,
+        "undoExactlyRemovedReturnBang": true,
+        "undoDepthAfter": 780,
+        "redoRestored": true,
+        "redoFirstObservedMs": 176.10009765625,
+        "redoDepthAfter": 781,
+        "pollGapMaximumMs": null,
+        "sampleCount": 1,
+        "firstPositivePublicTransitionAfterSync": {
+          "at": 1794068683165.0999,
+          "status": {
+            "state": "active",
+            "revision": 1806,
+            "pendingItems": 1,
+            "pendingBytes": 1,
+            "reservedBytes": 1,
+            "durable": false,
+            "pressure": null,
+            "maintenance": null
+          },
+          "workerLocalHistory": {
+            "phase": "idle",
+            "reason": "activity-or-journal",
+            "progress": {
+              "stage": "coverage",
+              "completed": 704,
+              "total": 3137,
+              "attempt": 4,
+              "elapsedMs": 8077
+            }
+          }
+        },
+        "firstPositiveToSelectionMs": 18338.0
+      },
+      {
+        "try": "B2",
+        "case": "B",
+        "replicate": 2,
+        "result": {
+          "path": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/B2/result.json",
+          "sha256": "df121f13858aa13538968fee46f2ef3b0ca6727e40a5b237bb964bafa1653378",
+          "bytes": 998907
+        },
+        "outcome": "diagnostic-complete",
+        "classification": "a",
+        "stage5Credit": false,
+        "selectedAt": 1794068889838.9,
+        "postResumeSync": {
+          "at": 1794068870487.913,
+          "path": "/account/delivery/submit"
+        },
+        "sampleStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": true,
+          "pressure": null,
+          "maintenance": null
+        },
+        "sampleWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": "activity-or-journal",
+          "progress": {
+            "stage": "coverage",
+            "completed": 1728,
+            "total": 3137,
+            "attempt": 2,
+            "elapsedMs": 12539
+          }
+        },
+        "snapshotUndo": 781,
+        "publicReadUndo": 781,
+        "selectedAgeAfterResumeMs": 20053.9453125,
+        "sampleSource": "initial-public-status-sample",
+        "selectionToKeyMs": 6.800048828125,
+        "keydownStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": true,
+          "pressure": null,
+          "maintenance": null
+        },
+        "keydownWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": "activity-or-journal",
+          "progress": {
+            "stage": "coverage",
+            "completed": 1728,
+            "total": 3137,
+            "attempt": 2,
+            "elapsedMs": 12539
+          }
+        },
+        "keydownDepth": 781,
+        "conditionAtActualKeydown": true,
+        "trustedFocusedVisible": true,
+        "immediateChanged": true,
+        "immediateAfterKeyMs": 58.300048828125,
+        "firstObservedChangeMs": 56,
+        "changeBoundsMs": [
+          0,
+          56
+        ],
+        "firstQueueEmptyAfterKeyMs": 52.89990234375,
+        "undoChanged": true,
+        "undoExactlyRemovedReturnBang": true,
+        "undoDepthAfter": 780,
+        "redoRestored": true,
+        "redoFirstObservedMs": 33.199951171875,
+        "redoDepthAfter": 781,
+        "pollGapMaximumMs": null,
+        "sampleCount": 1,
+        "firstPositivePublicTransitionAfterSync": {
+          "at": 1794068878967,
+          "status": {
+            "state": "active",
+            "revision": 1806,
+            "pendingItems": 1,
+            "pendingBytes": 1,
+            "reservedBytes": 1,
+            "durable": false,
+            "pressure": null,
+            "maintenance": null
+          },
+          "workerLocalHistory": {
+            "phase": "idle",
+            "reason": "activity-or-journal",
+            "progress": {
+              "stage": "coverage",
+              "completed": 1728,
+              "total": 3137,
+              "attempt": 2,
+              "elapsedMs": 12539
+            }
+          }
+        },
+        "firstPositiveToSelectionMs": 10871.89990234375
+      },
+      {
+        "try": "A2",
+        "case": "A",
+        "replicate": 2,
+        "result": {
+          "path": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/A2/result.json",
+          "sha256": "03ffafe4311863e2abf5b15f0650a2ec2c174e4103e90ec9d96352732dba9917",
+          "bytes": 962095
+        },
+        "outcome": "diagnostic-complete",
+        "classification": "a",
+        "stage5Credit": false,
+        "selectedAt": 1794069070356.4,
+        "postResumeSync": {
+          "at": 1794069056378.037,
+          "path": "/account/delivery/submit"
+        },
+        "sampleStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 1,
+          "pendingBytes": 1,
+          "reservedBytes": 1,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "sampleWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": null,
+          "progress": {
+            "stage": "complete",
+            "attempt": 2,
+            "elapsedMs": 3368
+          }
+        },
+        "snapshotUndo": 781,
+        "publicReadUndo": 781,
+        "selectedAgeAfterResumeMs": 14490.106201171875,
+        "sampleSource": "public-status-notification",
+        "selectionToKeyMs": 6.5,
+        "keydownStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 1,
+          "pendingBytes": 1,
+          "reservedBytes": 1,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "keydownWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": null,
+          "progress": {
+            "stage": "complete",
+            "attempt": 2,
+            "elapsedMs": 3368
+          }
+        },
+        "keydownDepth": 781,
+        "conditionAtActualKeydown": true,
+        "trustedFocusedVisible": true,
+        "immediateChanged": false,
+        "immediateAfterKeyMs": 3.10009765625,
+        "firstObservedChangeMs": 61.89990234375,
+        "changeBoundsMs": [
+          9.5,
+          61.89990234375
+        ],
+        "firstQueueEmptyAfterKeyMs": 59.39990234375,
+        "undoChanged": true,
+        "undoExactlyRemovedReturnBang": true,
+        "undoDepthAfter": 780,
+        "redoRestored": true,
+        "redoFirstObservedMs": 20,
+        "redoDepthAfter": 781,
+        "pollGapMaximumMs": 52.39990234375,
+        "sampleCount": 2,
+        "firstPositivePublicTransitionAfterSync": {
+          "at": 1794069070356.2998,
+          "status": {
+            "state": "active",
+            "revision": 1806,
+            "pendingItems": 1,
+            "pendingBytes": 1,
+            "reservedBytes": 1,
+            "durable": false,
+            "pressure": null,
+            "maintenance": null
+          },
+          "workerLocalHistory": {
+            "phase": "idle",
+            "reason": null,
+            "progress": {
+              "stage": "complete",
+              "attempt": 2,
+              "elapsedMs": 3368
+            }
+          }
+        },
+        "firstPositiveToSelectionMs": 0.10009765625,
+        "firstPositiveSampleProof": true
+      },
+      {
+        "try": "A3",
+        "case": "A",
+        "replicate": 3,
+        "result": {
+          "path": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/A3/result.json",
+          "sha256": "45ddda8ad25a2dff1749672d84e75b8a4d969e3095474374389503ec7ac02de8",
+          "bytes": 965222
+        },
+        "outcome": "diagnostic-complete",
+        "classification": "a",
+        "stage5Credit": false,
+        "selectedAt": 1794069248762.6,
+        "postResumeSync": {
+          "at": 1794069242886.129,
+          "path": "/account/delivery/submit"
+        },
+        "sampleStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 1,
+          "pendingBytes": 1,
+          "reservedBytes": 1,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "sampleWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": "preparation-saved",
+          "progress": {
+            "stage": "verifying",
+            "attempt": 3,
+            "elapsedMs": 928
+          }
+        },
+        "snapshotUndo": 781,
+        "publicReadUndo": 781,
+        "selectedAgeAfterResumeMs": 7031.2060546875,
+        "sampleSource": "public-status-notification",
+        "selectionToKeyMs": 5.099853515625,
+        "keydownStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 1,
+          "pendingBytes": 1,
+          "reservedBytes": 1,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "keydownWorkerLocalHistory": {
+          "phase": "idle",
+          "reason": "preparation-saved",
+          "progress": {
+            "stage": "verifying",
+            "attempt": 3,
+            "elapsedMs": 928
+          }
+        },
+        "keydownDepth": 781,
+        "conditionAtActualKeydown": true,
+        "trustedFocusedVisible": true,
+        "immediateChanged": false,
+        "immediateAfterKeyMs": 4.2001953125,
+        "firstObservedChangeMs": 29.60009765625,
+        "changeBoundsMs": [
+          6.5,
+          29.60009765625
+        ],
+        "firstQueueEmptyAfterKeyMs": 25.400146484375,
+        "undoChanged": true,
+        "undoExactlyRemovedReturnBang": true,
+        "undoDepthAfter": 780,
+        "redoRestored": true,
+        "redoFirstObservedMs": 18.60009765625,
+        "redoDepthAfter": 781,
+        "pollGapMaximumMs": 23.10009765625,
+        "sampleCount": 2,
+        "firstPositivePublicTransitionAfterSync": {
+          "at": 1794069248762.6,
+          "status": {
+            "state": "active",
+            "revision": 1806,
+            "pendingItems": 1,
+            "pendingBytes": 1,
+            "reservedBytes": 1,
+            "durable": false,
+            "pressure": null,
+            "maintenance": null
+          },
+          "workerLocalHistory": {
+            "phase": "idle",
+            "reason": "preparation-saved",
+            "progress": {
+              "stage": "verifying",
+              "attempt": 3,
+              "elapsedMs": 928
+            }
+          }
+        },
+        "firstPositiveToSelectionMs": 0.0,
+        "firstPositiveSampleProof": true
+      },
+      {
+        "try": "B3",
+        "case": "B",
+        "replicate": 3,
+        "result": {
+          "path": "/private/tmp/done-undo-pending-diagnostic-525-20261107/runs/B3/result.json",
+          "sha256": "4c16b6a7ec56b05ed76f9585bcd4fa808050d54eb03aabb29103ecb024a353e3",
+          "bytes": 990975
+        },
+        "outcome": "diagnostic-complete",
+        "classification": "a",
+        "stage5Credit": false,
+        "selectedAt": 1794069448579.4001,
+        "postResumeSync": {
+          "at": 1794069428635.983,
+          "path": "/account/delivery/submit"
+        },
+        "sampleStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": true,
+          "pressure": null,
+          "maintenance": null
+        },
+        "sampleWorkerLocalHistory": {
+          "phase": "running",
+          "reason": "activity-or-journal",
+          "progress": {
+            "stage": "verifying",
+            "attempt": 3,
+            "elapsedMs": 2350
+          }
+        },
+        "snapshotUndo": 781,
+        "publicReadUndo": 781,
+        "selectedAgeAfterResumeMs": 20611.909912109375,
+        "sampleSource": "public-status-notification",
+        "selectionToKeyMs": 6.39990234375,
+        "keydownStatus": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": false,
+          "pressure": null,
+          "maintenance": null
+        },
+        "keydownWorkerLocalHistory": {
+          "phase": "running",
+          "reason": "preparation-saved",
+          "progress": {
+            "stage": "durability",
+            "attempt": 4,
+            "elapsedMs": 0
+          }
+        },
+        "keydownDepth": 781,
+        "conditionAtActualKeydown": true,
+        "trustedFocusedVisible": true,
+        "immediateChanged": false,
+        "immediateAfterKeyMs": 8.39990234375,
+        "firstObservedChangeMs": 30.39990234375,
+        "changeBoundsMs": [
+          7.60009765625,
+          30.39990234375
+        ],
+        "firstQueueEmptyAfterKeyMs": 26.300048828125,
+        "undoChanged": true,
+        "undoExactlyRemovedReturnBang": true,
+        "undoDepthAfter": 780,
+        "redoRestored": true,
+        "redoFirstObservedMs": 16,
+        "redoDepthAfter": 781,
+        "pollGapMaximumMs": 22.7998046875,
+        "sampleCount": 2,
+        "firstPositivePublicTransitionAfterSync": {
+          "at": 1794069443021.7,
+          "status": {
+            "state": "active",
+            "revision": 1806,
+            "pendingItems": 1,
+            "pendingBytes": 1,
+            "reservedBytes": 1,
+            "durable": false,
+            "pressure": null,
+            "maintenance": null
+          },
+          "workerLocalHistory": {
+            "phase": "idle",
+            "reason": "activity-or-journal",
+            "progress": {
+              "stage": "coverage",
+              "completed": 1280,
+              "total": 3137,
+              "attempt": 2,
+              "elapsedMs": 14497
+            }
+          }
+        },
+        "firstPositiveToSelectionMs": 5557.7001953125
+      }
+    ],
+    "classificationCounts": {
+      "a": 6,
+      "b": 0,
+      "c": 0
+    }
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

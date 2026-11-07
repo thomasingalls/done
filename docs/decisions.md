@@ -8427,3 +8427,10 @@ Theoperatorcarryoverof21stands, buttheplanned15reruns areincomplete:12attempted,
 **Date:** 2026-11-07 · **Phase:** 524.
 
 LiteralCaseA isunavailable onplain510AccountWindow:carrierhasno compactContent,all1772observations maintenanceabsent. Positivependingisobserved andwasmentionedintheopeningquestion, buttheoperator namedmaintenance-running forA. Preservepreconditionfailure andaskwhichtrigger, ratherthansilentlysubstituteworkerhistoryprogress,forcequeueorclaimanUndofailure. NoModZwaspressed,soABCremainsunanswered. Saved-onlynetworktracecannotrecoverexactabortcause; qualifyhealthyidleclock interpretation andaggregateacceptancecounts. Holdfurtherdiagnosticruns foroperatorchoice.
+
+
+### Use approved positive-pending trigger; do not mistake an immediate text read for Undo completion
+
+**Date:** 2026-11-07 · **Phase:** 525.
+
+Operator approvedpendingItems>0forAafterpost-resumesynctraffic, preservingthe524unavailable-maintenanceprecondition. Sixstandaloneobservations support(a): allUndoapplyandRedoexactlyrestorewithdepth781; allbusy immediate readsandoneidle readwereunchangedbeforelaterapplication. PreserveB3:pending0atkeydoesnotguaranteeimmediatecompletion(durablechangedfalsebeforekey). Treattimingas10mspoll bounds, notexactcommitinstantsorA/Bspeedestimates; noapp/specfix oracceptancecarryoverauthorized. ERR_ABORTEDexactcauseunsaved; qualify15–20sidlecadenceinterpretation. Finishboundedreportandstop.
