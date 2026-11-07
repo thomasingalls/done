@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase497 diagnostic passes160;495failure retained;bounded fixture sessions next
+status: in flight # phase498 session fixture controls pass;full3072setup next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: controlled full3072fixture preparation with status/error evidence, then reader report
+blocks_on: fresh full fixture under1800s with original guards, then original reader report
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 497 passes a fresh 160-edit observed run beyond the old stall with exact writing and all HTTP200. Its added observations change timing; 495 remains unexplained. Next use four real 256-edit producer sessions, verifying automatic local reduction/reopen and unchanged server tuples before each. Keep one1800ssetup clock,30sposition checks, original final archive/Goals checks, and untouched old readers. Correct the private negative-code observer and capture state on any recurrence; no app change or acceptance credit.
-[Record](./development-evidence/2026-11-02-release-hardening/497-post-maintenance-diagnostic/README.md).
+**Active bounded outcome.** Phase 498 prepares four real256-edit producer sessions with normal automatic local reduction between them. Ten controls and exact inverse-byte proof pass; original1024individual acceptance checks and final archive/Goals/reader snapshots remain. Entire setup retains1800s and per-position30s. Run one fresh copy with read-only status/error evidence; stop on a recurrence. The495stall remains unexplained. No app source/policy/limit change.
+[Record](./development-evidence/2026-11-02-release-hardening/498-session-fixture/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

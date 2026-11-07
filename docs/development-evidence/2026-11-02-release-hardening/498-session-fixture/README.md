@@ -1,0 +1,11 @@
+# Phase 498 — four real producer sessions, one setup deadline
+
+Use the exact phase 495 original 1,024 accepted edits and final checks, adding normal native close/reopen and automatic local reduction after positions 256, 512 and 768. Each boundary checks the full expected writing, all unrelated archive entries, a new baseline revision, fewer native rows, the persisted baseline through a second native reopen, the exact service acknowledgment prefix and unchanged accepted service tuple set. The original reader snapshots remain untouched.
+
+All preparation, reopens, individual writes and final checks share one 1,800-second case and the same 1,860-second wrapper. Every original 30-second position check remains. The existing 120-second maintenance observation is retained at each boundary. No stored data are edited; every new position is actual admitted/durable/accepted writing. Nothing prunes the service. The returning reader still faces all 3,072 positions on its original old profile.
+
+This is a deliberate fixture lifetime variation: each normal reopen creates a fresh owner and restarts its existing in-memory automatic quiet/cooldown state. No cooldown constant or policy is changed, and no manual internal mutation method or forced scheduler wake is used. It does not measure a continuously open producer or fix that performance debt. It does not resolve phase 495's unexplained stall.
+
+Ten regression controls pass. An inverse byte proof recovers the exact phase 495 recipe after removing only added observers and session boundaries. All original edit/input/durability/position assertions and final whole archive/Goals/snapshot checks remain. The channel observer now reads negative code from value.code, matching production. It records bounded Window view changes through existing subscriptions rather than adding a per-edit roundtrip; HTTP/error metadata and failed browser state are saved. All are private test observations, absent from app sources and ordinary assets.
+
+Next run one fresh full fixture. Stop on a recurrence or new app failure; preserve every attempt. No app source, verification, format, limit, gate or deadline change. No performance credit, commit, push or deployment.

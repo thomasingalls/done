@@ -20430,3 +20430,13 @@ The fresh observed diagnostic passes 160 accepted positions and full archive/ord
 [Record](./development-evidence/2026-11-02-release-hardening/497-post-maintenance-diagnostic/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Bound producer fixture growth through normal lifetimes
+
+**Date:** 2026-11-06 · **Phase:** 498.
+
+The four-session fixture recipe and ten controls pass. Exact inverse proof retains all original 1,024 edit/durability/position assertions and final data checks. Genuine native lifetimes permit ordinary local reduction after each 256 edits; all work shares the original setup clock. Error/status observation stays fixture-only. Full setup is next.
+[Record](./development-evidence/2026-11-02-release-hardening/498-session-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

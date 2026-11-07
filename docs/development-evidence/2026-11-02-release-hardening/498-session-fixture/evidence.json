@@ -1,0 +1,68 @@
+{
+  "fixtureOnly": true,
+  "gateCredit": false,
+  "appRunPending": true,
+  "allGuardsAndDeadlinesPreserved": true,
+  "phase": 498,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerChannel.ts",
+      "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+      "bytes": 9454
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-session-fixture-498-20261106/498-private-files.json",
+      "sha256": "8e062e6c50ae745274f64af71e7f5aa119785a871c06047c9bd82eedf291dd97",
+      "bytes": 1458
+    },
+    {
+      "localPath": "/private/tmp/done-session-fixture-498-20261106/498-recipe-proof.json",
+      "sha256": "a8d2329e1cd8aa68b60e86e8bca17378f1011c44b0b2b0a16ef54382305b568e",
+      "bytes": 930
+    },
+    {
+      "localPath": "/private/tmp/done-session-fixture-498-20261106/498-controls.log",
+      "sha256": "960fa72da2cb955b68339cdea1630e60153a667ed83e06c0eb5892ec1c7bfe55",
+      "bytes": 769
+    }
+  ],
+  "summary": {
+    "phase": 498,
+    "parent495RecipeSha256": "7d0cd7d6ae414b42829d8a8acd47756a3d40ee66b29c2bff6362b209dc233f98",
+    "newRecipeSha256": "06a854aece24152ace2428c4566ff927f840cc46df02ea8271996a0640258d83",
+    "exactParentRecoveredByRemovingOnlyObserversAndSessionBoundaries": true,
+    "original1024EditLoopInputAnd30sAssertionsUnchanged": true,
+    "originalFinalArchiveGoalsOldReaderChecksUnchanged": true,
+    "originalDeadlinesUnchanged": {
+      "case": 1800000,
+      "wrapperSeconds": 1860,
+      "perPosition": 30000,
+      "maintenanceObservation": 120000
+    },
+    "sessionPositions": [
+      256,
+      512,
+      768
+    ],
+    "normalCloseReopenAndAutomaticOnly": true,
+    "localCooldownConstantUnchanged": true,
+    "fixtureLifetimeVariation": "normal new owners restart their existing in-memory quiet/cooldown state; not a production scheduler change or uninterrupted-session result",
+    "noServiceHistoryPruning": true,
+    "noStoredDataEdits": true,
+    "regressionControlsPassed": 10
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

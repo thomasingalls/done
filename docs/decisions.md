@@ -8238,3 +8238,10 @@ Do not treat earlier 36 passing journeys as permission to ignore the new unexpla
 **Date:** 2026-11-06 · **Phase:** 497.
 
 Do not relabel the unreproduced 495 failure as fixed. Keep all original per-edit and final assertions. For apparatus preparation, use ordinary native lifetimes and actual automatic local reduction between fixed sessions; preserve all accepted server tuples and old reader profiles. Count every maintenance/reopen inside one original setup clock, with no guard or cooldown constant change.
+
+
+### Preserve service workload while reducing producer setup cost
+
+**Date:** 2026-11-06 · **Phase:** 498.
+
+Keep production policy unchanged. Use normal reopened producer sessions solely to prepare the requested real service workload within its fixed deadline, and prove server tuples and old readers are preserved. Report this setup variation and do not infer uninterrupted-session performance or resolution of the old stall.
