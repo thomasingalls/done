@@ -8013,3 +8013,15 @@ replacing any ordinary shipping file. Retain byte-identical native assertions,
 config and seed ownership, with separate tool assets and fresh future output
 roots. Collection/build success provides no journey credit. Await the explicit
 next-block host readiness before timed work; elapsed time is not a reply.
+
+
+### Count native execution only on the source-matched delegate
+
+**Date:** 2026-11-06 · **Phase:** 474 · **Operator host window confirmed.**
+
+Run all nine native journeys on the phase 473 delegate with unchanged ordinary
+assets and current complete fixture. Keep every measured interval and cold
+stage; all pass. Do not treat earlier-source native passes or the delegate build
+as execution credit, and do not label deep catch-up as unlock time or attribute
+live input/peer metrics to semantic native cells. Continue the next bounded
+catch-up block under the same explicit host readiness and unchanged gates.

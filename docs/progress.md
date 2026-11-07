@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase473 native delegate ready; next timed-block host handshake pending
+status: in flight # phase474 native cells3/3; live catch-up block next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: 24 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6; next-block host handshake
+blocks_on: 15 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
 updated: 2026-11-06
 ```
 
@@ -199,22 +199,19 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 472 closes both grown cells3/3 with
-112–120 overlap, saved preparation and both owners completing uncensored.
-Worst input p955.079ms, peer p951,600.451ms and marker1,952.412ms; cold maximum
-3.309s. The closed-page optional-observer harness failure is retained without
-credit, its four-control repair is test-only, and the fresh retry passes.
-[Record](./development-evidence/2026-11-02-release-hardening/472-grown-maintenance-gates/README.md).
-Phase 473 now rebuilds the standalone native delegate on exact phase470source:
-125ordinary assets stay byte-identical,42tool assets remain separate, native
-cases/config/seed helper are exact, and all three tests collect. No journey
-credit from readiness. [Record](./development-evidence/2026-11-02-release-hardening/473-native-delegate-refresh/README.md).
-Twelve of36 blocking journeys pass;24 remain(native9,late6,fairness3,Goals6),
-then report-only andStage6work. The operator permits continuing if unblocked.
-The requested next-block quiet-host readiness is still pending; do not infer
-it from elapsed time. Next run the nine declared native cases in fresh output
-roots using phase473assets, then remaining cells, with separate Goals handshake.
-No app/source/assertion/gate/deadline change, commit, push or deployment.
+**Active bounded outcome.** Phase 474 passes native-context, native-resumable
+and native-deep 3/3 each on the exact repaired source and phase 473 delegate.
+Deep intervals are 21.852 / 19.529 / 21.659s against30s; all twelve cold stages
+are exact, maximum9.764s against15s. Era/rebind, saved-slice/reduction, later
+input/Undo and closed-sender receipt/application guards remain. No new build,
+source, assertion, wait or gate change; no failures or replacement runs.
+[Record](./development-evidence/2026-11-02-release-hardening/474-native-gate-block/README.md).
+The repaired candidate has21/36 blocking journeys passing. Fifteen remain:
+late-writing6, fairness3 and Goals6, followed by report-only work and Stage6.
+The operator confirmed quiet host for native and live catch-up; next run the
+six late normal/withheld cases on ordinary phase470assets. Goals still needs
+its separate tight-block handshake. Preserve all prior failures and source-
+bound results; no commit, push, release preparation or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

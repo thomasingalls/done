@@ -20113,3 +20113,23 @@ Outcome precedes advancing the seat. Twelve of36 blocking journeys pass.
 Next run the nine declared native journeys after the requested quiet-host
 readiness, then other frozen cells if unblocked. No commit, push, release
 preparation or deployment.
+
+
+### Pass all native Stage 5 cells on the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 474 · **Scope:** nine native journeys.
+
+Context, resumable history and deep catch-up each pass 3/3 with unchanged bodies
+and gates. Deep intervals: 21.852 / 19.529 / 21.659s against 30s. All twelve cold
+stages are exact; maximum 9.764s against 15s. Native era/rebind, genuine saved
+slice/reduction, subsequent input/Undo, accepted source before sender close and
+native receive/Window application guards all pass. No native input/peer p95
+claim. [Record](./development-evidence/2026-11-02-release-hardening/474-native-gate-block/README.md).
+
+No failure, replacement run, profiler, new build/source, assertion or deadline
+change. The phase 473 delegate manifest remains exact. All host/windowed power
+and raw profile/state records are retained locally behind hashes, without new
+object copies. Outcome precedes advancing the seat. Twenty-one of36 blocking
+journeys pass on this repaired source; fifteen remain plus report-only/Stage6.
+Proceed with live catch-up under the confirmed quiet window. No commit, push,
+release preparation or deployment.
