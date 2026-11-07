@@ -8025,3 +8025,15 @@ stage; all pass. Do not treat earlier-source native passes or the delegate build
 as execution credit, and do not label deep catch-up as unlock time or attribute
 live input/peer metrics to semantic native cells. Continue the next bounded
 catch-up block under the same explicit host readiness and unchanged gates.
+
+
+### Preserve late-gate denominators and state post-drain exposure separately
+
+**Date:** 2026-11-06 · **Phase:** 475.
+
+Run the declared six source-matched late journeys without changing the original
+analyzer or predicates. Record zero post-both-drain keys as unexposed rather
+than a liveness pass, and three as a small diagnostic sample. Keep every run;
+do not rerun a passing journey to improve exposure or apply the noise rule to
+passing results. Native lab observations remain unavailable; acceptance uses the
+original Window/archive/traffic evidence. No gate or claim expansion.

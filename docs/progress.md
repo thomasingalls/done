@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase474 native cells3/3; live catch-up block next
+status: in flight # phase475 live cells3/3; fairness and Goals next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: 15 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
+blocks_on: nine remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
 updated: 2026-11-06
 ```
 
@@ -199,19 +199,17 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 474 passes native-context, native-resumable
-and native-deep 3/3 each on the exact repaired source and phase 473 delegate.
-Deep intervals are 21.852 / 19.529 / 21.659s against30s; all twelve cold stages
-are exact, maximum9.764s against15s. Era/rebind, saved-slice/reduction, later
-input/Undo and closed-sender receipt/application guards remain. No new build,
-source, assertion, wait or gate change; no failures or replacement runs.
-[Record](./development-evidence/2026-11-02-release-hardening/474-native-gate-block/README.md).
-The repaired candidate has21/36 blocking journeys passing. Fifteen remain:
-late-writing6, fairness3 and Goals6, followed by report-only work and Stage6.
-The operator confirmed quiet host for native and live catch-up; next run the
-six late normal/withheld cases on ordinary phase470assets. Goals still needs
-its separate tight-block handshake. Preserve all prior failures and source-
-bound results; no commit, push, release preparation or deployment.
+**Active bounded outcome.** Phase475 passes normal and withheld-hint live
+catch-up3/3 each with unchanged original analyzer/predicates. Max input p954.765ms,
+peer1.994s, marker1.530s; full backlog, archives and offline cold exact. All125
+ordinary assets and seven source bindings remain exact. Native469repair has
+27/36blocking journeys passing: old/grown maintenance12, native9, live6.
+[Record](./development-evidence/2026-11-02-release-hardening/475-live-catchup-gates/README.md).
+Nine remain: fairness3 and Goals6, followed by report-only and Stage6. Post-both-
+drain exposure20and3keys in two withheld runs; all others unexposed for that
+question. No new predicate or favorable retry. All raw and host records stay.
+Prepare fairness/Goals and obtain the next separate tight-host handshake. No app
+change, commit, push, release preparation or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

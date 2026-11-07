@@ -20133,3 +20133,20 @@ object copies. Outcome precedes advancing the seat. Twenty-one of36 blocking
 journeys pass on this repaired source; fifteen remain plus report-only/Stage6.
 Proceed with live catch-up under the confirmed quiet window. No commit, push,
 release preparation or deployment.
+
+
+### Pass all live catch-up gates on the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 475 · **Scope:** six original late journeys.
+
+Normal and withheld-hint cells each pass3/3 with the exact original analyzer,
+case/app bindings and unchanged gates. Max input p954.765ms, peer1.994s, marker
+1.530s. Full backlog and archive guards and both offline cold profiles pass.
+[Record](./development-evidence/2026-11-02-release-hardening/475-live-catchup-gates/README.md).
+
+Post-both-drain exposure is20and3keys in two withheld runs; all others are
+unexposed for that specific question. Preserve that limitation, all raw runs and
+host logs. All pass, so no noise-rule retry. No source/build/assertion/wait/gate
+change. Outcome precedes advancing the seat:27/36 blocking journeys pass on the
+repaired source, nine plus report-only/Stage6 remain. Prepare fairness/Goals with
+the next separate host handshake. No commit, push or deployment.
