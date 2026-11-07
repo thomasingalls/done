@@ -8371,3 +8371,10 @@ Measure the actual production index bound on the completed genuine fixture. Reus
 **Date:** 2026-11-07 · **Phase:** 516.
 
 Report the observed bound honestly: no fallback through this workload, not an invented extrapolated crossing. The ordinary same-profile offline cold resolves the missing cold evidence for this report; earlier native-tool failures remain apparatus evidence. Preserve old timed-matrix bindings and make no release-clearance inference.
+
+
+### Close the missing report without transferring old timed-matrix credit
+
+**Date:** 2026-11-07 · **Phase:** 517.
+
+Stop at the source-qualified handoff. The missing report is complete; the full frozen blocking matrix still predates508 and must run on repaired final source before release clearance. Keep that prerequisite, all debts and compatible reader-on/writer-off rollback requirements explicit. No format, trust, limit, deadline or default change is made.

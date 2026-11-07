@@ -20620,3 +20620,13 @@ The original3072reader report passes all checks: exact service/native positions7
 [Record](./development-evidence/2026-11-02-release-hardening/516-complete3072-reader-report/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Bounded repaired-source and completed-reader handoff
+
+**Date:** 2026-11-07 · **Phase:** 517.
+
+Closed the bounded stale-projection repair and missing3072report handoff. Five new sensitive regressions,149 focused and3231 fullunit cases pass; current fixture completes under1800s; original3072reader/cold/positions/archive/Undo report passes. Explicitly retain old-source binding of36timedblockingjourneys and all prior failures; no current release clearance. Limits/flags/securitychecks unchanged. Patches507–517 prepared, no staging/signing/push/publication/deployment.
+[Record](./development-evidence/2026-11-02-release-hardening/517-repaired-source-handoff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
