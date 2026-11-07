@@ -19973,3 +19973,28 @@ is established. Stop under the explicit120s/retry-wait instruction, without
 changing any guard/deadline or running the remaining five cases. Outcome precedes
 advancing the seat. Stage5:15pass,1fail,20unrun; old-normal cell fails. No app
 source change, release prep, commit, push or deployment.
+
+
+### Trace immediate maintenance retries to warm-audit queue priority
+
+**Date:** 2026-11-06 · **Phase:** 468 · **Scope:** failed-gate diagnosis only.
+
+The fresh observation-only run reproduces seven interruptions and zero
+completions at the unchanged 120-second wait. All 120 keys, exact archive and
+Undo/peer convergence pass; cold is not reached. Every workspace durability
+barrier and native journal flush succeeds. The six post-input retries stop
+before the preparation callback because a warm-audit queue arrival changes the
+preparation-priority token. Each is a fresh interruption, not a retained rejected
+promise, and selects the existing 10-second priority-only retry floor.
+[Record](./development-evidence/2026-11-02-release-hardening/468-maintenance-priority-trace/README.md).
+
+The private observation diff reverses exactly to four canonical files; 51
+assertion/wait call ASTs remain exact and prior evidence is unchanged. Five
+existing focused unit files pass all 85 cases without edits. Every failed
+attempt and the proof-script import repair remain recorded. No acceptance
+credit, canonical source/test change, guard, limit or deadline change.
+
+Outcome precedes advancing the active seat. Stage 5 stays 15 passing, one failed,
+20 unrun. Next is a bounded audit/preparation scheduling repair with an integration
+regression and uninstrumented gate rerun; no repair started here. No commit,
+push, release preparation or deployment.

@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: held # phase467actual120smaintenance completion failure; diagnose durability guard next
+status: held # phase468 identifies warm-audit/preparation priority conflict; bounded repair next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: actual post-input durability/preparation rejection;120scompletion gate; remaining timed/report-only cells
+blocks_on: warm-audit/preparation arbitration repair; 120s completion gate; remaining timed/report-only cells
 updated: 2026-11-06
 ```
 
@@ -199,20 +199,21 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase467applies the approved old-fixture patch
-exactly in a fresh root. Typing reaches120keys; actual preparation/backlog,
-archive-plus-append and Undo/peer convergence pass. Partial input p953.377ms,
-peer0.874s, all markers below0.755s. The unchanged120s maintenance-completion
-wait fails: seven interruptions, zero completions, cold not reached. [Record](./development-evidence/2026-11-02-release-hardening/467-maintenance-completion-stop/README.md).
-Later starts at+23.95/+40.49/+56.30/+72.74/+90.52/+107.44s after typing leave at
-durability with activity-or-journal and reported0ms. Exact condition/job and
-configured retry waits are not exposed. No qualifying unrelated-load/swap trigger
-is established. Stop under the explicit120s/retry-wait rule. Diagnose durability
-barrier/preparation-entry rejection before a repair; no new app runs or guard,
-limit, deadline change. Stage5:15passing journeys,1failed,20unrun. Old-normal
-cell fails; five remaining block cases and all report-only work stay unrun.
-Both real-sync maintenance fixtures remain ready. No release prep, commit, push
-or deployment.
+**Active bounded outcome.** Phase 468 reproduces the completion failure and
+identifies its immediate-entry cause. Both durability waits pass on all seven
+attempts. Six post-input retries fail before the preparation callback when a
+warm-audit arrival changes the queue-priority token. Native error IDs are all
+different; each outcome selects the existing 10-second priority-only retry.
+[Record](./development-evidence/2026-11-02-release-hardening/468-maintenance-priority-trace/README.md).
+The private observation diff reverses exactly; 51 assertion/wait ASTs and all
+prior evidence stay exact. Five existing focused unit files pass 85 controls
+without edits. No canonical runtime/test or guard/deadline change and no timing
+credit. Stage 5 remains 15 passing journeys, one failed, 20 unrun; cold not reached
+in this diagnostic. Next bounded work is maintenance arbitration, a deterministic
+interleaving regression and an uninstrumented rerun, preserving audit pressure,
+foreground/lifecycle interruption and the 120-second completion gate. No repair
+is started here. Both fictional maintenance fixtures remain ready. No release
+prep, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

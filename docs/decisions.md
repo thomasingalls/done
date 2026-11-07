@@ -7921,3 +7921,21 @@ Do not label observed16sretry gaps as configured10s/60s timers; the public trace
 lacks exact guard/job data. Diagnose durability/preparation-entry rejection before
 repairing, preserving every interruption/authority/journal/commit guard. No noisy
 rerun is triggered by the recorded unrelated-process/swap evidence.
+
+
+### Distinguish successful durability from later preparation interruption
+
+**Date:** 2026-11-06 · **Phase:** 468 · **Operator-authorized diagnosis.**
+
+Trace each boundary and native error identity in a fresh fictional profile,
+without changing results, guards or deadlines. A public last stage of durability
+is not proof that its barrier failed: the private run passes both waits, then
+six warm-audit arrivals interrupt asynchronous preparation entry before its next
+progress report. Preserve that failed run and leave the original Stage 5 cell
+failed. Do not assign performance credit to an instrumented build.
+
+The next repair should arbitrate existing maintenance jobs while preserving
+foreground/input interruption, forced audit pressure, every verification and
+mutation fence, and the 120-second completion gate. The trace authorizes no
+new trust, format, budget, retry or deadline. Existing individual-policy unit
+success is not a substitute for the missing queue-interleaving regression.
