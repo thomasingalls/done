@@ -20069,3 +20069,31 @@ samples are on. The two maintenance cells pass on this repaired source; earlier
 candidate results are not transferred. Outcome precedes updating the seat.
 Six of36 blocking journeys pass;30 and the report-only/Stage6 work remain.
 The timed block ends; no commit, push, release preparation or deployment.
+
+
+### Pass grown maintenance with >=60 overlap and both owners observed
+
+**Date:** 2026-11-06 · **Phase:** 472 · **Scope:** three normal and three withheld
+journeys on the exact repaired source and ordinary assets.
+
+Both cells pass 3/3 with 112–120 overlapping keys and the saved-preparation
+condition exercised. All twelve owner completions are observed: writers at
+31.712–38.321s and readers at38.175–62.404s after the last key. Worst input p95
+5.079ms, peer p95 1,600.451ms, marker1,952.412ms. Every archive/Undo/cold guard
+passes; the longest inclusive cold interval is3.309s. No capacity status or
+starts during typing/reader drain are observed. Native journal bytes and exact
+interruption/retry-job data remain unavailable, not invented.
+[Record](./development-evidence/2026-11-02-release-hardening/472-grown-maintenance-gates/README.md).
+
+Keep the first normal attempt: both cold exports pass in its partial record,
+but an optional final observer reads an intentionally closed page and prevents
+final result save. It earns no acceptance credit. The private helper is repaired
+with four controls; live errors still throw. A fresh-root retry passes. Preserve
+the pre-app driver-generation error too. No app, case assertion/wait, gate,
+guard or deadline change; no old-fixture exemption applied to grown. The
+125shipping assets and original metric formulas remain exact.
+
+Outcome precedes advancing the seat. Twelve of36 blocking journeys now pass
+on this repaired source;24 remain plus report-only/Stage6 work. Continue with
+native gates, subject to the requested next host handshake. No commit, push,
+release preparation or deployment.

@@ -7986,3 +7986,19 @@ Use the original writer/host clock bounds and the after-maintenance-to-wrapper
 segment only as a conservative joint upper bound for cold work, not individual
 cold timings. No test assertion changes. FullStage5andStage6remain incomplete;
 no release or publication action follows from this bounded block.
+
+
+### Preserve grown predicates and distinguish optional observer cleanup
+
+**Date:** 2026-11-06 · **Phase:** 472 · **Standing apparatus-repair permission.**
+
+Keep >=60 overlap and saved preparation required on the grown fixture. Preserve
+the original writer wait and both-owner observation through the absolute
+120-second post-key cutoff. Use the frozen metric formulas unchanged; represent
+unavailable shipping-native journal/job fields as unavailable rather than zero.
+
+An optional final observer of intentionally closed pages may return explicit
+unavailability. Mandatory live assertions and live errors remain unchanged.
+Retain the ungraded failed attempt and four repair controls, then rerun in a
+fresh root. All six valid journeys pass. This grants only their source-bound
+cell evidence, not generalized qualification or permission to release.

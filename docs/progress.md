@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase471 both old-maintenance cells3/3; next source-bound gate block pending
+status: in flight # phase472 both grown-maintenance cells3/3; native gates next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: 30 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6; next-block host handshake
+blocks_on: 24 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6; next-block host handshake
 updated: 2026-11-06
 ```
 
@@ -199,22 +199,25 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 471 passes the five remaining original
-maintenance journeys on the exact ordinary phase 470 assets. Combined with its
-first normal, both normal and withheld cells pass 3/3. Completion is25.692–
-34.719s after the last key; worst input p953.696ms, peer p951,847.544ms and marker
-1,776.694ms. All original active-preparation, archive,120-key,Undo and offline
-cold guards pass. [Record](./development-evidence/2026-11-02-release-hardening/471-maintenance-gate-block/README.md).
-The case/analyzers/helpers,125shipping assets and phase469source stay exact;
-no guard/deadline changes or retries. Old overlap34–47 and saved-slice information
-remain old-only amendments; grown >=60 remains required. Joint cold/remaining-
-work bounds are all <7.199s; individual cold times are not claimed. Preserve all
-failed before runs. The repaired candidate has6/36 blocking journeys passing;
-30 remain (native9,late6,fairness3,Goals6,grown6), plus report-only work andStage6.
-Earlier-source passes are not transferred. The timed block is finished; next
-bounded block may be grown maintenance with both owners observed under its120s
-wait and >=60 overlap. A new tight-block host handshake is required. No commit,
-push, release preparation or deployment.
+**Active bounded outcome.** Phase 472 passes grown-normal and grown-withheld
+3/3 each on the exact ordinary phase 470 assets. All runs exercise saved
+preparation and 112–120 overlapping keys; no old-fixture amendment is applied.
+Both owners complete in every run, uncensored within the original observation:
+writers31.712–38.321s and readers38.175–62.404s after the last key. Worst input
+p95 5.079ms, peer p95 1,600.451ms, marker1,952.412ms. Archive,Undo and cold checks
+pass; maximum inclusive cold3.309s. No capacity status is observed; native
+journal bytes and exact job/retry-clock data remain unavailable.
+[Record](./development-evidence/2026-11-02-release-hardening/472-grown-maintenance-gates/README.md).
+Preserve one ungraded harness failure after exact cold: optional final status
+capture used a closed page. The private helper repair passes four controls,
+keeps live errors and every case assertion/wait, then a fresh retry passes.
+Also keep the pre-app driver-generation error. No app/source/build, guard or
+deadline change. Twelve of36 blocking journeys pass on this repaired source;
+24 remain (native9,late6,fairness3,Goals6), then report-only work andStage6.
+The operator authorizes continuing through the remaining journeys if unblocked.
+Next rebuild the separate native test delegate against unchanged source, run
+native gates and obtain the next tight-block host handshake. No commit, push,
+release preparation or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
