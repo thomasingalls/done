@@ -8074,3 +8074,16 @@ long-task tails and source identities. Key-to-rAF cannot stand in for the16ms
 mutation gate; lock/reload online cannot stand in for offline profile reopen.
 Report actual13,407-byte HGoals and avoid matched-size or physical-phone claims.
 Continue only the operator's named report-only work, then Stage6and stop.
+
+
+### Do not fabricate old lab readiness or unpublished audit observations
+
+**Date:** 2026-11-06 · **Phase:** 479 · **Proposal remains unapplied.**
+
+The report-only sender's internal idle hook is absent from ordinary release
+assets. Treat replacement with public packaged-owner send state as a visible
+readiness evidence-source decision; preserve all other bytes/guards and six
+isolated controls. Do not silently turn missing hooks into idle. Likewise,
+LEDGER_PROFILE=0publishes no audit start/end; retention completion cannot stand
+in for full-audit overlap. Ask the operator to choose unavailable report debt or
+a separate observed test build. No production diagnostic hook is added.

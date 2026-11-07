@@ -1,0 +1,128 @@
+{
+  "phase": 479,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/harness/test/account-continuation-lab/sender326.spec.ts.gz",
+      "sha256": "3815a47828ca1551a573494c411a7a04ce4f22fe729b15e0535261031c68ba7e",
+      "bytes": 4604
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountLedgerMetrics.ts",
+      "sha256": "2643afc21a77f521f428286861f5d9ca9c98038f0ca44084f8a4d32a54e1c2b8",
+      "bytes": 5814
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/PROTOCOL329.md",
+      "sha256": "8874c6c9b804312f5738d9b7326bc629270111983e22f0fe02bf8f3c656b0c15",
+      "bytes": 4402
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-report-preparation-479-20261106/479-private-files.json",
+      "sha256": "c20bead640257206f17998675f6b9f7ebb8ad32d92771a8ddfb109e995976731",
+      "bytes": 1834
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-report-preparation-479-20261106/479-preparation-review.json",
+      "sha256": "c6efc68b90f2116256a37185a300537abbe7705a1f109988c16d021bd7bd1649",
+      "bytes": 1634
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-report-preparation-479-20261106/479-sender-readiness-review.patch",
+      "sha256": "f01a2659387baf1e96c3decec039f67f616b6866a0a38d015661e2c4074e6abd",
+      "bytes": 9155
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-report-preparation-479-20261106/479-blocking-rollup.json",
+      "sha256": "b8aa4d7578703aa2af04267f348d962725fa44753850d75ada2acd65214825f4",
+      "bytes": 15151
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/471-summary.json",
+      "sha256": "ad9eef93f862febd8b9645f4a40edcd42566a47d0cbbf16fc23b9da164ab27fc",
+      "bytes": 15952
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-summary.json",
+      "sha256": "a9e5949d457c03d0f852b5d101e39e8a1ebb3d19da600e5fa57793a81bfec989",
+      "bytes": 53342
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/474-summary.json",
+      "sha256": "0f48fa699b23f798f413216a096ab448f8909ca56890059771cf5674f4b619ab",
+      "bytes": 9041
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/475-summary.json",
+      "sha256": "12da28e1b20e8ff7a4a27e689af1ab1e77d96193f926f3943e3095a4fd816f49",
+      "bytes": 18147
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/477-summary.json",
+      "sha256": "8a2b3020ad84949eefc25731963ba124053ce59aae94d1afda20a9c5dd144675",
+      "bytes": 9466
+    },
+    {
+      "localPath": "/private/tmp/done-goals-gates-478-20261106/478-summary.json",
+      "sha256": "aac03eb14eef89390ac54f946d982c2e4b69ce9aff43facd9e075edfbe08b00a",
+      "bytes": 20828
+    }
+  ],
+  "blockingRollup": {
+    "journeys": 36,
+    "cells": {
+      "old-maintenance-normal": 3,
+      "old-maintenance-withheld": 3,
+      "grown-normal": 3,
+      "grown-withheld": 3,
+      "native-context": 3,
+      "native-resumable": 3,
+      "native-deep": 3,
+      "late-normal": 3,
+      "late-withheld": 3,
+      "fairness": 3,
+      "goals-desktop": 3,
+      "goals-mobile4x": 3
+    },
+    "allOriginalPredicatesPassed": true,
+    "reportOnlyRemaining": 10
+  },
+  "readinessProposal": {
+    "phase": 479,
+    "status": "preparation only; proposed readiness binding unapplied",
+    "frozenSource": {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/harness/test/account-continuation-lab/sender326.spec.ts.gz",
+      "sha256": "3815a47828ca1551a573494c411a7a04ce4f22fe729b15e0535261031c68ba7e"
+    },
+    "singleUniqueOldHook": true,
+    "proposedPatchSha256": "f01a2659387baf1e96c3decec039f67f616b6866a0a38d015661e2c4074e6abd",
+    "unchanged": "All timing formulas, accepted/UI positions, full archive, offered streams, Undo, offline profiles, ownership count and30000ms readiness timeout stay byte-identical.",
+    "guardDecision": "The old guard observes driverTurnEnd outcome idle; proposal reads published sync.send.phase idle. This is a readiness evidence-source change and needs an operator decision under Stage5. No app source or trust change.",
+    "auditObservation": "Production LEDGER_PROFILE=0 publishes no full-audit start/end counters. Report-only runs can mark audit overlap unavailable, or a separate test-only observed build would be needed; do not infer zero.",
+    "fixture": "Re-run original grown329 real-sync/public-input recipe on legal current-format/current-date profiles; old lab rows cannot be injected or treated as main format.",
+    "timedRunsStarted": 0,
+    "proposalApplied": false,
+    "packagedWorkerPath": "/assets/recoveryOwner.worker-BFwrBTkE.js",
+    "workerProvenance": "Only the exact current packaged recovery owner Worker can satisfy idle. Other/no workers cannot satisfy the one-owner readiness condition."
+  },
+  "proposalControls": {
+    "passed": 6,
+    "runAgainst": "exact extracted proposed inspect callback, private synthetic observation controls only",
+    "preservedLoaderFailure": "esbuild is not a top-level installed module; use pinned Node stripTypeScriptTypes, no package install or app change"
+  },
+  "operatorDecisionNeeded": [
+    "report-only sender readiness source changes from lab driverTurnEnd idle to packaged-owner public send.phase idle",
+    "whether full-audit overlap is explicitly unavailable on ordinary release assets or requires a separate observed test build"
+  ],
+  "timedMatrixJourneysStarted": 0,
+  "appSourceOrShippingChanges": false,
+  "proposalApplied": false,
+  "committed": false,
+  "pushed": false
+}

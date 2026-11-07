@@ -20201,3 +20201,20 @@ Keep every run, host/windowed power record and qualification. No source/build,
 assertion/wait/deadline or gate change. Outcome precedes advancing the seat.
 All36declared blocking journeys have now run; ten named report-only journeys and
 Stage6remain. No commit, push or deployment.
+
+
+### Roll up the36source-matched blocking journeys and expose report-only gaps
+
+**Date:** 2026-11-06 · **Phase:** 479 · **Scope:** evidence/preparation only.
+
+All12cells pass3/3 with original applicable predicates; reference frozen471/472/
+474/475/477/478summaries. No older-source transfer or erasure of the ungraded
+472harness attempt. Ten report-only journeys remain. The old sender harness
+requires an unshipped idle hook; prepare, but do not apply, the narrow packaged-
+Worker/public-send-state replacement. Six isolated callback controls pass; keep
+the loader failure. Audit overlap is unpublished with LEDGER_PROFILE=0 and cannot
+be inferred from retention status. [Record](./development-evidence/2026-11-02-release-hardening/479-report-only-preparation/README.md).
+
+Outcome precedes advancing the seat. Ask the operator's readiness-source decision
+and report-only audit-observation choice, as the Stage5guard rule requires. No
+new app measurement, guard/source/build/limit/deadline change, commit or deploy.

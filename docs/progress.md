@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase478 Goals complete; named report-only journeys next
+status: in flight # phase479 blocking36/36; report-only readiness/audit decision pending
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: ten named report-only journeys and Stage6landing report
+blocks_on: report-only readiness-source/audit-observation decisions, ten named journeys and Stage6
 updated: 2026-11-06
 ```
 
@@ -199,15 +199,17 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase478 completes the six original Goals journeys,
-desktop/mobile4x: **pass3/3 each**. Same repaired source, ordinary assets and original
-case/analyzer. Exact paragraph/return input, Undo/Redo and lock/reload archives
-remain; report every beforeinput/rAF timing and tail separately from the existing
-mutation16ms/peer2.5sgates. Actual HGoals13,407UTF8bytes, no physical-phone claim.
-[Record](./development-evidence/2026-11-02-release-hardening/478-goals-journeys/README.md).
-All36declared blocking journeys have executed on the repaired source. Ten named
-report-only journeys and Stage6remain. Keep every failure, clock/host/windowed
-power record and qualification; no publication or commit authorization implied.
+**Active bounded outcome.** Phase479 rolls up36/36source-matched blocking
+journeys passing,12cells at3/3, with original predicates and Goals qualification.
+Ten report-only journeys remain. The old sender readiness hook is unshipped;
+a narrow packaged-owner/public-send-state proposal remains unapplied, with six
+isolated controls passing and the loader failure retained. Request the explicit
+readiness evidence-source decision under the Stage5guard rule. Full-audit overlap
+is unpublished with LEDGER_PROFILE=0; ask whether to report unavailable/debt or
+use a separate observed test build. No new app run or production hook.
+[Record](./development-evidence/2026-11-02-release-hardening/479-report-only-preparation/README.md).
+Earlier source results and all failures stay. No app/format/trust/guard/limit/
+deadline/default change, commit, push, deployment or release publication.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
