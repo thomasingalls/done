@@ -19853,3 +19853,25 @@ Historical H was 5,000 bytes and phase459 was 1,000: qualify later comparisons.
 No timed credit. Outcome precedes advancing the seat to native cases and remaining
 wrapper/fixture checks. Host handshake remains for tight cells. No commit, push
 or deployment.
+
+
+### Pass the three native Stage5 cells in three replicates
+
+**Date:** 2026-11-06 · **Phase:** 461 · **Scope:** nine hardened gate journeys.
+
+Native context, resumable history and closed-sender deep receive each pass3/3.
+Deep intervals:19.264/19.317/19.459s against30s. All reopens exact; maximum9.688s
+against15s. Seven original test/helper chunks retain every assertion and wait.
+Full13,407-byte H Goals fixture; no matched-size claim against historical5,000.
+[Record](./development-evidence/2026-11-02-release-hardening/461-native-gate-block/README.md).
+
+Preserve both wrapper failures and their fresh retries: temporary-page import
+before app open, and wrong Page-owner cleanup method after exact cold. Same
+pinned serializer/barriers/assertion; canonical workspace close;125shipping files
+byte-identical. Preserve the reporter error after passing r2 context, and its
+report-only repair. No app source, guard, limit, gate or deadline change. Every
+raw attempt/host/power record remains local and hashed, without binary objects.
+
+Outcome precedes advancing the seat. Nine of36 blocking journeys complete;
+27 remain plus report-only work. Tight-cell host handshake and maintenance
+writer fixtures remain. No commit, push or deployment.

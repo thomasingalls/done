@@ -7824,3 +7824,21 @@ private fixture under its new output directory. Actual H becomes 13,407 bytes;
 comparisons with historical 5,000-byte H are not matched document-size evidence.
 The passing recipe does not establish whether old unadmitted input was cancelled
 or lost. All Stage5 gates, functional stops and host requirements stay unchanged.
+
+
+### Repair apparatus lifecycle without relaxing completed-case checks
+
+**Date:** 2026-11-06 · **Phase:** 461 · **Standing operator permission applied.**
+
+Keep initial fixture import alive through transaction completion using current
+pinned Playwright serialization and the original exact-storage assertion. A
+post-cold adapter method mismatch is corrected to the existing workspace close
+port; no application or shipping bytes change. Retain both failed attempts and
+fresh successful retries. A reporting exception after a passed case is fixed
+without rerunning that case. Static UI wrappers use the same deterministic
+import path for fairness contexts before opening the app, preserving all case
+assertions/deadlines. Absent lab diagnostics stay explicitly unavailable.
+
+These are apparatus repairs, not relaxed guards or new trust. Nine successful
+native journeys count only for their declared cells; live input/peer predicates
+remain unmeasured. Obtain the required host handshake before those tight cells.

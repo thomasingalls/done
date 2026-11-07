@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase460 complete full-Goals cohort; declared native gate block next
+status: in flight # phase461 native block3/3 per cell; tight-cell preparation/host handshake next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: native/remaining apparatus closures, maintenance fixtures and tight-cell host handshake
+blocks_on: remaining UI metric/fixture closures, maintenance writer fixtures and tight-cell host handshake
 updated: 2026-11-06
 ```
 
@@ -199,17 +199,19 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase460 completes the approved Goals seed:
-H/M/Q actual 13,407/4,157/1,049 bytes, ten fictional devices, and 1,024/256/32 real
-individually accepted positions. Existing and new checks pass. Same phase458
-app/API, Chrome156, profile, resources, limits and setup deadlines. All 137 prior
-artifacts stay exact. [Record](./development-evidence/2026-11-02-release-hardening/460-complete-goals-cohort/README.md).
-Historical H was 5,000 bytes and phase459 was 1,000; comparisons must state the
-larger workload. Completion fixes the recipe, without proving an input-loss
-mechanism. Finish apparatus closures, run the declared native block, prepare
-maintenance writer fixtures, then the remaining Stage5 cells. No timed journeys
-yet; host handshake remains required before tight 16ms/2.5s cells. No commit,
-push, publication or deployment.
+**Active bounded outcome.** Phase461 passes all nine native journeys:3/3 each
+for context handoff, resumable maintenance and closed-sender deep receive. Deep
+intervals19.264/19.317/19.459s are below30s; all reopens exact, maximum9.688s
+below15s. Seven original chunks retain their assertions and waits. The full
+phase460 cohort has13,407-byte H Goals; historical H was5,000, so comparisons
+must qualify the workload. [Record](./development-evidence/2026-11-02-release-hardening/461-native-gate-block/README.md).
+Keep two failed wrapper attempts and fresh retries: owned-page fixture import
+and canonical Page-workspace close. Same pinned serializer/assertion,125shipping
+files exact, no app source change. A reporter error after passing r2 context is
+preserved without rerunning it. Nine of36 blocking journeys complete;27 remain
+plus report-only cells. Finish remaining UI metric/fixture bindings and maintenance
+writer fixtures. Tight16ms/2.5s cells require the operator's host handshake.
+No release prep, commit, push, publication or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
