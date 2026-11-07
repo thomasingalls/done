@@ -19744,3 +19744,24 @@ The old private lab fixtures are absent; next rebuild fictional unequal cohorts
 through actual current setup and accepted edits, then bind the final selected
 closure before timings/host handshake. No timed credit, commit, push or deploy.
 Outcome precedes advancing the active seat.
+
+
+### Hold Stage5at a real enrollment refusal during fresh fixture preparation
+
+**Date:** 2026-11-05 · **Phase:** 455 · **Scope:** fictional current-date cohort setup.
+
+First certify H6and exact archives, then retain a harness readiness failure from
+SWapp-shell navigation. Repair only the test-document navigation bypass through
+the existing authenticator CDPsession, restoring normal handling before owner
+open. Preserve the earlier config-list failure as well. The fresh retry then
+refuses candidate enrollment with “Expired enrollment challenge”; its unchanged
+waiting/display assertion fails. Stop all further app runs and timings under
+the governing functional-refusal rule. [Record](./development-evidence/2026-11-02-release-hardening/455-enrollment-refusal-hold/README.md).
+
+A private copy of the closed DB shows the expiry remains583,588.6msafter the
+host run ended. The message also covers a challenge too far in the future;
+clock disagreement is plausible but unmeasured, not an established diagnosis.
+Source DB/inventory stays exact. No expiry, assertion, deadline, gate, budget or
+app change. No timed credit, real-account access, commit, push or deploy. Outcome
+precedes advancing the seat to this explicit hold; all earlier passes/failures
+remain. Native456adapter preparation stays unexecuted until the refusal is resolved.

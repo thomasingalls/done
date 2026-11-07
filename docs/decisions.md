@@ -7738,3 +7738,17 @@ may change emitted app HTML through bundling; serve the frozen ordinary frontend
 and overlay only new test chunks/document, with equality checks for every
 shipping file. Keep the failed pre-service overlay and corrected smoke. No
 performance inference or acceptance credit from apparatus preparation.
+
+
+### Do not classify an expiry message as a harmless fixture race
+
+**Date:** 2026-11-05 · **Phase:** 455.
+
+A tooling-document navigation under the ordinary SW is a harness precondition;
+preserve it and repair only routing, without changing the app shell or offline
+cold semantics. The subsequent explicit enrollment refusal is different: stop
+as required before another app/timed journey. Keep the existing helper assertion
+and its15sdeadline. The shared expiry error covers both past expiry and excess
+future lifetime, so use copied historical timestamps to qualify the clock
+hypothesis without declaring its cause proven or changing the security window.
+No automatic retry, clock patch or guard weakening is authorized by this record.

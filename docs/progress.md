@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase454 current API/gateway bound; fresh fixture preparation next
+status: held # phase455 actual enrollment refusal during fixture preparation
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: fresh real-sync fixtures, final selected closures and host handshake
+blocks_on: diagnose enrollment refusal before another app run; then fixtures/closures/host handshake
 updated: 2026-11-05
 ```
 
@@ -203,15 +203,18 @@ commands have passing segments, not a final all-target-stack check. Earlier reds
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase454 restores the exact retained ARM64APIimage,
-with122current source matches, and passes a separate-process gateway smoke.
-A current native-owner test entry overlays only test assets; all452ordinary app
-bytes stay exact. Its first pre-service overlay failure is retained. [Record](./development-evidence/2026-11-02-release-hardening/454-current-runtime-apparatus/README.md).
-The old private lab fixtures are absent. Next recreate H6/M2/Q2fictional accounts,
-current-date writing and accepted histories through real APIs; bind selected
-native/late/maintenance/fairness/Goals/report-only closures and freeze them before
-timings. Keep all gates and the latency-sensitive host handshake. No timing
-credit, app/source change, commit, push or deployment.
+**Active bounded outcome.** Phase455is held under the Stage5functional-refusal
+rule. First fresh setup certifies H6with exact archives, then a test-entry SW
+routing precondition fails; preserve and repair only that navigation. The fresh
+retry then shows “Expired enrollment challenge” at stateenrolland fails the
+unchanged15shelper assertion. No further app/timed run. [Record](./development-evidence/2026-11-02-release-hardening/455-enrollment-refusal-hold/README.md).
+Copied closed-DB timestamps show expiry583,588.6msafter host run end; the error
+also covers an excess future lifetime. Clock disagreement is plausible, not
+measured/proven. Diagnose before another setup/journey; then complete current-date
+fixtures, final timed import/process binding and the quiet-host handshake. The
+456native adapter source is prepared but unexecuted.454'sruntime binding and452's
+15functional passes remain; no Stage5timing credit, app/guard/deadline change,
+commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
