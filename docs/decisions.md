@@ -8266,3 +8266,10 @@ Repair the healthy fixture-precondition contention through a supported ordinary 
 **Date:** 2026-11-06 · **Phase:** 501.
 
 Use exact archive and committed receive evidence to test whether one-input/one-position is a valid fixture assumption. Keep the original failed assertion and all deadlines. No canonical fix or waiver is justified until coverage is distinguished; a fresh reader diagnostic cannot clear the failed setup by itself.
+
+
+### Reject the coalescing explanation without weakening the fixture
+
+**Date:** 2026-11-06 · **Phase:** 502.
+
+Keep the original fixture assertion: the lastedit is actually unpublished, so changing expectedpositions would hide the symptom. Source-specific verified native storage and exact archive candidates decide coverage; cross-device aggregates alone do not. Stop under the functional-failure rule before furtherappwork.

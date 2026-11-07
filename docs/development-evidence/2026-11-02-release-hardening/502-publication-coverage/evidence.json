@@ -1,0 +1,288 @@
+{
+  "diagnosticAttempts": 3,
+  "validWitnessRuns": 1,
+  "originalAssertionsUnchanged": true,
+  "appSourceChanged": false,
+  "no3072OrGateCredit": true,
+  "phase": 502,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workspaceBridge.ts",
+      "sha256": "f7bd65ea88a17abf246b5918e0dacbeb0a1cc6d98a1c7501a992b2e04a0570fd",
+      "bytes": 7516
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkspacePort.ts",
+      "sha256": "0c1fb64f0358321163cf3bd60eecfb2e996a220bcb964a77ba5057e489906d62",
+      "bytes": 3842
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502-20261107/502-private-files.json",
+      "sha256": "e2adb63ee10f1840a1f62816e2cd7270547ba5db91232ca80f8c842ad9b9ace9",
+      "bytes": 5472
+    },
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502-20261107/502-declaration.json",
+      "sha256": "55c6da29c4c289fab4aea1416db465059adc619392b68462807ac156065800f2",
+      "bytes": 767
+    },
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502-20261107/502-summary.json",
+      "sha256": "5db44166af8b16fe66440bc116b2b6baa2e078109f45496b8cb457c9c8b2d0a8",
+      "bytes": 2136
+    },
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502-20261107/502-other-attempt-files.json",
+      "sha256": "d2da20d07f69340bb1fbb5f0599ec1d988bb5e7ae973d7cbe3be23f3830a45d1",
+      "bytes": 9799
+    },
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502b-20261107/502b-declaration.json",
+      "sha256": "5d564ca20ab85c6d97ebab6f0af9a54cb60304bbc11422180854500433f7a6be",
+      "bytes": 665
+    },
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502c-20261107/502c-declaration.json",
+      "sha256": "753a88b0442b2226c1041730c9554d81ce502e1d2cda7d87641e0aa46d009f90",
+      "bytes": 790
+    },
+    {
+      "localPath": "/private/tmp/done-publication-coverage-502c-20261107/witness/result.json",
+      "sha256": "7abd86b9d426dce89521f9577a98ce99f8468846d62ec220c3c501484a660f23",
+      "bytes": 925
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/child.log",
+      "sha256": "4fa100432d9c27b3cc7401ee5c88e82a586757efef5660f51d5a5c5567cc17b7",
+      "bytes": 4891
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/host-load.jsonl",
+      "sha256": "b852640328ef5962ea9fff0d0879d104ba6ba4c5e85ca838303532e1c338ea96",
+      "bytes": 41360
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/power-assertions-before.txt",
+      "sha256": "bb3d4e98ae7d446977240416198735ae807213f887852d6b59f63b6e90d3315a",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/power-log-after.meta.json",
+      "sha256": "733a567056878162a1dd86d3ebe986667600e1dea2bbaa6037d7e9c7b3f1563f",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/power-log-after.txt",
+      "sha256": "390c500145aa7974be9a5359489f4c24e1410f390578f3ad2284344a80546612",
+      "bytes": 628
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/power-log-before.meta.json",
+      "sha256": "ff2d4df7e1aed553782643bcdfebc1fa197401e25a2fe8ecf6c18b653b588b7e",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502-source-coverage-witness/run.json",
+      "sha256": "d70d30904d3c52bd85f3ced952cbb9a7d2da9e14713be7cd7e650e90c536f445",
+      "bytes": 1653
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/child.log",
+      "sha256": "b39704d0070377834d4e7de6f9cabaf3757798c243d156d7784b1d5c0479e20b",
+      "bytes": 7231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/host-load.jsonl",
+      "sha256": "bd3ddb559e23b596c4b4b550e20d670274f58485a3eaf431db729645735b9bbb",
+      "bytes": 1504
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/power-assertions-before.txt",
+      "sha256": "d4340c06afefa041dac45c8478f1c0de04c168732294d76dc1286492aa83efb2",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/power-log-after.meta.json",
+      "sha256": "0321911d6d04d766a1d46b662251f35f40f837aafff872686c50595db386a6a3",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/power-log-after.txt",
+      "sha256": "2a236c2368fd17ae83ce30de212097b6242ea0d996124ce2ddd9759114f2064f",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/power-log-before.meta.json",
+      "sha256": "53063df1a4161e9df6e44a75cedeac9d30bde1edab0c41c4804112b1d1da6a79",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502b-source-coverage-witness/run.json",
+      "sha256": "a5ed8add8f245306d9a355366bf5df3a8d75cfaf3260a3fe0b8962d82ccc8bc3",
+      "bytes": 1652
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/child.log",
+      "sha256": "99e1c6b7d8d29669e43bf14963af764682ea4d4128491ba68106afd9272b02e2",
+      "bytes": 391
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/host-load.jsonl",
+      "sha256": "b472df71d85a3b925f2355358da5f84a78413a69a46e60347226439120ca0227",
+      "bytes": 21856
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/power-assertions-before.txt",
+      "sha256": "92b05f920618f11cadf1ca35d0034fe5972bf831f5aba9af906b0fd07efb43f7",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/power-log-after.meta.json",
+      "sha256": "87b4d8434b9ace1055420e825a9f0ebb6b7f2768a997a7adf82012353d05f975",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/power-log-after.txt",
+      "sha256": "471cf549c5f3d82d60a564776271750942fc114a085423691a17bf5810f00114",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/power-log-before.meta.json",
+      "sha256": "93562b79c8efb8aa24b7301548994407ff97cba6a7087951902ea109d5a222ac",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/502c-source-coverage-witness/run.json",
+      "sha256": "21edf20749e942e22fac1a12da79dc82972e6f28e29dc9941e5a280ac963c9be",
+      "bytes": 1651
+    }
+  ],
+  "summary": {
+    "phase": 502,
+    "outcome": "confirmed pending lastedit; not coalescing",
+    "attempts": [
+      {
+        "name": "a",
+        "outcome": "aggregateproxy precondition120stimeout at2640ratherthan2641; no source-specific conclusion",
+        "root": "/private/tmp/done-publication-coverage-502-20261107"
+      },
+      {
+        "name": "b",
+        "outcome": "harness404beforeappopening; absenttoolpath under484served",
+        "root": "/private/tmp/done-publication-coverage-502b-20261107"
+      },
+      {
+        "name": "c",
+        "outcome": "canonical witness plus exactnative sourcepositions pass; only582edits published",
+        "root": "/private/tmp/done-publication-coverage-502c-20261107"
+      }
+    ],
+    "witness": {
+      "phase": 502,
+      "outcome": "passed",
+      "scope": "sourcecoverage diagnostic,no3072or gatecredit",
+      "confirmedPositions": 582,
+      "lastEditCharacters": 583,
+      "counter": {
+        "ordinal": "662",
+        "failures": 0,
+        "origin": 1794007773298.2,
+        "parentOrdinal": "662",
+        "complete": true
+      },
+      "sourceTip": 2636,
+      "verifiedPeerEvidence": null,
+      "sourceReceipts": {
+        "allPositionsExact": true,
+        "first": 7,
+        "last": 2636,
+        "count": 2630,
+        "readOnlyUnchanged": true
+      },
+      "native": {
+        "state": "ready",
+        "receivedThrough": 2641,
+        "link": "f7a013ce34427a01001559b389777a8427c0501a342eafdeb91f4f416d85b0ea",
+        "observedThrough": 2641
+      },
+      "elapsedMs": 63186,
+      "all583Published": false,
+      "only582Published": true,
+      "acceptedServerTuplesUnchanged": true,
+      "allUnrelatedWritingExact": true,
+      "diagnosis": "lasteditnotcoveredbycommittedservicehistory;publicationpathstillneedsdiagnosis"
+    },
+    "applicationSourceChanged": false,
+    "originalFixtureAssertionsChanged": false,
+    "guardsLimitsDeadlinesChanged": false,
+    "coldDurabilityOfLastSenderEditEstablished": false,
+    "functionalStop": "Originalactive/durable sender failed to publish its583rdedit throughunchanged30scheck whileits laneidle hadno due; caughtupindependentwitness lacksit. Stop beforefurtherappwork underhardeningfunctional-failure rule.",
+    "no3072Report": true
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

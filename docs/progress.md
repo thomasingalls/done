@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase501 idle-send symptom captured;source coverage discriminator next
+status: in flight # phase502 true unpublishededit confirmed;functionalstop
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: normal witness archive comparison for lastunacknowledgededit;no3072fixture
+blocks_on: sourcecapture/flush/selection versus sendernotification boundedrepair;3072report blocked
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase501confirms582newpositions thenfails the unchanged30scheck. NoHTTP/channel/ownererror; Windowactive/durable has583extra characters while senderidle hasno pendingretry. Failedprofile saved. Next check a canonical caught-up witness againstfull583/582editarchives to distinguishpendingwritingfromcoalescing. Noappfix or guard/limit/deadlinechange; keepallpriorfailures and originalchecks.
-[Record](./development-evidence/2026-11-02-release-hardening/501-idle-publication-stall/README.md).
+**Active bounded outcome.** Phase502valid witness proves only582extra chars and allsourcepositions7–2636, while failedsenderWindow has583. Coalescingis ruledout; originalfixtureassertion stays. Bothharnessfailures retained. Nativecounter662events exact andread-onlyreceiptstorage unchanged. Senderclaimed durablebutidlewithnonextattempt; cold durabilitynotestablished. Stopunderfunctional-failurerule. Nextisolate sourcecapture/selection andsendernotification withoutassumingrootcause. Noapp or guard/limit/deadline change.
+[Record](./development-evidence/2026-11-02-release-hardening/502-publication-coverage/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

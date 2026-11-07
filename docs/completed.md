@@ -20470,3 +20470,13 @@ The active/durable idle-send symptom reproduces after582newacceptedpositions, wi
 [Record](./development-evidence/2026-11-02-release-hardening/501-idle-publication-stall/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Confirm the last edit is absent from committed service history
+
+**Date:** 2026-11-06 · **Phase:** 502.
+
+The valid fully caught-up witness contains only582newcharacters, while the failed Window contains583. Every sourceposition7–2636 is present in a read-only native receipt census, all other writing is exact, and servertuples remain unchanged. Coalescing is ruledout. Two harnessprecondition failures stay preserved. Stop on the confirmedpublicationfailure; sourcecapture/selection and localnotification scheduling remain unisolated.
+[Record](./development-evidence/2026-11-02-release-hardening/502-publication-coverage/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
