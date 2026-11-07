@@ -8420,3 +8420,10 @@ Goalsdesktopreplicate2 fails originalUndo text-change guard, so its cell fails a
 **Date:** 2026-11-07 · **Phase:** 523.
 
 Theoperatorcarryoverof21stands, buttheplanned15reruns areincomplete:12attempted,11pass,1functionalguardfailure,3unrun. OnefailedreplicatefailstheGoalsdesktopcell. Noisecriteriondoesnotpermitretry. Do notpresumepermanentUndofailure, harmlessharnessrace or508causation; theonlyprovedfailureisoriginalimmediatepost-CmdZtextunchanged, onanunreducedprofile. Preservealllogs/profiles/specs. Stage6amendmentmustreportthisactualoutcome, retainpost-reductiontypingcostdebt andstopforoperatorbeforeanyfurtherapp/testchangeorjourney.
+
+
+### Do not replace unavailable Windowmaintenance trigger without operatorclarification
+
+**Date:** 2026-11-07 · **Phase:** 524.
+
+LiteralCaseA isunavailable onplain510AccountWindow:carrierhasno compactContent,all1772observations maintenanceabsent. Positivependingisobserved andwasmentionedintheopeningquestion, buttheoperator namedmaintenance-running forA. Preservepreconditionfailure andaskwhichtrigger, ratherthansilentlysubstituteworkerhistoryprogress,forcequeueorclaimanUndofailure. NoModZwaspressed,soABCremainsunanswered. Saved-onlynetworktracecannotrecoverexactabortcause; qualifyhealthyidleclock interpretation andaggregateacceptancecounts. Holdfurtherdiagnosticruns foroperatorchoice.

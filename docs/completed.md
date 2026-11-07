@@ -20690,3 +20690,13 @@ AmendedStage6with actualscoped outcome:21operator-carried runs,15plannedreruns,1
 [Record](./development-evidence/2026-11-02-release-hardening/523-source510-stage6-undo-hold/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Undo diagnostic: literal busy trigger unavailable; saved traffic traced
+
+**Date:** 2026-11-07 · **Phase:** 524.
+
+OutsideStage5, declared six standalone A/B probes on plain510 with frozen522prelude/waits unchanged. First A reachedreturn!but literal Windowmaintenance=running neveroccurred in120s; noUndo/Redo pressed.1772public observations allmaintenanceabsent,pendingpeak2,finalUndo781. Code:WindowAccountMirror carrier lackscompactContent, soadmissionQueue cannotpublishrunning. AskedoperatorwhetherusependingItems>0 orstop; othertriesheld, noABCconclusion. Saved-only trafficread: r2submitERR_ABORTED22.939ms; nextrequest+16.149svsr1+3.994s. Prior-read-to-next gaps19.538s/17.045s fithealthy15–20sidleclock, causalitynotproved. BothsavedpublisherDBs58acceptedvsseed1 and57recordedsubmits, nofailedservice metrics; exactabortreasonunsaved/unknown. Noapp/spec/assertion/wait/gate/limitchange,noStage5credit.
+[Record](./development-evidence/2026-11-02-release-hardening/524-undo-diagnostic-trigger-hold/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

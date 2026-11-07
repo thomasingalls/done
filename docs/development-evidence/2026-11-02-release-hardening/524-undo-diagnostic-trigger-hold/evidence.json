@@ -1,0 +1,393 @@
+{
+  "phase": 524,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/windowAccountMirror.ts",
+      "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8",
+      "bytes": 12104
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/account/privateDeliveryHttp.ts",
+      "sha256": "a9d3e25464123357a3af42d8ca552ba78eab50ffedbf4b34278a850c405d9e21",
+      "bytes": 6041
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/account/scopedTransport.ts",
+      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7",
+      "bytes": 14869
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-undo-admission-524-record-20261107/524-private-files.json",
+      "sha256": "447e768fa20adf8024bbe0cdd52d94a3706938130ab13cdececf30c6b018e1e3",
+      "bytes": 676
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-524-record-20261107/524-summary.json",
+      "sha256": "e691444483902b9cdcab3b482a7337d43a2f763016d59e94c47ba8aa2db96355",
+      "bytes": 8630
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/524-declaration.json",
+      "sha256": "cf90835ff06bd3afdaab1d6daa838f9b6c907dd07d0d4fb0603136d7a252b6d6",
+      "bytes": 31837
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/524-progress.json",
+      "sha256": "8a9624ea60c60959d6752445317e51f8c004673a5bf4cec46ff0b6cee0941046",
+      "bytes": 662
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/524-driver.log",
+      "sha256": "a12717a8de842aa14cf43cbfe2811f52bc3d198405798d30d822dfbd8c1111ff",
+      "bytes": 495
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/A1-precondition-analysis.json",
+      "sha256": "e38990718eab4edffbca7755d1addeee27411719c1f51fe3fd335e888e980dd8",
+      "bytes": 1001
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-traffic-analysis.json",
+      "sha256": "b182c4241e6fac286d11039e0cd4b705f6404a0446f2f469a4ceffcc13b17064",
+      "bytes": 6695
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-sql-schema.json",
+      "sha256": "432b8ecf29daf17b1ddedcae26102c4acde44d7124f41b526e7d549be651d021",
+      "bytes": 24201
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-publisher-positions.json",
+      "sha256": "384e694a7384c77255cbe4953c637f5955eb1cb82267d27147b57835c009e3e0",
+      "bytes": 27965
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/read-saved-sql.mjs",
+      "sha256": "fc821ff6b5c1b2f024bfda01fd1ed5c46c97e02f0ff4926c4b11f999b710732e",
+      "bytes": 1108
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/sql-counts.mjs",
+      "sha256": "1296f7c9aeaf9551d0ebdae58a8374a517aaa4e60914bd036c0f422b06101fe5",
+      "bytes": 1160
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/analyze-saved-traffic.py",
+      "sha256": "adbe42e7596d6d2a810607b875fce255a582842198a3680c2cd73333017d6b58",
+      "bytes": 4050
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/probe.mjs",
+      "sha256": "5169376574587d8f4a3f8f5ea573ca7cf07fe4dfd189a4064d920d4221f99d7b",
+      "bytes": 3312
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/diagnostic.mjs",
+      "sha256": "53cef513f538253bf21e4b917ac6e29d37bb5b3d5b48133d63dc18fa3bf2f51f",
+      "bytes": 8023
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/loader.mjs",
+      "sha256": "bc0935493387fc4430e33f22dffbdabc3599fae3e7ecdada6bf65418d828c63e",
+      "bytes": 549
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/run.py",
+      "sha256": "5ccda36b08e8314fb26d38fb9236722aa612e4a4c2039854289e181cbfa9e9ab",
+      "bytes": 2429
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/runs/A1/result.json",
+      "sha256": "0008af842a82b27c1d4b0e064cca3bc64ef6c1382b87f710035081cf010b1dbd",
+      "bytes": 739943
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/A1-runner.log",
+      "sha256": "9163fa3b2e5e4d56d895593bb81c1d556bac6a27f4cb22b979ea1700c56acd09",
+      "bytes": 1726
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/run.json",
+      "sha256": "b4c665bfd2084efcbf21d8de6a8e03e7d91754ed045cb52b3aa14fd7eb367156",
+      "bytes": 1850
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/child.log",
+      "sha256": "8a9015811c73c235cdaa93631e7c5653a499b9586f7dd52fbcc9129f8aa02294",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/host-load.jsonl",
+      "sha256": "c28069310f77a669eab8cf2d6938ad594d2dfe3ebfc2d0b1961d6a3ebaf266da",
+      "bytes": 97459
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/524-A1/power-log-after.txt",
+      "sha256": "b6f155c23f58beb5b4466002c286d149644e2279ea2cb37819e5062efd068813",
+      "bytes": 2861
+    }
+  ],
+  "summary": {
+    "phase": 524,
+    "scope": "standalone Undo diagnostic outsideStage5, literal-A precondition hold; saved-record traffic trace",
+    "plannedTries": 6,
+    "attemptedPrelude": 1,
+    "undoPresses": 0,
+    "redoPresses": 0,
+    "stage5JourneyReruns": 0,
+    "gateCredit": false,
+    "classificationABC": null,
+    "precondition": {
+      "outcome": "literal A trigger unavailable; no Mod-z/Redo press",
+      "source": "/private/tmp/done-undo-admission-diagnostic-524-20261107/runs/A1/result.json",
+      "admissionStatusObservations": 1772,
+      "maintenanceValues": [
+        "None"
+      ],
+      "maxPendingItems": 2,
+      "finalPublicSnapshot": {
+        "at": 1794067035945.3,
+        "status": {
+          "state": "active",
+          "revision": 1806,
+          "pendingItems": 0,
+          "pendingBytes": 0,
+          "reservedBytes": 0,
+          "durable": true,
+          "pressure": null,
+          "maintenance": null
+        },
+        "snapshotUndo": 781,
+        "snapshotRedo": 0,
+        "publicReadUndo": 781,
+        "undoEnabledFromSnapshot": true,
+        "focused": true,
+        "visible": "visible",
+        "activeInGoals": true,
+        "sameWorkspace": true
+      },
+      "postReturnPositivePendingObservations": 40,
+      "classificationABC": null,
+      "reason": "WindowAccountMirror has no compactContent; scheduleMaintenance exits before setting running; operator clarification requested before changing condition"
+    },
+    "savedTraffic": {
+      "scope": "saved records/code only; no tracing build, new request, profiler or app run for this subquestion",
+      "runs": [
+        {
+          "run": "r1-goals-desktop",
+          "source": {
+            "path": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/result.json",
+            "sha256": "669c1888cc868f021165671c6b1005d19189f133d02a1877828d413539078e0c",
+            "bytes": 2588171
+          },
+          "resumeAt": 1794064254952.5686,
+          "lastPreResumeReceive": {
+            "path": "/account/delivery/read-v2-batch",
+            "startMs": -13074.41064453125,
+            "endMs": -13050.767578125,
+            "status": 200
+          },
+          "postResumeSubmit": {
+            "startMs": 552.2724609375,
+            "endMs": 572.2333984375,
+            "durationMs": 19.9609375,
+            "status": 200,
+            "failed": null
+          },
+          "nextSyncRequest": {
+            "path": "/account/membership/v2/discover",
+            "startMs": 3994.315673828125,
+            "priorReadEndToNextStartMs": 17045.083251953125
+          },
+          "recordedSubmits": 57,
+          "serverMetricStatuses": {
+            "200": 286
+          },
+          "allBrowserAborts": [
+            {
+              "path": "/account/notifications/v1/subscribe",
+              "startAfterResumeMs": -159431.12353515625,
+              "durationMs": 180164.02099609375
+            },
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "startAfterResumeMs": -149206.14501953125,
+              "durationMs": 36.49169921875
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -121037.17309570312,
+              "durationMs": 17.208251953125
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -112612.806640625,
+              "durationMs": 18.201171875
+            },
+            {
+              "path": "/account/membership/v2/discover",
+              "startAfterResumeMs": -81013.0478515625,
+              "durationMs": 36.00830078125
+            },
+            {
+              "path": "/account/membership/v2/discover",
+              "startAfterResumeMs": -48293.010009765625,
+              "durationMs": 35.568603515625
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -39556.283203125,
+              "durationMs": 19.14404296875
+            },
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "startAfterResumeMs": -30265.40771484375,
+              "durationMs": 39.91064453125
+            },
+            {
+              "path": "/account/membership/v2/discover",
+              "startAfterResumeMs": 3994.315673828125,
+              "durationMs": 43.4091796875
+            }
+          ]
+        },
+        {
+          "run": "r2-goals-desktop",
+          "source": {
+            "path": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/result.json",
+            "sha256": "15d9d9971e545cc692fce7650ed7bd3c50366b3b0ec95694e0ab6c480dcd453e",
+            "bytes": 4870279
+          },
+          "resumeAt": 1794064638571.494,
+          "lastPreResumeReceive": {
+            "path": "/account/delivery/read-v2-batch",
+            "startMs": -3419.822021484375,
+            "endMs": -3388.760986328125,
+            "status": 200
+          },
+          "postResumeSubmit": {
+            "startMs": 640.490478515625,
+            "endMs": 663.429443359375,
+            "durationMs": 22.93896484375,
+            "status": null,
+            "failed": "net::ERR_ABORTED"
+          },
+          "nextSyncRequest": {
+            "path": "/account/membership/v2/discover",
+            "startMs": 16149.35791015625,
+            "priorReadEndToNextStartMs": 19538.118896484375
+          },
+          "recordedSubmits": 57,
+          "serverMetricStatuses": {
+            "200": 288
+          },
+          "allBrowserAborts": [
+            {
+              "path": "/account/membership/v2/discover",
+              "startAfterResumeMs": -157586.78051757812,
+              "durationMs": 32.639404296875
+            },
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "startAfterResumeMs": -143812.79248046875,
+              "durationMs": 43.612548828125
+            },
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "startAfterResumeMs": -142910.56665039062,
+              "durationMs": 31.7734375
+            },
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "startAfterResumeMs": -140357.78735351562,
+              "durationMs": 33.963134765625
+            },
+            {
+              "path": "/account/delivery/read-v2-batch",
+              "startAfterResumeMs": -139679.13159179688,
+              "durationMs": 42.024169921875
+            },
+            {
+              "path": "/account/delivery/read-v2",
+              "startAfterResumeMs": -138434.86962890625,
+              "durationMs": 13.649658203125
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -101962.28442382812,
+              "durationMs": 17.8291015625
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -99855.91723632812,
+              "durationMs": 17.966796875
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -72544.28686523438,
+              "durationMs": 20.8115234375
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": -51525.663330078125,
+              "durationMs": 18.1728515625
+            },
+            {
+              "path": "/account/delivery/submit",
+              "startAfterResumeMs": 640.490478515625,
+              "durationMs": 22.93896484375
+            }
+          ]
+        }
+      ],
+      "confirmed": [
+        "r2 browser submit label net::ERR_ABORTED after22.939ms; r1 counterpart200 after19.961ms",
+        "Next receive-prelude request is3.994safterresume inr1 and16.149sinr2",
+        "Relative tolast pre-resume read end, those are17.045sand19.538s, both within thehealthy-notification15\u201320sidle scheduling interval",
+        "Servermetrics all200:286r1/288r2; both saved publisher DBs have58accepted positions andnorefusals forH2, versus seedposition1; each browserrecorded57submitcalls",
+        "Browser abort label alone therefore doesnot establish lostwriting, a403/429, anowner halt or a10s retry timeout"
+      ],
+      "inference": "Difference is consistent with a different phase of the existing randomized healthy-stream idle timer, rather than a fresh16s backoff from theaborted submit. Saved data doesnot include scheduler due times, exact AbortSignal reason or a requestbody/response association, so this is not a proved causal attribution.",
+      "unresolved": "Exact cancellation source for the22.939ms aborted fetch cannotbe selected fromthese records. Source has parent/lifetime/login cancellation,10stimeout and boundedresponsecancel paths; no abortreason/header/per-requestbody/stack is retained. Do not call it a proved timeout, lostsubmission, admission stall or harmlessChrome artifact."
+    },
+    "operatorClarificationPending": "use pendingItems>0 forbusyA or stop; do not silently substitute for maintenance===running",
+    "noAppSpecAssertionWaitGateLimitChanges": true
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}
