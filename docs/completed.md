@@ -19799,3 +19799,20 @@ Retain prior red development/fixture/census attempts and old deferred tail
 formatting; no policy/guard workaround. Outcome precedes advancing the seat.
 Next bind rebuilt clients/effective server bytes and rerun455on the current date.
 No app/timed journey, commit, push or deployment in this phase.
+
+
+### Rebind both clients and effective API to the repaired protocol
+
+**Date:** 2026-11-06 · **Phase:** 458 · **Scope:** frozen build and untimed binding.
+
+Full release-profile build and corrected separate test-entry build pass. No lab
+or observation hooks enter shipping assets. The API'sold430image is explicitly
+only a foundation; a read-only protocol overlay supplies the six changed files
+and new shared constant. All123effective runtime files are source-bound, with
+unchanged container/resources/ports/limits and separate gateway. Exact byte and
+mount/process smoke passes. Retain the first test-config dependency-resolution
+failure and corrected build. [Record](./development-evidence/2026-11-02-release-hardening/458-repaired-runtime-bindings/README.md).
+
+Outcome precedes advancing the seat. Rerun455seed with root/date bindings only,
+then continue Stage5under the original gates and host handshake. No app/browser
+or timed journey, release-image claim, commit, push or deployment.

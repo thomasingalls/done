@@ -7784,3 +7784,17 @@ purpose and all other negative checks. Reconcile both exact census totals from
 the30new IDs; use the established reviewed Node formats.test.mjsname instead of
 widening the policy regex. Preserve the failed first census and test fixture
 framing attempts. This is source verification, not Stage5performance acceptance.
+
+
+### Bind effective source instead of claiming an old image contains a new fix
+
+**Date:** 2026-11-06 · **Phase:** 458.
+
+After457the old APIimage cannot be called current. For this unchanged local test
+composition, keep its immutable foundation and resource bounds, overlay only the
+exact current account-protocol directory read-only before startup, and hash the
+full123fileeffective APIclosure. Rebuild the client from the same current tree.
+Keep the test entry separate and ordinary frontend bytes exact. A missing local
+config dependency link is apparatus failure: preserve it, fix the link without
+changing source/flags/deadlines, and continue under standing permission. No
+publication or performance credit follows from this binding check.
