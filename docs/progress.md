@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase480 observed build ready; report-only fixtures next
+status: in flight # phase481 common sender fixture ready; sender report declaration/host next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: current common report-only fixtures, ten named journeys and Stage6
+blocks_on: sender report-only declaration/quiet host, remaining50msdeep/3072fixtures and Stage6
 updated: 2026-11-06
 ```
 
@@ -199,19 +199,18 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase480 implements the operator-approved private
-sender readiness binding and passive full-audit build. Ordinary control reproduces
-125release assets;2,046canonical inputs remain exact. Two private source files
-contain inverse-proven scalar observations, with a distinct recomputed verifier
-identity and no gate credit. Seven observation/six actual-callback controls and
-two final real-profile preflights pass. Keep the import failure and both wrong-
-Worker-binding attempts; actual joined provenance is the exact enrollment owner.
-No full-audit exposure is claimed by preflight.
-[Record](./development-evidence/2026-11-02-release-hardening/480-observed-report-build/README.md).
-All36plain-build blocking journeys stand. Prepare common current-date sender
-fixtures through real sync/public input, then the ten named report-only journeys
-under fresh tight-host readiness. Stage6still follows. No canonical source/test,
-format/trust/guard/limit/deadline/default change, commit, push or deployment.
+**Active bounded outcome.** Phase481 prepares the common current legal-format
+sender fixture through real catch-up, exactly two Scheduled additions and the
+byte-identical original329growth body.100keys suffice:2852physical rows against
+1536; final owners2873/2695against1024each, known padding and full exports exact.
+Keep the first pointer apparatus failure, verified cleanup and fresh passing
+setup. No storage edits or new timing credit. Fixture has2048base history and
+13,407-byteGoals, explicitly qualified against older lab material.
+[Record](./development-evidence/2026-11-02-release-hardening/481-common-sender-fixture/README.md).
+Approved observed480build/readiness are ready; all36plain-build blocking passes
+stand. Declare six sender reports and obtain a fresh quiet-host handshake.
+50msdeep x3,3072reader and Stage6also remain. No canonical source/test, guard,
+threshold, deadline, commit, push or deployment changes.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

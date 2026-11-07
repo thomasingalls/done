@@ -8105,3 +8105,15 @@ enrollment owner. Retain both failed preflights and the successful exact-archive
 collector/idle callbacks. Do not broaden the Worker list or infer audit absence
 from no exposure. Prepare fresh legal-format fixtures through actual app sync
 and input; ask the next quiet-host handshake before tight report-only timings.
+
+
+### Recreate report-only exposure through legal current-format app actions
+
+**Date:** 2026-11-06 · **Phase:** 481.
+
+Use actual current-date sync, Scheduled quick entry and the original329public-
+typing growth recipe. Preserve all old writing, threshold and setup-deadline
+checks; do not convert unreleased lab rows or rewrite fixture storage. Keep the
+actual larger Goals/history context visible when comparing reports. Harmless
+native pointer activity is setup-only, as in the original329protocol; its failed
+selector is apparatus evidence, not a product refusal or a timing result.

@@ -1,0 +1,316 @@
+{
+  "phase": 481,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/harness/test/account-continuation-lab/grow-paired329.spec.ts.gz",
+      "sha256": "7e85ea543453577f3dbc09ee2cf95cbb7729b96078a0da457f2eca598f3b7931",
+      "bytes": 2170
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/harness/test/account-continuation-lab/grow-paired329.config.ts.gz",
+      "sha256": "7564a9047906d1dc6669f2f6f5b6116efcfe230a71e8aa2f0c3d565f181eea28",
+      "bytes": 234
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/serialize.ts",
+      "sha256": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+      "bytes": 8256
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/geometry/task-ux.spec.ts",
+      "sha256": "87737fe6f542814aabb79e4fac88cc4513e41765be4797b625ac0e83feed2619",
+      "bytes": 9541
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-report-fixtures-481-20261106/481-private-files.json",
+      "sha256": "e99c7c8fc94c5f72398bcda702d978b47661003a5adfbb7c9ec47b4ebbd532b9",
+      "bytes": 451796
+    },
+    {
+      "localPath": "/private/tmp/done-report-fixtures-481-20261106/481-summary.json",
+      "sha256": "5b87d3ca366427b0de8cc5cecd48c4ee28725f72e5c87dcd7100a9d11d58116e",
+      "bytes": 2160
+    },
+    {
+      "localPath": "/private/tmp/done-report-fixtures-481-20261106/481-preparation-declaration.json",
+      "sha256": "ad3551e0f17bc7b895381e2eade1fdc5d5cd38dfb316a5178159a8dcb938d5f8",
+      "bytes": 1086
+    },
+    {
+      "localPath": "/private/tmp/done-report-fixtures-481-20261106/481-pointer-precondition-failure.json",
+      "sha256": "180b674a005fbfed0576e684d0c449f7edf057dca6667a62464fc02a0b1b4023",
+      "bytes": 348
+    },
+    {
+      "localPath": "/private/tmp/done-report-fixtures-481-20261106/481-failed-run-cleanup.json",
+      "sha256": "b4efb295b5f1561bc90ea618a3915b6c6190c28458664ad28ce3a7cf80d35639",
+      "bytes": 181
+    },
+    {
+      "localPath": "/private/tmp/done-report-fixtures-481-20261106/record481.py",
+      "sha256": "5790bb3d6b8d2649a2404392866b3959d9dec901393fead50e7368c734768ae5",
+      "bytes": 10248
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/child.log",
+      "sha256": "e16af9a4858f60667da830c80590a0b12823200da9efc4667abb87f2949ef12e",
+      "bytes": 5408
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/host-load.jsonl",
+      "sha256": "07542767da245b3a6e27fd0b221c1d2796b21c518c6600f376c8a3e7d578dafd",
+      "bytes": 3090
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/power-assertions-before.txt",
+      "sha256": "9a4b11253287f89fbb98bd1a0276bb5a93a85b180c2f8c04f2b4bd823aaeaa5d",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/power-log-after.meta.json",
+      "sha256": "3c77f61ac6fe0cbe915ca8ed8efb26ef039b4529283a5fd84754e6b549b5c120",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/power-log-before.meta.json",
+      "sha256": "e64714e0db07825fec87401a30bf59d2162d2f5c5d3a3884a9227591e317df56",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture/run.json",
+      "sha256": "4facd12a27eb217c92500027483a664631889825d7fbfc773d43425900b0d044",
+      "bytes": 1875
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/child.log",
+      "sha256": "0fba614e3e85d65bffc84bd811567024dbd679e4ee5f91255c761a8d2f96398d",
+      "bytes": 506
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/host-load.jsonl",
+      "sha256": "6aac1c9d97790fb1b8debf511db7d6faf1c205aafcb2835e4dbaa08f50dea3e2",
+      "bytes": 22110
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/power-assertions-before.txt",
+      "sha256": "714924e6fcc77b1513db592b2f91372d47da25b7571f634011eef02538995049",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/power-log-after.meta.json",
+      "sha256": "33d3d421d570a962cb4b6b60c77b7d4a611c22d2a954e1d85684abce303a1649",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/power-log-after.txt",
+      "sha256": "12e43de8ecb7ef555c958fd6ca232d90319858deabe0c3d453f1589a87fbf0b1",
+      "bytes": 1883
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/power-log-before.meta.json",
+      "sha256": "3190f9d90c0157ad012552da51c6c73b42f6a231a1798894f4be27817c42ffff",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-common-sender-fixture-retry/run.json",
+      "sha256": "375217f2a3b1b6608f49fc405d586e25e26393b6cfbe46828cf11059e43d07b8",
+      "bytes": 1886
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/child.log",
+      "sha256": "64a734ba9cc0de3a81cdc97ad180354b1781a0640466a9419d92b3ba99593486",
+      "bytes": 443
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/host-load.jsonl",
+      "sha256": "978c5d775bfd7d3eb4ac119c62d121d1f93a6a79143286e907ab90be52b28b12",
+      "bytes": 11028
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/power-assertions-before.txt",
+      "sha256": "febdb9df24a272a65887b7f714393b5b47128da6f807d73471db19a8dc7bbcd1",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/power-log-after.meta.json",
+      "sha256": "d6a34f16f098887cfc8541746176bd3303793cf9ce81a68f4ef29625f4d6f022",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/power-log-after.txt",
+      "sha256": "bd5577cef89d3ab42b531ced38ef81064acc6717058f2af3a58c1259abef3eb4",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/power-log-before.meta.json",
+      "sha256": "553b7db8bb7e7abdac7a3c9cfb60c9f1dd3ea1d72e9aad2e9a3167a9ac872f18",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/481-original-grown-sender-recipe/run.json",
+      "sha256": "c83502c2c5b9083d48b9fa54a40c58490e680fc5c80df10aa585bc6c9a1fd8f0",
+      "bytes": 1865
+    }
+  ],
+  "summary": {
+    "phase": 481,
+    "outcome": "prepared",
+    "fixturePath": "/private/tmp/done-report-fixtures-481-20261106/paired-fixture329/fixture.json",
+    "date": "2026-11-06",
+    "baseBacklog": 2048,
+    "actualGoalsUtf8Bytes": 13407,
+    "prepareGuards": {
+      "bothOriginalArchivesExact": true,
+      "onlyTwoKnownCardsAdded": true
+    },
+    "acceptedPublisherRowsBeforeCards": 7,
+    "acceptedPublisherRowsAfterCards": 8,
+    "newCards": 2,
+    "paddingKeys": 100,
+    "physicalBefore": [
+      [
+        {
+          "stores": {
+            "content": 2101,
+            "heads": 527,
+            "outbound": 3
+          },
+          "total": 2631
+        }
+      ],
+      [
+        {
+          "stores": {
+            "content": 2056,
+            "heads": 523,
+            "outbound": 7
+          },
+          "total": 2586
+        }
+      ]
+    ],
+    "physicalGrowthObservation": [
+      {
+        "keys": 100,
+        "at": 1793980566247,
+        "counts": [
+          {
+            "stores": {
+              "content": 2194,
+              "heads": 548,
+              "outbound": 110
+            },
+            "total": 2852
+          }
+        ]
+      }
+    ],
+    "physicalFinal": [
+      [
+        {
+          "stores": {
+            "content": 2202,
+            "heads": 551,
+            "outbound": 120
+          },
+          "total": 2873
+        }
+      ],
+      [
+        {
+          "stores": {
+            "content": 2157,
+            "heads": 531,
+            "outbound": 7
+          },
+          "total": 2695
+        }
+      ]
+    ],
+    "thresholds": {
+      "firstOwnerGrowthAtLeast": 1536,
+      "bothOwnersFinalAtLeast": 1024
+    },
+    "oldGrowBodyAnd600sCaseExact": true,
+    "legacyLabOnlyField": "inert metadata from unchanged old fixture recipe; no lab app source/factor enabled",
+    "stateOrRecordEdits": false,
+    "timingCredit": false,
+    "historicalComparison": "Current legal-format recipe at2048base positions and13407byteGoals, not byte-matched original329lab rows or5000byteGoals",
+    "preservedFailures": [
+      "offscreen unscoped pointer selector in first setup; no final app result",
+      "verified disposable API/gateway cleanup then fresh run; native corner pointer errors retained explicitly"
+    ],
+    "originalBlankAndExistingWritingExact": true,
+    "canonicalSourceChanged": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "gateCredit": false,
+  "newAppSourceOrCanonicalTestChange": false,
+  "noGuardThresholdBudgetOrDeadlineChange": true,
+  "next": "Declare three single500Device1 and three paired150report-only cases on this common observed-build fixture, then ask quiet-host readiness; prepare remaining50msdeep/3072report cells",
+  "committed": false,
+  "pushed": false
+}

@@ -20238,3 +20238,21 @@ that exact owner. Two final actual preflights pass archive/collector/readiness;
 no audit exposure claimed. Outcome precedes advancing the seat.36blocking passes
 stand; ten named report-only journeys remain. No canonical test edit, commit,
 push or deployment.
+
+
+### Prepare the common legal-format grown sender fixture
+
+**Date:** 2026-11-06 · **Phase:** 481 · **Scope:** real sync/public-input preparation.
+
+Both original archives catch up exactly. Only two canonical Scheduled additions
+are admitted, then the byte-identical329growth body types100keys and preserves
+known padding/full exports. Growth2852rows meets1536; final owners2873/2695meet
+1024each. All original thresholds and600scase remain. Current2048base history/
+13,407-byteGoals is explicitly not a byte-matched old lab fixture.
+[Record](./development-evidence/2026-11-02-release-hardening/481-common-sender-fixture/README.md).
+
+Retain the first offscreen pointer apparatus failure, verified disposable cleanup
+and fresh passing setup. No app refusal/loss is established. No stored-row edits,
+performance credit or source/guard/deadline change. Outcome precedes advancing
+the seat. Declare sender report-only cases and ask the next quiet-host handshake.
+All36blocking passes stand; ten reports and Stage6remain. No commit or deployment.
