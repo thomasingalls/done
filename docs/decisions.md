@@ -7603,3 +7603,16 @@ Stop before the timing matrix and past-index preflight. No functional assertion,
 wait, limit, trust or runtime code changes. A next bounded diagnosis must resolve
 why marker60was not visible while hot writing continued; later archive/cold
 results are still unobserved, not successes or inferred data loss.
+
+
+### Distinguish an explicit repeat from the automatic noise exception
+
+**Date:** 2026-11-05 · **Phase:** 446.
+
+The operator explicitly asks for one retry before tracing; this authorizes the
+repeat despite445's false noise predicate, without regrading the earlier result.
+Use exactly the same selected case and frozen inputs on a fresh seed clone.
+Collection/controller failures before execution are harness attempts, not app
+retries; preserve and fix them before the one actual attempt. The same assertion
+fails again. Keep the functional stop, both results and the existing noise rule;
+do not start tracing or additional app runs in this phase.

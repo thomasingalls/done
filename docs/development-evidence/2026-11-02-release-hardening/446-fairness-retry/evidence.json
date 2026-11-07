@@ -1,0 +1,455 @@
+{
+  "phase": 446,
+  "date": "2026-11-05",
+  "scope": "one explicit operator retry before tracing",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/server.mjs",
+      "sha256": "22930b1e10b0866e2f96ab4ec8ad8d4e5dbf649d48c0eb33acd35b64747d6dd2",
+      "bytes": 5479
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-continuation.config.ts",
+      "sha256": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "bytes": 446
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f",
+      "bytes": 11736
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    }
+  ],
+  "declaration": {
+    "phase": 446,
+    "declaredEpoch": 1793884566.577842,
+    "authorization": "Explicit operator request to retry before tracing; not an automatic noise retry",
+    "base": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "test": "continuous native fairness known-backlog normal",
+    "sourcePins": {
+      "test/inbound-continuation/fairness.spec.ts": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "test/inbound-index/past-index.spec.ts": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "playwright.inbound-continuation.config.ts": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "playwright.inbound-index.config.ts": "9f7ae060eff3538ef31af56b2d20fb5d27d7f0bebc2218b50cc884fec028b2ee"
+    },
+    "sourceBodiesAndDeadlinesUnchanged": true,
+    "originalFailure": "phase445 retained; source/assets/seed unchanged",
+    "seedOriginal": "/private/tmp/done-stage5-hardening-20261105/preflight-fairness/seed",
+    "seedClone": "/private/tmp/done-stage5-retry-446-20261105/fixture-r2/seed",
+    "seedInventorySha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+    "frozenBuild": "/private/tmp/done-stage5-hardening-20261105/build-r2",
+    "assetRecordsVerified": true,
+    "browser": "same installed PlaywrightChromium151 as445functional case",
+    "appOrTestChanges": false,
+    "newObservationOrProfiling": false,
+    "hostLogSeconds": 5,
+    "powerLogStorage": "command window only plus complete stdout hash/size",
+    "maximumAttempts": 1,
+    "argv": [
+      "env",
+      "INBOUND_CONTINUATION_ROOT=/private/tmp/done-stage5-retry-446-20261105/fixture-r2",
+      "INBOUND_CONTINUATION_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-positive",
+      "INBOUND_CONTINUATION_NEGATIVE_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-negative",
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "playwright.inbound-continuation.config.ts",
+      "--grep",
+      "continuous native fairness known-backlog normal$",
+      "--max-failures",
+      "1"
+    ],
+    "credit": "functional preflight retry only; no Stage5timing credit"
+  },
+  "review": {
+    "phase": 446,
+    "authorization": "one explicit operator retry before tracing",
+    "preExecutionHarnessFailures": [
+      {
+        "attempt": "run446.py",
+        "error": "No tests found due to full-title leading-anchor filter",
+        "appTestsExecuted": 0
+      },
+      {
+        "attempt": "run446-r2.py",
+        "error": "private controller base-directory substitution before startup",
+        "appTestsExecuted": 0
+      }
+    ],
+    "actualAppAttempts": 1,
+    "retry": {
+      "title": "continuous native fairness known-backlog normal",
+      "status": "failed",
+      "durationMs": 67987,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    20,\u001b[22m\n\u001b[2m    40,\u001b[22m\n\u001b[32m-   60,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+      "errorLocation": {
+        "file": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/inbound-continuation/fairness.spec.ts",
+        "column": 62,
+        "line": 261
+      },
+      "observedSparse": [
+        20,
+        40
+      ],
+      "requiredSparse": [
+        20,
+        40,
+        60
+      ]
+    },
+    "sameFailureAs445": true,
+    "sourceAssetsAndSeedsUnchanged": true,
+    "host": {
+      "samples": 14,
+      "allAbove100PercentSpans": [
+        {
+          "pid": 52709,
+          "process": "node",
+          "samples": 1,
+          "first": 1793884567.984782,
+          "last": 1793884567.984782,
+          "maxCpu": 107.7,
+          "observedSpanSeconds": 0.0
+        },
+        {
+          "pid": 52711,
+          "process": "node",
+          "samples": 3,
+          "first": 1793884597.989393,
+          "last": 1793884607.98667,
+          "maxCpu": 118.1,
+          "observedSpanSeconds": 9.997277021408081
+        },
+        {
+          "pid": 52711,
+          "process": "node",
+          "samples": 1,
+          "first": 1793884617.990647,
+          "last": 1793884617.990647,
+          "maxCpu": 100.3,
+          "observedSpanSeconds": 0.0
+        }
+      ],
+      "swapFirst": {
+        "at": 1793884567.984782,
+        "usedMiB": 16064.31
+      },
+      "swapLast": {
+        "at": 1793884632.995301,
+        "usedMiB": 16064.31
+      },
+      "swapIncreases": []
+    },
+    "laterArchiveUndoCold": "not reached",
+    "originalFailurePreserved": true,
+    "tracingStarted": false,
+    "timedMatrixJourneysStarted": 0
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/child.log",
+      "sha256": "471cd15376888c4fa68525b2549152691611b808fb1dade2cd0a38de82ff6c52",
+      "bytes": 349,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/host-load.jsonl",
+      "sha256": "184ee59aa44a924203261bb64a6bbcbaf7580a1349853978594009885e9f82e8",
+      "bytes": 1503,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/power-assertions-before.txt",
+      "sha256": "2d5ce530cc2ee4a4901296d4cb8667c436d35e225ab0633169505bffb08547cf",
+      "bytes": 1681,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/power-log-after.meta.json",
+      "sha256": "17a101e18ba7540b011695b963d4ff6875aae3ef1bcc9c9a2483e79046c3a23c",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/power-log-after.txt",
+      "sha256": "cda443a413756e38953c78962996088af571db91e09c7f12e45b004db9fd9bbb",
+      "bytes": 468,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/power-log-before.meta.json",
+      "sha256": "4220d9981f6deef10fc8834c57b0dff5fe86066694a958a450b3a76f50b94934",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-native-fairness-retry/run.json",
+      "sha256": "77a45760751af1dac9b7afa28d916576e8ae1f2e09ef68defb7bfecf0640a693",
+      "bytes": 1902,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/child.log",
+      "sha256": "73cac26ad956307cb472cc01d413065158515abc3a3bb09ff173bdc07144e76c",
+      "bytes": 2161,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/host-load.jsonl",
+      "sha256": "0b81d106fe0c0de19d6d3f8a38d02e37b63ba6ea512cb6c42f3a1d8699c32029",
+      "bytes": 21637,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/power-assertions-before.txt",
+      "sha256": "33704b74350ba0ba5829f3c9e8fcd1de119618d7478b2abb2b41ca282568c57c",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/power-log-after.meta.json",
+      "sha256": "c60543c5342c8610fab01c4c7e58cad74053915cd6570354d082b972843941f0",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/power-log-after.txt",
+      "sha256": "300246d70477367463f6c2aa364eae49e071e0187a7b7f0e2c7b7c199b6a127d",
+      "bytes": 459,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/power-log-before.meta.json",
+      "sha256": "7daee30c04f0a69d005c6732dbb88db2abbb8038dad503d3299b65b676165dd1",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/446-r2-native-fairness-retry/run.json",
+      "sha256": "4ff7130bc6804a982a23760d529dd2f76a988b669ea72d288a1d01b82a72da82",
+      "bytes": 1906,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-console-r2.log",
+      "sha256": "1a8ecd7ffb3731c91df034535f56c448c14295e707218a35ca975a45a8b2c621",
+      "bytes": 911,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-console-r3.log",
+      "sha256": "0074bb90398eb2b5c5f24d68aef3153fcb49425aabca477b0a46a1f2b43a15f9",
+      "bytes": 3833,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-console.log",
+      "sha256": "f3c5b4a8ac0c3f36c6ac00a66c7768ffdbb40abe8caa9a160c1c91c699bc346a",
+      "bytes": 3787,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-declaration.json",
+      "sha256": "02675a3df60cec1c2714de4bedccd7584ac239757ee5ec79b3ab69a639296dd0",
+      "bytes": 2251,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-playwright-results.json",
+      "sha256": "066f47ebd08105ea2aab2b7e039d040d1f26135ce2a59653c6f1b5053be65d0e",
+      "bytes": 2113,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-r2-declaration.json",
+      "sha256": "2ce3aac281c55d0d77533753ec92d9c0d09a65dbc331251e712cb64d8dfb4620",
+      "bytes": 2256,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-r2-list.log",
+      "sha256": "bec3636260ef65d0c596709c16483bea1f1e0a74bd6110c2ac7656f7bf4b78ce",
+      "bytes": 441,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-r2-playwright-results.json",
+      "sha256": "433a2412a474be9b61c59c7e0faba74a3373a38ef93e4394590dacee7bd3fe5a",
+      "bytes": 9292,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-r2-result.json",
+      "sha256": "d29618625fd301926723a47d9612627c630cc46c6c332562ae5fd54c45c12fc1",
+      "bytes": 2248,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-result.json",
+      "sha256": "240afd511563c041450ea9f46e406f3abf5e6dff426dfeaed99eca14cb2782eb",
+      "bytes": 2244,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-review-console.log",
+      "sha256": "0f75f3c0994c03af68f9fda40035a22ebe91ecaf185b7e51628235c2b6b16d4f",
+      "bytes": 1252,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-review-precondition-repair.json",
+      "sha256": "34b9ca9f79cb1ba48e440cc8357af03e59f42437979e71ac53e422a40e1769eb",
+      "bytes": 263,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-review.json",
+      "sha256": "ba83d299bde9375f6ca0a4a98488d068519e28617fdbfbd37b1dbace2273b50e",
+      "bytes": 2413,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-selection-failure.json",
+      "sha256": "0d00ca5bf3eb80d335faa53ce99815d23b3f7c0e692f5f773daee9852a11b094",
+      "bytes": 426,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/446-setup-failure.json",
+      "sha256": "376a677236cd037425dd8b8c6073230d35bee864a9dac44a6400b78aff6f29be",
+      "bytes": 354,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/fixture-r2/continuous-native-fairness-known-backlog-normal/evidence.json",
+      "sha256": "29a9be04454e1de98a3fb119610d6cd7a546390ca5d65ba9fc7abfac9184badf",
+      "bytes": 1494,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/record446.py",
+      "sha256": "cea50efb0b3e1ae53950e45a59e57d78c982bdf9c7b0c7a804010b852992712d",
+      "bytes": 8050,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/review446-attempt1.py",
+      "sha256": "731e5c05533e5dd2b00ace2f59dfd8090fe45bcd47b401f50b7769db98b550fa",
+      "bytes": 3339,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/review446.py",
+      "sha256": "b6cbebb80d8ab15a8399f16adeea244eee80acd231ca8b008b31192c21ef6267",
+      "bytes": 3675,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/run446-r2.py",
+      "sha256": "4860e489802cc49c86c30c50c7c065dc5ed7d506982dfd52c811a00aabe35cdc",
+      "bytes": 4693,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/run446-r3.py",
+      "sha256": "af3db31d7d622d6a86f6fb316112a43d3996106a446d55fba254e623633fd1ec",
+      "bytes": 4690,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/run446.py",
+      "sha256": "33e49826fb953817e51c1bee528d663306f774eeaef12aa564313adde511bb55",
+      "bytes": 4386,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/seed-before-r2.json",
+      "sha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+      "bytes": 105480,
+      "stored": "original local artifact; no duplicate copy"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-retry-446-20261105/seed-before.json",
+      "sha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+      "bytes": 105480,
+      "stored": "original local artifact; no duplicate copy"
+    }
+  ],
+  "original445RecordUnchanged": true,
+  "applicationChanges": false,
+  "testBodyAssertionOrDeadlineChanges": false,
+  "newInstrumentation": false,
+  "tracingStarted": false,
+  "timedMatrixJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

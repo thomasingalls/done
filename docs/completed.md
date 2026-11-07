@@ -19563,3 +19563,18 @@ owner closure is not established. No app/test-body repair or timed Stage5journey
 occurs. Stop for the next bounded liveness diagnosis/decision. Stage6landing
 results remain unavailable. All earlier results, original roots and object bytes
 remain intact. Outcome precedes advancing this seat.
+
+
+### Repeat the unchanged fairness case before tracing
+
+**Date:** 2026-11-05 · **Phase:** 446 · **Scope:** explicit one-case retry.
+
+The operator-authorized retry reproduces445's same sparse-liveness failure:
+20/40arrive,60is absent before hot writing stops (original assertion line261;
+67.987s). Source, frozen assets and both closed seeds remain exact. Swap stays
+16,064.31MiB; no sustained non-test>100%CPUinterval is observed. Retain both app
+failures and all host logs. Two controller/collection failures before execution
+and one review-field failure are retained separately; exactly one app test ran.
+Later archive/Undo/cold remain unobserved. No code, case, assertion, deadline,
+guard or limit change; no tracing or timed matrix starts. [Record](./development-evidence/2026-11-02-release-hardening/446-fairness-retry/README.md).
+Outcome precedes advancing this seat. No commit, push or deployment.

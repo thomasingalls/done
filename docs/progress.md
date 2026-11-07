@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked # Stage 5 preflight: native sparse-publisher liveness failure
+status: blocked # unchanged fairness retry reproduces sparse-publisher failure
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: sparse-publisher liveness diagnosis/decision before preflight and timed matrix resume
 updated: 2026-11-05
@@ -191,28 +191,26 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Record effective snapshot capacity and repeated-attempt cost debt](./development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
-Static inspection confirms the hex/JSON expansion, encoded-size boundary and changed-hint capacity retry behind the60sclock. The debt wording distinguishes the practical growth ceiling from an early raw guard on a single oversized input, and scheduler eligibility from an observed once-per-minute cadence. Source references match signed commit 4d20580c8b9385e225a6452e4ffc74711f829b38. No new measurements or app tests were run.
+**Latest checks.** [Phase 446 unchanged fairness retry](./development-evidence/2026-11-02-release-hardening/446-fairness-retry/README.md)
+reproduces the same line261failure in67.987s: sparse20/40visible,60absent before hot
+writing ends. Exactly one app attempt, unchanged source/assets/closed seeds.
+The collection/base-directory preconditions and review-schema error are retained
+as separate harness failures. Swap is flat; no sustained non-test CPU trigger.
+No later archive/Undo/cold result or new instrumentation is claimed.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase 445 stops on the first positive fairness
-preflight case: sparse markers20/40arrive, but60is absent before90hot edits finish.
-The genuine fresh seed passed. The fixed host-noise condition is false (one
-Firefox111.3%sample, no sustained>100%interval; swap decreases). No rerun is credited.
-Four remaining fairness cases and past-index are unrun. No timed matrix journey
-started, and the failed case did not reach later archive/Undo/cold checks.
-Durable data loss and owner closure are not established. Typecheck, approved lint,
-unit (330files/3,210tests,137.46s,existing skip), inventory/policy, six-second
-windowed-log dry run and frozen release-profile build pass. The pnpm copied-context
-failure is retained before the unchanged script's successful direct execution.
-Shipping code is unchanged since the prior app checkpoint; runtime flags remain
-as declared. Prepare this bounded patch and stop for the next liveness diagnosis.
-Do not start further app runs, timing cells, commits, push or deployment.
-Stage6will need the completed matrix; no landing verdict exists yet.
+**Active bounded outcome.** Phase 446 completes the operator-requested single
+retry before tracing. It fails the same sparse-liveness assertion as445 with
+unchanged inputs. Both failures and host logs remain; no noise retry or regrading.
+Later archive/Undo/cold checks remain unreached. Stage5preflight is still held;
+four other fairness cases, past-index and all36blocking/10report-only matrix
+journeys remain unrun. Prepare the documentation-only446patch. No app/test-body,
+assertion, guard, deadline or limit repair; tracing has not started. Wait for the
+next bounded sparse-publication/receiving diagnosis. No commit, push or deploy.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
