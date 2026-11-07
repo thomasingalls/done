@@ -20350,3 +20350,13 @@ The fresh recipe exhausts the unchanged30-minute setup ceiling before1,024extra 
 [Record](./development-evidence/2026-11-02-release-hardening/489-grown3072-setup-deadline/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Record the unexposed production-index report
+
+**Date:** 2026-11-06 · **Phase:** 490.
+
+The3,072reader journey is unexposed because fixture preparation stops at2,738positions under its unchanged30-minute ceiling.690independent service acceptances match690poll confirmations. The next per-position check was cut short by the global deadline. Counter controls pass6/6; reader, index, archive, Undo and cold results remain unavailable. Carry this report-only debt into Stage6without changing limits or substituting a smaller workload.
+[Record](./development-evidence/2026-11-02-release-hardening/490-index-report-unavailable/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

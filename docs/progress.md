@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase489 setup deadline;3072report unexposed
+status: in flight # phase490 report-only3072cell unexposed;Stage6next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: Stage6must record unavailable3072report and setup cost
+blocks_on: Stage6landing report, including unavailable3,072evidence
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase489uses exactly the approved bounded per-key poll on a fresh2048fixture. original30-minute fixture setup ceiling exhausted; no3072reader journey exposed. Original167asset bytes and allother recipe assertions/deadlines remain. Independent stopped-service accepted-decision evidence is recorded. Do not run a smaller workload or raise a deadline. Record report-only490as unexposed;36blocking passes/9validreports remain. CompleteStage6with this debt and the Worker-reply census, then stop.
-[Record](./development-evidence/2026-11-02-release-hardening/489-grown3072-setup-deadline/README.md).
+**Active bounded outcome.** Phase490records the unexposed3072reader report: fresh setup reached2738positions before its unchanged30-minute ceiling.690service acceptances match690published confirmations; no30sper-position exhaustion or writing-loss claim. Reader/index/Undo/cold metrics are unavailable. All36blocking journeys and9validreports remain; one report-onlycell is not complete. FinishStage6with this debt and the55methodreply census, then stop.
+[Record](./development-evidence/2026-11-02-release-hardening/490-index-report-unavailable/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

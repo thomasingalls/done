@@ -8182,3 +8182,10 @@ Use the already-published bounded sync status for fixture acceptance polling; do
 **Date:** 2026-11-06 · **Phase:** 489.
 
 Retain both the exact per-position acceptance checks and setup ceiling. Partial fixture growth cannot establish3,072index/cold/Undo behavior. Report-only unavailability is a debt, not a failed result converted to a pass or a basis for silently extending a deadline.
+
+
+### Keep unexposed index evidence distinct from passing fallback checks
+
+**Date:** 2026-11-06 · **Phase:** 490.
+
+Do not infer a cap crossing, exact archive, successful cold reopen or3,072catch-up performance from an unrun reader. Keep real-scale index time/RAM and this missing report explicit. Earlier low-ceiling functional evidence and final blocking acceptance retain their separate scope.
