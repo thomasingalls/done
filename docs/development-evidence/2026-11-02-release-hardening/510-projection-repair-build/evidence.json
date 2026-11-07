@@ -1,0 +1,64 @@
+{
+  "phase": 510,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite.config.ts",
+      "sha256": "eb8d3f51ab784d719528ac6748823c915e69424a3c03fda24de2b29f8338857c",
+      "bytes": 5916
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/check-budget.mjs",
+      "sha256": "df005d4125d275f4347c21ddfb274299c9f11546c9c0761dc7e48274eceb91e0",
+      "bytes": 3665
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/check-origin-isolation.mjs",
+      "sha256": "737bf159c5213910945c1cc40433f70858bc69dc0e7e24f0a30e89fae503a581",
+      "bytes": 11356
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-projection-build-510-20261107/510-private-files.json",
+      "sha256": "a8212dbf1796e0f622f24b227a0ad3cfbd260f3a41abface36cc764ece3318b7",
+      "bytes": 544538
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/510-frozen-release-profile-build/run.json",
+      "sha256": "11fa76248649b5e6b40838b98189a574ac7d97efeadf6c28dfdf688d3e4352fe",
+      "bytes": 902
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/510-frozen-release-profile-build/child.log",
+      "sha256": "01afc8317fa486f4a03f54b89eaa5276db2272b8e2b40026cd53399645e05ca1",
+      "bytes": 10609
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/510-canonical-native-build/run.json",
+      "sha256": "889515c60e90581c765d6a2c364bdaabfc238b4f418d4a3e5b96460132993720",
+      "bytes": 1268
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/510-canonical-native-build/child.log",
+      "sha256": "985eca8e5588a10a994cc5c90148682a9ca3eb2f1e33738b9e81055357d87467",
+      "bytes": 9566
+    }
+  ],
+  "summary": {
+    "sourceInputs": 2047,
+    "ordinaryAssets": 125,
+    "separateNativeAssets": 42,
+    "sourceTransforms": 0,
+    "releaseProfileBuild": true,
+    "nativeBuild": true,
+    "normalGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

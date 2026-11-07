@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 509 coherent checkpoint green; unobserved browser confirmation next
+status: in flight # phase 510 plain repaired build ready; saved-state publication regression next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: plain rebuilt browser confirmation and original 3072 report; no new acceptance claim
+blocks_on: saved-state browser confirmation and current-date 3072 report
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 509 passes all 3,231 unit cases in 333 files plus the existing skip, types, lint, changed formatting and 21 policy/census controls. Five cases were added and none removed; release blocks stay. Next build the repaired ordinary source without trace hooks and confirm continued publication on a copy of the saved failing browser state.
-[Record](./development-evidence/2026-11-02-release-hardening/509-projection-repair-checkpoint/README.md).
+**Active bounded outcome.** Phase 510 builds the unchanged release profile from 2,047 exact canonical inputs, with no probes. The 125 ordinary assets pass budget/isolation; 42 separate native assets preserve ordinary bytes. Next verify pending-edit recovery and continued publication on a private copy of phase 506, then address current-date fixture preparation.
+[Record](./development-evidence/2026-11-02-release-hardening/510-projection-repair-build/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

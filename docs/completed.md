@@ -20550,3 +20550,13 @@ Closed the coherent checkpoint: 333 unit files, 3,231 passed plus the existing s
 [Record](./development-evidence/2026-11-02-release-hardening/509-projection-repair-checkpoint/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Unobserved projection-repair build
+
+**Date:** 2026-11-07 · **Phase:** 510.
+
+Built all 2,047 canonical inputs with the original release flags and no probes: 125 ordinary assets, 42 separate native assets. Build, bundle budget, origin isolation and exact ordinary-asset preservation pass. No normal-gate or current-date fixture credit.
+[Record](./development-evidence/2026-11-02-release-hardening/510-projection-repair-build/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

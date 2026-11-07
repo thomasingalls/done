@@ -8322,3 +8322,10 @@ Discard both private views at the failed installation boundary; a later interrup
 **Date:** 2026-11-07 · **Phase:** 509.
 
 Keep frozen reproduction bytes intact and exclude only the four specifically approved archive paths from active lint. Register every new regression and update exact census values. Record the new source identity after the approved edits rather than comparing it with the old one.
+
+
+### Bind browser confirmation to repaired canonical bytes
+
+**Date:** 2026-11-07 · **Phase:** 510.
+
+Use the unobserved repaired Worker for functional confirmation. The saved November 6 profile diagnosis may use the existing explicit test-date port, but must not be represented as a current-date or ordinary offline cold gate.
