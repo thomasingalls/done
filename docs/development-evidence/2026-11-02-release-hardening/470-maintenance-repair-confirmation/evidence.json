@@ -1,0 +1,298 @@
+{
+  "phase": 470,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditScheduler.ts",
+      "sha256": "00f32596e332c09d74003f4965c0102339b174198994758e19c46793cdde8867",
+      "bytes": 3123
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditStart.ts",
+      "sha256": "7386b29fcabf5d6f7d869838d9d8e3c8294b731597874a25fb7e080a64875795",
+      "bytes": 2258
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-private-files.json",
+      "sha256": "6c4bda6b20dbf70afb885879d1f9727c2b902a520d68adfb845e7a9865f82d9c",
+      "bytes": 716189
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-summary.json",
+      "sha256": "39f9da79e05a286da6c5356a08081171d22b205f0680f93992f8b36dcbe11e61",
+      "bytes": 1554
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-declaration.json",
+      "sha256": "6825c88d290f539209125d50010d02ae26eb3e3eaed581b0f5bef26d5b0bcc48",
+      "bytes": 806
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-build-binding.json",
+      "sha256": "ab8cbe88133b1cef0881a9fe88904e16c1950a3dd02375076bc259abe8af2657",
+      "bytes": 365
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-build-complete.json",
+      "sha256": "ad183d712cf2324162e15666b1e07d46d74a874c0540846b8659a67e29173795",
+      "bytes": 22027
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-source-inputs.json",
+      "sha256": "07c0aa455d692ec7d73872c6139cd7804159fc349409b517450e22695408e733",
+      "bytes": 349762
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/470-host-review.json",
+      "sha256": "e6387cd1484250b7937b4d0348706ecfe7800fde952e3a6282c4c50e0f37941e",
+      "bytes": 307
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/build470.py",
+      "sha256": "99c6fc19afc21fca3200ec653269b372272d75f9ea0029fc33dc8772385dd582",
+      "bytes": 4575
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/record470.py",
+      "sha256": "906f5b0b278b5f47b7600f73ba20a7a85ac890f142637f6e0d4e494d8a2f0571",
+      "bytes": 10645
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/analyze-case.py",
+      "sha256": "b8c2d68ef705b7c8fae448581cf76fb04aa779e6a4654b50fb1a8d2ec413f32d",
+      "bytes": 4919
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-rerun-470-20261106/analyze-old.py",
+      "sha256": "03824d5f34e62fee8965d028b336354b6abfbaebb15d6f166c6b76516159acd3",
+      "bytes": 1784
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/child.log",
+      "sha256": "5958512103d00f799f8456e9c1f2824b23ef9288f54a0fb7f53c7a5b1319c723",
+      "bytes": 10591
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/host-load.jsonl",
+      "sha256": "8fecfd462da4a023536fec8ee14dd8d42ab94cdaabdbb0817788a125988c8b7d",
+      "bytes": 3051
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/power-assertions-before.txt",
+      "sha256": "af4eecaebc7734175160cb48b2424a104ef8820371d7a672511b60e463e47a1a",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/power-log-after.meta.json",
+      "sha256": "d70aa8a8f19f1ab919f5a9c13b9fcfec82a094095f9e87f23d83005708f29940",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/power-log-after.txt",
+      "sha256": "7c7000760af1972711288a5fe306c972a919d5bd23b25b23bbd89f71f79b0d87",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/power-log-before.meta.json",
+      "sha256": "464065999e744ba1c6b770b06778662966224dac985bc0d76c65940f3f163b4b",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-frozen-release-profile-build/run.json",
+      "sha256": "ecff067f0d4cf71d9e25f1d752b6eb3c4707b61abd624e6dbbc0ce7258386929",
+      "bytes": 904
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/child.log",
+      "sha256": "ab493aa300e8066b4714cb9c3527f886506e1eebd52c985755e8903a0bca000e",
+      "bytes": 409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/host-load.jsonl",
+      "sha256": "e71846c8ae44eba53737640c0cf961192ec5efb31634d5c6cb30eed4f657b31c",
+      "bytes": 36556
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/power-assertions-before.txt",
+      "sha256": "d69fd28e5c7f06e858f6336f248ed9cdf5aee1d28807e035240b90583609454e",
+      "bytes": 2090
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/power-log-after.meta.json",
+      "sha256": "8dc907f84680c24545bcd78b2c0e4da3948bad4657a51fb5de4a91aef8934c82",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/power-log-after.txt",
+      "sha256": "9876306d1056905795b6a52624dee5107d77989e7222476e70a180aec8437e45",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/power-log-before.meta.json",
+      "sha256": "c7eece0beebd689b0126948322c4cfd045d1a2a0ad36ae260facf47c659ba290",
+      "bytes": 478
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/470-r1-old-maintenance-normal/run.json",
+      "sha256": "3db241a4e22d75b5e1de0fb4959ad2168e9eedb2bbed07772dbf697d6ecdb6c1",
+      "bytes": 1978
+    }
+  ],
+  "summary": {
+    "phase": 470,
+    "candidate": "phase469 source; ordinary release profile; no observer/lab assets",
+    "case": "old-maintenance-normal replicate1",
+    "acceptedByOriginalAnalyzerWithOperatorAmendments": true,
+    "completionAfterLastKeyMs": 26211.646240234375,
+    "publicAttemptAtCompletion": 2,
+    "completionStageElapsedMs": 3509,
+    "inputP95Ms": 3.38427734375,
+    "peerP95Ms": 796.318359375,
+    "markersMs": [
+      784.746826171875,
+      620.388427734375,
+      737.5546875
+    ],
+    "backlogMs": 32484.552490234375,
+    "keysDuringBacklogInformation": {
+      "keys": 45,
+      "wouldMeet60": false,
+      "blocking": false,
+      "authority": "operator321amendment and Stage5note: grown fixtures only"
+    },
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "gates": {
+      "all120KeysComplete": true,
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "fullBacklog600s": true,
+      "finalNewDelivery30s": true,
+      "archiveAndColdGuards": true,
+      "faultExercised": true,
+      "actualPreparation": true,
+      "maintenanceCompletes": true
+    },
+    "coldExact": true,
+    "coldElapsedIndividuallyRecorded": false,
+    "originalColdWaitsUnchanged": true,
+    "newCandidateBlockingJourneysPassed": 1,
+    "priorCandidateResults": "15 pass/1 fail retained on earlier source; not silently transferred to repaired source"
+  },
+  "host": {
+    "samples": 23,
+    "displayStates": [
+      "on"
+    ],
+    "swapMiB": {
+      "first": 12932.44,
+      "last": 12932.44,
+      "min": 12932.44,
+      "max": 12932.44
+    },
+    "noiseRule": "Passing replicate; no failed-replicate noise rerun needed",
+    "power": "windowed samples only; full log identity kept by runner"
+  },
+  "repairSource": {
+    "phase": 469,
+    "baseCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "requires": "468-maintenance-priority-trace.patch",
+    "patch": "469-maintenance-arbitration.patch",
+    "sha256": "a6688452f83209423e338d1d2dff3d6095a325f72fe2da85f5d03a639350674d",
+    "parentTree": "50b7ce0331dc5d3bf95f3e49acd1c842e9022132",
+    "tree": "f2cba99872c96ff5017d74adabe6b09417a7caa5",
+    "paths": [
+      "docs/account-crypto/census.json",
+      "docs/completed.md",
+      "docs/decisions.md",
+      "docs/development-evidence/2026-11-02-release-hardening/469-maintenance-arbitration/README.md",
+      "docs/development-evidence/2026-11-02-release-hardening/469-maintenance-arbitration/evidence.json",
+      "docs/progress.md",
+      "docs/release-validation-graph.json",
+      "scripts/release-validation/general-tests.json",
+      "src/crdt/accountCapture.ts",
+      "src/crdt/maintenanceTurns.ts",
+      "test/maintenanceTurns.test.ts",
+      "test/release-validation/general-tests.test.mjs"
+    ],
+    "docsOnly": false,
+    "canonicalAppOrTestChanges": true,
+    "status": "repaired-and-unit-tested",
+    "timedMatrixJourneysStarted": 0,
+    "committed": false,
+    "pushed": false,
+    "checks": [
+      "source and artifact references exact",
+      "append-only completed/decisions and other seat preserved",
+      "prior frozen patches exact",
+      "forward/reverse",
+      "real index empty"
+    ]
+  },
+  "caseByteIdenticalTo467": true,
+  "onlyTwoRuntimeFilesChangedSince458": true,
+  "allGuardsAndDeadlinesUnchanged": true,
+  "timedMatrixJourneysStarted": 1,
+  "committed": false,
+  "pushed": false,
+  "next": "Finish the remaining two normal and three withheld old-maintenance replicates on the same built assets after the quiet-host handshake. Earlier-source passes remain evidence, not final-source acceptance."
+}

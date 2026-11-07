@@ -7956,3 +7956,16 @@ Prove the collision with a private no-serialization fault control and keep its
 expected failure. Preserve every old behavioral test; add eight explicit cases
 and exact census accounting. Build and test the app next; a unit pass does not
 close the existing 120-second completion failure or award Stage 5 credit.
+
+
+### Keep repaired-candidate acceptance bound to its rebuilt assets
+
+**Date:** 2026-11-06 · **Phase:** 470.**
+
+Repeat the approved original app case on ordinary, uninstrumented output after
+the full unit checkpoint. Do not turn the private phase 468 diagnostic build
+into performance evidence. The repaired first old-normal run passes, including
+120-second completion and cold/archive/Undo checks. Keep the earlier failed
+runs and qualify earlier-source passes instead of treating them as tests of the
+new candidate. Finish the declared replicate cells on these same assets; no
+gate, limit, deadline, trust or format changes.

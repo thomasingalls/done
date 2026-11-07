@@ -20022,3 +20022,25 @@ Runtime census classification is unchanged; reviewed source hashes refresh.
 Outcome precedes updating the active seat. Keep failed before runs; no timing
 credit yet. Next build the uninstrumented client and rerun maintenance under the
 same guards/deadlines. No commit, push, release preparation or deployment.
+
+
+### Confirm the maintenance scheduling repair in the unchanged app case
+
+**Date:** 2026-11-06 · **Phase:** 470 · **Scope:** first uninstrumented repair rerun.
+
+The byte-identical approved old-normal case passes all ten analyzer predicates.
+Maintenance completes 26.212s after the last key, versus no completion at 120s
+before the repair. Exact archive, 120 keys, Undo/peer convergence and both
+ordinary offline cold exports pass. Input p95 3.384ms, peer p95 796.318ms; every
+marker <785ms; backlog 32.485s. No separate cold durations are claimed.
+[Record](./development-evidence/2026-11-02-release-hardening/470-maintenance-repair-confirmation/README.md).
+
+The ordinary release-profile build passes all standard checks and contains no
+lab/observation code. Only the two phase 469 runtime files differ from phase 458;
+API/flags/limits stay exact. Keep all prior failures and all raw host/profile
+records. No app/test, guard or deadline change in this phase.
+
+Outcome precedes advancing the seat. One blocking journey passes on this repaired
+candidate; earlier-source results are not silently carried forward as final
+acceptance. Next finish the remaining old-maintenance replicates after the host
+handshake. No commit, push, release preparation or deployment.
