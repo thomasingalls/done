@@ -1,0 +1,22 @@
+from pathlib import Path
+import shutil
+old=Path('/private/tmp/done-worker-conversion-20261028/native184');r=old.with_name('native185');r.mkdir();(r/'lab').mkdir()
+for f in(old/'lab').iterdir():
+ if f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules'),target_is_directory=True)
+for name in['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in[r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))
+p=r/'harness/test/account-continuation-lab/worker-owner.spec.ts';s=p.read_text();s+='''
+test('public session ports observe actual Worker sync and sign out the original login',async()=>laboratory('session-ports',async(p,r)=>{
+ const ready=await opening(p,'composed');await p.evaluate(()=>(window as any).b.flush());
+ await waitForState(p,()=>(window as any).b.session.session.networkLogin.getSnapshot()==='remembered',undefined,30000);
+ const before=await p.evaluate(async()=>{const v=(window as any).b.session.session;const roster=await v.devices.read();return{login:v.networkLogin.getSnapshot(),sync:v.sync.status,roster};});expect(before.roster.devices.length).toBeGreaterThan(0);expect(before.login).toBe('remembered');r.guards.originalVerifiedRosterAndLogin=true;
+ await p.evaluate(()=>{const ui=(window as any).b.session.session;(window as any).__sessionEvents=[];ui.networkLogin.subscribe(()=>(window as any).__sessionEvents.push(ui.networkLogin.getSnapshot()));ui.sync.retry('receive');ui.sync.retry('send');});
+ const marker='\\nPublic session port keeps original input.';r.input=await input(p,marker);expect(r.input.requestsDuringHandler).toBe(0);await p.evaluate(()=>(window as any).input.ticket.accepted);await p.evaluate(()=>(window as any).b.flush());
+ await p.evaluate(()=>(window as any).b.session.session.networkLogin.signOut());
+ await waitForState(p,()=>['signed-out','sign-out-pending'].includes((window as any).b.session.session.networkLogin.getSnapshot()),undefined,5000);
+ const signed=await p.evaluate(()=>({events:(window as any).__sessionEvents,state:(window as any).b.session.session.networkLogin.getSnapshot(),passkeys:(window as any).b.trace.passkeyCalls}));expect(signed.passkeys).toBe(1);expect(signed.events.some((s:string)=>['signed-out','sign-out-pending'].includes(s))).toBe(true);r.signed={state:signed.state,passkeys:signed.passkeys};r.guards.actualSignoutWithoutAdditionalFactor=true;
+ await p.evaluate(()=>(window as any).b.close());await empty(p);await shipping(p,{...account.archive,'master.md':ready.master+marker},r);
+}));
+''';p.write_text(s)

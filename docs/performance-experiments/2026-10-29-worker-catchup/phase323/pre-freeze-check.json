@@ -1,0 +1,12 @@
+{
+  "canonicalInputsStillExact": 1552,
+  "appendOnlyPrefixesVerified": [
+    "docs/completed.md",
+    "docs/decisions.md",
+    "docs/product-backlog.md"
+  ],
+  "reportLinksExist": 15,
+  "directCsvAllLF": true,
+  "realIndexEmpty": true,
+  "noHardeningCommitOrRelease": true
+}

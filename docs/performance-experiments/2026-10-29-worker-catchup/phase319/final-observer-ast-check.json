@@ -1,0 +1,570 @@
+{
+  "reports": [
+    {
+      "before": "gate-native-before-cold-observer.spec.ts",
+      "after": "harness/test/account-continuation-lab/gate-native.spec.ts",
+      "beforeSha256": "fb57148c982039abba27d14cbb060338b7de6387687936255c267bddf3732242",
+      "afterSha256": "04d2ddca4e824527579e675e073d3e346ccacd4c2ed923de2dd1264600f8095d",
+      "assertions": 824,
+      "testNames": [
+        {
+          "type": "StringLiteral",
+          "value": "unmodified asynchronous worker opens, seals while genuinely busy, preserves Undo and shipping reopen"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "BinaryExpression",
+            "left": {
+              "type": "StringLiteral",
+              "value": "actual worker rejects "
+            },
+            "operator": "+",
+            "right": {
+              "type": "Identifier",
+              "name": "fault"
+            }
+          },
+          "operator": "+",
+          "right": {
+            "type": "StringLiteral",
+            "value": " and retains writing"
+          }
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "BinaryExpression",
+            "left": {
+              "type": "StringLiteral",
+              "value": "actual worker sealed journal survives "
+            },
+            "operator": "+",
+            "right": {
+              "type": "Identifier",
+              "name": "loss"
+            }
+          },
+          "operator": "+",
+          "right": {
+            "type": "StringLiteral",
+            "value": " loss"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual worker quota fallback promotes only after native commit"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual native commit with lost port reply recovers once without false promotion"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "canceling actual worker opening before passkey completion cannot revive an owner"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "extracted page composition retains actual authentication, admission, Undo and shipping reopen"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "extracted page composition refuses "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "fault"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "real worker history conversion rebinds two journal eras before input and cold reopen"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "worker opening captures caller fields and callback before its first await"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "real era handoff keeps pending input outside the head until the new journal binding is ready"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "lost committed history reply drains the unacknowledged worker and cold reopens exact writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "closing between native history commit and Window rebinding cannot revive a journal writer"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "a fabricated Window controller cannot trigger native history work"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual worker receives peer signed writing through acknowledged Window FIFO and preserves local Undo"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual worker rejects a modified nonempty signed read without publishing it"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "lost Window apply request drains the genuine native receive task and cold replays the committed original once"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual joined worker keeps physical custody distinct through sealed input Undo era replacement and joined Page cold reopen"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "composed Worker owns native sync while Window admits actor "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "actor"
+          }
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "composed Worker catches accepted peer writing after sender closes actor "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "actor"
+          }
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "BinaryExpression",
+            "left": {
+              "type": "StringLiteral",
+              "value": "composed Worker retains original "
+            },
+            "operator": "+",
+            "right": {
+              "type": "Identifier",
+              "name": "fault"
+            }
+          },
+          "operator": "+",
+          "right": {
+            "type": "StringLiteral",
+            "value": " refusal"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "composed Worker context queue installs an actual native journal era before later input"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "native owner retirement withdraws Window input without its own hint "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "mode"
+          }
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "certified new membership rebinds the live Worker mirror before its next source "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "activity"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "public session ports observe actual Worker sync and sign out the original login"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "composed Worker prepares and reduces actual local history without lending a stale journal writer"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "maintenance scheduling hint agrees with the independently observed current predecessor actor "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "actor"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual native removal retains its terminal notice after withdrawing the Worker channel"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "fresh authenticated Worker readiness clears only its own previous Window transition notice"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "live continuation capability reaches original native discovery without reopening"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "late capability acknowledgment refusal erases an already delivered raw opening"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local native shared writers coexist and exclusive transition waits for both realms and phases"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local phase needs native Window pin and replacement Worker cannot replay pinned ticket"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local failed key cleanup retains both native fences until actual Worker death"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker reuses original factor census crypto recovery and native phase drain"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker wrong code refuses without replacing retained claim content or writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker captures original caller fields and bootstrap cancellation retains exact cold data"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker recovery has one async owner and refuses non-update admission without changing content"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Window mirror seals while Worker is busy, retains native Undo and exact original cold reader"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Window mirror quota fallback waits native commit and rejects editing after native retirement"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Window sealed writing survives actual Worker loss before copy completes"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local new Worker mirror and old Page writer preserve their exact CRDT union on cold reopen"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native Local journal observation authenticates exact ciphertext and detects another compatible writer"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "original Page automatic Local compaction retains 128-record threshold and exact cold writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker automatic maintenance preserves native coverage and exact original cold writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker final commit retains a newly sealed compatible-writer journal then cold reopens both writings"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local Worker foreground input aborts an active native trim and drains before retry"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local hard Worker death automatically withdraws Window admission and replays sealed writing without manual close"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Account hard Worker death automatically withdraws Window admission and preserves exact shipping replay"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native read-only startup Worker verifies protected routing and preserves original Local writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native read-only startup Worker opens the original nonextractable automatic Local opener"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "startup Worker preserves empty-database and real legacy-journal classification without deleting either"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "startup Worker inspection coexists with active Local Worker and never substitutes for its writer"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual Worker genesis issues a code before confirmation and preserves wrong-confirmation refusal and cold writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual Worker automatic genesis retains the original nonextractable opener and exact Local mirror writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "two native Worker creators preserve the one winning factor without replacing the winner"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "lost native Worker creation reply refuses false success and verifies resumption with the issued factor"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Worker genesis refuses to replace existing protected Local custody or its writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "partial native Worker creation resumes the original signed custody claim after physical termination"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "ceremony journal reader authenticates fresh actual Local seals and refuses pinned or removal authority"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "ceremony journal AEAD refuses corrupted retained ciphertext without removing it"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "actual exclusive task authenticates source journal after content retirement and checks exact protected-copy coverage"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "restored valid but uncopied source journal refuses coverage and stays retained"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native Worker protection authenticates pending writing before retiring the automatic source"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "withdrawn protection Window refuses late cleanup and resumes the authenticated durable copy"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "lost matched cleanup reply never reports protection success and fresh Worker resumes"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Worker death cannot let delayed matched cleanup delete a restored uncopied valid seal"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local UI controller creates automatic native Worker writing and reopens without a factor prompt"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local UI controller preserves protected confirmation and wrong-factor refusal with worker execution"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "Local UI controller closes its editing owner before native protection and preserves writing and Undo"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "duplicate Account bootstrap cannot replace the actual live Worker owner or its sealed writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "same physical Worker drains the ceremony and opens a fresh Account native lifetime with exact cold writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "foreign handoff bootstrap cannot replace the requested new Account owner"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "canceling passkey after same-worker handoff cannot revive the new native owner"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "abandoned same-worker handoff expires after actual ceremony drain"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "lost native handoff acknowledgment cannot return a usable transition"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "StringLiteral",
+            "value": "actual native promotion approval remains same-realm across handoff without a second passkey "
+          },
+          "operator": "+",
+          "right": {
+            "type": "Identifier",
+            "name": "sessions"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "structured copy of a genuinely approved native opening cannot authorize Account access"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native Worker JSON create and get preserve the original service WebAuthn verification policy"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native setup context reuses original approval and renames only the actual canonical Window actor"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native first-device coordinator opens returning writing through the real Window mirror and cold reopens exactly"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native setup keeps protected writing through a wrong-code attempt and retries in the same Worker"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native setup closes while a real Window provider request is held without resurrecting its UI"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native fresh account creates protected Local writing and reaches the original registration step"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native setup recreates its owner after a cancelled Account opening and preserves original writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native fresh setup preserves real registration recovery approvals and exact original Page cold writing"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "BinaryExpression",
+            "left": {
+              "type": "StringLiteral",
+              "value": "original "
+            },
+            "operator": "+",
+            "right": {
+              "type": "Identifier",
+              "name": "kind"
+            }
+          },
+          "operator": "+",
+          "right": {
+            "type": "StringLiteral",
+            "value": " enrollment Page port preserves real joined factor verification and cold writing"
+          }
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native enrollment preserves original joined factors canonical admission and exact cold writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "native enrollment notification authorization stream and close retain original service verification"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "whole native lost-device recovery retains explicit review fresh approval and exact original cold writing"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "default rebuilt Local screen uses native owner and cold reopens with worker assets offline"
+        },
+        {
+          "type": "StringLiteral",
+          "value": "default rebuilt enrollment completes both native device roles and two-way writing"
+        },
+        {
+          "type": "BinaryExpression",
+          "left": {
+            "type": "BinaryExpression",
+            "left": {
+              "type": "StringLiteral",
+              "value": "default recovery screen preserves "
+            },
+            "operator": "+",
+            "right": {
+              "type": "Identifier",
+              "name": "sourceKind"
+            }
+          },
+          "operator": "+",
+          "right": {
+            "type": "StringLiteral",
+            "value": " review retry and offline writing"
+          }
+        }
+      ],
+      "waits": 74,
+      "allExact": true
+    },
+    {
+      "before": "before-cold-observation-stall.spec.ts",
+      "after": "harness/test/account-continuation-lab/stall.spec.ts",
+      "beforeSha256": "7161e14bb6fba596bc982fe78816146a273711fa1c65eacd4310f502293063ff",
+      "afterSha256": "6a6f78e817839a39bffa80d553b151c0cc606f95ed630427c6a9d51084d3e601",
+      "assertions": 24,
+      "testNames": [
+        {
+          "type": "StringLiteral",
+          "value": "released Goals sustained paragraph and unlocked lifecycle return diagnostic"
+        }
+      ],
+      "waits": 4,
+      "allExact": true
+    },
+    {
+      "before": "before-cold-observation-continuation.spec.ts",
+      "after": "harness/test/account-continuation-lab/continuation.spec.ts",
+      "beforeSha256": "997f2f01be74c53b779c795d0ac424c616e37b9f45b6130a77803789cd247362",
+      "afterSha256": "4e78bbbde088cc2c41aefda32b1329d86e1c9d43bfc63a4ff3ae33dbb2a31055",
+      "assertions": 65,
+      "testNames": [
+        {
+          "type": "StringLiteral",
+          "value": "membership refusals and retained pending writing after contention"
+        }
+      ],
+      "waits": 5,
+      "allExact": true
+    },
+    {
+      "before": "gate-maintenance-before-explicit-old-fixture.spec.ts",
+      "after": "harness/test/account-continuation-lab/gate-maintenance.spec.ts",
+      "beforeSha256": "3182d3d0653d396b7550f28df357560ba2d80102c4f0a514649520d0362b5455",
+      "afterSha256": "8e6c4fb532b7642b3b229ca0fec60e463f1d0d4e32ac1b3346c903dc57ece22c",
+      "assertions": 48,
+      "testNames": [
+        {
+          "type": "StringLiteral",
+          "value": "genuine accumulated local preparation yields to typing while a peer catches up"
+        }
+      ],
+      "waits": 8,
+      "allExact": true
+    }
+  ],
+  "parser": "Independent Babel7 TypeScript AST, location/format metadata removed",
+  "oldAssertionsTestNamesAndWaitsExact": true
+}

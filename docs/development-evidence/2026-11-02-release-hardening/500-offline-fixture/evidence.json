@@ -1,0 +1,61 @@
+{
+  "fixtureOnly": true,
+  "gateCredit": false,
+  "allDeadlinesAndAssertionsPreserved": true,
+  "appRunPending": true,
+  "phase": 500,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-offline-fixture-500-20261107/500-private-files.json",
+      "sha256": "650a5e7516340928432de923ec2fbf82243e571f731e4ab195042d2cf0a0d243",
+      "bytes": 1459
+    },
+    {
+      "localPath": "/private/tmp/done-offline-fixture-500-20261107/500-recipe-proof.json",
+      "sha256": "2aaf47f3e8266a20d12cea54c8fb607c77311ff2815c1045613fe1bfcd3a2027",
+      "bytes": 753
+    },
+    {
+      "localPath": "/private/tmp/done-offline-fixture-500-20261107/500-controls.log",
+      "sha256": "2c7c0fd085d8316557579b9d59203b204bd632104e899f3fc168ae3410139e87",
+      "bytes": 1032
+    }
+  ],
+  "summary": {
+    "phase": 500,
+    "parent498Sha256": "06a854aece24152ace2428c4566ff927f840cc46df02ea8271996a0640258d83",
+    "newRecipeSha256": "4202f3fc65a8329f018b627d7d315dd4800c2feeb915bb94ef4e6a7fffba9d3e",
+    "inverse498ExactRemovingOnlyNetworkPrecondition": true,
+    "original1024EditsAssertionsAndFinalChecksRetained": true,
+    "allPreviousDeadlineLiteralsRetained": true,
+    "caseMs": 1800000,
+    "maintenanceObservationMs": 120000,
+    "perPositionMs": 30000,
+    "offlineTransitionBoundMs": 5000,
+    "sourceEligibilityHome": "src/crdt/accountReceive.ts synchronizationQuiet and automaticRetention.observe",
+    "ordinaryOfflineOnly": true,
+    "noSchedulerOrGuardMutation": true,
+    "noOnlineStage5GateSubstitution": true,
+    "normalOnlineWritingAndReturningReader": true,
+    "controlsPassed": 13
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

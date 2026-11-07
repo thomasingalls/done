@@ -23,6 +23,8 @@ export type OutboundStep = { receivedThrough?: number; acceptedNow?: true } & (
   | { kind: 'batching'; acceptedThrough: number; due: number }
   | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
 );
+/** A completed check can yield its turn without claiming progress or a complete idle sweep. */
+export type SyncReceiveStep = ReceiveStep | { kind: 'yielded'; receivedThrough: number };
 export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
@@ -52,6 +54,7 @@ interface Lane {
   lastSuccessAt?: number;
   expedite: boolean;
   dirty: boolean;
+  continuing: boolean;
 }
 const clockDefault: DriverClock = {
   now: () => Date.now(),
@@ -66,7 +69,7 @@ export function createSyncScheduler(options: {
   signal: AbortSignal;
   gate(): SyncGate;
   send(beforeNewEnvelope?: () => number | undefined): Promise<OutboundStep>;
-  receive(): Promise<ReceiveStep>;
+  receive(sendDue: () => boolean): Promise<SyncReceiveStep>;
   detach(): void;
   clock?: DriverClock;
   receiveInterval?(): number;
@@ -82,6 +85,7 @@ export function createSyncScheduler(options: {
     failures: 0,
     expedite: false,
     dirty: false,
+    continuing: false,
   });
   const lanes = { send: fresh(), receive: fresh() };
   const listeners = new Set<(status: SyncStatus) => void>();
@@ -91,6 +95,7 @@ export function createSyncScheduler(options: {
   let active: SyncLane | undefined,
     last: SyncLane = 'receive';
   let signInSince: number | undefined;
+  let turn = 0;
   const laneStatus = (name: SyncLane): SyncLaneStatus => {
     const lane = lanes[name],
       gate = options.gate();
@@ -156,6 +161,7 @@ export function createSyncScheduler(options: {
     for (const name of names) {
       lanes[name].due = undefined;
       lanes[name].dirty = lanes[name].expedite = false;
+      lanes[name].continuing = false;
     }
     options.signal.removeEventListener('abort', stop);
     options.detach();
@@ -200,6 +206,7 @@ export function createSyncScheduler(options: {
       return;
     }
     active = name;
+    const currentTurn = ++turn;
     const lane = lanes[name];
     work = Promise.resolve()
       .then(async () => {
@@ -208,11 +215,21 @@ export function createSyncScheduler(options: {
         // Keep the deadline until after observers have had their last opportunity to pause this pass.
         if (!ready() || lane.halt) return;
         lane.due = undefined;
-        lane.dirty = lane.expedite = false;
+        if (!lane.continuing) lane.dirty = lane.expedite = false;
+        lane.continuing = false;
         last = name;
         const result =
           name === 'receive'
-            ? await options.receive()
+            ? await options.receive(
+                () =>
+                  !stopped &&
+                  turn === currentTurn &&
+                  active === 'receive' &&
+                  options.gate() === 'ready' &&
+                  !lanes.send.halt &&
+                  lanes.send.due !== undefined &&
+                  dueAt('send') <= clock.now(),
+              )
             : await options.send(
                 batch
                   ? () => {
@@ -255,7 +272,12 @@ export function createSyncScheduler(options: {
           lanes.receive.failures === 0
         )
           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
-        if (result.kind === 'batching') {
+        if (result.kind === 'yielded') {
+          // Preserve hints received before/during the pause, so completing the remaining
+          // checks cannot hide writing on a publisher checked before that hint.
+          lane.continuing = true;
+          lane.due = clock.now();
+        } else if (result.kind === 'batching') {
           delete lane.issueSince;
           lane.phase = 'idle';
           lane.failures = 0;
@@ -363,7 +385,7 @@ export function createSyncScheduler(options: {
       if (options.gate() === 'ready' && (lane.halt || lane.failures))
         lane.issueSince ??= clock.now();
       if (cause === 'remote' && name === 'receive' && !lane.halt) {
-        if (active === name) lane.dirty = true;
+        if (active === name || lane.continuing) lane.dirty = true;
         else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
       }
       // Only the owner calls this after installing verified membership. Other evidence halts stay closed.
@@ -386,7 +408,7 @@ export function createSyncScheduler(options: {
       if (cause === 'start' && lane.due === undefined && active !== name && !lane.halt)
         lane.due = clock.now();
       if ((cause === 'online' || cause === 'authority' || cause === 'retry') && !lane.halt) {
-        if (active === name) lane.expedite = true;
+        if (active === name || lane.continuing) lane.expedite = true;
         else lane.due = clock.now();
       }
     }
@@ -414,6 +436,39 @@ export function createSyncScheduler(options: {
         };
       },
     }),
+  };
+}
+/** Scheduling budget only; every check still belongs to its native verified receive owner. */
+export function createReceiveSweep() {
+  let held: { context: object; count: number; remaining: number } | undefined;
+  return {
+    reset() {
+      held = undefined;
+    },
+    async run(
+      context: object,
+      count: number,
+      check: () => Promise<ReceiveStep>,
+      sendDue: () => boolean,
+    ): Promise<SyncReceiveStep> {
+      if (!Number.isSafeInteger(count) || count < 1) throw Error('Invalid receive sweep size');
+      if (!held || held.context !== context || held.count !== count)
+        held = { context, count, remaining: count };
+      const sweep = held;
+      try {
+        for (;;) {
+          const step = await check();
+          if (step.kind !== 'idle' || held !== sweep || --sweep.remaining === 0) {
+            if (held === sweep) held = undefined;
+            return step;
+          }
+          if (sendDue()) return { kind: 'yielded', receivedThrough: step.receivedThrough };
+        }
+      } catch (cause) {
+        if (held === sweep) held = undefined;
+        throw cause;
+      }
+    },
   };
 }
 /** Private v9 outbound step, retaining v8's byte retry with explicit paused outcomes. */

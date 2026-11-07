@@ -1,0 +1,159 @@
+{
+  "canonicalSourceInputsUnchanged": 1552,
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "diffCheckExit": 0,
+  "sourceMatchesFrozen": true,
+  "assetsMatchFrozen": true,
+  "apparatusMatchesFrozen": true,
+  "declaredReplacementJourneys": 8,
+  "reachedReplacementJourneys": 7,
+  "unreachedReplacementJourneys": [
+    "baseline-retry-08-rtt50-profile"
+  ],
+  "stop": {
+    "rule": "Any no-F cold failure stops immediately",
+    "case": {
+      "name": "baseline-retry-07-rtt0-profile",
+      "rtt": 0,
+      "profile": true,
+      "bits": "10101",
+      "SY": "11",
+      "repairMs": 1000,
+      "config": "worker-owner.config.ts",
+      "fileFilter": "worker-owner.spec.ts",
+      "grep": "lab G V deep joined with cold reopen$",
+      "result": "deep-gv/result.json",
+      "labOnly": true,
+      "acceptanceCredit": false,
+      "apparatusReplacement": "Docker unavailable in original attempt; original failures retained, not a passing rerun",
+      "command": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "node_modules/@playwright/test/cli.js",
+        "test",
+        "--config",
+        "test/account-continuation-lab/worker-owner.config.ts",
+        "worker-owner.spec.ts",
+        "--grep",
+        "lab G V deep joined with cold reopen$"
+      ],
+      "childExit": 1,
+      "startedAt": 1793487327.522209,
+      "finishedAt": 1793487378.6881201,
+      "outcome": "failed",
+      "error": "Error: page.evaluate: NotAllowedError: The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client.",
+      "coldFailure": true,
+      "guards": {
+        "actualSourceAcceptedBeforeSenderClosed": true,
+        "noNativeReceiveFailure": true,
+        "treatmentExposed": true,
+        "peerExcludedFromUndo": true,
+        "originalOwnerClosed": true
+      },
+      "ownerObservation": null,
+      "ownerCold": null,
+      "positionsAt30": 1025,
+      "timeTo700Ms": 15090.900146484375,
+      "timeTo1025Ms": 23336,
+      "deep30Pass": true,
+      "externalLoadLog": "host-load.jsonl"
+    }
+  },
+  "allOriginalDockerFailuresRetained": true,
+  "noOptimizationOr75Build": true,
+  "fixtureSha256": "1fdfcaa4637c91ca0560c1fab98cab17fa15eac4f289e261b1e027c9bbd256b5",
+  "prefetchMatchesMainCommit": "bb89aa9ae1ad800d52ad896279ad9a95d8fb02269702f18865dd0c461e4b0499",
+  "drainsIndependentlyRecomputed": [
+    {
+      "run": "baseline-retry-01-rtt0",
+      "positions": 1025,
+      "drainMs": 23098.300048828125,
+      "cold": true
+    },
+    {
+      "run": "baseline-retry-02-rtt50",
+      "positions": 1025,
+      "drainMs": 49441.099853515625,
+      "cold": true
+    },
+    {
+      "run": "baseline-retry-03-rtt50",
+      "positions": 1025,
+      "drainMs": 52993.39990234375,
+      "cold": true
+    },
+    {
+      "run": "baseline-retry-04-rtt0",
+      "positions": 1025,
+      "drainMs": 24369.0,
+      "cold": true
+    },
+    {
+      "run": "baseline-retry-05-rtt0",
+      "positions": 1025,
+      "drainMs": 25300.099853515625,
+      "cold": true
+    },
+    {
+      "run": "baseline-retry-06-rtt50",
+      "positions": 1025,
+      "drainMs": 49957.10009765625,
+      "cold": true
+    },
+    {
+      "run": "baseline-retry-07-rtt0-profile",
+      "positions": 1025,
+      "drainMs": 23336,
+      "cold": false
+    }
+  ],
+  "budgetKinds": {
+    "refund": 2109,
+    "acquire": 2105,
+    "reserve": 896
+  },
+  "methodCountsIndependentlyRecomputed": [
+    {
+      "run": "baseline-retry-01-rtt0",
+      "messages": 6360,
+      "chargedBytes": 1591129,
+      "partitionSamplesChecked": 101
+    },
+    {
+      "run": "baseline-retry-02-rtt50",
+      "messages": 7824,
+      "chargedBytes": 1934457,
+      "partitionSamplesChecked": 101
+    },
+    {
+      "run": "baseline-retry-03-rtt50",
+      "messages": 7982,
+      "chargedBytes": 1972346,
+      "partitionSamplesChecked": 101
+    },
+    {
+      "run": "baseline-retry-04-rtt0",
+      "messages": 6482,
+      "chargedBytes": 1618998,
+      "partitionSamplesChecked": 101
+    },
+    {
+      "run": "baseline-retry-05-rtt0",
+      "messages": 6560,
+      "chargedBytes": 1639674,
+      "partitionSamplesChecked": 101
+    },
+    {
+      "run": "baseline-retry-06-rtt50",
+      "messages": 7726,
+      "chargedBytes": 1911646,
+      "partitionSamplesChecked": 101
+    },
+    {
+      "run": "baseline-retry-07-rtt0-profile",
+      "messages": 6422,
+      "chargedBytes": 1605238,
+      "partitionSamplesChecked": 101
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "src/crdt/workerFrameStream.ts": "c22fad4ad96e0dc90b70d5e952b039ab98babb6dd6f53279524ee550a0936941",
+  "src/crdt/accountWorkerReceive.ts": "5e9756906e5efd218b4ca089f9d4334645e3a5bd1e12b58335b714fab012af29",
+  "src/crdt/accountWorkerClient.ts": "450ba29fc1a6550519dce08315162dbb36a9cd3a9d98f734446963aaf98061ac",
+  "src/crdt/accountOwner.worker.ts": "688a74e6d7035350560ffef264c523b88f1bb634c495b010d7ca4e5122fd40f1",
+  "test/workerFrameStream.test.ts": "0d615e5848f6fb0d80148ed2afde43888c4b8d43a488799a513d84be97d9f65b",
+  "test/accountWorkerReceive.test.ts": "ee9965194db9fda17b7beabffb852cd5dba7827f8acf45b7e8ac9d040192e9df"
+}

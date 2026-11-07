@@ -1,0 +1,2254 @@
+{
+  "items": [
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/contrast333.py",
+      "copy": "apparatus/contrast333.py.gz",
+      "rawSha256": "48126672e5b0aebd44b4afcf0ed4e94064af77baa125d78439f6cda8e375f8de",
+      "gzipSha256": "c8cecdfc0e1ce4a54d7b23de3c0181c05221350a1bff3f1c0dd5a14e06f39b8e",
+      "bytes": 1402
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/analyze-details333.py",
+      "copy": "apparatus/analyze-details333.py.gz",
+      "rawSha256": "61c0be9898ed7c6b16c19f7a8c7bff6e4ed6c0443065f0e47279a00dfa93602a",
+      "gzipSha256": "631b619018078a4a22975fe48080d248075b5e8d0a80bb0cacf8da7994dcba12",
+      "bytes": 6759
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedRest333-plan.json",
+      "copy": "evidence/pairedRest333-plan.json.gz",
+      "rawSha256": "81c9421bfeca75467f0ac3ac9ed7b56f43431c7bf97f2ab22cd6f86a06d215a6",
+      "gzipSha256": "17ed6eb48c9c88a137c787a6f2c9447bc4e6ef1ce5fbc96a5f705e5a8547fff0",
+      "bytes": 8455
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source-change-list333.json",
+      "copy": "evidence/source-change-list333.json.gz",
+      "rawSha256": "e8a03fdfa2827d85144cc4e04ca939f934624f87bedd5b456cbbd271450f187a",
+      "gzipSha256": "e514a854f77bfc22bdc85dd846833f823b682170d765ea259ef76b66d66c31ef",
+      "bytes": 260
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/playwright-storage-source.txt",
+      "copy": "evidence/playwright-storage-source.txt.gz",
+      "rawSha256": "d3f2f3af4867283ed658a2b3f58759903e72fa7359e9bb732931248c25885ffb",
+      "gzipSha256": "a9f986a5b1bb207b9554d6cbdef7842f412be85ddfab59fcbc94c4b87edc13f9",
+      "bytes": 14719
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/observer.mjs",
+      "copy": "apparatus/observer.mjs.gz",
+      "rawSha256": "776437226d5971f2700e11f273a23e59ebd6496e120b0f2f1c0bcfc04346e7f0",
+      "gzipSha256": "307722984cec831501afcc094a34c67d3ee3800faefc922807902b7dfcc79cf9",
+      "bytes": 579
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedRest333-inputs.json",
+      "copy": "evidence/pairedRest333-inputs.json.gz",
+      "rawSha256": "bf06d2ecf255a92e5025311eeb6d7b4564a3c47c9f0d7d9f40774ee5ab1f5244",
+      "gzipSha256": "38aefd11f96a6e00ea42821a7d78b64d6d7f675039729098f6df5a333f017f57",
+      "bytes": 309358
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/checks333-receipt.json",
+      "copy": "evidence/checks333-receipt.json.gz",
+      "rawSha256": "4746df655eeeed21b2a7108b34fa5db0c860e906d2107eaca433d40ccc2be181",
+      "gzipSha256": "c4fc90133fcdecc6fdb5abf3123c8f83c40c5e3956accbaf6b96d26ead59bcae",
+      "bytes": 425
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-plan.json",
+      "copy": "evidence/paired333-plan.json.gz",
+      "rawSha256": "d55975e32cc886fbd354577729a794e6c2c377b72f6c459819b11a30358c4e31",
+      "gzipSha256": "86293f87b86db11132d8647b73e55c12d2bd1e9c2926869c167a98b42fcf3ac2",
+      "bytes": 9219
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/summary333.json",
+      "copy": "evidence/summary333.json.gz",
+      "rawSha256": "dd2702a027bb9aa4c71d38f8a2da45af39e8c666dd7535f9658bc98df01babfd",
+      "gzipSha256": "82a3006301afbb534c471ab6ff0202d8b52db3e2362cc851361b93bd26dce3f5",
+      "bytes": 22933
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/lab-context.mjs",
+      "copy": "apparatus/lab-context.mjs.gz",
+      "rawSha256": "f0996c8d089d102f14ad362a469decb6139852f59404a0cb122e2e3fb4dfc6a5",
+      "gzipSha256": "3511dffcd49714b9fbcec562ddb5f3d62245dcda86c2a85fa352d2c32eefbf7f",
+      "bytes": 3827
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/type333-attempt2.log",
+      "copy": "evidence/type333-attempt2.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "bytes": 0
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/contrast333.log",
+      "copy": "evidence/contrast333.log.gz",
+      "rawSha256": "9f8d6777a7ac97196bb65f2a5e199ac475cc1d11ed8726f713dbcb75cfc56a11",
+      "gzipSha256": "e0b7532d2fb17f8be50eaa6a71dcf1adfbd292efc85fe3ff2bc033c6ad99cc1a",
+      "bytes": 10881
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/PROTOCOL333.md",
+      "copy": "evidence/PROTOCOL333.md.gz",
+      "rawSha256": "463468d99f219682fbe72a733245b8308521fa91caab9e1e278bde865b298ad6",
+      "gzipSha256": "c7f41575a562115cbfcabf2272493756c8b0105289029ad3a7e98275e91a4cec",
+      "bytes": 2731
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/build333.py",
+      "copy": "apparatus/build333.py.gz",
+      "rawSha256": "0717ea4ab1b9aa9bfd3de12bf8e0e434e9194d6d86d6bfede6e4f02e65176211",
+      "gzipSha256": "ae5b602761bf3b0f75a88eee1d8c3654405807fea10b49e7bf1c1395ec8b850c",
+      "bytes": 601
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/build-coordinated-2000.log",
+      "copy": "evidence/build-coordinated-2000.log.gz",
+      "rawSha256": "835d63c155c699a94b7e0051be64b84b487bfd809a5688ab781e221a95c12a69",
+      "gzipSha256": "b4cd49d236850311a33f0f299fc56985a389b2788ea88b386984dc9a023e38d5",
+      "bytes": 409
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedRest333-results.json",
+      "copy": "evidence/pairedRest333-results.json.gz",
+      "rawSha256": "2e45fa939f6b4142ef902a9c48ee535c67d2d5ee8af00d274582d4228d9ea59c",
+      "gzipSha256": "f4567466772dbbd4011fcdef0c3bb4d163ddd17170c7081e7d1f48a2a59be47c",
+      "bytes": 18766
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/type333-attempt1.log",
+      "copy": "evidence/type333-attempt1.log.gz",
+      "rawSha256": "de101848f07480762e9d1fd7fbf77969c73704bfd761866d64a68b1eef5cb972",
+      "gzipSha256": "c41df10a8760fecd9ae231c6ba95b5ebe3317c8dad027fc352578506700669b5",
+      "bytes": 275
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/analyze-paired333.py",
+      "copy": "apparatus/analyze-paired333.py.gz",
+      "rawSha256": "09e44b6ed1caa4de21e59df64ec07fe1dd4da21333afb977b9bc2f36db9b0d68",
+      "gzipSha256": "f757ef1bac7612fa7737cbf250be517d6eaea53b11dc0a0b6203eca2615ef672",
+      "bytes": 8881
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirst333-inputs.json",
+      "copy": "evidence/pairedFirst333-inputs.json.gz",
+      "rawSha256": "169009e7d39186d7c14def8111ad333cf4c4bb3bf9032ea026460b728f93000e",
+      "gzipSha256": "a7b609a6281b96a7801abf45d8ed3239aeae03c05c003c7d3b2ccf0dcec152a9",
+      "bytes": 226195
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirstRetry333-driver.log",
+      "copy": "evidence/pairedFirstRetry333-driver.log.gz",
+      "rawSha256": "6236b82150342f78df831b4f2be00b56d1df970b664c0a1dfa2b48696e5d659f",
+      "gzipSha256": "55d28555a4eb4a7d6f3c35943280ac3c25cfc28cc614a61b9c754361a5858c58",
+      "bytes": 1579
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/read333-turns.csv",
+      "copy": "evidence/read333-turns.csv.gz",
+      "rawSha256": "83455b7d645a4f6baa6f1df20de1455ce07f7a1ab7c12947eef4b04f19577153",
+      "gzipSha256": "fce473560fa2e1f1bf0f5f45abc0bc3b77db073aeb113e8c8d2adfdcc98001b8",
+      "bytes": 3489099
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/owners333.csv",
+      "copy": "evidence/owners333.csv.gz",
+      "rawSha256": "9dbc3dacd7f757dcdf19d9ab9cc96182bf24115cc6d8f7f061ecce0e8eaf3b40",
+      "gzipSha256": "e0809309d1ee9474bc02e51ac7df2f7814207f4278cb15cf932d27cf147d1603",
+      "bytes": 2937
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/unit333-attempt1.log",
+      "copy": "evidence/unit333-attempt1.log.gz",
+      "rawSha256": "f88231d4a5b7bf1246a3070d4de41d1f6094428b03cf50a388d627e1e0861c45",
+      "gzipSha256": "da99cdea045910a9ce20e5288fb10070cb161cce9e950b3008926f281a744ac3",
+      "bytes": 313
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/preflight333-classification.json",
+      "copy": "evidence/preflight333-classification.json.gz",
+      "rawSha256": "2b2e9533e736d66f1f3a336db131e074622ed014f455215f9dfa56929f8a3c3b",
+      "gzipSha256": "799ce1273a4953cf6d49bbda2ff20a7b925b630999e0e167063e2a77de4ff536",
+      "bytes": 316
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirstRetry333-plan.json",
+      "copy": "evidence/pairedFirstRetry333-plan.json.gz",
+      "rawSha256": "edad6098475a7c932c3adb79db0d1d9019c10ca337f8f462d9fa015288ec6d3b",
+      "gzipSha256": "90442a9f41c7b1d593eae45626ad02a98e15115a0841d326d4d9444fb4bb2354",
+      "bytes": 776
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirst333-driver.log",
+      "copy": "evidence/pairedFirst333-driver.log.gz",
+      "rawSha256": "778cd4f7c93cead4c0586f4c479ab364d51fab5bae25a2d2415568a52331414e",
+      "gzipSha256": "65574fccf223a1cf8b5476f66eeec9d9ba81ea951d01d6392239abf1e699a6cc",
+      "bytes": 52
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirstRetry333-results.json",
+      "copy": "evidence/pairedFirstRetry333-results.json.gz",
+      "rawSha256": "e13b6ffc788ad7ae1fd18b7f649ef6c296f28fa72625e6d590a5710661b5171e",
+      "gzipSha256": "5f7c7f79e0bf84460279918311f4cbfd9997d23bdb045b45704aeb0c932ee741",
+      "bytes": 1712
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirst333-plan.json",
+      "copy": "evidence/pairedFirst333-plan.json.gz",
+      "rawSha256": "4cb770ac8010f789df2f38830beb188439f5a2fc14e45a8a15b2c4f74a08f916",
+      "gzipSha256": "74fccbb6053c328abc79450361b205bd0e354f653bcaed9c3da8ca257ddca0d7",
+      "bytes": 767
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/analysis-details333.log",
+      "copy": "evidence/analysis-details333.log.gz",
+      "rawSha256": "bf8cb67d416694c8d638911788601b5f62ba6bebd918159a2d716364ac16d281",
+      "gzipSha256": "ff51ff44ac4d879f86be78b5f9befc9cbe6d1a5a9e2abcbe0df157ac12f32993",
+      "bytes": 876
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/audit333-slices.csv",
+      "copy": "evidence/audit333-slices.csv.gz",
+      "rawSha256": "5075db3e5c78b4ae67cc5ea16bfb0d1b906b41091378492ee8bc75b653d71a6f",
+      "gzipSha256": "0f0ff44232ba08bb8cbf56475b68c536d5384d6f3dfe037e5425f41554e28a8d",
+      "bytes": 257580
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/unit333-final.log",
+      "copy": "evidence/unit333-final.log.gz",
+      "rawSha256": "3c1f424f638f13efdcbb0e5be20c075b08c07792c00e555a3c5e775cad184482",
+      "gzipSha256": "a14d05c5343daa02486d74653ac191ede813532a8318ca7db7a4c935c49421fa",
+      "bytes": 313
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-runs.csv",
+      "copy": "evidence/paired333-runs.csv.gz",
+      "rawSha256": "a5f68b863db28315ebd21ce981ebc40cc33fa088eb81dc446b0940cda29151b0",
+      "gzipSha256": "4cf7bac862ef99e771c4a7d7ef088e57cb447f83a0d670f76fc4260371c2e31e",
+      "bytes": 6388
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/contrast333.json",
+      "copy": "evidence/contrast333.json.gz",
+      "rawSha256": "9f8d6777a7ac97196bb65f2a5e199ac475cc1d11ed8726f713dbcb75cfc56a11",
+      "gzipSha256": "e0b7532d2fb17f8be50eaa6a71dcf1adfbd292efc85fe3ff2bc033c6ad99cc1a",
+      "bytes": 10881
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/analysis-paired333.log",
+      "copy": "evidence/analysis-paired333.log.gz",
+      "rawSha256": "a0545e6e6d7f8c5ecee40ecd8254598a44bcbe003e8c913e59791b5aec83547f",
+      "gzipSha256": "8af1d22f99da3dbb52290e35458c888281f39d4d6ce9e8f08a1fe3862e948e39",
+      "bytes": 789
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/private-source333.diff",
+      "copy": "apparatus/private-source333.diff.gz",
+      "rawSha256": "ccc9deb7780a92e79d30f0748d288b8fedff828f69e93858d962f5de0a587a05",
+      "gzipSha256": "32680150514d6b129b34b41cfcf9dbb255573631d744ba2c17cf0686594d30d5",
+      "bytes": 14569
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/read-request.mjs",
+      "copy": "apparatus/read-request.mjs.gz",
+      "rawSha256": "dddcdf4c98fcc778cc1b8e9dcc7dad09934a747b52c009f7a211519eb10960cc",
+      "gzipSha256": "b528a80f6c6ac5179b5efac4c54509ed8542e087aa025396f66abe3cc200d1bd",
+      "bytes": 1047
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedFirstRetry333-inputs.json",
+      "copy": "evidence/pairedFirstRetry333-inputs.json.gz",
+      "rawSha256": "dbc2385dbd16f6eaae59bbc1db433f880380f72eca70d77ed7e3de376bce1a09",
+      "gzipSha256": "85dec617f2660524b83d730ddd705bdca8547d458dd4603cf0549049374d9c08",
+      "bytes": 226204
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/canonical-start.json",
+      "copy": "evidence/canonical-start.json.gz",
+      "rawSha256": "7482468a97b646569a5e41184bac93bc815491ec55ecf194ff9b141c06fff928",
+      "gzipSha256": "15347b9e3533707b19409a73c5006c4a162437927e8d3d3d26866ab9c05f5a59",
+      "bytes": 172002
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-analysis.json",
+      "copy": "evidence/paired333-analysis.json.gz",
+      "rawSha256": "af732da3f262b04b7b7b0fa1c9436ebe0702fcef236b953d21fd650d6cf4830c",
+      "gzipSha256": "3912dbf0b9b8d2c1e33df42add8ac14065dab518a3d21598bdbc60c2e5ab2ca3",
+      "bytes": 1852455
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/finish333.py",
+      "copy": "apparatus/finish333.py.gz",
+      "rawSha256": "a4bd4953862bae9e68fd03c717f9317ce5c4d9ee0259c980931ade08dd1bdba7",
+      "gzipSha256": "db84151639363a1a7bc303301a1e436dfcc2c7aeb42a59658b5445361a4c522e",
+      "bytes": 14015
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/audit333-semantic.csv",
+      "copy": "evidence/audit333-semantic.csv.gz",
+      "rawSha256": "1853a995e5b99ac8fe138816576c39614ec7e2a23fa9d4f00c8382a76f6466db",
+      "gzipSha256": "abd28274ba7de0c32c7bc664b4706fb5f51ef61b34470c29062eca290c6a31d1",
+      "bytes": 2090
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/run-stage.py",
+      "copy": "apparatus/run-stage.py.gz",
+      "rawSha256": "aa354f7186abb0615cd431bd0dbd09a4e74c9ead8add10a3b6d5505a79cc7645",
+      "gzipSha256": "8a7d5f9094a11317cc7ef840e334c938c5adb1850d9564d0a6a694895504dd88",
+      "bytes": 6381
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/build333-driver.log",
+      "copy": "evidence/build333-driver.log.gz",
+      "rawSha256": "957b308823cc6ee9380b1cc9e5c1b4a0b10157fb0311c561a1267f9a597fb493",
+      "gzipSha256": "56ef6b63970deaa1ce64efe251e90ce808a6292448ee4cdd2d1069dd54a7517a",
+      "bytes": 48
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/details333-analysis.json",
+      "copy": "evidence/details333-analysis.json.gz",
+      "rawSha256": "68711cb9d2db21951b5778f4aba2bd03f5ddaa5e39805af5c204cc64f709601a",
+      "gzipSha256": "33c51c3f12ee62f4aa6e90460dab1e83d786b60e4fb39c44ac451f00194dcc28",
+      "bytes": 31253
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/pairedRest333-driver.log",
+      "copy": "evidence/pairedRest333-driver.log.gz",
+      "rawSha256": "995865b9402f3c16c2e3ff5ce4e4b3fce493d315546281ed4f1be105517a28b5",
+      "gzipSha256": "8cde70b77ecfdfd0660569225d8e1f428feaca184315c841db86e3f1311c36b5",
+      "bytes": 16666
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/host333-summary.json",
+      "copy": "evidence/host333-summary.json.gz",
+      "rawSha256": "01daef0f91dc0ef0a2a4021d2f600eb19ccd44a04d7afb19a26c8de7ed0b42ac",
+      "gzipSha256": "16227fe57eea74dc888b8c47792d281a165c32cec0822c39a8424593cd7e421a",
+      "bytes": 37893
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-cells.json",
+      "copy": "evidence/paired333-cells.json.gz",
+      "rawSha256": "c4436096af5459b29c977a4ea40f3ff35ab4c849b83a598bf8cff705170a14ea",
+      "gzipSha256": "a99baf34ec8e404da60a21b4ad91d39192efdb925b8ea216350fba6d5c7af196",
+      "bytes": 54773
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/fixture-roles.mjs",
+      "copy": "apparatus/fixture-roles.mjs.gz",
+      "rawSha256": "9a7c96ce6d15f7ddb3bc0c0edf290efa58bad57e295cf86a20fda683ac2417e4",
+      "gzipSha256": "fe5abeb0a308f1b9a82add52bcb08ebb7fc57e7733976b06f5a757fde2f2eec3",
+      "bytes": 1029
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/prepare-analysis333.py",
+      "copy": "apparatus/prepare-analysis333.py.gz",
+      "rawSha256": "dec6d8d725eb3fc61506c1d9b45876634d6a3e123156e92f7ddb1c8a6ffc0e83",
+      "gzipSha256": "b4eb9135841c82f58659ca6ab0fe7deb9a816ce8447db6c38a43ce5f33eb2a84",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/build-immediate-inflight.log",
+      "copy": "evidence/build-immediate-inflight.log.gz",
+      "rawSha256": "8e748f8b357acff46b2f3fe3cdcd3d111c981a4726d96c2c9e4c64d2b5844606",
+      "gzipSha256": "6febdb9503f3990f14f84c11b64b908b95e37d04a575d979f4fbc39f52b81d3b",
+      "bytes": 410
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d",
+      "bytes": 3560
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/storage333-jobs.csv",
+      "copy": "evidence/storage333-jobs.csv.gz",
+      "rawSha256": "6951100112619ce9579590d002e4461f5199fa8548d1ebdc0adba074dabe4f6c",
+      "gzipSha256": "44ce9b89d1d60efb0b02b31bf37a6795d507ed09ee60ea8a5112570d556b9d18",
+      "bytes": 5389490
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/tsconfig333.json",
+      "copy": "evidence/tsconfig333.json.gz",
+      "rawSha256": "83495c906f9bb3eb76b8332058d4ca1e9595f21e07bb8e95715b96a6f6dbc536",
+      "gzipSha256": "3be8ff4d603dbdbcddc4a0efb4cca2daa25f7c75ef3b95bf7d0e40b404aef167",
+      "bytes": 941
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/container-service.mjs",
+      "copy": "apparatus/container-service.mjs.gz",
+      "rawSha256": "56849d574273bedd37035be41563b544f180ec9728ab41c4ef9906e0b1e8f3b2",
+      "gzipSha256": "7897ae1c60735931ee66a4d413285bf56c2f6e1ab90690f9a1189139c6802616",
+      "bytes": 6245
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/container-image.json",
+      "copy": "evidence/container-image.json.gz",
+      "rawSha256": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+      "gzipSha256": "ead75b01a977e5c739f82fee2002c50e4704076ab8b16209b3fc47168378dd00",
+      "bytes": 4538
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/independent333.json",
+      "copy": "evidence/independent333.json.gz",
+      "rawSha256": "ad5bfc130d3f98cbc9f601e763abd3883893db3bd7fa5083d054a50bd3c35362",
+      "gzipSha256": "c745e1aceb3bac1204a4a38eea872b62530628b9924aaa1f447c51a2e3f38a09",
+      "bytes": 707
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/markers333.csv",
+      "copy": "evidence/markers333.csv.gz",
+      "rawSha256": "e83bbe8974f8083c04274448c05a9974629f0049cb248f8c296f0a4b7d8e9560",
+      "gzipSha256": "1662636cfd917d317f0805b9604e29d74e6c2d03b8d65366307a8a8c1bcccdab",
+      "bytes": 6297
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "f4f89589ff99cf845e19a71c4acb9e3d3c96900b765f019964a0963500a9d88a",
+      "gzipSha256": "76052d17e2488625b2db839ad646da0030440441572bd2e6a658aa0d961e25b9",
+      "bytes": 39335
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/partial-result.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/partial-result.json.gz",
+      "rawSha256": "22dcf2c69c9c516d8deddc13faa4d4279501d2bddb3dd860e634aa33edfadda9",
+      "gzipSha256": "e58ab645b87a4c6225db5c9a499889dd00b882496e6f124fbd4abedfaf8fe435",
+      "bytes": 76939579
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/result.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/result.json.gz",
+      "rawSha256": "f96c5db579fb2837bb392d8beb78978ed627d0f4de7bc63e86f8ac237b512d05",
+      "gzipSha256": "2bfdc13023dc87f0109bf343694a3442c1e45e868003597f06675849504df6ea",
+      "bytes": 77317446
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/docker-command.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/docker-command.json.gz",
+      "rawSha256": "924b44527f5527257e221ac2106e2d32a1d5b962b8d5f0cf708a0fd1a8b80adc",
+      "gzipSha256": "62e2050dea454af37fbf78b2f4cdf4b177726117a0d4ca3c18227c96decad212",
+      "bytes": 1229
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/console.log",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/console.log.gz",
+      "rawSha256": "43dd5553abc05ba4c1c4eb2000dcf364204a3664790e83f990f8fa9215d53961",
+      "gzipSha256": "a926d00a75597e07b3878f52fa1e44f1bfeea0243dca3245e60d5725cbd1aabf",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/container-identity.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/container-identity.json.gz",
+      "rawSha256": "e24b2f20a0fa140279791b0b33244fbe121b8dd43738712fbd8e9d1e2fefd8ae",
+      "gzipSha256": "72258ffad0da2c355ac0ffaa2b7042a611dc5eeea0cc108e8d80d0f0634cd51c",
+      "bytes": 2712
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "c7d74dbd85fe877c00518873949ef846e11b9433e044844345133821e7079625",
+      "gzipSha256": "0ef9ffb1831844c36fe132b65e4d9451a4bb0d6b6fb1e641d4ccde387757e400",
+      "bytes": 496839
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/services.log",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "1c10adca3ba2bffd158c2abea5e85ce2c5770c39bf67c947bdb7daf62f3fae3e",
+      "gzipSha256": "492d2689077a9ce56dfa17d97a0c6a5d079265614881063f5bffebde7655673b",
+      "bytes": 592165
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/list.log",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/host-load.jsonl",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/host-load.jsonl.gz",
+      "rawSha256": "455d2879f8885e54870a6bf82f7a2f02e076f96263ae1b718aef9af5184a691b",
+      "gzipSha256": "672c184c0e878b0da3cbdc53604afbf76eadc485d1a7d0710f4ae9fd182d6fa2",
+      "bytes": 44054
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "4c8180bff213cdd6edfca1f08878748016dffa5eee589cd7938d690f2beaeaee",
+      "gzipSha256": "8d8df2b5ebe07ca2f98de4cacafc5de75cbbed8cbff73734951b38a87b075856",
+      "bytes": 40615
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000-attempt2/receipt.json",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000-attempt2/receipt.json.gz",
+      "rawSha256": "053ab96de42037832aa60d6909c115a9a4598764f277bbd85f6e568083941458",
+      "gzipSha256": "a19df7d9cb0112eb369006cd9628ca83678026d6b39fdb1b79131206414b29d8",
+      "bytes": 1600
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "f3a224000242c78c8d66d04b8d86ca83daa11ca56a2de7f84e0fe02e669ec31a",
+      "gzipSha256": "c67e1e47a1b47da79884551e8e3cf78db96b6d336c62871a0480a043aa22159c",
+      "bytes": 39947
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/partial-result.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/partial-result.json.gz",
+      "rawSha256": "40241ec2123bcf71519f578b84559a0d0550fb5c65b070ab73df257860c2a5a5",
+      "gzipSha256": "ad5e2a96dbbedff5f34c6a156212e139fd3913f136d438798abb7f3b7bf75a51",
+      "bytes": 77156049
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/result.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/result.json.gz",
+      "rawSha256": "b276e5dbcb528072e4586aeb2d9f9853958b641098530eca9aeeb691dcfde781",
+      "gzipSha256": "a9d65cf69c91de957f415158a50d372a834f46aea06f8e9e46a5757f7922e16f",
+      "bytes": 77538140
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/docker-command.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/docker-command.json.gz",
+      "rawSha256": "3f03c87dd7b2df10d55dfe783d9bad984077b36e238856f0f96480195a4eaa47",
+      "gzipSha256": "7d653308c0faef2dc1ca2ebefbacf51b872a2f101efdcabf96ce6569a955d1ad",
+      "bytes": 1217
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/console.log",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/console.log.gz",
+      "rawSha256": "655ea87bd36a150a1b610b5d4a61139d20af28a647cd6e67a74c5862fb7e0240",
+      "gzipSha256": "ed54be6e81b2d2fb0469ac81175c2f57b4bcd26d00ef4df6589b0e111983c7e2",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/container-identity.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/container-identity.json.gz",
+      "rawSha256": "c6a8b77a11336f4fa02009efb4509d711fc993b32d31bf69a9c9f3d2dcfb64fb",
+      "gzipSha256": "546fcc5b138979ec84f97da86f904089d88bf40f024eb1eb09c2c7cf0570cb73",
+      "bytes": 2704
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "37a3b4d077280e7a598145ffb06ec17faa11878745561405eea76e1addb89270",
+      "gzipSha256": "44aadedebb1754588918f86c83c4f10487830b75bf22f85a518e1a798a8a1c9a",
+      "bytes": 658962
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/services.log",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "d9911e45da8f6c03d17f749953e5e2bb46a4ffe17cad71e9a64606c5efebdf7f",
+      "gzipSha256": "666ee9772357b43f99b995eda08e85561d1b0a203de20778b77cad61f4e07a57",
+      "bytes": 601511
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/list.log",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/host-load.jsonl",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/host-load.jsonl.gz",
+      "rawSha256": "b213a6bfe86613d39a95350ce8f41c4ac068c7d1e22dca9f5f3f950aeb4b6901",
+      "gzipSha256": "6640bd3b69917999d6856f0306efc8e00cfafb350f4f0308b5d814e0e8416494",
+      "bytes": 40799
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "6db196a69e72ae0851ed2d56f3d0d883b9b2ada698768abf319bb8fa39289d9e",
+      "gzipSha256": "9164fc584dd71a458f89bebafcc4c463738b7dd9f52502f1e13a20bea748e7ea",
+      "bytes": 40045
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-immediate-inflight/receipt.json",
+      "copy": "evidence/paired333-r1-d50-immediate-inflight/receipt.json.gz",
+      "rawSha256": "6701b818b00bde422e32caacea0e6ac0d5facbca4f15db0c60d7d0a032fd77bd",
+      "gzipSha256": "952f0f8b047f5c14f6ee4bad8a5018b463192da1b9ecafad6a960e2c5060e7be",
+      "bytes": 1600
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "646476639fc6678cb4a3694aa9674d289dcfd2c9a7777c2dbbe4de3e140c80ab",
+      "gzipSha256": "0a01f711afc5787cf193d4f8910290725b4e3b0838e5da2ae222e5263ce998ab",
+      "bytes": 39972
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/partial-result.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/partial-result.json.gz",
+      "rawSha256": "afb71c9ee62d6eadfe7c4100e9b2efc836074d00fbea22343bab3590b206c4ff",
+      "gzipSha256": "17c64108fa026116205f138993c86cbde1b95b412a551154f3b2560b30189703",
+      "bytes": 77602770
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/result.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/result.json.gz",
+      "rawSha256": "387e49ae7eb55f6454320cc0fbc5452be5cb313c09ba47e470c64d5cbdf0f845",
+      "gzipSha256": "132c0af5549cec50293a3c9ab7bc7c1c2bbc0466a589b843b57ba56d8e1ff8e4",
+      "bytes": 78032757
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/docker-command.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/docker-command.json.gz",
+      "rawSha256": "1acd03f380f37838ab4d2a9d18f9290a4fb25ec17dba7d7e03c2545841631e41",
+      "gzipSha256": "a902de44b7bc3f5a0a2d4a701ccb798bed735eb6ac27c08dc85b3611cd46ff19",
+      "bytes": 1215
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/console.log",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/console.log.gz",
+      "rawSha256": "971a85b4ffeae07819174a6a5065fe12e82e7896fc846bcca11c00cc91466c5c",
+      "gzipSha256": "7f570da8a3e1781f4b8be70a3dd55ec2fab72ba88e1998448850a9e3b69d26ee",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/container-identity.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/container-identity.json.gz",
+      "rawSha256": "7eb395317d3c07a8f8dc200193bd9bf856a3fbbb0a11404a6494b330c61dd2c3",
+      "gzipSha256": "aa5685b1029542fd4b0a437a275e6c6625582a31be9b15c41403ad1d6af05c33",
+      "bytes": 2703
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "f87a0adb08f3a05962d98dce047a9f1f102570efa2caec525fd4fe646efb13d2",
+      "gzipSha256": "aabbe912f625bcd11a91c2b8dd020bd4a13be3f7305d7b148f3b800a30efb2cc",
+      "bytes": 793582
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/services.log",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "65d2fd86cc412e13ac49216681fa415c2803fc1c22a409816ac6c79421183a1b",
+      "gzipSha256": "9c47875fe5c5e42f2e47ec17b26e9b1fc6ad41c078739ad822747af96b097c38",
+      "bytes": 730768
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/list.log",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/host-load.jsonl",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/host-load.jsonl.gz",
+      "rawSha256": "b5a4a4ab32d879ed4b277165ab7261fadeed6a59477e60692bf2f252c20e3107",
+      "gzipSha256": "1f7ec1bc4328e52b01b0fb869f9b1ad3036bfbfd65b594bbbe370f010cf23915",
+      "bytes": 42455
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "36acff77460fabb0aad8c582670e0318f111a19d7dc05ed0b7aaac9555a4e218",
+      "gzipSha256": "f9cced3507a8cdb18acf6532a1ccbb0696b78637c18cb177172e7d3f5a66b595",
+      "bytes": 40802
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-immediate-inflight/receipt.json",
+      "copy": "evidence/paired333-r1-d0-immediate-inflight/receipt.json.gz",
+      "rawSha256": "2296355c3140dcdd052476ec36ecde619f1ace6aaab471fc620ca05fbe488dc5",
+      "gzipSha256": "4b598f1999aa7bed09278f34cf2b592d922649713978e174dcfa2e91b6879f8a",
+      "bytes": 1599
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "fa42bf7d89944caf0d983c738e35cdd7a5679cec5dcd4ef510e8818389908820",
+      "gzipSha256": "b128d1a757a825336117842b7f50311fd6e574c0970f5dedf549688b24319b99",
+      "bytes": 39348
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/partial-result.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/partial-result.json.gz",
+      "rawSha256": "355c0e754cd5909e5d1fc55cc7ddd077f3dea348ff7723c7aa7a26a09985abf3",
+      "gzipSha256": "758433049600906b990fb448543c8d5c0e39505c4481a1eca59459721a9f594a",
+      "bytes": 76757414
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/result.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/result.json.gz",
+      "rawSha256": "93c489df3104c6c5c5eb128af27ea2ea5f5615c7afd283d9adb16e6f7bea2bde",
+      "gzipSha256": "86651a0c2dc283f268a925db2a87a3926e52118a3fd315a4539afdec6a320bb7",
+      "bytes": 77082019
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/docker-command.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/docker-command.json.gz",
+      "rawSha256": "8d989979c1179f6c635bb1ff15b6cf37237aeb3cb163bb7d6f37be191daaf9a9",
+      "gzipSha256": "54a29b91fa5787c225c7c29a800abea53ebc30ac922ffa98d967c1c5c2ee9399",
+      "bytes": 1213
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/console.log",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/console.log.gz",
+      "rawSha256": "89ce0db82e5836baf8bbf7858e22c5617c57b4a731dcc99f6f36264886c72e68",
+      "gzipSha256": "8834f9ef60a649fe1e2e2e45881be266b024292af62897cd398d033250f3d8f1",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/container-identity.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/container-identity.json.gz",
+      "rawSha256": "c81bbcc6eba7de8ccba1fbbd6b6fdaae0ab7ea07887a938b0d7486bc40346d91",
+      "gzipSha256": "a315d92363b2fbf7b715d848637d6ef6553b5bbd0ae7a90b7aaad26a1c28bd0f",
+      "bytes": 2702
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "004448f51f21ce70f5651942ec9bf1f77aec3131c74c5b6cd1dfd37cd6048a5e",
+      "gzipSha256": "746966556c1e848f9021492683b574592a1bdccfb0dc6ea9a65d3ae3b64cfb64",
+      "bytes": 483552
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/services.log",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "9cfe3a2be5795b58abb96d3341d225588b6d18811ffe2516263b9c608dd35960",
+      "gzipSha256": "f3353d21f929c6118c8327dac972397ff54675b9110c056817b1fc7e00ea0ae4",
+      "bytes": 592066
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/list.log",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/host-load.jsonl",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/host-load.jsonl.gz",
+      "rawSha256": "99b974a20f8b6b21f1f0402ed9303350658b5298839521892b4151bde47e6683",
+      "gzipSha256": "3c7a2dea83a51b38faff58debeea5d13b37f3b4f7f7b7feb68a530669f4d7964",
+      "bytes": 42525
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "1a97ac504041aede1307c48cbf5db2fa8cae607eee70d99a70bee0c303b1d44a",
+      "gzipSha256": "ea5744160d91884e95ea3311249429b6b1f8b87d14b06615e3e0a102770856b3",
+      "bytes": 40564
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d50-coordinated-2000/receipt.json",
+      "copy": "evidence/paired333-r1-d50-coordinated-2000/receipt.json.gz",
+      "rawSha256": "ee06721885a8f0e7916a2adb7a470ccb7e1ab08ff3c5ae9a22d7fee98f4d1c3a",
+      "gzipSha256": "c224fdb603b33376aae4f930c17237dee63481a489aa8a5d566e3e3d815ddfc2",
+      "bytes": 1594
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "f2660ce4a776b1251eb65cb5f6a6b6c72a91dcdf7e51544b8587732c48b7efd9",
+      "gzipSha256": "a25c51cd914fd080aaac96d758cf5c1d4f639270e555d63885f2ac86e0beeb08",
+      "bytes": 40511
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/partial-result.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/partial-result.json.gz",
+      "rawSha256": "2c0debdd932c5db0766daa1f9f0b1f563176a06d85db5dfacb40bc7723839abd",
+      "gzipSha256": "b778a2904fe35436c2495b3cc8df8d7a0ceb6d488766f63c69c415f2bb49a807",
+      "bytes": 77330917
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/result.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/result.json.gz",
+      "rawSha256": "7481796bf5b1143ff1fc2d49c5c6c3cc284beafff18d20ab09d5b9c6f5dd72f6",
+      "gzipSha256": "5b2d413bcce80c2f5dfecfc0a0f6c5e374864ca04e0971bbd00555a6876ec3f2",
+      "bytes": 77729622
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/docker-command.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/docker-command.json.gz",
+      "rawSha256": "ad83967d151a7794742fa2b6cbe7f718d195123336b8cc65c4d953fe9cebc75e",
+      "gzipSha256": "783050aed54f8f8172371162c7f35c500f58aac3b5038c18cc59584a848752de",
+      "bytes": 1215
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/console.log",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/console.log.gz",
+      "rawSha256": "82db7018a6183fdc0c0e6396331426c0ea15c87cbd49c2b8f9932f4ba4502e84",
+      "gzipSha256": "c83721377a7a4b4747c6120a84b0c5955ba05b1a4a9b6fb70f382749bb00af46",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/container-identity.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/container-identity.json.gz",
+      "rawSha256": "818ad64772ce0b884dc6edbd71fd84e466122f1ad8fe493fe7dba4ca44e1b003",
+      "gzipSha256": "026517e7d38ece69abb6e1d7b67fcda939969cc5af85890f3b510525395880db",
+      "bytes": 2703
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "bdea90c77314d12709e1f51a2e098f0c61a8cb2492382e25f9ab1e5bf3db71a1",
+      "gzipSha256": "1e5441934c228879257e32d8db1d052ba77715b4b1f2ba54d5d0e55d5cb1ac0f",
+      "bytes": 847049
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/services.log",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "8560a17dbec7c8ebc416d83e7d6f2dda4132ff0a47c2fa863cecfa85aff49dfe",
+      "gzipSha256": "4b5462f301e692b46ae35219879fbda96a928b3d34636bc1446f923428eea40b",
+      "bytes": 716902
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/list.log",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/host-load.jsonl",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/host-load.jsonl.gz",
+      "rawSha256": "023d9ed67a89c020363c8090fc3030b3b1045aa16419a948d5b6b8f8f54ec50e",
+      "gzipSha256": "26b2caf0ce02837a8cec163b0cff3e911eb34cd33c7b7dd89101cbe6a47ce24f",
+      "bytes": 40839
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "4ca92cbb08e97cd3d29519848517bf03c76bf62c08dc4bd768fd29e4276fdcd4",
+      "gzipSha256": "c264629f1632a2eac97192642eeed4fcb72bd7a419fddf4a1cfc2bdbef946b5b",
+      "bytes": 41281
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-immediate-inflight/receipt.json",
+      "copy": "evidence/paired333-r2-d0-immediate-inflight/receipt.json.gz",
+      "rawSha256": "9e8684712e722eebb9b6df80f128aa3201cf1b75346e7c86d278e85fcfaefbda",
+      "gzipSha256": "411dee71a491e4fbff3349bdb8493f58111a5241e699d0a4d3c5f8c4c8749532",
+      "bytes": 1597
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "3eb2daa71bc0a60021d17fd988b0328147ab94ad7d1be2c5f8b5f648a4e184b2",
+      "gzipSha256": "8959e6eec8a5925fb06c1e93460e05bea97e51396da744ca76f0c6bd71834997",
+      "bytes": 39967
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/partial-result.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/partial-result.json.gz",
+      "rawSha256": "e0b1f473461ff6d4f253f29f07ae7372e7230826a60f588f19727f3b6504a06f",
+      "gzipSha256": "2efdad8118773020f8428e4cdd9bada2d769470ad77c63aa09b5f1c50d9e5ace",
+      "bytes": 77052717
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/result.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/result.json.gz",
+      "rawSha256": "86a2a87cd2b0c8b2d191b3d78142e7c6fb6bf4c84d1358f1929941599bd81cd0",
+      "gzipSha256": "ee854b36d41de762f945caa1d66e15da4b6b7643c8b70c912f0d9050e6520460",
+      "bytes": 77453725
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/docker-command.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/docker-command.json.gz",
+      "rawSha256": "52fd8198b3aa61c49e08ae3d3e797e7c6df922f9c6e725700cf3c26256bc05c0",
+      "gzipSha256": "02086de7e4e945177527e4902e322089d4451c4b7e11cd8efb1e1ebde2ea1a18",
+      "bytes": 1217
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/console.log",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/console.log.gz",
+      "rawSha256": "3aedc10de1e9df9c0bf06b9c2a131dd618a98577853e4a29976d92677911d754",
+      "gzipSha256": "508ad8c425971c99dee48ba5c7b06074666c83643169f054a2ea795720b20bf5",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/container-identity.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/container-identity.json.gz",
+      "rawSha256": "5db234832978f157b26c1dea3c74d3abfa8a326f8ad163e4fa0b8db82dc4f78d",
+      "gzipSha256": "e127a5d5baae674e9e878ad98101a55b00a8ebd6d8438d9cc3b21701c5412929",
+      "bytes": 2704
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "89df5ce78d5790c8a0465bb205d4000fa1435152bc77bc8c5cd8fa97f2e4c9ac",
+      "gzipSha256": "5ef0d2c32fb1696414b6ef19609bd290de1725a559df6656dc150ca517cb496b",
+      "bytes": 619764
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/services.log",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "39a0f7db51be57afef9cf6d2c3faedd74d9cf357004c13f0b55233d7c7d4701c",
+      "gzipSha256": "ad2d066dffa2f48c7056eff1347da60fc0116942697b39dce6a9f8a4307d7670",
+      "bytes": 603598
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/list.log",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/host-load.jsonl",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/host-load.jsonl.gz",
+      "rawSha256": "886848ff0c0f65393a772e06df3f76fa1bd939159dd47c158e711053c161ea04",
+      "gzipSha256": "8e75e4d6d1963862a06d1708e0ce475dbacaa7c4a1f024dd45d033432549ad96",
+      "bytes": 42487
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "f3dfe347921e31cbfb0abbb77acefce8e6004a029332cad8597d56f2e15a546c",
+      "gzipSha256": "a6a0ea42d058c5657c7014ebe0fff178388d1522cfd0c79da32f35cde530a28f",
+      "bytes": 41298
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-immediate-inflight/receipt.json",
+      "copy": "evidence/paired333-r2-d50-immediate-inflight/receipt.json.gz",
+      "rawSha256": "2fc68a46609a7d5def9fe1f7023596cb247a52de91db158719e9fb51777e27a1",
+      "gzipSha256": "fc7a0534dc68b107c052ea82a1879549bee47b0ee1cdb49b0198fdf608216048",
+      "bytes": 1600
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "572ea80dbc43c46b10433b6557b7b76722a37c962cad0e4bfa602c3ec927ae23",
+      "gzipSha256": "ee25e06b7ca29933d2bf2ef241a1457e00c7b50bf25f44f87633bfef514591d0",
+      "bytes": 39285
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/partial-result.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/partial-result.json.gz",
+      "rawSha256": "f6d4f9087cb52f9c7e19419eed4d26253de1da4a3b278ecd600b21aba118c885",
+      "gzipSha256": "7504423e543c2d7fc4ffef39d2d3f1210574e5a9ad3982017da776934e234e06",
+      "bytes": 76824464
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/result.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/result.json.gz",
+      "rawSha256": "a540a05593562a4993ed0733b688d2b2f4bf75355e830142b53b77bc5a6e43c8",
+      "gzipSha256": "d92bb78c193f9b35e375a3133af8d966428d672b8ef94d479c87acfe08d97515",
+      "bytes": 77225226
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/docker-command.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/docker-command.json.gz",
+      "rawSha256": "f1f56067ead35657e862be8ef1b8158cd483d3d26cc726cedccb592c5f5c5f87",
+      "gzipSha256": "5af22337f4b08748fdad5bf4ef5238f3f7f9703e773eb5f3ebd7e2c31a11a82c",
+      "bytes": 1211
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/console.log",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/console.log.gz",
+      "rawSha256": "6ac2541b318b7868fd57c0c8ea76d638f401258f3c8cfc9b593c6c9faf29e845",
+      "gzipSha256": "b50c43224c896ceae1e17575c00410f89862db924d6a63cbbbb3255dc26e1aa3",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/container-identity.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/container-identity.json.gz",
+      "rawSha256": "b49e7162dc47f902e75f030c321fb552bb848855546deb78a7e3e8dc8e74d1df",
+      "gzipSha256": "f5170786907357399b4d19264c308bcbbfe3ab4cc7158a133a6a0c44637d2d87",
+      "bytes": 2701
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "1dd027a1e1f085dc2d79a5b6abae5aa1fd7912f7a11d07a145e0cfba0d93788f",
+      "gzipSha256": "358631bfc8e1bb7a1ce8c626c2ef828d837e6227f660b86f288cdaa928c15cc7",
+      "bytes": 483455
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/services.log",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "e98e3435945ebf5a6f973ce120eb29293397fd6f0c73ec738cc3bc9cd8c3b127",
+      "gzipSha256": "423ff2b011340035eaa0471289d187f352fa25447cc9fd263e7f5329a1963963",
+      "bytes": 602101
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/list.log",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/host-load.jsonl",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/host-load.jsonl.gz",
+      "rawSha256": "5c7ee96fac5585c5e5b7beb045443241a5b97b920f1bc1d44d9aeb6a568910d8",
+      "gzipSha256": "924b758980ae0ea5f12b84aabe4e8a01429c8d793d644257ce576eede5cba11d",
+      "bytes": 42525
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "e0e305b14d6a401389e7d0edf5a8ded9f04738ed83d8328a0ef7f33e5d2258b0",
+      "gzipSha256": "ff92273cf4b7c8c65040d16b618ad588a66f517b4b97a9ad58943832742a2ebd",
+      "bytes": 40596
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d0-coordinated-2000/receipt.json",
+      "copy": "evidence/paired333-r2-d0-coordinated-2000/receipt.json.gz",
+      "rawSha256": "65b05dd38a9aa72223d169d56f626572ba1d6bd4c4306b68f349c2c61ba78c8b",
+      "gzipSha256": "b1752512e58bdcff2b3334feb2a1ea3cd12b21d747b95186339fc922b9875b56",
+      "bytes": 1592
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "7075df06bdd466ab7901a9bb1049558f5e750ac9e38580258c2aa54ee5359855",
+      "gzipSha256": "ebc81ddb2f2b60c4a8cd6c54632d52eefc85900fe5e1f75c6a2048941bbf73d8",
+      "bytes": 39305
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/partial-result.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/partial-result.json.gz",
+      "rawSha256": "979cb07b9b72deee9b35bbc95c0cea6b9271767d0e05f47529a1131066afd797",
+      "gzipSha256": "a7ebd978a815c407bf49ad962748d42dc94320f3863ea89869f90ab068643fd1",
+      "bytes": 76721309
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/result.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/result.json.gz",
+      "rawSha256": "5da1f939ff312a3b7156a6bdeb107c207135bd311b1487de9675e307bf0a550c",
+      "gzipSha256": "6b5b1b942ca552c8acb88d4cbe4d3d8c8aaf1c7e9427a3784aab0f147e0b9f43",
+      "bytes": 77073041
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/docker-command.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/docker-command.json.gz",
+      "rawSha256": "9413cf092b7d5bd492207fb2284834c84bc5e3fb26b5a03fc382967733b3bd09",
+      "gzipSha256": "f1ac8fa362b352cd434ae17fd322c904a467dba37294a8b729b0aac9ccff3486",
+      "bytes": 1213
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/console.log",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/console.log.gz",
+      "rawSha256": "03461da72b55ae4bc494021f53f71b9332038a631ff1b4648284500dcb9d0e31",
+      "gzipSha256": "9c3018c15c235b21bdc484663e5e6440fdcf33b7b1920def44937dd490c75b5c",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/container-identity.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/container-identity.json.gz",
+      "rawSha256": "47280e66676145bb35a014fa13139d67c43c643c51a7ae4b23498c0aec6662b8",
+      "gzipSha256": "bdc175d5033b5ca7bde71d15edfd99bae12b128b65f2216b0fa10e59c1906be1",
+      "bytes": 2702
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "6612f50f445c0a8d884b3618470addf9f13b3170b179afb0596d10c253f0da53",
+      "gzipSha256": "52a80c647846d990e653c5d636a5d12bcfb2e58ab5b058e12703f333be7466ec",
+      "bytes": 469690
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/services.log",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "b5cc6cefba8829ec45b833485cf7fa1b41e050fa1f0a7e0d0afe27959a948ab9",
+      "gzipSha256": "f5594d24261e5b3d16d3c1bf24bd093fdd4cc71965d7c846608dd3da3445c248",
+      "bytes": 595960
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/list.log",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/host-load.jsonl",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/host-load.jsonl.gz",
+      "rawSha256": "af84517d244aff229a1803ae385fcaca960b13cc18faca9be40cd2576628b505",
+      "gzipSha256": "5ff71c95807d69a4679288bb10edfb7bdf8dd251e763e5a12f283460f05c222e",
+      "bytes": 42392
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "f703ea9cd5c72d71d67a94b9be338fe04d0f7e9fda500ed95c28aa06867cc0ff",
+      "gzipSha256": "dcca32f1a4719de10946a894436aea3213ca78a85e02339469562094f539b065",
+      "bytes": 40619
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r2-d50-coordinated-2000/receipt.json",
+      "copy": "evidence/paired333-r2-d50-coordinated-2000/receipt.json.gz",
+      "rawSha256": "7756003c7e629932666af24fd88d63206dc85e0f2811630a1c04cb5b831f5316",
+      "gzipSha256": "73aa06bb5caa1949391e99ebab2ba35b645466cd43ac10e63a23de88518c38b9",
+      "bytes": 1594
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "b48491915315f35c89a74b85f577c9b620e54e231c11df79a7c31601588f846a",
+      "gzipSha256": "caf32e461202aa35264e18b9b383c457509296f775a16ce84d565d63d2d3eb91",
+      "bytes": 39868
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/partial-result.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/partial-result.json.gz",
+      "rawSha256": "bbbee3fbdca2e1826656f7f2d2a95c51cea2f66888d3c44bcfdebba5d28d7000",
+      "gzipSha256": "fae63accc28ba49d28faea5e6364e839353cd2ecf0265e25a034b4aec065d05f",
+      "bytes": 76931012
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/result.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/result.json.gz",
+      "rawSha256": "26c64e1e7715d10576b7f7831311871e127c86028a1d40373427c14264a3d410",
+      "gzipSha256": "32ddb8b7869dbe76e121c993b9bc7850ba95ab3f7c1d60c8275f6e126bd97c14",
+      "bytes": 77270897
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/docker-command.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/docker-command.json.gz",
+      "rawSha256": "6f7c075caa78032e7005c744f347e50d2b5c167a1f149612ce9b79cd0a973c65",
+      "gzipSha256": "f117d72a887e76458b4b8420a643f8a0a4c3588d744fa4d8dff077da14c940a9",
+      "bytes": 1213
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/console.log",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/console.log.gz",
+      "rawSha256": "a148affdd2932b7ea4b01e166fd67cc0ce295f5cd9697c7c3e9abd4d993f0712",
+      "gzipSha256": "d4a2c12e3496c36b12466f74d4209a1ecc70ff6576d204b407b81711b049b2aa",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/container-identity.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/container-identity.json.gz",
+      "rawSha256": "db3a48d73b3901981cde89a020b66a852702881f601f5e9c51aa115c6e837461",
+      "gzipSha256": "59292245879b351b2b0f9e95428285bbe59cec8beb0491b70106ed4ee3503304",
+      "bytes": 2702
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "3895bdd3c5d0cae6496ae202a199bc141ee0c3df4ff3486c35303b4497bc3c9b",
+      "gzipSha256": "f65ca2d3e1771853200f0f4398d2a7365a6bd07dc53da50ae65bb50968a65d58",
+      "bytes": 476118
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/services.log",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "1b5fec5d5029d37b64db39e581dfaedddc364401dc3b1de8312a8ef88788659f",
+      "gzipSha256": "d22b9fcad139c2112f1acf33ca8083aa8b773348f5d0636654164277b52a7302",
+      "bytes": 592276
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/list.log",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/host-load.jsonl",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/host-load.jsonl.gz",
+      "rawSha256": "c95d6976313497420b6ba61416240375b6104d7f870d9e5a452066c66bd09373",
+      "gzipSha256": "9cb4054646592177cddcca37aa3dcd67f1293b54067f6be09b749618f1dd6a14",
+      "bytes": 42541
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "711148a9700df7bbd2e45ff3117624b89bdf723f4f5e630c21fa89f56f5f00c3",
+      "gzipSha256": "d4d840c60874414641b484ff5dc3219866e4877842b870a982b27a0a07671581",
+      "bytes": 40614
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-coordinated-2000/receipt.json",
+      "copy": "evidence/paired333-r3-d50-coordinated-2000/receipt.json.gz",
+      "rawSha256": "2dbed5adb99c223e8aca2973387c13b6802e2474ba8209034d74aae2111402d1",
+      "gzipSha256": "2eb42a2a1fb9feda523a03dcce02678215b1e4b2c77cf5d0c730cfe052810b3b",
+      "bytes": 1594
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "f6d7fbbf4dd505f0583372dcfae0ea375ae28a50234f5925c149e7354e50b026",
+      "gzipSha256": "37a33587e80b9a68ee0f9a259eb7118d41eeb43835cbf14c4aa781a711a8135e",
+      "bytes": 40485
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/partial-result.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/partial-result.json.gz",
+      "rawSha256": "3844815a41032419645266fb1029deacc3b8e0ba4b7bc857845f9cad047868be",
+      "gzipSha256": "466c5a37bcc5096a26e1d16149e0863330749582099dce4d6a3672b7ce7374ab",
+      "bytes": 77108456
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/result.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/result.json.gz",
+      "rawSha256": "277be8fb92fc2605fff71838ef5a1b01382700ba0642c8e1dacea436eac0a755",
+      "gzipSha256": "674d12c2b4d128643bb4a6d4e7736279ad3c0e7556fb5cb1cb38619b60e08c15",
+      "bytes": 77466249
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/docker-command.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/docker-command.json.gz",
+      "rawSha256": "67fb5af412de26306d11e54cb1394053c9946b5a734660b9b5cff8c1aed22bfd",
+      "gzipSha256": "9651f5ea718a5d2732c523f651c8f781eb5788099551a4bbb27c6884d9fcadf7",
+      "bytes": 1217
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/console.log",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/console.log.gz",
+      "rawSha256": "7d187bfa01dde7cfdfffd4efa29ab2efaad93014c02837973a11951a90e4cec0",
+      "gzipSha256": "ea34d831d1d8b84fabdecc96204197ca11766bdddb7b287b0c184a655598b1cb",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/container-identity.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/container-identity.json.gz",
+      "rawSha256": "432d251badcc9247c226206a7224adbe3262822d601f4fc6f9f132a80b6e974c",
+      "gzipSha256": "6a42d36784e6df64f44e58bb573a019a44e5b4e94ccfda50131e12cb9bf74ac1",
+      "bytes": 2704
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "b78debc30452e755e0d1fb9a0fd921d697fb8029b095d36695e8bc6ed729036d",
+      "gzipSha256": "6f35fbcabfe1019e396ad88f1e23a59507a6d14f6f4c311c5e03f9eb54729a94",
+      "bytes": 589049
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/services.log",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "1d0a2f05ff70c9b666085710df67d3217f2fbbc07128b72c2fb489807312f03a",
+      "gzipSha256": "85a438f3e930369b120966a9e00a1af10f892d89b31549357803bb6b720fe1ec",
+      "bytes": 534222
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/list.log",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/host-load.jsonl",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/host-load.jsonl.gz",
+      "rawSha256": "f0cb62cd8cad97f79658887e86f09dee965f87c74ea719f7919a386c26f31ca0",
+      "gzipSha256": "2f65ba5ab156ee1b8071d591e5e6add04164d638d3f7780291ca15cba6173a6d",
+      "bytes": 40790
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "2cb547f0c2586bb589f5d5ea3d0d1e2e89e33894c7f525759f525408c72488b9",
+      "gzipSha256": "c876da771456d072f162eaa199d9c653e6c28b0e5bc7f65eb6e34ac9b54772ad",
+      "bytes": 41410
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d50-immediate-inflight/receipt.json",
+      "copy": "evidence/paired333-r3-d50-immediate-inflight/receipt.json.gz",
+      "rawSha256": "4a80ed20c51cb03ba38ea7bbf7ec4c2d131d28cb582d0e69fef552319188fbe1",
+      "gzipSha256": "98f19d9e29c1d58cfb3e656244a65dc52c815b8dc60997d765dabc6440f39cfb",
+      "bytes": 1602
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "89713e38519e35abd9715603485fd5a9d69590e906e25bc18cd7a225b55572ed",
+      "gzipSha256": "7b736d51e83382aed386491dedeade8ae148fc3f80f8fad49d7ff5893e478161",
+      "bytes": 40498
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/partial-result.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/partial-result.json.gz",
+      "rawSha256": "f9285d7728d1b3705ec5d6059c5c77c6041e0d7be0ea2995f80b473562a826bf",
+      "gzipSha256": "01e088448e061afa6861e2ea94b3d60caef7831cf89864c20bb6d18c41beae9b",
+      "bytes": 77469904
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/result.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/result.json.gz",
+      "rawSha256": "f4103e312803cfbe726eb8d88512899282a6f215d2cf2ece1beed57ef2da4eea",
+      "gzipSha256": "45100c4122e9f31672755308a9e03e5ec73274f5993e81e37bfd6668c0f1312d",
+      "bytes": 77899264
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/docker-command.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/docker-command.json.gz",
+      "rawSha256": "dd83894e9b523512cc430ab830686b728b61b9f91f2b184708da2a123412d7b7",
+      "gzipSha256": "0747803ae16622841e05a85197236fcad7c031dd30070e10e11e9e75546f035a",
+      "bytes": 1215
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/console.log",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/console.log.gz",
+      "rawSha256": "1d51aea94136ae162cba0f9b224b0fdeadc1436535ad984d3575c9b2d014ab4c",
+      "gzipSha256": "89dd870e6bebf426a51301f6e66687aae66d7da51767a7769616deab97558f82",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/container-identity.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/container-identity.json.gz",
+      "rawSha256": "d5f0695c4aa7da4863a4bd14a4e184b5442d388b03d08572ee97b7a1d16ad179",
+      "gzipSha256": "94c85e6a367dbc3bd2ff8565c35510ef36642d3b32daf652ee82f08122af6852",
+      "bytes": 2703
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "1941687fcc344153edc1b344df68e666926289e752c28a550cd4f1fd17016076",
+      "gzipSha256": "681eaa286a89783c4117a114ea6a6642d61921be93b1bd6ac0ca310c4fdfa41b",
+      "bytes": 792053
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/services.log",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "f374c50e75ff81b97d8725f951309bf7b6988203c54df4dffe4401832db3f09f",
+      "gzipSha256": "36d3cd63a8abc81dc7ca2075f87d1ce1d8cab7e70ed75151af8c89ad9e6dd39c",
+      "bytes": 668812
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/list.log",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/host-load.jsonl",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/host-load.jsonl.gz",
+      "rawSha256": "7d1f05038bbddc5a7a4c25422f6dc845f12fa315710893b576f4a7afb4d37fd2",
+      "gzipSha256": "782187395d68f4c15ccce329bf6fae6d5bee822a3a51f42be9aa560b011e89e6",
+      "bytes": 42553
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "36e817ab7ea843ed5dcf1dc5336b430f022d0ba8282bf32ddf2b5d3086eb5219",
+      "gzipSha256": "1afbff53c08072c4bf76d38c1eedfb7c7f109cc14ac09e13fe25e1d8b21473da",
+      "bytes": 40768
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-immediate-inflight/receipt.json",
+      "copy": "evidence/paired333-r3-d0-immediate-inflight/receipt.json.gz",
+      "rawSha256": "e834546de56361550d9f05207243e99c3848ca520222a0e072e09ccbd8b65062",
+      "gzipSha256": "88ee864bb55ec7c5185eb447464796adceff4eeea0d27371af344c2cf2231dcd",
+      "bytes": 1600
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/fault327-before-cold-page-2.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "ab9af35b97df6d849cfb8f80ff1d11a03c811ecc0e963f81594e656bc9c519d1",
+      "gzipSha256": "c1deef21b572a000929ec583bc97c0acd566376ce404ecd274ce4c3fd673485a",
+      "bytes": 39285
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/partial-result.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/partial-result.json.gz",
+      "rawSha256": "3281a68a73094c53587ac2323ec79c4b4feb5bccf4dfcd4531166ab232793345",
+      "gzipSha256": "2218d4d5e7490dbd138c65abbb449ebc2355d3b9829d4908d3b5eb82ba9641c6",
+      "bytes": 76928470
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/result.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/result.json.gz",
+      "rawSha256": "02a573b99c60fb6e41c62a481e06e3701d13a1f1c37ccd2430634a79f18f9ffa",
+      "gzipSha256": "c2a1d87a2dd1af8580b11ae1728143ad40d18137e69021523e8936e00b1859f9",
+      "bytes": 77316336
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/docker-command.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/docker-command.json.gz",
+      "rawSha256": "588a6e85821de9207b71544d5ffefc09986644d9421d78b7621807799826e5bf",
+      "gzipSha256": "7a06d6bd48bf98b2cca2072100af18b5edcebe282d5f63a33486361f7b3f0e5f",
+      "bytes": 1211
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/console.log",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/console.log.gz",
+      "rawSha256": "23cf06bc24429ad63a30da521ce68bd22d7db332cb94c1f81c04f32e91cbec81",
+      "gzipSha256": "52d2989e4ff2616e9cd70a93e018b94e09f917b34a96364be27f0dcc33d58370",
+      "bytes": 352
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/container-identity.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/container-identity.json.gz",
+      "rawSha256": "72857141ebace16aab4afe2e21c49dd386bc06b047b8c0b8442c791b34d336f8",
+      "gzipSha256": "c1a02bcd4a1e257ab7346db6b356ed855364627c2ea1e1bd54eae878c16f8884",
+      "bytes": 2701
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/audit333-owner-2-worker-0.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/audit333-owner-2-worker-0.json.gz",
+      "rawSha256": "6b18381db77eaafb7482243b8326c564b7f342761b9678f480f129b87a84b1b9",
+      "gzipSha256": "0e519805b9193fb1dba9db7b18d7112018e4a393eaa9a0eaa7d6a0d8dfe4e36b",
+      "bytes": 469494
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/services.log",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10",
+      "bytes": 318
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/audit333-owner-1-worker-0.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/audit333-owner-1-worker-0.json.gz",
+      "rawSha256": "660725e9617d6f4ede590f45356abefbc916985e7967aea6f3f0904bd896b2e6",
+      "gzipSha256": "94cc16855d8f6c6e32f0e1a717493c7db1b3ab24b24fb2b194a7f18a6b6c09ce",
+      "bytes": 679450
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/list.log",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/list.log.gz",
+      "rawSha256": "7f4c67f94e652a05b6ba26c3e04031f734505bf015d734a71b18ecf386428958",
+      "gzipSha256": "7bafc76d14fba0ed2ef294e6cbe26cf1d0e91bb97e90c36e68434f482cf4e900",
+      "bytes": 131
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/host-load.jsonl",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/host-load.jsonl.gz",
+      "rawSha256": "12385c2df08d695cf17c76e5199633ef778090f48bcb41ebee04c19b15b9ecee",
+      "gzipSha256": "9da7c4e4344548c63c6461947dd9e6ed432372755580dab0a0abb6bb3ca58f3e",
+      "bytes": 42514
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/fault327-before-cold-page-1.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "16280b779e30ac4c190d78b7c57aff7d0079c154b05497d33d48528fa68a53e4",
+      "gzipSha256": "f0b1c33b77127dc16116ab9fad7695efb993088c6f4f0cebc57149bf65aaa2a8",
+      "bytes": 40648
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r3-d0-coordinated-2000/receipt.json",
+      "copy": "evidence/paired333-r3-d0-coordinated-2000/receipt.json.gz",
+      "rawSha256": "bcd405da716102545449f5fdb35c80d5da30de9dec3db261cceaa8aa30d3c80a",
+      "gzipSha256": "b31c5f2056face39304dd05ee6200dc0a439942e5e6c970e003a57327d64906e",
+      "bytes": 1592
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/paired333-r1-d0-coordinated-2000/list.log",
+      "copy": "evidence/paired333-r1-d0-coordinated-2000/list.log.gz",
+      "rawSha256": "5e152c2faaaa2b305332a9794aa9da3a770771eb2f064ab0f847543a061516e7",
+      "gzipSha256": "7a7842c01565b6c89c388e465b49a998091a9122460969fc22b587dab1eee356",
+      "bytes": 1578
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/seed.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed.config.ts.gz",
+      "rawSha256": "31a35401f2a1943585dc5732bb4acef2ffb0c6dc62dc96c49e1445353cfc851e",
+      "gzipSha256": "36d3327108eea29cc4c68527700ddef3f8fd388f1d05324f083d3c5261acd616",
+      "bytes": 471
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/old1024-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.spec.ts.gz",
+      "rawSha256": "7391bccddd08c18b14fe9e2e88306c29094ccf0049126829280f2f37f719e0b4",
+      "gzipSha256": "b4e6d4c2c66e08fd8b2ef4cbb8ae771004e67b150532f0d9180309d9a7f28b54",
+      "bytes": 4351
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance.spec.ts.gz",
+      "rawSha256": "8f27a07df6eead1a45f8045d222383fd08fbf747f71c406905624e231f920c27",
+      "gzipSha256": "7fde833a227ade4ff0c0c1197c82bf21e746fcc64896a0071d783e380f2b78db",
+      "bytes": 10984
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/idle-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/idle-maintenance.config.ts.gz",
+      "rawSha256": "ad9491d0f5de1c0c88b3ff8ee022a67ccc66b81d56d92dd7cfbcf4c2fcc7026b",
+      "gzipSha256": "edee73743f4748272a3107cfd0a3a90908101220de4421234a9c6402ee15b0fc",
+      "bytes": 290
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "rawSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "gzipSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170",
+      "bytes": 285
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/grown-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grown-maintenance.config.ts.gz",
+      "rawSha256": "45909a9e9b43e1507a96f8eb463ef30fe898cfdb4bd1bc4d2033619c368d66a7",
+      "gzipSha256": "a67a7cb28aa9dd3f18be236525397378b889a12ac1621b789bee115fb56704fa",
+      "bytes": 294
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/deep-traffic.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/deep-traffic.mjs.gz",
+      "rawSha256": "c40c06aa8a56574733337ca184595a8ace8b9db788169fa08bf7d6718efb50a5",
+      "gzipSha256": "3fcc7febbc3e680e63af3b4e8d08b78c8abcfa542049af4dd2623e0180508772",
+      "bytes": 2138
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/continuation.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/continuation.spec.ts.gz",
+      "rawSha256": "4e78bbbde088cc2c41aefda32b1329d86e1c9d43bfc63a4ff3ae33dbb2a31055",
+      "gzipSha256": "005705853d4743e399a0b9bed58d148a59d79033f7d6c123ba53c22d548711a2",
+      "bytes": 17829
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/r-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-idle.spec.ts.gz",
+      "rawSha256": "050c0a8e3c98d671b9495b343c47ba2765e95c284fb1568558641cd9c7d6d929",
+      "gzipSha256": "f65c2afee3bb4d3ecb87c55b7b2f4702eb9159dc632c283d3b97af8039286eeb",
+      "bytes": 11880
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/focus-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/focus-sender326.config.ts.gz",
+      "rawSha256": "b1f2b2b83484648f35ca2b7fb42e437064f2abf17399f3675fdec9e20df719de",
+      "gzipSha256": "4e19823799831e0f398f051cd37361ac4925966fa57914c800a0385894e69e51",
+      "bytes": 289
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/devices.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "rawSha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77",
+      "gzipSha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef",
+      "bytes": 5092
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/prepare-short326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-short326.config.ts.gz",
+      "rawSha256": "a83a6e86bd263891eeae6a0e0b6b07090a87fe7d351e84174b260756788474d8",
+      "gzipSha256": "b33b459fc85ca0892453c465b6b02714e901550920fd9134370e0007939e51f1",
+      "bytes": 290
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/dense-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.spec.ts.gz",
+      "rawSha256": "13a5e12cdbb148d542147264c12aa12e803cc5e526745e5282110307a4de5603",
+      "gzipSha256": "d6c91e6f3ed23d0d719c3021cb2522e520a4039b7cd645bfb6ea84ec0d1a2e5b",
+      "bytes": 4350
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/marker-civil.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker-civil.spec.ts.gz",
+      "rawSha256": "7bce3ea6ff68ec5fda8b3c99fed87779654f268a4362397613f638d45f45ed6e",
+      "gzipSha256": "8ef4ee77be990fbbef3c8a6cd544cd7192e93ad68290c75f47b1b5b943f0b941",
+      "bytes": 11764
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/race.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/race.spec.ts.gz",
+      "rawSha256": "d371f255566c1344574c523b17b310c2b2690f706b2e62701e22793a7b666f88",
+      "gzipSha256": "bc2b38223782acb6c136cb7cd83687b8442001463f5ecf38af462578ba6f946b",
+      "bytes": 7096
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/result.d.mts",
+      "copy": "apparatus/harness/test/account-continuation-lab/result.d.mts.gz",
+      "rawSha256": "59587c96f34299f9033c31ddabf68514b60498c5c84a1828e27cbc4b929d1994",
+      "gzipSha256": "0ea08ffb4530ea1e811b729a8072904a333f6237d12593cf482be5d93bdd6deb",
+      "bytes": 96
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/grow-paired329.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grow-paired329.spec.ts.gz",
+      "rawSha256": "8b2a2647a414dd854f3d3eec6818779ba073bb7316e692d7c5dc65d9dcdf2491",
+      "gzipSha256": "7e85ea543453577f3dbc09ee2cf95cbb7729b96078a0da457f2eca598f3b7931",
+      "bytes": 4866
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/inspect-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/inspect-sender326.config.ts.gz",
+      "rawSha256": "2dda7a8a635b3ee6880f6b4c7fac1b4d4d06a2c6575a8e7e76297e341c1fbcf3",
+      "gzipSha256": "10e6c3420e6b6f04c1dbe479bec1ba1c8de320f50e940f355aefd05d0ac40baa",
+      "bytes": 291
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/dense-cut.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cut.config.ts.gz",
+      "rawSha256": "a4b9c1a77e0e86dde1980e8fa971903d12fda9988085171bf72b7481e785e344",
+      "gzipSha256": "3a7f9a21f3acca6e808f26e467f3819f5dced9486e59a1e03096dcafdf818e28",
+      "bytes": 286
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/prepare-short326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-short326.spec.ts.gz",
+      "rawSha256": "65e75463e0eb13e7f0c682739839eab755facd910ea44fa4b0e5d716f674984c",
+      "gzipSha256": "25b6b37034ef9db5d7f87c117828adbba2980c3b1a5608489ce7f8e676667267",
+      "bytes": 3606
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/dense-cut.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cut.spec.ts.gz",
+      "rawSha256": "79bd441be6ede1f528ff174ec1f9eb6bce508b8e2f28390f4ce0fb87d1d7d5f8",
+      "gzipSha256": "d0e8fa3449a01f5988ad3f4397b7a7217dad06e15b42f4d1d09a75c2461a4269",
+      "bytes": 8600
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/runtime.d.mts",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.d.mts.gz",
+      "rawSha256": "d033939d1d06cc3d19a3592adfb6cc728f0a025fffadca7fb074ce30c1a71446",
+      "gzipSha256": "3762793e6a740c9907253daff3cb27220577efbf716f197c831f1222269c4659",
+      "bytes": 254
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/race.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/race.config.ts.gz",
+      "rawSha256": "21521655e2c96f7792b80086b52d2113486197093b34acaf6df61a74fec1a0a8",
+      "gzipSha256": "82517b9ef451e8be91b7ea188317f8aae618af44b4c588e6461d627688bc40b4",
+      "bytes": 281
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/marker-civil.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker-civil.config.ts.gz",
+      "rawSha256": "03df63e48830666304a691cd8aa4c3fedb466d0af9381a829e11c23cc2b893a2",
+      "gzipSha256": "f00e0d41013dc49b22154828fe2485f767df792b1f23874dc59acb78bc9ed19c",
+      "bytes": 289
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/input-diagnostic.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/input-diagnostic.spec.ts.gz",
+      "rawSha256": "a36cfdfe272075b910e0e21901f8bc153e0fe6b2cf4b9399481df852a5d7c1a2",
+      "gzipSha256": "07e1ba652ec94990cd274031fa87708df508e5e0364b20b44b09ec3f3a79d23c",
+      "bytes": 14413
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/maintenance-pilot.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance-pilot.config.ts.gz",
+      "rawSha256": "bc663e4e8a826c87ded50ccc42e00ad83b43118ea1d93ebe99b98403102ba6f0",
+      "gzipSha256": "ce7b15ba1f00c20f467d8ffb07052ff26e7094f00d03949b92532aedfb996073",
+      "bytes": 294
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/inspect-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/inspect-sender326.spec.ts.gz",
+      "rawSha256": "40443f076a7b904755ddae442224b7e5acc92ab2443f55c46b050e1fea73b983",
+      "gzipSha256": "843b21b4491f3d40972f5ee52b6c549007c9aead5636674fd674e776dd42739e",
+      "bytes": 2683
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/sender326.spec.ts.gz",
+      "rawSha256": "9ebf78864af684ba0647e3ba324ccb07b1e3bf75fc69d5c41ef243148c61dcbc",
+      "gzipSha256": "3815a47828ca1551a573494c411a7a04ce4f22fe729b15e0535261031c68ba7e",
+      "bytes": 14280
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/nonoverlap.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/nonoverlap.config.ts.gz",
+      "rawSha256": "0b07f2c1dc822cfdde3ea58a5850776096be513ee9aea3ee1a7c76211ff2b796",
+      "gzipSha256": "eb139d56981c12e1895ca3dea0a864de78989aae10c52b56f3cc68cefbd6ec48",
+      "bytes": 477
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/seed-profile.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "rawSha256": "79a54db29559ee0e9c74b3c1e00cf61f35091631944b22b1fa4685891f506717",
+      "gzipSha256": "1a114718897c6fe79a25a6fa00e55904f83aaa7e841183e3522d37efe890142f",
+      "bytes": 1542
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/input-diagnostic.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/input-diagnostic.config.ts.gz",
+      "rawSha256": "b33998b1fef15b4197b8ad7da773ccce035beec714426534df0718a2401798a6",
+      "gzipSha256": "616172a70005b531c48ba4394ed86ff5e8dcb640ced5bc5b42bcbc085522c983",
+      "bytes": 293
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/gate-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.spec.ts.gz",
+      "rawSha256": "8e6c4fb532b7642b3b229ca0fec60e463f1d0d4e32ac1b3346c903dc57ece22c",
+      "gzipSha256": "34fac797c554d6be981e0692a06506c7b83fd4cc7d1856edcc0820e25a597a34",
+      "bytes": 11440
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/marker.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker.config.ts.gz",
+      "rawSha256": "e228a74799169cc091979e0b67b6b0f9b3c0239ca7c7194683a5cd2edf10cf28",
+      "gzipSha256": "92dcec3f276f7162bc743db33c270247fa567ba53500dbd4c2dbdb0cc1ca6247",
+      "bytes": 283
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/common.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "rawSha256": "6d5a5bf1eda8477deafe0a4206bd676fbd2aa2d0b9aefd68d1746bc9b25c478d",
+      "gzipSha256": "8e17742739c635633316ef000551bde9ef5708d3045e784925ca6a20361d88b1",
+      "bytes": 3495
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/stall-probe.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall-probe.ts.gz",
+      "rawSha256": "9a19478276881be6ca8546524a1f2de3b4ae776feed1e0849677fe4b68e10e95",
+      "gzipSha256": "131f64aba3afb197cbb8935e445c49f7724bec38c9b7af03eb1e996b7b27b856",
+      "bytes": 3046
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/prepare-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-sender326.config.ts.gz",
+      "rawSha256": "fee5127e478858c4d666f53bb636ef9d733d77b80f247057db5a92080ba0110e",
+      "gzipSha256": "accec648f6e5ff4014edbbaf61e9b00bd18d385952a223b24ee707ef4ef535db",
+      "bytes": 294
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/idle-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/idle-maintenance.spec.ts.gz",
+      "rawSha256": "2fc4f41abee8bf32baf1eed941e8201e8e7c3d616beb8ecd902b6a6390e30012",
+      "gzipSha256": "4431d647ce2a101cf1e795973a9ea55abf9805b9c6c3ab56e65d6cd8ee3394b5",
+      "bytes": 4934
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/seed.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed.spec.ts.gz",
+      "rawSha256": "f5870b3ff3049e9c60bfcee512c1531cfbe48c4da0135934200ee56f950f12e4",
+      "gzipSha256": "e71d5c8539a61046012d81621abc8bca5cd52e20f808004b8b917e5ba3115852",
+      "bytes": 6439
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/paired333.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/paired333.config.ts.gz",
+      "rawSha256": "0815bd5f26adfe0abed44e6111d077c37d0ac2eeb4ef7de25ec5f5d31e65315f",
+      "gzipSha256": "6b2ad425d252d75da15cb1b5ea125c8aa734c8cae2a4b0266562993cd206bb1b",
+      "bytes": 283
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/sender326.config.ts.gz",
+      "rawSha256": "ae83ee26e9b639fdc28f8b107b31d8fff5813f98b88b11160701dff6d7451384",
+      "gzipSha256": "ea1c97ef7a04388d32d05a112ff07dd0d1b9ae7543d98cc811fe5c5510f2152b",
+      "bytes": 286
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/focus-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/focus-sender326.spec.ts.gz",
+      "rawSha256": "c51fcef14bed927bbfb36090b79a6f4240e6b83d207c3fade39d6f6721e24736",
+      "gzipSha256": "bf61707c6f8c8ab3d1c166278441a1b6db0b109e7b15fb00f84d280c41b0793d",
+      "bytes": 2818
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/default.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/default.spec.ts.gz",
+      "rawSha256": "b1bc5ed7d62eb4e44250ff13d15156d5e6f62a0c0b61f44fdf78263342f9a2de",
+      "gzipSha256": "1dac703aaa0e89bc04c156fffe7409d0d62de7c134ca7b3043f0cdb94af80ba0",
+      "bytes": 4313
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/r-late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.config.ts.gz",
+      "rawSha256": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+      "gzipSha256": "5bb30739474228ef550c986cfe86a764122dd74e8b6908ab939c92c19e89e42b",
+      "bytes": 283
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/gate-native.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "rawSha256": "ad31fd0d9e7f3a85fbddb1602acec9f35878821e5b892b1659cf13aef421df30",
+      "gzipSha256": "a138d989bbb03f4d2dbfd4bd93d962a5f2325ed06dad827c3c06c98e72ed25d5",
+      "bytes": 153915
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/root-cache-review.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/root-cache-review.spec.ts.gz",
+      "rawSha256": "f62600f00adda6c4359d3d77607cf50c63a6e104c6600582dc72044c40f82a84",
+      "gzipSha256": "e9a171e17506f50f5f6ccae9795e20672c474a568eff75f89aca68b5cbe0109d",
+      "bytes": 4815
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/r-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-idle.config.ts.gz",
+      "rawSha256": "dda6b768130ed88c009e3af76a5fcf07e018cdecf02b0f04fd46461905999b11",
+      "gzipSha256": "2d0b59bb4923bf4ced4eb59991356ad173161350d70d0901276bd7a5028ea9cd",
+      "bytes": 283
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/late.config.ts.gz",
+      "rawSha256": "8b87a9b0c5633b19b45e167d7fe3bca4712549bff967bcdcc8982ec7142a6387",
+      "gzipSha256": "79dd73c5093c6996d81ce5dee6938b8c71cd7ced24680f036d1b15ead22db27a",
+      "bytes": 281
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/gate-native.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.config.ts.gz",
+      "rawSha256": "2e71b9a38acbabec7d18717abec3271cc7f48cf2a414879f259748bb61a57413",
+      "gzipSha256": "ff3677b6dfeec325ef38d2b9f369cbd85227567f3cf60d3515644cf4ee069ede",
+      "bytes": 288
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/capture-maintenance-trace.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/capture-maintenance-trace.ts.gz",
+      "rawSha256": "32e0d1836fd0e499f0415b3e452a763e30ff5803147c7d45c68f7464c01b4107",
+      "gzipSha256": "fabde8cf16c32cb6f63a5c23596f1d528d2615bf3c518b2b75c73371a134cc6c",
+      "bytes": 392
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/gate-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.config.ts.gz",
+      "rawSha256": "f2b9974f167087fd3899fc2aad61639acc0f2439169b9fdd85670015c73f5b35",
+      "gzipSha256": "7a10d2f124f2bb640f0e2d3a468b4a83ea154c5d53655a1d40d689dbf8aa7392",
+      "bytes": 293
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/treatment.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/treatment.config.ts.gz",
+      "rawSha256": "31123458dd7b1ecbc7a2cc36ead9c3cee0365263cd606a779df52ef534165d8b",
+      "gzipSha256": "5d788a0c76f81d29b59e8a3c7905074538bf16a2f86999a32a8070ee23c7a1cd",
+      "bytes": 286
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/worker-owner.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.spec.ts.gz",
+      "rawSha256": "c33605cc349354e22976ebbf520b83fef7c7a86ad1811446ea97b3f56c736832",
+      "gzipSha256": "2ca5e6c54e0f3f7e8faa3a6078c5a81e32be0f763072a966bcec7145e6e5797c",
+      "bytes": 158358
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/dense-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.config.ts.gz",
+      "rawSha256": "88520272e626e2ff47081cff1f15d40a07da943ef37b4717a79921ed11a3e132",
+      "gzipSha256": "f3a0f452a0fc5f2c4fa8c0a4d09e39b8753af125fd083c60f114f4c820e137c4",
+      "bytes": 289
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/cohort323.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cohort323.config.ts.gz",
+      "rawSha256": "5c3c16ab2fde37e2911b5417c82f99127b810131e34985e155e95f3273df05e3",
+      "gzipSha256": "939baae5d06e0125d5dba8ff75eb0d46a9cdfe31041608adfb9138219ad1c64b",
+      "bytes": 286
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/dispatch-probe.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "rawSha256": "801dd1c895d29b673e54331760455d173e8d22e5f65cb7eeb1f50b5b2748ae64",
+      "gzipSha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415",
+      "bytes": 4448
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/runtime.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "rawSha256": "4019e94ad836e66a614acc28fed21042a0715c284d2748f14faa5ceee85d9ccd",
+      "gzipSha256": "c1c58f800f8adb143a1e7f71590d35f89614eb9aa30c40f16f1bed0675337f66",
+      "bytes": 4461
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/r-late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.spec.ts.gz",
+      "rawSha256": "6e0e20d51a4c8d7d4bd539553619fa551f1d5ef44ef416e329f9bb83ac47e01a",
+      "gzipSha256": "8240b070cf058cf90160b2f9deb773372da2e14109eeb91cc344da4b855209c3",
+      "bytes": 11421
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/nonoverlap.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/nonoverlap.spec.ts.gz",
+      "rawSha256": "52e3db4f0b4d2de2cf13cd50604bc41547c6edacd0865ed7f9ff5de261dec065",
+      "gzipSha256": "7821761928ee053528e74558677cadbf969814f5df8b24f275a1f2993de8f558",
+      "bytes": 5415
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/paired329.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/paired329.config.ts.gz",
+      "rawSha256": "0c078a3556bc48387b548a7d7bfffaeb91c674e4c2a48d6544279f5dffaf37ee",
+      "gzipSha256": "d51c62d84b16d59fbf76d81e777688977142dfd2630412192ac6fb5f7b34a18a",
+      "bytes": 283
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/capture-lab.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/capture-lab.ts.gz",
+      "rawSha256": "126dae0c0104dff6772dab27933aa53282b61c163ecfd2c0788d75188a8b6c6c",
+      "gzipSha256": "cf57ad0eaf25534b3e55a185a06d48428b5dbea630f758041a6326c585be1cbd",
+      "bytes": 412
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/worker-owner.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.config.ts.gz",
+      "rawSha256": "51a6a8ba5e326e169f571208c17ee8741fec1174b14c6faffff638090022acc9",
+      "gzipSha256": "5741c02b5b3d0dcf68d10dcb9dbb40c1259ab7bf100459e33e9a6ae8e995efc7",
+      "bytes": 289
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/treatment.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/treatment.spec.ts.gz",
+      "rawSha256": "17f22dc84f96dc4cea7785e0d39319622854d90e7bdacd323746a5bd2a290408",
+      "gzipSha256": "3720000c8cd9cc23bc0409f0006a2751843fb779d50aaf2127eab339f70a0364",
+      "bytes": 2505
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/prepare-profile.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-profile.spec.ts.gz",
+      "rawSha256": "3162bfd281d582d3282935657af5fc661c17c5efac4aa1604d0635220c376ea3",
+      "gzipSha256": "f1d18d87c9838eae71cd8e6d1ed32b10fa1b56432607428c61c9277b3f004bc2",
+      "bytes": 3463
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/root-cache-review.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/root-cache-review.config.ts.gz",
+      "rawSha256": "969bcbffe98d4bd85ea512a1bab64a86e5b99e889c9c19ab6d5876227a84920b",
+      "gzipSha256": "74110cd1771fc49d90721b2da340d37bbbcafc4444295df77223f9cc24b21174",
+      "bytes": 294
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/paired329.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/paired329.spec.ts.gz",
+      "rawSha256": "a889bfc42b7489e13ef0b519bdc21d8432ee156d8e876a4bad3cedfaff6cb7e2",
+      "gzipSha256": "2802165e46f3626f45fc9cd4e4bd7287c1fb781c40181c1d01065315d8b66383",
+      "bytes": 16840
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/marker.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker.spec.ts.gz",
+      "rawSha256": "89889adb1dc8372178b5ed144f1cba4f23eca54c893a24c4c6e5ddb8b37b4168",
+      "gzipSha256": "94bc5e9af20c8b5929af1bef5188371a8f244ed2270eb965e816938b0d1d815b",
+      "bytes": 10327
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/late.spec.ts.gz",
+      "rawSha256": "91dc7b950f3286e7b6085f8851c5044df14b12711fccf9192ab31af65790ded9",
+      "gzipSha256": "fedce71364404d9b190f0b252bcd9bdf549059662b9f793020538d150606062f",
+      "bytes": 11072
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance.config.ts.gz",
+      "rawSha256": "70b43c22df03535dc5849f9c2c6c597e1cd1e960edfdfa777982a0afa6a142f9",
+      "gzipSha256": "8d9593f88cc2c59efeb331c81780652e4a7bdbdc35cded4da2ba5721499465c1",
+      "bytes": 288
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/old1024-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.config.ts.gz",
+      "rawSha256": "abcad4ab77d5824818e4787dd4330907e2d40d968d5ba079ab84a01972505169",
+      "gzipSha256": "86a9538f9043d2b05dc3484a5bf4537d7cf5798299b964856ac66d3b30fc7bfc",
+      "bytes": 291
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/stall.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.config.ts.gz",
+      "rawSha256": "8b57cc7f74f224ccf47e7cae7b5ca17a4b0a5f12630e0a7f691de9b776a50fb5",
+      "gzipSha256": "bb39ada26d52a24a57c6c9ef96a89c254ca656dee81c04a5e68ce17fd17f44a2",
+      "bytes": 285
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "rawSha256": "52a98127646d48363fe64520ca44f18e0b1a810248a2e8901f8ed971c6e3e76f",
+      "gzipSha256": "ccfdb89ffc1bdceffa9eab2a799ec141826da179a5c9ecb4cab73d29938171cf",
+      "bytes": 5601
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/default.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/default.config.ts.gz",
+      "rawSha256": "b2c7926bd6cf25d23e3e326c2253a828eacd120d9b912062059f265fff80c972",
+      "gzipSha256": "353b312daea65a62d8fffa22305f7b09b02b6724ef6fa269d6695abb7024bc30",
+      "bytes": 284
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grown-maintenance.spec.ts.gz",
+      "rawSha256": "d78afc6147b03d726102303d5ad5bac292aa3fbecce06f452f80c79f8ad9c7df",
+      "gzipSha256": "09cc1edcb58b2655558f99723e7f87129c00240602ccd649e7f8a5da71433d87",
+      "bytes": 12043
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/lab-cpu.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/lab-cpu.mjs.gz",
+      "rawSha256": "f7e40df43bdbdb16babcb8dd1797b9a277299ae87e4ce00e110e233a8a51669f",
+      "gzipSha256": "7ac5561b761acccb13d72cf0e60ddcfd73944acdae8f8f1676d093aaadd2496a",
+      "bytes": 1455
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/fixture-roles.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/fixture-roles.mjs.gz",
+      "rawSha256": "e188d9e96861a2600eb7399d68f5110042b79eaa0edac46a398fd2d0b75e62e5",
+      "gzipSha256": "062c5b175a2dae51f6704b3513c960fed3f51d906395a38e3c230aa7822ceb17",
+      "bytes": 943
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/prepare-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-sender326.spec.ts.gz",
+      "rawSha256": "c28df171840c7a8863ebfb9d035b9db6e8bb2f8cdce6d7a2f1376d9ff204932f",
+      "gzipSha256": "7a71db0c6980f40502d82b91f45ed19532176fc9b6dbe40bc182d87971ab1c56",
+      "bytes": 3400
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/playwright.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/playwright.config.ts.gz",
+      "rawSha256": "8e6b678c7eb438f3f2d34f97c325a8cf4bd6b9e250a07aad47497233a28754b0",
+      "gzipSha256": "cb1687309948f52fd8437ada5a7b1ac4ae1b4dc327b2d44a07a8d4c1bbfa12cd",
+      "bytes": 479
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/cohort323.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cohort323.spec.ts.gz",
+      "rawSha256": "20efbd578520db6b44c9810e24f073c90920b15eba821fb82f6849bc26cb0c84",
+      "gzipSha256": "9e484377ebcb6267f4f5aa52e616ceb1abd0119ce693260ce1f95926ab90571e",
+      "bytes": 4385
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/hint.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/hint.config.ts.gz",
+      "rawSha256": "391f47fa119beabce52f563b47d5c440c1078dc0425cd8c32cc64d42d3e78592",
+      "gzipSha256": "3a8aa50f4c141da82963247e727759fd0989accb1f85c817b028e2198b7bfcf1",
+      "bytes": 471
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/cold-observer.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cold-observer.ts.gz",
+      "rawSha256": "a191ff009d3c711bd519c784407a7988f4f8ea00caccff4e96d731031f9429b2",
+      "gzipSha256": "f06384fcf16d3a46c9070359ad083065cf3b2d3bd994eb85dfa37c2866f7e4f5",
+      "bytes": 714
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/worker-cpu-profile.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-cpu-profile.mjs.gz",
+      "rawSha256": "d188e8f1fea59dc0531c70f12dacb0294d21dba12d7a6fbb2e83b363df70c2a9",
+      "gzipSha256": "6fddfea0f66a7afb1c155630cd237ce4f6e6af078538d8b6a32f9f12dbcac853",
+      "bytes": 2107
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/paired333.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/paired333.spec.ts.gz",
+      "rawSha256": "d08a02cb0fbd6c5a5775d3620069ed9e229d56ec79ea5fc7352e468f39e4d83d",
+      "gzipSha256": "19c46fa3ba92fc60367dd56f19fbe503b3992b00b724a79686ec9162300a977a",
+      "bytes": 17483
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/hint.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/hint.spec.ts.gz",
+      "rawSha256": "3b732293f37bc6fb6bbb275021507261dd9feeb60abc5e97de70b7e6d8a6e475",
+      "gzipSha256": "1bd05d2f81b5d642148406d0353d0d31bc3008280b19e93595167ea9bb0eb898",
+      "bytes": 4132
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/maintenance-pilot.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance-pilot.spec.ts.gz",
+      "rawSha256": "e6bd99a496aa0146517520dbe89956ba4a40784055437b5d9df8cc682bcf2d19",
+      "gzipSha256": "bdbb500a90d1ef20e6ed20e89aa15bf531518462784829713dd4aaa08c3edd6b",
+      "bytes": 2656
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/prepare.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare.config.ts.gz",
+      "rawSha256": "9c9c77ec61b78096de8ab698cb6132db2978638bec7d60a0a42fb10246aa9f7a",
+      "gzipSha256": "1a8aaa30ca67f6ea727dd84b21f8ccaeab9f50482770268f3837686c0daf530b",
+      "bytes": 292
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/result.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/result.mjs.gz",
+      "rawSha256": "191d89fe6b82522f92a5e52ca8aa61a62c080e8679c14d621dcf66bc982953d2",
+      "gzipSha256": "731b2f8a787e5f614667fd9771ac3a67500ea48ee4298d58aadc33a04eb30eb9",
+      "bytes": 244
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/stall.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.spec.ts.gz",
+      "rawSha256": "ccc61651e1e049cb17b088c445fc1a2529cdfb12f2071af76ece1f7192f3d20c",
+      "gzipSha256": "63699fee39fa5a1815c48784cac2fbf41085cf83c96db57d3ac6c5646b97a867",
+      "bytes": 10171
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/grow-paired329.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grow-paired329.config.ts.gz",
+      "rawSha256": "456033c9b1e37301de0cbe62cf3d78c07cabc5d856028ebc67db057f52d0f41f",
+      "gzipSha256": "7564a9047906d1dc6669f2f6f5b6116efcfe230a71e8aa2f0c3d565f181eea28",
+      "bytes": 288
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/phase329/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase329/grown-maintenance.spec.ts.gz",
+      "rawSha256": "94a305e02cefb61c2bb87e8602594fafaff14d764a7f9b3d448cb878bab77604",
+      "gzipSha256": "18533fad2c8bad00ecb05299679f95928fecc354cba8e3925a700bd397178718",
+      "bytes": 15369
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts.gz",
+      "rawSha256": "571cab4b1f23d9374f8173fb04ac081adf356ef5eac72c2432d1a8eb86ce9798",
+      "gzipSha256": "7093861d6747b18ae510463d4b2af131c16735df33e2b960ceed249563d13821",
+      "bytes": 14456
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/test/labAuditIdle333.test.ts",
+      "copy": "private-source-observation/source/test/labAuditIdle333.test.ts.gz",
+      "rawSha256": "3cdad3925170a9c8c9c82e80d39b16734ab5f962f50976737217fe7099307c59",
+      "gzipSha256": "81a9c81b0d9730e3d335efffcde8bd0ffe97526e7e0b4180e8df5cae4137d963",
+      "bytes": 676
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/contentStore.ts",
+      "copy": "private-source-observation/source/src/crdt/contentStore.ts.gz",
+      "rawSha256": "96b6d51fd50aeccf429a98417aacca20c48f4ba02626ac38456d6db05bf50580",
+      "gzipSha256": "947198e5306491cdea85b8fa60a9a2930f2edf2dc865037d9548faa3c52c1df0",
+      "bytes": 72525
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/localBaselineReuse.ts",
+      "copy": "private-source-observation/source/src/crdt/localBaselineReuse.ts.gz",
+      "rawSha256": "5eaba03cc1bf2ce2b46b82ae89bd9dbbdc79304e3080b93f512c375b2a123833",
+      "gzipSha256": "f026d57aca37b81c29b230ee1419ffe2cdc8444c1adaa08032cbb56c9bfbb37f",
+      "bytes": 9441
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountSyncDriver.ts",
+      "copy": "private-source-observation/source/src/crdt/accountSyncDriver.ts.gz",
+      "rawSha256": "218d22d5fd4b77c93a4af107597487ae1cff357efacfe1e803bdc0fab94f98d3",
+      "gzipSha256": "3c6bcadf708aaec176bd2c80a562b7bb0b7d846b1f87d5475adfa48029872181",
+      "bytes": 21577
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountReceive.ts",
+      "copy": "private-source-observation/source/src/crdt/accountReceive.ts.gz",
+      "rawSha256": "0241e958bb550ec2fb1db4d4600fa03d7a67f71e353e6b51b662298ddd02feab",
+      "gzipSha256": "709a380f002457123cddfbd6cd5c93150985a82643454f782686f660ced2c5d2",
+      "bytes": 165104
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/warmContent.ts",
+      "copy": "private-source-observation/source/src/crdt/warmContent.ts.gz",
+      "rawSha256": "70b8770aea16f8fc6bac27bf88fc3275eba8f32511889a445bec886c4eca6704",
+      "gzipSha256": "6f7c2d4ad462011b7cacbe57cec526317e10168a0cdb38a0452a1c4656f97ed3",
+      "bytes": 6236
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/accountCapture.ts",
+      "copy": "private-source-observation/source/src/crdt/accountCapture.ts.gz",
+      "rawSha256": "5e057a20d050c5ab55380cd21613acc32ff089671715146cb1ca1cb04f17b57c",
+      "gzipSha256": "c036554a46941dd0a0effc4d28cc559715f9bd503fd911d6da98df21f6716d94",
+      "bytes": 35677
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/source/src/crdt/auditLab333.ts",
+      "copy": "private-source-observation/source/src/crdt/auditLab333.ts.gz",
+      "rawSha256": "f6826c394ec0ba2ef42bf1b43d0ded0b20c7d2edfb2240fba91c82f50e50b0fa",
+      "gzipSha256": "fc6248c043b2620dfcdde0e73d103b16aba4d7c570f8a372029e864c16317e7f",
+      "bytes": 767
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/coordinated-2000/build-identity.json",
+      "copy": "apparatus/coordinated-2000/build-identity.json.gz",
+      "rawSha256": "0cbf316f4521a8eb1b7622f4fd421dfa8b203b1296c975cc8ef50d532b1a8490",
+      "gzipSha256": "bc5581c3892d50c4eacfbe2bd078c5fba0299c7f4b1c4a29609e139e5d876759",
+      "bytes": 74183
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/coordinated-2000/build-flags.json",
+      "copy": "apparatus/coordinated-2000/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d",
+      "bytes": 308
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/coordinated-2000/frontend-build.log",
+      "copy": "apparatus/coordinated-2000/frontend-build.log.gz",
+      "rawSha256": "2bbff3f5cd4f46771a5dd4a2571052195106baec3131607afa7c4f8471a116cd",
+      "gzipSha256": "b09089b1ef80581cc200a6b01b716ad11f918adf926f3410c91cb92c3d97675c",
+      "bytes": 8779
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/coordinated-2000/lab-build.log",
+      "copy": "apparatus/coordinated-2000/lab-build.log.gz",
+      "rawSha256": "872cff538aa3f3aa2ff0bc0e4fe28d04907e562095e96d7b131c3d5b6cfe5a16",
+      "gzipSha256": "066857ad9d4532df714306046a2afa152a8f086f2e262193e05cad91358bcd02",
+      "bytes": 30438
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/immediate-inflight/build-identity.json",
+      "copy": "apparatus/immediate-inflight/build-identity.json.gz",
+      "rawSha256": "4c4469bc6335a80e83b16daa7357e394aa9e2ae6f203ad402571b5a189a65836",
+      "gzipSha256": "36249bdfe40ca4d498e422ef623bdd1236343a66401357f83f2f74d834390734",
+      "bytes": 74183
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/immediate-inflight/build-flags.json",
+      "copy": "apparatus/immediate-inflight/build-flags.json.gz",
+      "rawSha256": "0970e84b522c9058660b752818c5f74ca7e54e6385f77a79b833c5b819b7aa94",
+      "gzipSha256": "c0e241ed7600034a0e3077b5e3db1657e734498775d2bff52b3082bfbcf710f2",
+      "bytes": 310
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/immediate-inflight/frontend-build.log",
+      "copy": "apparatus/immediate-inflight/frontend-build.log.gz",
+      "rawSha256": "cdee3d2cb673c14448b3474e6fd614b400b7624bd95ca11bc82e708bdb88534f",
+      "gzipSha256": "ce613eb1cbb98977e9d8a1cc5ab3a5246b2f5106967fd889f9ee42ccdcb9cdaa",
+      "bytes": 8779
+    },
+    {
+      "source": "/private/tmp/done-idle-warm-audit-lab-20261101/immediate-inflight/lab-build.log",
+      "copy": "apparatus/immediate-inflight/lab-build.log.gz",
+      "rawSha256": "fd283e1c40561b2226225efc29e1af276dcf00f30f3948ffa8b68bf998890bd4",
+      "gzipSha256": "7933f18f4cb111fa8a8011ff456021ac186d053db59575350599b70596a7ba33",
+      "bytes": 30438
+    }
+  ],
+  "labOnly": true,
+  "noApplicationPatch": true,
+  "compiledAssetsCredentialsProfilesDatabasesNotCopied": true
+}

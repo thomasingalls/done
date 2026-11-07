@@ -1,0 +1,30 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountOwner.worker.ts');s=p.read_text().replace("type BaselineReply = { id: number; result: BaselineResult; opening: AccountMirrorOpening };", "type ContextResult = BaselineResult | Awaited<ReturnType<Owner['refreshAuthority']>>;\ntype BaselineReply = { id: number; result: ContextResult; opening: AccountMirrorOpening };")
+start=s.index('''        if (!Number.isSafeInteger(value.id)''');end=s.index('''      baselineFinish:''',start);body=s[start:end];body=body[:body.rfind('''      },''')];body=body.replace('value.id','id');body=body.replace('''              const result = await owner!.installLocalBaseline!(
+                command.expectedRevision,
+                command.kind === 'advance',
+              );''','''              const result = await operation();''')
+# Shared actual reservation/ack protocol, with operation functions chosen only by closed handlers.
+s=s[:start]+'''        return startContext(value.id, () => owner!.installLocalBaseline!(command.expectedRevision, command.kind === 'advance'));
+      },
+      authorityStart: input => {
+        live();
+        if (!owner?.access || !input || typeof input !== 'object' || Object.keys(input).join(',') !== 'id') throw Error('Worker authority refresh unavailable');
+        return startContext((input as {id:number}).id, () => owner!.refreshAuthority(owner!.access!));
+      },
+'''+s[end:]
+a='''  channel = createWorkerChannel(''';b='''  const startContext = (id: number, operation: () => Promise<ContextResult>) => {
+    live(); if (!owner || !prefix || baseline) throw Error('Worker context operation unavailable');
+'''+body+'''  };
+  channel = createWorkerChannel(''';assert a in s;s=s.replace(a,b);p.write_text(s)
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountWorkerClient.ts');s=p.read_text();start=s.index('''        return controller.journalFence(async (fence) => {''',s.index('''      maintainLocalHistory:'''));end=s.index('''      status:''',start);old=s[start:end];# strip final method closing and reuse actual queue body
+body=old[:old.rfind('''      },''')];body=body.replace("channel!.request('baselineStart', { id, command })", "channel!.request(method, { id, ...(command ? { command } : {}) })").replace("Awaited<ReturnType<NonNullable<Opened['installLocalBaseline']>>>", 'T')
+fn='''  const changeContext = <T extends object>(controller: MirrorController, method: 'baselineStart' | 'authorityStart', command?: WorkerLocalBaselineCommand) => {
+    requireWindowAccountMirrorController(controller, cohort);
+    if (!ready || receiving) throw Error('Worker context change is not ready');
+'''+body+'''  };
+'''
+a='''  const receiveOwned = (''';assert a in s;s=s.replace(a,fn+a)
+start=s.index('''      maintainLocalHistory:''');end=s.index('''      status:''',start);s=s[:start]+'''      maintainLocalHistory: (controller: MirrorController, input: WorkerLocalBaselineCommand) => changeContext<Awaited<ReturnType<NonNullable<Opened['installLocalBaseline']>>>>(controller, 'baselineStart', captureWorkerLocalBaselineCommand(input)),
+      refreshAuthority: (controller: MirrorController) => changeContext<Awaited<ReturnType<Opened['refreshAuthority']>>>(controller, 'authorityStart'),
+'''+s[end:];p.write_text(s)

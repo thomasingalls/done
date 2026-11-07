@@ -71,6 +71,7 @@ const recordedFiles = [
   'test/content/browser.mjs',
   'docs/journal-store.md',
   'scripts/storage-conformance/report.mjs',
+  'scripts/storage-conformance/observe.mjs',
   ...['scripts/journal', 'test/journal'].flatMap((dir) =>
     readdirSync(join(root, dir)).map((name) => `${dir}/${name}`),
   ),

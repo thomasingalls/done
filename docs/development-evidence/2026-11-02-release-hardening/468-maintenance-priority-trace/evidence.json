@@ -1,0 +1,607 @@
+{
+  "phase": 468,
+  "date": "2026-11-06",
+  "scope": "trace the failed maintenance entry without changing canonical runtime or tests",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountCapture.ts",
+      "sha256": "f9abd8db7b7f7a96b95d01c06d6a47e4b4d32c4068f4e3f10b1592b4982a8f36",
+      "bytes": 33645
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/contentMaintenance.ts",
+      "sha256": "133c4dee725c8b43083d235eecbe5212f17f9081e6ff3e680a338e4d97035b1a",
+      "bytes": 5220
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/preparationJournalObservation.ts",
+      "sha256": "367d9f3ff94f51ae00b86f0a45c7dab79b47ef0d2496180df5aa0614cf7659ae",
+      "bytes": 1144
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditScheduler.ts",
+      "sha256": "00f32596e332c09d74003f4965c0102339b174198994758e19c46793cdde8867",
+      "bytes": 3123
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditStart.ts",
+      "sha256": "7386b29fcabf5d6f7d869838d9d8e3c8294b731597874a25fb7e080a64875795",
+      "bytes": 2258
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workspaceBridge.ts",
+      "sha256": "f7bd65ea88a17abf246b5918e0dacbeb0a1cc6d98a1c7501a992b2e04a0570fd",
+      "bytes": 7516
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/retentionPriorityRetry.test.ts",
+      "sha256": "1fe796fe8cd5237db81d80f5bed77af5a8eec1d996d58982b2ce077c4f41dfc8",
+      "bytes": 7046
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/warmAuditScheduler.test.ts",
+      "sha256": "cda642c5744dea2f809db220df07f65be846419bd1e6c4c2e673e7ac7baca6d1",
+      "bytes": 7985
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/preparationJournalObservation.test.ts",
+      "sha256": "872d5b18f3bff34fa12c5d0c77e877ee227a9f1938a264813edd278ad2a8a0b9",
+      "bytes": 4115
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/contentMaintenance.test.ts",
+      "sha256": "cdf1e26d6a4ce8577079359729bdd1f75d5b961b46553fca477ef1e28ae1d961",
+      "bytes": 2318
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/admissionQueue.test.ts",
+      "sha256": "2c86562f979da14bcb0154a24611516c4c4f0b376ed958e915c3de5fee037278",
+      "bytes": 52249
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-private-files.json",
+      "sha256": "ed7041f7eacc0b266f264ba79ec7f8e3a71efc52ff220a1b54aba33320a35a8b",
+      "bytes": 699769
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-summary.json",
+      "sha256": "93a0448a8231c110ca97e3c5022174764a9a70a31bf7700271dbf4e4c275a536",
+      "bytes": 5288
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-declaration.json",
+      "sha256": "7f66fa9576d2fb68a2b5c996d057e01e7489d5fd99d87f934b5a01254723ad9b",
+      "bytes": 868
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-source-proof.json",
+      "sha256": "c9b40cdf8efb35ab2afded231f095ac6d1362ef537e7be7286e2961b9f1e5648",
+      "bytes": 524
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-host-review.json",
+      "sha256": "91df6dd1129c36cb2a18df3f968196218fb7950d5bdfd52c1580929ba1df276a",
+      "bytes": 1506
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-development-attempt.json",
+      "sha256": "6570804b88ee2703a1d8ee65a4af28676cd33fecf14ce0e36f1d5d62e5ca417a",
+      "bytes": 368
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/468-build-environment.json",
+      "sha256": "c075cdaedada206d284625b639bb7b9305f8433c9a70501be1447dccecbdc38b",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/source-changes.json",
+      "sha256": "ac8efa9250021ae1870a015c65070b8fde4eb3018d0cd8446c666c4bd449e31e",
+      "bytes": 936
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/observation-only.diff",
+      "sha256": "f1268b956040d07e175a15f80cc488c279af700ae4f21dd34bb7fd9072b333b4",
+      "bytes": 8381
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/prepare468.py",
+      "sha256": "b772a9f6e8408a151d609e9b16763729ea3dad936e1dc45605304873516f4389",
+      "bytes": 8766
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/build468.py",
+      "sha256": "36eec5d3b0ebec93c66ebf1d352369822c6c6acdd9846db56b41255f5f34a9e1",
+      "bytes": 1128
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/analyze468.py",
+      "sha256": "f7afbec3484d6009ad26083e01326b830bf58129d272e8476abb814676a1322c",
+      "bytes": 3113
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/prove468.mjs",
+      "sha256": "021a214fcec4bb3a9be9f429c7f084662f4d0dd126dcc39ddb454ee35cfadc1d",
+      "bytes": 2996
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/record468.py",
+      "sha256": "fc818985a2fbb7c9da0cb72d1384d94ea505afc4147c98abc06d7313d937eb78",
+      "bytes": 13616
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-barriers-468-20261106/run/barriers.jsonl",
+      "sha256": "4ecc023f5a225d53217a9344be29cf3ba562f1fc77f7531bddbff4703f0653bf",
+      "bytes": 3995140
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/child.log",
+      "sha256": "477177275e82d4371296c2ee47d5970416d5aadcee771f4dbdec3230b225eaca",
+      "bytes": 8327
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/host-load.jsonl",
+      "sha256": "a6b1f47d1bf4656e699923ae5d5a6382bdb0e14e92a7631471927ffae3f661fb",
+      "bytes": 3093
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/power-assertions-before.txt",
+      "sha256": "5e24b774be93eb95970ac9612cf0f13e24ef7d94014d35b55d03ba5ed361375a",
+      "bytes": 1681
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/power-log-after.meta.json",
+      "sha256": "fc90ef1ba58b7779762471cbcc22ca2cd8a9a951fc85dd411da8e8a5388f26eb",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/power-log-after.txt",
+      "sha256": "a4eb92ee550c33ffeb5fdc24f7dd31f8caea1cea0d6c95997899a5db639995b6",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/power-log-before.meta.json",
+      "sha256": "43d3c5924890f9781407b4aa4382341e3dd01133be47d634070e75c4a5c441f5",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-observation-build/run.json",
+      "sha256": "d3aa6e4a783974da690350fd5f8570857527a129d3851fb4e46529ba91bb1843",
+      "bytes": 1089
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/child.log",
+      "sha256": "b05324de5254c1d96d50c63571b3aa3b161aba38ee9727f4a25d4cc4ec08ba24",
+      "bytes": 3802
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/host-load.jsonl",
+      "sha256": "2aef729f1299ee009d8907d83c8f16858aa7e2f4df0a89288e16e6e04edb930f",
+      "bytes": 66092
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/power-assertions-before.txt",
+      "sha256": "31c70533a78d5c4209c63f3c866ff660f06527390bb689689a98b1edefde522a",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/power-log-after.meta.json",
+      "sha256": "85bbe492787d7d64887d208eaf28c046ea1ba3d24cf32c34ed43b67195b3bc75",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/power-log-after.txt",
+      "sha256": "ca3749eb3de855aeb826ad38e8b4a7e8134ebb44167a69a5d3ea9717de023e1d",
+      "bytes": 1276
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/power-log-before.meta.json",
+      "sha256": "169ad2d7fffb003dfa1b43e8757f3419645fa4e67ac93f5cafecbef50409e275",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-old-maintenance-barrier-trace/run.json",
+      "sha256": "99757b6d5ae11bc8cff89f8f21c200b1f48fd8e0fa831d712080ad98914c7839",
+      "bytes": 1951
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/child.log",
+      "sha256": "c13b89beef539d7d291a157e35a2a6f8a069547d72d6e5899643882bc153e048",
+      "bytes": 238
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/host-load.jsonl",
+      "sha256": "4d291648cb2ba628d91e7558d2c4192d6e5e7138268f0d92819a48f611d049b8",
+      "bytes": 1509
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/power-assertions-before.txt",
+      "sha256": "fe59e6f1ca951f42dd979edff979a2ff7154cc442de26c4cfc5f859bd877e4af",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/power-log-after.meta.json",
+      "sha256": "b49b46dce15971644b346ba3f166a0c4a33d2674fbe0cdd984ca04ed714bdef0",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/power-log-after.txt",
+      "sha256": "2f1cc845b3523fd0701c75dcddaf7967a8f868ce7232affa628e005ee198624b",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/power-log-before.meta.json",
+      "sha256": "64d191bb55f38d3ce9d45d8506c335c2c67ac9bf610ed62bb4db324da5313a23",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/468-existing-guard-unit-controls/run.json",
+      "sha256": "49707e5d5a5c1c3a87d4aa18db8da3e5044c53eced91760b6b4158ac4152c39b",
+      "bytes": 1227
+    }
+  ],
+  "summary": {
+    "phase": 468,
+    "kind": "observation-only diagnosis; no acceptance/timing credit",
+    "appTestOutcome": "failed",
+    "failure": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "typedKeys": 120,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "startAfterLastKeyMs": -59966.338134765625,
+        "durationMs": 777.699951171875,
+        "durabilityPassed": true,
+        "durabilityMs": 1.699951171875,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 0.400146484375,
+        "shadowEntryReached": true,
+        "preparationBodyReached": true,
+        "queueToGuardMs": 770.699951171875,
+        "reason": "activity-or-journal",
+        "errorId": 1,
+        "originJobKind": "foreground",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      },
+      {
+        "attempt": 2,
+        "startAfterLastKeyMs": 24756.86181640625,
+        "durationMs": 3.60009765625,
+        "durabilityPassed": true,
+        "durabilityMs": 1.60009765625,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 1.099853515625,
+        "shadowEntryReached": true,
+        "preparationBodyReached": false,
+        "queueToGuardMs": 0.199951171875,
+        "reason": "activity-or-journal",
+        "errorId": 35,
+        "originJobKind": "warm-audit",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      },
+      {
+        "attempt": 3,
+        "startAfterLastKeyMs": 43919.56201171875,
+        "durationMs": 6.0,
+        "durabilityPassed": true,
+        "durabilityMs": 3.5,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 1.699951171875,
+        "shadowEntryReached": true,
+        "preparationBodyReached": false,
+        "queueToGuardMs": 0.2001953125,
+        "reason": "activity-or-journal",
+        "errorId": 53,
+        "originJobKind": "warm-audit",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      },
+      {
+        "attempt": 4,
+        "startAfterLastKeyMs": 62633.161865234375,
+        "durationMs": 6.199951171875,
+        "durabilityPassed": true,
+        "durabilityMs": 1.89990234375,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 3.400146484375,
+        "shadowEntryReached": true,
+        "preparationBodyReached": false,
+        "queueToGuardMs": 0.39990234375,
+        "reason": "activity-or-journal",
+        "errorId": 71,
+        "originJobKind": "warm-audit",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      },
+      {
+        "attempt": 5,
+        "startAfterLastKeyMs": 81718.4619140625,
+        "durationMs": 6.0,
+        "durabilityPassed": true,
+        "durabilityMs": 3.2998046875,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 1.800048828125,
+        "shadowEntryReached": true,
+        "preparationBodyReached": false,
+        "queueToGuardMs": 0.2001953125,
+        "reason": "activity-or-journal",
+        "errorId": 89,
+        "originJobKind": "warm-audit",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      },
+      {
+        "attempt": 6,
+        "startAfterLastKeyMs": 97836.86181640625,
+        "durationMs": 3.800048828125,
+        "durabilityPassed": true,
+        "durabilityMs": 1.900146484375,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 1.300048828125,
+        "shadowEntryReached": true,
+        "preparationBodyReached": false,
+        "queueToGuardMs": 0.300048828125,
+        "reason": "activity-or-journal",
+        "errorId": 107,
+        "originJobKind": "warm-audit",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      },
+      {
+        "attempt": 7,
+        "startAfterLastKeyMs": 116580.06201171875,
+        "durationMs": 4.099853515625,
+        "durabilityPassed": true,
+        "durabilityMs": 2.0,
+        "nativeFlushPassed": true,
+        "nativeFlushMs": 1.199951171875,
+        "shadowEntryReached": true,
+        "preparationBodyReached": false,
+        "queueToGuardMs": 0.2998046875,
+        "reason": "activity-or-journal",
+        "errorId": 125,
+        "originJobKind": "warm-audit",
+        "conditions": {
+          "queuePriority": true,
+          "suspended": false,
+          "shadowActivity": false
+        },
+        "retryDelayMs": 10000,
+        "priorityOnly": true
+      }
+    ],
+    "completed": 0,
+    "allInterruptionIdsDistinct": true,
+    "barrierErrors": 0,
+    "events": 4111,
+    "writerEvents": 232,
+    "eventCap": 24000,
+    "actors": {
+      "1": 3879,
+      "2": 232
+    },
+    "coldReached": false,
+    "configuredRetryMs": 10000,
+    "canonicalSourceChanged": false,
+    "declaredCaseAssertionWaitASTsExact": 51,
+    "previousGateCountsUnchanged": {
+      "pass": 15,
+      "failed": 1,
+      "unrun": 20
+    }
+  },
+  "sourceProof": {
+    "inverseBytesExact": [
+      "src/crdt/contentMaintenance.ts",
+      "src/crdt/accountReceive.ts",
+      "src/crdt/accountCapture.ts",
+      "src/crdt/automaticLocalRetention.ts"
+    ],
+    "assertionAndWaitCallASTsExact": 51,
+    "onlySourceDifferences": [
+      "src/crdt/accountCapture.ts",
+      "src/crdt/accountReceive.ts",
+      "src/crdt/automaticLocalRetention.ts",
+      "src/crdt/contentMaintenance.ts",
+      "src/crdt/maintenanceBarrierObservation468.ts"
+    ],
+    "newModuleDiagnosticOnly": true,
+    "noCanonicalSourceChange": true
+  },
+  "host": {
+    "samples": 42,
+    "displayStates": [
+      "on"
+    ],
+    "swapMiB": {
+      "first": 12932.44,
+      "last": 12932.44,
+      "min": 12932.44,
+      "max": 12932.44
+    },
+    "topProcessPeaks": {
+      "node": 122.7,
+      "WindowServer": 156.3,
+      "ghostty": 48.4,
+      "runningboardd": 22.7,
+      "Claude Helper": 15.3,
+      "Claude Helper (Renderer)": 19.6,
+      "com.apple.WebKit.WebContent": 65.4,
+      "com.apple.Virtualization.VirtualMachine": 111.0,
+      "Codex (Renderer)": 16.3,
+      "Google Chrome": 70.7,
+      "Google Chrome Helper (GPU)": 27.0,
+      "Google Chrome Helper (Renderer)": 121.5,
+      "Google Chrome Helper": 17.0,
+      "ctkd": 39.8,
+      "Finder": 26.6,
+      "secd": 43.9,
+      "Safari": 12.6,
+      "Claude": 12.9,
+      "loginwindow": 10.9,
+      "com.apple.WebKit.GPU": 16.5,
+      "rapportd": 6.2,
+      "codex": 4.9,
+      "launchservicesd": 35.3,
+      "airportd": 16.1,
+      "WeatherWidget": 9.6,
+      "locationd": 8.4,
+      "Codex (Service)": 6.4,
+      "com.apple.DriverKit-AppleBCMWLAN": 4.9,
+      "mobileassetd": 40.3,
+      "duetexpertd": 63.9,
+      "claude": 4.8,
+      "dasd": 11.9,
+      "biomesyncd": 6.0,
+      "ChatGPT": 4.0,
+      "MTLAssetUpgraderD": 46.8,
+      "axassetsd": 22.8,
+      "T3 Code (Beta) Helper (Renderer)": 1.9,
+      "com.docker.backend": 5.3,
+      "io.tailscale.ipn.macsys.network-extension": 3.6,
+      "logd": 85.0
+    },
+    "fseventsdMaxCpuPercent": 3.7,
+    "acceptanceCredit": false,
+    "interpretation": "External logs preserved; this is a causal diagnosis, not a new gate replicate or performance estimate."
+  },
+  "focusedUnits": {
+    "files": 5,
+    "passed": 85,
+    "durationSeconds": 1.84,
+    "wrapperSeconds": 2.266835927963257,
+    "childExit": 0
+  },
+  "timedMatrixJourneysStarted": 0,
+  "diagnosticAppJourneysStarted": 1,
+  "diagnosticBuilds": 1,
+  "canonicalRuntimeOrTestChanges": false,
+  "frozenPriorPrivateFilesVerified": 663,
+  "noAcceptanceCredit": true,
+  "noNewLabPhase": true,
+  "allExistingGuardsAndDeadlinesUnchanged": true,
+  "serviceFlagsBudgetsAndLimitsUnchanged": true,
+  "rawProfilesRemainLocal": true,
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "next": "Repair scheduling between warm audit and read-only retention preparation; preserve foreground/lifecycle interruption, audit pressure and every final mutation guard. Needs a deterministic regression and uninstrumented gate rerun; no repair started in this phase."
+}

@@ -1,0 +1,51 @@
+{
+  "phase": 508,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineReuse.ts",
+      "sha256": "1a54dffcb5108fc332f2ea4ce2dbcd0ca7e2662f11f0f381ca87168f5f674a6b",
+      "bytes": 10493
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-baseline-projection-repair-508-20261107/508-private-files.json",
+      "sha256": "13dbe78638db309fecaf7e7819a1e1d5399ebfdba3eca3dbb36a57616ce62e97",
+      "bytes": 1318
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/508-baseline-projection-focused-retry/child.log",
+      "sha256": "013120a2ea71debaec7db1c362f5fdc4344b03b12290357e836135cf86939fac",
+      "bytes": 239
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/508-baseline-projection-focused-retry/run.json",
+      "sha256": "be6485d5238e13ebbe6c629cc416234c8756cc83cbe29da91b9af8094550b1eb",
+      "bytes": 1466
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/508-naive-flag-control/child.log",
+      "sha256": "cd52ba9193837ff05a27ef1f5982915583977389c56a5823fe8e20d6ce912878",
+      "bytes": 1243
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/508-naive-flag-control/run.json",
+      "sha256": "9c8efea6041ed3f8d357928c3d748d8430a0ae7801f7ff11d63d1e094daa1833",
+      "bytes": 1119
+    }
+  ],
+  "summary": {
+    "focusedFiles": 8,
+    "focusedPassed": 149,
+    "naiveFlagOnlyFailed": 1,
+    "naiveFlagOnlyPassed": 4,
+    "onlyNewExecutableStatement": "if (logical) clearView();",
+    "normalGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

@@ -1,0 +1,1956 @@
+{
+  "qualification": "Lab-only descriptive independent journey contrasts, mixed order. No causal certainty from 2 or3 runs. Tokens are logical budget units; arms/interval decisions are not actual timer firings. Raw failed runs retained.",
+  "groups": {
+    "Roff-Doff": [
+      {
+        "name": "named-cost-03-control1-Roff",
+        "drainMs": {
+          "H1": 39078.39794921875,
+          "H2": 40088.54638671875
+        },
+        "tokensTypingWindow": 1499,
+        "tokensThroughDelivery": 1512,
+        "peerMs": {
+          "n": 120,
+          "p50": 602.196044921875,
+          "p95": 742.490966796875,
+          "max": 918.86474609375
+        },
+        "postDrainPeerMs": {
+          "n": 52,
+          "p50": 584.836181640625,
+          "p95": 659.019287109375,
+          "max": 686.745849609375
+        },
+        "postBothDrainsPeerMs": {
+          "n": 50,
+          "p50": 584.5478515625,
+          "p95": 654.446044921875,
+          "max": 661.137451171875
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 655,
+            "contentHints": 120,
+            "namedHints": 0
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 155,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59505.168212890625,
+            "logicalReadFrames": {
+              "H1:quiet-peer": 353,
+              "H2:quiet-peer": 152,
+              "H1:backlog": 294,
+              "H2:backlog": 240,
+              "H1:live-writer": 237,
+              "H2:self": 8,
+              "H1:self": 58
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:quiet-peer": 5.932257829052393,
+              "H2:quiet-peer": 2.5543999717166113,
+              "H1:backlog": 4.940747313715025,
+              "H2:backlog": 4.033263113236755,
+              "H1:live-writer": 3.982847324321295,
+              "H2:self": 0.13444210377455848,
+              "H1:self": 0.9747052523655491
+            },
+            "httpRequests": {
+              "H1:/account/delivery/read-v2": 700,
+              "H2:/account/delivery/read-v2": 162,
+              "H1:/account/delivery/read-v2-batch": 121,
+              "H2:/account/delivery/read-v2-batch": 119,
+              "H2:/account/delivery/submit": 119,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/membership/v2/discover": 8,
+              "H1:/account/membership/v2/discover": 11
+            },
+            "statuses": {
+              "H1:quiet-peer:200": 353,
+              "H2:quiet-peer:200": 152,
+              "H1:backlog:200": 294,
+              "H2:backlog:200": 240,
+              "H1:live-writer:200": 237,
+              "H2:self:200": 8,
+              "H1:self:200": 58
+            }
+          },
+          "H1-drain": {
+            "durationMs": 39078.39794921875,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 152,
+              "H1:self": 7,
+              "H2:self": 7,
+              "H1:live-writer": 137,
+              "H1:quiet-peer": 206,
+              "H2:backlog": 255,
+              "H1:backlog": 257
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 3.8896169745115863,
+              "H1:self": 0.179127097510402,
+              "H2:self": 0.179127097510402,
+              "H1:live-writer": 3.5057731941321535,
+              "H1:quiet-peer": 5.271454583877545,
+              "H2:backlog": 6.525344266450358,
+              "H1:backlog": 6.576523437167617
+            },
+            "httpRequests": {
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 8,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 8,
+              "H2:/account/history/v1/checkpoint": 7,
+              "H1:/account/history/v1/checkpoint": 8,
+              "H2:/account/delivery/read-v2": 160,
+              "H1:/account/delivery/read-v2": 351,
+              "H2:/account/delivery/read-v2-batch": 127,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/submit": 67
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 152,
+              "H1:self:200": 7,
+              "H2:self:200": 7,
+              "H1:live-writer:200": 137,
+              "H1:quiet-peer:200": 206,
+              "H2:backlog:200": 255,
+              "H1:backlog:200": 257
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      },
+      {
+        "name": "named-cost-06-control2-Roff",
+        "drainMs": {
+          "H1": 38582.841064453125,
+          "H2": 41095.340087890625
+        },
+        "tokensTypingWindow": 1506,
+        "tokensThroughDelivery": 1521,
+        "peerMs": {
+          "n": 120,
+          "p50": 604.556396484375,
+          "p95": 765.33740234375,
+          "max": 1002.205078125
+        },
+        "postDrainPeerMs": {
+          "n": 52,
+          "p50": 572.627197265625,
+          "p95": 722.456787109375,
+          "max": 806.959716796875
+        },
+        "postBothDrainsPeerMs": {
+          "n": 47,
+          "p50": 572.605712890625,
+          "p95": 689.12451171875,
+          "max": 743.431884765625
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 661,
+            "contentHints": 120,
+            "namedHints": 0
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 160,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59505.868408203125,
+            "logicalReadFrames": {
+              "H2:backlog": 240,
+              "H1:quiet-peer": 357,
+              "H2:quiet-peer": 157,
+              "H1:backlog": 289,
+              "H1:live-writer": 238,
+              "H1:self": 59,
+              "H2:self": 9
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:backlog": 4.033215654523832,
+              "H1:quiet-peer": 5.999408286104201,
+              "H2:quiet-peer": 2.6383952406676734,
+              "H1:backlog": 4.8566638506557815,
+              "H1:live-writer": 3.999605524069467,
+              "H1:self": 0.9914988484037753,
+              "H2:self": 0.1512455870446437
+            },
+            "httpRequests": {
+              "H2:/account/delivery/read-v2-batch": 119,
+              "H1:/account/delivery/read-v2": 707,
+              "H2:/account/delivery/read-v2": 168,
+              "H1:/account/delivery/read-v2-batch": 118,
+              "H2:/account/delivery/submit": 119,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/membership/v2/discover": 11,
+              "H2:/account/membership/v2/discover": 8
+            },
+            "statuses": {
+              "H2:backlog:200": 240,
+              "H1:quiet-peer:200": 357,
+              "H2:quiet-peer:200": 157,
+              "H1:backlog:200": 289,
+              "H1:live-writer:200": 238,
+              "H1:self:200": 59,
+              "H2:self:200": 9
+            }
+          },
+          "H1-drain": {
+            "durationMs": 38582.841064453125,
+            "logicalReadFrames": {
+              "H1:self": 7,
+              "H2:quiet-peer": 151,
+              "H1:live-writer": 137,
+              "H2:self": 7,
+              "H1:quiet-peer": 207,
+              "H1:backlog": 257,
+              "H2:backlog": 249
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:self": 0.1814278007238091,
+              "H2:quiet-peer": 3.9136568441850246,
+              "H1:live-writer": 3.5508012427374065,
+              "H2:self": 0.1814278007238091,
+              "H1:quiet-peer": 5.365079249975497,
+              "H1:backlog": 6.66099211228842,
+              "H2:backlog": 6.453646054318352
+            },
+            "httpRequests": {
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 8,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 8,
+              "H2:/account/history/v1/checkpoint": 7,
+              "H1:/account/history/v1/checkpoint": 7,
+              "H1:/account/delivery/read-v2": 352,
+              "H2:/account/delivery/read-v2": 159,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/read-v2-batch": 124,
+              "H2:/account/delivery/submit": 66
+            },
+            "statuses": {
+              "H1:self:200": 7,
+              "H2:quiet-peer:200": 151,
+              "H1:live-writer:200": 137,
+              "H2:self:200": 7,
+              "H1:quiet-peer:200": 207,
+              "H1:backlog:200": 257,
+              "H2:backlog:200": 249
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      }
+    ],
+    "R1000-Doff": [
+      {
+        "name": "named-cost-01-pair1-D0",
+        "drainMs": {
+          "H1": 50196.85009765625,
+          "H2": 53739.30615234375
+        },
+        "tokensTypingWindow": 1468,
+        "tokensThroughDelivery": 1482,
+        "peerMs": {
+          "n": 120,
+          "p50": 691.147216796875,
+          "p95": 949.753173828125,
+          "max": 1266.443603515625
+        },
+        "postDrainPeerMs": {
+          "n": 31,
+          "p50": 640.369140625,
+          "p95": 818.888916015625,
+          "max": 879.0693359375
+        },
+        "postBothDrainsPeerMs": {
+          "n": 24,
+          "p50": 609.283447265625,
+          "p95": 746.911376953125,
+          "max": 747.1865234375
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 612,
+            "contentHints": 118,
+            "namedHints": 0
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 189,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59505.50634765625,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 188,
+              "H1:live-writer": 231,
+              "H1:quiet-peer": 339,
+              "H2:backlog": 235,
+              "H1:backlog": 268,
+              "H1:self": 40,
+              "H2:self": 10
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 3.1593714857516675,
+              "H1:live-writer": 3.8819936872799743,
+              "H1:quiet-peer": 5.696951774839443,
+              "H2:backlog": 3.949214357189584,
+              "H1:backlog": 4.503784883943866,
+              "H1:self": 0.6722066990960994,
+              "H2:self": 0.16805167477402486
+            },
+            "httpRequests": {
+              "H2:/account/delivery/read-v2": 199,
+              "H1:/account/delivery/read-v2": 642,
+              "H2:/account/delivery/read-v2-batch": 117,
+              "H1:/account/delivery/read-v2-batch": 118,
+              "H2:/account/delivery/submit": 117,
+              "H2:/account/history/v1/checkpoint": 9,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/membership/v2/discover": 9,
+              "H1:/account/membership/v2/discover": 11
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 188,
+              "H1:live-writer:200": 231,
+              "H1:quiet-peer:200": 339,
+              "H2:backlog:200": 235,
+              "H1:backlog:200": 268,
+              "H1:self:200": 40,
+              "H2:self:200": 10
+            }
+          },
+          "H1-drain": {
+            "durationMs": 50196.85009765625,
+            "logicalReadFrames": {
+              "H1:self": 9,
+              "H2:quiet-peer": 182,
+              "H2:self": 9,
+              "H1:live-writer": 172,
+              "H1:quiet-peer": 254,
+              "H2:backlog": 249,
+              "H1:backlog": 257
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:self": 0.17929411870447665,
+              "H2:quiet-peer": 3.6257255115794167,
+              "H2:self": 0.17929411870447665,
+              "H1:live-writer": 3.426509824129998,
+              "H1:quiet-peer": 5.060078461215229,
+              "H2:backlog": 4.96047061749052,
+              "H1:backlog": 5.119843167450055
+            },
+            "httpRequests": {
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 10,
+              "H2:/account/grant/v1/finish": 1,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 10,
+              "H2:/account/history/v1/checkpoint": 9,
+              "H1:/account/history/v1/checkpoint": 10,
+              "H1:/account/delivery/read-v2": 436,
+              "H2:/account/delivery/read-v2": 192,
+              "H2:/account/delivery/read-v2-batch": 124,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/submit": 86
+            },
+            "statuses": {
+              "H1:self:200": 9,
+              "H2:quiet-peer:200": 182,
+              "H2:self:200": 9,
+              "H1:live-writer:200": 172,
+              "H1:quiet-peer:200": 254,
+              "H2:backlog:200": 249,
+              "H1:backlog:200": 257
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      },
+      {
+        "name": "named-cost-05-pair2-D0",
+        "drainMs": {
+          "H1": 40611.52978515625,
+          "H2": 41115.429931640625
+        },
+        "tokensTypingWindow": 1496,
+        "tokensThroughDelivery": 1509,
+        "peerMs": {
+          "n": 120,
+          "p50": 591.79150390625,
+          "p95": 775.830810546875,
+          "max": 900.144775390625
+        },
+        "postDrainPeerMs": {
+          "n": 48,
+          "p50": 577.3056640625,
+          "p95": 680.3134765625,
+          "max": 741.427978515625
+        },
+        "postBothDrainsPeerMs": {
+          "n": 47,
+          "p50": 577.3056640625,
+          "p95": 680.3134765625,
+          "max": 741.427978515625
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 650,
+            "contentHints": 120,
+            "namedHints": 0
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 158,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59506.607666015625,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 155,
+              "H2:backlog": 240,
+              "H1:quiet-peer": 352,
+              "H1:backlog": 289,
+              "H1:live-writer": 238,
+              "H2:self": 9,
+              "H1:self": 56
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 2.6047527506516035,
+              "H2:backlog": 4.033165549396031,
+              "H1:quiet-peer": 5.915309472447513,
+              "H1:backlog": 4.856603515731054,
+              "H1:live-writer": 3.9995558364843977,
+              "H2:self": 0.1512437081023512,
+              "H1:self": 0.9410719615257407
+            },
+            "httpRequests": {
+              "H2:/account/delivery/read-v2": 166,
+              "H2:/account/delivery/read-v2-batch": 119,
+              "H1:/account/delivery/read-v2": 695,
+              "H1:/account/delivery/read-v2-batch": 120,
+              "H2:/account/delivery/submit": 119,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/membership/v2/discover": 8,
+              "H1:/account/membership/v2/discover": 11
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 155,
+              "H2:backlog:200": 240,
+              "H1:quiet-peer:200": 352,
+              "H1:backlog:200": 289,
+              "H1:live-writer:200": 238,
+              "H2:self:200": 9,
+              "H1:self:200": 56
+            }
+          },
+          "H1-drain": {
+            "durationMs": 40611.52978515625,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 156,
+              "H1:self": 8,
+              "H2:self": 8,
+              "H1:live-writer": 144,
+              "H1:quiet-peer": 215,
+              "H2:backlog": 253,
+              "H1:backlog": 258
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 3.8412736684698565,
+              "H1:self": 0.19698839325486445,
+              "H2:self": 0.19698839325486445,
+              "H1:live-writer": 3.54579107858756,
+              "H1:quiet-peer": 5.294063068724482,
+              "H2:backlog": 6.229757936685088,
+              "H1:backlog": 6.352875682469378
+            },
+            "httpRequests": {
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 9,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 9,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/history/v1/checkpoint": 8,
+              "H2:/account/delivery/read-v2": 165,
+              "H1:/account/delivery/read-v2": 369,
+              "H2:/account/delivery/read-v2-batch": 126,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/submit": 71
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 156,
+              "H1:self:200": 8,
+              "H2:self:200": 8,
+              "H1:live-writer:200": 144,
+              "H1:quiet-peer:200": 215,
+              "H2:backlog:200": 253,
+              "H1:backlog:200": 258
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      },
+      {
+        "name": "named-cost-07-pair3-D0",
+        "drainMs": {
+          "H1": 39620.2529296875,
+          "H2": 41643.9384765625
+        },
+        "tokensTypingWindow": 1499,
+        "tokensThroughDelivery": 1513,
+        "peerMs": {
+          "n": 120,
+          "p50": 601.80859375,
+          "p95": 779.81396484375,
+          "max": 939.00341796875
+        },
+        "postDrainPeerMs": {
+          "n": 50,
+          "p50": 585.366943359375,
+          "p95": 656.224365234375,
+          "max": 700.82177734375
+        },
+        "postBothDrainsPeerMs": {
+          "n": 46,
+          "p50": 582.932861328125,
+          "p95": 656.224365234375,
+          "max": 700.82177734375
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 652,
+            "contentHints": 120,
+            "namedHints": 0
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 158,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59508.0283203125,
+            "logicalReadFrames": {
+              "H1:quiet-peer": 352,
+              "H2:backlog": 244,
+              "H1:backlog": 291,
+              "H2:quiet-peer": 153,
+              "H1:live-writer": 237,
+              "H1:self": 57,
+              "H2:self": 9
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:quiet-peer": 5.915168254362213,
+              "H2:backlog": 4.10028708541017,
+              "H1:backlog": 4.89009648300967,
+              "H2:quiet-peer": 2.5710816560153935,
+              "H1:live-writer": 3.982655898533649,
+              "H1:self": 0.9578539502802447,
+              "H2:self": 0.15124009741267022
+            },
+            "httpRequests": {
+              "H1:/account/delivery/read-v2": 697,
+              "H2:/account/delivery/read-v2-batch": 121,
+              "H1:/account/delivery/read-v2-batch": 120,
+              "H2:/account/delivery/read-v2": 164,
+              "H2:/account/delivery/submit": 119,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/membership/v2/discover": 11,
+              "H2:/account/membership/v2/discover": 8
+            },
+            "statuses": {
+              "H1:quiet-peer:200": 352,
+              "H2:backlog:200": 244,
+              "H1:backlog:200": 291,
+              "H2:quiet-peer:200": 153,
+              "H1:live-writer:200": 237,
+              "H1:self:200": 57,
+              "H2:self:200": 9
+            }
+          },
+          "H1-drain": {
+            "durationMs": 39620.2529296875,
+            "logicalReadFrames": {
+              "H1:self": 8,
+              "H2:quiet-peer": 150,
+              "H1:live-writer": 139,
+              "H2:self": 7,
+              "H1:quiet-peer": 209,
+              "H1:backlog": 258,
+              "H2:backlog": 251
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:self": 0.20191693410431488,
+              "H2:quiet-peer": 3.785942514455904,
+              "H1:live-writer": 3.508306730062471,
+              "H2:self": 0.1766773173412755,
+              "H1:quiet-peer": 5.275079903475226,
+              "H1:backlog": 6.511821124864155,
+              "H2:backlog": 6.335143807522879
+            },
+            "httpRequests": {
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 9,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 8,
+              "H2:/account/history/v1/checkpoint": 7,
+              "H1:/account/history/v1/checkpoint": 8,
+              "H1:/account/delivery/read-v2": 358,
+              "H2:/account/delivery/read-v2": 158,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/read-v2-batch": 125,
+              "H2:/account/delivery/submit": 69
+            },
+            "statuses": {
+              "H1:self:200": 8,
+              "H2:quiet-peer:200": 150,
+              "H1:live-writer:200": 139,
+              "H2:self:200": 7,
+              "H1:quiet-peer:200": 209,
+              "H1:backlog:200": 258,
+              "H2:backlog:200": 251
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      }
+    ],
+    "R1000-Don": [
+      {
+        "name": "named-cost-02-pair1-D1",
+        "drainMs": {
+          "H1": 32067.396484375,
+          "H2": 40138.15771484375
+        },
+        "tokensTypingWindow": 1468,
+        "tokensThroughDelivery": 1482,
+        "peerMs": {
+          "n": 120,
+          "p50": 603.36474609375,
+          "p95": 804.618408203125,
+          "max": 941.958740234375
+        },
+        "postDrainPeerMs": {
+          "n": 65,
+          "p50": 580.21826171875,
+          "p95": 741.2783203125,
+          "max": 881.90087890625
+        },
+        "postBothDrainsPeerMs": {
+          "n": 49,
+          "p50": 574.7060546875,
+          "p95": 721.907958984375,
+          "max": 881.90087890625
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 1,
+            "repairIntervals": 61,
+            "quietReads": 609,
+            "contentHints": 120,
+            "namedHints": 120
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 154,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59505.97998046875,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 151,
+              "H1:quiet-peer": 293,
+              "H2:backlog": 242,
+              "H1:backlog": 308,
+              "H1:live-writer": 238,
+              "H2:self": 8,
+              "H1:self": 71
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 2.537560091432184,
+              "H1:quiet-peer": 4.923874879401523,
+              "H2:backlog": 4.066818159778732,
+              "H1:backlog": 5.175950385172932,
+              "H1:live-writer": 3.9995980249063563,
+              "H2:self": 0.13444026974475148,
+              "H1:self": 1.1931573939846694
+            },
+            "httpRequests": {
+              "H2:/account/delivery/read-v2": 161,
+              "H1:/account/delivery/read-v2": 668,
+              "H2:/account/delivery/read-v2-batch": 120,
+              "H1:/account/delivery/read-v2-batch": 121,
+              "H2:/account/delivery/submit": 119,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/membership/v2/discover": 8,
+              "H1:/account/membership/v2/discover": 11
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 151,
+              "H1:quiet-peer:200": 293,
+              "H2:backlog:200": 242,
+              "H1:backlog:200": 308,
+              "H1:live-writer:200": 238,
+              "H2:self:200": 8,
+              "H1:self:200": 71
+            }
+          },
+          "H1-drain": {
+            "durationMs": 32067.396484375,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 121,
+              "H1:self": 6,
+              "H2:self": 6,
+              "H1:live-writer": 109,
+              "H1:quiet-peer": 101,
+              "H2:backlog": 219,
+              "H1:backlog": 257
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 3.7733028953241603,
+              "H1:self": 0.18710592869376003,
+              "H2:self": 0.18710592869376003,
+              "H1:live-writer": 3.3990910379366404,
+              "H1:quiet-peer": 3.1496164663449604,
+              "H2:backlog": 6.82936639732224,
+              "H1:backlog": 8.01437061238272
+            },
+            "httpRequests": {
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 7,
+              "H1:/account/grant/v1/finish": 1,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 7,
+              "H2:/account/history/v1/checkpoint": 6,
+              "H1:/account/history/v1/checkpoint": 6,
+              "H2:/account/delivery/read-v2": 128,
+              "H1:/account/delivery/read-v2": 217,
+              "H2:/account/delivery/read-v2-batch": 109,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/submit": 53
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 121,
+              "H1:self:200": 6,
+              "H2:self:200": 6,
+              "H1:live-writer:200": 109,
+              "H1:quiet-peer:200": 101,
+              "H2:backlog:200": 219,
+              "H1:backlog:200": 257
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.504140930984262,
+        "armCoverageComplete": false
+      },
+      {
+        "name": "named-cost-04-pair2-D1",
+        "drainMs": {
+          "H1": 33089.179931640625,
+          "H2": 40131.10888671875
+        },
+        "tokensTypingWindow": 1445,
+        "tokensThroughDelivery": 1459,
+        "peerMs": {
+          "n": 120,
+          "p50": 599.712890625,
+          "p95": 796.35400390625,
+          "max": 936.197998046875
+        },
+        "postDrainPeerMs": {
+          "n": 63,
+          "p50": 575.665283203125,
+          "p95": 772.3740234375,
+          "max": 936.197998046875
+        },
+        "postBothDrainsPeerMs": {
+          "n": 49,
+          "p50": 570.881103515625,
+          "p95": 652.575439453125,
+          "max": 735.614990234375
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 601,
+            "contentHints": 119,
+            "namedHints": 119
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 154,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59505.76416015625,
+            "logicalReadFrames": {
+              "H1:quiet-peer": 289,
+              "H2:backlog": 236,
+              "H1:backlog": 300,
+              "H2:quiet-peer": 151,
+              "H1:live-writer": 237,
+              "H1:self": 69,
+              "H2:self": 8
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:quiet-peer": 4.856672359036909,
+              "H2:backlog": 3.9660023416356767,
+              "H1:backlog": 5.041528400384335,
+              "H2:quiet-peer": 2.537569294860115,
+              "H1:live-writer": 3.9828074363036245,
+              "H1:self": 1.159551532088397,
+              "H2:self": 0.13444075734358227
+            },
+            "httpRequests": {
+              "H1:/account/delivery/read-v2": 659,
+              "H2:/account/delivery/read-v2-batch": 117,
+              "H1:/account/delivery/read-v2-batch": 118,
+              "H2:/account/delivery/read-v2": 161,
+              "H2:/account/delivery/submit": 118,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/membership/v2/discover": 11,
+              "H2:/account/membership/v2/discover": 8
+            },
+            "statuses": {
+              "H1:quiet-peer:200": 289,
+              "H2:backlog:200": 236,
+              "H1:backlog:200": 300,
+              "H2:quiet-peer:200": 151,
+              "H1:live-writer:200": 237,
+              "H1:self:200": 69,
+              "H2:self:200": 8
+            }
+          },
+          "H1-drain": {
+            "durationMs": 33089.179931640625,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 128,
+              "H1:self": 6,
+              "H2:self": 6,
+              "H1:live-writer": 113,
+              "H1:quiet-peer": 106,
+              "H2:backlog": 225,
+              "H1:backlog": 257
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 3.868334007202261,
+              "H1:self": 0.18132815658760598,
+              "H2:self": 0.18132815658760598,
+              "H1:live-writer": 3.415013615733246,
+              "H1:quiet-peer": 3.203464099714372,
+              "H2:backlog": 6.799805872035225,
+              "H1:backlog": 7.76688937383579
+            },
+            "httpRequests": {
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 7,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 7,
+              "H2:/account/history/v1/checkpoint": 6,
+              "H1:/account/history/v1/checkpoint": 6,
+              "H2:/account/delivery/read-v2": 135,
+              "H1:/account/delivery/read-v2": 226,
+              "H2:/account/delivery/read-v2-batch": 112,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/submit": 54
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 128,
+              "H1:self:200": 6,
+              "H2:self:200": 6,
+              "H1:live-writer:200": 113,
+              "H1:quiet-peer:200": 106,
+              "H2:backlog:200": 225,
+              "H1:backlog:200": 257
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      },
+      {
+        "name": "named-cost-08-pair3-D1",
+        "drainMs": {
+          "H1": 32029.866943359375,
+          "H2": 39582.6494140625
+        },
+        "tokensTypingWindow": 1463,
+        "tokensThroughDelivery": 1477,
+        "peerMs": {
+          "n": 120,
+          "p50": 594.841796875,
+          "p95": 766.702392578125,
+          "max": 887.792236328125
+        },
+        "postDrainPeerMs": {
+          "n": 66,
+          "p50": 583.715576171875,
+          "p95": 688.115478515625,
+          "max": 719.8603515625
+        },
+        "postBothDrainsPeerMs": {
+          "n": 50,
+          "p50": 575.292236328125,
+          "p95": 687.09228515625,
+          "max": 708.453125
+        },
+        "realmCounterDeltas": [
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 608,
+            "contentHints": 120,
+            "namedHints": 120
+          },
+          {
+            "repairActivations": 0,
+            "repairIntervals": 0,
+            "quietReads": 151,
+            "contentHints": 0,
+            "namedHints": 0
+          }
+        ],
+        "readClassWindows": {
+          "typing": {
+            "durationMs": 59507.191650390625,
+            "logicalReadFrames": {
+              "H1:quiet-peer": 292,
+              "H2:quiet-peer": 149,
+              "H1:backlog": 308,
+              "H2:backlog": 240,
+              "H1:live-writer": 238,
+              "H1:self": 71,
+              "H2:self": 8
+            },
+            "logicalReadFramesPerSecond": {
+              "H1:quiet-peer": 4.906969929206586,
+              "H2:quiet-peer": 2.503899039218429,
+              "H1:backlog": 5.175844993820645,
+              "H2:backlog": 4.033125969210892,
+              "H1:live-writer": 3.999516586134135,
+              "H1:self": 1.193133099224889,
+              "H2:self": 0.13443753230702973
+            },
+            "httpRequests": {
+              "H1:/account/delivery/read-v2": 667,
+              "H2:/account/delivery/read-v2": 159,
+              "H1:/account/delivery/read-v2-batch": 121,
+              "H2:/account/delivery/read-v2-batch": 119,
+              "H2:/account/delivery/submit": 119,
+              "H2:/account/history/v1/checkpoint": 8,
+              "H1:/account/history/v1/checkpoint": 11,
+              "H1:/account/membership/v2/discover": 11,
+              "H2:/account/membership/v2/discover": 8
+            },
+            "statuses": {
+              "H1:quiet-peer:200": 292,
+              "H2:quiet-peer:200": 149,
+              "H1:backlog:200": 308,
+              "H2:backlog:200": 240,
+              "H1:live-writer:200": 238,
+              "H1:self:200": 71,
+              "H2:self:200": 8
+            }
+          },
+          "H1-drain": {
+            "durationMs": 32029.866943359375,
+            "logicalReadFrames": {
+              "H2:quiet-peer": 122,
+              "H1:self": 6,
+              "H2:self": 6,
+              "H1:live-writer": 110,
+              "H1:quiet-peer": 101,
+              "H2:backlog": 217,
+              "H1:backlog": 257
+            },
+            "logicalReadFramesPerSecond": {
+              "H2:quiet-peer": 3.808944951777072,
+              "H1:self": 0.18732516156280682,
+              "H2:self": 0.18732516156280682,
+              "H1:live-writer": 3.4342946286514584,
+              "H1:quiet-peer": 3.153306886307248,
+              "H2:backlog": 6.774926676521513,
+              "H1:backlog": 8.023761086940226
+            },
+            "httpRequests": {
+              "H2:/account/session/v1/acknowledge": 1,
+              "H1:/account/session/v1/acknowledge": 1,
+              "H2:/account/session/v1/renew": 1,
+              "H1:/account/session/v1/renew": 1,
+              "H2:/account/grant/v1/begin": 1,
+              "H1:/account/grant/v1/begin": 1,
+              "H2:/account/grant/v1/finish": 1,
+              "H1:/account/grant/v1/finish": 1,
+              "H2:/account/notifications/v1/subscribe": 1,
+              "H2:/account/membership/v2/discover": 7,
+              "H1:/account/notifications/v1/subscribe": 1,
+              "H1:/account/membership/v2/discover": 7,
+              "H2:/account/history/v1/checkpoint": 6,
+              "H1:/account/history/v1/checkpoint": 6,
+              "H2:/account/delivery/read-v2": 129,
+              "H1:/account/delivery/read-v2": 218,
+              "H2:/account/delivery/read-v2-batch": 108,
+              "H1:/account/delivery/read-v2-batch": 128,
+              "H2:/account/delivery/submit": 53
+            },
+            "statuses": {
+              "H2:quiet-peer:200": 122,
+              "H1:self:200": 6,
+              "H2:self:200": 6,
+              "H1:live-writer:200": 110,
+              "H1:quiet-peer:200": 101,
+              "H2:backlog:200": 217,
+              "H1:backlog:200": 257
+            }
+          }
+        },
+        "allMeasuredPredicates": true,
+        "cold": true,
+        "analysisError": null,
+        "repairTypingArmedFractionObserved": 0.0,
+        "armCoverageComplete": false
+      }
+    ]
+  },
+  "pairs": [
+    {
+      "pair": 1,
+      "rows": [
+        {
+          "name": "named-cost-01-pair1-D0",
+          "D": 0,
+          "drainMs": {
+            "H1": 50196.85009765625,
+            "H2": 53739.30615234375
+          },
+          "tokensTypingWindow": 1468,
+          "realmCounterDeltas": [
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 612,
+              "contentHints": 118,
+              "namedHints": 0
+            },
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 189,
+              "contentHints": 0,
+              "namedHints": 0
+            }
+          ],
+          "readClassWindows": {
+            "typing": {
+              "durationMs": 59505.50634765625,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 188,
+                "H1:live-writer": 231,
+                "H1:quiet-peer": 339,
+                "H2:backlog": 235,
+                "H1:backlog": 268,
+                "H1:self": 40,
+                "H2:self": 10
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 3.1593714857516675,
+                "H1:live-writer": 3.8819936872799743,
+                "H1:quiet-peer": 5.696951774839443,
+                "H2:backlog": 3.949214357189584,
+                "H1:backlog": 4.503784883943866,
+                "H1:self": 0.6722066990960994,
+                "H2:self": 0.16805167477402486
+              },
+              "httpRequests": {
+                "H2:/account/delivery/read-v2": 199,
+                "H1:/account/delivery/read-v2": 642,
+                "H2:/account/delivery/read-v2-batch": 117,
+                "H1:/account/delivery/read-v2-batch": 118,
+                "H2:/account/delivery/submit": 117,
+                "H2:/account/history/v1/checkpoint": 9,
+                "H1:/account/history/v1/checkpoint": 11,
+                "H2:/account/membership/v2/discover": 9,
+                "H1:/account/membership/v2/discover": 11
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 188,
+                "H1:live-writer:200": 231,
+                "H1:quiet-peer:200": 339,
+                "H2:backlog:200": 235,
+                "H1:backlog:200": 268,
+                "H1:self:200": 40,
+                "H2:self:200": 10
+              }
+            },
+            "H1-drain": {
+              "durationMs": 50196.85009765625,
+              "logicalReadFrames": {
+                "H1:self": 9,
+                "H2:quiet-peer": 182,
+                "H2:self": 9,
+                "H1:live-writer": 172,
+                "H1:quiet-peer": 254,
+                "H2:backlog": 249,
+                "H1:backlog": 257
+              },
+              "logicalReadFramesPerSecond": {
+                "H1:self": 0.17929411870447665,
+                "H2:quiet-peer": 3.6257255115794167,
+                "H2:self": 0.17929411870447665,
+                "H1:live-writer": 3.426509824129998,
+                "H1:quiet-peer": 5.060078461215229,
+                "H2:backlog": 4.96047061749052,
+                "H1:backlog": 5.119843167450055
+              },
+              "httpRequests": {
+                "H1:/account/session/v1/acknowledge": 1,
+                "H2:/account/session/v1/acknowledge": 1,
+                "H2:/account/session/v1/renew": 1,
+                "H1:/account/session/v1/renew": 1,
+                "H2:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/finish": 1,
+                "H1:/account/notifications/v1/subscribe": 1,
+                "H1:/account/membership/v2/discover": 10,
+                "H2:/account/grant/v1/finish": 1,
+                "H2:/account/notifications/v1/subscribe": 1,
+                "H2:/account/membership/v2/discover": 10,
+                "H2:/account/history/v1/checkpoint": 9,
+                "H1:/account/history/v1/checkpoint": 10,
+                "H1:/account/delivery/read-v2": 436,
+                "H2:/account/delivery/read-v2": 192,
+                "H2:/account/delivery/read-v2-batch": 124,
+                "H1:/account/delivery/read-v2-batch": 128,
+                "H2:/account/delivery/submit": 86
+              },
+              "statuses": {
+                "H1:self:200": 9,
+                "H2:quiet-peer:200": 182,
+                "H2:self:200": 9,
+                "H1:live-writer:200": 172,
+                "H1:quiet-peer:200": 254,
+                "H2:backlog:200": 249,
+                "H1:backlog:200": 257
+              }
+            }
+          },
+          "peerMs": {
+            "n": 120,
+            "p50": 691.147216796875,
+            "p95": 949.753173828125,
+            "max": 1266.443603515625
+          },
+          "postDrainPeerMs": {
+            "n": 31,
+            "p50": 640.369140625,
+            "p95": 818.888916015625,
+            "max": 879.0693359375
+          },
+          "allMeasuredPredicates": true
+        },
+        {
+          "name": "named-cost-02-pair1-D1",
+          "D": 1,
+          "drainMs": {
+            "H1": 32067.396484375,
+            "H2": 40138.15771484375
+          },
+          "tokensTypingWindow": 1468,
+          "realmCounterDeltas": [
+            {
+              "repairActivations": 1,
+              "repairIntervals": 61,
+              "quietReads": 609,
+              "contentHints": 120,
+              "namedHints": 120
+            },
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 154,
+              "contentHints": 0,
+              "namedHints": 0
+            }
+          ],
+          "readClassWindows": {
+            "typing": {
+              "durationMs": 59505.97998046875,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 151,
+                "H1:quiet-peer": 293,
+                "H2:backlog": 242,
+                "H1:backlog": 308,
+                "H1:live-writer": 238,
+                "H2:self": 8,
+                "H1:self": 71
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 2.537560091432184,
+                "H1:quiet-peer": 4.923874879401523,
+                "H2:backlog": 4.066818159778732,
+                "H1:backlog": 5.175950385172932,
+                "H1:live-writer": 3.9995980249063563,
+                "H2:self": 0.13444026974475148,
+                "H1:self": 1.1931573939846694
+              },
+              "httpRequests": {
+                "H2:/account/delivery/read-v2": 161,
+                "H1:/account/delivery/read-v2": 668,
+                "H2:/account/delivery/read-v2-batch": 120,
+                "H1:/account/delivery/read-v2-batch": 121,
+                "H2:/account/delivery/submit": 119,
+                "H2:/account/history/v1/checkpoint": 8,
+                "H1:/account/history/v1/checkpoint": 11,
+                "H2:/account/membership/v2/discover": 8,
+                "H1:/account/membership/v2/discover": 11
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 151,
+                "H1:quiet-peer:200": 293,
+                "H2:backlog:200": 242,
+                "H1:backlog:200": 308,
+                "H1:live-writer:200": 238,
+                "H2:self:200": 8,
+                "H1:self:200": 71
+              }
+            },
+            "H1-drain": {
+              "durationMs": 32067.396484375,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 121,
+                "H1:self": 6,
+                "H2:self": 6,
+                "H1:live-writer": 109,
+                "H1:quiet-peer": 101,
+                "H2:backlog": 219,
+                "H1:backlog": 257
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 3.7733028953241603,
+                "H1:self": 0.18710592869376003,
+                "H2:self": 0.18710592869376003,
+                "H1:live-writer": 3.3990910379366404,
+                "H1:quiet-peer": 3.1496164663449604,
+                "H2:backlog": 6.82936639732224,
+                "H1:backlog": 8.01437061238272
+              },
+              "httpRequests": {
+                "H2:/account/session/v1/acknowledge": 1,
+                "H1:/account/session/v1/acknowledge": 1,
+                "H2:/account/session/v1/renew": 1,
+                "H1:/account/session/v1/renew": 1,
+                "H2:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/begin": 1,
+                "H2:/account/grant/v1/finish": 1,
+                "H2:/account/notifications/v1/subscribe": 1,
+                "H2:/account/membership/v2/discover": 7,
+                "H1:/account/grant/v1/finish": 1,
+                "H1:/account/notifications/v1/subscribe": 1,
+                "H1:/account/membership/v2/discover": 7,
+                "H2:/account/history/v1/checkpoint": 6,
+                "H1:/account/history/v1/checkpoint": 6,
+                "H2:/account/delivery/read-v2": 128,
+                "H1:/account/delivery/read-v2": 217,
+                "H2:/account/delivery/read-v2-batch": 109,
+                "H1:/account/delivery/read-v2-batch": 128,
+                "H2:/account/delivery/submit": 53
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 121,
+                "H1:self:200": 6,
+                "H2:self:200": 6,
+                "H1:live-writer:200": 109,
+                "H1:quiet-peer:200": 101,
+                "H2:backlog:200": 219,
+                "H1:backlog:200": 257
+              }
+            }
+          },
+          "peerMs": {
+            "n": 120,
+            "p50": 603.36474609375,
+            "p95": 804.618408203125,
+            "max": 941.958740234375
+          },
+          "postDrainPeerMs": {
+            "n": 65,
+            "p50": 580.21826171875,
+            "p95": 741.2783203125,
+            "max": 881.90087890625
+          },
+          "allMeasuredPredicates": true
+        }
+      ]
+    },
+    {
+      "pair": 2,
+      "rows": [
+        {
+          "name": "named-cost-04-pair2-D1",
+          "D": 1,
+          "drainMs": {
+            "H1": 33089.179931640625,
+            "H2": 40131.10888671875
+          },
+          "tokensTypingWindow": 1445,
+          "realmCounterDeltas": [
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 601,
+              "contentHints": 119,
+              "namedHints": 119
+            },
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 154,
+              "contentHints": 0,
+              "namedHints": 0
+            }
+          ],
+          "readClassWindows": {
+            "typing": {
+              "durationMs": 59505.76416015625,
+              "logicalReadFrames": {
+                "H1:quiet-peer": 289,
+                "H2:backlog": 236,
+                "H1:backlog": 300,
+                "H2:quiet-peer": 151,
+                "H1:live-writer": 237,
+                "H1:self": 69,
+                "H2:self": 8
+              },
+              "logicalReadFramesPerSecond": {
+                "H1:quiet-peer": 4.856672359036909,
+                "H2:backlog": 3.9660023416356767,
+                "H1:backlog": 5.041528400384335,
+                "H2:quiet-peer": 2.537569294860115,
+                "H1:live-writer": 3.9828074363036245,
+                "H1:self": 1.159551532088397,
+                "H2:self": 0.13444075734358227
+              },
+              "httpRequests": {
+                "H1:/account/delivery/read-v2": 659,
+                "H2:/account/delivery/read-v2-batch": 117,
+                "H1:/account/delivery/read-v2-batch": 118,
+                "H2:/account/delivery/read-v2": 161,
+                "H2:/account/delivery/submit": 118,
+                "H1:/account/history/v1/checkpoint": 11,
+                "H2:/account/history/v1/checkpoint": 8,
+                "H1:/account/membership/v2/discover": 11,
+                "H2:/account/membership/v2/discover": 8
+              },
+              "statuses": {
+                "H1:quiet-peer:200": 289,
+                "H2:backlog:200": 236,
+                "H1:backlog:200": 300,
+                "H2:quiet-peer:200": 151,
+                "H1:live-writer:200": 237,
+                "H1:self:200": 69,
+                "H2:self:200": 8
+              }
+            },
+            "H1-drain": {
+              "durationMs": 33089.179931640625,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 128,
+                "H1:self": 6,
+                "H2:self": 6,
+                "H1:live-writer": 113,
+                "H1:quiet-peer": 106,
+                "H2:backlog": 225,
+                "H1:backlog": 257
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 3.868334007202261,
+                "H1:self": 0.18132815658760598,
+                "H2:self": 0.18132815658760598,
+                "H1:live-writer": 3.415013615733246,
+                "H1:quiet-peer": 3.203464099714372,
+                "H2:backlog": 6.799805872035225,
+                "H1:backlog": 7.76688937383579
+              },
+              "httpRequests": {
+                "H2:/account/session/v1/acknowledge": 1,
+                "H1:/account/session/v1/acknowledge": 1,
+                "H2:/account/session/v1/renew": 1,
+                "H1:/account/session/v1/renew": 1,
+                "H2:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/finish": 1,
+                "H2:/account/grant/v1/finish": 1,
+                "H1:/account/notifications/v1/subscribe": 1,
+                "H1:/account/membership/v2/discover": 7,
+                "H2:/account/notifications/v1/subscribe": 1,
+                "H2:/account/membership/v2/discover": 7,
+                "H2:/account/history/v1/checkpoint": 6,
+                "H1:/account/history/v1/checkpoint": 6,
+                "H2:/account/delivery/read-v2": 135,
+                "H1:/account/delivery/read-v2": 226,
+                "H2:/account/delivery/read-v2-batch": 112,
+                "H1:/account/delivery/read-v2-batch": 128,
+                "H2:/account/delivery/submit": 54
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 128,
+                "H1:self:200": 6,
+                "H2:self:200": 6,
+                "H1:live-writer:200": 113,
+                "H1:quiet-peer:200": 106,
+                "H2:backlog:200": 225,
+                "H1:backlog:200": 257
+              }
+            }
+          },
+          "peerMs": {
+            "n": 120,
+            "p50": 599.712890625,
+            "p95": 796.35400390625,
+            "max": 936.197998046875
+          },
+          "postDrainPeerMs": {
+            "n": 63,
+            "p50": 575.665283203125,
+            "p95": 772.3740234375,
+            "max": 936.197998046875
+          },
+          "allMeasuredPredicates": true
+        },
+        {
+          "name": "named-cost-05-pair2-D0",
+          "D": 0,
+          "drainMs": {
+            "H1": 40611.52978515625,
+            "H2": 41115.429931640625
+          },
+          "tokensTypingWindow": 1496,
+          "realmCounterDeltas": [
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 650,
+              "contentHints": 120,
+              "namedHints": 0
+            },
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 158,
+              "contentHints": 0,
+              "namedHints": 0
+            }
+          ],
+          "readClassWindows": {
+            "typing": {
+              "durationMs": 59506.607666015625,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 155,
+                "H2:backlog": 240,
+                "H1:quiet-peer": 352,
+                "H1:backlog": 289,
+                "H1:live-writer": 238,
+                "H2:self": 9,
+                "H1:self": 56
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 2.6047527506516035,
+                "H2:backlog": 4.033165549396031,
+                "H1:quiet-peer": 5.915309472447513,
+                "H1:backlog": 4.856603515731054,
+                "H1:live-writer": 3.9995558364843977,
+                "H2:self": 0.1512437081023512,
+                "H1:self": 0.9410719615257407
+              },
+              "httpRequests": {
+                "H2:/account/delivery/read-v2": 166,
+                "H2:/account/delivery/read-v2-batch": 119,
+                "H1:/account/delivery/read-v2": 695,
+                "H1:/account/delivery/read-v2-batch": 120,
+                "H2:/account/delivery/submit": 119,
+                "H2:/account/history/v1/checkpoint": 8,
+                "H1:/account/history/v1/checkpoint": 11,
+                "H2:/account/membership/v2/discover": 8,
+                "H1:/account/membership/v2/discover": 11
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 155,
+                "H2:backlog:200": 240,
+                "H1:quiet-peer:200": 352,
+                "H1:backlog:200": 289,
+                "H1:live-writer:200": 238,
+                "H2:self:200": 9,
+                "H1:self:200": 56
+              }
+            },
+            "H1-drain": {
+              "durationMs": 40611.52978515625,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 156,
+                "H1:self": 8,
+                "H2:self": 8,
+                "H1:live-writer": 144,
+                "H1:quiet-peer": 215,
+                "H2:backlog": 253,
+                "H1:backlog": 258
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 3.8412736684698565,
+                "H1:self": 0.19698839325486445,
+                "H2:self": 0.19698839325486445,
+                "H1:live-writer": 3.54579107858756,
+                "H1:quiet-peer": 5.294063068724482,
+                "H2:backlog": 6.229757936685088,
+                "H1:backlog": 6.352875682469378
+              },
+              "httpRequests": {
+                "H2:/account/session/v1/acknowledge": 1,
+                "H1:/account/session/v1/acknowledge": 1,
+                "H1:/account/session/v1/renew": 1,
+                "H2:/account/session/v1/renew": 1,
+                "H2:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/begin": 1,
+                "H2:/account/grant/v1/finish": 1,
+                "H1:/account/grant/v1/finish": 1,
+                "H2:/account/notifications/v1/subscribe": 1,
+                "H2:/account/membership/v2/discover": 9,
+                "H1:/account/notifications/v1/subscribe": 1,
+                "H1:/account/membership/v2/discover": 9,
+                "H2:/account/history/v1/checkpoint": 8,
+                "H1:/account/history/v1/checkpoint": 8,
+                "H2:/account/delivery/read-v2": 165,
+                "H1:/account/delivery/read-v2": 369,
+                "H2:/account/delivery/read-v2-batch": 126,
+                "H1:/account/delivery/read-v2-batch": 128,
+                "H2:/account/delivery/submit": 71
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 156,
+                "H1:self:200": 8,
+                "H2:self:200": 8,
+                "H1:live-writer:200": 144,
+                "H1:quiet-peer:200": 215,
+                "H2:backlog:200": 253,
+                "H1:backlog:200": 258
+              }
+            }
+          },
+          "peerMs": {
+            "n": 120,
+            "p50": 591.79150390625,
+            "p95": 775.830810546875,
+            "max": 900.144775390625
+          },
+          "postDrainPeerMs": {
+            "n": 48,
+            "p50": 577.3056640625,
+            "p95": 680.3134765625,
+            "max": 741.427978515625
+          },
+          "allMeasuredPredicates": true
+        }
+      ]
+    },
+    {
+      "pair": 3,
+      "rows": [
+        {
+          "name": "named-cost-07-pair3-D0",
+          "D": 0,
+          "drainMs": {
+            "H1": 39620.2529296875,
+            "H2": 41643.9384765625
+          },
+          "tokensTypingWindow": 1499,
+          "realmCounterDeltas": [
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 652,
+              "contentHints": 120,
+              "namedHints": 0
+            },
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 158,
+              "contentHints": 0,
+              "namedHints": 0
+            }
+          ],
+          "readClassWindows": {
+            "typing": {
+              "durationMs": 59508.0283203125,
+              "logicalReadFrames": {
+                "H1:quiet-peer": 352,
+                "H2:backlog": 244,
+                "H1:backlog": 291,
+                "H2:quiet-peer": 153,
+                "H1:live-writer": 237,
+                "H1:self": 57,
+                "H2:self": 9
+              },
+              "logicalReadFramesPerSecond": {
+                "H1:quiet-peer": 5.915168254362213,
+                "H2:backlog": 4.10028708541017,
+                "H1:backlog": 4.89009648300967,
+                "H2:quiet-peer": 2.5710816560153935,
+                "H1:live-writer": 3.982655898533649,
+                "H1:self": 0.9578539502802447,
+                "H2:self": 0.15124009741267022
+              },
+              "httpRequests": {
+                "H1:/account/delivery/read-v2": 697,
+                "H2:/account/delivery/read-v2-batch": 121,
+                "H1:/account/delivery/read-v2-batch": 120,
+                "H2:/account/delivery/read-v2": 164,
+                "H2:/account/delivery/submit": 119,
+                "H1:/account/history/v1/checkpoint": 11,
+                "H2:/account/history/v1/checkpoint": 8,
+                "H1:/account/membership/v2/discover": 11,
+                "H2:/account/membership/v2/discover": 8
+              },
+              "statuses": {
+                "H1:quiet-peer:200": 352,
+                "H2:backlog:200": 244,
+                "H1:backlog:200": 291,
+                "H2:quiet-peer:200": 153,
+                "H1:live-writer:200": 237,
+                "H1:self:200": 57,
+                "H2:self:200": 9
+              }
+            },
+            "H1-drain": {
+              "durationMs": 39620.2529296875,
+              "logicalReadFrames": {
+                "H1:self": 8,
+                "H2:quiet-peer": 150,
+                "H1:live-writer": 139,
+                "H2:self": 7,
+                "H1:quiet-peer": 209,
+                "H1:backlog": 258,
+                "H2:backlog": 251
+              },
+              "logicalReadFramesPerSecond": {
+                "H1:self": 0.20191693410431488,
+                "H2:quiet-peer": 3.785942514455904,
+                "H1:live-writer": 3.508306730062471,
+                "H2:self": 0.1766773173412755,
+                "H1:quiet-peer": 5.275079903475226,
+                "H1:backlog": 6.511821124864155,
+                "H2:backlog": 6.335143807522879
+              },
+              "httpRequests": {
+                "H1:/account/session/v1/acknowledge": 1,
+                "H2:/account/session/v1/acknowledge": 1,
+                "H1:/account/session/v1/renew": 1,
+                "H2:/account/session/v1/renew": 1,
+                "H2:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/finish": 1,
+                "H2:/account/grant/v1/finish": 1,
+                "H1:/account/notifications/v1/subscribe": 1,
+                "H1:/account/membership/v2/discover": 9,
+                "H2:/account/notifications/v1/subscribe": 1,
+                "H2:/account/membership/v2/discover": 8,
+                "H2:/account/history/v1/checkpoint": 7,
+                "H1:/account/history/v1/checkpoint": 8,
+                "H1:/account/delivery/read-v2": 358,
+                "H2:/account/delivery/read-v2": 158,
+                "H1:/account/delivery/read-v2-batch": 128,
+                "H2:/account/delivery/read-v2-batch": 125,
+                "H2:/account/delivery/submit": 69
+              },
+              "statuses": {
+                "H1:self:200": 8,
+                "H2:quiet-peer:200": 150,
+                "H1:live-writer:200": 139,
+                "H2:self:200": 7,
+                "H1:quiet-peer:200": 209,
+                "H1:backlog:200": 258,
+                "H2:backlog:200": 251
+              }
+            }
+          },
+          "peerMs": {
+            "n": 120,
+            "p50": 601.80859375,
+            "p95": 779.81396484375,
+            "max": 939.00341796875
+          },
+          "postDrainPeerMs": {
+            "n": 50,
+            "p50": 585.366943359375,
+            "p95": 656.224365234375,
+            "max": 700.82177734375
+          },
+          "allMeasuredPredicates": true
+        },
+        {
+          "name": "named-cost-08-pair3-D1",
+          "D": 1,
+          "drainMs": {
+            "H1": 32029.866943359375,
+            "H2": 39582.6494140625
+          },
+          "tokensTypingWindow": 1463,
+          "realmCounterDeltas": [
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 608,
+              "contentHints": 120,
+              "namedHints": 120
+            },
+            {
+              "repairActivations": 0,
+              "repairIntervals": 0,
+              "quietReads": 151,
+              "contentHints": 0,
+              "namedHints": 0
+            }
+          ],
+          "readClassWindows": {
+            "typing": {
+              "durationMs": 59507.191650390625,
+              "logicalReadFrames": {
+                "H1:quiet-peer": 292,
+                "H2:quiet-peer": 149,
+                "H1:backlog": 308,
+                "H2:backlog": 240,
+                "H1:live-writer": 238,
+                "H1:self": 71,
+                "H2:self": 8
+              },
+              "logicalReadFramesPerSecond": {
+                "H1:quiet-peer": 4.906969929206586,
+                "H2:quiet-peer": 2.503899039218429,
+                "H1:backlog": 5.175844993820645,
+                "H2:backlog": 4.033125969210892,
+                "H1:live-writer": 3.999516586134135,
+                "H1:self": 1.193133099224889,
+                "H2:self": 0.13443753230702973
+              },
+              "httpRequests": {
+                "H1:/account/delivery/read-v2": 667,
+                "H2:/account/delivery/read-v2": 159,
+                "H1:/account/delivery/read-v2-batch": 121,
+                "H2:/account/delivery/read-v2-batch": 119,
+                "H2:/account/delivery/submit": 119,
+                "H2:/account/history/v1/checkpoint": 8,
+                "H1:/account/history/v1/checkpoint": 11,
+                "H1:/account/membership/v2/discover": 11,
+                "H2:/account/membership/v2/discover": 8
+              },
+              "statuses": {
+                "H1:quiet-peer:200": 292,
+                "H2:quiet-peer:200": 149,
+                "H1:backlog:200": 308,
+                "H2:backlog:200": 240,
+                "H1:live-writer:200": 238,
+                "H1:self:200": 71,
+                "H2:self:200": 8
+              }
+            },
+            "H1-drain": {
+              "durationMs": 32029.866943359375,
+              "logicalReadFrames": {
+                "H2:quiet-peer": 122,
+                "H1:self": 6,
+                "H2:self": 6,
+                "H1:live-writer": 110,
+                "H1:quiet-peer": 101,
+                "H2:backlog": 217,
+                "H1:backlog": 257
+              },
+              "logicalReadFramesPerSecond": {
+                "H2:quiet-peer": 3.808944951777072,
+                "H1:self": 0.18732516156280682,
+                "H2:self": 0.18732516156280682,
+                "H1:live-writer": 3.4342946286514584,
+                "H1:quiet-peer": 3.153306886307248,
+                "H2:backlog": 6.774926676521513,
+                "H1:backlog": 8.023761086940226
+              },
+              "httpRequests": {
+                "H2:/account/session/v1/acknowledge": 1,
+                "H1:/account/session/v1/acknowledge": 1,
+                "H2:/account/session/v1/renew": 1,
+                "H1:/account/session/v1/renew": 1,
+                "H2:/account/grant/v1/begin": 1,
+                "H1:/account/grant/v1/begin": 1,
+                "H2:/account/grant/v1/finish": 1,
+                "H1:/account/grant/v1/finish": 1,
+                "H2:/account/notifications/v1/subscribe": 1,
+                "H2:/account/membership/v2/discover": 7,
+                "H1:/account/notifications/v1/subscribe": 1,
+                "H1:/account/membership/v2/discover": 7,
+                "H2:/account/history/v1/checkpoint": 6,
+                "H1:/account/history/v1/checkpoint": 6,
+                "H2:/account/delivery/read-v2": 129,
+                "H1:/account/delivery/read-v2": 218,
+                "H2:/account/delivery/read-v2-batch": 108,
+                "H1:/account/delivery/read-v2-batch": 128,
+                "H2:/account/delivery/submit": 53
+              },
+              "statuses": {
+                "H2:quiet-peer:200": 122,
+                "H1:self:200": 6,
+                "H2:self:200": 6,
+                "H1:live-writer:200": 110,
+                "H1:quiet-peer:200": 101,
+                "H2:backlog:200": 217,
+                "H1:backlog:200": 257
+              }
+            }
+          },
+          "peerMs": {
+            "n": 120,
+            "p50": 594.841796875,
+            "p95": 766.702392578125,
+            "max": 887.792236328125
+          },
+          "postDrainPeerMs": {
+            "n": 66,
+            "p50": 583.715576171875,
+            "p95": 688.115478515625,
+            "max": 719.8603515625
+          },
+          "allMeasuredPredicates": true
+        }
+      ]
+    }
+  ]
+}

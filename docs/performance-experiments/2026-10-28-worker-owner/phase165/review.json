@@ -1,0 +1,16 @@
+{
+  "existingRuntimeSourcesUnchanged": 417,
+  "newSource": "accountWorkerCohort.ts",
+  "unitCases": 14,
+  "focusedExistingAndNewCases": 35,
+  "nativeCases": 20,
+  "browsers": [
+    "chromium",
+    "firefox"
+  ],
+  "nativeMissingAnchorMutationsDetected": 2,
+  "metadataCases": 98,
+  "obligations": 938,
+  "unresolved": 392,
+  "qualification": "Private coordination primitive only; not an account verifier, no activation or performance credit."
+}

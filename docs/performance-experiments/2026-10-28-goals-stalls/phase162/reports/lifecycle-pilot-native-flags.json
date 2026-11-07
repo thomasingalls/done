@@ -1,0 +1,47 @@
+[
+  {
+    "label": "default",
+    "visible": "visible",
+    "focus": true,
+    "beats": 0,
+    "events": []
+  },
+  {
+    "label": "focus-emulation-disabled",
+    "visible": "visible",
+    "focus": false,
+    "beats": 2,
+    "events": []
+  },
+  {
+    "label": "minimized",
+    "visible": "visible",
+    "focus": false,
+    "beats": 50,
+    "events": []
+  },
+  {
+    "label": "bounds",
+    "bounds": {
+      "left": 22,
+      "top": 55,
+      "width": 1282,
+      "height": 800,
+      "windowState": "minimized"
+    }
+  },
+  {
+    "label": "thawed",
+    "visible": "visible",
+    "focus": false,
+    "beats": 80,
+    "events": []
+  },
+  {
+    "label": "restored",
+    "visible": "visible",
+    "focus": true,
+    "beats": 120,
+    "events": []
+  }
+]

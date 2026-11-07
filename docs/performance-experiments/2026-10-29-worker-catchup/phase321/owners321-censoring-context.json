@@ -1,0 +1,44 @@
+[
+  {
+    "case": "owners321-01-r1-normal",
+    "mode": "normal",
+    "readerMinusWriterMs": 4262.5,
+    "extraObservationMs": 5020.80712890625,
+    "overlapInformation": 120
+  },
+  {
+    "case": "owners321-02-r1-withheld",
+    "mode": "withheld",
+    "readerMinusWriterMs": 18100.800048828125,
+    "extraObservationMs": 18116.995361328125,
+    "overlapInformation": 84
+  },
+  {
+    "case": "owners321-03-r2-withheld",
+    "mode": "withheld",
+    "readerMinusWriterMs": 14637.7998046875,
+    "extraObservationMs": 15095.1220703125,
+    "overlapInformation": 83
+  },
+  {
+    "case": "owners321-04-r2-normal",
+    "mode": "normal",
+    "readerMinusWriterMs": 21153.0,
+    "extraObservationMs": 21168.879150390625,
+    "overlapInformation": 120
+  },
+  {
+    "case": "owners321-05-r3-normal",
+    "mode": "normal",
+    "readerMinusWriterMs": -19492.300048828125,
+    "extraObservationMs": 2.509521484375,
+    "overlapInformation": 120
+  },
+  {
+    "case": "owners321-06-r3-withheld",
+    "mode": "withheld",
+    "readerMinusWriterMs": 22816.599853515625,
+    "extraObservationMs": 23126.6611328125,
+    "overlapInformation": 80
+  }
+]

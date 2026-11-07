@@ -1,0 +1,7 @@
+# Previously failed campaigns, complete-command rerun — phase 350
+
+Three complete commands pass: geometry **228 passed /32 existing skips**, account transport, and account service-inbound. The sync command passes types, units and all native checks (**25 passed /6 existing skips**), including both historical oversized sealed/submitted writers, exact retries, rollback reading and cold/fault cases. [Every command and raw output](./evidence.json).
+
+The next sync stage fails before any discriminator executes: its scheduler control copies `accountSyncDriver.ts` into an isolated directory, rewrites just one protocol import, and then cannot resolve newly imported `account/historyHttp`. All five controls fail on the missing source closure; the same command on untouched signed base89b11fe2 reproduces it. This is a harness precondition failure, not an app refusal or a successful omission control. Preserve it; do not weaken the guards or claim the later stages passed.
+
+Stop the sequential command observer for classification, then repair only this copied-source harness in the next bounded patch. Ten later declared commands remain unrun here, and the five whole-tree receipts plus trace check remain pending. The four full command passes carried from earlier repair phases remain explicitly identified in the observer state, not relabeled as new executions. No source, test, limit, deadline or gate changed in this evidence-only phase. Stage2 has not started.

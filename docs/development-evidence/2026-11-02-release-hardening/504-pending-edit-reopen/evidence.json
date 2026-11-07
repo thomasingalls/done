@@ -1,0 +1,199 @@
+{
+  "diagnosticAttempts": 2,
+  "validAttempts": 1,
+  "inputCommandsIssued": 0,
+  "noGateCredit": true,
+  "noAppSourceChange": true,
+  "phase": 504,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkerClient.ts",
+      "sha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3",
+      "bytes": 23879
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-pending-reopen-504-20261107/504-private-files.json",
+      "sha256": "6e42ea89d146604a78bf278aa77a951ea920e5dc44c4867e0bfe67887db535d0",
+      "bytes": 5726
+    },
+    {
+      "localPath": "/private/tmp/done-pending-reopen-504-20261107/504-summary.json",
+      "sha256": "4432760eff5cdd81129b288358c4fafa9d2251104104c78727a12bb8a3434a32",
+      "bytes": 1529
+    },
+    {
+      "localPath": "/private/tmp/done-pending-reopen-504-20261107/504b-files.json",
+      "sha256": "4c52e01fc5b6baa1cca780a7c7fe1e9ef9117714e1491f9a60aa5a83435ea9da",
+      "bytes": 4432
+    },
+    {
+      "localPath": "/private/tmp/done-pending-reopen-504b-20261107/504b-declaration.json",
+      "sha256": "cc99a66b53ff7b64d2a663cde86a0f2055d4b9ebbc32e244e27b0324d881320c",
+      "bytes": 909
+    },
+    {
+      "localPath": "/private/tmp/done-pending-reopen-504b-20261107/reopen/result.json",
+      "sha256": "d989a8c1d3dab64d83fa4bcbeb495f1b6ccd744a985d6dd94e7fc19237a37ff8",
+      "bytes": 743
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/child.log",
+      "sha256": "77c9f40b323560e90dcbc9bed87c89bb70296946b4ae4e27d0b63eddf0790271",
+      "bytes": 1842
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/host-load.jsonl",
+      "sha256": "c4c5bb8560c0ac687e4ea7a956e1b04a67fc3b734fad0ff4c1e501c9fe37e8f0",
+      "bytes": 3078
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/power-assertions-before.txt",
+      "sha256": "455f3ff0bf177e8e971d9943f68a8ac16ce25886d1ccec2582232883cbbb9ffa",
+      "bytes": 1617
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/power-log-after.meta.json",
+      "sha256": "854ea7e45dc0a3b993f8b115581b8c61a84140c771141fb00d0dea032001187e",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/power-log-after.txt",
+      "sha256": "86a379c2e46ab5e3f0009fc465b70d851223d3d466c1f89d0e56bcf5ef09eee0",
+      "bytes": 450
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/power-log-before.meta.json",
+      "sha256": "254eade28a00da3084fc1f833e0a19998ae0f684c5dcb77e0e9c4c75874b73b6",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504-pending-edit-reopen/run.json",
+      "sha256": "42419f57e5a027f3f25471170715ba8cd83872c234c73521305e9eabeb108f8c",
+      "bytes": 1624
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/child.log",
+      "sha256": "9c634a05f751c9ee2df39210f212d573a5e71d14c0ae5c9e8b6ad508debefc66",
+      "bytes": 380
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/host-load.jsonl",
+      "sha256": "47175b094f7fbfc798f3f0a9d78845ad6c49e66f950e453b5ab0e5386c11838a",
+      "bytes": 3038
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/power-assertions-before.txt",
+      "sha256": "79f9d78f88fbae622da2d99a9caf010ef46d65e6a89d598a80f66b6ac97c711d",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/power-log-after.meta.json",
+      "sha256": "9352c409b560eccc4a506a08fbcbee3d3f75936cc1f9e6ef4f3e6dc1bc596119",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/power-log-after.txt",
+      "sha256": "16668deb0ab7b80e3a7718b448024e094e490e0c5f6214c0f865ae8dcde22b95",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/power-log-before.meta.json",
+      "sha256": "b3e2d03531429d5254bf3b598d5c4adf01e7241d9bb5319964fee46aa48dfe79",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/504b-pending-edit-reopen/run.json",
+      "sha256": "34d292ec28db4d994108124943c4bacb62a3f18665e2b1e7ffb99e7dc162ecfe",
+      "bytes": 1628
+    }
+  ],
+  "summary": {
+    "phase": 504,
+    "outcome": "saved pendingedit cold-recovers; restart selectsandaccepts one new envelope withoutinput",
+    "validAttempt": {
+      "phase": 504,
+      "outcome": "passed",
+      "inputCommandsIssued": 0,
+      "heldSubmits": [
+        {
+          "at": 1794008717391,
+          "bytes": 1056
+        }
+      ],
+      "openMs": 877,
+      "coldArchiveExactBeforeAnySubmit": true,
+      "pendingSourceSelectedAndSubmitPrepared": true,
+      "status": {
+        "send": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": 1794008720402,
+          "issueSince": null,
+          "lastSuccessAt": 1794008720402,
+          "reason": null,
+          "acceptedThrough": 2637
+        },
+        "receive": {
+          "phase": "working",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": null,
+          "lastSuccessAt": null,
+          "reason": null,
+          "receivedThrough": 2642
+        }
+      },
+      "exactOneNewAcceptance": true
+    },
+    "firstAttempt": "preparationJSON serializationfailed; protocolsource existedbeforeexecution; diagnosticHTTPbodydecoder thenfailedafter870mscoldarchive match. Retained, no gatecredit.",
+    "normalAssets": "exact473",
+    "guardsAndDeadlinesUnchanged": true,
+    "applicationSourceChanged": false,
+    "scopeLimit": "no ordinaryoffline shell/cold gatecredit andno power-loss/disk-fsyncclaim; selectednewenvelope accepted but no newremote plaintextreadback here",
+    "next": "private read-only source-notification/selection/scheduler trace on copiedfailedstate and bounded newedits"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

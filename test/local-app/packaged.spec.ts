@@ -28,9 +28,15 @@ test('packaged precache names real files and serves their exact bytes', async ({
       '/icon-maskable-512.png',
     ]),
   );
-  expect(entries.some((path) => /private|migration|recovery|binding|\.map$/u.test(path))).toBe(
-    false,
-  );
+  // These compiled public runtime modules are not private tooling or recovery pages.
+  const publicRuntime =
+    /^\/assets\/(?:privateDeliveryHttp|recoveryOwner\.worker)-[A-Za-z0-9_-]+\.js$/u;
+  expect(
+    entries.some(
+      (path) =>
+        /private|migration|recovery|binding|\.map$/u.test(path) && !publicRuntime.test(path),
+    ),
+  ).toBe(false);
 });
 
 for (const entry of ['/', '/local.html']) {

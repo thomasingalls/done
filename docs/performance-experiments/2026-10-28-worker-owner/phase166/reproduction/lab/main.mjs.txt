@@ -1,0 +1,46 @@
+import{bounded}from'./wire.mjs';
+import{openWindowAccountCohort}from'./src/crdt/accountWorkerCohort.ts';import{createWindowAccountMirror}from'./src/crdt/windowAccountMirror.ts';
+const all=[];const now=()=>performance.timeOrigin+performance.now();const defer=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b});return{promise,resolve,reject}};
+async function metadata(){const db=await new Promise((resolve,reject)=>{const q=indexedDB.open('done.slots');q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);q.onupgradeneeded=()=>{q.transaction.abort();reject(Error('No saved slot'))}});try{const slots=await new Promise((resolve,reject)=>{const q=db.transaction('slots').objectStore('slots').getAll();q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error)});const slot=slots.find(v=>v.status==='active'&&v.account);if(!slot)throw Error('No account slot');return{slotId:slot.id,pin:JSON.parse(localStorage.getItem('done.account-service.pin.v1')),identity:{id:slot.stores[0].principal,actor:{kind:'human',name:'You',color:'#e0662f'},device:{id:'mirror-test',name:'Mirror test'}}};}finally{db.close()}}
+function create(spec,fault='none'){
+ if(!crossOriginIsolated)throw Error('Isolated lab adapter required');const trace={requests:[],replies:[],storage:[],keysPackets:0,keyPacketZero:false,stale:0,held:false,committed:false,working:false,metrics:null,diagnostic:[]};
+ let observedKeys=[];let cohort,worker,port,closed=false,killed=false,next=0,workspace;const boot=defer(),pending=new Map(),lifeBuffer=new SharedArrayBuffer(4),life=new Int32Array(lifeBuffer);Atomics.store(life,0,1);
+ const erase=value=>{if(value?.opening){value.opening.key?.fill(0);for(const pair of value.opening.previous??[])pair[1]?.fill(0)}};
+ const rpc=(method,value)=>{if(closed&&method!=='close')return Promise.reject(Error('Closed'));if(!bounded(value))return Promise.reject(Error('Message bytes'));if(pending.size>=8&&method!=='close')return Promise.reject(Error('Message budget'));const id=++next,done=defer();pending.set(id,{...done,method});trace.requests.push({id,method,at:now()});worker.postMessage({kind:'rpc',owner:cohort.ticket.incarnation,id,method,value,fault});return done.promise};
+ const stop=async()=>{
+  closed=true;for(const[id,p]of pending)if(p.method!=='close'){p.reject(Error('Closed-uncertain'));pending.delete(id)}
+  if(killed){Atomics.store(life,0,0);worker?.terminate();port?.close();return;}
+  if(worker){await boot.promise;trace.metrics=await rpc('close');worker.terminate();port.close();}
+ };
+ const opening=(async()=>{
+  cohort=await openWindowAccountCohort(spec.slotId,stop);cohort.signal.addEventListener('abort',()=>{for(const[id,p]of pending)if(p.method!=='close'){p.reject(Error('Closed-uncertain'));pending.delete(id)}},{once:true});
+  worker=new Worker(new URL('./kernel.mjs',import.meta.url),{type:'module'});const channel=new MessageChannel();port=channel.port1;
+  port.onmessage=async e=>{
+   const m=e.data;if(m?.owner!==cohort.ticket.incarnation)return;
+   if(m.kind==='storage'){
+    let value;const at=now();try{
+     cohort.write(()=>{});
+     if(m.op==='get')value=localStorage.getItem(m.args[0]);else if(m.op==='keys')value=Object.keys(localStorage);else if(m.op==='length')value=localStorage.length;else if(m.op==='key')value=localStorage.key(m.args[0]);
+     else if(m.op==='set'||m.op==='remove'){if(!/^done\.pending-update\.done\.[a-f0-9]{32}\./.test(m.args[0]))throw Error('Journal scope');cohort.write(()=>{if(m.op==='set')localStorage.setItem(m.args[0],m.args[1]);else localStorage.removeItem(m.args[0])})}else throw Error('Storage operation');
+     answer(m.mailbox,{ok:true,value});trace.storage.push({op:m.op,at});
+    }catch{answer(m.mailbox,{ok:false,name:'InvalidStateError'})}
+   }else if(m.kind==='passkey'){
+    try{
+     const r=m.request,id=Uint8Array.from(atob(r.credentialId.replaceAll('-','+').replaceAll('_','/')),v=>v.charCodeAt(0));const c=await navigator.credentials.get({publicKey:{rpId:r.rpId,challenge:r.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id}]}});const response=c.response,signature=new Uint8Array(response.signature);if(fault==='bad-passkey')signature[0]^=1;
+     port.postMessage({kind:'passkey-result',owner:cohort.ticket.incarnation,id:m.id,ok:true,assertion:{credentialId:c.id,authenticatorData:new Uint8Array(response.authenticatorData),clientDataJSON:new Uint8Array(response.clientDataJSON),signature,userHandle:response.userHandle?new Uint8Array(response.userHandle):null}});
+    }catch{port.postMessage({kind:'passkey-result',owner:cohort.ticket.incarnation,id:m.id,ok:false})}
+   }
+  };
+  worker.onmessage=e=>{const m=e.data;if(m?.owner!==cohort.ticket.incarnation){trace.stale++;erase(m?.value);return}if(m.kind==='booted'){boot.resolve();return}if(m.kind==='diagnostic'){trace.diagnostic.push(m);return}if(m.kind==='held'){trace.held=true;return}if(m.kind==='committed'){trace.committed=true;return}if(m.kind==='working'){trace.working=true;return}
+   const p=pending.get(m.id);if(m.kind!=='reply'||!p||p.method!==m.method){trace.stale++;erase(m?.value);return}pending.delete(m.id);trace.replies.push({id:m.id,method:m.method,at:now(),ok:m.ok});if(!bounded(m.value)){erase(m.value);p.reject(Error('Reply bytes'));return}if(m.ok)p.resolve(m.value);else p.reject(Error(m.value?.reason??'Worker refused'));
+  };
+  worker.onerror=()=>{killed=true;void cohort.close().catch(()=>{})};worker.postMessage({kind:'bootstrap',ticket:cohort.ticket,port:channel.port2,life:lifeBuffer},[channel.port2]);await boot.promise;
+  try{
+   const result=await rpc('open',spec);trace.keysPackets++;const keys=[result.opening.key,...result.opening.previous.map(v=>v[1])];observedKeys=keys;if(fault==='stale-opening')result.opening.incarnation='ff'.repeat(16);
+   workspace=await createWindowAccountMirror(cohort,result.opening,{loadRecovery:()=>rpc('loadRecovery'),flushJournal:()=>rpc('flushJournal'),appendBatch:input=>rpc('appendBatch',input)},{identity:spec.identity});trace.keyPacketZero=keys.every(k=>k.every(v=>v===0));return{entries:workspace.exportEntries(),master:workspace.text({kind:'master'}).read().text};
+  }catch(cause){await cohort.close();trace.keyPacketZero=observedKeys.length>0&&observedKeys.every(k=>k.every(v=>v===0));throw cause;}
+ })();
+ function answer(mailbox,value){const bytes=new TextEncoder().encode(JSON.stringify(value));if(bytes.length>1024*1024)throw Error('Mailbox bound');new Uint8Array(mailbox,12,bytes.length).set(bytes);const h=new Int32Array(mailbox,0,3);Atomics.store(h,1,bytes.length);Atomics.store(h,0,1);Atomics.notify(h,0)}
+ const entry={opening,trace,get workspace(){return workspace},get cohort(){return cohort},rpc,hold:()=>rpc('hold'),release:()=>worker.postMessage({kind:'release',owner:cohort.ticket.incarnation}),close:()=>workspace?workspace.close():cohort.close(),kill:async()=>{killed=true;worker.terminate();return cohort.close()},input(text){const native=workspace.text({kind:'master'}),before=native.read().text,requests=trace.requests.length;const ticket=native.input({name:'insert',text},{ranges:[{anchor:before.length,head:before.length}],main:0});return{before,after:native.read().text,requestsDuringHandler:trace.requests.length-requests,ticket}},flush:()=>workspace.whenDurable(),read:()=>workspace.text({kind:'master'}).read().text};all.push(entry);return entry;
+}
+window.__mirrorLab={metadata,create,all};document.querySelector('#input').value='Disposable Window admission mirror';

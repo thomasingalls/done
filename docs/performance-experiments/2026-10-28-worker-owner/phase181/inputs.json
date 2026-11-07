@@ -1,0 +1,5 @@
+{
+  "src/crdt/workerWorkspaceQueues.ts": "ed5713f4d2a9538d57af03d2081fa71329e6a01369e80cf78d312c281ec74761",
+  "src/crdt/windowWorkspaceQueues.ts": "f5250ac61f6a844342238ff6c713e996868cdaed014fa8bae5770059eade3ae3",
+  "test/workerWorkspaceQueues.test.ts": "72febfa0e5f1e6b7866bce0342e27c5589edb953721e57e3f086d8059eddff82"
+}

@@ -1,0 +1,17 @@
+{
+  "baseCommit": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "candidate": "exact291runtime, actual Page composition and lab64service only",
+  "flags": {
+    "VITE_ACCOUNT_BASELINE_READ": "1",
+    "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+    "VITE_ACCOUNT_RETENTION": "1",
+    "VITE_ACCOUNT_RETENTION_AUTO": "1",
+    "VITE_ACCOUNT_RETENTION_RESUME": "1",
+    "VITE_ACCOUNT_HISTORY_AUTO": "0",
+    "VITE_ACCOUNT_BATCH": "coordinated-2000"
+  },
+  "publicFrontendReusedExact291": true,
+  "testOnlyStatusAccessor": true,
+  "startedAt": 1793379045134,
+  "finishedAt": 1793379048177
+}

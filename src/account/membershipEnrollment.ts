@@ -1,8 +1,15 @@
 import {
+  pageEnrollmentWorkspace,
+  createPageMembershipEnrollmentBrowser,
+  type EnrollmentWorkspaceExecution,
+  type EnrollmentWorkspaceOpened,
+  type EnrollmentBrowserFactory,
+} from './enrollmentExecution';
+import type { SetupWorkspacePort } from './setupWorkspace';
+import {
   reportEnrollmentProgress,
   type EnrollmentProgressListener,
 } from '../lib/enrollmentProgress';
-import { authenticationResponse } from './passkeyResponse';
 import { defaultDeviceName } from '../lib/browser';
 /** Browser/session composition for the retained additional-device coordinator. */
 import { parseAuthorityPin } from '../../account-protocol/authority';
@@ -33,8 +40,6 @@ import {
   NetworkThrottled,
 } from './scopedTransport';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
-import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
-import { assertSlotPasskey } from './assertSlotPasskey';
 import { enrollmentMessages, type EnrollmentView } from './deviceEnrollment';
 import type { SetupConfig } from './setupProgress';
 
@@ -89,7 +94,9 @@ async function responseJson(
   }
 }
 
-export function createMembershipEnrollment(
+export function createMembershipEnrollmentCoordinator<W extends SetupWorkspacePort>(
+  execution: EnrollmentWorkspaceExecution<W>,
+  browserFactory: EnrollmentBrowserFactory,
   config: SetupConfig,
   slotId: string,
   code: string,
@@ -118,12 +125,17 @@ export function createMembershipEnrollment(
   }
   type Binding = { scope: GrantScope; identity: { accountId: string; credentialId: string } };
   let notificationBinding: Binding | undefined,
-    opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined,
-    operation: Promise<EnrollmentView> | undefined,
-    last: EnrollmentView = { kind: 'locked', message: enrollmentMessages.locked, canCancel: false };
+    opened: EnrollmentWorkspaceOpened<W> | undefined,
+    operation: Promise<EnrollmentView<W>> | undefined,
+    last: EnrollmentView<W> = {
+      kind: 'locked',
+      message: enrollmentMessages.locked,
+      canCancel: false,
+    };
   const editors = new Set<() => void>(),
     guard = () => lifetime.signal.throwIfAborted();
-  const view = (kind: EnrollmentView['kind'], extra: Partial<EnrollmentView> = {}) =>
+  const browser = browserFactory(lifetime.signal, guard);
+  const view = (kind: EnrollmentView<W>['kind'], extra: Partial<EnrollmentView<W>> = {}) =>
     (last = { kind, message: enrollmentMessages[kind], canCancel: false, ...extra });
   const identity = (base: SuccessorBase) => ({
     accountId: base.receipt.offer.epoch.accountId,
@@ -291,15 +303,12 @@ export function createMembershipEnrollment(
             });
           },
           assert: async (context) => {
-            const credential = (await navigator.credentials.get({
-              publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
-                await enrollmentOptions(context),
-              ),
-              signal: lifetime.signal,
-            })) as PublicKeyCredential | null;
+            const response = await browser.authenticate(
+              await enrollmentOptions(context),
+              lifetime.signal,
+            );
             guard();
-            if (!credential) throw Error('Passkey request cancelled');
-            return authenticationResponse(credential);
+            return response;
           },
           acknowledge: (login) =>
             postSession(
@@ -369,14 +378,14 @@ export function createMembershipEnrollment(
     if (!joined) return null;
     if (workspaceId !== joined.workspaceId)
       throw Error('Saved workspace differs from this connection');
-    opened = await openOwnedSyncingAccountWorkspace(
+    opened = await execution.open(
       {
         slotId,
         code,
         pin,
         signal: lifetime.signal,
         membershipContinuation: true,
-        assertPasskey: assertSlotPasskey(lifetime.signal),
+        assertPasskey: browser.assertSlot,
         ...(networkLogin ? { networkLogin } : {}),
         identity: {
           id: joined.principalId,
@@ -495,4 +504,30 @@ export function createMembershipEnrollment(
       return !!operation;
     },
   };
+}
+
+export function createMembershipEnrollment(
+  config: SetupConfig,
+  slotId: string,
+  code: string,
+  role: 'existing' | 'new',
+  workspaceId?: string,
+  invitation?: unknown,
+  networkLogin?: NetworkLogin,
+  begin?: string,
+  onProgress?: EnrollmentProgressListener,
+) {
+  return createMembershipEnrollmentCoordinator(
+    pageEnrollmentWorkspace,
+    createPageMembershipEnrollmentBrowser,
+    config,
+    slotId,
+    code,
+    role,
+    workspaceId,
+    invitation,
+    networkLogin,
+    begin,
+    onProgress,
+  );
 }

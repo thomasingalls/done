@@ -1,0 +1,175 @@
+{
+  "phase": 466,
+  "date": "2026-11-06",
+  "scope": "old-fixture precondition failure, then operator-approved amendment",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/gate-maintenance.spec.ts.gz",
+      "sha256": "34fac797c554d6be981e0692a06506c7b83fd4cc7d1856edcc0820e25a597a34",
+      "bytes": 3824
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-case.py.gz",
+      "sha256": "f7c0a36a2b3f57cbe91132b7c2bfc79908ec8a5098b5cbb096cf9a5c102b549f",
+      "bytes": 2021
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-28-idle-reconciliation/phase153/after-1-maintenance-C-withheld/result.json.gz",
+      "sha256": "0c131a2474a5233f287c071767c99f5076c08b09a84b84129f2774968d3ca16c",
+      "bytes": 46478
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-gates-466-20261106/466-private-files.json",
+      "sha256": "6255cfd3efc45ef437de41b91a93afa76e85515926e1551bdfa3e86784a42e5f",
+      "bytes": 206826
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-gates-466-20261106/466-finding.json",
+      "sha256": "c690dbd283e94a80ed8d1375b8f07e932ca499c829199d79728dd35a372fe52e",
+      "bytes": 966
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-gates-466-20261106/466-host-review.json",
+      "sha256": "40e827c47c86861031a3e611154fa99250cc8b0464b5fabfe67221fb2d9e4046",
+      "bytes": 566
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-gates-466-20261106/466-operator-approval.json",
+      "sha256": "fca1fa88c1d8455d6c3e352a54f52c7c604f3e870aac606ea849389e29c3fed9",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-gates-466-20261106/466-old-saved-precondition-proposed.patch",
+      "sha256": "fd5f7fe7220381516800925d1efad3f08cccabb386336d9d3fe32e5e9cd70623",
+      "bytes": 4445
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-gates-466-20261106/466-overlap-controls.json",
+      "sha256": "e6a105afb5d12ce1a32212f7ab1516e3a87d2ee42b360444b23f90095ebbb6d3",
+      "bytes": 363
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/child.log",
+      "sha256": "5ddc774a529ea3696c8176edd303dddde09e6e5ab7d237dd8314b67f2f371f8a",
+      "bytes": 2949
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/host-load.jsonl",
+      "sha256": "fa90aec256a23a2f2f9683e726d46bd6d934dda6a69b6568ed68950229c4a289",
+      "bytes": 34491
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/power-assertions-before.txt",
+      "sha256": "8eef6bc7fdb7a3caf7389acaa177a2bef0b6efc1decc3f9d3d8228eb32f782ca",
+      "bytes": 2127
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/power-log-after.meta.json",
+      "sha256": "32f2fcec7731ded383277ed22869b9324b28d0848e4ba10191053380201b33f9",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/power-log-after.txt",
+      "sha256": "3d9498d8f7c56548dc921e5c999338948227b8bd8260be0c946b2ee78f8bd617",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/power-log-before.meta.json",
+      "sha256": "5350a0bbf7eb16c5a1ff8f14aec9ac84c4558566342ac41266663ac6cf8af99d",
+      "bytes": 478
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/466-r1-old-maintenance-normal/run.json",
+      "sha256": "65d54e2f6f9f58fea178c9623f24d3ebd57270787910b6aedaa44f9e38e1f169",
+      "bytes": 1997
+    }
+  ],
+  "finding": {
+    "testOutcome": "failed",
+    "failedBoundary": "90s saved-slice plus active-verification fixture prerequisite",
+    "offers": 0,
+    "maintenanceAttempts": 1,
+    "maintenanceCompletions": 1,
+    "maintenanceReportedElapsedMs": 2920,
+    "observedDurabilityToCompleteMs": 2919.10009765625,
+    "savedSliceObserved": false,
+    "finalPhase": "idle",
+    "haltedObserved": false,
+    "overflow": 0,
+    "readerCatchupMs": 23942.821533203125,
+    "noMeasuredInputOrPeerResult": true,
+    "existingCaseSourceUnchanged": true,
+    "proposalApplied": false,
+    "proposalSha256": "fd5f7fe7220381516800925d1efad3f08cccabb386336d9d3fe32e5e9cd70623",
+    "changeRequiresOperator": "separate old-fixture saved-slice prerequisite; not covered by prior overlap amendment",
+    "proposedScope": "old1024case and its analyzer only; active verifying plus unfinished backlog, all timing/completion/Undo/archive/cold/historical-comparison gates retained; grown saved-slice and native resumable cases unchanged"
+  },
+  "operatorApproval": {
+    "operatorMessage": "i approve changing the fixture",
+    "scope": "the proposed old1024saved-slice prerequisite amendment only; record saved slice as information, retain active verification/unfinished backlog and all remaining gates; grown/native unchanged",
+    "proposalSha256": "fd5f7fe7220381516800925d1efad3f08cccabb386336d9d3fe32e5e9cd70623",
+    "appliedInThisRoot": false,
+    "next": "apply exact proposal in new467root, keep466attempt/source unchanged"
+  },
+  "host": {
+    "samples": 22,
+    "swapUsedMiB": {
+      "first": 12956.44,
+      "last": 12956.44,
+      "min": 12956.44,
+      "max": 12956.44
+    },
+    "processesOverOneCore": [
+      {
+        "pid": 423,
+        "process": "WindowServer",
+        "sampleCount": 1,
+        "firstLastSpanSeconds": 0.0
+      },
+      {
+        "pid": 47656,
+        "process": "Google Chrome",
+        "sampleCount": 1,
+        "firstLastSpanSeconds": 0.0
+      },
+      {
+        "pid": 47633,
+        "process": "Google Chrome Helper (Renderer)",
+        "sampleCount": 3,
+        "firstLastSpanSeconds": 9.996907949447632
+      }
+    ]
+  },
+  "noiseRule": "No non-test process>one core for>10s; swap constant. No automatic noise rerun required.",
+  "testCodeStillUnchanged": true,
+  "appSourceOrGuardsChanged": false,
+  "developmentControls": "Preserve initial syntax errors in the new analysis control and corrected three passing controls; no app run or predicate value changed by the syntax fix.",
+  "timedMatrixJourneysStarted": 1,
+  "qualifiedJourneysCompleted": 0,
+  "stage5BlockingPassed": 15,
+  "stage5BlockingRemaining": 21,
+  "remainingDeclaredRunsNotStarted": 5,
+  "next": "apply approved patch in fresh467root and restart old6cell block; original failed attempt stays not-exposed",
+  "committed": false,
+  "pushed": false
+}

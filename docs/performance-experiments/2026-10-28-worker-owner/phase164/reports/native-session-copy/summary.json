@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "selection": "standalone-write-session",
+  "claim": "Only this bounded selection; no native aggregate or release qualification.",
+  "status": "passed",
+  "stages": [
+    {
+      "id": "write-session:full",
+      "key": "8aeb25c09e52269fb9c54694ecbaa3afb00b0e14a0e40e3d189dc64f1ee24d23",
+      "reused": false,
+      "status": "passed",
+      "elapsedMs": 47908,
+      "cases": 18,
+      "reason": null,
+      "groupDrained": true
+    }
+  ],
+  "startedAt": "2026-10-28T21:02:34.513Z",
+  "input": "006d92ef3462b76e03698685a4b2aa53c6fcf6193df29090d333d6a7807c5f52",
+  "completedAt": "2026-10-28T21:04:19.066Z"
+}

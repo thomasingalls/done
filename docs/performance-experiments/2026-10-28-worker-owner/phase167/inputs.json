@@ -1,0 +1,6 @@
+{
+  "src/crdt/windowJournalBridge.ts": "ab6f9c6795f932ef385c4414a48fdf5767ee870719e58877d1afd352ec3e1764",
+  "src/crdt/workerChannel.ts": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+  "test/windowJournalBridge.test.ts": "2ee6e9fcc5e1900b53d30c060150fcb0d2b8d779c1b5bb7b2d94e36ecc258468",
+  "test/workerChannel.test.ts": "66313dbb7b37c3957c8b738727650133afa42e0184569d6fb167e2a86e765912"
+}

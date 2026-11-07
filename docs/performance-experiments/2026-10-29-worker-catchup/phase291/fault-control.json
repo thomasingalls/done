@@ -1,0 +1,4 @@
+{
+  "fault": "ignore partial native-turn alignment",
+  "exactNamedCaseFails": true
+}

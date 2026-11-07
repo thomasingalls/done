@@ -1,0 +1,1 @@
+Packet audit initially compared domain/construction line numbers as identities and replaced every identical fixture expectation. Corrected to independently compare unchanged labels/paths/contracts and only the first exact assertion. Neither refusal was a product result. Private factor/key string scan passed; no profiles copied.

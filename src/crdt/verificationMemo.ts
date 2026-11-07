@@ -1,55 +1,126 @@
 /** Private, owner-scoped crypto reuse. Semantic reducers and commit guards always run again. */
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import { eraseVerified, sameBytes } from './verifiedRecords';
+import { ownedByteCapacity } from './verificationOwnership';
 export function createVerificationMemo() {
-  const entries = new Map<string, { context: string; inputs: Uint8Array[]; value: unknown }>();
-  let revision = 0;
+  const entries = new Map<
+    string,
+    {
+      context: string;
+      inputs: Uint8Array[];
+      value: unknown;
+      slots: readonly string[];
+      bytes: number;
+    }
+  >();
+  let revision = 0,
+    ownedBytes = 0;
+  const drop = (key: string) => {
+    const previous = entries.get(key);
+    if (previous) ownedBytes -= previous.bytes;
+    eraseVerified(previous);
+    entries.delete(key);
+  };
   const clear = () => {
     revision++;
     for (const entry of entries.values()) eraseVerified(entry);
     entries.clear();
+    ownedBytes = 0;
+  };
+  const check = async <T>(
+    key: string,
+    slots: readonly string[],
+    context: string,
+    inputs: readonly Uint8Array[],
+    verify: () => Promise<T>,
+    current: () => void,
+  ): Promise<T> => {
+    current();
+    const previous = entries.get(key);
+    if (
+      previous?.context === context &&
+      previous.inputs.length === inputs.length &&
+      inputs.every((b, i) => sameBytes(b, previous.inputs[i]!))
+    )
+      return structuredClone(previous.value) as T;
+    drop(key);
+    const at = revision,
+      copy = inputs.map((b) => b.slice());
+    let value: T | undefined;
+    try {
+      value = await verify();
+      current();
+      if (at !== revision) throw Error('Verification owner changed');
+      const retained = { context, inputs: copy, value: structuredClone(value), slots };
+      const bytes = ownedByteCapacity([retained.inputs, retained.value]);
+      entries.set(key, { ...retained, bytes });
+      ownedBytes += bytes;
+      return structuredClone(value);
+    } catch (e) {
+      eraseVerified(copy);
+      throw e;
+    } finally {
+      eraseVerified(value);
+    }
   };
   return {
     clear,
+    /** Capacity of actual independently owned buffers; not an estimate from logical positions. */
+    ownedBytes: () => ownedBytes,
     retain(slots: ReadonlySet<string>) {
-      for (const [slot, entry] of entries)
-        if (!slots.has(slot)) {
-          eraseVerified(entry);
-          entries.delete(slot);
-        }
+      for (const [key, entry] of entries)
+        if (entry.slots.some((slot) => !slots.has(slot))) drop(key);
     },
-    async check<T>(
+    check<T>(
       slot: string,
       context: string,
       inputs: readonly Uint8Array[],
       verify: () => Promise<T>,
       current: () => void,
     ): Promise<T> {
+      return check(JSON.stringify(['single', slot]), [slot], context, inputs, verify, current);
+    },
+    /** One self-contained receipt, addressed by every ordered original entry index. Inputs and
+     * proof are copied once as one graph; no page registry or cross-record alias is introduced. */
+    async checkReceipt<T>(
+      slots: readonly string[],
+      context: string,
+      inputs: readonly Uint8Array[],
+      verify: () => Promise<T>,
+      current: () => void,
+    ): Promise<T> {
       current();
-      const previous = entries.get(slot);
-      if (
-        previous?.context === context &&
-        previous.inputs.length === inputs.length &&
-        inputs.every((b, i) => sameBytes(b, previous.inputs[i]!))
-      )
-        return structuredClone(previous.value) as T;
-      eraseVerified(previous);
-      entries.delete(slot);
-      const at = revision,
-        copy = inputs.map((b) => b.slice());
-      let value: T | undefined;
-      try {
-        value = await verify();
-        current();
-        if (at !== revision) throw Error('Verification owner changed');
-        entries.set(slot, { context, inputs: copy, value: structuredClone(value) });
-        return structuredClone(value);
-      } catch (e) {
-        eraseVerified(copy);
-        throw e;
-      } finally {
-        eraseVerified(value);
+      if (!Array.isArray(slots)) return Promise.reject(Error('Invalid receipt memo address'));
+      const length = slots.length;
+      if (!Number.isSafeInteger(length) || length < 1 || length > READ_COUNT_LIMIT)
+        return Promise.reject(Error('Invalid receipt memo address'));
+      const addresses: string[] = [];
+      // Indexed capture also validates holes; Array.some skips them. Read each address once.
+      for (let index = 0; index < length; index++) {
+        const slot = slots[index];
+        if (typeof slot !== 'string' || !slot.length)
+          return Promise.reject(Error('Invalid receipt memo address'));
+        addresses.push(slot);
       }
+      if (new Set(addresses).size !== length)
+        return Promise.reject(Error('Invalid receipt memo address'));
+      const captured = Object.freeze(addresses);
+      return check(
+        JSON.stringify(['receipt', captured]),
+        captured,
+        context,
+        inputs,
+        verify,
+        current,
+      );
     },
   };
 }
-export type VerificationMemo = ReturnType<typeof createVerificationMemo>;
+/** Portable base port; old adapters may omit receipt reuse and keep the verified fallback. */
+export type VerificationMemo = Pick<
+  ReturnType<typeof createVerificationMemo>,
+  'clear' | 'retain' | 'check'
+> &
+  Partial<Pick<ReturnType<typeof createVerificationMemo>, 'checkReceipt' | 'ownedBytes'>>;
+/** Complete extension implemented by native memos and the separately hardened journal adapter. */
+export type ReceiptVerificationMemo = ReturnType<typeof createVerificationMemo>;

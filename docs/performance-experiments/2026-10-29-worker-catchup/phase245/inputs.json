@@ -1,0 +1,8 @@
+{
+  "civil-protocol.md": "d98db09a1476356601710432fd84bdb394452fea3192cc52036babf87f8383b7",
+  "prepare-civil.py": "a03931158debe910c38f62187ea5c70ead244b0581bee1a92cf099a0ce81dc05",
+  "marker-civil-harness.patch": "b5ce4746f2af14c9208b63e35dcdea8879a5850a312a579a103ebcd3dd3d8be1",
+  "packet245.py": "f9c9fbc91b57d6a091e180a6bad7b83dde52e73b855c367b42dc45600a78c7cb",
+  "harness/test/account-continuation-lab/marker-civil.spec.ts": "44ee50f875debf69b8d76edca8c0cc3f870290368968fd2cd44e8f0dde8a40de",
+  "harness/test/account-continuation-lab/marker-civil.config.ts": "03df63e48830666304a691cd8aa4c3fedb466d0af9381a829e11c23cc2b893a2"
+}

@@ -1,0 +1,1494 @@
+{
+  "labRoot": "/private/tmp/done-owner-fault-trace-lab-20261101",
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "noApplicationPatch": true,
+  "compiledBuildsBrowserProfilesCredentialsDatabasesNotCopied": true,
+  "items": [
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/PROTOCOL327.md",
+      "copy": "evidence/PROTOCOL327.md.gz",
+      "rawSha256": "9c309ff91034b81c3b43a86871e8b1b5ed8beb7b3ded577a69495ff9776253e1",
+      "bytes": 2935,
+      "gzipSha256": "6b233c70963a73fe3cb67980d7c5b8d92f9562ed65b73ac3305f24470530f467"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/analyze-sender327.py",
+      "copy": "apparatus/analyze-sender327.py.gz",
+      "rawSha256": "93591186d7eebc3daf533cf460c9024571e36358aa9aec04b34654d4f22b51e6",
+      "bytes": 8917,
+      "gzipSha256": "12d4e9cccc0a2ddeea59de9d1f33fa1e4b211abd0fb1dc68241b47beae04f456"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/analyze327.log",
+      "copy": "evidence/analyze327.log.gz",
+      "rawSha256": "20accdc5e3e42d78e44241908c6ae8d05a1b938e236f0ba7b6a005c0735bbb61",
+      "bytes": 2362,
+      "gzipSha256": "781724986aa559aecb8db74aadc47d614732b752aace107cc4aa4d26372afff3"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/analyze327.py",
+      "copy": "apparatus/analyze327.py.gz",
+      "rawSha256": "f0387a2345fa4b724256238bc044e5662fde646779d8976f52d31c09c8291896",
+      "bytes": 4860,
+      "gzipSha256": "3aeef1689b28420d7595ca590f53e6ed9e2cae72fa7079b66707e3d7a736b0b2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/build327-coordinated-2000.log",
+      "copy": "evidence/build327-coordinated-2000.log.gz",
+      "rawSha256": "9b1dbd7aad2154aaf8ae08687f92a2e181bfa112f044cf494bcb61f8a9f294af",
+      "bytes": 408,
+      "gzipSha256": "d9f8330e006889f0af001d9b09dd3895314f4d03f00955c03a7e63f26aaf449c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/build327-driver.log",
+      "copy": "evidence/build327-driver.log.gz",
+      "rawSha256": "037167e1177414ab6cf5e7b65691659cb4e7f133e91adb45ddbe2e030d86de6e",
+      "bytes": 39,
+      "gzipSha256": "e876ef9729511cef2a3d91476b7cd71d96c6de087bdd76202c3db786e9209230"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/build327-reference.log",
+      "copy": "evidence/build327-reference.log.gz",
+      "rawSha256": "1f7a643f522cfb48faa0d7f26d75ad8c97ebc9035ae93cb6b551b14cffd5da48",
+      "bytes": 401,
+      "gzipSha256": "724b5970fbd5141b18d5c12d14aa107040dbf970105c579cd416f6d25d028ac6"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/build327-tagged-reference.log",
+      "copy": "evidence/build327-tagged-reference.log.gz",
+      "rawSha256": "9582d655ba33f8ca51f2eb44ecf52872e31ff7d65d6f36e0a8e54f36fe2c5a63",
+      "bytes": 401,
+      "gzipSha256": "6fb23878d95e05aed111a5e5c1ac9e51af155ff71322bce1b27f2601439b6912"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/build327.py",
+      "copy": "apparatus/build327.py.gz",
+      "rawSha256": "e32f7fe7369144cba7853005a49d3aadac982bfe6f27593fdc0a4102f29d08db",
+      "bytes": 983,
+      "gzipSha256": "c558385d6619024b5d11f1d851d8926ccaf2e644891d01fdd91da07d47307bd9"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/canonical-start.json",
+      "copy": "evidence/canonical-start.json.gz",
+      "rawSha256": "7482468a97b646569a5e41184bac93bc815491ec55ecf194ff9b141c06fff928",
+      "bytes": 172002,
+      "gzipSha256": "15347b9e3533707b19409a73c5006c4a162437927e8d3d3d26866ab9c05f5a59"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/container-image.json",
+      "copy": "evidence/container-image.json.gz",
+      "rawSha256": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+      "bytes": 4538,
+      "gzipSha256": "ead75b01a977e5c739f82fee2002c50e4704076ab8b16209b3fc47168378dd00"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/container-service.mjs",
+      "copy": "apparatus/container-service.mjs.gz",
+      "rawSha256": "56849d574273bedd37035be41563b544f180ec9728ab41c4ef9906e0b1e8f3b2",
+      "bytes": 6245,
+      "gzipSha256": "7897ae1c60735931ee66a4d413285bf56c2f6e1ab90690f9a1189139c6802616"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/fixture-roles.mjs",
+      "copy": "apparatus/fixture-roles.mjs.gz",
+      "rawSha256": "9a7c96ce6d15f7ddb3bc0c0edf290efa58bad57e295cf86a20fda683ac2417e4",
+      "bytes": 1029,
+      "gzipSha256": "fe5abeb0a308f1b9a82add52bcb08ebb7fc57e7733976b06f5a757fde2f2eec3"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/implement327.py",
+      "copy": "apparatus/implement327.py.gz",
+      "rawSha256": "01d08f97719256b5c5e72f4f7ff6d4ce871d11a2cd59ac00b09e901ba5a8ce50",
+      "bytes": 8627,
+      "gzipSha256": "ac8df83dd99542b18d9a5664704012c40a7b273789aaad712d6e50c80398f5f4"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/independent327-check.json",
+      "copy": "evidence/independent327-check.json.gz",
+      "rawSha256": "dbf66ad8ab83e932ca070c69749c861f6dd1fe1b6817c247a4f8b6d2968db007",
+      "bytes": 649,
+      "gzipSha256": "b59c73b79b9a9c4c130bc9c89ea9ea4b6673dca5d40ef6a0f963f4e5e5a01f48"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/lab-context.mjs",
+      "copy": "apparatus/lab-context.mjs.gz",
+      "rawSha256": "6cacafed8615a5586d82fd7629e37a6a3d9b586314ceda0bcddcdc2c8b711c07",
+      "bytes": 3650,
+      "gzipSha256": "84991162096ea8259cabb51fe75f40496b8a5ace005430a26e039ca0517aa961"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/map-control327.log",
+      "copy": "evidence/map-control327.log.gz",
+      "rawSha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3,
+      "gzipSha256": "029ac1ef2bb96aa9fa0166f8f60604b79b92f7fb5cd41a374f80171306cf1b52"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/map-fault327.mjs",
+      "copy": "apparatus/map-fault327.mjs.gz",
+      "rawSha256": "9546cfed03754d222b29836eabe3dc237f85352be454a2814089601fc6dd3d64",
+      "bytes": 1685,
+      "gzipSha256": "567a5f57340c6c0d3d5b32df9cb1c84d53b434e3f7a4666d7f5e8d1ce03150d3"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/map-first327.log",
+      "copy": "evidence/map-first327.log.gz",
+      "rawSha256": "590f2e57f7f13e943df9e6f7ae7c131852a2b0b5de44d9457e1e76d2d0129f1e",
+      "bytes": 11378,
+      "gzipSha256": "cb62c1508ceeea910bc6aeede2a05994e64b8f3626c76d58134ff2a31a0647d7"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/map-tagged327.log",
+      "copy": "evidence/map-tagged327.log.gz",
+      "rawSha256": "6d6722ec1fcfce43d474988bdd2c52caea24fa7113307d5d3a89d5e37edf39db",
+      "bytes": 14471,
+      "gzipSha256": "93ab9f9ff158ced0d2063618690c7cecfea44444c95f39a4ff8ce3fadcf0f802"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/notification-probe.mjs",
+      "copy": "apparatus/notification-probe.mjs.gz",
+      "rawSha256": "179a77f2ed0debbfe257821c61411a4b0b67d32e80bab7333e1f39125bc604f0",
+      "bytes": 1713,
+      "gzipSha256": "53e3b9fea547061617e7f9c6ba2317e0afe36bb4ff4b8532b2193b5ce6756d8a"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/observer.mjs",
+      "copy": "apparatus/observer.mjs.gz",
+      "rawSha256": "776437226d5971f2700e11f273a23e59ebd6496e120b0f2f1c0bcfc04346e7f0",
+      "bytes": 579,
+      "gzipSha256": "307722984cec831501afcc094a34c67d3ee3800faefc922807902b7dfcc79cf9"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/playwright-storage-source.txt",
+      "copy": "evidence/playwright-storage-source.txt.gz",
+      "rawSha256": "d3f2f3af4867283ed658a2b3f58759903e72fa7359e9bb732931248c25885ffb",
+      "bytes": 14719,
+      "gzipSha256": "a9f986a5b1bb207b9554d6cbdef7842f412be85ddfab59fcbc94c4b87edc13f9"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/preserve327-running-empty-reconstructed.log",
+      "copy": "evidence/preserve327-running-empty.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83",
+      "reconstructedFromRecordedEmptyRawAndGzipHashes": true
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/preserve327.py",
+      "copy": "apparatus/preserve327.py.gz",
+      "rawSha256": "0cc6667461a9be68515bfb559bb6982b7e68731b791584d64ad2e1a5d01a9279",
+      "bytes": 3110,
+      "gzipSha256": "b391da78f9ac3c3a01d553aeb290ecdeb17665a3c06995e20c394942cfca53ea"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/read-request.mjs",
+      "copy": "apparatus/read-request.mjs.gz",
+      "rawSha256": "dddcdf4c98fcc778cc1b8e9dcc7dad09934a747b52c009f7a211519eb10960cc",
+      "bytes": 1047,
+      "gzipSha256": "b528a80f6c6ac5179b5efac4c54509ed8542e087aa025396f66abe3cc200d1bd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/record-prefixes327.json",
+      "copy": "evidence/record-prefixes327.json.gz",
+      "rawSha256": "a7a9a9918adea8974f3eebd8edfbfdd042317561724c7b83f7135dc6c1b240ea",
+      "bytes": 406,
+      "gzipSha256": "2a67d7c9e3c59112f6b718eb3a4441f04035f5a3d27a0a42ac0d071c08822479"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/run-stage.py",
+      "copy": "apparatus/run-stage.py.gz",
+      "rawSha256": "aa094f92c39f37332a6894a1d750934c7088511e9005b540a59b7d79781f96cd",
+      "bytes": 6043,
+      "gzipSha256": "7e1842ed7b6e189d1293f92f7501cbbe82dce8b89648df3d2811aa84ac3e1e59"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender327-analysis.json",
+      "copy": "evidence/sender327-analysis.json.gz",
+      "rawSha256": "949ef680718a30c07e103de9d217b74f9a4d17158e8fe0efe65d0bef8c0976a1",
+      "bytes": 48581,
+      "gzipSha256": "e793f098b7e9eff196bd234bf83b5694f3da87acb95e10f9f45cbdecd87111f4"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender327-analysis.log",
+      "copy": "evidence/sender327-analysis.log.gz",
+      "rawSha256": "281762ae714d4f586f7441d5e55cc2ec7702b51457970f75fcea9d9871708e5a",
+      "bytes": 386,
+      "gzipSha256": "736acbcc1a0d4c4a0e255197710ad82361f9227ad3c037527039038e953417cd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender327-cells.json",
+      "copy": "evidence/sender327-cells.json.gz",
+      "rawSha256": "1d86a0bbc21b55f997f24527faa9d93c95f581a8f6a44385a8159e1389aba7d7",
+      "bytes": 42563,
+      "gzipSha256": "98379ed9254cc119eed833f75a4161e6cfcb8e8d6a8f16588645892e674cba10"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender327-runs.csv",
+      "copy": "evidence/sender327-runs.csv.gz",
+      "rawSha256": "436d48206dbc41e9cd7abb6d81b3ec4c6baacc8b34fd79b0fb8fabc526fbbccb",
+      "bytes": 1705,
+      "gzipSha256": "c2310a2d5921ecdbeb1e88e0dc4bececba9ec00672b7cd8ecd9ac0dfd07cba86"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source327-inputs.json",
+      "copy": "evidence/source327-inputs.json.gz",
+      "rawSha256": "d49f7d26d8e846d9b4547d7667a89d279719f46184f5a0347d8a5307ec2ce069",
+      "bytes": 162402,
+      "gzipSha256": "e09a059ce641f88ba94c116a4e7707e76a6b0f452e5248d12fbd31872bdc14bf"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/start327.py",
+      "copy": "apparatus/start327.py.gz",
+      "rawSha256": "604555b7553a4f4bdf789b56f4a8e998b49af789c403c59e9224e523e87c56fc",
+      "bytes": 3815,
+      "gzipSha256": "0c9126960ecd10670897bde9c6a1f97573d2745599673f51b558d097c8c44493"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tag-native327.log",
+      "copy": "evidence/tag-native327.log.gz",
+      "rawSha256": "32770139631427503b89bca044be45a23108710639a890d6ce71ec211bdcf3fc",
+      "bytes": 37,
+      "gzipSha256": "18f8def685a47f10217a3bb610578a92d18c346ca5e6b63a0c7f4c7ce0a4c1dd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tag-native327.py",
+      "copy": "apparatus/tag-native327.py.gz",
+      "rawSha256": "eea472f53859c30d82365f0dfddfbc271bf54fdc46713baf49c4d1ddcbfccd88",
+      "bytes": 2727,
+      "gzipSha256": "a6838004914dc1f9de3961f07a911e1416e81e2458312a85c6fd5d741bba4482"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-events.csv",
+      "copy": "evidence/trace327-events.csv.gz",
+      "rawSha256": "871b5d8f3d6d92ed6a88debf41c3cc8aef00dbf7ef7e46f033aeb397f91de512",
+      "bytes": 1883,
+      "gzipSha256": "311ca8ad0949f4c41bfaade1f85b07259048d1a7dcdae3a26762d0682f55e20e"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-plan.json",
+      "copy": "evidence/trace327-plan.json.gz",
+      "rawSha256": "819788fbb0ba12ce72c7e48072a77dc65ccad5c2e0b5df6b5316ab7732bf0ccb",
+      "bytes": 1732,
+      "gzipSha256": "b2ff228402048bf9d2b095d703ef1cf5362a9676f6d7c7b770177ae86d0e090a"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-queues.csv",
+      "copy": "evidence/trace327-queues.csv.gz",
+      "rawSha256": "3ceb60d625684bbe1254f6a9f93ec8094f7932ac91cabee89e3a1a391706166d",
+      "bytes": 5875,
+      "gzipSha256": "8cbecaf0f6c13fac1f0ffdc5f81d8817e49e29c947cc41de433d1b61d23a1186"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000-mapped.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000-mapped.json.gz",
+      "rawSha256": "556b7f2bf8d18eb98e407a9e1bced151048dfc4e4e5cdd2acf5e0693f9029c01",
+      "bytes": 1300,
+      "gzipSha256": "c7d2f83f3e5c59b84be8b8d8e5152c67cc396a3aa70545d7508b0d6844f76877"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference-mapped.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference-mapped.json.gz",
+      "rawSha256": "5a54af29274b9cf4b6ed50b626591001b5810b90b3902ca8b948a568ae630a13",
+      "bytes": 12252,
+      "gzipSha256": "af8b0715dc41e544ee7b6da080b8e3fbc4511cb9f22105ebb7fb1e9868adaf36"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-summary.json",
+      "copy": "evidence/trace327-summary.json.gz",
+      "rawSha256": "dab8e645a7f1c3fee7eb58ffecd98fa6c6bd826368f75c6e31aded5aac80ea39",
+      "bytes": 33245,
+      "gzipSha256": "b3c9797bfc5cdd7e0c52359424dbfae6d0087f3621cbb47481aa5b037a7ed186"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference-mapped.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference-mapped.json.gz",
+      "rawSha256": "b226709918e839731842dd07868fb338e66faf118f2ea2dcb1e4dc616d098356",
+      "bytes": 15345,
+      "gzipSha256": "c6757f59ff5af2cea0525381cf8012e75acc1de1057efe92175fca265e0c2fd4"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceControl327-plan.json",
+      "copy": "evidence/traceControl327-plan.json.gz",
+      "rawSha256": "d68d13a3a71ddf82bb770412375528ca7022ff7ca60e094c33f5ed0bf29491f3",
+      "bytes": 878,
+      "gzipSha256": "3e91fc37a5d927168a31bdf7cfe5c2709ac9067a68e74b06f61473a50248fa64"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceControlReady327-driver.log",
+      "copy": "evidence/traceControlReady327-driver.log.gz",
+      "rawSha256": "82ce6a620f2785d9b2b0ce5dfd0685c6bad66665e3989cef41b013ac9ad4b063",
+      "bytes": 1632,
+      "gzipSha256": "28bfe0f2f0deaafaa9db6f861caa00e6d9636fc162862bbe2b1333085d6f6162"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceControlReady327-inputs.json",
+      "copy": "evidence/traceControlReady327-inputs.json.gz",
+      "rawSha256": "38b0b63941d6fc495a1633ad286bbc0d5ca013b766db1d506e6ccf913a73a5bf",
+      "bytes": 225173,
+      "gzipSha256": "a1f589018f1037264f193dde654a02c8d769b328cca07cf763168e5bdeece9fc"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceControlReady327-plan.json",
+      "copy": "evidence/traceControlReady327-plan.json.gz",
+      "rawSha256": "3d6b113f48b5d99359c10de954af8c7b7b27b3174cd931133e7c0fcc7a7a1f19",
+      "bytes": 884,
+      "gzipSha256": "6708f2481acd0866b7704dcf86dab756a6124952c58a2f2deb62ce68081057c9"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceControlReady327-results.json",
+      "copy": "evidence/traceControlReady327-results.json.gz",
+      "rawSha256": "69733a8763945801e05cfa7f4f30515ccb4ac46368dcdb786cf6d1e9dd850296",
+      "bytes": 1751,
+      "gzipSha256": "cdf279d805924f48700fe5ee0cafcaf1c1e1cb48b9d482b649cd43dca9e367e1"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirst327-driver.log",
+      "copy": "evidence/traceFirst327-driver.log.gz",
+      "rawSha256": "7f4529dd5037372b0603f52e0de182a8f625b0814e9adb34bb04be6fea91654c",
+      "bytes": 51,
+      "gzipSha256": "1492acdd0c4057540ba7b89650a0d4781fcbb313b21a973bbba384943544a5d6"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirst327-inputs.json",
+      "copy": "evidence/traceFirst327-inputs.json.gz",
+      "rawSha256": "0cc625dcb832eb6798b57a2199737d8ba712e9267e1938f428b528585f505678",
+      "bytes": 225139,
+      "gzipSha256": "37a67e52c1f801bd9f2a23c4a43adeb833cb45287b3520792568e936f9746ef0"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirst327-plan.json",
+      "copy": "evidence/traceFirst327-plan.json.gz",
+      "rawSha256": "1031c7e5efd2c617d4b53edaac4ec15761e778c212a0ebc9808e256b91c5835d",
+      "bytes": 857,
+      "gzipSha256": "a186500b78fd1cc49a7d9ff5a6dd15894d406f8353fa5dc02516f7437239385b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirstReady327-driver.log",
+      "copy": "evidence/traceFirstReady327-driver.log.gz",
+      "rawSha256": "c004b468118d5cb049070c4470814d126c503ccb4e883ecb8388e66422960d54",
+      "bytes": 1769,
+      "gzipSha256": "ba903ea7171e5aab56c8d2d258d3629951a566eab3d67618538ec363e07063aa"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirstReady327-inputs.json",
+      "copy": "evidence/traceFirstReady327-inputs.json.gz",
+      "rawSha256": "c19721730b86330736829d033a5f64e55d6721c5098498a64b9b54d3c6230f56",
+      "bytes": 225145,
+      "gzipSha256": "7d7839c08576f33928bba83b9e358c4171b8c48c584732308677ffceaa5d20ac"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirstReady327-plan.json",
+      "copy": "evidence/traceFirstReady327-plan.json.gz",
+      "rawSha256": "1cae1b1f4e9e2fa3e63dd0cd8116b1fd8851b3884c7aa09883a040cfecd2216e",
+      "bytes": 863,
+      "gzipSha256": "00548469521c00e1290f44e86c0cb66f4c3eac19fa1708948883180907ca3601"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceFirstReady327-results.json",
+      "copy": "evidence/traceFirstReady327-results.json.gz",
+      "rawSha256": "7cbb7370f14339577d31aa176052ef60d6e368a72269fd83afda53065e4ad26a",
+      "bytes": 1873,
+      "gzipSha256": "81e42bbf0e52f1a0b688ed6ca7d487805f63247b76ca4445254a414ec871c4b5"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceReady327-plan.json",
+      "copy": "evidence/traceReady327-plan.json.gz",
+      "rawSha256": "51e2dd0a395b2a420d0d4d73e97567660f89f7aff6464d0517fcaa199eb3d1fc",
+      "bytes": 1744,
+      "gzipSha256": "6afca0581e13f60332e79d0340e771da5b3b8e876cbc92d1ec3e67622d0ccb3c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceTagged327-driver.log",
+      "copy": "evidence/traceTagged327-driver.log.gz",
+      "rawSha256": "620bef2a7e67c4e74593841a7905959308d299d28b435d1f68ab316c083b705f",
+      "bytes": 1757,
+      "gzipSha256": "c3ebe8fcd757af9cf3db0277f2c6a393f5c211ad599554c1c89b98bd37e55b93"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceTagged327-inputs.json",
+      "copy": "evidence/traceTagged327-inputs.json.gz",
+      "rawSha256": "cdbf89c090c5013e6e0304cd59c79cac842c42ef34517ba341876beec7a5639d",
+      "bytes": 225144,
+      "gzipSha256": "b184502a312a538b3b09045efd55fdb34bd9293624b4a65dd5e85c8af2538f6c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceTagged327-plan.json",
+      "copy": "evidence/traceTagged327-plan.json.gz",
+      "rawSha256": "cfac0c299c45e135a9ea1a52c153a61070715aa3d22bf1f103f91e304b4d8c9b",
+      "bytes": 855,
+      "gzipSha256": "3b9ff8390badb174583b933cbbdfb88e0465362c9ac4b9d34dd72a3ac6123375"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/traceTagged327-results.json",
+      "copy": "evidence/traceTagged327-results.json.gz",
+      "rawSha256": "d34ab68c22a8427a19edfba8222dafd2bbac717ef031f9a61ad03860239b3ff3",
+      "bytes": 1864,
+      "gzipSha256": "584f8e707ff7e2af514807afcd86ce7891fe61ab063c23a4dae9c88d402b1629"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tsconfig.lab327.json",
+      "copy": "evidence/tsconfig.lab327.json.gz",
+      "rawSha256": "ad5f1a1246baff0ded8a9c4227bbf7584567d49380fb999cc4c2252b753501d8",
+      "bytes": 803,
+      "gzipSha256": "f83a01dbd7fc9771098f8220dafea6fdc54c387686b1bea8e879a4ff9ebb5d9c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tsconfig.sender326.json",
+      "copy": "evidence/tsconfig.sender326.json.gz",
+      "rawSha256": "20ad8c17bec5225a8ee3b8190794b0d0fe6a4439f54ae1e916476fa504b80be3",
+      "bytes": 867,
+      "gzipSha256": "c9125fe05b6041d66ade103446ba1d7c3ac79f79c351d9400bf84d710cd52db9"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tsconfig.tagged327.json",
+      "copy": "evidence/tsconfig.tagged327.json.gz",
+      "rawSha256": "9502ad3576286cbf81630db06807cb71a59e16b02a5138cebdb8512be5885e72",
+      "bytes": 915,
+      "gzipSha256": "47249843eda88a36693de3d296fe2a27c7349f6acd60362741017f59e6ad88e0"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/type327-attempt1.log",
+      "copy": "evidence/type327-attempt1.log.gz",
+      "rawSha256": "583bc9b8a12d4f44c8ad1ac391b9ba84245a29ba3565d9110067b95302ba5c1e",
+      "bytes": 620,
+      "gzipSha256": "aed1972cca3ecbfe3f10a2df2c23c4a7d221fbe9f262f7eeda89c2e30c7cc24e"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/type327-attempt2.log",
+      "copy": "evidence/type327-attempt2.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/type327-tagged.log",
+      "copy": "evidence/type327-tagged.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/unit327-attempt1.log",
+      "copy": "evidence/unit327-attempt1.log.gz",
+      "rawSha256": "99b1b1da91717e5b65673a19df8671f48d05379830aeeb1220b4c404cecaf3be",
+      "bytes": 12612,
+      "gzipSha256": "1fdeaca512a3588a7d9aac7d5ec5d8531481b1580880819bb465929070d52a41"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/unit327-attempt2.log",
+      "copy": "evidence/unit327-attempt2.log.gz",
+      "rawSha256": "21a91b36650e6ca12776a7d8f771b3eb4fbd8c26aaa17265472d1ee2eb195fc6",
+      "bytes": 12204,
+      "gzipSha256": "b3ad682d9dbdb54395989379da0d6f9c64db869b4be6600f0db972aa6c730549"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/unit327-final.log",
+      "copy": "evidence/unit327-final.log.gz",
+      "rawSha256": "b9a6e6a4b544372c8e542bdfeb1d13458fcaf8a5686ea4b8c404a5168a0b928c",
+      "bytes": 13527,
+      "gzipSha256": "2f450efc406695c825a66c150d9f608853499063a947f506de6f429c8bc039d4"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/unit327-tagged.log",
+      "copy": "evidence/unit327-tagged.log.gz",
+      "rawSha256": "3eec15c61e23b6f9adeba4a40bfaa286e9614ef1145d2918ee3e3dd116b3a557",
+      "bytes": 13534,
+      "gzipSha256": "e1051aed673813ee5103bdfead435b1a473397fa5dc903181ff7228f484393f6"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/write-report327.py",
+      "copy": "apparatus/write-report327.py.gz",
+      "rawSha256": "78de69419694dc69e10c896b65b769899a762eb7cf57809572443dc5d1c1cd3d",
+      "bytes": 13229,
+      "gzipSha256": "fd0a71c19ec7335dfe6f8b5a2013a37944db053aec9ef72a4814b336b5ae2ade"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/fault327-before-cold-page-2.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/fault327-before-cold-page-2.json.gz",
+      "rawSha256": "ef0ac11890b123410d53301dfbbec5f79a716224d79d7d9921e30bb2f6f16b6d",
+      "bytes": 15960533,
+      "gzipSha256": "5e88ef7c7c03abeb0af93706f4a9222209e59e8c2c35063c5b081a84bcf2f543"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/partial-result.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/partial-result.json.gz",
+      "rawSha256": "c3ebc45af66879af5715170b753c3e771437ecb6b995b4063ea8a9a90c0793c7",
+      "bytes": 57748387,
+      "gzipSha256": "d487f74b2cc6201a0f55755b16853a98f348a153fdf819faacc3f1acc80c0211"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/result.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/result.json.gz",
+      "rawSha256": "2fdb8e83f466f80fba2adb25f0e181d420fe0371b6f235dd8ee35c33191ed20c",
+      "bytes": 57796996,
+      "gzipSha256": "75fa1db5a78e4c1321b4d91cc69465cd80bcd3fa65f7f18363dd4ca56ee1c2e2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/docker-command.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/docker-command.json.gz",
+      "rawSha256": "a1a8191a6e7f1ebb369a22ea3dfbc68e6ccbe99b7ea94c6ba628918e1c682a5b",
+      "bytes": 1249,
+      "gzipSha256": "7c3ec64f4df7079854f37f052caffa464cc111f41935c2a877f0975ddb5c1305"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/container-identity.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/container-identity.json.gz",
+      "rawSha256": "4dd9d92050573e533e49aa655c3a285c650f371c99d79f387aba08c56a1e182e",
+      "bytes": 2725,
+      "gzipSha256": "679cf27106310b93b07a6cd7edf80e0a39a5085a1eed1d1e4c864be558b8bbbe"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/fault327-before-cold-page-1.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/fault327-before-cold-page-1.json.gz",
+      "rawSha256": "d8c5db8cab1debfd4d8168ee42d4c4a3f494937e15cb55b8f44641e1d0c4d02c",
+      "bytes": 14655015,
+      "gzipSha256": "694afc3dd8f81869676f0eab479eae0d0a87f050d5e1371f93ffb64fb9449e2e"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/receipt.json",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/receipt.json.gz",
+      "rawSha256": "be67093f35b949ea5e11dbc2b558449558803b3ae4c595d88a15c2ab8f0ddacf",
+      "bytes": 1643,
+      "gzipSha256": "6ab34cbf5690a60059cf5420a0d270afc5146a374c6ac5795a7d90bbedca97c2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/host-load.jsonl",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/host-load.jsonl.gz",
+      "rawSha256": "ea98a6e79af0f74431764c39bf4b178ee2aee6557e3014cf0da2f168d94304b2",
+      "bytes": 30748,
+      "gzipSha256": "55d34c6d397f7910c3227eda1274851218f03877b46d23fd70ed6f84e35179e6"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/console.log",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/console.log.gz",
+      "rawSha256": "fa6c32d17257376d8b336298758872a85557432eeba6209a60c62c345252d93e",
+      "bytes": 352,
+      "gzipSha256": "d4189298ed6c238718613a2df0ca62cb0e189b5d2b318ca8fdf2c8e76554c9a2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/services.log",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318,
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-coordinated-2000/list.log",
+      "copy": "evidence/trace327-ready-paired150-d0-coordinated-2000/list.log.gz",
+      "rawSha256": "f8731a7a04a64cc261f24e3e6c37366f43d9f4b96c51c955383115cac0efb0ac",
+      "bytes": 131,
+      "gzipSha256": "0da9e1a076ef9ce924b37407cb48af54a9b3a0cab5137852fa18905adcdeb291"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-paired150-d0-reference/list.log",
+      "copy": "evidence/trace327-paired150-d0-reference/list.log.gz",
+      "rawSha256": "9faa1e3e4ef67aa4e6d933add69ad2b62f9ba8524851af420b4ae4b0507e5861",
+      "bytes": 1590,
+      "gzipSha256": "baf288cfeeede1339fe6fc8d5d579d4199df692eceb46671c142301328a9c7b2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/partial-result.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/partial-result.json.gz",
+      "rawSha256": "26fc21c22ac65a6f200e968265227425ea068e9b6572bc563e4a05374623f89d",
+      "bytes": 8118583,
+      "gzipSha256": "324befb8deed715ec8167862c8a337d06af6fc5fe06b919fc5e874a818c4d9aa"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/result.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/result.json.gz",
+      "rawSha256": "0f9ac6cc41e5288146f3c2bcb57dc0a980b5d0b6b512dbf13aa52cac3538dfb7",
+      "bytes": 45063085,
+      "gzipSha256": "c214ab96674cdcc4b083d6ec2f1a3080ad2f55283473fd43ce5ae365b167c96b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/docker-command.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/docker-command.json.gz",
+      "rawSha256": "23212ff0f65f3ec8ed46dd4e871eca0b2da164e55d025df110bf50dbd0c3a406",
+      "bytes": 1235,
+      "gzipSha256": "8730a785b1a0b35934c32dc6086167e251e253cee387c86b32987b231dd211c8"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/fault327-page-2.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/fault327-page-2.json.gz",
+      "rawSha256": "8af69f2117c09a41e8a21c33f9180c65930ca202a79d289d84dd3611d44281ae",
+      "bytes": 47669244,
+      "gzipSha256": "7efd5061c5832c5a600c7d0ffeabbf2d613d961456ad9f8d91bfa53c53dc4ddf"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/container-identity.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/container-identity.json.gz",
+      "rawSha256": "9b34e5c859502157b4782bae53c7e7c4d87fec5bc270b1766fb8bb118a461119",
+      "bytes": 2720,
+      "gzipSha256": "14745d7b24311737289192b4b9d597b27b16c76676bdfa055a2450af203b7e32"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/fault327-page-1.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/fault327-page-1.json.gz",
+      "rawSha256": "9c7d93e19cb1ae1ee77dc3fed8bc4c34b5d28e1d935f759848ca7621b88ec1f4",
+      "bytes": 5706779,
+      "gzipSha256": "7fce88201877d2c832b8a5ed074f88bded9517aaf7f003108bffb958e9d873b2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/receipt.json",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/receipt.json.gz",
+      "rawSha256": "57a4ced93004713bb261512163ac5815955859812effb7af07fe16340a943855",
+      "bytes": 1773,
+      "gzipSha256": "e7c8960e75a443f6612df4dce1ebcf8c5e1d014a0a82504ce5db0f8cc08f95aa"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/host-load.jsonl",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/host-load.jsonl.gz",
+      "rawSha256": "9c82744a26f1cc2c9edc7577c3d8dd1d2ee795bb204f808154669e963412b16d",
+      "bytes": 35330,
+      "gzipSha256": "8262dd0ee05f57d71c62a03aaa90a9af321895382baa726ee12e4b13720ad0a2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/console.log",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/console.log.gz",
+      "rawSha256": "cfe253eb7758606de4c19f23067ad638ad413e26fd8be556866b9a98285bc590",
+      "bytes": 8409,
+      "gzipSha256": "280bc42401610c99d6d65e0a12293b87a4ed0ea222ae366c4534abfc6f6a3681"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/services.log",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318,
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/list.log",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/list.log.gz",
+      "rawSha256": "f8731a7a04a64cc261f24e3e6c37366f43d9f4b96c51c955383115cac0efb0ac",
+      "bytes": 131,
+      "gzipSha256": "0da9e1a076ef9ce924b37407cb48af54a9b3a0cab5137852fa18905adcdeb291"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-ready-paired150-d0-reference/artifacts/sender326-sender-policy-wi-7de46-ng-and-exact-cold-histories/error-context.md",
+      "copy": "evidence/trace327-ready-paired150-d0-reference/artifacts/sender326-sender-policy-wi-7de46-ng-and-exact-cold-histories/error-context.md.gz",
+      "rawSha256": "a572975bc0b85e773a01fe3159075c8556386ff43ce00bb5f9c3c86e60a68039",
+      "bytes": 15211,
+      "gzipSha256": "adc4795422e65dc0a1107fc430531809540e8193d11f09c7f55d043bdc98c581"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/partial-result.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/partial-result.json.gz",
+      "rawSha256": "12fd093273f364509327f50ed296e8e3ee7b9c74b0291f23d49a07bc8a8baea5",
+      "bytes": 8120758,
+      "gzipSha256": "ac56386de33cf06c4c0eafa0dafae0a545435ff03addfa4c974c4ef7e8a35db6"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/result.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/result.json.gz",
+      "rawSha256": "a8e327323ce5f61ee92b843db03693444af0684bd7431b020f4f9e816522fbd5",
+      "bytes": 45068754,
+      "gzipSha256": "cacc9a51757d57476acf3b54e2bb34990ee6f1623dd0093db59e243152e692da"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/docker-command.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/docker-command.json.gz",
+      "rawSha256": "f9fa6b3ed595813f6f431d9fd71a0d45bf14487268334a653c42a4ebc61513fa",
+      "bytes": 1237,
+      "gzipSha256": "9c74a935747fcf226d29f6b10c89339a1b4f85f055a4946e6f96f340ae336d82"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/fault327-page-2.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/fault327-page-2.json.gz",
+      "rawSha256": "eef3d0f625a04eff7f4d8c58a9631980a3666bf85fcc873cd404ffacd5aecb0d",
+      "bytes": 47666535,
+      "gzipSha256": "13edf27c1e4f1bdb45ebed216980f3cf955ed058c0f464733496f9d3a4118529"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/container-identity.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/container-identity.json.gz",
+      "rawSha256": "cf0c9d39b4c3bc4f8528b078437e91bc84ccb6815bf65e6deda6e7b151e71c85",
+      "bytes": 2719,
+      "gzipSha256": "5bb7a336d4460c18988d581db79afc049e97e557874cb69f1fcdaa5e7196ead7"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/fault327-page-1.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/fault327-page-1.json.gz",
+      "rawSha256": "04a6951f0df82c4b61addbf931b869440c08c2981b44aa712d81632d9482e42a",
+      "bytes": 5504587,
+      "gzipSha256": "33e6dcac21e0cb87edcfe5b0ad95f2f440eb093172ef1b426b97648065652946"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/receipt.json",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/receipt.json.gz",
+      "rawSha256": "6371bdd4c4d3345e1aca4b6852b92f4d68709116c12d16b14f355ba043d37e4c",
+      "bytes": 1764,
+      "gzipSha256": "2e8fa695d4fb7f21794baf09a4343de9efad8b0dba1deac10ba04cbf1d19a97d"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/host-load.jsonl",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/host-load.jsonl.gz",
+      "rawSha256": "5a733efd16a9a2d268ce08ecc980c444cf46b88608215aa1031cbb1885972cb5",
+      "bytes": 33831,
+      "gzipSha256": "5af27b279c6ee34ac5d5f1572865c05684d71aa76fd2e220cffe19f2dacffba6"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/console.log",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/console.log.gz",
+      "rawSha256": "1bf99b27d01d929af46ce49c57e6c3340c4d3a0a66d1943decaaffe2df1d6db6",
+      "bytes": 8410,
+      "gzipSha256": "8a72beff2aee391b483e2d3ff4cc492438b57352b50dde6b4739a34a4b462eca"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/services.log",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/services.log.gz",
+      "rawSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318,
+      "gzipSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/list.log",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/list.log.gz",
+      "rawSha256": "f8731a7a04a64cc261f24e3e6c37366f43d9f4b96c51c955383115cac0efb0ac",
+      "bytes": 131,
+      "gzipSha256": "0da9e1a076ef9ce924b37407cb48af54a9b3a0cab5137852fa18905adcdeb291"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/trace327-tagged-paired150-d0-reference/artifacts/sender326-sender-policy-wi-7de46-ng-and-exact-cold-histories/error-context.md",
+      "copy": "evidence/trace327-tagged-paired150-d0-reference/artifacts/sender326-sender-policy-wi-7de46-ng-and-exact-cold-histories/error-context.md.gz",
+      "rawSha256": "a572975bc0b85e773a01fe3159075c8556386ff43ce00bb5f9c3c86e60a68039",
+      "bytes": 15211,
+      "gzipSha256": "adc4795422e65dc0a1107fc430531809540e8193d11f09c7f55d043bdc98c581"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/seed.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed.config.ts.gz",
+      "rawSha256": "31a35401f2a1943585dc5732bb4acef2ffb0c6dc62dc96c49e1445353cfc851e",
+      "bytes": 471,
+      "gzipSha256": "36d3327108eea29cc4c68527700ddef3f8fd388f1d05324f083d3c5261acd616"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/old1024-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.spec.ts.gz",
+      "rawSha256": "7391bccddd08c18b14fe9e2e88306c29094ccf0049126829280f2f37f719e0b4",
+      "bytes": 4351,
+      "gzipSha256": "b4e6d4c2c66e08fd8b2ef4cbb8ae771004e67b150532f0d9180309d9a7f28b54"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance.spec.ts.gz",
+      "rawSha256": "8f27a07df6eead1a45f8045d222383fd08fbf747f71c406905624e231f920c27",
+      "bytes": 10984,
+      "gzipSha256": "7fde833a227ade4ff0c0c1197c82bf21e746fcc64896a0071d783e380f2b78db"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/idle-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/idle-maintenance.config.ts.gz",
+      "rawSha256": "ad9491d0f5de1c0c88b3ff8ee022a67ccc66b81d56d92dd7cfbcf4c2fcc7026b",
+      "bytes": 290,
+      "gzipSha256": "edee73743f4748272a3107cfd0a3a90908101220de4421234a9c6402ee15b0fc"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "rawSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "bytes": 285,
+      "gzipSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/grown-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grown-maintenance.config.ts.gz",
+      "rawSha256": "45909a9e9b43e1507a96f8eb463ef30fe898cfdb4bd1bc4d2033619c368d66a7",
+      "bytes": 294,
+      "gzipSha256": "a67a7cb28aa9dd3f18be236525397378b889a12ac1621b789bee115fb56704fa"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/deep-traffic.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/deep-traffic.mjs.gz",
+      "rawSha256": "02fdab304a0dbf629c288b4d7a7cb68bd537d55203f190ddd23a1efa1886da13",
+      "bytes": 2142,
+      "gzipSha256": "25b5ca230d7b5162e2a3c4ba97f4fcb53bd9492f2e762683f827733dd8cf747f"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/continuation.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/continuation.spec.ts.gz",
+      "rawSha256": "4e78bbbde088cc2c41aefda32b1329d86e1c9d43bfc63a4ff3ae33dbb2a31055",
+      "bytes": 17829,
+      "gzipSha256": "005705853d4743e399a0b9bed58d148a59d79033f7d6c123ba53c22d548711a2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/r-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-idle.spec.ts.gz",
+      "rawSha256": "050c0a8e3c98d671b9495b343c47ba2765e95c284fb1568558641cd9c7d6d929",
+      "bytes": 11880,
+      "gzipSha256": "f65c2afee3bb4d3ecb87c55b7b2f4702eb9159dc632c283d3b97af8039286eeb"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/focus-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/focus-sender326.config.ts.gz",
+      "rawSha256": "b1f2b2b83484648f35ca2b7fb42e437064f2abf17399f3675fdec9e20df719de",
+      "bytes": 289,
+      "gzipSha256": "4e19823799831e0f398f051cd37361ac4925966fa57914c800a0385894e69e51"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/devices.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "rawSha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77",
+      "bytes": 5092,
+      "gzipSha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/prepare-short326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-short326.config.ts.gz",
+      "rawSha256": "a83a6e86bd263891eeae6a0e0b6b07090a87fe7d351e84174b260756788474d8",
+      "bytes": 290,
+      "gzipSha256": "b33b459fc85ca0892453c465b6b02714e901550920fd9134370e0007939e51f1"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/dense-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.spec.ts.gz",
+      "rawSha256": "13a5e12cdbb148d542147264c12aa12e803cc5e526745e5282110307a4de5603",
+      "bytes": 4350,
+      "gzipSha256": "d6c91e6f3ed23d0d719c3021cb2522e520a4039b7cd645bfb6ea84ec0d1a2e5b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/marker-civil.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker-civil.spec.ts.gz",
+      "rawSha256": "7bce3ea6ff68ec5fda8b3c99fed87779654f268a4362397613f638d45f45ed6e",
+      "bytes": 11764,
+      "gzipSha256": "8ef4ee77be990fbbef3c8a6cd544cd7192e93ad68290c75f47b1b5b943f0b941"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/race.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/race.spec.ts.gz",
+      "rawSha256": "d371f255566c1344574c523b17b310c2b2690f706b2e62701e22793a7b666f88",
+      "bytes": 7096,
+      "gzipSha256": "bc2b38223782acb6c136cb7cd83687b8442001463f5ecf38af462578ba6f946b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/result.d.mts",
+      "copy": "apparatus/harness/test/account-continuation-lab/result.d.mts.gz",
+      "rawSha256": "59587c96f34299f9033c31ddabf68514b60498c5c84a1828e27cbc4b929d1994",
+      "bytes": 96,
+      "gzipSha256": "0ea08ffb4530ea1e811b729a8072904a333f6237d12593cf482be5d93bdd6deb"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/inspect-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/inspect-sender326.config.ts.gz",
+      "rawSha256": "2dda7a8a635b3ee6880f6b4c7fac1b4d4d06a2c6575a8e7e76297e341c1fbcf3",
+      "bytes": 291,
+      "gzipSha256": "10e6c3420e6b6f04c1dbe479bec1ba1c8de320f50e940f355aefd05d0ac40baa"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/dense-cut.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cut.config.ts.gz",
+      "rawSha256": "a4b9c1a77e0e86dde1980e8fa971903d12fda9988085171bf72b7481e785e344",
+      "bytes": 286,
+      "gzipSha256": "3a7f9a21f3acca6e808f26e467f3819f5dced9486e59a1e03096dcafdf818e28"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/prepare-short326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-short326.spec.ts.gz",
+      "rawSha256": "65e75463e0eb13e7f0c682739839eab755facd910ea44fa4b0e5d716f674984c",
+      "bytes": 3606,
+      "gzipSha256": "25b6b37034ef9db5d7f87c117828adbba2980c3b1a5608489ce7f8e676667267"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/dense-cut.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cut.spec.ts.gz",
+      "rawSha256": "3d2a82d10b235f158c14405ad578db46bcf5902362a001496f2d897b2cfc6ead",
+      "bytes": 8614,
+      "gzipSha256": "9faf0b2e7b0b62475c91314d6e8621ca38a58dc3ccbfb503327bee6cdb9d5425"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/runtime.d.mts",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.d.mts.gz",
+      "rawSha256": "d033939d1d06cc3d19a3592adfb6cc728f0a025fffadca7fb074ce30c1a71446",
+      "bytes": 254,
+      "gzipSha256": "3762793e6a740c9907253daff3cb27220577efbf716f197c831f1222269c4659"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/race.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/race.config.ts.gz",
+      "rawSha256": "21521655e2c96f7792b80086b52d2113486197093b34acaf6df61a74fec1a0a8",
+      "bytes": 281,
+      "gzipSha256": "82517b9ef451e8be91b7ea188317f8aae618af44b4c588e6461d627688bc40b4"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/marker-civil.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker-civil.config.ts.gz",
+      "rawSha256": "03df63e48830666304a691cd8aa4c3fedb466d0af9381a829e11c23cc2b893a2",
+      "bytes": 289,
+      "gzipSha256": "f00e0d41013dc49b22154828fe2485f767df792b1f23874dc59acb78bc9ed19c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/input-diagnostic.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/input-diagnostic.spec.ts.gz",
+      "rawSha256": "a36cfdfe272075b910e0e21901f8bc153e0fe6b2cf4b9399481df852a5d7c1a2",
+      "bytes": 14413,
+      "gzipSha256": "07e1ba652ec94990cd274031fa87708df508e5e0364b20b44b09ec3f3a79d23c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/maintenance-pilot.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance-pilot.config.ts.gz",
+      "rawSha256": "bc663e4e8a826c87ded50ccc42e00ad83b43118ea1d93ebe99b98403102ba6f0",
+      "bytes": 294,
+      "gzipSha256": "ce7b15ba1f00c20f467d8ffb07052ff26e7094f00d03949b92532aedfb996073"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/inspect-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/inspect-sender326.spec.ts.gz",
+      "rawSha256": "40443f076a7b904755ddae442224b7e5acc92ab2443f55c46b050e1fea73b983",
+      "bytes": 2683,
+      "gzipSha256": "843b21b4491f3d40972f5ee52b6c549007c9aead5636674fd674e776dd42739e"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/sender326.spec.ts.gz",
+      "rawSha256": "9ebf78864af684ba0647e3ba324ccb07b1e3bf75fc69d5c41ef243148c61dcbc",
+      "bytes": 14280,
+      "gzipSha256": "3815a47828ca1551a573494c411a7a04ce4f22fe729b15e0535261031c68ba7e"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/nonoverlap.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/nonoverlap.config.ts.gz",
+      "rawSha256": "0b07f2c1dc822cfdde3ea58a5850776096be513ee9aea3ee1a7c76211ff2b796",
+      "bytes": 477,
+      "gzipSha256": "eb139d56981c12e1895ca3dea0a864de78989aae10c52b56f3cc68cefbd6ec48"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/seed-profile.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "rawSha256": "803ce8ad6201e5fbee7ae38154c34c73d367de0f7950f9c60559954d707eaf6e",
+      "bytes": 1544,
+      "gzipSha256": "d5ac830ea40dabace7e09b6fbff7f50c7aceb500bb41249ba3757b3aa35c3457"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/input-diagnostic.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/input-diagnostic.config.ts.gz",
+      "rawSha256": "b33998b1fef15b4197b8ad7da773ccce035beec714426534df0718a2401798a6",
+      "bytes": 293,
+      "gzipSha256": "616172a70005b531c48ba4394ed86ff5e8dcb640ced5bc5b42bcbc085522c983"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/gate-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.spec.ts.gz",
+      "rawSha256": "8e6c4fb532b7642b3b229ca0fec60e463f1d0d4e32ac1b3346c903dc57ece22c",
+      "bytes": 11440,
+      "gzipSha256": "34fac797c554d6be981e0692a06506c7b83fd4cc7d1856edcc0820e25a597a34"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/marker.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker.config.ts.gz",
+      "rawSha256": "e228a74799169cc091979e0b67b6b0f9b3c0239ca7c7194683a5cd2edf10cf28",
+      "bytes": 283,
+      "gzipSha256": "92dcec3f276f7162bc743db33c270247fa567ba53500dbd4c2dbdb0cc1ca6247"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/common.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "rawSha256": "ccffd5137af8089805b41542c89b148e8ebeff4ded3a2d7aae001dc8cc54378a",
+      "bytes": 3497,
+      "gzipSha256": "0110416266addc342bf73de2ceee54afabf16984bf9c4ee4c1b211c629014a6b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/stall-probe.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall-probe.ts.gz",
+      "rawSha256": "9a19478276881be6ca8546524a1f2de3b4ae776feed1e0849677fe4b68e10e95",
+      "bytes": 3046,
+      "gzipSha256": "131f64aba3afb197cbb8935e445c49f7724bec38c9b7af03eb1e996b7b27b856"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/prepare-sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-sender326.config.ts.gz",
+      "rawSha256": "fee5127e478858c4d666f53bb636ef9d733d77b80f247057db5a92080ba0110e",
+      "bytes": 294,
+      "gzipSha256": "accec648f6e5ff4014edbbaf61e9b00bd18d385952a223b24ee707ef4ef535db"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/idle-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/idle-maintenance.spec.ts.gz",
+      "rawSha256": "2fc4f41abee8bf32baf1eed941e8201e8e7c3d616beb8ecd902b6a6390e30012",
+      "bytes": 4934,
+      "gzipSha256": "4431d647ce2a101cf1e795973a9ea55abf9805b9c6c3ab56e65d6cd8ee3394b5"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/seed.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/seed.spec.ts.gz",
+      "rawSha256": "f5870b3ff3049e9c60bfcee512c1531cfbe48c4da0135934200ee56f950f12e4",
+      "bytes": 6439,
+      "gzipSha256": "e71d5c8539a61046012d81621abc8bca5cd52e20f808004b8b917e5ba3115852"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/sender326.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/sender326.config.ts.gz",
+      "rawSha256": "ae83ee26e9b639fdc28f8b107b31d8fff5813f98b88b11160701dff6d7451384",
+      "bytes": 286,
+      "gzipSha256": "ea1c97ef7a04388d32d05a112ff07dd0d1b9ae7543d98cc811fe5c5510f2152b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/focus-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/focus-sender326.spec.ts.gz",
+      "rawSha256": "c51fcef14bed927bbfb36090b79a6f4240e6b83d207c3fade39d6f6721e24736",
+      "bytes": 2818,
+      "gzipSha256": "bf61707c6f8c8ab3d1c166278441a1b6db0b109e7b15fb00f84d280c41b0793d"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/default.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/default.spec.ts.gz",
+      "rawSha256": "b1bc5ed7d62eb4e44250ff13d15156d5e6f62a0c0b61f44fdf78263342f9a2de",
+      "bytes": 4313,
+      "gzipSha256": "1dac703aaa0e89bc04c156fffe7409d0d62de7c134ca7b3043f0cdb94af80ba0"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/r-late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.config.ts.gz",
+      "rawSha256": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+      "bytes": 283,
+      "gzipSha256": "5bb30739474228ef550c986cfe86a764122dd74e8b6908ab939c92c19e89e42b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/gate-native.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "rawSha256": "6575eba5724005f8d6fbcaf7218891509e39c6f639472638a56854065e0ef423",
+      "bytes": 153929,
+      "gzipSha256": "7810c61fd16df2bb666afded52402aacba1df08c28e18bc7ed7d3d53511f5940"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/root-cache-review.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/root-cache-review.spec.ts.gz",
+      "rawSha256": "f62600f00adda6c4359d3d77607cf50c63a6e104c6600582dc72044c40f82a84",
+      "bytes": 4815,
+      "gzipSha256": "e9a171e17506f50f5f6ccae9795e20672c474a568eff75f89aca68b5cbe0109d"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/r-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-idle.config.ts.gz",
+      "rawSha256": "dda6b768130ed88c009e3af76a5fcf07e018cdecf02b0f04fd46461905999b11",
+      "bytes": 283,
+      "gzipSha256": "2d0b59bb4923bf4ced4eb59991356ad173161350d70d0901276bd7a5028ea9cd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/late.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/late.config.ts.gz",
+      "rawSha256": "8b87a9b0c5633b19b45e167d7fe3bca4712549bff967bcdcc8982ec7142a6387",
+      "bytes": 281,
+      "gzipSha256": "79dd73c5093c6996d81ce5dee6938b8c71cd7ced24680f036d1b15ead22db27a"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/gate-native.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-native.config.ts.gz",
+      "rawSha256": "2e71b9a38acbabec7d18717abec3271cc7f48cf2a414879f259748bb61a57413",
+      "bytes": 288,
+      "gzipSha256": "ff3677b6dfeec325ef38d2b9f369cbd85227567f3cf60d3515644cf4ee069ede"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/capture-maintenance-trace.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/capture-maintenance-trace.ts.gz",
+      "rawSha256": "32e0d1836fd0e499f0415b3e452a763e30ff5803147c7d45c68f7464c01b4107",
+      "bytes": 392,
+      "gzipSha256": "fabde8cf16c32cb6f63a5c23596f1d528d2615bf3c518b2b75c73371a134cc6c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/gate-maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/gate-maintenance.config.ts.gz",
+      "rawSha256": "f2b9974f167087fd3899fc2aad61639acc0f2439169b9fdd85670015c73f5b35",
+      "bytes": 293,
+      "gzipSha256": "7a10d2f124f2bb640f0e2d3a468b4a83ea154c5d53655a1d40d689dbf8aa7392"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/treatment.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/treatment.config.ts.gz",
+      "rawSha256": "31123458dd7b1ecbc7a2cc36ead9c3cee0365263cd606a779df52ef534165d8b",
+      "bytes": 286,
+      "gzipSha256": "5d788a0c76f81d29b59e8a3c7905074538bf16a2f86999a32a8070ee23c7a1cd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/worker-owner.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.spec.ts.gz",
+      "rawSha256": "3030993af063804cd8e3bf70d8066c05c2ff230badfad756b6ee86c23864c6ec",
+      "bytes": 158374,
+      "gzipSha256": "cc7b6ffba0f6246a33fd1494f9c88d64245cf3064ba4184d389180351609ac26"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/dense-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.config.ts.gz",
+      "rawSha256": "88520272e626e2ff47081cff1f15d40a07da943ef37b4717a79921ed11a3e132",
+      "bytes": 289,
+      "gzipSha256": "f3a0f452a0fc5f2c4fa8c0a4d09e39b8753af125fd083c60f114f4c820e137c4"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/cohort323.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cohort323.config.ts.gz",
+      "rawSha256": "5c3c16ab2fde37e2911b5417c82f99127b810131e34985e155e95f3273df05e3",
+      "bytes": 286,
+      "gzipSha256": "939baae5d06e0125d5dba8ff75eb0d46a9cdfe31041608adfb9138219ad1c64b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/dispatch-probe.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "rawSha256": "801dd1c895d29b673e54331760455d173e8d22e5f65cb7eeb1f50b5b2748ae64",
+      "bytes": 4448,
+      "gzipSha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/runtime.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "rawSha256": "5658a8a7d67d9967c08f4b663e1f5901570ca02de81e7f30ed9683d1b1e8c6b5",
+      "bytes": 4465,
+      "gzipSha256": "446dcdf786aaa4c9cbfe995b331433c1034e935dd1ea487c1d8a47a59f615f14"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/r-late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/r-late.spec.ts.gz",
+      "rawSha256": "6e0e20d51a4c8d7d4bd539553619fa551f1d5ef44ef416e329f9bb83ac47e01a",
+      "bytes": 11421,
+      "gzipSha256": "8240b070cf058cf90160b2f9deb773372da2e14109eeb91cc344da4b855209c3"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/nonoverlap.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/nonoverlap.spec.ts.gz",
+      "rawSha256": "52e3db4f0b4d2de2cf13cd50604bc41547c6edacd0865ed7f9ff5de261dec065",
+      "bytes": 5415,
+      "gzipSha256": "7821761928ee053528e74558677cadbf969814f5df8b24f275a1f2993de8f558"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/capture-lab.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/capture-lab.ts.gz",
+      "rawSha256": "126dae0c0104dff6772dab27933aa53282b61c163ecfd2c0788d75188a8b6c6c",
+      "bytes": 412,
+      "gzipSha256": "cf57ad0eaf25534b3e55a185a06d48428b5dbea630f758041a6326c585be1cbd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/worker-owner.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.config.ts.gz",
+      "rawSha256": "51a6a8ba5e326e169f571208c17ee8741fec1174b14c6faffff638090022acc9",
+      "bytes": 289,
+      "gzipSha256": "5741c02b5b3d0dcf68d10dcb9dbb40c1259ab7bf100459e33e9a6ae8e995efc7"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/treatment.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/treatment.spec.ts.gz",
+      "rawSha256": "da585fa316e43ff91c1e105a447eecd6e64404cea8b08a4b9a7641ce329f6354",
+      "bytes": 2507,
+      "gzipSha256": "b89dad6c220ebf1c5ff5180bfa0c30d361c5735988269082f99bb0496e973d06"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/prepare-profile.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-profile.spec.ts.gz",
+      "rawSha256": "3162bfd281d582d3282935657af5fc661c17c5efac4aa1604d0635220c376ea3",
+      "bytes": 3463,
+      "gzipSha256": "f1d18d87c9838eae71cd8e6d1ed32b10fa1b56432607428c61c9277b3f004bc2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/root-cache-review.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/root-cache-review.config.ts.gz",
+      "rawSha256": "969bcbffe98d4bd85ea512a1bab64a86e5b99e889c9c19ab6d5876227a84920b",
+      "bytes": 294,
+      "gzipSha256": "74110cd1771fc49d90721b2da340d37bbbcafc4444295df77223f9cc24b21174"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/marker.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/marker.spec.ts.gz",
+      "rawSha256": "89889adb1dc8372178b5ed144f1cba4f23eca54c893a24c4c6e5ddb8b37b4168",
+      "bytes": 10327,
+      "gzipSha256": "94bc5e9af20c8b5929af1bef5188371a8f244ed2270eb965e816938b0d1d815b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/late.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/late.spec.ts.gz",
+      "rawSha256": "91dc7b950f3286e7b6085f8851c5044df14b12711fccf9192ab31af65790ded9",
+      "bytes": 11072,
+      "gzipSha256": "fedce71364404d9b190f0b252bcd9bdf549059662b9f793020538d150606062f"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/maintenance.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance.config.ts.gz",
+      "rawSha256": "70b43c22df03535dc5849f9c2c6c597e1cd1e960edfdfa777982a0afa6a142f9",
+      "bytes": 288,
+      "gzipSha256": "8d9593f88cc2c59efeb331c81780652e4a7bdbdc35cded4da2ba5721499465c1"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/old1024-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/old1024-cohort.config.ts.gz",
+      "rawSha256": "abcad4ab77d5824818e4787dd4330907e2d40d968d5ba079ab84a01972505169",
+      "bytes": 291,
+      "gzipSha256": "86a9538f9043d2b05dc3484a5bf4537d7cf5798299b964856ac66d3b30fc7bfc"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/stall.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.config.ts.gz",
+      "rawSha256": "8b57cc7f74f224ccf47e7cae7b5ca17a4b0a5f12630e0a7f691de9b776a50fb5",
+      "bytes": 285,
+      "gzipSha256": "bb39ada26d52a24a57c6c9ef96a89c254ca656dee81c04a5e68ce17fd17f44a2"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "rawSha256": "52a98127646d48363fe64520ca44f18e0b1a810248a2e8901f8ed971c6e3e76f",
+      "bytes": 5601,
+      "gzipSha256": "ccfdb89ffc1bdceffa9eab2a799ec141826da179a5c9ecb4cab73d29938171cf"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/default.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/default.config.ts.gz",
+      "rawSha256": "b2c7926bd6cf25d23e3e326c2253a828eacd120d9b912062059f265fff80c972",
+      "bytes": 284,
+      "gzipSha256": "353b312daea65a62d8fffa22305f7b09b02b6724ef6fa269d6695abb7024bc30"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/grown-maintenance.spec.ts.gz",
+      "rawSha256": "d78afc6147b03d726102303d5ad5bac292aa3fbecce06f452f80c79f8ad9c7df",
+      "bytes": 12043,
+      "gzipSha256": "09cc1edcb58b2655558f99723e7f87129c00240602ccd649e7f8a5da71433d87"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/lab-cpu.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/lab-cpu.mjs.gz",
+      "rawSha256": "f7e40df43bdbdb16babcb8dd1797b9a277299ae87e4ce00e110e233a8a51669f",
+      "bytes": 1455,
+      "gzipSha256": "7ac5561b761acccb13d72cf0e60ddcfd73944acdae8f8f1676d093aaadd2496a"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/fixture-roles.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/fixture-roles.mjs.gz",
+      "rawSha256": "e188d9e96861a2600eb7399d68f5110042b79eaa0edac46a398fd2d0b75e62e5",
+      "bytes": 943,
+      "gzipSha256": "062c5b175a2dae51f6704b3513c960fed3f51d906395a38e3c230aa7822ceb17"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/prepare-sender326.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare-sender326.spec.ts.gz",
+      "rawSha256": "c28df171840c7a8863ebfb9d035b9db6e8bb2f8cdce6d7a2f1376d9ff204932f",
+      "bytes": 3400,
+      "gzipSha256": "7a71db0c6980f40502d82b91f45ed19532176fc9b6dbe40bc182d87971ab1c56"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/playwright.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/playwright.config.ts.gz",
+      "rawSha256": "8e6b678c7eb438f3f2d34f97c325a8cf4bd6b9e250a07aad47497233a28754b0",
+      "bytes": 479,
+      "gzipSha256": "cb1687309948f52fd8437ada5a7b1ac4ae1b4dc327b2d44a07a8d4c1bbfa12cd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/cohort323.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cohort323.spec.ts.gz",
+      "rawSha256": "20efbd578520db6b44c9810e24f073c90920b15eba821fb82f6849bc26cb0c84",
+      "bytes": 4385,
+      "gzipSha256": "9e484377ebcb6267f4f5aa52e616ceb1abd0119ce693260ce1f95926ab90571e"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/hint.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/hint.config.ts.gz",
+      "rawSha256": "391f47fa119beabce52f563b47d5c440c1078dc0425cd8c32cc64d42d3e78592",
+      "bytes": 471,
+      "gzipSha256": "3a8aa50f4c141da82963247e727759fd0989accb1f85c817b028e2198b7bfcf1"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/cold-observer.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/cold-observer.ts.gz",
+      "rawSha256": "a191ff009d3c711bd519c784407a7988f4f8ea00caccff4e96d731031f9429b2",
+      "bytes": 714,
+      "gzipSha256": "f06384fcf16d3a46c9070359ad083065cf3b2d3bd994eb85dfa37c2866f7e4f5"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/worker-cpu-profile.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-cpu-profile.mjs.gz",
+      "rawSha256": "d188e8f1fea59dc0531c70f12dacb0294d21dba12d7a6fbb2e83b363df70c2a9",
+      "bytes": 2107,
+      "gzipSha256": "6fddfea0f66a7afb1c155630cd237ce4f6e6af078538d8b6a32f9f12dbcac853"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/hint.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/hint.spec.ts.gz",
+      "rawSha256": "3b732293f37bc6fb6bbb275021507261dd9feeb60abc5e97de70b7e6d8a6e475",
+      "bytes": 4132,
+      "gzipSha256": "1bd05d2f81b5d642148406d0353d0d31bc3008280b19e93595167ea9bb0eb898"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/maintenance-pilot.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/maintenance-pilot.spec.ts.gz",
+      "rawSha256": "e6bd99a496aa0146517520dbe89956ba4a40784055437b5d9df8cc682bcf2d19",
+      "bytes": 2656,
+      "gzipSha256": "bdbb500a90d1ef20e6ed20e89aa15bf531518462784829713dd4aaa08c3edd6b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/prepare.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/prepare.config.ts.gz",
+      "rawSha256": "9c9c77ec61b78096de8ab698cb6132db2978638bec7d60a0a42fb10246aa9f7a",
+      "bytes": 292,
+      "gzipSha256": "1a8aaa30ca67f6ea727dd84b21f8ccaeab9f50482770268f3837686c0daf530b"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/result.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/result.mjs.gz",
+      "rawSha256": "191d89fe6b82522f92a5e52ca8aa61a62c080e8679c14d621dcf66bc982953d2",
+      "bytes": 244,
+      "gzipSha256": "731b2f8a787e5f614667fd9771ac3a67500ea48ee4298d58aadc33a04eb30eb9"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/stall.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/stall.spec.ts.gz",
+      "rawSha256": "179d6eb5715633d59593643e5b558dafbf3c8be357ce0420e9d50ebde1c24577",
+      "bytes": 10173,
+      "gzipSha256": "e3df51dabe3815759161cbdfd63cda1b623ca5251e975b7625b156221b163bf0"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts.gz",
+      "rawSha256": "571cab4b1f23d9374f8173fb04ac081adf356ef5eac72c2432d1a8eb86ce9798",
+      "bytes": 14456,
+      "gzipSha256": "7093861d6747b18ae510463d4b2af131c16735df33e2b960ceed249563d13821"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source/test/labFaultStream327.test.ts",
+      "copy": "apparatus/source/test/labFaultStream327.test.ts.gz",
+      "rawSha256": "77a8197d338494c9efd74826d5ba17e08ca23d643818a2f0dffffea29aeaf928",
+      "bytes": 1249,
+      "gzipSha256": "07d31ffbde73ca35bae6baaaa218f5ef5e2da3f4e5908ad34e78c1954adbbf94"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source/test/labFault327.test.ts",
+      "copy": "apparatus/source/test/labFault327.test.ts.gz",
+      "rawSha256": "6d809744d6bdfad833cd4e79f5b56aa7a437c1d0cd5765aae97dcded4d3e1f83",
+      "bytes": 3627,
+      "gzipSha256": "c81783342b16c536232d492f01d467c1452335fd9288dd4b03fdb626f1edc4ad"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source-tagged/test/labFaultStream327.test.ts",
+      "copy": "apparatus/source-tagged/test/labFaultStream327.test.ts.gz",
+      "rawSha256": "77a8197d338494c9efd74826d5ba17e08ca23d643818a2f0dffffea29aeaf928",
+      "bytes": 1249,
+      "gzipSha256": "07d31ffbde73ca35bae6baaaa218f5ef5e2da3f4e5908ad34e78c1954adbbf94"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/source-tagged/test/labFault327.test.ts",
+      "copy": "apparatus/source-tagged/test/labFault327.test.ts.gz",
+      "rawSha256": "6d809744d6bdfad833cd4e79f5b56aa7a437c1d0cd5765aae97dcded4d3e1f83",
+      "bytes": 3627,
+      "gzipSha256": "c81783342b16c536232d492f01d467c1452335fd9288dd4b03fdb626f1edc4ad"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-reference/build-identity.json",
+      "copy": "evidence/sender-reference/build-identity.json.gz",
+      "rawSha256": "254575cf864359ee0bc665ce4675b7ae7886fc2b7b56710fb2eafd0daad3003e",
+      "bytes": 74183,
+      "gzipSha256": "9d75ebb39f4709444253d7eddd13cd429d94c54ffb04e0cc666de67cb416f551"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-reference/build-flags.json",
+      "copy": "evidence/sender-reference/build-flags.json.gz",
+      "rawSha256": "076493c3f3737bc62b76f103dee652a40d4336611f6601f0aac8e2fd4ab6155f",
+      "bytes": 301,
+      "gzipSha256": "70c9d8389d208b9e16956ec1df2272347ab609ef3c1252dd841df16838672ade"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-reference/frontend-build.log",
+      "copy": "evidence/sender-reference/frontend-build.log.gz",
+      "rawSha256": "bbe7de318959972834abdba07d9c0b79268790c3297a1296eec22859a0a597a7",
+      "bytes": 8779,
+      "gzipSha256": "fd1a6f4afe435581deb7a8d798b37db988ba8d902e34406c0e7679ac358a7a1f"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-reference/lab-build.log",
+      "copy": "evidence/sender-reference/lab-build.log.gz",
+      "rawSha256": "2e25473950d96426ff32cd96b05d9ace1dad20b121dcaf094d86eb9ee7c2628f",
+      "bytes": 30438,
+      "gzipSha256": "3831d227e5e4d04e0a78d3a89198b0226a098273f22fa75480737c0c8c6bfd6c"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-coordinated-2000/build-identity.json",
+      "copy": "evidence/sender-coordinated-2000/build-identity.json.gz",
+      "rawSha256": "c3d6e0cba8e5923c2c247a1f9e532c38a2f1a81c87e54b6b2c4385a9f09f8376",
+      "bytes": 74183,
+      "gzipSha256": "807175a48561145bdcbcdcdbdb5555f823afe0b65b8b0f66cb001850410f7014"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-coordinated-2000/build-flags.json",
+      "copy": "evidence/sender-coordinated-2000/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "bytes": 308,
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-coordinated-2000/frontend-build.log",
+      "copy": "evidence/sender-coordinated-2000/frontend-build.log.gz",
+      "rawSha256": "f631dd23808c8d543e85469ac37b2fe98dfa079485f9f277d7c5d228a6d82503",
+      "bytes": 8779,
+      "gzipSha256": "6ca8417e0689f0938675bc14363ad63a819a7d521dc8ee9b4b1bfb0a97d55279"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/sender-coordinated-2000/lab-build.log",
+      "copy": "evidence/sender-coordinated-2000/lab-build.log.gz",
+      "rawSha256": "5e74442fd5128308dd89f48163144207d3fc719f781a3a14d5bc2667e03c69c2",
+      "bytes": 30438,
+      "gzipSha256": "0e4ecc0c1a83e8374a40a412697a117a640a86cca47f00c051cddf3c969e847a"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tagged-reference/build-identity.json",
+      "copy": "evidence/tagged-reference/build-identity.json.gz",
+      "rawSha256": "b750a2b32059ea6323463c4ed6b16bffa7b7c5da0e38dc4a10a7d91f5132b78c",
+      "bytes": 74183,
+      "gzipSha256": "8b9416ab0c54ab6dad8fcd063e6cd2aa431ed38dfaffe92e7845317faaeae766"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tagged-reference/build-flags.json",
+      "copy": "evidence/tagged-reference/build-flags.json.gz",
+      "rawSha256": "076493c3f3737bc62b76f103dee652a40d4336611f6601f0aac8e2fd4ab6155f",
+      "bytes": 301,
+      "gzipSha256": "70c9d8389d208b9e16956ec1df2272347ab609ef3c1252dd841df16838672ade"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tagged-reference/frontend-build.log",
+      "copy": "evidence/tagged-reference/frontend-build.log.gz",
+      "rawSha256": "4c7bd18bbc1927730edbe9973d4c9d2177c88be3ccbfd901f922f1cd08e75bf3",
+      "bytes": 9213,
+      "gzipSha256": "5fa21aa6e1df37d2317406ad903ba66878f5b97b5726b14576ecca3d3d2cfedf"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/tagged-reference/lab-build.log",
+      "copy": "evidence/tagged-reference/lab-build.log.gz",
+      "rawSha256": "88998014b5b656957a57cad0a6fec384e1fb8c910fd77e188c760d16e8489c54",
+      "bytes": 30438,
+      "gzipSha256": "17b97b65b70db4449846eff3a90697a68fa6520d40699d31064fa71a42ecb36d"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/observation327.diff",
+      "copy": "apparatus/observation327.diff.gz",
+      "rawSha256": "dd162e70375846a5c8b0c38549d1920fec813a1a5fd29d258b6f41acf34ae1bc",
+      "bytes": 25383,
+      "gzipSha256": "c4aec465e2106f33aa6bac7add2ec6c705d0e4f31f3e0c273f4811d6c2454067"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/native-tag327.diff",
+      "copy": "apparatus/native-tag327.diff.gz",
+      "rawSha256": "8e52839bcb356c804c11bcce9daa9684e5cdc8071a9f59d84fab3b5e2f6a2252",
+      "bytes": 1184,
+      "gzipSha256": "e539858c633b442d5b2a1546233df26054462b87f00ae48453b6cca8524b5b29"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/preserve327.log",
+      "copy": "evidence/preserve327.log.gz",
+      "rawSha256": "7e2faf21095083d6ab1e3ce527d90b972b9d20255fd0fd38e9c4bb60075109a1",
+      "bytes": 35,
+      "gzipSha256": "6b5abdd341d893b4ae2ebbecf7e36b760cb762f216fa0a9a934bf21c2acfd535"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/write-report327.log",
+      "copy": "evidence/write-report327.log.gz",
+      "rawSha256": "bd0c6dc111285b2a0429298539617f5c084f940099844573c751dd4d883f48eb",
+      "bytes": 54,
+      "gzipSha256": "bf1fdfbff2cf587fc5397fe459950af8cc1d36f360569538710dcb7457ee6bcd"
+    },
+    {
+      "source": "/private/tmp/done-owner-fault-trace-lab-20261101/freeze327.py",
+      "copy": "apparatus/freeze327.py.gz",
+      "rawSha256": "f40dc119e3a39900e12a5adf3f5ee796d9809909df6bbfa80d6ffed4efe7560f",
+      "bytes": 3866,
+      "gzipSha256": "68b2c85cd58d7f6b60b9ff0bf3dd199c6bfec76577aee671212e2dfd8e027594"
+    }
+  ]
+}

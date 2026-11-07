@@ -1,0 +1,66 @@
+import{createChannel}from'./channel.mjs';
+const encode=v=>new TextEncoder().encode(JSON.stringify(v)),decode=b=>JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(b));
+const now=()=>performance.timeOrigin+performance.now();
+const all=[];let fault='none';
+function deferred(){let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b});return{promise,resolve,reject}}
+async function assertPasskey(request,trace){
+ const binary=Uint8Array.from(atob(request.credentialId.replaceAll('-','+').replaceAll('_','/')),c=>c.charCodeAt(0));
+ const credential=await navigator.credentials.get({publicKey:{rpId:request.rpId,challenge:request.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id:binary}]}});
+ if(!credential)throw Error('passkey-refused');const r=credential.response,assertion={credentialId:credential.id,authenticatorData:new Uint8Array(r.authenticatorData),clientDataJSON:new Uint8Array(r.clientDataJSON),signature:new Uint8Array(r.signature),userHandle:r.userHandle?new Uint8Array(r.userHandle):null};if(fault==='bad-passkey'){assertion.signature[0]^=1;trace.faults.push({kind:'bad-passkey',at:now()})}return assertion;
+}
+async function metadata(){
+ const db=await new Promise((yes,no)=>{const q=indexedDB.open('done.slots');q.onsuccess=()=>yes(q.result);q.onerror=()=>no(q.error);q.onupgradeneeded=()=>{q.transaction.abort();no(Error('missing-slot-index'))}});
+ try{const slots=await new Promise((yes,no)=>{const tx=db.transaction('slots');const q=tx.objectStore('slots').getAll();q.onsuccess=()=>yes(q.result);q.onerror=()=>no(q.error)});const slot=slots.find(s=>s.status==='active'&&s.account);if(!slot||slot.stores.length!==1)throw Error('one-account-slot-required');const pin=JSON.parse(localStorage.getItem('done.account-service.pin.v1'));return{slotId:slot.id,pin,identity:{id:slot.stores[0].principal,actor:{kind:'human',name:'You',color:'#e0662f'},device:{id:'worker-feasibility',name:'Worker feasibility'}}};}finally{db.close()}
+}
+function create(){
+ if(!crossOriginIsolated||typeof SharedArrayBuffer==='undefined')throw Error('isolated-lab-required');
+ const incarnation=[...crypto.getRandomValues(new Uint8Array(16))].map(b=>b.toString(16).padStart(2,'0')).join('');
+ const gate=createChannel(incarnation),lifeBuffer=new SharedArrayBuffer(4),life=new Int32Array(lifeBuffer);Atomics.store(life,0,1);
+ const worker=new Worker(new URL('./kernel.mjs',import.meta.url),{type:'module'}),messages=new MessageChannel(),pending=new Map(),boot=deferred(),disposed=deferred();
+ const trace={diagnostic:[],storage:[],replies:[],stale:0,invalid:0,disposed:null,faults:[],mainMessages:[]};let pendingStorage,closing=false,slotId,bridgePermit,bridgeOpening;const bridgeAbort=new AbortController();const retirement=new BroadcastChannel('done/slot-lifecycle');retirement.onmessage=e=>{if(e.data?.kind==='retire'&&e.data.slotId===slotId&&!closing)void close().catch(()=>{})};
+ const valid=()=>!closing&&Atomics.load(life,0)===1;
+ const answer=(mailbox,value)=>{const b=encode(value);if(b.length>1024*1024)throw Error('mailbox-capacity');new Uint8Array(mailbox,12,b.length).set(b);const h=new Int32Array(mailbox,0,3);Atomics.store(h,1,b.length);Atomics.store(h,0,1);Atomics.notify(h,0)};
+ const performStorage=m=>{
+  const start=now();let value=null;
+  try{
+   if(!valid()||!bridgePermit||bridgePermit.state!=='active')throw new DOMException('Closed','InvalidStateError');
+   bridgePermit.write(()=>{});
+   if(m.op==='get')value=localStorage.getItem(m.args[0]);else if(m.op==='keys')value=Object.keys(localStorage);else if(m.op==='length')value=localStorage.length;else if(m.op==='key')value=localStorage.key(m.args[0]);
+   else if(m.op==='set'||m.op==='remove'){
+    if(typeof m.args[0]!=='string'||!/^done\.pending-update\.done\.[a-f0-9]{32}\./.test(m.args[0]))throw Error('unscoped-journal-write');
+    if(fault==='quota'&&m.op==='set')throw new DOMException('Test quota refusal','QuotaExceededError');
+    bridgePermit.write(()=>{if(m.op==='set')localStorage.setItem(m.args[0],m.args[1]);else localStorage.removeItem(m.args[0])});
+   }else throw Error('invalid-storage-operation');
+   trace.storage.push({op:m.op,start,end:now(),written:m.op==='set'});
+   if(m.op==='set'&&fault==='after-write'){pendingStorage={mailbox:m.mailbox,result:{ok:true,value}};trace.faults.push({kind:'after-write',at:now()});return}
+   answer(m.mailbox,{ok:true,value});
+  }catch(error){trace.storage.push({op:m.op,start,end:now(),refused:true});answer(m.mailbox,{ok:false,name:error.name==='QuotaExceededError'?error.name:'InvalidStateError'})}
+ };
+ messages.port1.onmessage=async event=>{const m=event.data;if(m?.owner!==incarnation)return;
+  if(m.kind==='storage'){if(fault==='before-write'&&m.op==='set'){pendingStorage={mailbox:m.mailbox,result:null};trace.faults.push({kind:'before-write',at:now()});return}performStorage(m)}
+  else if(m.kind==='passkey'){if(fault==='hold-passkey'){trace.faults.push({kind:'hold-passkey',at:now()});return}try{const assertion=await assertPasskey(m.request,trace);if(valid())messages.port1.postMessage({kind:'passkey-result',owner:incarnation,id:m.id,ok:true,assertion});}catch{messages.port1.postMessage({kind:'passkey-result',owner:incarnation,id:m.id,ok:false})}}
+ };
+ worker.onmessage=event=>{const m=event.data;if(m?.owner!==incarnation){trace.stale++;return}
+  if(m.kind==='diagnostic-fault'){trace.diagnostic.push(m);return}if(m.kind==='booted'){boot.resolve();return}if(m.kind==='disposed'){trace.disposed=m.metrics;disposed.resolve(m.metrics);return}if(m.kind==='cleanup-failed'){disposed.reject(Error('cleanup-failed'));return}
+  const result=gate.receive(m);if(result.kind!=='accepted'){trace[result.kind==='stale'?'stale':'invalid']++;return}
+  trace.replies.push({id:m.id,operation:m.operation,kind:m.kind,at:now()});const p=pending.get(m.id);pending.delete(m.id);if(!p)return;
+  if(m.kind==='refused')p.reject(Error('worker-operation-refused'));else p.resolve(m.bytes.length?decode(m.bytes):undefined);m.bytes.fill(0);
+ };
+ worker.onerror=()=>{Atomics.store(life,0,0);gate.invalidate();for(const p of pending.values())p.reject(Error('worker-failed'));pending.clear();};
+ worker.postMessage({kind:'bootstrap',owner:incarnation,life:lifeBuffer,port:messages.port2},[messages.port2]);
+ const activity=event=>{if(valid())messages.port1.postMessage({kind:'activity',owner:incarnation,event:event.type,visibility:document.visibilityState})};
+ for(const kind of['visibilitychange','freeze','resume'])document.addEventListener(kind,activity);
+ const send=async(operation,value)=>{await boot.promise;if(operation==='open'){slotId=value.slotId;bridgeOpening=import('./src/crdt/writeSession.ts').then(({openWriteSession})=>openWriteSession(slotId,{signal:bridgeAbort.signal}));bridgePermit=await bridgeOpening;if(!valid())throw Error('owner-closed');}const request=gate.issue(operation,value===undefined?new Uint8Array():encode(value)),done=deferred();pending.set(request.id,done);trace.mainMessages.push({operation,at:now()});worker.postMessage(request);request.bytes.fill(0);return done.promise;};
+ const close=async()=>{
+  if(closing)return disposed.promise;closing=true;Atomics.store(life,0,0);
+  for(const p of pending.values())p.reject(Error('owner-closed-uncertain'));pending.clear();
+  if(pendingStorage){answer(pendingStorage.mailbox,{ok:false,name:'InvalidStateError'});pendingStorage=null}
+  for(const kind of['visibilitychange','freeze','resume'])document.removeEventListener(kind,activity);
+  const result=send('close');await result;const metrics=await disposed.promise;bridgeAbort.abort();await bridgeOpening?.catch(()=>{});await bridgePermit?.close();retirement.close();messages.port1.close();worker.terminate();return metrics;
+ };
+ const terminate=async()=>{closing=true;Atomics.store(life,0,0);gate.invalidate();for(const p of pending.values())p.reject(Error('context-lost-uncertain'));pending.clear();if(pendingStorage){answer(pendingStorage.mailbox,{ok:false,name:'InvalidStateError'});pendingStorage=null}worker.terminate();bridgeAbort.abort();await bridgeOpening?.catch(()=>{});await bridgePermit?.close();retirement.close();messages.port1.close()};
+ const entry={send,close,terminate,trace,gate,get owner(){return incarnation},get heldStorage(){return!!pendingStorage}};all.push(entry);return entry;
+}
+const beats=[];let previous=now();setInterval(()=>{const at=now();beats.push({at,gap:at-previous});previous=at;if(beats.length>20000)beats.shift()},16);
+window.__workerLab={metadata,create,all,trace:()=>({beats:structuredClone(beats),instances:all.map(v=>structuredClone(v.trace))}),fault(value){fault=value},version:1};
+document.querySelector('#status').textContent='Worker laboratory ready';

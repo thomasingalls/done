@@ -1,0 +1,18 @@
+[
+  {
+    "case": "control",
+    "CcatchupMs": 15449.61962890625,
+    "acceptedBefore": 7,
+    "acceptedAfter": 7,
+    "createMs": null,
+    "admitMs": null
+  },
+  {
+    "case": "checkpoint",
+    "CcatchupMs": 14947.845703125,
+    "acceptedBefore": 7,
+    "acceptedAfter": 7,
+    "createMs": 7872.81884765625,
+    "admitMs": 6347.2919921875
+  }
+]

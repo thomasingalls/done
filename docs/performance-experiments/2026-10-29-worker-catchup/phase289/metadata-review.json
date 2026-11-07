@@ -1,0 +1,18 @@
+{
+  "runtimeSources": 504,
+  "changedSourceRecords": [
+    "src/crdt/accountInbound.ts",
+    "src/crdt/receiveGroup.ts"
+  ],
+  "domainsUnchanged": 199,
+  "specifiedContractsRetained": 78,
+  "openConstructionsUnchanged": 16,
+  "priorManifestRowsRetained": 1031,
+  "newRequiredUncreditedTest": [
+    "test:test/boundedInboundPreparation.test.ts"
+  ],
+  "rowsAfter": 1032,
+  "unresolvedBefore": 484,
+  "unresolvedAfter": 485,
+  "nativeFourPositionAllowanceUnchanged": true
+}

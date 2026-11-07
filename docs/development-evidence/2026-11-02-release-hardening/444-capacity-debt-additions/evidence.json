@@ -1,0 +1,123 @@
+{
+  "phase": 444,
+  "date": "2026-11-05",
+  "slug": "capacity-debt-additions",
+  "title": "Record effective snapshot capacity and repeated-attempt cost debt",
+  "sourceFiles": [
+    "src/crdt/localBaselineRecord.ts",
+    "src/crdt/automaticLocalRetention.ts",
+    "src/crdt/contentRecord.ts",
+    "docs/development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md"
+  ],
+  "requiredChecks": [],
+  "detail": "Record the operator additions in the Stage6 debt home: docs/release-hardening-2026-11-02.md, \u201cOperator additions to the phase442debts\u201d. Use exact committed source references and the existing442observation. Do not alter the frozen442record or perform another maintenance run.",
+  "validation": "Static inspection confirms the hex/JSON expansion, encoded-size boundary and changed-hint capacity retry behind the60sclock. The debt wording distinguishes the practical growth ceiling from an early raw guard on a single oversized input, and scheduler eligibility from an observed once-per-minute cadence. Source references match signed commit 4d20580c8b9385e225a6452e4ffc74711f829b38. No new measurements or app tests were run.",
+  "limitations": "Per-attempt wall/CPU cost, repeated-attempt cadence,438/439preparation attribution and real-scale32MiBindex time/RAM remain unmeasured. The74.4s442journey is not an individual-attempt measurement. Binary encoding or a different limit requires an operator format/limit decision. No code/test/guard/format/limit/retry change, fix, Stage5run, commit, push, publication or deployment.",
+  "summary": "The Stage6debt home now records effective snapshot capacity below2MiBafter overhead and possible repeated capacity-refused attempts behind the60sretry clock. Both are source-derived mechanisms; per-attempt costs remain unmeasured alongside438/439preparation and production-index time/RAM. Prior frozen evidence stays unchanged.",
+  "decisionTitle": "Keep the effective baseline ceiling and retry cost as operator debts",
+  "decision": "Record the two operator additions without treating them as measured performance or changing a guard. The encoded record determines usable capacity; any binary representation or altered ceiling needs a separate operator decision. Capacity is keyed to the current authenticated hint, so later writing can permit another costly refusal after the retry and quiet clocks; leave that cost unmeasured. Use the existing Stage6debt home rather than adding a competing active-state document.",
+  "next": "Phase444records the operator additions to the442Stage6debts, with exact committed source references and no new measurement or implementation. Prepare its documentation-only patch after rebuilt443; do not commit or push. The original rebuilt history/local evidence guarantees remain intact. Stage5and actual Stage6reporting remain paused for explicit operator resumption.",
+  "testedInputs": {
+    "src/crdt/localBaselineRecord.ts": "35786d675814d02aab35cba0b9570f957e761cde5e5f7bfaf3067c0bf3a37c1e",
+    "src/crdt/automaticLocalRetention.ts": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+    "src/crdt/contentRecord.ts": "4427c4baf2feaf942e53ee2eae92b40533697f14a8ab87828f5ddbb2c9fa1479",
+    "docs/development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md": "fc2dca5a77231c74c7d85eb4a3ade59ad06420a2465e7732122b2e625b8c13e5"
+  },
+  "evidence": [
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs/development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "docs/development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md",
+        "sha256": "fc2dca5a77231c74c7d85eb4a3ade59ad06420a2465e7732122b2e625b8c13e5",
+        "bytes": 3219
+      },
+      "sha256": "fc2dca5a77231c74c7d85eb4a3ade59ad06420a2465e7732122b2e625b8c13e5",
+      "bytes": 3219
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+        "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+        "bytes": 3112
+      },
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_recorder.py",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_recorder.py",
+        "sha256": "b81e32263fc6d36bcfcd505a8419c671f829ab8245ec28b494336ecc0d533a6a",
+        "bytes": 3718
+      },
+      "sha256": "b81e32263fc6d36bcfcd505a8419c671f829ab8245ec28b494336ecc0d533a6a",
+      "bytes": 3718
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+        "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+        "bytes": 6197
+      },
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/automaticLocalRetention.ts",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "src/crdt/automaticLocalRetention.ts",
+        "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+        "bytes": 10161
+      },
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/contentRecord.ts",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "src/crdt/contentRecord.ts",
+        "sha256": "4427c4baf2feaf942e53ee2eae92b40533697f14a8ab87828f5ddbb2c9fa1479",
+        "bytes": 9704
+      },
+      "sha256": "4427c4baf2feaf942e53ee2eae92b40533697f14a8ab87828f5ddbb2c9fa1479",
+      "bytes": 9704
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/localBaselineRecord.ts",
+      "source": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "sha256": "35786d675814d02aab35cba0b9570f957e761cde5e5f7bfaf3067c0bf3a37c1e",
+        "bytes": 10131
+      },
+      "sha256": "35786d675814d02aab35cba0b9570f957e761cde5e5f7bfaf3067c0bf3a37c1e",
+      "bytes": 10131
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/444-record.json",
+      "artifact": "objects/6192dcc5db645d2708c1a50c5969a6504e7250134ad8187d459331169baf2d06.gz",
+      "sha256": "6192dcc5db645d2708c1a50c5969a6504e7250134ad8187d459331169baf2d06",
+      "bytes": 2875
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/444-source-review.json",
+      "artifact": "objects/c61644d656a6f5d552c72b4d2301c1ab5cf4e2f8f1f5f360402d864ea6ad6f56.gz",
+      "sha256": "c61644d656a6f5d552c72b4d2301c1ab5cf4e2f8f1f5f360402d864ea6ad6f56",
+      "bytes": 1761
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/444-tested-inputs.json",
+      "artifact": "objects/c5de1d0c1b16006402cabb51f5548e3ac147d5e52ba0409941269e4fe9e6b317.gz",
+      "sha256": "c5de1d0c1b16006402cabb51f5548e3ac147d5e52ba0409941269e4fe9e6b317",
+      "bytes": 484
+    }
+  ]
+}

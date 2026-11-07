@@ -1,0 +1,30 @@
+[
+  {
+    "check": "check-yjs-patch.mjs",
+    "exit": 0
+  },
+  {
+    "check": "check-write-admission.mjs",
+    "exit": 0
+  },
+  {
+    "check": "check-authority-map.mjs",
+    "exit": 0
+  },
+  {
+    "check": "check-recipient-authority.mjs",
+    "exit": 0
+  },
+  {
+    "check": "check-retention.mjs",
+    "exit": 0
+  },
+  {
+    "check": "check-update-limit.mjs",
+    "exit": 0
+  },
+  {
+    "check": "check-wasm-seal.mjs",
+    "exit": 0
+  }
+]

@@ -1,0 +1,5840 @@
+[
+  {
+    "name": "grown329-withheld-repaired-r1",
+    "replicate": 1,
+    "withhold": true,
+    "pp": true,
+    "source": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+    "dist": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+    "control": "repaired P1",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "fixture": "/private/tmp/done-retained-scope-lab-20261101/cohort-winning/fixture.json",
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "phase329/grown-maintenance.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "stopFunctional": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "phase329/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793551711.057533,
+    "finishedAt": 1793551863.228683,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793551836319.7869,
+        "sampleReturnedAt": 1793551836332.7468,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 5,
+          "interruptions": 2,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793551856423.1638,
+        "sampleReturnedAt": 1793551856432.0972,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 18,
+          "interruptions": 15,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793551856861.529,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793551859476.372
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793551859704.0063,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793551862190.031
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 18,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 31101825,
+        "durableBytes": 18990390,
+        "durablePeakBytes": 18990390,
+        "durableDeltas": 2,
+        "durableChunks": 73,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 55409.03955078125,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551823505,
+            "attempt": 1,
+            "at": 1793551823505.4001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551824877,
+            "attempt": 2,
+            "at": 1793551824877
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551826245,
+            "attempt": 3,
+            "at": 1793551826244.9001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551827791,
+            "attempt": 4,
+            "at": 1793551827791.4001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551829252,
+            "attempt": 5,
+            "at": 1793551829252.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551830612,
+            "attempt": 6,
+            "at": 1793551830612.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551831983,
+            "attempt": 7,
+            "at": 1793551831983.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551833435,
+            "attempt": 8,
+            "at": 1793551833435.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551834931,
+            "attempt": 9,
+            "at": 1793551834931.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551836300,
+            "attempt": 10,
+            "at": 1793551836300.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551837684,
+            "attempt": 11,
+            "at": 1793551837683.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551839119,
+            "attempt": 12,
+            "at": 1793551839119.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551840608,
+            "attempt": 13,
+            "at": 1793551840607.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551842033,
+            "attempt": 14,
+            "at": 1793551842033.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823365,
+            "notBefore": 1793551843422,
+            "attempt": 15,
+            "at": 1793551843422
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2411,
+              "bytes": 2394096
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 1996,
+              "bytes": 224415
+            }
+          },
+          {
+            "opened": {
+              "entries": 2134,
+              "bytes": 237781
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1171,
+              "bytes": 14574162
+            },
+            "coverage": {
+              "entries": 1170,
+              "bytes": 161460
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4144536
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 26590609
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3990,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551823408.1
+                },
+                "arrivingJob": {
+                  "id": 3992,
+                  "name": "accountReceive.ts:1631:receivePage",
+                  "at": 1793551823505
+                },
+                "at": 1793551823505.1
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4020,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551823858.2
+                },
+                "arrivingJob": {
+                  "id": 4022,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551824865.2
+                },
+                "at": 1793551824871.8
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4052,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551825232
+                },
+                "arrivingJob": {
+                  "id": 4054,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793551826233.3
+                },
+                "at": 1793551826239.6
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4086,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551826774.4001
+                },
+                "arrivingJob": {
+                  "id": 4088,
+                  "name": "accountReceive.ts:1377:prepared",
+                  "at": 1793551827779.8
+                },
+                "at": 1793551827786.2
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4119,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551828234.4001
+                },
+                "arrivingJob": {
+                  "id": 4121,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551829241.6
+                },
+                "at": 1793551829247.7
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4151,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551829598.5
+                },
+                "arrivingJob": {
+                  "id": 4153,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551830604
+                },
+                "at": 1793551830607.5
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4183,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551830964.8
+                },
+                "arrivingJob": {
+                  "id": 4185,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793551831973
+                },
+                "at": 1793551831979
+              }
+            ]
+          },
+          {
+            "attempt": 8,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4217,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551832414.3
+                },
+                "arrivingJob": {
+                  "id": 4219,
+                  "name": "accountReceive.ts:1377:prepared",
+                  "at": 1793551833424.5
+                },
+                "at": 1793551833430.6
+              }
+            ]
+          },
+          {
+            "attempt": 9,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4250,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551833908.1
+                },
+                "arrivingJob": {
+                  "id": 4252,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551834920
+                },
+                "at": 1793551834926.5
+              }
+            ]
+          },
+          {
+            "attempt": 10,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4282,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551835284.4001
+                },
+                "arrivingJob": {
+                  "id": 4284,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551836289.1
+                },
+                "at": 1793551836295.8
+              }
+            ]
+          },
+          {
+            "attempt": 11,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4314,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551836667.7
+                },
+                "arrivingJob": {
+                  "id": 4316,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793551837673.4001
+                },
+                "at": 1793551837678.6
+              }
+            ]
+          },
+          {
+            "attempt": 12,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4348,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551838107
+                },
+                "arrivingJob": {
+                  "id": 4350,
+                  "name": "accountReceive.ts:1377:prepared",
+                  "at": 1793551839109.6
+                },
+                "at": 1793551839116.2
+              }
+            ]
+          },
+          {
+            "attempt": 13,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4381,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551839594.3
+                },
+                "arrivingJob": {
+                  "id": 4383,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551840597.1
+                },
+                "at": 1793551840603.8
+              }
+            ]
+          },
+          {
+            "attempt": 14,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4413,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551841013.9001
+                },
+                "arrivingJob": {
+                  "id": 4415,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793551842019.7
+                },
+                "at": 1793551842023.4001
+              }
+            ]
+          },
+          {
+            "attempt": 15,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4445,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551842407.5
+                },
+                "arrivingJob": {
+                  "id": 4447,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793551843411.9001
+                },
+                "at": 1793551843418.6
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551823505,
+            "endedAt": 1793551823505.4001,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 350.7998046875,
+            "actualClockToNextStartMs": 350.7998046875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551824877,
+            "endedAt": 1793551824877,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 352.699951171875,
+            "actualClockToNextStartMs": 352.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551826245,
+            "endedAt": 1793551826244.9001,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 527.39990234375,
+            "actualClockToNextStartMs": 527.39990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551827791,
+            "endedAt": 1793551827791.4001,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 441.699951171875,
+            "actualClockToNextStartMs": 441.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551829252,
+            "endedAt": 1793551829252.6,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 344.5,
+            "actualClockToNextStartMs": 344.5,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551830612,
+            "endedAt": 1793551830612.3,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 350.199951171875,
+            "actualClockToNextStartMs": 350.199951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551831983,
+            "endedAt": 1793551831983.5,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 428.300048828125,
+            "actualClockToNextStartMs": 428.300048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551833435,
+            "endedAt": 1793551833435.5,
+            "nextAttempt": 9,
+            "actualEndToNextStartMs": 471.10009765625,
+            "actualClockToNextStartMs": 471.10009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 9,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551834931,
+            "endedAt": 1793551834931.3,
+            "nextAttempt": 10,
+            "actualEndToNextStartMs": 346.699951171875,
+            "actualClockToNextStartMs": 346.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 10,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551836300,
+            "endedAt": 1793551836300.6,
+            "nextAttempt": 11,
+            "actualEndToNextStartMs": 365.800048828125,
+            "actualClockToNextStartMs": 365.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 11,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551837684,
+            "endedAt": 1793551837683.7,
+            "nextAttempt": 12,
+            "actualEndToNextStartMs": 421.800048828125,
+            "actualClockToNextStartMs": 421.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 12,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551839119,
+            "endedAt": 1793551839119.2,
+            "nextAttempt": 13,
+            "actualEndToNextStartMs": 473.5,
+            "actualClockToNextStartMs": 473.5,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 13,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551840608,
+            "endedAt": 1793551840607.7,
+            "nextAttempt": 14,
+            "actualEndToNextStartMs": 404.5,
+            "actualClockToNextStartMs": 404.5,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 14,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551842033,
+            "endedAt": 1793551842033.3,
+            "nextAttempt": 15,
+            "actualEndToNextStartMs": 372.60009765625,
+            "actualClockToNextStartMs": 372.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 15,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823365,
+            "notBefore": 1793551843422,
+            "endedAt": 1793551843422,
+            "nextAttempt": 16,
+            "actualEndToNextStartMs": 495.10009765625,
+            "actualClockToNextStartMs": 495.10009765625,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 5,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 30709790,
+        "durableBytes": 14767448,
+        "durablePeakBytes": 14767448,
+        "durableDeltas": 2,
+        "durableChunks": 57,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 35629.639404296875,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551751179,
+            "notBefore": 1793551741491,
+            "attempt": 2,
+            "at": 1793551741491.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793551823564,
+            "notBefore": 1793551829799,
+            "attempt": 4,
+            "at": 1793551829799
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 460,
+              "bytes": 5814619
+            },
+            "coverage": {
+              "entries": 459,
+              "bytes": 63342
+            }
+          },
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1082,
+              "bytes": 13751334
+            },
+            "coverage": {
+              "entries": 1082,
+              "bytes": 149316
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 805,
+              "bytes": 10216129
+            },
+            "coverage": {
+              "entries": 805,
+              "bytes": 111090
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1894,
+              "bytes": 24083786
+            },
+            "coverage": {
+              "entries": 1894,
+              "bytes": 261372
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 26087419
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551739022.2
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551741478.7
+                },
+                "at": 1793551741485
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1329,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793551826581.9001
+                },
+                "arrivingJob": {
+                  "id": 1331,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793551829784
+                },
+                "at": 1793551829790.2
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551751179,
+            "notBefore": 1793551741491,
+            "endedAt": 1793551741491.6,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 82081.89990234375,
+            "actualClockToNextStartMs": 82081.89990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793551823564,
+            "notBefore": 1793551829799,
+            "endedAt": 1793551829799,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 530.60009765625,
+            "actualClockToNextStartMs": 530.60009765625,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "peerP95Ms": 1755.9990234375,
+    "peerWorstMarkerMs": 1460.521728515625,
+    "inputP95Ms": 5.756591796875,
+    "inputWorstMarkerMs": 4.370361328125,
+    "overlapKeys": 79,
+    "backlogMs": 54109.49853515625,
+    "finalNewDeliveryMs": 1882.847900390625,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 41.21272365805169,
+    "hostBusyMax": 49.12940245350217
+  },
+  {
+    "name": "grown329-withheld-repaired-r2",
+    "replicate": 2,
+    "withhold": true,
+    "pp": true,
+    "source": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+    "dist": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+    "control": "repaired P1",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "fixture": "/private/tmp/done-retained-scope-lab-20261101/cohort-winning/fixture.json",
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "phase329/grown-maintenance.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "stopFunctional": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "phase329/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793552073.711651,
+    "finishedAt": 1793552224.566354,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793552194249.164,
+        "sampleReturnedAt": 1793552194256.998,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 4,
+          "interruptions": 1,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793552217343.1438,
+        "sampleReturnedAt": 1793552217351.2546,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 18,
+          "interruptions": 15,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793552217856.299,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793552220737.0554
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793552220964.194,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793552223422.472
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 18,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 31114050,
+        "durableBytes": 19140009,
+        "durablePeakBytes": 19140009,
+        "durableDeltas": 2,
+        "durableChunks": 74,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 55417.164794921875,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552184712,
+            "attempt": 1,
+            "at": 1793552184713.0999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552186115,
+            "attempt": 2,
+            "at": 1793552186116.2998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552187507,
+            "attempt": 3,
+            "at": 1793552187509.0999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552188999,
+            "attempt": 4,
+            "at": 1793552189001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552190473,
+            "attempt": 5,
+            "at": 1793552190474.2998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552191830,
+            "attempt": 6,
+            "at": 1793552191831.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552193205,
+            "attempt": 7,
+            "at": 1793552193207.0999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552194637,
+            "attempt": 8,
+            "at": 1793552194638.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552196086,
+            "attempt": 9,
+            "at": 1793552196087.7998
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552197494,
+            "attempt": 10,
+            "at": 1793552197496
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552198911,
+            "attempt": 11,
+            "at": 1793552198912.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552200415,
+            "attempt": 12,
+            "at": 1793552200416.5999
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552201876,
+            "attempt": 13,
+            "at": 1793552201878
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552203241,
+            "attempt": 14,
+            "at": 1793552203243.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552184662,
+            "notBefore": 1793552204736,
+            "attempt": 15,
+            "at": 1793552204738.2
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2563,
+              "bytes": 3909723
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2540,
+              "bytes": 3689161
+            }
+          },
+          {
+            "opened": {
+              "entries": 2310,
+              "bytes": 1356662
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2110,
+              "bytes": 235457
+            }
+          },
+          {
+            "opened": {
+              "entries": 2510,
+              "bytes": 3380478
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 1821,
+              "bytes": 207455
+            }
+          },
+          {
+            "opened": {
+              "entries": 2157,
+              "bytes": 240012
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            },
+            "witness": {
+              "entries": 392,
+              "bytes": 64178
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1190,
+              "bytes": 14723266
+            },
+            "coverage": {
+              "entries": 1190,
+              "bytes": 164220
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4142141
+            },
+            "witness": {
+              "entries": 392,
+              "bytes": 64178
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2178,
+              "bytes": 26605531
+            },
+            "coverage": {
+              "entries": 2179,
+              "bytes": 300702
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3968,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552184681.0999
+                },
+                "arrivingJob": {
+                  "id": 3970,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552184712.4
+                },
+                "at": 1793552184712.5999
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4000,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552185102
+                },
+                "arrivingJob": {
+                  "id": 4002,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552186104.7998
+                },
+                "at": 1793552186111.2998
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4032,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552186490.2
+                },
+                "arrivingJob": {
+                  "id": 4034,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552187497.4
+                },
+                "at": 1793552187504
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4066,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552187975.5
+                },
+                "arrivingJob": {
+                  "id": 4068,
+                  "name": "accountReceive.ts:1377:prepared",
+                  "at": 1793552188989.2998
+                },
+                "at": 1793552188996
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4099,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552189452.2
+                },
+                "arrivingJob": {
+                  "id": 4101,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552190464
+                },
+                "at": 1793552190469.2998
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4131,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552190813.7998
+                },
+                "arrivingJob": {
+                  "id": 4133,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552191820.7
+                },
+                "at": 1793552191826.7998
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4163,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552192183.7
+                },
+                "arrivingJob": {
+                  "id": 4165,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552193196.7998
+                },
+                "at": 1793552193202.5
+              }
+            ]
+          },
+          {
+            "attempt": 8,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4197,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552193625.2998
+                },
+                "arrivingJob": {
+                  "id": 4199,
+                  "name": "accountReceive.ts:1377:prepared",
+                  "at": 1793552194628.2
+                },
+                "at": 1793552194633
+              }
+            ]
+          },
+          {
+            "attempt": 9,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4230,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552195077.9
+                },
+                "arrivingJob": {
+                  "id": 4232,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552196078.2998
+                },
+                "at": 1793552196084.7998
+              }
+            ]
+          },
+          {
+            "attempt": 10,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4262,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552196481
+                },
+                "arrivingJob": {
+                  "id": 4264,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552197485.5999
+                },
+                "at": 1793552197492.0999
+              }
+            ]
+          },
+          {
+            "attempt": 11,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4294,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552197892.2998
+                },
+                "arrivingJob": {
+                  "id": 4296,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552198898.2998
+                },
+                "at": 1793552198902.2998
+              }
+            ]
+          },
+          {
+            "attempt": 12,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4328,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552199400.5999
+                },
+                "arrivingJob": {
+                  "id": 4330,
+                  "name": "accountReceive.ts:1377:prepared",
+                  "at": 1793552200407
+                },
+                "at": 1793552200413.5
+              }
+            ]
+          },
+          {
+            "attempt": 13,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4361,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552200859.2
+                },
+                "arrivingJob": {
+                  "id": 4363,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552201867
+                },
+                "at": 1793552201872.2
+              }
+            ]
+          },
+          {
+            "attempt": 14,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4393,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552202229
+                },
+                "arrivingJob": {
+                  "id": 4395,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552203233.7998
+                },
+                "at": 1793552203236.2
+              }
+            ]
+          },
+          {
+            "attempt": 15,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4425,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552203723.4
+                },
+                "arrivingJob": {
+                  "id": 4427,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552204725
+                },
+                "at": 1793552204731
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552184712,
+            "endedAt": 1793552184713.2,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 386.099853515625,
+            "actualClockToNextStartMs": 386.199951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552186115,
+            "endedAt": 1793552186116.2998,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 371.900146484375,
+            "actualClockToNextStartMs": 371.900146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552187507,
+            "endedAt": 1793552187509.0999,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 465.0,
+            "actualClockToNextStartMs": 465.0,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552188999,
+            "endedAt": 1793552189001,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 449.2998046875,
+            "actualClockToNextStartMs": 449.2998046875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552190473,
+            "endedAt": 1793552190474.2998,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 338.10009765625,
+            "actualClockToNextStartMs": 338.10009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552191830,
+            "endedAt": 1793552191831.5999,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 349.699951171875,
+            "actualClockToNextStartMs": 349.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552193205,
+            "endedAt": 1793552193207.0999,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 416.800048828125,
+            "actualClockToNextStartMs": 416.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552194637,
+            "endedAt": 1793552194638.2,
+            "nextAttempt": 9,
+            "actualEndToNextStartMs": 438.300048828125,
+            "actualClockToNextStartMs": 438.300048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 9,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552196086,
+            "endedAt": 1793552196087.7998,
+            "nextAttempt": 10,
+            "actualEndToNextStartMs": 391.900146484375,
+            "actualClockToNextStartMs": 391.900146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 10,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552197494,
+            "endedAt": 1793552197496,
+            "nextAttempt": 11,
+            "actualEndToNextStartMs": 394.7998046875,
+            "actualClockToNextStartMs": 394.7998046875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 11,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552198911,
+            "endedAt": 1793552198912.7,
+            "nextAttempt": 12,
+            "actualEndToNextStartMs": 486.39990234375,
+            "actualClockToNextStartMs": 486.39990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 12,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552200415,
+            "endedAt": 1793552200416.5999,
+            "nextAttempt": 13,
+            "actualEndToNextStartMs": 440.900146484375,
+            "actualClockToNextStartMs": 440.900146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 13,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552201876,
+            "endedAt": 1793552201878,
+            "nextAttempt": 14,
+            "actualEndToNextStartMs": 348.89990234375,
+            "actualClockToNextStartMs": 348.89990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 14,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552203241,
+            "endedAt": 1793552203243.2,
+            "nextAttempt": 15,
+            "actualEndToNextStartMs": 478.199951171875,
+            "actualClockToNextStartMs": 478.199951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 15,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552184662,
+            "notBefore": 1793552204736,
+            "endedAt": 1793552204738.2,
+            "nextAttempt": 16,
+            "actualEndToNextStartMs": 460.300048828125,
+            "actualClockToNextStartMs": 460.300048828125,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 4,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 30703840,
+        "durableBytes": 14959162,
+        "durablePeakBytes": 14959162,
+        "durableDeltas": 2,
+        "durableChunks": 58,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 32560.86474609375,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552112183,
+            "notBefore": 1793552102486,
+            "attempt": 2,
+            "at": 1793552102486.7
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 488,
+              "bytes": 6171843
+            },
+            "coverage": {
+              "entries": 487,
+              "bytes": 67206
+            }
+          },
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1141,
+              "bytes": 14504115
+            },
+            "coverage": {
+              "entries": 1141,
+              "bytes": 157458
+            }
+          },
+          {
+            "opened": {
+              "entries": 3180,
+              "bytes": 4002697
+            },
+            "witness": {
+              "entries": 875,
+              "bytes": 143390
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 820,
+              "bytes": 10407499
+            },
+            "coverage": {
+              "entries": 820,
+              "bytes": 113160
+            }
+          },
+          {
+            "opened": {
+              "entries": 3180,
+              "bytes": 4002697
+            },
+            "witness": {
+              "entries": 875,
+              "bytes": 143390
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 26087419
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552099950.9
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552102473.5999
+                },
+                "at": 1793552102479.7998
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552112183,
+            "notBefore": 1793552102486,
+            "endedAt": 1793552102486.7,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 82316.09985351562,
+            "actualClockToNextStartMs": 82316.09985351562,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "peerP95Ms": 1792.91650390625,
+    "peerWorstMarkerMs": 1462.232177734375,
+    "inputP95Ms": 5.30712890625,
+    "inputWorstMarkerMs": 5.385986328125,
+    "overlapKeys": 78,
+    "backlogMs": 53687.49462890625,
+    "finalNewDeliveryMs": 1883.736083984375,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 40.44117647058823,
+    "hostBusyMax": 51.92689709972189
+  },
+  {
+    "name": "grown329-withheld-repaired-r3",
+    "replicate": 3,
+    "withhold": true,
+    "pp": true,
+    "source": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+    "dist": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+    "control": "repaired P1",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "fixture": "/private/tmp/done-retained-scope-lab-20261101/cohort-winning/fixture.json",
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "phase329/grown-maintenance.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "stopFunctional": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "phase329/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793552225.4068558,
+    "finishedAt": 1793552373.709994,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793552344428.8096,
+        "sampleReturnedAt": 1793552344439.5603,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 5,
+          "interruptions": 2,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793552366533.197,
+        "sampleReturnedAt": 1793552366540.8757,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 17,
+          "interruptions": 14,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793552367025.0662,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793552369808.4836
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793552370070.103,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793552372560.9866
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 17,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 30709893,
+        "durableBytes": 21700045,
+        "durablePeakBytes": 21700045,
+        "durableDeltas": 2,
+        "durableChunks": 84,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 54002.519775390625,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552334975,
+            "attempt": 1,
+            "at": 1793552334976.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552336337,
+            "attempt": 2,
+            "at": 1793552336338.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552337757,
+            "attempt": 3,
+            "at": 1793552337758.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552339153,
+            "attempt": 4,
+            "at": 1793552339154.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552340692,
+            "attempt": 5,
+            "at": 1793552340694.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552342059,
+            "attempt": 6,
+            "at": 1793552342061
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552343464,
+            "attempt": 7,
+            "at": 1793552343465.9001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552344870,
+            "attempt": 8,
+            "at": 1793552344871.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552346409,
+            "attempt": 9,
+            "at": 1793552346411.1
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552347845,
+            "attempt": 10,
+            "at": 1793552347846.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552349240,
+            "attempt": 11,
+            "at": 1793552349241.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552350620,
+            "attempt": 12,
+            "at": 1793552350622.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552352183,
+            "attempt": 13,
+            "at": 1793552352185.1
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333535,
+            "notBefore": 1793552353562,
+            "attempt": 14,
+            "at": 1793552353563.4001
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2603,
+              "bytes": 4095174
+            }
+          },
+          {
+            "opened": {
+              "entries": 2142,
+              "bytes": 238544
+            }
+          },
+          {
+            "opened": {
+              "entries": 2502,
+              "bytes": 3231025
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            }
+          },
+          {
+            "opened": {
+              "entries": 2457,
+              "bytes": 2818076
+            }
+          },
+          {
+            "opened": {
+              "entries": 2615,
+              "bytes": 4150778
+            }
+          },
+          {
+            "opened": {
+              "entries": 1916,
+              "bytes": 216654
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            },
+            "witness": {
+              "entries": 404,
+              "bytes": 66146
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 72,
+              "bytes": 868223
+            },
+            "coverage": {
+              "entries": 72,
+              "bytes": 9936
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            },
+            "witness": {
+              "entries": 404,
+              "bytes": 66146
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1395,
+              "bytes": 17228090
+            },
+            "coverage": {
+              "entries": 1394,
+              "bytes": 192372
+            }
+          },
+          {
+            "opened": {
+              "entries": 2620,
+              "bytes": 4163552
+            },
+            "witness": {
+              "entries": 404,
+              "bytes": 66146
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 26177857
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4155,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552333953
+                },
+                "arrivingJob": {
+                  "id": 4157,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552334966
+                },
+                "at": 1793552334971
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4187,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552335322
+                },
+                "arrivingJob": {
+                  "id": 4189,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552336328.7
+                },
+                "at": 1793552336333.5
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4219,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552336745.5
+                },
+                "arrivingJob": {
+                  "id": 4221,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552337748.3
+                },
+                "at": 1793552337753.7
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4251,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552338136.6
+                },
+                "arrivingJob": {
+                  "id": 4253,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552339142.9001
+                },
+                "at": 1793552339149.5
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4286,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552339674.9001
+                },
+                "arrivingJob": {
+                  "id": 4288,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552340683.6
+                },
+                "at": 1793552340689.3
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4318,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552341045.3
+                },
+                "arrivingJob": {
+                  "id": 4320,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552342049.6
+                },
+                "at": 1793552342056.1
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4350,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552342444.2
+                },
+                "arrivingJob": {
+                  "id": 4352,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552343455.1
+                },
+                "at": 1793552343460.9001
+              }
+            ]
+          },
+          {
+            "attempt": 8,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4382,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552343855.8
+                },
+                "arrivingJob": {
+                  "id": 4384,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552344859
+                },
+                "at": 1793552344865.8
+              }
+            ]
+          },
+          {
+            "attempt": 9,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4417,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552345401.3
+                },
+                "arrivingJob": {
+                  "id": 4419,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552346401.4001
+                },
+                "at": 1793552346407.8
+              }
+            ]
+          },
+          {
+            "attempt": 10,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4449,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552346831.9001
+                },
+                "arrivingJob": {
+                  "id": 4451,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552347837.4001
+                },
+                "at": 1793552347843.5
+              }
+            ]
+          },
+          {
+            "attempt": 11,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4481,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552348218
+                },
+                "arrivingJob": {
+                  "id": 4483,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552349230.9001
+                },
+                "at": 1793552349237.5
+              }
+            ]
+          },
+          {
+            "attempt": 12,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4513,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552349607.6
+                },
+                "arrivingJob": {
+                  "id": 4515,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552350612.2
+                },
+                "at": 1793552350618.8
+              }
+            ]
+          },
+          {
+            "attempt": 13,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4548,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552351171.6
+                },
+                "arrivingJob": {
+                  "id": 4550,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552352176.4001
+                },
+                "at": 1793552352181.5
+              }
+            ]
+          },
+          {
+            "attempt": 14,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4580,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552352549.8
+                },
+                "arrivingJob": {
+                  "id": 4582,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552353554.1
+                },
+                "at": 1793552353559.1
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552334975,
+            "endedAt": 1793552334976.3,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 344.199951171875,
+            "actualClockToNextStartMs": 344.199951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552336337,
+            "endedAt": 1793552336338.7,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 405.300048828125,
+            "actualClockToNextStartMs": 405.300048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552337757,
+            "endedAt": 1793552337758.6,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 376.599853515625,
+            "actualClockToNextStartMs": 376.599853515625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552339153,
+            "endedAt": 1793552339154.2,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 519.400146484375,
+            "actualClockToNextStartMs": 519.400146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552340692,
+            "endedAt": 1793552340694.2,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 349.60009765625,
+            "actualClockToNextStartMs": 349.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552342059,
+            "endedAt": 1793552342061,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 381.699951171875,
+            "actualClockToNextStartMs": 381.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552343464,
+            "endedAt": 1793552343465.9001,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 388.5,
+            "actualClockToNextStartMs": 388.5,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552344870,
+            "endedAt": 1793552344871.7,
+            "nextAttempt": 9,
+            "actualEndToNextStartMs": 528.10009765625,
+            "actualClockToNextStartMs": 528.10009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 9,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552346409,
+            "endedAt": 1793552346411.1,
+            "nextAttempt": 10,
+            "actualEndToNextStartMs": 419.39990234375,
+            "actualClockToNextStartMs": 419.39990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 10,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552347845,
+            "endedAt": 1793552347846.6,
+            "nextAttempt": 11,
+            "actualEndToNextStartMs": 369.800048828125,
+            "actualClockToNextStartMs": 369.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 11,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552349240,
+            "endedAt": 1793552349241.5,
+            "nextAttempt": 12,
+            "actualEndToNextStartMs": 364.400146484375,
+            "actualClockToNextStartMs": 364.400146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 12,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552350620,
+            "endedAt": 1793552350622.2,
+            "nextAttempt": 13,
+            "actualEndToNextStartMs": 547.800048828125,
+            "actualClockToNextStartMs": 547.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 13,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552352183,
+            "endedAt": 1793552352185.1,
+            "nextAttempt": 14,
+            "actualEndToNextStartMs": 361.89990234375,
+            "actualClockToNextStartMs": 361.89990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 14,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333535,
+            "notBefore": 1793552353562,
+            "endedAt": 1793552353563.4001,
+            "nextAttempt": 15,
+            "actualEndToNextStartMs": 401.0,
+            "actualClockToNextStartMs": 401.0,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 5,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 30709790,
+        "durableBytes": 14558212,
+        "durablePeakBytes": 14558212,
+        "durableDeltas": 2,
+        "durableChunks": 57,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 32516.31982421875,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552262406,
+            "notBefore": 1793552252713,
+            "attempt": 2,
+            "at": 1793552252713.7
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552333894,
+            "notBefore": 1793552337985,
+            "attempt": 4,
+            "at": 1793552337986.7
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 443,
+              "bytes": 5597733
+            },
+            "coverage": {
+              "entries": 442,
+              "bytes": 60996
+            }
+          },
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1017,
+              "bytes": 12921608
+            },
+            "coverage": {
+              "entries": 1017,
+              "bytes": 140346
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 789,
+              "bytes": 10012001
+            },
+            "coverage": {
+              "entries": 788,
+              "bytes": 108744
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 789,
+              "bytes": 10012001
+            },
+            "coverage": {
+              "entries": 788,
+              "bytes": 108744
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 26087419
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552250326.7
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552252700.5
+                },
+                "at": 1793552252706.5999
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 1329,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552336927.0999
+                },
+                "arrivingJob": {
+                  "id": 1331,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552337973.5
+                },
+                "at": 1793552337979
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552262406,
+            "notBefore": 1793552252713,
+            "endedAt": 1793552252713.7,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 81190.80004882812,
+            "actualClockToNextStartMs": 81190.80004882812,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552333894,
+            "notBefore": 1793552337985,
+            "endedAt": 1793552337986.7,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 514.300048828125,
+            "actualClockToNextStartMs": 514.300048828125,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "peerP95Ms": 1652.486328125,
+    "peerWorstMarkerMs": 1200.063720703125,
+    "inputP95Ms": 3.449462890625,
+    "inputWorstMarkerMs": 3.0234375,
+    "overlapKeys": 87,
+    "backlogMs": 58084.5126953125,
+    "finalNewDeliveryMs": 867.316650390625,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 42.689709972189114,
+    "hostBusyMax": 49.21673606979972
+  },
+  {
+    "name": "grown329-withheld-P0-control",
+    "replicate": 1,
+    "withhold": true,
+    "pp": false,
+    "source": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+    "dist": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+    "control": "P0",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "fixture": "/private/tmp/done-retained-scope-lab-20261101/cohort-winning/fixture.json",
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "phase329/grown-maintenance.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "stopFunctional": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "phase329/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793552374.5690491,
+    "finishedAt": 1793552548.9115,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793552513722.516,
+        "sampleReturnedAt": 1793552513724.9526,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 7,
+          "interruptions": 1,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793552541829.7732,
+        "sampleReturnedAt": 1793552541835.606,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 22,
+          "interruptions": 16,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793552542284.6575,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793552545092.5532
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793552545292.783,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793552547782.695
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 22,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 31268758,
+        "durableBytes": 29548729,
+        "durablePeakBytes": 29548729,
+        "durableDeltas": 5,
+        "durableChunks": 116,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 73314.93481445312,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552491136,
+            "attempt": 1,
+            "at": 1793552491137.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552492496,
+            "attempt": 2,
+            "at": 1793552492498
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552493892,
+            "attempt": 3,
+            "at": 1793552493894.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552495248,
+            "attempt": 4,
+            "at": 1793552495249.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552496759,
+            "attempt": 5,
+            "at": 1793552496761.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552498196,
+            "attempt": 6,
+            "at": 1793552498197.9001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552499582,
+            "attempt": 7,
+            "at": 1793552499583.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552500954,
+            "attempt": 8,
+            "at": 1793552500955.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552502475,
+            "attempt": 9,
+            "at": 1793552502476.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552503854,
+            "attempt": 10,
+            "at": 1793552503855.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552505224,
+            "attempt": 11,
+            "at": 1793552505226.2
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552506573,
+            "attempt": 12,
+            "at": 1793552506574.6
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552508146,
+            "attempt": 13,
+            "at": 1793552508147.5
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552509510,
+            "attempt": 14,
+            "at": 1793552509511.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552510869,
+            "attempt": 15,
+            "at": 1793552510870.8
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552489889,
+            "notBefore": 1793552528769,
+            "attempt": 20,
+            "at": 1793552528771.2
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 485,
+              "bytes": 6143520
+            },
+            "coverage": {
+              "entries": 485,
+              "bytes": 66930
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 991,
+              "bytes": 12407161
+            },
+            "coverage": {
+              "entries": 991,
+              "bytes": 136758
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1512,
+              "bytes": 18762155
+            },
+            "coverage": {
+              "entries": 1512,
+              "bytes": 208656
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1512,
+              "bytes": 18762155
+            },
+            "coverage": {
+              "entries": 1512,
+              "bytes": 208656
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2023,
+              "bytes": 24982994
+            },
+            "coverage": {
+              "entries": 2023,
+              "bytes": 279174
+            }
+          },
+          {
+            "opened": {
+              "entries": 2609,
+              "bytes": 4161828
+            },
+            "witness": {
+              "entries": 393,
+              "bytes": 64342
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 26740250
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4148,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552490118.2
+                },
+                "arrivingJob": {
+                  "id": 4150,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552491125.3
+                },
+                "at": 1793552491132
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4180,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552491475.9001
+                },
+                "arrivingJob": {
+                  "id": 4182,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552492486.5
+                },
+                "at": 1793552492493.2
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4212,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552492874
+                },
+                "arrivingJob": {
+                  "id": 4214,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552493883.6
+                },
+                "at": 1793552493889.1
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4244,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552494227.8
+                },
+                "arrivingJob": {
+                  "id": 4246,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552495238.8
+                },
+                "at": 1793552495244.9001
+              }
+            ]
+          },
+          {
+            "attempt": 5,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4279,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552495737.2
+                },
+                "arrivingJob": {
+                  "id": 4281,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552496749.3
+                },
+                "at": 1793552496755.9001
+              }
+            ]
+          },
+          {
+            "attempt": 6,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4311,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552497175.4001
+                },
+                "arrivingJob": {
+                  "id": 4313,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552498188.5
+                },
+                "at": 1793552498193.2
+              }
+            ]
+          },
+          {
+            "attempt": 7,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4343,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552498559.2
+                },
+                "arrivingJob": {
+                  "id": 4345,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552499572
+                },
+                "at": 1793552499578.6
+              }
+            ]
+          },
+          {
+            "attempt": 8,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4375,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552499928.6
+                },
+                "arrivingJob": {
+                  "id": 4377,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552500945.1
+                },
+                "at": 1793552500950.5
+              }
+            ]
+          },
+          {
+            "attempt": 9,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4410,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552501459.4001
+                },
+                "arrivingJob": {
+                  "id": 4412,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552502465.5
+                },
+                "at": 1793552502472.1
+              }
+            ]
+          },
+          {
+            "attempt": 10,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4442,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552502838.8
+                },
+                "arrivingJob": {
+                  "id": 4444,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552503845.9001
+                },
+                "at": 1793552503850.9001
+              }
+            ]
+          },
+          {
+            "attempt": 11,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4474,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552504203.2
+                },
+                "arrivingJob": {
+                  "id": 4476,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552505214.8
+                },
+                "at": 1793552505221.4001
+              }
+            ]
+          },
+          {
+            "attempt": 12,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4506,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552505555.2
+                },
+                "arrivingJob": {
+                  "id": 4508,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552506563.7
+                },
+                "at": 1793552506569.8
+              }
+            ]
+          },
+          {
+            "attempt": 13,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4541,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552507125.6
+                },
+                "arrivingJob": {
+                  "id": 4543,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552508136.2
+                },
+                "at": 1793552508142.8
+              }
+            ]
+          },
+          {
+            "attempt": 14,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4573,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552508496
+                },
+                "arrivingJob": {
+                  "id": 4575,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552509500.3
+                },
+                "at": 1793552509507
+              }
+            ]
+          },
+          {
+            "attempt": 15,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4605,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552509846.1
+                },
+                "arrivingJob": {
+                  "id": 4607,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552510859.8
+                },
+                "at": 1793552510866.2
+              }
+            ]
+          },
+          {
+            "attempt": 20,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4661,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552527366.8
+                },
+                "arrivingJob": {
+                  "id": 4663,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552528760.2
+                },
+                "at": 1793552528764.8
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552491136,
+            "endedAt": 1793552491137.8,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 336.60009765625,
+            "actualClockToNextStartMs": 336.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552492496,
+            "endedAt": 1793552492498,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 374.60009765625,
+            "actualClockToNextStartMs": 374.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552493892,
+            "endedAt": 1793552493894.2,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 332.2001953125,
+            "actualClockToNextStartMs": 332.2001953125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552495248,
+            "endedAt": 1793552495249.5,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 485.900146484375,
+            "actualClockToNextStartMs": 485.900146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552496759,
+            "endedAt": 1793552496761.2,
+            "nextAttempt": 6,
+            "actualEndToNextStartMs": 412.800048828125,
+            "actualClockToNextStartMs": 412.800048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552498196,
+            "endedAt": 1793552498197.9001,
+            "nextAttempt": 7,
+            "actualEndToNextStartMs": 360.0,
+            "actualClockToNextStartMs": 360.0,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552499582,
+            "endedAt": 1793552499583.6,
+            "nextAttempt": 8,
+            "actualEndToNextStartMs": 343.599853515625,
+            "actualClockToNextStartMs": 343.599853515625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552500954,
+            "endedAt": 1793552500955.5,
+            "nextAttempt": 9,
+            "actualEndToNextStartMs": 502.60009765625,
+            "actualClockToNextStartMs": 502.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 9,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552502475,
+            "endedAt": 1793552502476.8,
+            "nextAttempt": 10,
+            "actualEndToNextStartMs": 360.60009765625,
+            "actualClockToNextStartMs": 360.60009765625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 10,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552503854,
+            "endedAt": 1793552503855.8,
+            "nextAttempt": 11,
+            "actualEndToNextStartMs": 346.0,
+            "actualClockToNextStartMs": 346.0,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 11,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552505224,
+            "endedAt": 1793552505226.2,
+            "nextAttempt": 12,
+            "actualEndToNextStartMs": 327.5,
+            "actualClockToNextStartMs": 327.5,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 12,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552506573,
+            "endedAt": 1793552506574.6,
+            "nextAttempt": 13,
+            "actualEndToNextStartMs": 548.699951171875,
+            "actualClockToNextStartMs": 548.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 13,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552508146,
+            "endedAt": 1793552508147.5,
+            "nextAttempt": 14,
+            "actualEndToNextStartMs": 346.900146484375,
+            "actualClockToNextStartMs": 346.900146484375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 14,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552509510,
+            "endedAt": 1793552509511.8,
+            "nextAttempt": 15,
+            "actualEndToNextStartMs": 332.699951171875,
+            "actualClockToNextStartMs": 332.699951171875,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 15,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552510869,
+            "endedAt": 1793552510870.8,
+            "nextAttempt": 16,
+            "actualEndToNextStartMs": 329.5,
+            "actualClockToNextStartMs": 329.5,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 20,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552489889,
+            "notBefore": 1793552528769,
+            "endedAt": 1793552528771.2,
+            "nextAttempt": 21,
+            "actualEndToNextStartMs": 558.400146484375,
+            "actualClockToNextStartMs": 558.400146484375,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 7,
+        "completions": 1,
+        "capacityRefusals": 0,
+        "maxMapBytes": 30709790,
+        "durableBytes": 26285973,
+        "durablePeakBytes": 26285973,
+        "durableDeltas": 5,
+        "durableChunks": 102,
+        "byteCap": 33554432,
+        "lastStage": "complete",
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": 46111.934814453125,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552418047,
+            "notBefore": 1793552408346,
+            "attempt": 2,
+            "at": 1793552408346.4
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 63,
+              "bytes": 752303
+            },
+            "coverage": {
+              "entries": 63,
+              "bytes": 8694
+            }
+          },
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 130,
+              "bytes": 1604479
+            },
+            "coverage": {
+              "entries": 130,
+              "bytes": 17940
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 139,
+              "bytes": 1719301
+            },
+            "coverage": {
+              "entries": 139,
+              "bytes": 19182
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 668,
+              "bytes": 8468283
+            },
+            "coverage": {
+              "entries": 667,
+              "bytes": 92046
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1175,
+              "bytes": 14920941
+            },
+            "coverage": {
+              "entries": 1175,
+              "bytes": 162150
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 1704,
+              "bytes": 21653116
+            },
+            "coverage": {
+              "entries": 1704,
+              "bytes": 235152
+            }
+          },
+          {
+            "opened": {
+              "entries": 3185,
+              "bytes": 4006457
+            },
+            "witness": {
+              "entries": 880,
+              "bytes": 144210
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 26087419
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552406365.8
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552408339.2
+                },
+                "at": 1793552408342.4
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552418047,
+            "notBefore": 1793552408346,
+            "endedAt": 1793552408346.4,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 81914.69995117188,
+            "actualClockToNextStartMs": 81914.69995117188,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "pass",
+    "peerP95Ms": 1674.811279296875,
+    "peerWorstMarkerMs": 1808.842041015625,
+    "inputP95Ms": 5.403564453125,
+    "inputWorstMarkerMs": 4.84716796875,
+    "overlapKeys": 103,
+    "backlogMs": 65518.4853515625,
+    "finalNewDeliveryMs": 1875.901611328125,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": true,
+      "bothColdExact": true
+    },
+    "hostBusyMedian": 36.062608453851205,
+    "hostBusyMax": 50.417163289630516
+  },
+  {
+    "name": "grown329-withheld-unrepaired-P1-control",
+    "replicate": 1,
+    "withhold": true,
+    "pp": true,
+    "source": "/private/tmp/done-retained-scope-lab-20261101/source-unrepaired-control",
+    "dist": "/private/tmp/done-retained-scope-lab-20261101/unrepaired-control-coordinated/combined-dist",
+    "control": "unrepaired P1; functional stop applies",
+    "rtt": 0,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "eb": "11",
+    "fixture": "/private/tmp/done-retained-scope-lab-20261101/cohort-winning/fixture.json",
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "phase329/grown-maintenance.spec.ts",
+    "result": "result.json",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "stopFunctional": true,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "phase329/grown-maintenance.spec.ts"
+    ],
+    "childExit": 1,
+    "startedAt": 1793552549.764318,
+    "finishedAt": 1793552665.710557,
+    "outcome": "failed",
+    "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m1\u001b[39m\nReceived:    \u001b[31m0\u001b[39m",
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "attempts": 5,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 4134707,
+        "durableBytes": null,
+        "durablePeakBytes": null,
+        "durableDeltas": 0,
+        "durableChunks": null,
+        "byteCap": 33554432,
+        "lastStage": "opening",
+        "lastOutcome": null,
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552657903,
+            "notBefore": 1793552659139,
+            "attempt": 1,
+            "at": 1793552659140.2002
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552657903,
+            "notBefore": 1793552660493,
+            "attempt": 2,
+            "at": 1793552660494.4001
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552657903,
+            "notBefore": 1793552661879,
+            "attempt": 3,
+            "at": 1793552661880.3
+          },
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552657903,
+            "notBefore": 1793552663247,
+            "attempt": 4,
+            "at": 1793552663248.5
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4134707
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4134707
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4134707
+            }
+          },
+          {
+            "opened": {
+              "entries": 2608,
+              "bytes": 4134707
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 1,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3942,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552658126.4001
+                },
+                "arrivingJob": {
+                  "id": 3944,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552659131.2002
+                },
+                "at": 1793552659134.9001
+              }
+            ]
+          },
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 3974,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552659477.8
+                },
+                "arrivingJob": {
+                  "id": 3976,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552660483.1
+                },
+                "at": 1793552660489.7002
+              }
+            ]
+          },
+          {
+            "attempt": 3,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4006,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552660858.4001
+                },
+                "arrivingJob": {
+                  "id": 4008,
+                  "name": "accountReceive.ts:1608:status",
+                  "at": 1793552661869.3
+                },
+                "at": 1793552661875.6
+              }
+            ]
+          },
+          {
+            "attempt": 4,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 4038,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552662226.6
+                },
+                "arrivingJob": {
+                  "id": 4040,
+                  "name": "accountReceive.ts:2487:prepared",
+                  "at": 1793552663237.4001
+                },
+                "at": 1793552663243.9001
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552657903,
+            "notBefore": 1793552659139,
+            "endedAt": 1793552659140.2002,
+            "nextAttempt": 2,
+            "actualEndToNextStartMs": 336.099853515625,
+            "actualClockToNextStartMs": 336.099853515625,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552657903,
+            "notBefore": 1793552660493,
+            "endedAt": 1793552660494.4001,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 362.39990234375,
+            "actualClockToNextStartMs": 362.39990234375,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552657903,
+            "notBefore": 1793552661879,
+            "endedAt": 1793552661880.3,
+            "nextAttempt": 4,
+            "actualEndToNextStartMs": 344.300048828125,
+            "actualClockToNextStartMs": 344.300048828125,
+            "censoredNoNextStart": false
+          },
+          {
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552657903,
+            "notBefore": 1793552663247,
+            "endedAt": 1793552663248.5,
+            "nextAttempt": 5,
+            "actualEndToNextStartMs": 507.0,
+            "actualClockToNextStartMs": 507.0,
+            "censoredNoNextStart": false
+          }
+        ]
+      },
+      {
+        "role": "writer",
+        "attempts": 4,
+        "completions": 0,
+        "capacityRefusals": 0,
+        "maxMapBytes": 30703840,
+        "durableBytes": 16006016,
+        "durablePeakBytes": 16006016,
+        "durableDeltas": 2,
+        "durableChunks": 62,
+        "byteCap": 33554432,
+        "lastStage": "building",
+        "lastOutcome": {
+          "kind": "threw",
+          "name": "Error",
+          "message": "Local baseline refused: integrity",
+          "stack": "Error: Local baseline refused: integrity\n    at qK (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:443973)\n    at iq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:450714)\n    at aq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:453195)\n    at async rq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:450064)\n    at async tq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:447684)\n    at async Loe (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:477745)\n    at async Object.M [as prepareHistoryRemoval] (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:522729)\n    at async oce (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:18:529)\n    at async http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:63:17226\n    at async http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:63:8984"
+        },
+        "startsDuringTyping": [],
+        "startsDuringReaderDrain": [],
+        "firstCompletionAfterLastKeyMs": null,
+        "retryClocks": [
+          {
+            "kind": "retry-clock",
+            "priorityRetry": true,
+            "retryMs": 0,
+            "quietUntil": 1793552587060,
+            "notBefore": 1793552577357,
+            "attempt": 2,
+            "at": 1793552577358.2002
+          }
+        ],
+        "families": [
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 495,
+              "bytes": 6261149
+            },
+            "coverage": {
+              "entries": 494,
+              "bytes": 68172
+            }
+          },
+          {
+            "opened": {
+              "entries": 2325,
+              "bytes": 3469361
+            },
+            "witness": {
+              "entries": 270,
+              "bytes": 44170
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1207
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 1186,
+              "bytes": 15061664
+            },
+            "coverage": {
+              "entries": 1186,
+              "bytes": 163668
+            }
+          },
+          {
+            "opened": {
+              "entries": 3180,
+              "bytes": 4002697
+            },
+            "witness": {
+              "entries": 875,
+              "bytes": 143390
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 901,
+              "bytes": 11440922
+            },
+            "coverage": {
+              "entries": 900,
+              "bytes": 124200
+            }
+          },
+          {
+            "opened": {
+              "entries": 3180,
+              "bytes": 4002697
+            },
+            "witness": {
+              "entries": 875,
+              "bytes": 143390
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 144041
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 26087419
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          }
+        ],
+        "traceOverflow": 0,
+        "interruptedAttempts": [
+          {
+            "attempt": 2,
+            "outcome": {
+              "kind": "skipped",
+              "reason": "activity-or-journal"
+            },
+            "conditions": [
+              {
+                "site": "accountCapture:baseline-shadow",
+                "suspended": false,
+                "shadowActivity": false,
+                "queuePriority": true,
+                "capturedQueue": {
+                  "id": 82,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552574808.6
+                },
+                "arrivingJob": {
+                  "id": 84,
+                  "name": "accountCapture.ts:615:flushJournal",
+                  "at": 1793552577347
+                },
+                "at": 1793552577351
+              }
+            ]
+          }
+        ],
+        "retryWaits": [
+          {
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 0,
+            "quietUntilAtScheduling": 1793552587060,
+            "notBefore": 1793552577357,
+            "endedAt": 1793552577358.2002,
+            "nextAttempt": 3,
+            "actualEndToNextStartMs": 80904.69995117188,
+            "actualClockToNextStartMs": 80904.69995117188,
+            "censoredNoNextStart": false
+          }
+        ]
+      }
+    ],
+    "cold": "not reached",
+    "peerP95Ms": 1740.296875,
+    "peerWorstMarkerMs": 1234.43310546875,
+    "inputP95Ms": 3.288818359375,
+    "inputWorstMarkerMs": 3.13818359375,
+    "overlapKeys": 71,
+    "backlogMs": 50137.740234375,
+    "finalNewDeliveryMs": 868.39111328125,
+    "trustedFocusedVisibleInput": true,
+    "gatePredicates": {
+      "finalNewDelivery30s": true,
+      "faultExposed": true,
+      "trustedFocusedVisibleInput": true,
+      "input16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "overlap60": true,
+      "backlog600s": true,
+      "functionalAndOriginalWriterDeadline": false,
+      "bothColdExact": false
+    },
+    "hostBusyMedian": 32.83392246339118,
+    "hostBusyMax": 46.76557863501483
+  }
+]

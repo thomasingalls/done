@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from './clockSkew.ts';
 import {
   parseHistorySources,
   parseHistorySourceValue,
@@ -24,9 +25,8 @@ import {
 export const HISTORY_EXCHANGE_LIMIT = HISTORY_CHECKPOINT_LIMIT + 8192;
 export const HISTORY_PAGE_LIMIT = HISTORY_CHECKPOINT_LIMIT + HISTORY_ADMISSION_LIMIT + 64 * 1024;
 export const HISTORY_EXCHANGE_LIFETIME_MS = 60_000;
-// Send with headroom inside the verifier's unchanged maximum. Using all 60 seconds
-// makes even a sub-second fast client clock invalidate every request at the service.
-// This is a sender policy, not a clock-skew allowance in signature/expiry validation.
+// Keep ordinary sender headroom independently of the verifier's bounded clock tolerance.
+// This policy does not extend a request's signed expiry.
 export const HISTORY_EXCHANGE_REQUEST_LIFETIME_MS = 30_000;
 const h = (v: unknown, n = 32): string => {
   unhex(v, n);
@@ -103,7 +103,7 @@ export function checkHistoryExchangeLifetime(expiresAt: number, now: number) {
     !Number.isSafeInteger(now) ||
     now < 0 ||
     expiresAt <= now ||
-    expiresAt - now > HISTORY_EXCHANGE_LIFETIME_MS
+    expiresAt - now > HISTORY_EXCHANGE_LIFETIME_MS + CLOCK_SKEW_ALLOWANCE_MS
   )
     throw Error('History exchange expired');
 }

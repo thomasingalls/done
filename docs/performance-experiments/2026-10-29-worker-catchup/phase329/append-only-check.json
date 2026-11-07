@@ -1,0 +1,18 @@
+{
+  "oldPrefixesVerified": {
+    "docs/completed.md": {
+      "bytes": 1625219,
+      "sha256": "c7a3f7feebbcd707a648db2afbbbd760a802d3c6dda73416fb6e5dd3efaa4a9e"
+    },
+    "docs/decisions.md": {
+      "bytes": 594685,
+      "sha256": "c98bfdfdd164c2a890765e40ff96e0d736beffd4c9f1229f07e0cf9985d0c4cc"
+    },
+    "docs/product-backlog.md": {
+      "bytes": 106053,
+      "sha256": "edaa86e2fd2baa18e30afd2f9efef5cfd214045416df52c034436a5e1ce5a5ba"
+    }
+  },
+  "completionAppendedBeforeQueue": true,
+  "progressMdUntouched": true
+}

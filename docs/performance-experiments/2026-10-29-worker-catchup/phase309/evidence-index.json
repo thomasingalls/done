@@ -1,0 +1,764 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "sourceRootRetained": "/private/tmp/done-maintenance-syp-lab-20261031",
+  "applicationJourneys": 4,
+  "unitRuns": 1,
+  "preflightFailures": 1,
+  "allTimedRunsHaveExternalHostLoad": true,
+  "excludes": "No experimental app/service source, built assets, fixture credentials, browser profiles or databases enter the patch. Full isolated originals retained.",
+  "excludedRuntimeSources": [
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/instrument-trace.py",
+      "sha256": "4cb4049c921176b4c078ab19163d0a35a145e7057326f466b837a6058c2e9f05",
+      "reason": "Experimental runtime implementation/transform retained only in isolated lab; no app code enters patch"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/tag-queue-jobs.cjs",
+      "sha256": "6f9275059de8711e2efd9f90570b6d5e0c25ca4ac8b9f33540002fc698674605",
+      "reason": "Experimental runtime implementation/transform retained only in isolated lab; no app code enters patch"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/source/src/crdt/maintenanceTraceLab.ts",
+      "sha256": "9a042062756eab46be8386ed7e0118de9ca6774e14125f49ef66d1435dcd9ee8",
+      "reason": "Experimental runtime implementation/transform retained only in isolated lab; no app code enters patch"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-instrumentation.json",
+      "sha256": "1d822b2edb2b5a2dcc12ec9eb6e7f85bf66a7f7f0d1e865987c51bd3b9b1514a",
+      "reason": "Experimental runtime implementation/transform retained only in isolated lab; no app code enters patch"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/build.mjs",
+      "sha256": "388ba697f4eef8aba25698aba711f77701b7b3ab4ad5fc76737242c0cf261929",
+      "reason": "Experimental runtime implementation/transform retained only in isolated lab; no app code enters patch"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/build-lab.py",
+      "sha256": "b020bc24d7a56f8985738b74619a35a7f573a0e373088811ff812696c7254cf5",
+      "reason": "Experimental runtime implementation/transform retained only in isolated lab; no app code enters patch"
+    }
+  ],
+  "files": [
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-site-inventory.json",
+      "artifact": "evidence/trace-site-inventory.json.gz",
+      "sourceSha256": "1a25e0ad4197a1c764e888ae629ee4273d7d878b6789c535552acfaa8a0ff790",
+      "sourceBytes": 20548,
+      "artifactSha256": "f9b24528c1f0477f4f9f10f5cd5d99291c01d5a8506f0b82ea9928a469023b98"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/check-recipient-authority.mjs.log",
+      "artifact": "evidence/check-recipient-authority.mjs.log.gz",
+      "sourceSha256": "66be948e5cd1163610ff62591bcb5275f11584a8803eb7763238d7af08f2bfae",
+      "sourceBytes": 438,
+      "artifactSha256": "2b945683649df1569d3d1eeb4605253ad347430b6b11daf95f1c13c814a05eef"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/logger-calibration-notes.json",
+      "artifact": "evidence/logger-calibration-notes.json.gz",
+      "sourceSha256": "55582dac6cf213dc8756f61b8d156243350819250900c42a608270a44c4d3bff",
+      "sourceBytes": 700,
+      "artifactSha256": "39a927e8f092b234de5e090d917e00639ca87d01f419923428a2fad3999fcd7a"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/host-preflight.jsonl",
+      "artifact": "evidence/host-preflight.jsonl.gz",
+      "sourceSha256": "4711cb61a6f64489b1acb54f3776ece70b36b851c9572c91c41d929598e69a85",
+      "sourceBytes": 6651,
+      "artifactSha256": "98995da1b75e6229e187948be4d5e38afe486fdfdd1de14cb3034fd9970cf9b5"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/remediation-status.mjs.log",
+      "artifact": "evidence/remediation-status.mjs.log.gz",
+      "sourceSha256": "0e38113ee255379e2fc0e271ac8b27d70f3c1842da7f6e1a359f8fe3154ef8ca",
+      "sourceBytes": 455,
+      "artifactSha256": "cb2e37ff239b9ab21053e52a71be099d63807f8383eef6d691e7b5f35062cdd1"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/build-identity.json",
+      "artifact": "evidence/build-identity.json.gz",
+      "sourceSha256": "425435e12191ff03571b6c7f46f267730c82fbbd2941e94fd393e5f6fa514f77",
+      "sourceBytes": 75053,
+      "artifactSha256": "1428da12a037811fdc1f5b8339a7c193db3c2de5bdcccda67c32fbff6ea3ba18"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/protocol-identity.json",
+      "artifact": "evidence/protocol-identity.json.gz",
+      "sourceSha256": "04211fee54a093b0d13852fa206cdb6e0ca792542420c750bbc5bd111df29709",
+      "sourceBytes": 138,
+      "artifactSha256": "beae847ec1cf8d570c3fb6c26746e79150647a7b0597f9b92e5031c73c630000"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/attempts.csv",
+      "artifact": "evidence/attempts.csv.gz",
+      "sourceSha256": "b8deff8582aadc085af5b2a7dda8e6b1878addc66ea5d1bfb86a4f4ac433b961",
+      "sourceBytes": 22041,
+      "artifactSha256": "c29dcced7aa07730eaeabdeb02639d93be071eb4b546f9924c2c4ee96958f148"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/host-preflight-v2.jsonl",
+      "artifact": "evidence/host-preflight-v2.jsonl.gz",
+      "sourceSha256": "4b9a40db2825b4bf9b8578b616fbdf4d1b04bdabb366bf7531c6ac55a8e8f8b5",
+      "sourceBytes": 5648,
+      "artifactSha256": "905c74024aa37f56d8513418620bbd733a3cb22ff0ae3f764f22ad9f7765a14c"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-inputs.json",
+      "artifact": "evidence/trace-inputs.json.gz",
+      "sourceSha256": "12db6349cd6ac0038241c7e5b22229f46a1bef0649d74a7894874d592be843a4",
+      "sourceBytes": 129351,
+      "artifactSha256": "f1eb19869d61ee090d4b757153f814bdbf6f8e8ed01e1ea2eed74e7960a2b679"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/README.md",
+      "artifact": "evidence/README.md.gz",
+      "sourceSha256": "8e346e10c3402517aea713413156c69549853c6eebaadae7af0a6969b1f6e3b5",
+      "sourceBytes": 12995,
+      "artifactSha256": "c02e40822afe6c6879b4cb5761b967e6fd7d71b6d7c4f6937db17dd9f331f61b"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/check-write-admission.mjs.log",
+      "artifact": "evidence/check-write-admission.mjs.log.gz",
+      "sourceSha256": "95715b74e8b1f4bb28175dfd4bf3721d95c43a8e4cdfef89c97ec76523adf703",
+      "sourceBytes": 446,
+      "artifactSha256": "ac4de0c1db77f896638fb1f950cf4d1c639430e8231d02a846d3295c66e6bf1c"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/release-flags.json",
+      "artifact": "evidence/release-flags.json.gz",
+      "sourceSha256": "87d55e97ad4d3ecf145b227dc651b11e9b925d7d7499644a464ccdcaa24bf6b9",
+      "sourceBytes": 1466,
+      "artifactSha256": "01a437feb9c4f22b711c8f2b0960680cd30a1731feaca43c4b91d68f08b59409"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-results.json",
+      "artifact": "evidence/trace-results.json.gz",
+      "sourceSha256": "c16b5c0089822c0e1a086202207fced462010a6dfbaeb85939c8bf538ba68821",
+      "sourceBytes": 2354,
+      "artifactSha256": "ee90df547e75016fa67feffb4d693a218ec629f61b88f4fa761c6ed688189970"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/lab-build.log",
+      "artifact": "evidence/lab-build.log.gz",
+      "sourceSha256": "64092c00adf8eee1823bdaf12b5d4d04fc0096a1df1a584c192c5bda0a133a47",
+      "sourceBytes": 27391,
+      "artifactSha256": "77521cdbf48755116405b20275cb5e1bae0d2a4778140fd5ab0fde4242275116"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/check-retention.mjs.log",
+      "artifact": "evidence/check-retention.mjs.log.gz",
+      "sourceSha256": "31fe3dd8da6afa328cf3032567f15af73edaf510af76f48e195c86203841f384",
+      "sourceBytes": 592,
+      "artifactSha256": "a9f5fb28a03e51835858df6b0b5c3d99869d46b81f0923c384e35803c9a67c78"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/build-flags.json",
+      "artifact": "evidence/build-flags.json.gz",
+      "sourceSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "sourceBytes": 308,
+      "artifactSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/step1-decision.json",
+      "artifact": "evidence/step1-decision.json.gz",
+      "sourceSha256": "8df1c0382ac43a9a7979de10eb556dcd14674ade8581a604b91a72d78768e10f",
+      "sourceBytes": 788,
+      "artifactSha256": "d8b98804c369f7fb5ccf4a3baa802dacb72ea76918f8482a9a63daa15bdb08ae"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/canonical-start.json",
+      "artifact": "evidence/canonical-start.json.gz",
+      "sourceSha256": "58d66cbe4b0d3653a62c45b0c054b9af2fc62dc7a828d54f90bf8aaf4800df7c",
+      "sourceBytes": 171824,
+      "artifactSha256": "8d6c53639c0c4f6ad7698bf42ffd42aa4fac0c2781df94bfc556cd8abcb36a10"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/retention-main-identity.json",
+      "artifact": "evidence/retention-main-identity.json.gz",
+      "sourceSha256": "f55c4ca00ff40d72c79aaca015321bedddc5cb1041266006d8a179de525a255b",
+      "sourceBytes": 583,
+      "artifactSha256": "948e2b7212869af261813f927553fc20f4c65bf1cfaf4f65f6b1875ff0cda328"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/cpu-calibration.json",
+      "artifact": "evidence/cpu-calibration.json.gz",
+      "sourceSha256": "78981ac663fa19e105b5994e46215447766259f5693570c51aad783423de40e7",
+      "sourceBytes": 196,
+      "artifactSha256": "68dd3dcdb392e4f13fc85b3ff77ee848b6a67539c7a4576aeb949728c8588b13"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/check-update-limit.mjs.log",
+      "artifact": "evidence/check-update-limit.mjs.log.gz",
+      "sourceSha256": "8921e683c5e22a3cb5f59bf63420276473c38b7bf6c58caa81d9632b09525fd7",
+      "sourceBytes": 184,
+      "artifactSha256": "d38631d50eea1e2a6f9ff5e95bae7baa761a8c2768a33605366b2828ea230218"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/quiet-recheck.jsonl",
+      "artifact": "evidence/quiet-recheck.jsonl.gz",
+      "sourceSha256": "b8d39566fae515bc5ac704d45c1fc70c639fa7e91502de9679b041e062758f3a",
+      "sourceBytes": 3988,
+      "artifactSha256": "16688bddf72fd2c1b6e9df7e021481a80b09c180a961113d21c7f15704961736"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/interruption-analysis.json",
+      "artifact": "evidence/interruption-analysis.json.gz",
+      "sourceSha256": "3249855a830aa0ab7050564d21bfa3208ffb40eb504ca639d9b6ee978a7c8ee0",
+      "sourceBytes": 11764,
+      "artifactSha256": "ddf79674c33e12d9b993511d4d8a35ac6d1a03730eb0b10801c691a2099bb2df"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/queue-job-tags.json",
+      "artifact": "evidence/queue-job-tags.json.gz",
+      "sourceSha256": "9cda322b66502ff4213a7dfb8cee6d0b47038e3dee1c2a5586fb3761a8f48967",
+      "sourceBytes": 3846,
+      "artifactSha256": "52c50865108d32a5c6f531b3c5d6e83ed4c90b7f83a9060dc8d0aebfa54b9121"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/frontend-build.log",
+      "artifact": "evidence/frontend-build.log.gz",
+      "sourceSha256": "0c89fff45588dbfcd8f64da491e725ee095f2b6fbb42b18ccf69c9c22e28e1c0",
+      "sourceBytes": 8294,
+      "artifactSha256": "821dbfc770ce46c5a31d3efd6361d50054430d7aa004f6950b4b292bf363fd50"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/check-authority-map.mjs.log",
+      "artifact": "evidence/check-authority-map.mjs.log.gz",
+      "sourceSha256": "68d330a3a991ba2356e20eb3a0ddcc8e060e831c29c31ba5355cbc43107727bf",
+      "sourceBytes": 751,
+      "artifactSha256": "6b11110970fc0131c4d80e0d05534a30b6d88b022c7637b66f57deff5f879b7e"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/container-image.json",
+      "artifact": "evidence/container-image.json.gz",
+      "sourceSha256": "be1dcff570dd94ca2c4b0454e3828d7738dc071361341a1381512a2089cf5d54",
+      "sourceBytes": 4538,
+      "artifactSha256": "ead75b01a977e5c739f82fee2002c50e4704076ab8b16209b3fc47168378dd00"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/check-selection-status.mjs.log",
+      "artifact": "evidence/check-selection-status.mjs.log.gz",
+      "sourceSha256": "551ab9bdb97a262d0ecfb3b1d65e2f16c7c07097792c4d353da7feb0727dafe9",
+      "sourceBytes": 355,
+      "artifactSha256": "ec887c3018c45ea0a411df27912566a204281dc4dc5420157a0255783731f91f"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/host-conditions.json",
+      "artifact": "evidence/host-conditions.json.gz",
+      "sourceSha256": "0f7dc5b1b9a16e8c69f710d60e8529d09bfe265c1a175f2640c5c92d8c983e60",
+      "sourceBytes": 194,
+      "artifactSha256": "3d1657453ce58f110c564183826acbac51383757cc180d03261a5478617b3670"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/contract-checks.json",
+      "artifact": "evidence/contract-checks.json.gz",
+      "sourceSha256": "f2f3142397550f9c2c4548d512c175edba639f1a3ef4e3ac618754d905851016",
+      "sourceBytes": 456,
+      "artifactSha256": "0f7d803f797745f2d60a13eea7653819ad6285ac6ee430f78f4c02e13fd5bc29"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/PROTOCOL.md",
+      "artifact": "evidence/PROTOCOL.md.gz",
+      "sourceSha256": "d2873659c82db8cc37fc665d405e579a74a09ac90702dbbf995e02557cc07405",
+      "sourceBytes": 4883,
+      "artifactSha256": "3a8938d4dbed28056581487b1ddc945e7d90e1db3642d24fd68770bb978237cd"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-analysis.json",
+      "artifact": "evidence/trace-analysis.json.gz",
+      "sourceSha256": "d675c57f1a8c19bbae570252606ad36c752c947bc641e3aea46140dbd758a3ca",
+      "sourceBytes": 16914,
+      "artifactSha256": "3eb1ffb86bee1b7b0ef1bfdad576ada530b2644f9df3dbcf06e79bcce599ae8b"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/result.json",
+      "artifact": "evidence/trace-idle-polls/result.json.gz",
+      "sourceSha256": "7b7ac2ab226315d451ea9d8e373d73980c65bfee43db23d3b60019dccb39811f",
+      "sourceBytes": 11448192,
+      "artifactSha256": "d83beef6c5821944ace9b70f8a2318e1f64c776dffa7ca39946806b87472b91a"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/docker-command.json",
+      "artifact": "evidence/trace-idle-polls/docker-command.json.gz",
+      "sourceSha256": "7eb4d5211c54bf47cb38315bb85022753366c3676c40d8a32a49532238c9847d",
+      "sourceBytes": 1179,
+      "artifactSha256": "f149485d012859ef183dfd45ffb524238a66b1872224ef93eeaa3bd4dd4906dc"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/console.log",
+      "artifact": "evidence/trace-idle-polls/console.log.gz",
+      "sourceSha256": "9d9125ffb3b29a73b18603688d89a5d9eb41e8cd981c9bcbb43fb2a9fbe5e4e9",
+      "sourceBytes": 340,
+      "artifactSha256": "f6e6210944b3c952e246db5a8cb6590e43933fab7f2967aaca7f7c93a6d5e8fd"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/container-identity.json",
+      "artifact": "evidence/trace-idle-polls/container-identity.json.gz",
+      "sourceSha256": "bc1abe4b6b46b4461ca4b40958e2b31f874ba338c71229acefadf992b796ba18",
+      "sourceBytes": 2685,
+      "artifactSha256": "ca61ecbb80e2a4e356184ca8aeca5225e1a33b8d2557dce2b92160e35596e17c"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/services.log",
+      "artifact": "evidence/trace-idle-polls/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "sourceBytes": 318,
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/list.log",
+      "artifact": "evidence/trace-idle-polls/list.log.gz",
+      "sourceSha256": "811ac4f9d8a935785ba5c1be2a700d2bef41a615be36018fb1f026716ee2b05b",
+      "sourceBytes": 119,
+      "artifactSha256": "fd8bf6c6f2521ddb6b1cd78196938dbabd6a99b5b89a9b929c2dca8463cce2b5"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/host-load.jsonl",
+      "artifact": "evidence/trace-idle-polls/host-load.jsonl.gz",
+      "sourceSha256": "b134532aabd6bd5fe53db0be1fcffc4faa89622421a917e4c2775efd98435141",
+      "sourceBytes": 47721,
+      "artifactSha256": "08212a592fcce2e8a628dc67404a090fcdf582d53ef6e8019aa5eb0408962484"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-polls/receipt.json",
+      "artifact": "evidence/trace-idle-polls/receipt.json.gz",
+      "sourceSha256": "e520e1f8627b30f249b2adbbe49c39d1cf9249481002faa2c431579c40e8fd97",
+      "sourceBytes": 554,
+      "artifactSha256": "e344c3fde0d046a20d573b362e883e38f1a18e3f7113fc55a136acf95e6e7362"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/partial-result.json",
+      "artifact": "evidence/trace-grown-withheld/partial-result.json.gz",
+      "sourceSha256": "e2ef9bfe33f7819e9d7bbab0e02a831a45c3440429974b87597f2652683f09b4",
+      "sourceBytes": 30811395,
+      "artifactSha256": "6e62e5ac7e4f64a2c16488bae4cd6c07902e7ad666efd0f600fa397a59bb422f"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/result.json",
+      "artifact": "evidence/trace-grown-withheld/result.json.gz",
+      "sourceSha256": "0cd43eeacffe963c8ed6d4dd34cfb6d94a2a4570c6e4536db17651baed6cca79",
+      "sourceBytes": 31323355,
+      "artifactSha256": "fb38dd09b4eb0d1117d2d8bf520c76e072ad5656b5a739da87d3016ff73a06fd"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/docker-command.json",
+      "artifact": "evidence/trace-grown-withheld/docker-command.json.gz",
+      "sourceSha256": "9a6a5f528c4288ef986e50c9eea0343d8df94cfda9b7045edf93fca8094da7a8",
+      "sourceBytes": 1187,
+      "artifactSha256": "245ba5803407f2017a22f70ee429431b7f90a42e067753042aae3b30bd9de7b4"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/console.log",
+      "artifact": "evidence/trace-grown-withheld/console.log.gz",
+      "sourceSha256": "3c7a78e27640b8cd6878ad6b35c2e84de975ff14f45a1cf005c4c9f779b5c2cb",
+      "sourceBytes": 3784,
+      "artifactSha256": "f58acd44905ef5b637bc96bb0158bacd21743fb4370eab29fd1b230ef3cb125d"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/container-identity.json",
+      "artifact": "evidence/trace-grown-withheld/container-identity.json.gz",
+      "sourceSha256": "8b72543e5926ac470aaba6bf120803990f36777780f052e4ae87c7f5dfb22028",
+      "sourceBytes": 2689,
+      "artifactSha256": "014e7b6e6dda432b5920868ec3b8c25763f3716af07fc1f97f77707fbfaa313c"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/services.log",
+      "artifact": "evidence/trace-grown-withheld/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "sourceBytes": 318,
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/list.log",
+      "artifact": "evidence/trace-grown-withheld/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "sourceBytes": 155,
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/host-load.jsonl",
+      "artifact": "evidence/trace-grown-withheld/host-load.jsonl.gz",
+      "sourceSha256": "46e758779a477e6bf3f4065c4b13b078a3397e32b2b4adff29713bee9ebb0aaf",
+      "sourceBytes": 94043,
+      "artifactSha256": "efb146fd53880b275fbd75e35a24fd41c5f731054b448843f8cf9fcdf5c77d39"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-withheld/receipt.json",
+      "artifact": "evidence/trace-grown-withheld/receipt.json.gz",
+      "sourceSha256": "b063deeea7b5aee181945051aedf68584dea1e79da251b195171015de19e97a2",
+      "sourceBytes": 546,
+      "artifactSha256": "4285b092fe417ee4ffdf43c07f00db534e80b6d3a4f56f486d28a390402c47eb"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/result.json",
+      "artifact": "evidence/trace-idle-paused/result.json.gz",
+      "sourceSha256": "1c26486d7e3a8d30b159ad7a92c3e612fe4d7cbbcfc052e19cae6c43dae28841",
+      "sourceBytes": 11371536,
+      "artifactSha256": "879e1d55b7c8a16b375734e0e93c0543139314e7431fcf9cec471480c1f82055"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/docker-command.json",
+      "artifact": "evidence/trace-idle-paused/docker-command.json.gz",
+      "sourceSha256": "e88045495c7a6f4552a5d1cf12f192398e5750646cb97cbfd6b1ce7b25b79ea4",
+      "sourceBytes": 1181,
+      "artifactSha256": "959791360fe4d06e674094f449187cb37fb152b298f5a206646d454be8263b24"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/console.log",
+      "artifact": "evidence/trace-idle-paused/console.log.gz",
+      "sourceSha256": "4f2af8d34297251141aa9787433ce579a2ad7b95c9b21b8d99437b168e6b01ca",
+      "sourceBytes": 340,
+      "artifactSha256": "01279b33dae347b9a846e68fd74b660196791fbc96a0d5bee18670dbdc8d644e"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/container-identity.json",
+      "artifact": "evidence/trace-idle-paused/container-identity.json.gz",
+      "sourceSha256": "9cf18df51dd22872de028dd0f8afdb0b2c216b2e12b979ab377ee61dcd8dbdfd",
+      "sourceBytes": 2686,
+      "artifactSha256": "d810a5610ede21418b9035f4306bad956eb43958711c9ad70eee70f65de9c738"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/services.log",
+      "artifact": "evidence/trace-idle-paused/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "sourceBytes": 318,
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/list.log",
+      "artifact": "evidence/trace-idle-paused/list.log.gz",
+      "sourceSha256": "811ac4f9d8a935785ba5c1be2a700d2bef41a615be36018fb1f026716ee2b05b",
+      "sourceBytes": 119,
+      "artifactSha256": "fd8bf6c6f2521ddb6b1cd78196938dbabd6a99b5b89a9b929c2dca8463cce2b5"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/host-load.jsonl",
+      "artifact": "evidence/trace-idle-paused/host-load.jsonl.gz",
+      "sourceSha256": "6193620599b478bcdf4890abe376b2092803960f121dc3d8b4d2e835edb08214",
+      "sourceBytes": 20921,
+      "artifactSha256": "aa14fdadb78323e33e167ccf9007c55efcea86168f7bd739b26b420dd52d0907"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-idle-paused/receipt.json",
+      "artifact": "evidence/trace-idle-paused/receipt.json.gz",
+      "sourceSha256": "6f2e36916af52a29cedb9f506936449de1e0c84f6f1ad21f8e6050ed2c1af072",
+      "sourceBytes": 541,
+      "artifactSha256": "e965e6c7b67bf5388542ee4c2c390dd0c6cdf3f30fe0330af03d5591bb0d8ee4"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/step0-full-units/console.log",
+      "artifact": "evidence/step0-full-units/console.log.gz",
+      "sourceSha256": "1779aaf2e1ac8dbab1bd3c2107725bd608e56d282ca198bd37f854861978a74b",
+      "sourceBytes": 264,
+      "artifactSha256": "0df93a85b0ac1c393883602b43fcd38c83a73d535ff8c58af7bacbf1ca29dbb4"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/step0-full-units/host-load.jsonl",
+      "artifact": "evidence/step0-full-units/host-load.jsonl.gz",
+      "sourceSha256": "ebaeeb3dea473dc7ffcbbb0614e9914156a1571e684a272d16a6abf1d14e90c0",
+      "sourceBytes": 39149,
+      "artifactSha256": "4fc3fa86224586e897c33654c29efc0f76f0917b4fb830c3624c4951c8eb4e85"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/step0-full-units/receipt.json",
+      "artifact": "evidence/step0-full-units/receipt.json.gz",
+      "sourceSha256": "946c08a7dca28ee3fb93fb59d4f36134e5e6e76bf9a5499fbe7c166425bfa238",
+      "sourceBytes": 453,
+      "artifactSha256": "7c351847c9a6dfb4ddd15612dfd1aa55f4fbd5bb5bffe8e1b5fae95aaf46cce9"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/preflight01-grown-normal/list.log",
+      "artifact": "evidence/preflight01-grown-normal/list.log.gz",
+      "sourceSha256": "9c1c6250a844aa305ba0e20d7e35914efd6d654101f8637a07f17170a62b3e01",
+      "sourceBytes": 894,
+      "artifactSha256": "87621d95d31cafc36132429c5bebf57254c589817467c852caef268a26789744"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/preflight01-grown-normal/receipt.json",
+      "artifact": "evidence/preflight01-grown-normal/receipt.json.gz",
+      "sourceSha256": "b85fee15e6b2fef947fa82a8a320bd1eac21a347b50b3e8c9abeb30656a9e615",
+      "sourceBytes": 199,
+      "artifactSha256": "ad9dfa045acc4af596ebb1307025d35db5174f1354eb3898805b15d9f5c09140"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/partial-result.json",
+      "artifact": "evidence/trace-grown-normal/partial-result.json.gz",
+      "sourceSha256": "4fc89569c38a55cc021da0df8341260c2c79bbd6fd937a73200cb8cbbedb28d5",
+      "sourceBytes": 29709696,
+      "artifactSha256": "2e3d6ea33cfa344e8e2bdfea4800f6df4ab9d31142314fc32975b0e9978478f9"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/result.json",
+      "artifact": "evidence/trace-grown-normal/result.json.gz",
+      "sourceSha256": "6ff93ae9f6c5492a20355ca13b76b7ea67718704fc7dbb6aec4125630b296c58",
+      "sourceBytes": 30069807,
+      "artifactSha256": "fdf788eae780bf794db477becadd698c8efd2d3989c5a17ad3300c21f640fc05"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/docker-command.json",
+      "artifact": "evidence/trace-grown-normal/docker-command.json.gz",
+      "sourceSha256": "e001ff0cc4fcfda32b292a8ff751d98aa60cae23a076472d4bb909fcab54473e",
+      "sourceBytes": 1183,
+      "artifactSha256": "fc3fb95b529daeb3deaf0d4ea3af1c6b4a829a62a6a94e4f5fb201ef3f29f02f"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/console.log",
+      "artifact": "evidence/trace-grown-normal/console.log.gz",
+      "sourceSha256": "3ed01c5b268262bb65c1931a622d18bc998fe8fcae07a7db6e065179a1ad507f",
+      "sourceBytes": 3782,
+      "artifactSha256": "ec4a904f7de84cc1b8aedc640a3bf2a29585fc390dc232a14614182c5147b029"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/container-identity.json",
+      "artifact": "evidence/trace-grown-normal/container-identity.json.gz",
+      "sourceSha256": "aec36a53b77fc80adb8cab6c7ecc481c17f2fb955b929d019fb0cb42d30158ca",
+      "sourceBytes": 2689,
+      "artifactSha256": "355a185b934396982b291072a2d560677fadf038c4aba68cf1549c1a820e0bcd"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/services.log",
+      "artifact": "evidence/trace-grown-normal/services.log.gz",
+      "sourceSha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "sourceBytes": 318,
+      "artifactSha256": "61c4226eaebfcd35c0d15a51f9e23f9f8b5ec723a5ef6217dbd4101ad14fbb10"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/list.log",
+      "artifact": "evidence/trace-grown-normal/list.log.gz",
+      "sourceSha256": "e5373a55211e3537266b7fab56f3de1a2a24a17347b246036f85064d8f6ee4e0",
+      "sourceBytes": 155,
+      "artifactSha256": "adc3971ae28b2f3c570a1a72a387bb28c4ef15885af57df6eceaeceb83c3337c"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/host-load.jsonl",
+      "artifact": "evidence/trace-grown-normal/host-load.jsonl.gz",
+      "sourceSha256": "788cef63a398cc7827fce2ea8bfa7a2b968bba4c7e9ad7eda37e31bc8dcdad9b",
+      "sourceBytes": 93928,
+      "artifactSha256": "0dc713e18c5d002c3caf45e0a8b0358758d7761fbd3b48670201da39c0b41aba"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/trace-grown-normal/receipt.json",
+      "artifact": "evidence/trace-grown-normal/receipt.json.gz",
+      "sourceSha256": "c33c73bfb80d75bde1cf6ec9f7a73a5c72a20d66c89caf3bcd2d55e54e089046",
+      "sourceBytes": 546,
+      "artifactSha256": "2408c4ae397124fa871c9b095767b70276277e7a42f65c793fbae5100ed6ae4f"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/host_load.py",
+      "artifact": "apparatus/host_load.py.gz",
+      "sourceSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "sourceBytes": 3560,
+      "artifactSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/host_load-before-calibration.py",
+      "artifact": "apparatus/host_load-before-calibration.py.gz",
+      "sourceSha256": "af9b76d5a2bff7fdc07cc918d6e9ec1c8a416943ea7b234dd7b77b97381ade62",
+      "sourceBytes": 3632,
+      "artifactSha256": "d5a9c02f0e4e554a68f9cfe22023f00ffb978d40c417bda8ea6981479b2ac3ea",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/host_load-libproc-calibrated.py",
+      "artifact": "apparatus/host_load-libproc-calibrated.py.gz",
+      "sourceSha256": "7f0dc47bbc9783750a311582b6117151b4ae3b0dc7418d6875bc88fbd55a03e9",
+      "sourceBytes": 3910,
+      "artifactSha256": "3934ec14574b1286c37ef7cd87347602c69f4c2d75f764db6b339fca22c9963d",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/run-unit.py",
+      "artifact": "apparatus/run-unit.py.gz",
+      "sourceSha256": "3fd8ea492db0dc5532034a10f59980f74d3d5c84a0b372541af43df57208e900",
+      "sourceBytes": 1379,
+      "artifactSha256": "6d3d63a8059598e5a6ab29996ea59ba639de217bdcae8e11ed3898136b548173",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/run-trace.py",
+      "artifact": "apparatus/run-trace.py.gz",
+      "sourceSha256": "340e828f67df6fb69b071d0c6c1daf1e5edf9f7eadf72c594b98c53c62ffa9b5",
+      "sourceBytes": 3788,
+      "artifactSha256": "b584f527ae14d67b200c63a48b92bf416c065ce5a0c023a8a65b20721a700b1f",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/analyze-trace.py",
+      "artifact": "apparatus/analyze-trace.py.gz",
+      "sourceSha256": "892fab9ae32e5d15a6894c98719774b06f6898a74b995010c7cacbf4b516ec64",
+      "sourceBytes": 6695,
+      "artifactSha256": "5f7762133ef2c3930c376c718fed64daa5a01eead49a8538b4bb4a3c5d44c6bb",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/report309.py",
+      "artifact": "apparatus/report309.py.gz",
+      "sourceSha256": "37e34fdacda89b836ea98dc2175cab40ab9dd26d621b62d15b0067baca4fa002",
+      "sourceBytes": 13433,
+      "artifactSha256": "e340b3c12f03894a8327d907d994d6552902064235782262da3b3eb828bf2e0c",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/lab-context.mjs",
+      "artifact": "apparatus/lab-context.mjs.gz",
+      "sourceSha256": "5098931fc67b2a17f03f709ce39675f9ca43d6586b1fbcd895a57f9866219075",
+      "sourceBytes": 2071,
+      "artifactSha256": "3de28b21b332de7143313b01bcf82b684a6e33366479ae71d93636740bd9b3f1",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/notification-probe.mjs",
+      "artifact": "apparatus/notification-probe.mjs.gz",
+      "sourceSha256": "179a77f2ed0debbfe257821c61411a4b0b67d32e80bab7333e1f39125bc604f0",
+      "sourceBytes": 1713,
+      "artifactSha256": "53e3b9fea547061617e7f9c6ba2317e0afe36bb4ff4b8532b2193b5ce6756d8a",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/read-request.mjs",
+      "artifact": "apparatus/read-request.mjs.gz",
+      "sourceSha256": "dddcdf4c98fcc778cc1b8e9dcc7dad09934a747b52c009f7a211519eb10960cc",
+      "sourceBytes": 1047,
+      "artifactSha256": "b528a80f6c6ac5179b5efac4c54509ed8542e087aa025396f66abe3cc200d1bd",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/fixture-roles.mjs",
+      "artifact": "apparatus/fixture-roles.mjs.gz",
+      "sourceSha256": "9a7c96ce6d15f7ddb3bc0c0edf290efa58bad57e295cf86a20fda683ac2417e4",
+      "sourceBytes": 1029,
+      "artifactSha256": "fe5abeb0a308f1b9a82add52bcb08ebb7fc57e7733976b06f5a757fde2f2eec3",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/container-service.mjs",
+      "artifact": "apparatus/container-service.mjs.gz",
+      "sourceSha256": "06d8f0564368390850bd50d4e9d32242847e767ef83b21a4f88abc8d225897d1",
+      "sourceBytes": 5698,
+      "artifactSha256": "a33df1225ca57db1a4dad59228e5c156318b4f37bd5773e34ed75f0f0908bb1c",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/scripts/lib/account-gateway.mjs",
+      "artifact": "apparatus/harness/scripts/lib/account-gateway.mjs.gz",
+      "sourceSha256": "0188189dbd7406fda58facd8098b574686c316a2592bff429a5eb84df385401c",
+      "sourceBytes": 4754,
+      "artifactSha256": "ef61d7f5137e11f72188898d74111d811644fe6faff472e63898820a18d55b60",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/capture-maintenance-trace.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/capture-maintenance-trace.ts.gz",
+      "sourceSha256": "32e0d1836fd0e499f0415b3e452a763e30ff5803147c7d45c68f7464c01b4107",
+      "sourceBytes": 392,
+      "artifactSha256": "fabde8cf16c32cb6f63a5c23596f1d528d2615bf3c518b2b75c73371a134cc6c",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/grown-maintenance.spec.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/grown-maintenance.spec.ts.gz",
+      "sourceSha256": "058603a9e30643ec6244b33dfe014ab6fd3c48f5ae38d35f27153af7bdb9c147",
+      "sourceBytes": 11716,
+      "artifactSha256": "7168dfc384429987737edafc15ba823d7b0c38158d86439f1f32e6dcd76fbeee",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/grown-maintenance.config.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/grown-maintenance.config.ts.gz",
+      "sourceSha256": "45909a9e9b43e1507a96f8eb463ef30fe898cfdb4bd1bc4d2033619c368d66a7",
+      "sourceBytes": 294,
+      "artifactSha256": "a67a7cb28aa9dd3f18be236525397378b889a12ac1621b789bee115fb56704fa",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/idle-maintenance.spec.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/idle-maintenance.spec.ts.gz",
+      "sourceSha256": "2fc4f41abee8bf32baf1eed941e8201e8e7c3d616beb8ecd902b6a6390e30012",
+      "sourceBytes": 4934,
+      "artifactSha256": "4431d647ce2a101cf1e795973a9ea55abf9805b9c6c3ab56e65d6cd8ee3394b5",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/idle-maintenance.config.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/idle-maintenance.config.ts.gz",
+      "sourceSha256": "ad9491d0f5de1c0c88b3ff8ee022a67ccc66b81d56d92dd7cfbcf4c2fcc7026b",
+      "sourceBytes": 290,
+      "artifactSha256": "edee73743f4748272a3107cfd0a3a90908101220de4421234a9c6402ee15b0fc",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/common.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "sourceSha256": "c85601c5025ca60a03aba8dff24271ee6c53d9d3fcbba8064d8d3d6fff91f3d7",
+      "sourceBytes": 3495,
+      "artifactSha256": "094fd6dcf3ef55cabb42367173ea9f75c68ce959251c45c867f209d3fe6688ac",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/seed-profile.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "sourceSha256": "882a9f6cd6b7889fb17522205e5a2b6b5564e0b7ae561cb838d54088a1fe114b",
+      "sourceBytes": 1542,
+      "artifactSha256": "3a9da9055e633c98fe1a65495f36a8db94728db84c0c55bb4322795b388a7017",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/devices.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "sourceSha256": "be1190a21b84a3d57c38fc5bce75b6693888d5212f37684765968a01bf2b5a77",
+      "sourceBytes": 5092,
+      "artifactSha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/dispatch-probe.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "sourceSha256": "801dd1c895d29b673e54331760455d173e8d22e5f65cb7eeb1f50b5b2748ae64",
+      "sourceBytes": 4448,
+      "artifactSha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/runtime.mjs",
+      "artifact": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "sourceSha256": "296d87a49b81dfe99d0a00e1ec970912e42d97dd2d6716818c17527b0f08ee8a",
+      "sourceBytes": 4375,
+      "artifactSha256": "130d268b9e6004e8a27a2dbffeb2d87e4ff8a8fd13424b25b7cfc8aa6069d525",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/harness/test/account-continuation-lab/capture-lab.ts",
+      "artifact": "apparatus/harness/test/account-continuation-lab/capture-lab.ts.gz",
+      "sourceSha256": "126dae0c0104dff6772dab27933aa53282b61c163ecfd2c0788d75188a8b6c6c",
+      "sourceBytes": 412,
+      "artifactSha256": "cf57ad0eaf25534b3e55a185a06d48428b5dbea630f758041a6326c585be1cbd",
+      "kind": "Non-executing diagnostic/test/analysis apparatus"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/verify309.py",
+      "artifact": "apparatus/verify309.py.gz",
+      "sourceSha256": "3f9359fe54275f1d293a5633c47685198341030ac40e3508b994edf5e8b0e56a",
+      "sourceBytes": 6176,
+      "artifactSha256": "6b1077c289256cbdff04bc7400060ee3a23aba59d6a4997a2c192c08322569ea",
+      "kind": "Independent evidence/identity verifier"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/freeze-attempt1/receipt.json",
+      "artifact": "evidence/freeze-attempt1/receipt.json.gz",
+      "sourceSha256": "2e6e58554a9c6b42c2a87eebec50edc4893c9c1d24caee1b551402045666d962",
+      "sourceBytes": 736,
+      "artifactSha256": "e1c72a59da2d1ed9810be84375eb793947af1a8274f0c30025f1df01ca2bc4d2",
+      "kind": "Patch apparatus failure/repair evidence"
+    },
+    {
+      "source": "/private/tmp/done-maintenance-syp-lab-20261031/freeze309.py",
+      "artifact": "apparatus/freeze309.py.gz",
+      "sourceSha256": "e2955dffc4c06c7ae3a70b522f191de8878c59ab2003931e01abfabfd410953e",
+      "sourceBytes": 3592,
+      "artifactSha256": "b2a7b56798420c2ee188fd34ccec1c6aaa5219f08d2b7a954d6b6f9ced40207a",
+      "kind": "Patch apparatus failure/repair evidence"
+    }
+  ]
+}

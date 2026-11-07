@@ -1,0 +1,9 @@
+{
+  "summary.json": "5de952d603243a08dcc48c07b5be1ea1f84dcfc2a60b6c39befcda720ab89b37",
+  "deep-before-01/receipt.json": "dfb6a0e690b599986b883f45cd91f6586bc522201eee19386a08332bf6c7cfc2",
+  "deep-before-01/console.log": "b9630461d85d62c883b428a958db81205c6381bf41f1a09eff478b2aa60f5d75",
+  "deep-before-01/composed-receive-1/result.json": "b9bcac36b762c14403b9b4692b92b633c732a7eced0e43996b897a5395096f13",
+  "deep-before-01/composed-receive-1/container-identity.json": "24770122a20c754ecf1f9121389c3abc61114ce2d1aac2ef2f2c3fab8feff49c",
+  "deep-before-01/composed-receive-1/docker-command.json": "8b96d1110307408f562ef897894bc7a5e4900b4a39d47d96d5b1801f37983a90",
+  "deep-before-01/composed-receive-1/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b"
+}

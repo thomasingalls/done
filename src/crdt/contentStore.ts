@@ -38,7 +38,12 @@ import {
   measureLedgerWork,
   measureLedger,
 } from './accountLedgerMetrics';
-import { compactContent, equalStoredRecord, type DiskState } from './contentCompaction';
+import {
+  compactContent,
+  equalStoredRecord,
+  type DiskState,
+  type WorkerCompactionCommit,
+} from './contentCompaction';
 import { copyRecords, eraseVerified } from './verifiedRecords';
 import {
   rotateContent,
@@ -105,6 +110,7 @@ export interface ContentCrypto {
     counter: ContentCounter,
     view?: object,
     baseline?: AccountBaselineRead,
+    localRetentionRevision?: number,
   ): void | Promise<void>;
   open(task: SessionTask, record: StoredRecord): Promise<Bytes>;
   seal(
@@ -447,19 +453,19 @@ export const createContentOwner = (
             const { baselineAuthorityPin } = await task.wait(() => import('./localBaselineReuse'));
             const unchangedAuthority = baselineAuthorityPin(context);
             const prior = openedView;
-            // One-shot recovery still reads every row/chunk. Only exact authenticated evidence
-            // under the same verifier-owned authority can retain its completed logical proof.
-            // Warm reference/oracle calls and other direct snapshot consumers stay full replays.
+            // Unreduced live owners and opted-in one-shot recovery still read every row/chunk.
+            // Only exact evidence under the same verifier-owned authority retains a completed
+            // proof. Reduced warm continuation and direct reference/oracle replays are unchanged.
+            const exactOwner =
+              (crypt.exactBaselineReuse && !crypt.warmLoads) ||
+              (crypt.warmLoads && !metadata.reduced());
             if (
               allowExactBaselineReuse &&
-              crypt.exactBaselineReuse &&
-              !crypt.warmLoads &&
+              exactOwner &&
               !forceFullRead &&
-              metadata.reduced() &&
               reuse &&
               prior === reusedView &&
-              prior?.baseline &&
-              prior.baselineChunks &&
+              prior?.baselineChunks &&
               prior.baselineMatches?.(context) &&
               prior.baselineChunks.length === snapshot.chunks.length &&
               snapshot.chunks.every((row, n) => equalStoredRecord(row, prior.baselineChunks![n]!))
@@ -471,7 +477,10 @@ export const createContentOwner = (
                   'generation-changed',
                   'Baseline authority changed during reuse.',
                 );
-              logical = task.step(() => structuredClone(prior.baseline!));
+              // v3 verification completes without a journal-era logical projection.
+              logical = task.step(() =>
+                prior.baseline ? structuredClone(prior.baseline) : undefined,
+              );
               chunks = structuredClone(snapshot.chunks);
               baselineMatches = prior.baselineMatches;
               id = prior.id;
@@ -503,12 +512,8 @@ export const createContentOwner = (
                 baselineReuse.matches(baselineContext)
               )
                 baselineReuse.compare(logical);
-              if (held.counter.v === 5) chunks = structuredClone(held.chunks);
-              if (
-                crypt.exactBaselineReuse &&
-                metadata.reduced() &&
-                unchangedAuthority(baselineContext)
-              )
+              if (held.counter.v === 5 || exactOwner) chunks = structuredClone(held.chunks);
+              if (exactOwner && unchangedAuthority(baselineContext))
                 baselineMatches = unchangedAuthority;
             }
           } finally {
@@ -517,7 +522,9 @@ export const createContentOwner = (
           }
         }
         if (crypt.validate)
-          await task.wait(() => crypt.validate!(opened, task, counter, id, logical));
+          await task.wait(() =>
+            crypt.validate!(opened, task, counter, id, logical, metadata?.revision() ?? 0),
+          );
         if (crypt.reuseOpened && (!reuse || metadata?.active()))
           task.step(() => {
             clearView();
@@ -617,6 +624,9 @@ export const createContentOwner = (
                 openedView.baseline = logical;
               }
             } catch (e) {
+              // advance already owns the new continuation identity. If its detached projection
+              // was not installed, discard both views so a retry authenticates from storage.
+              if (logical) clearView();
               eraseVerified(logical);
               throw e;
             }
@@ -634,6 +644,7 @@ export const createContentOwner = (
                   checked.counter,
                   openedView!.id,
                   openedView!.baseline,
+                  metadata?.revision() ?? 0,
                 ),
               );
             if (forceFullRead) {
@@ -1604,6 +1615,14 @@ export const createContentOwner = (
     },
     hasReducedHistory: () => metadata?.reduced() === true,
     warmAuditDue: () => Boolean(warm?.due() || baselineReuse?.due()),
+    // Rolling ciphertext slices may finish while the full semantic oracle remains due.
+    // Either cache's physical suffix pressure must still force an audit attempt.
+    pendingWarmAuditRows: () =>
+      Math.max(
+        warm?.pendingRows() ?? 0,
+        baselineReuse?.pendingRows(openedView?.opened.length) ?? 0,
+      ),
+    pendingWarmAuditPositions: () => baselineReuse?.pendingPositions() ?? 0,
     warmAuditDelay: () =>
       Math.min(warm?.delay() ?? WARM_AUDIT_MS, baselineReuse?.delay() ?? WARM_AUDIT_MS),
     /** One background slice. Caller serializes slices with ordinary storage jobs. */
@@ -1756,11 +1775,16 @@ export const createContentOwner = (
         sequences: Object.freeze(records.map((r) => r.seq)),
       });
     },
-    compact: async (task: SessionTask, checkJournal: () => void) => {
+    compact: async (
+      task: SessionTask,
+      checkJournal: () => void,
+      workerCommit?: WorkerCompactionCommit,
+    ) => {
       if (metadata?.active()) {
         const rows = await load(task);
         eraseVerified(rows);
-        checkJournal();
+        if (workerCommit) await task.wait(() => workerCommit.checkJournal());
+        else checkJournal();
         return {
           status: 'retained' as const,
           storeId: scope.storeId,
@@ -1782,6 +1806,7 @@ export const createContentOwner = (
           authenticate: (snapshot) => openSnapshot(task, snapshot),
           publish: async (bytes) => (await appendRecords(task, [{ kind: 'state', bytes }]))[0]!,
           checkJournal,
+          ...(workerCommit ? { workerCommit } : {}),
         });
       } finally {
         warm = undefined;

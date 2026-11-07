@@ -1,0 +1,106 @@
+{
+  "0": {
+    "fixtureSha256": "e8d39c4e9a24654c00c0011f96419c04a43cf1428050d98e265f2282e2b4f806",
+    "accountDate": "2026-10-31",
+    "sourceHistory": "same frozen2048server/sender; own actor2original behind storage, received by selected writer",
+    "archive": {
+      "sha256": "e6ba5fcc54917403bf561ed9167a9cdfecf37ad6d8fb55ebf72342f9061aadaa",
+      "files": [
+        {
+          "name": "master.md",
+          "bytes": 1000,
+          "characters": 1000
+        },
+        {
+          "name": "days/2026-10-31.md",
+          "bytes": 3489,
+          "characters": 3489
+        }
+      ]
+    },
+    "census": [
+      {
+        "stores": {
+          "content": {
+            "rows": 2054,
+            "cipherBytes": 110726
+          },
+          "heads": {
+            "rows": 2055,
+            "cipherBytes": 27772726
+          },
+          "meta": {
+            "rows": 1,
+            "cipherBytes": 0
+          },
+          "outbound": {
+            "rows": 3,
+            "cipherBytes": 2644
+          }
+        },
+        "counterVersion": 2
+      }
+    ],
+    "drainMs": 91427.57495117188,
+    "actorHashes": {
+      "0": "e40aca3cde04c8f787603091faeb3a2c566bf6e145e0420dc88af253a0e3f2fe",
+      "1": "7956b4d4b66f93211cd503074d3f7530235cf4974190b0a21f05dfa317dae7be",
+      "2": "d8ff458232b9116df4df092ecb0dee99a2507e94ea3e223062f5a61a13f4bcc1",
+      "3": "8b3fdd8c931068f713667a34dc806939be23db941337f5a77f6b020ff77acdc1",
+      "4": "852503ac31cfa1b48198f68fa547938a353c90b7a470e9dcc4a4ff10271eb58b",
+      "5": "610fae5bbb8686fcb4972871672d5221c58dd221234aebb12b1cd250b51ce312"
+    }
+  },
+  "1": {
+    "fixtureSha256": "b1773633090b7f1c9c7fed3c07311194b5ce352b56dcf2553837681cf9f86d75",
+    "accountDate": "2026-10-31",
+    "sourceHistory": "same frozen2048server/sender; own actor2original behind storage, received by selected writer",
+    "archive": {
+      "sha256": "e6ba5fcc54917403bf561ed9167a9cdfecf37ad6d8fb55ebf72342f9061aadaa",
+      "files": [
+        {
+          "name": "master.md",
+          "bytes": 1000,
+          "characters": 1000
+        },
+        {
+          "name": "days/2026-10-31.md",
+          "bytes": 3489,
+          "characters": 3489
+        }
+      ]
+    },
+    "census": [
+      {
+        "stores": {
+          "content": {
+            "rows": 2054,
+            "cipherBytes": 110726
+          },
+          "heads": {
+            "rows": 520,
+            "cipherBytes": 3480890
+          },
+          "meta": {
+            "rows": 1,
+            "cipherBytes": 0
+          },
+          "outbound": {
+            "rows": 3,
+            "cipherBytes": 2644
+          }
+        },
+        "counterVersion": 2
+      }
+    ],
+    "drainMs": 42604.46435546875,
+    "actorHashes": {
+      "0": "e40aca3cde04c8f787603091faeb3a2c566bf6e145e0420dc88af253a0e3f2fe",
+      "1": "7956b4d4b66f93211cd503074d3f7530235cf4974190b0a21f05dfa317dae7be",
+      "2": "c0cd44dcc5b413204c39daed7e2fd8b75e2bb6fbd89d6769fed1b0488040d88b",
+      "3": "8b3fdd8c931068f713667a34dc806939be23db941337f5a77f6b020ff77acdc1",
+      "4": "852503ac31cfa1b48198f68fa547938a353c90b7a470e9dcc4a4ff10271eb58b",
+      "5": "610fae5bbb8686fcb4972871672d5221c58dd221234aebb12b1cd250b51ce312"
+    }
+  }
+}

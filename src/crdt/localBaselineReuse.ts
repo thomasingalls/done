@@ -1,3 +1,4 @@
+import { createInboundReceiptTurn } from './accountInbound';
 /** Private reduced-owner continuation. Only a full authenticated replay may seed this cache. */
 import type { LocalBaselineContext } from './localBaselineReplay';
 import type { AccountBaselineRead } from './localBaselineShadow';
@@ -10,13 +11,14 @@ import {
   type AccountLedgerView,
 } from './incrementalAccountLedger';
 import { copyRecords, createVerifiedRecords, eraseVerified } from './verifiedRecords';
-import { createInboundCoverage, verifyInboundLedger } from './inboundLedger';
+import { createInboundCoverage, verifyInboundLedger, inboundPositionsAfter } from './inboundLedger';
 import { advanceSelfReceive } from './accountSyncState';
 import { decodeSourceCapsule, eraseCapsule } from './sourceCapture';
 import { createVerificationMemo } from './verificationMemo';
 import { guardedSubtle } from './custodyCrypto';
 import { cpuCheckpoint } from './cpuBudget';
 import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
+import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
 import { countLedgerWork } from './accountLedgerMetrics';
 import type { SessionTask } from './writeSession';
 
@@ -86,10 +88,13 @@ export async function createBaselineReuse(
   const verifiedAt = performance.now();
   let alive = true,
     added = 0,
+    addedPositions = 0,
+    physicalRowsAtLastAdvance = initial.records.length - prefix.length,
     lastIdentity = identity;
   let lastCounter = structuredClone(counter);
   const clear = () => {
     alive = false;
+    addedPositions = 0;
     verified.clear();
     coverage.clear();
     memo.clear();
@@ -116,6 +121,7 @@ export async function createBaselineReuse(
           context.route,
           counter,
           guardedSubtle(current),
+          memo.ownedBytes(),
         );
         return { ...ledger, ...(indexes ? { indexes } : {}) };
       },
@@ -131,9 +137,19 @@ export async function createBaselineReuse(
     clear,
     matches,
     hasIdentity: (id: object) => alive && id === lastIdentity,
-    due: () => added >= WARM_AUDIT_ROWS || performance.now() - verifiedAt >= WARM_AUDIT_MS,
+    // A committed tail may not have reached advance yet. Count it without scanning or
+    // trusting it; the ordinary continuation must still verify every record.
+    pendingRows: (physicalRows = physicalRowsAtLastAdvance) =>
+      added + Math.max(0, physicalRows - physicalRowsAtLastAdvance),
+    pendingPositions: () => addedPositions,
+    due: () =>
+      added >= WARM_AUDIT_ROWS ||
+      addedPositions >= WARM_AUDIT_FORCE_POSITIONS ||
+      performance.now() - verifiedAt >= WARM_AUDIT_MS,
     delay: () =>
-      added >= WARM_AUDIT_ROWS ? 0 : Math.max(0, verifiedAt + WARM_AUDIT_MS - performance.now()),
+      added >= WARM_AUDIT_ROWS || addedPositions >= WARM_AUDIT_FORCE_POSITIONS
+        ? 0
+        : Math.max(0, verifiedAt + WARM_AUDIT_MS - performance.now()),
     /** Full replay must agree with the last checked logical view before it replaces that view. */
     compare(full: AccountBaselineRead) {
       const prior = verified.read(full.records);
@@ -168,7 +184,8 @@ export async function createBaselineReuse(
       }
       if (physical.some((r) => r.seq < header.firstSuffix)) corrupt('Reduced prefix reappeared.');
       const records = [...prefix, ...physical];
-      let appended = 0;
+      let appended = 0,
+        appendedPositions = 0;
       try {
         await verified.verify(
           records,
@@ -178,64 +195,77 @@ export async function createBaselineReuse(
           },
           check,
           async (previous, before, candidate) => {
-            const suffix = appendedRecords(before, candidate);
-            if (!suffix) return;
-            const next = await extendAccountLedger(
-              previous,
-              before,
-              candidate,
-              c.route,
-              allocation,
-              c.inbound,
-              c.signer,
-              guardedSubtle(check),
-              { memo, current: check },
-            );
-            if (!next) return;
-            const checking = coverage.bind(candidate);
-            // Unlike the ordinary census, baseline replay also proves every unallocated source.
-            const sourceSequences = new Set([...next.indexes!.sources.values()].map((s) => s.seq));
-            for (const row of suffix)
-              if (row.kind === 'outbound') {
-                // The reducer has classified these bytes; only newly indexed capsules need this proof.
-                if (!sourceSequences.has(row.seq)) continue;
-                const capsule = decodeSourceCapsule(row.bytes, c.route);
-                try {
-                  checking.check(
-                    candidate,
-                    capsule.sources.map((s) => s.bytes),
-                  );
-                } finally {
-                  eraseCapsule(capsule);
-                }
-                const pause = cpuCheckpoint(task)?.();
-                if (pause) await pause;
-              }
-            const inbound = await verifyInboundLedger(
-              next.census,
-              candidate,
-              c.inbound,
-              { ...c, assertCurrent: check },
-              {
-                memo,
-                coverage: checking,
-                checkpoint: async () => {
+            const syntaxTurn = createInboundReceiptTurn();
+            try {
+              const suffix = appendedRecords(before, candidate);
+              if (!suffix) return;
+              const next = await extendAccountLedger(
+                previous,
+                before,
+                candidate,
+                c.route,
+                allocation,
+                c.inbound,
+                c.signer,
+                guardedSubtle(check),
+                { memo, current: check },
+                undefined,
+                syntaxTurn,
+              );
+              if (!next) return;
+              const checking = coverage.bind(candidate);
+              // Unlike the ordinary census, baseline replay also proves every unallocated source.
+              const sourceSequences = new Set(
+                [...next.indexes!.sources.values()].map((s) => s.seq),
+              );
+              for (const row of suffix)
+                if (row.kind === 'outbound') {
+                  // The reducer has classified these bytes; only newly indexed capsules need this proof.
+                  if (!sourceSequences.has(row.seq)) continue;
+                  const capsule = decodeSourceCapsule(row.bytes, c.route);
+                  try {
+                    checking.check(
+                      candidate,
+                      capsule.sources.map((s) => s.bytes),
+                    );
+                  } finally {
+                    eraseCapsule(capsule);
+                  }
                   const pause = cpuCheckpoint(task)?.();
                   if (pause) await pause;
+                }
+              const inbound = await verifyInboundLedger(
+                next.census,
+                candidate,
+                c.inbound,
+                { ...c, assertCurrent: check },
+                {
+                  memo,
+                  coverage: checking,
+                  checkpoint: async () => {
+                    const pause = cpuCheckpoint(task)?.();
+                    if (pause) await pause;
+                  },
                 },
-              },
-              { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
-            );
-            advanceSelfReceive(
-              next.census.delivery,
-              next.delivery,
-              inbound,
-              c.route,
-              (updates) => checking.check(candidate, updates),
-              previous.delivery.acceptedThrough,
-            );
-            appended = suffix.length;
-            return { ...next, inbound };
+                { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
+                syntaxTurn,
+              );
+              advanceSelfReceive(
+                next.census.delivery,
+                next.delivery,
+                inbound,
+                c.route,
+                (updates) => checking.check(candidate, updates),
+                previous.delivery.acceptedThrough,
+              );
+              appended = suffix.length;
+              appendedPositions = inboundPositionsAfter(next.census, before.at(-1)?.seq ?? 0);
+              const result = { ...next, inbound };
+              syntaxTurn.complete(result);
+              return result;
+            } finally {
+              syntaxTurn.dispose();
+            }
           },
           cpuCheckpoint(task),
         );
@@ -246,6 +276,8 @@ export async function createBaselineReuse(
           inbound,
         }));
         added += appended;
+        addedPositions = Math.min(WARM_AUDIT_FORCE_POSITIONS, addedPositions + appendedPositions);
+        physicalRowsAtLastAdvance = physical.length;
         lastIdentity = id;
         lastCounter = structuredClone(allocation);
         // Crypto memo inputs are operation-local; retained semantic indexes are separately bounded.

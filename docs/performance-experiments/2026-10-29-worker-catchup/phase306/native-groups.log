@@ -1,0 +1,23 @@
+(node:11707) ExperimentalWarning: The supports Web Crypto API method is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11707) ExperimentalWarning: The ML-DSA-44 Web Crypto API algorithm is an experimental feature and might change at any time
+✔ four original receipts commit in one transaction and reopen in the pre-group reference reader (12872.816084ms)
+✔ group before commit crash keeps all content and receipts atomic (12699.039ms)
+✔ group after commit crash keeps all content and receipts atomic (17690.296916ms)
+✔ group refuses invalid-tail without retaining a partial prefix (8677.486875ms)
+✔ group refuses reordered without retaining a partial prefix (8192.923709ms)
+✔ group refuses superseded without retaining a partial prefix (8387.254125ms)
+✔ group expiry during sealing cannot commit (7261.563125ms)
+✔ group authority during sealing cannot commit (7422.805583ms)
+✔ group cuts at the records bound and retains a retryable valid tail (8921.559834ms)
+✔ group cuts at the bytes bound and retains a retryable valid tail (45929.664875ms)
+receive-group-counts {"single":{"loads":36,"readonly":92,"readwrite":8,"verify":60},"group":{"loads":9,"readonly":23,"readwrite":2,"verify":39}}
+✔ group amortizes fresh content-counter reads and transactions while preserving each receipt (20091.217083ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 162558.546709

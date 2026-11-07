@@ -20,8 +20,18 @@ import {
 } from '../../account-protocol/historyExchange';
 import type { AuthorityPin } from '../../account-protocol/authority';
 import { openHistoryCheckpoint } from './historyCheckpoint';
-import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
-import { decodeInboundRecord } from './inboundRecord';
+import {
+  verifyStoredInboundReceipt,
+  type InboundContext,
+  type InboundLifetime,
+} from './accountInbound';
+import {
+  captureScopedInboundReceiptSyntax,
+  inboundReceiptViews,
+  encodeInboundPageRecord,
+} from './inboundRecord';
+import { captureInboundReceiptVersion } from './inboundReceiptVersion';
+import { eraseVerified } from './verifiedRecords';
 import { hex, random, type Bytes } from './custodyCrypto';
 import { unhex } from '../../account-protocol/recovery';
 import { Y, sameDocState, type YDoc } from './yjs';
@@ -123,9 +133,11 @@ export async function replayHandoffStream(
   proof: HandoffHistory | undefined,
   lifetime: InboundLifetime,
 ) {
-  const cut = handoffHistoryPrefix(proof, base.publisher.id);
+  const floor = captureInboundReceiptVersion(base),
+    cut = handoffHistoryPrefix(proof, base.publisher.id);
   const context: InboundContext = {
     ...base,
+    ...floor,
     prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
   };
   const records: { record: Bytes; updates: readonly Bytes[] }[] = [];
@@ -139,44 +151,92 @@ export async function replayHandoffStream(
       lifetime.assertCurrent();
       const bytes = unhex(wire, wire.length / 2);
       try {
-        const record = decodeInboundRecord(bytes),
-          position = record.position;
-        if (position <= last) throw Error('Retained handoff order changed');
-        record.request.fill(0);
-        record.page.fill(0);
-        last = position;
-        if (position <= cut.position)
-          context.prefix = {
-            position: position - 1,
-            link: record.previous,
-            observedThrough: position - 1,
-          };
-        if (position > cut.position && context.prefix.position < cut.position)
-          context.prefix = { ...cut };
-        const result = await verifyStoredInbound(context, bytes, lifetime);
-        if (result.kind !== 'received') throw Error('Invalid retained handoff event');
-        let retained = false;
+        const captured = captureScopedInboundReceiptSyntax(bytes, floor);
+        if (!captured) throw Error('Invalid inbound record');
         try {
-          for (const update of result.updates) Y.applyUpdate(doc, update);
-          if (position <= cut.position) {
-            if (!sameDocState(doc, snapshot))
-              throw Error('Admitted history omits retained accepted writing');
-            if (position === cut.position && result.link !== cut.link)
-              throw Error('Handoff history cut conflicts');
-          } else {
-            records.push({ record: result.record, updates: result.updates });
-            retained = true;
+          const logical = [...inboundReceiptViews(captured).entries()],
+            first = logical[0]!.event,
+            position = first.position,
+            end = logical.at(-1)!.event.position;
+          if (position <= last) throw Error('Retained handoff order changed');
+          last = end;
+          if (position <= cut.position)
+            context.prefix = {
+              position: position - 1,
+              link: first.previous,
+              observedThrough: position - 1,
+            };
+          if (position > cut.position && context.prefix.position < cut.position)
+            context.prefix = { ...cut };
+          const receipt = await verifyStoredInboundReceipt(context, bytes, lifetime);
+          let retainedRecord: Bytes | undefined, narrowed: Bytes | undefined;
+          const retainedUpdates = new Set<Bytes>();
+          try {
+            for (const selected of receipt.entries) {
+              lifetime.assertCurrent();
+              const result = selected.result;
+              if (result.kind !== 'received') throw Error('Invalid retained handoff event');
+              for (const update of result.updates) Y.applyUpdate(doc, update);
+              if (result.position <= cut.position) {
+                if (!sameDocState(doc, snapshot))
+                  throw Error('Admitted history omits retained accepted writing');
+                if (result.position === cut.position && result.link !== cut.link)
+                  throw Error('Handoff history cut conflicts');
+              }
+              context.prefix = {
+                position: result.position,
+                link: result.link,
+                observedThrough: result.through,
+              };
+            }
+            const suffix = receipt.entries.filter((e) => e.result.position > cut.position);
+            if (suffix.length) {
+              const begin = suffix[0]!,
+                end = suffix.at(-1)!;
+              if (begin.result.kind !== 'received' || end.result.kind !== 'received')
+                throw Error('Invalid retained handoff event');
+              if (suffix.length !== receipt.entries.length) {
+                if (captured.receipt.kind !== 'page') throw Error('Invalid handoff extent');
+                // Only the unsigned admitted-extent header changes. Exact original signed frames
+                // remain whole; the covered snapshot/cut checks above authorize this suffix.
+                narrowed = encodeInboundPageRecord({
+                  baseline: begin.event.baseline,
+                  lineage: begin.event.lineage,
+                  head: begin.event.head,
+                  reader: begin.event.reader,
+                  publisher: begin.event.publisher,
+                  firstPosition: begin.result.position,
+                  previous: begin.event.previous,
+                  lastLink: end.result.link,
+                  firstEntry: begin.index,
+                  entryCount: suffix.length,
+                  request: begin.event.request,
+                  page: begin.event.page,
+                });
+              }
+              const updates = suffix.flatMap((e) => {
+                if (e.result.kind !== 'received') throw Error('Invalid retained handoff event');
+                return [...e.result.updates];
+              });
+              lifetime.assertCurrent();
+              records.push({ record: narrowed ?? receipt.record, updates });
+              retainedRecord = narrowed ?? receipt.record;
+              for (const update of updates) retainedUpdates.add(update);
+            }
+          } finally {
+            if (receipt.record !== retainedRecord) receipt.record.fill(0);
+            if (narrowed !== retainedRecord) narrowed?.fill(0);
+            for (const selected of receipt.entries) {
+              if ('record' in selected.result && selected.result.record !== retainedRecord)
+                selected.result.record.fill(0);
+              if (selected.result.kind === 'received')
+                for (const update of selected.result.updates)
+                  if (!retainedUpdates.has(update)) update.fill(0);
+              eraseVerified(selected.original);
+            }
           }
-          context.prefix = {
-            position: result.position,
-            link: result.link,
-            observedThrough: result.through,
-          };
         } finally {
-          if (!retained) {
-            result.record.fill(0);
-            for (const u of result.updates) u.fill(0);
-          }
+          eraseVerified(captured);
         }
       } finally {
         bytes.fill(0);

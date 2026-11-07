@@ -136,3 +136,11 @@ D4 recorded that the earlier implementation used relaxed content transactions. T
 for both content reservations and final attempt-event/witness commits before network AES. Unsupported
 capability refuses. Renderer recovery and API reporting still do not measure physical power-loss survival;
 accurate initial budgets and an unrewound, unbranched history remain assumptions.
+
+## Development follow-up — indexed range receipts, 2026-10-30
+
+The [indexed inbound range contract](account-inbound-range-development.md) adds a development-only
+v2 receipt reader. V1 remains exact; application range writes are not enabled in the reader phase.
+The new record family is an open qualification obligation, including complete reader routing,
+range4/8 costs/fairness, stale-tab fencing and rollback behavior. Existing production guarantees
+and qualification blocks remain; this follow-up grants no release or activation credit.

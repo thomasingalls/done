@@ -1,0 +1,13 @@
+import{readFileSync,writeFileSync}from'node:fs';import{parseSync}from'/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@babel/core/lib/index.js';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done',rows=[];
+for(const[family,timeout]of[['admission',10000],['journal',10000],['write-session',8000]]){
+ const path='scripts/'+family+'/scenarios.mjs',source=readFileSync(root+'/'+path,'utf8'),ast=parseSync(source,{filename:path,configFile:false,babelrc:false}),edits=[];
+ const walk=node=>{if(!node||typeof node!=='object')return;if(node.type==='CallExpression'&&node.callee.type==='MemberExpression'&&node.callee.property.name==='waitForFunction'){
+  if(node.arguments.length>2)throw Error('Options need separate review');const object=source.slice(node.callee.object.start,node.callee.object.end),args=node.arguments.map(a=>source.slice(a.start,a.end));edits.push({start:node.start,end:node.end,text:'waitForState('+object+', '+args[0]+', '+(args[1]??'undefined')+', OBSERVATION_TIMEOUT_MS)'});
+ }
+ for(const[k,v]of Object.entries(node))if(!['loc','start','end'].includes(k)){if(Array.isArray(v))v.forEach(walk);else walk(v);}};walk(ast);
+ let next=source;for(const e of edits.sort((a,b)=>b.start-a.start))next=next.slice(0,e.start)+e.text+next.slice(e.end);
+ if(next.split('p.setDefaultTimeout('+timeout+');').length!==2)throw Error('Default timeout home changed');next=next.replace('p.setDefaultTimeout('+timeout+');','p.setDefaultTimeout(OBSERVATION_TIMEOUT_MS);');next="import { waitForState } from '../storage-conformance/observe.mjs';\nconst OBSERVATION_TIMEOUT_MS = "+timeout+';\n'+next;writeFileSync(root+'/'+path,next);
+ const worker='scripts/'+family+'/worker.mjs',w=readFileSync(root+'/'+worker,'utf8'),anchor="  'scripts/storage-conformance/report.mjs',";if(w.split(anchor).length!==2)throw Error('Worker source evidence anchor changed');writeFileSync(root+'/'+worker,w.replace(anchor,anchor+"\n  'scripts/storage-conformance/observe.mjs',"));rows.push({family,observations:edits.length,timeout,oldScenario:source});
+}
+writeFileSync('/private/tmp/done-worker-conversion-20261028/173-observation-edits.json',JSON.stringify(rows,null,2)+'\n');console.log(rows.map(({oldScenario,...r})=>r));

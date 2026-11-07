@@ -1,0 +1,12 @@
+{
+  "rawCopiesMatch": 48,
+  "journeys": 2,
+  "allAttempts": 34,
+  "finishedAttempts": 33,
+  "bothReaders": true,
+  "canonicalInputsUnchanged": 1552,
+  "coldAttempts": 0,
+  "capacityRefusals": 1,
+  "labOnly": true,
+  "acceptanceCredit": false
+}

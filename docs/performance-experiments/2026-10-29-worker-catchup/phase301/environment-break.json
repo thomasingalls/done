@@ -1,0 +1,11 @@
+{
+  "oldRoot": "/private/tmp/done-civil-gates-20261030",
+  "case": "02-yield-withheld",
+  "timedCaseStarted": false,
+  "directoryCreated": false,
+  "refusal": "browserSha256 assertion",
+  "oldBinarySha256": "0a8cb6eba2bee365c01fb0612f64f1d15855fd499dd54625ced1fe50215e5fb4",
+  "newBinarySha256": "5ea0e9796f5e34efe7b0c76c138643d7b61ca9805cbaa36d52943ef321372cc4",
+  "restoredImageDigest": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "smokeFailure": "Image absent; cleanup stop masked startup failure. Exact existing digest restored by pull; fresh smoke passes. No timed case started."
+}

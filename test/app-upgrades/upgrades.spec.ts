@@ -92,7 +92,17 @@ test('every cached URL is a real file with exactly matching HTTP bytes', async (
   expect(paths).toEqual(
     expect.arrayContaining(['/manifest.webmanifest', '/icon-192.png', '/local.html']),
   );
-  expect(paths.some((path) => /private|cleanup|recovery|\.map$/u.test(path))).toBe(false);
+  // Same public-runtime distinction as packaged.spec.ts: these compiled modules
+  // are required app assets, while private tooling/recovery pages stay excluded.
+  const publicRuntime =
+    /^\/assets\/(?:privateDeliveryHttp|recoveryOwner\.worker)-[A-Za-z0-9_-]+\.js$/u;
+  expect(
+    paths.some(
+      (path) =>
+        /private|cleanup|migration|recovery|binding|\.map$/u.test(path) &&
+        !publicRuntime.test(path),
+    ),
+  ).toBe(false);
 });
 
 test('first installation closes and reopens offline without taking over its original page', async ({

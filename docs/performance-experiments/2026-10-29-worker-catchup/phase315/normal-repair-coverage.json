@@ -1,0 +1,34 @@
+[
+  {
+    "name": "repair-05-normal-R1000",
+    "rearms": 5,
+    "episodes": 1,
+    "typingWindowMs": 59505.22021484375,
+    "armedDuringTypingMs": 57665.137939453125,
+    "armedFraction": 0.9690769604961211,
+    "episodeOffsetsMs": [
+      [
+        1840.082275390625,
+        74127.28247070312
+      ]
+    ],
+    "intervalSelections": 26,
+    "qualification": "Armed time inferred from approved30srearm rule and observer performance clock, not a count of fired timers/extra HTTPrequests. No matched normalR1500orRoffarm; incremental traffic remains unproven."
+  },
+  {
+    "name": "repair-06-normal-R1000",
+    "rearms": 2,
+    "episodes": 1,
+    "typingWindowMs": 59509.21826171875,
+    "armedDuringTypingMs": 30147.724365234375,
+    "armedFraction": 0.5066059552764767,
+    "episodeOffsetsMs": [
+      [
+        29361.493896484375,
+        70188.7939453125
+      ]
+    ],
+    "intervalSelections": 21,
+    "qualification": "Armed time inferred from approved30srearm rule and observer performance clock, not a count of fired timers/extra HTTPrequests. No matched normalR1500orRoffarm; incremental traffic remains unproven."
+  }
+]

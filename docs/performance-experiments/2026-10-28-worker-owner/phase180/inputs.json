@@ -1,0 +1,6 @@
+{
+  "src/crdt/workspaceBridge.ts": "f7bd65ea88a17abf246b5918e0dacbeb0a1cc6d98a1c7501a992b2e04a0570fd",
+  "src/crdt/accountWorkspacePort.ts": "051b72c01ee7827538ae5aba3aeae49a75f400373bb62d3428cc62d81f190109",
+  "src/crdt/accountReceive.ts": "1e96fd78ae7edc478a31513aacefd9074a5e44edc48fa950e8beaecd68c9b66a",
+  "test/workspaceBridge.test.ts": "b89c1c1220d2ec6553a6670c2367bc1b30890a71ce740ba9daab80d42933c106"
+}

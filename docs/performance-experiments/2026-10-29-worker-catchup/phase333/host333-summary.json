@@ -1,0 +1,1454 @@
+[
+  {
+    "name": "paired333-r1-d0-coordinated-2000-attempt2",
+    "samples": 27,
+    "medianHostBusyPercent": 31.194753531004068,
+    "maxHostBusyPercent": 52.48255234297109,
+    "first": {
+      "kind": "load",
+      "at": 1793567494208.247,
+      "monotonicNs": 11018342778050333,
+      "intervalSeconds": 5.094381042,
+      "hostPercent": {
+        "user": 19.36514274306249,
+        "system": 13.256138949890198,
+        "idle": 67.37871830704732,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 60.65506240159253,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 20.02205943275844,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 19.040585933628236,
+          "newOrReset": false
+        },
+        {
+          "pid": 52664,
+          "name": "Google Chrome",
+          "cpuPercent": 16.685049527946166,
+          "newOrReset": true
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 14.133218423694899,
+          "newOrReset": false
+        },
+        {
+          "pid": 52638,
+          "name": "node",
+          "cpuPercent": 13.348039622356932,
+          "newOrReset": true
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 10.011029716950514,
+          "newOrReset": false
+        },
+        {
+          "pid": 52636,
+          "name": "node",
+          "cpuPercent": 9.225850915452586,
+          "newOrReset": true
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 8.636966814466206,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.440672114571655,
+          "newOrReset": false
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 5.1036622041607105,
+          "newOrReset": false
+        },
+        {
+          "pid": 1,
+          "name": "launchd",
+          "cpuPercent": 4.907367508219461,
+          "newOrReset": false
+        },
+        {
+          "pid": 52674,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.514778107561904,
+          "newOrReset": true
+        },
+        {
+          "pid": 98568,
+          "name": "codex",
+          "cpuPercent": 4.122188706744385,
+          "newOrReset": false
+        },
+        {
+          "pid": 52649,
+          "name": "com.docker.virtualization",
+          "cpuPercent": 3.72959930624679,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 867,
+      "samplerCpuMs": 7.59,
+      "psWallMs": 91.708458,
+      "psChildCpuMs": 53.283
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793567622382.2458,
+      "samples": 26,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r1-d0-coordinated-2000-attempt2/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r1-d50-immediate-inflight",
+    "samples": 25,
+    "medianHostBusyPercent": 38.11082960187874,
+    "maxHostBusyPercent": 49.22496025437202,
+    "first": {
+      "kind": "load",
+      "at": 1793567650145.6262,
+      "monotonicNs": 11018498618004583,
+      "intervalSeconds": 5.067383333,
+      "hostPercent": {
+        "user": 25.54759060135404,
+        "system": 16.168857029072083,
+        "idle": 58.283552369573876,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 47.95374338799829,
+          "newOrReset": false
+        },
+        {
+          "pid": 52959,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 41.244166123952475,
+          "newOrReset": true
+        },
+        {
+          "pid": 52947,
+          "name": "Google Chrome",
+          "cpuPercent": 35.521291398619354,
+          "newOrReset": true
+        },
+        {
+          "pid": 52926,
+          "name": "node",
+          "cpuPercent": 25.65426601011398,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 20.523412808091237,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 16.379262144091882,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 13.419154528229472,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 12.827133005516458,
+          "newOrReset": false
+        },
+        {
+          "pid": 52953,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 11.248408942896129,
+          "newOrReset": true
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 9.66968488055148,
+          "newOrReset": false
+        },
+        {
+          "pid": 52925,
+          "name": "node",
+          "cpuPercent": 9.275003865195053,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 8.682982341876835,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 7.696279802735539,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 5.7228747253324,
+          "newOrReset": false
+        },
+        {
+          "pid": 52957,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.538831678712473,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 884,
+      "samplerCpuMs": 7.121,
+      "psWallMs": 57.545291,
+      "psChildCpuMs": 45.805
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793567767134.083,
+      "samples": 24,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r1-d50-immediate-inflight/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r1-d0-immediate-inflight",
+    "samples": 26,
+    "medianHostBusyPercent": 40.333796940194716,
+    "maxHostBusyPercent": 49.40334128878282,
+    "first": {
+      "kind": "load",
+      "at": 1793567773499.5552,
+      "monotonicNs": 11018621972706583,
+      "intervalSeconds": 5.054881458,
+      "hostPercent": {
+        "user": 28.876046233559187,
+        "system": 13.37186129932244,
+        "idle": 57.75209246711837,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 70.8226301598129,
+          "newOrReset": false
+        },
+        {
+          "pid": 53194,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 49.45714396612464,
+          "newOrReset": true
+        },
+        {
+          "pid": 53184,
+          "name": "Google Chrome",
+          "cpuPercent": 34.81782935215175,
+          "newOrReset": true
+        },
+        {
+          "pid": 53161,
+          "name": "node",
+          "cpuPercent": 25.322057710655816,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 20.376343314043375,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 17.606743252216734,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 15.430628917407857,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 11.078400248365858,
+          "newOrReset": false
+        },
+        {
+          "pid": 53188,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.287085944953924,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 10.089257369075751,
+          "newOrReset": false
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 9.891428793224927,
+          "newOrReset": false
+        },
+        {
+          "pid": 53160,
+          "name": "node",
+          "cpuPercent": 9.100114489766934,
+          "newOrReset": true
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.110971610513532,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 4.9457143966124635,
+          "newOrReset": false
+        },
+        {
+          "pid": 53192,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.352228669018968,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 866,
+      "samplerCpuMs": 4.995,
+      "psWallMs": 48.916292,
+      "psChildCpuMs": 43.221000000000004
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793567896910.102,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r1-d0-immediate-inflight/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r1-d50-coordinated-2000",
+    "samples": 26,
+    "medianHostBusyPercent": 30.789107533293574,
+    "maxHostBusyPercent": 57.25646123260437,
+    "first": {
+      "kind": "load",
+      "at": 1793567903377.937,
+      "monotonicNs": 11018751851802958,
+      "intervalSeconds": 5.05304075,
+      "hostPercent": {
+        "user": 26.05927988860155,
+        "system": 14.243087328426498,
+        "idle": 59.69763278297195,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 53441,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 45.121345993499055,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 41.757035107742404,
+          "newOrReset": false
+        },
+        {
+          "pid": 53431,
+          "name": "Google Chrome",
+          "cpuPercent": 37.007419740282124,
+          "newOrReset": true
+        },
+        {
+          "pid": 53409,
+          "name": "node",
+          "cpuPercent": 25.529182601584996,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 22.758573637072008,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 16.425753145926844,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 14.446746743739942,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 12.467740340401106,
+          "newOrReset": false
+        },
+        {
+          "pid": 53435,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.884535217730038,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 10.0929326564269,
+          "newOrReset": false
+        },
+        {
+          "pid": 53408,
+          "name": "node",
+          "cpuPercent": 9.499230735473487,
+          "newOrReset": true
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 8.5097275325715,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 7.718124972848672,
+          "newOrReset": false
+        },
+        {
+          "pid": 59708,
+          "name": "plugin-container",
+          "cpuPercent": 6.332820490314398,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 5.54121792902791,
+          "newOrReset": false
+        }
+      ],
+      "observedProcesses": 866,
+      "samplerCpuMs": 5.578,
+      "psWallMs": 44.35525,
+      "psChildCpuMs": 39.415
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568028789.124,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r1-d50-coordinated-2000/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r2-d0-immediate-inflight",
+    "samples": 25,
+    "medianHostBusyPercent": 40.12699894696986,
+    "maxHostBusyPercent": 50.82488570860664,
+    "first": {
+      "kind": "load",
+      "at": 1793568035365.7559,
+      "monotonicNs": 11018883840376875,
+      "intervalSeconds": 5.058389834,
+      "hostPercent": {
+        "user": 26.514399205561073,
+        "system": 14.299900695134061,
+        "idle": 59.18570009930487,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 56.73742226636271,
+          "newOrReset": false
+        },
+        {
+          "pid": 53679,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 47.64361939447944,
+          "newOrReset": true
+        },
+        {
+          "pid": 53669,
+          "name": "Google Chrome",
+          "cpuPercent": 35.58444602077302,
+          "newOrReset": true
+        },
+        {
+          "pid": 53648,
+          "name": "node",
+          "cpuPercent": 25.502186314887332,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 21.94374171281002,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 18.38529711174536,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 14.233778408332224,
+          "newOrReset": false
+        },
+        {
+          "pid": 53673,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.477642439449834,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 9.68687697233521,
+          "newOrReset": false
+        },
+        {
+          "pid": 53647,
+          "name": "node",
+          "cpuPercent": 9.686876972321546,
+          "newOrReset": true
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 9.68687697213743,
+          "newOrReset": false
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 8.698420137306497,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.500728772066383,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 6.523815103809197,
+          "newOrReset": false
+        },
+        {
+          "pid": 1,
+          "name": "launchd",
+          "cpuPercent": 4.546901436194792,
+          "newOrReset": false
+        }
+      ],
+      "observedProcesses": 867,
+      "samplerCpuMs": 5.505,
+      "psWallMs": 47.32075,
+      "psChildCpuMs": 40.33500000000001
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568154268.52,
+      "samples": 24,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r2-d0-immediate-inflight/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r2-d50-immediate-inflight",
+    "samples": 26,
+    "medianHostBusyPercent": 36.8389662027833,
+    "maxHostBusyPercent": 59.35637663885578,
+    "first": {
+      "kind": "load",
+      "at": 1793568160737.0828,
+      "monotonicNs": 11019009212551250,
+      "intervalSeconds": 5.058423417,
+      "hostPercent": {
+        "user": 25.72168027075453,
+        "system": 14.513239100139359,
+        "idle": 59.76508062910611,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 53915,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 45.271022435645186,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 44.48026221842868,
+          "newOrReset": false
+        },
+        {
+          "pid": 53905,
+          "name": "Google Chrome",
+          "cpuPercent": 37.16573020917596,
+          "newOrReset": true
+        },
+        {
+          "pid": 53884,
+          "name": "node",
+          "cpuPercent": 25.304326950928314,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 22.73435624497477,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 20.16438553910155,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 17.396724778855273,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 12.454473421252086,
+          "newOrReset": false
+        },
+        {
+          "pid": 53909,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.675262932422882,
+          "newOrReset": true
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 10.279882824182854,
+          "newOrReset": false
+        },
+        {
+          "pid": 53883,
+          "name": "node",
+          "cpuPercent": 9.29143255229399,
+          "newOrReset": true
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.50067233551475,
+          "newOrReset": false
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 8.500672335083234,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 5.535321520515029,
+          "newOrReset": false
+        },
+        {
+          "pid": 53913,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.546871248994932,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 867,
+      "samplerCpuMs": 5.139,
+      "psWallMs": 47.601041,
+      "psChildCpuMs": 41.679999999999986
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568286170.082,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r2-d50-immediate-inflight/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r2-d0-coordinated-2000",
+    "samples": 26,
+    "medianHostBusyPercent": 32.472178060413356,
+    "maxHostBusyPercent": 50.72978303747534,
+    "first": {
+      "kind": "load",
+      "at": 1793568292731.667,
+      "monotonicNs": 11019141207902416,
+      "intervalSeconds": 5.059913583,
+      "hostPercent": {
+        "user": 26.13275039745628,
+        "system": 13.43402225755167,
+        "idle": 60.43322734499205,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 48.222167433849,
+          "newOrReset": false
+        },
+        {
+          "pid": 54161,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 47.629271932567704,
+          "newOrReset": true
+        },
+        {
+          "pid": 54150,
+          "name": "Google Chrome",
+          "cpuPercent": 35.37609824037187,
+          "newOrReset": true
+        },
+        {
+          "pid": 54129,
+          "name": "node",
+          "cpuPercent": 25.494506553117155,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 21.739501711960813,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 16.996337701802013,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 13.241332861174394,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 12.253173692103811,
+          "newOrReset": false
+        },
+        {
+          "pid": 54154,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.474487188489993,
+          "newOrReset": true
+        },
+        {
+          "pid": 54128,
+          "name": "node",
+          "cpuPercent": 9.88159168725471,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 9.288696186024461,
+          "newOrReset": false
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 8.893432517608945,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.498168850901006,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 5.731323178607013,
+          "newOrReset": false
+        },
+        {
+          "pid": 59708,
+          "name": "plugin-container",
+          "cpuPercent": 5.1384276773722695,
+          "newOrReset": false
+        }
+      ],
+      "observedProcesses": 867,
+      "samplerCpuMs": 5.351,
+      "psWallMs": 49.088042,
+      "psChildCpuMs": 41.39
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568417715.346,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r2-d0-coordinated-2000/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r2-d50-coordinated-2000",
+    "samples": 26,
+    "medianHostBusyPercent": 31.345656927052275,
+    "maxHostBusyPercent": 55.858907931446794,
+    "first": {
+      "kind": "load",
+      "at": 1793568424125.423,
+      "monotonicNs": 11019272602347458,
+      "intervalSeconds": 5.061240625,
+      "hostPercent": {
+        "user": 25.318471337579616,
+        "system": 14.211783439490446,
+        "idle": 60.46974522292994,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 54412,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 46.23372357444475,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 40.306323115768585,
+          "newOrReset": false
+        },
+        {
+          "pid": 54402,
+          "name": "Google Chrome",
+          "cpuPercent": 35.9595627801237,
+          "newOrReset": true
+        },
+        {
+          "pid": 54380,
+          "name": "node",
+          "cpuPercent": 25.290241955251833,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 21.73380168029499,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 16.991881313408808,
+          "newOrReset": false
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 12.645120980202066,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 12.2499609469831,
+          "newOrReset": false
+        },
+        {
+          "pid": 54406,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 11.064480855422678,
+          "newOrReset": true
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 10.669320825032877,
+          "newOrReset": false
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 9.68142074849053,
+          "newOrReset": false
+        },
+        {
+          "pid": 54379,
+          "name": "node",
+          "cpuPercent": 9.088680702668627,
+          "newOrReset": true
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 7.903200610901191,
+          "newOrReset": false
+        },
+        {
+          "pid": 427,
+          "name": "loginwindow",
+          "cpuPercent": 7.508040580269876,
+          "newOrReset": false
+        },
+        {
+          "pid": 54410,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.741920366609718,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 858,
+      "samplerCpuMs": 5.423,
+      "psWallMs": 50.423917,
+      "psChildCpuMs": 42.62199999999999
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568548896.951,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r2-d50-coordinated-2000/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r3-d50-coordinated-2000",
+    "samples": 26,
+    "medianHostBusyPercent": 30.694251044360456,
+    "maxHostBusyPercent": 49.20102584336161,
+    "first": {
+      "kind": "load",
+      "at": 1793568555402.6738,
+      "monotonicNs": 11019403880450166,
+      "intervalSeconds": 5.056971833,
+      "hostPercent": {
+        "user": 27.111906181673625,
+        "system": 14.17213277678394,
+        "idle": 58.715961041542435,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 48.0524725120219,
+          "newOrReset": false
+        },
+        {
+          "pid": 54658,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 47.0637385098522,
+          "newOrReset": true
+        },
+        {
+          "pid": 54648,
+          "name": "Google Chrome",
+          "cpuPercent": 35.19893048215837,
+          "newOrReset": true
+        },
+        {
+          "pid": 54624,
+          "name": "node",
+          "cpuPercent": 26.102577660926432,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 21.9498948512333,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 17.006224839418245,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 13.051288830532277,
+          "newOrReset": false
+        },
+        {
+          "pid": 23316,
+          "name": "Codex (Renderer)",
+          "cpuPercent": 12.260301628614801,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 10.876074025155805,
+          "newOrReset": false
+        },
+        {
+          "pid": 54652,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.67832722492445,
+          "newOrReset": true
+        },
+        {
+          "pid": 54622,
+          "name": "node",
+          "cpuPercent": 9.68959322261663,
+          "newOrReset": true
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 9.294099621141005,
+          "newOrReset": false
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 8.305365619387121,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 7.909872018347452,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 5.734657213384633,
+          "newOrReset": false
+        }
+      ],
+      "observedProcesses": 859,
+      "samplerCpuMs": 5.276,
+      "psWallMs": 46.091625,
+      "psChildCpuMs": 38.958999999999996
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568679001.3088,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r3-d50-coordinated-2000/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r3-d50-immediate-inflight",
+    "samples": 25,
+    "medianHostBusyPercent": 37.33586352040655,
+    "maxHostBusyPercent": 55.7218830017727,
+    "first": {
+      "kind": "load",
+      "at": 1793568686197.099,
+      "monotonicNs": 11019534675578958,
+      "intervalSeconds": 5.05538575,
+      "hostPercent": {
+        "user": 25.333333333333332,
+        "system": 13.950248756218905,
+        "idle": 60.71641791044776,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 54895,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 47.67193087095282,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 41.539856776209895,
+          "newOrReset": false
+        },
+        {
+          "pid": 54885,
+          "name": "Google Chrome",
+          "cpuPercent": 35.60559152187348,
+          "newOrReset": true
+        },
+        {
+          "pid": 54864,
+          "name": "node",
+          "cpuPercent": 25.319531748887808,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 21.758972596700907,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 17.40717807745248,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 13.64881008343089,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 11.8685305074063,
+          "newOrReset": false
+        },
+        {
+          "pid": 54889,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.681677456562044,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 9.29701556404978,
+          "newOrReset": false
+        },
+        {
+          "pid": 54863,
+          "name": "node",
+          "cpuPercent": 9.297015564044742,
+          "newOrReset": true
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 9.29701556349207,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.505780196753829,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 6.329882937220693,
+          "newOrReset": false
+        },
+        {
+          "pid": 54893,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.747412202916464,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 863,
+      "samplerCpuMs": 6.078,
+      "psWallMs": 49.751,
+      "psChildCpuMs": 42.11300000000001
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568805294.88,
+      "samples": 24,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r3-d50-immediate-inflight/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r3-d0-immediate-inflight",
+    "samples": 26,
+    "medianHostBusyPercent": 39.90442054958184,
+    "maxHostBusyPercent": 50.16942395854096,
+    "first": {
+      "kind": "load",
+      "at": 1793568811790.6392,
+      "monotonicNs": 11019660269939166,
+      "intervalSeconds": 5.058422416,
+      "hostPercent": {
+        "user": 25.34846674631621,
+        "system": 14.55595380326563,
+        "idle": 60.09557945041816,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 55143,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 46.85255214162407,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 44.0848908333118,
+          "newOrReset": false
+        },
+        {
+          "pid": 55133,
+          "name": "Google Chrome",
+          "cpuPercent": 35.38652672299877,
+          "newOrReset": true
+        },
+        {
+          "pid": 55111,
+          "name": "node",
+          "cpuPercent": 25.69971214519464,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 22.338980556976786,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 17.39672822145458,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 14.233686726592351,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 12.059095698622853,
+          "newOrReset": false
+        },
+        {
+          "pid": 55137,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 11.070645231776153,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 9.884504671228706,
+          "newOrReset": false
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 9.489124484011333,
+          "newOrReset": false
+        },
+        {
+          "pid": 55110,
+          "name": "node",
+          "cpuPercent": 9.09374429753041,
+          "newOrReset": true
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 8.105293830476581,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 6.128392896162967,
+          "newOrReset": false
+        },
+        {
+          "pid": 55141,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 4.546872148765205,
+          "newOrReset": true
+        }
+      ],
+      "observedProcesses": 852,
+      "samplerCpuMs": 5.997,
+      "psWallMs": 50.813167,
+      "psChildCpuMs": 45.331999999999994
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793568936250.85,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r3-d0-immediate-inflight/host-load.jsonl.gz"
+  },
+  {
+    "name": "paired333-r3-d0-coordinated-2000",
+    "samples": 26,
+    "medianHostBusyPercent": 31.1644514977187,
+    "maxHostBusyPercent": 57.54735792622134,
+    "first": {
+      "kind": "load",
+      "at": 1793568942662.887,
+      "monotonicNs": 11019791142977166,
+      "intervalSeconds": 5.059484958,
+      "hostPercent": {
+        "user": 25.98048974716305,
+        "system": 14.632689627712523,
+        "idle": 59.38682062512443,
+        "nice": 0.0
+      },
+      "top": [
+        {
+          "pid": 55363,
+          "name": "Google Chrome Helper (Renderer)",
+          "cpuPercent": 47.040361217731686,
+          "newOrReset": true
+        },
+        {
+          "pid": 354,
+          "name": "fseventsd",
+          "cpuPercent": 42.29679538092561,
+          "newOrReset": false
+        },
+        {
+          "pid": 55353,
+          "name": "Google Chrome",
+          "cpuPercent": 35.774392354661494,
+          "newOrReset": true
+        },
+        {
+          "pid": 55332,
+          "name": "node",
+          "cpuPercent": 25.694314950861845,
+          "newOrReset": true
+        },
+        {
+          "pid": 52650,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 22.136640573050293,
+          "newOrReset": false
+        },
+        {
+          "pid": 1204,
+          "name": "ghostty",
+          "cpuPercent": 15.811886124527662,
+          "newOrReset": false
+        },
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "cpuPercent": 13.440103204928139,
+          "newOrReset": false
+        },
+        {
+          "pid": 52978,
+          "name": "com.apple.Virtualization.VirtualMachine",
+          "cpuPercent": 12.254211746278845,
+          "newOrReset": false
+        },
+        {
+          "pid": 55357,
+          "name": "Google Chrome Helper (GPU)",
+          "cpuPercent": 10.870671709980012,
+          "newOrReset": true
+        },
+        {
+          "pid": 423,
+          "name": "WindowServer",
+          "cpuPercent": 9.68478025052539,
+          "newOrReset": false
+        },
+        {
+          "pid": 14268,
+          "name": "WeatherWidget",
+          "cpuPercent": 9.09183452107491,
+          "newOrReset": false
+        },
+        {
+          "pid": 55331,
+          "name": "node",
+          "cpuPercent": 9.09183452107419,
+          "newOrReset": true
+        },
+        {
+          "pid": 44079,
+          "name": "secd",
+          "cpuPercent": 8.49888879144467,
+          "newOrReset": false
+        },
+        {
+          "pid": 65041,
+          "name": "codex",
+          "cpuPercent": 7.708294484959432,
+          "newOrReset": false
+        },
+        {
+          "pid": 50461,
+          "name": "com.docker.backend",
+          "cpuPercent": 6.324754449443904,
+          "newOrReset": false
+        }
+      ],
+      "observedProcesses": 837,
+      "samplerCpuMs": 5.686,
+      "psWallMs": 48.818,
+      "psChildCpuMs": 42.98800000000001
+    },
+    "last": {
+      "kind": "end",
+      "at": 1793569067433.7002,
+      "samples": 25,
+      "stopped": true
+    },
+    "raw": "evidence/paired333-r3-d0-coordinated-2000/host-load.jsonl.gz"
+  }
+]

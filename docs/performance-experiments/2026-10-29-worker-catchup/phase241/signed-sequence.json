@@ -1,0 +1,805 @@
+{
+  "base": "8d6d42c1c723f3dff7c7822b2358a813dc8c16e6",
+  "commits": [
+    {
+      "phase": 161,
+      "patch": "161-backlog-release-status-and-stall-reports.patch",
+      "patchSha256": "2ba9b723741c42edb619ab60a29be2054fe4b3436ffcfd22956558857378f277",
+      "commit": "bc024aa12524f304ee09ed62b5e39943f0b7c3e7",
+      "parent": "8d6d42c1c723f3dff7c7822b2358a813dc8c16e6",
+      "tree": "3b6ebdd31392b79386470aec7059ce5d912f08d9",
+      "signatureVerified": true,
+      "title": "docs: backlog release status and stall reports (phase 161)"
+    },
+    {
+      "phase": 162,
+      "patch": "162-goals-stall-investigation-and-worker-boundary.patch",
+      "patchSha256": "0238a91ec86a93bb1dbc95dd3c183df9cace85518446c08acc2808ff60966c92",
+      "commit": "03c816c488d9100973d5e8100910de4b5f3b121c",
+      "parent": "bc024aa12524f304ee09ed62b5e39943f0b7c3e7",
+      "tree": "0ea8858331d1c8e99b8c36d30366cc7a8556713a",
+      "signatureVerified": true,
+      "title": "docs: goals stall investigation and worker boundary (phase 162)"
+    },
+    {
+      "phase": 163,
+      "patch": "163-worker-owner-contract-and-native-feasibility.patch",
+      "patchSha256": "2c8354dc765266181005ff440487ebd3c84f813fb303fd765aa1576cc9b83346",
+      "commit": "b9276c4435ac00d9252310ba7e7536601b4a95ae",
+      "parent": "03c816c488d9100973d5e8100910de4b5f3b121c",
+      "tree": "64060478dae478eded9babf37aeeb1d2814fce53",
+      "signatureVerified": true,
+      "title": "docs: worker owner contract and native feasibility (phase 163)"
+    },
+    {
+      "phase": 164,
+      "patch": "164-page-runtime-and-lifetime-ports.patch",
+      "patchSha256": "ffcedf2bdacdb072d503fcdc1d380ada641acc59d6b9415bc23d83ef75e77bf8",
+      "commit": "7de41c7fafa1f98303f729e754083badf9f56138",
+      "parent": "b9276c4435ac00d9252310ba7e7536601b4a95ae",
+      "tree": "ba1d0b3677f380898aab753077e86d7dc6da9aff",
+      "signatureVerified": true,
+      "title": "refactor: page runtime and lifetime ports (phase 164)"
+    },
+    {
+      "phase": 165,
+      "patch": "165-native-account-worker-cohort.patch",
+      "patchSha256": "5337204f08ad9c65b3f1b36df69e62b61da9ad8d07ae2b73eec6b2a97ccec57e",
+      "commit": "be7dc86d59e8ec0229b4700b00d386c607356afe",
+      "parent": "7de41c7fafa1f98303f729e754083badf9f56138",
+      "tree": "a75a9b7e54d6c44f55be376f2327239bf9d72e10",
+      "signatureVerified": true,
+      "title": "refactor: native account worker cohort (phase 165)"
+    },
+    {
+      "phase": 166,
+      "patch": "166-admitted-window-account-mirror.patch",
+      "patchSha256": "9f63efe1d87cad29eff94fa2c9ad56c0248f2f4e8ac75d044237b5e28d4a379f",
+      "commit": "8bfb2afd640f806fdd64322a5679f7d7859fbd40",
+      "parent": "be7dc86d59e8ec0229b4700b00d386c607356afe",
+      "tree": "25e356b23d26f95e31b04b2875b70f4a79971227",
+      "signatureVerified": true,
+      "title": "refactor: admitted window account mirror (phase 166)"
+    },
+    {
+      "phase": 167,
+      "patch": "167-async-worker-journal-and-channel.patch",
+      "patchSha256": "51ea526f24944c8df634d30d38af4a26cb453d387dd3400633173d3df1f73a0e",
+      "commit": "b8a33ffc7041ae5148cc68562b506f5c698c23e7",
+      "parent": "8bfb2afd640f806fdd64322a5679f7d7859fbd40",
+      "tree": "2c2650b801a819e13ec94d4be277833dfa8a2ba4",
+      "signatureVerified": true,
+      "title": "refactor: async worker journal and channel (phase 167)"
+    },
+    {
+      "phase": 168,
+      "patch": "168-native-account-worker-runtime.patch",
+      "patchSha256": "88d405537306e01ecf2ce18c7a69b4862315de4d9983a8590073ff4932125c23",
+      "commit": "0eaf154f43bb4c17324c7ce8f567ac84d6bafe07",
+      "parent": "b8a33ffc7041ae5148cc68562b506f5c698c23e7",
+      "tree": "298a94f173287f218ebd23c9136165b3c8e9b207",
+      "signatureVerified": true,
+      "title": "refactor: native account worker runtime (phase 168)"
+    },
+    {
+      "phase": 169,
+      "patch": "169-acyclic-native-worker-runtime.patch",
+      "patchSha256": "655ada9b89d0c8ea4041fdfa110b8fe9d9cbbdfd9db96d2222d552117dbe3b6b",
+      "commit": "78856a9499b9afbc876aa6a46a077116b92b72ec",
+      "parent": "0eaf154f43bb4c17324c7ce8f567ac84d6bafe07",
+      "tree": "ecdea8e726c9f89a107e4fa5370b623da6b7489e",
+      "signatureVerified": true,
+      "title": "refactor: acyclic native worker runtime (phase 169)"
+    },
+    {
+      "phase": 170,
+      "patch": "170-bounded-worker-activity-and-lifecycle.patch",
+      "patchSha256": "3a7b3a648ea555adf1d6e0aae78047609780027f6db8a5cf13366a5c21c6f064",
+      "commit": "201616985ab892aeea94838675dec5b0eaea9ae4",
+      "parent": "78856a9499b9afbc876aa6a46a077116b92b72ec",
+      "tree": "148f74e00070f88ce2c3ccdbc0bd9e07f864985b",
+      "signatureVerified": true,
+      "title": "refactor: bounded worker activity and lifecycle (phase 170)"
+    },
+    {
+      "phase": 171,
+      "patch": "171-account-workspace-composition-port.patch",
+      "patchSha256": "06d6d870ab8f7596e15b173c7515eb140418742fb6edc5667fe5b92e69086680",
+      "commit": "4679186f4ffe01e7c2f03d4788a190c968b25b57",
+      "parent": "201616985ab892aeea94838675dec5b0eaea9ae4",
+      "tree": "a58015ae3a12e85c624b3b21f1c601a627fce0dd",
+      "signatureVerified": true,
+      "title": "refactor: account workspace composition port (phase 171)"
+    },
+    {
+      "phase": 172,
+      "patch": "172-owned-queue-head-journal-fence.patch",
+      "patchSha256": "fe1bebe37c6d34925ab56852c33d97aaab813d596528eb7c96deb19cb6abe502",
+      "commit": "b231f7a751b6f351402d9b8b345e2bf79ce3d057",
+      "parent": "4679186f4ffe01e7c2f03d4788a190c968b25b57",
+      "tree": "b1b63fc139d50d8758f510a1044d90046aae551a",
+      "signatureVerified": true,
+      "title": "refactor: owned queue head journal fence (phase 172)"
+    },
+    {
+      "phase": 173,
+      "patch": "173-native-state-observer-and-campaign-closure.patch",
+      "patchSha256": "2d4ec63944596ddd1245a7a81c4c8d90cbc3d35e687c3e2e57173fc581dbfd8e",
+      "commit": "586b8efe26fd5e1691aa289261d738f4cb9f6544",
+      "parent": "b231f7a751b6f351402d9b8b345e2bf79ce3d057",
+      "tree": "43f3763089daa2d815c038a6b9e47d07f53dc533",
+      "signatureVerified": true,
+      "title": "refactor: native state observer and campaign closure (phase 173)"
+    },
+    {
+      "phase": 174,
+      "patch": "174-window-journal-context-rebinding.patch",
+      "patchSha256": "8db69035542a0993426f11d0ceea6d7d6851e53ff52dfe67b91b89c12b710b7e",
+      "commit": "6190214b3516822424fd30bce216f7852abfa7ef",
+      "parent": "586b8efe26fd5e1691aa289261d738f4cb9f6544",
+      "tree": "f3ae2f561f30b59d34e844afdd64c2996ca360de",
+      "signatureVerified": true,
+      "title": "refactor: window journal context rebinding (phase 174)"
+    },
+    {
+      "phase": 175,
+      "patch": "175-acknowledged-worker-history.patch",
+      "patchSha256": "1d6540c3cd56fbce826ac4838e1aa3410a9238abd1ae3d3df940b1dbe8b89661",
+      "commit": "295569a35165f912b9f5f01593e797a9511b3ed8",
+      "parent": "6190214b3516822424fd30bce216f7852abfa7ef",
+      "tree": "b84e5f0e00843a8a1aead83cdade29429e3823ec",
+      "signatureVerified": true,
+      "title": "refactor: acknowledged worker history (phase 175)"
+    },
+    {
+      "phase": 176,
+      "patch": "176-native-receive-acknowledgment.patch",
+      "patchSha256": "16c27dbe7ee46368e687ddb49f37cd06d6019033515264346321d13a68e501d3",
+      "commit": "877fa9d2be2c2b19b480bcae2304b763c3557972",
+      "parent": "295569a35165f912b9f5f01593e797a9511b3ed8",
+      "tree": "130945cbb6511415d5b7eb7d910c257f2fe4b661",
+      "signatureVerified": true,
+      "title": "refactor: native receive acknowledgment (phase 176)"
+    },
+    {
+      "phase": 177,
+      "patch": "177-actual-worker-signed-receive.patch",
+      "patchSha256": "c9974ffb0bbd89c6a29732c543f2ffb68faba6adbecaef27248af604c7303d49",
+      "commit": "bfd8caa05e93002a70b8df972edd902798075ab5",
+      "parent": "877fa9d2be2c2b19b480bcae2304b763c3557972",
+      "tree": "879e878c6d1bb18fe54ca69fb1d113e26176d73b",
+      "signatureVerified": true,
+      "title": "refactor: actual worker signed receive (phase 177)"
+    },
+    {
+      "phase": 178,
+      "patch": "178-joined-worker-custody-scopes.patch",
+      "patchSha256": "0b8aef82297f307fc7d36069dd63d358a491587474ca96411352706e4cf308bb",
+      "commit": "00125cb0c59d487c63803984ae051a873cd5d378",
+      "parent": "bfd8caa05e93002a70b8df972edd902798075ab5",
+      "tree": "724ef28c88a26691defc2eb33904aee149f6bc73",
+      "signatureVerified": true,
+      "title": "refactor: joined worker custody scopes (phase 178)"
+    },
+    {
+      "phase": 179,
+      "patch": "179-task-held-journal-context.patch",
+      "patchSha256": "903992895dc534b093ddb6c414b02b1ac6b94fbf70dde1072c4ceda18cbd6582",
+      "commit": "916e7a3efded320f8aed1396946c926c7749ac39",
+      "parent": "00125cb0c59d487c63803984ae051a873cd5d378",
+      "tree": "1b823a5b9674f5b48dce3c8552ef7aee36a000f2",
+      "signatureVerified": true,
+      "title": "refactor: task held journal context (phase 179)"
+    },
+    {
+      "phase": 180,
+      "patch": "180-workspace-observation-bridge.patch",
+      "patchSha256": "7a619e981aafdb6b9d4c42b5be7dcc1936b829ac03e73f285ce216831fd83d30",
+      "commit": "e71ce8f93523283ec6dada0c160df2362d823a0a",
+      "parent": "916e7a3efded320f8aed1396946c926c7749ac39",
+      "tree": "d59f40be2de6b6df55dac7b12bebb3658de8150c",
+      "signatureVerified": true,
+      "title": "refactor: workspace observation bridge (phase 180)"
+    },
+    {
+      "phase": 181,
+      "patch": "181-composed-final-queues.patch",
+      "patchSha256": "b87f329d6ed0cf7bdbe74eea451f3fd776b52d46592c1fe4e902ecf0d10b4c5f",
+      "commit": "334419a3eff1679c2d6623eaa5e4a3823e5ac104",
+      "parent": "e71ce8f93523283ec6dada0c160df2362d823a0a",
+      "tree": "a4e963623a5126231b0f69006dd8ebd901328020",
+      "signatureVerified": true,
+      "title": "refactor: composed final queues (phase 181)"
+    },
+    {
+      "phase": 182,
+      "patch": "182-composed-account-worker.patch",
+      "patchSha256": "ad0401e284cceb0a7f4e812d9a1c5b4cdb7dcb294d056aabd5cacf2cb9c7338c",
+      "commit": "bf86c8535d7b16553a702844a99dd2cc45e4f86a",
+      "parent": "334419a3eff1679c2d6623eaa5e4a3823e5ac104",
+      "tree": "90c436d53e0be6502e2930f5d2cc246344e99b08",
+      "signatureVerified": true,
+      "title": "refactor: composed account worker (phase 182)"
+    },
+    {
+      "phase": 183,
+      "patch": "183-native-retirement-mirror-withdrawal.patch",
+      "patchSha256": "0870ea4c241203eac42e0a307171a6fd654bb95c0d57dceb5a998cafdebd6c18",
+      "commit": "277e217f8fae2f92a95305d0ad48a24464717db8",
+      "parent": "bf86c8535d7b16553a702844a99dd2cc45e4f86a",
+      "tree": "5fefe501b6ebf66c26713c8ec0da958ec2e601ad",
+      "signatureVerified": true,
+      "title": "refactor: native retirement mirror withdrawal (phase 183)"
+    },
+    {
+      "phase": 184,
+      "patch": "184-automatic-context-final-handoff.patch",
+      "patchSha256": "76a38a96c7c6e400b76c6168d3e7ecaa63bfdba5906f71615c8a2dad2204191c",
+      "commit": "07c30c8897a2482ab06becde1accf316fc1413f0",
+      "parent": "277e217f8fae2f92a95305d0ad48a24464717db8",
+      "tree": "911746e01f4c8ffd8dba29375fb10c224469f9bd",
+      "signatureVerified": true,
+      "title": "refactor: automatic context final handoff (phase 184)"
+    },
+    {
+      "phase": 185,
+      "patch": "185-public-session-ui-ports.patch",
+      "patchSha256": "6b078035013d5f6617a90d59164e6202e2d61dbe0e0b8e240bb767c98fa3179d",
+      "commit": "3dfc0da983633e18ea88b8350a87c2e53218074f",
+      "parent": "07c30c8897a2482ab06becde1accf316fc1413f0",
+      "tree": "9f8dd836067a750840dcc3111f2ef2540c9294f6",
+      "signatureVerified": true,
+      "title": "refactor: public session ui ports (phase 185)"
+    },
+    {
+      "phase": 186,
+      "patch": "186-scoped-passkey-cancellation.patch",
+      "patchSha256": "9afdbdd9645b36b72a6bf9ef599ef060732448feec63f5733f50acb3fc0addcc",
+      "commit": "407d4eb2a20ae24537e5e04e92b8d39710f125db",
+      "parent": "3dfc0da983633e18ea88b8350a87c2e53218074f",
+      "tree": "99b364776e0c4fb2e1458fe06c7cabd29c19acba",
+      "signatureVerified": true,
+      "title": "refactor: scoped passkey cancellation (phase 186)"
+    },
+    {
+      "phase": 187,
+      "patch": "187-scoped-read-only-maintenance.patch",
+      "patchSha256": "512bf93fe400de2100ce7086f74e76dee3ca96c485201ae94345b6f399c4e467",
+      "commit": "60734dd1fbabf4bee2d1e54025bf45f0bcf5102b",
+      "parent": "407d4eb2a20ae24537e5e04e92b8d39710f125db",
+      "tree": "28bf0453d911425552ca18e51fa07922ca63536e",
+      "signatureVerified": true,
+      "title": "refactor: scoped read only maintenance (phase 187)"
+    },
+    {
+      "phase": 188,
+      "patch": "188-current-maintenance-revision-hint.patch",
+      "patchSha256": "46b153bfa79abe72c5b8b134cd3ab336920b27c7f361a45f28f4a599fb2e703c",
+      "commit": "1a77fec33f2dde5bd9eb2f1966a87e2b722c22ac",
+      "parent": "60734dd1fbabf4bee2d1e54025bf45f0bcf5102b",
+      "tree": "db2c6b7388ee61aea343cc7b5028ae8d6c0d80ed",
+      "signatureVerified": true,
+      "title": "refactor: current maintenance revision hint (phase 188)"
+    },
+    {
+      "phase": 189,
+      "patch": "189-post-drain-worker-transition-notices.patch",
+      "patchSha256": "134b734546d0c0b9474109570dbc669293809c29be23ed6360ef1844d9e31c9b",
+      "commit": "ec2fbbe2fba5eea6096c3f2c18adeeeb1d8e2f92",
+      "parent": "1a77fec33f2dde5bd9eb2f1966a87e2b722c22ac",
+      "tree": "ef1eff2dd338933f83b77a8eb4b21bbb323140f8",
+      "signatureVerified": true,
+      "title": "refactor: post drain worker transition notices (phase 189)"
+    },
+    {
+      "phase": 190,
+      "patch": "190-live-worker-capability-observations.patch",
+      "patchSha256": "435d300cca705c092080ff3733525f3705df045038d29ee37c6d53da07fc3eb1",
+      "commit": "ed103d0ba634cbc45b6a9e4f76009898e082d9a4",
+      "parent": "ec2fbbe2fba5eea6096c3f2c18adeeeb1d8e2f92",
+      "tree": "5b797ddf27a477cc5f6f2d34725b96b07e79bc5d",
+      "signatureVerified": true,
+      "title": "refactor: live worker capability observations (phase 190)"
+    },
+    {
+      "phase": 191,
+      "patch": "191-local-native-lifetime.patch",
+      "patchSha256": "54ce328de698da71be5ccfb9241539bf5d08233e534edda243953e47c62951c5",
+      "commit": "ad5d750eb078286e437822552bcb4509257c72f0",
+      "parent": "ed103d0ba634cbc45b6a9e4f76009898e082d9a4",
+      "tree": "8456778cf09a8f1fd0f84240f854642ecba3d06c",
+      "signatureVerified": true,
+      "title": "refactor: local native lifetime (phase 191)"
+    },
+    {
+      "phase": 192,
+      "patch": "192-retained-local-worker-carriers.patch",
+      "patchSha256": "cc41c20a027ded472924ecf478f3d86f73c44a437ba5a7cb0c060ef3ce2b214a",
+      "commit": "1d30eb729a35ce00ad73a55aa870f61efb98a717",
+      "parent": "ad5d750eb078286e437822552bcb4509257c72f0",
+      "tree": "1a0e3525d66dd228dda6c70f89cd0764a611055c",
+      "signatureVerified": true,
+      "title": "refactor: retained local worker carriers (phase 192)"
+    },
+    {
+      "phase": 193,
+      "patch": "193-local-window-admission-mirror.patch",
+      "patchSha256": "4796959aade47fe4bc6fbb222691d64027492b2d0f1a3fc382eac9d7d5ba4b74",
+      "commit": "671182b07636eedb50104df496a12119b1afec02",
+      "parent": "1d30eb729a35ce00ad73a55aa870f61efb98a717",
+      "tree": "593a9f06050dfa402697007ebbc19aa1a2cb7f4a",
+      "signatureVerified": true,
+      "title": "refactor: local window admission mirror (phase 193)"
+    },
+    {
+      "phase": 194,
+      "patch": "194-local-maintenance-browser-falsifier.patch",
+      "patchSha256": "cf1840af59c73a74c89c37f05a86f8fc33e5136dfba2e01a54ce9127e8b316cb",
+      "commit": "69c8612ca3ad1d9c847f6d2dcbc49a78a176913e",
+      "parent": "671182b07636eedb50104df496a12119b1afec02",
+      "tree": "80a3334e45836d4dbac17b187a1d82fa00f9a370",
+      "signatureVerified": true,
+      "title": "docs: local maintenance browser falsifier (phase 194)"
+    },
+    {
+      "phase": 195,
+      "patch": "195-authenticated-journal-observations.patch",
+      "patchSha256": "06b1351721d294d8cf88926207924467290f44a0b471fb434b3468463d72fa1a",
+      "commit": "efeb24b4a5b23b8c0d36e36127f6adbe68b169d3",
+      "parent": "69c8612ca3ad1d9c847f6d2dcbc49a78a176913e",
+      "tree": "d116a4311ebd20c06959edf98bb8d1ddc22d1880",
+      "signatureVerified": true,
+      "title": "refactor: authenticated journal observations (phase 195)"
+    },
+    {
+      "phase": 196,
+      "patch": "196-local-maintenance-commit-foundations.patch",
+      "patchSha256": "e7e67898d637d1c984add1d4d9edea08dee4417cbe84407c0eb43feabc0009d3",
+      "commit": "fa9cadf156e748a40cf9d1c6657b94bd30922c24",
+      "parent": "efeb24b4a5b23b8c0d36e36127f6adbe68b169d3",
+      "tree": "324f82fadbe7d992a60ca1f0df008ae037149194",
+      "signatureVerified": true,
+      "title": "refactor: local maintenance commit foundations (phase 196)"
+    },
+    {
+      "phase": 197,
+      "patch": "197-local-worker-automatic-maintenance.patch",
+      "patchSha256": "53c13563d87b109d247b588d3a67ff9260c04b5de63dee0a8b0a8703011cd5c8",
+      "commit": "ea63683a94fd582c9131529ee90a42a1e16fae92",
+      "parent": "fa9cadf156e748a40cf9d1c6657b94bd30922c24",
+      "tree": "fda4ced7c682d0523f5b7619147947238e430b3a",
+      "signatureVerified": true,
+      "title": "refactor: local worker automatic maintenance (phase 197)"
+    },
+    {
+      "phase": 198,
+      "patch": "198-native-worker-death-observer.patch",
+      "patchSha256": "eb45149d61d3b26efcfd3e28ef79b6f2cb305123dce6d94c24f2def051a6357f",
+      "commit": "ff4e796ee45e7304f976fe96f4fc33aba28c9b10",
+      "parent": "ea63683a94fd582c9131529ee90a42a1e16fae92",
+      "tree": "3132a6e7ce5548c4ed78baa0503227883f899212",
+      "signatureVerified": true,
+      "title": "refactor: native worker death observer (phase 198)"
+    },
+    {
+      "phase": 199,
+      "patch": "199-local-readonly-startup-worker.patch",
+      "patchSha256": "975ae2f3e0286e0cf2d08db398a78b16f4f454fce6107bca27a8400d64b3801b",
+      "commit": "ac1732ce76cc9efff4ba45c8b15776d9a3aef352",
+      "parent": "ff4e796ee45e7304f976fe96f4fc33aba28c9b10",
+      "tree": "79495e54f35d291f905b6ea3f024fe2c99db7849",
+      "signatureVerified": true,
+      "title": "refactor: local readonly startup worker (phase 199)"
+    },
+    {
+      "phase": 200,
+      "patch": "200-local-worker-genesis-resumption.patch",
+      "patchSha256": "76d0c66f59618dd28ab765d9aa7883a5792f3e0b7ec1f85e879de34777ee1ada",
+      "commit": "e164999483e025dd0261b60bab6095e23a9d9ddd",
+      "parent": "ac1732ce76cc9efff4ba45c8b15776d9a3aef352",
+      "tree": "e7ab32f939595d2966462d842520b0ca681f15a3",
+      "signatureVerified": true,
+      "title": "refactor: local worker genesis resumption (phase 200)"
+    },
+    {
+      "phase": 201,
+      "patch": "201-readonly-ceremony-journal-transport.patch",
+      "patchSha256": "4cb5aec50bdad7b1d8f40d64fe8370bd2133ccd999bcfb7c6f94c5f495d4bf37",
+      "commit": "e131eda7c3ae20445015713f38756fb793f8bd60",
+      "parent": "e164999483e025dd0261b60bab6095e23a9d9ddd",
+      "tree": "b86675b2df1b631bc08f753e11289cae92b2a38f",
+      "signatureVerified": true,
+      "title": "refactor: readonly ceremony journal transport (phase 201)"
+    },
+    {
+      "phase": 202,
+      "patch": "202-retired-journal-coverage-preparation.patch",
+      "patchSha256": "44b3c115477ae40017c04b1f900a21db0380400a24ae909782ca8d0485a666bd",
+      "commit": "78dcc8fe668c1db2b2963ce1329a16a12f02770f",
+      "parent": "e131eda7c3ae20445015713f38756fb793f8bd60",
+      "tree": "7a8169f37b5928c75ca442946953f31458275944",
+      "signatureVerified": true,
+      "title": "refactor: retired journal coverage preparation (phase 202)"
+    },
+    {
+      "phase": 203,
+      "patch": "203-native-local-protection.patch",
+      "patchSha256": "613aeca58ec67a4666e3e62cfd3f059cf1a1712213e9cb235f9f7eba2dcc4347",
+      "commit": "92c9969a2949b5bc1143f9a0b6993102caa582e0",
+      "parent": "78dcc8fe668c1db2b2963ce1329a16a12f02770f",
+      "tree": "50d7d8508614d320979e9af51912eb9a735b4cee",
+      "signatureVerified": true,
+      "title": "refactor: native local protection (phase 203)"
+    },
+    {
+      "phase": 204,
+      "patch": "204-local-ui-worker-adapter.patch",
+      "patchSha256": "d0ea637c96a88b84ce1b9e78fac86a72d4ddbb74e4097c0f01420280e8febdca",
+      "commit": "9382a007ce5ab4559ff583397a7901cf49f7ed1a",
+      "parent": "92c9969a2949b5bc1143f9a0b6993102caa582e0",
+      "tree": "27a373446f564788e9d7640a9a82a00ee5f37333",
+      "signatureVerified": true,
+      "title": "refactor: local ui worker adapter (phase 204)"
+    },
+    {
+      "phase": 205,
+      "patch": "205-account-owner-entry.patch",
+      "patchSha256": "5f83a08196a6349a9247114bc16b5517575ea1c77c4c8d52d52120ea52894d1d",
+      "commit": "d17c969a7ac0b4552474778247cb0e0d03b3eddb",
+      "parent": "9382a007ce5ab4559ff583397a7901cf49f7ed1a",
+      "tree": "dcd4a1846020ee7e4cf63357e21e68c6b13a1f56",
+      "signatureVerified": true,
+      "title": "refactor: account owner entry (phase 205)"
+    },
+    {
+      "phase": 206,
+      "patch": "206-account-owner-evidence.patch",
+      "patchSha256": "bf1807fe92c0be5fa3a3436a0a68103fdd658fedd6d727a2c1b33995de5eb1f6",
+      "commit": "0d33474d523890e4a5f06e63b9b26899c4bc40c6",
+      "parent": "d17c969a7ac0b4552474778247cb0e0d03b3eddb",
+      "tree": "0068e6f3db5e4c543149db7943f5f87544d60dc6",
+      "signatureVerified": true,
+      "title": "docs: account owner evidence (phase 206)"
+    },
+    {
+      "phase": 207,
+      "patch": "207-same-worker-native-handoff.patch",
+      "patchSha256": "70b7b2df9aa4cbaa5f8c4bf236f907a105af92ef2bbdeb51bcfe0a63dd76ffab",
+      "commit": "2a3ecf7cdaeec1de89692e6cb578cb80a07cfdf6",
+      "parent": "0d33474d523890e4a5f06e63b9b26899c4bc40c6",
+      "tree": "3e82459431af096d4c5446c567d705361e30bb06",
+      "signatureVerified": true,
+      "title": "refactor: same worker native handoff (phase 207)"
+    },
+    {
+      "phase": 208,
+      "patch": "208-native-approval-retention.patch",
+      "patchSha256": "97182a03f1f498b98244db0677fffafc6597dc9fca6920c2ff4deae352ac324c",
+      "commit": "1dd0176783fdb8b0dfcc0f5ec4f281c7c8b8cca6",
+      "parent": "2a3ecf7cdaeec1de89692e6cb578cb80a07cfdf6",
+      "tree": "3d4c3818aa73bdf56237104bd9d0730446c1d15d",
+      "signatureVerified": true,
+      "title": "refactor: native approval retention (phase 208)"
+    },
+    {
+      "phase": 209,
+      "patch": "209-final-account-init-boundary.patch",
+      "patchSha256": "9e5367677f6e6d68c2e403f13e93bf5af7bc8385b1a20b71358b55a8302133bd",
+      "commit": "ea11063329cd1248c47a702935ac37f31690e061",
+      "parent": "1dd0176783fdb8b0dfcc0f5ec4f281c7c8b8cca6",
+      "tree": "32ad8bfc67c4385210d82fa427d7a40d079a63af",
+      "signatureVerified": true,
+      "title": "docs: final account init boundary (phase 209)"
+    },
+    {
+      "phase": 210,
+      "patch": "210-minimal-setup-workspace.patch",
+      "patchSha256": "fb81a205e1c76eac61165260578f3b97394666ce3c68a75954f283455a65ca45",
+      "commit": "dedfe5f569c74e207ce06eebffcac7be2c825a2d",
+      "parent": "ea11063329cd1248c47a702935ac37f31690e061",
+      "tree": "755dd308ebab2621179e627c427e7796af4519a2",
+      "signatureVerified": true,
+      "title": "refactor: minimal setup workspace (phase 210)"
+    },
+    {
+      "phase": 211,
+      "patch": "211-owned-credential-browser-port.patch",
+      "patchSha256": "87b714e32cb3b3136792346a1a4497bc9cd911b77a5071044aac063a64faf417",
+      "commit": "a62fb05c4577c46ad5d5790d73b2b4ebb536889c",
+      "parent": "dedfe5f569c74e207ce06eebffcac7be2c825a2d",
+      "tree": "3f5926ee59566ebe35a93dc6f2e15a355928806e",
+      "signatureVerified": true,
+      "title": "refactor: owned credential browser port (phase 211)"
+    },
+    {
+      "phase": 212,
+      "patch": "212-ceremony-reservation-isolation.patch",
+      "patchSha256": "73f872de21dc17da4bc6e5216e0d079ce1c93ad8eba31b2628020b7b417f047a",
+      "commit": "e581454b686a84161223ead2f4c353671cec470e",
+      "parent": "a62fb05c4577c46ad5d5790d73b2b4ebb536889c",
+      "tree": "3f4997439180cc6697ee25385611c5340d7f7230",
+      "signatureVerified": true,
+      "title": "refactor: ceremony reservation isolation (phase 212)"
+    },
+    {
+      "phase": 213,
+      "patch": "213-setup-browser-effects.patch",
+      "patchSha256": "9efc73c8ee64adb3cb3fa7954aa4fd696bdabd7c3c1ad1f5cc1a48fe45067362",
+      "commit": "ddcde4b28f7b3d19b9aa943fb1fa7d03fd9b94de",
+      "parent": "e581454b686a84161223ead2f4c353671cec470e",
+      "tree": "2138f08c0716af19a030545294054e28ffe1a96b",
+      "signatureVerified": true,
+      "title": "refactor: setup browser effects (phase 213)"
+    },
+    {
+      "phase": 214,
+      "patch": "214-native-setup-account-context.patch",
+      "patchSha256": "714de0272b86e740013baace9574f68c56547b0243914f0f913526bc01586d50",
+      "commit": "08636dd996ec6e5a0a620473517dbdee88955a88",
+      "parent": "ddcde4b28f7b3d19b9aa943fb1fa7d03fd9b94de",
+      "tree": "793dc8dd112373531c56dd40bd77ca918a263d98",
+      "signatureVerified": true,
+      "title": "refactor: native setup account context (phase 214)"
+    },
+    {
+      "phase": 215,
+      "patch": "215-tracked-setup-phase.patch",
+      "patchSha256": "88958db59086cca5c52072d0c106df4b5d2e5c8f88a454480181cc6a0d8fba32",
+      "commit": "63de13b8ea5a94ddc6b1ce12f29186efc46b5354",
+      "parent": "08636dd996ec6e5a0a620473517dbdee88955a88",
+      "tree": "8b68eb2f57139df9ce9c17089139187e7f3c0ebc",
+      "signatureVerified": true,
+      "title": "refactor: tracked setup phase (phase 215)"
+    },
+    {
+      "phase": 216,
+      "patch": "216-whole-native-returning-setup.patch",
+      "patchSha256": "6b12d6c82a0656e1aae5b9493a44f0c53bc4f9e35e552bde41134ea015c5a6c0",
+      "commit": "8b976504241db3f00d62bbc9f8a24c9d0f815392",
+      "parent": "63de13b8ea5a94ddc6b1ce12f29186efc46b5354",
+      "tree": "2d63ad691b2154cb8947c5ace4847cab26ae818b",
+      "signatureVerified": true,
+      "title": "refactor: whole native returning setup (phase 216)"
+    },
+    {
+      "phase": 217,
+      "patch": "217-native-fresh-setup-evidence.patch",
+      "patchSha256": "a82aa2dc0eb24bf83cba4eeffb0e07dde761e5de9b13cf4e4ddeff69d2080ca8",
+      "commit": "753666516cc6d44f34f8b0e7d751c3d1638b5604",
+      "parent": "8b976504241db3f00d62bbc9f8a24c9d0f815392",
+      "tree": "ae61212566dbb2ed20498cf8af69e750f9bfa48c",
+      "signatureVerified": true,
+      "title": "docs: native fresh setup evidence (phase 217)"
+    },
+    {
+      "phase": 218,
+      "patch": "218-acknowledged-ui-lifetime.patch",
+      "patchSha256": "9fed8d5e1824b81ea10a3de441b2dc76c5025029ff4f0f060986dde068db4b96",
+      "commit": "d90730392fdef5a18bd7d7555d78459e08c39c65",
+      "parent": "753666516cc6d44f34f8b0e7d751c3d1638b5604",
+      "tree": "47d0631b7e793b8351f50e6a4588a5cfa3cce85e",
+      "signatureVerified": true,
+      "title": "refactor: acknowledged ui lifetime (phase 218)"
+    },
+    {
+      "phase": 219,
+      "patch": "219-enrollment-execution-ports.patch",
+      "patchSha256": "68e0c764870c8f95efe1b6f47c628fd4d34fc96e811917192b8f72cf45100148",
+      "commit": "7abb8bf9be3df507299c6f4b72d94efdaff3e245",
+      "parent": "d90730392fdef5a18bd7d7555d78459e08c39c65",
+      "tree": "c70fceedb83372c7f04ff2938d9d5558f7cf8c83",
+      "signatureVerified": true,
+      "title": "refactor: enrollment execution ports (phase 219)"
+    },
+    {
+      "phase": 220,
+      "patch": "220-shared-native-ui-lifetime.patch",
+      "patchSha256": "fc4f7d8aa090725eaf783ebb0097728cf413e90a06227cabe0b3e719fc5294a0",
+      "commit": "8090705d580e0647053b679ec8f36f764139f835",
+      "parent": "7abb8bf9be3df507299c6f4b72d94efdaff3e245",
+      "tree": "93de0da6a3ae7e36239122b3b6de44063f37e7cb",
+      "signatureVerified": true,
+      "title": "refactor: shared native ui lifetime (phase 220)"
+    },
+    {
+      "phase": 221,
+      "patch": "221-shared-window-ceremony-ui.patch",
+      "patchSha256": "438cb55b8a509c5dc712fca0cef9deb3a34c3b8609723b60af0d550acd4de942",
+      "commit": "0bbe025b2a8290c9ca4c100ea20735decae459af",
+      "parent": "8090705d580e0647053b679ec8f36f764139f835",
+      "tree": "f3f51257a8f17ace768bd016647758f32085b2fe",
+      "signatureVerified": true,
+      "title": "refactor: shared window ceremony ui (phase 221)"
+    },
+    {
+      "phase": 222,
+      "patch": "222-native-device-connection.patch",
+      "patchSha256": "645ec2136bb29fb84b34ce5667c0b527a380c7bb55f46e21f511a71bc2a2a2b6",
+      "commit": "b3cef28b6ea9405eb0e81385777a5f0e63ee2678",
+      "parent": "0bbe025b2a8290c9ca4c100ea20735decae459af",
+      "tree": "ac93353c336f9a17d7409dff87630b654e6a66a0",
+      "signatureVerified": true,
+      "title": "refactor: native device connection (phase 222)"
+    },
+    {
+      "phase": 223,
+      "patch": "223-native-enrollment-notifications.patch",
+      "patchSha256": "7f2b9dfb50594cdfe529051c08880a48315925a5aa1ee81880e05556526c92d3",
+      "commit": "0bf978fbb4203688be6bb7a48e74549988d3fec2",
+      "parent": "b3cef28b6ea9405eb0e81385777a5f0e63ee2678",
+      "tree": "086a813833458df621c24b79345d0c6aa566e4dc",
+      "signatureVerified": true,
+      "title": "refactor: native enrollment notifications (phase 223)"
+    },
+    {
+      "phase": 224,
+      "patch": "224-recovery-effect-boundaries.patch",
+      "patchSha256": "fa220b55d5a007cdb8d81f6cac0c4ad68685d8b2c8821c33f3f246179d14fdc0",
+      "commit": "e46d786f0212bdef70547cf043b9de0a2a0c6886",
+      "parent": "0bf978fbb4203688be6bb7a48e74549988d3fec2",
+      "tree": "b42cfbbcad8e1001062d4bea0bd40379647d9396",
+      "signatureVerified": true,
+      "title": "refactor: recovery effect boundaries (phase 224)"
+    },
+    {
+      "phase": 225,
+      "patch": "225-native-lost-device-recovery.patch",
+      "patchSha256": "8cc840c37c5522c3878851083674a4147e9be343bb810b6b9f47e7c7b710dfbd",
+      "commit": "700087b073e4074339979178a88ac3190b422836",
+      "parent": "e46d786f0212bdef70547cf043b9de0a2a0c6886",
+      "tree": "e53b33ede1f93d1c17f63ac6efa283e93396321b",
+      "signatureVerified": true,
+      "title": "refactor: native lost device recovery (phase 225)"
+    },
+    {
+      "phase": 226,
+      "patch": "226-default-local-setup-workers.patch",
+      "patchSha256": "8f6c21aeea00c5faa13cadd527e740303f50821ddf3c5cda687da6035bd6e314",
+      "commit": "98de7c3037414b2708cf7b359e943ba357d44bdf",
+      "parent": "700087b073e4074339979178a88ac3190b422836",
+      "tree": "7ea09d33655d3141852381dd8bb435dc2595b1ff",
+      "signatureVerified": true,
+      "title": "refactor: default local setup workers (phase 226)"
+    },
+    {
+      "phase": 227,
+      "patch": "227-default-enrollment-workers.patch",
+      "patchSha256": "4842cf80efbea270f185308d10a36192745a5dbe2cdde6dcf59ca3287230e154",
+      "commit": "2423fd553c9f60fafd578716a1a5ec557858919d",
+      "parent": "98de7c3037414b2708cf7b359e943ba357d44bdf",
+      "tree": "20fbf918eaeac1f7160f392ff5bb39dec663c3b7",
+      "signatureVerified": true,
+      "title": "refactor: default enrollment workers (phase 227)"
+    },
+    {
+      "phase": 228,
+      "patch": "228-default-recovery-worker.patch",
+      "patchSha256": "41d9a81b81aa801a7aa87fae428a730e1cf75a2314267a791d114fb1263235e0",
+      "commit": "39b3e3f19318d5e589e0bae11717e5ce340be201",
+      "parent": "2423fd553c9f60fafd578716a1a5ec557858919d",
+      "tree": "52383ddf56f12b45cfbca2cc6401246e74d9fe2e",
+      "signatureVerified": true,
+      "title": "refactor: default recovery worker (phase 228)"
+    },
+    {
+      "phase": 229,
+      "patch": "229-recovery-navigation.patch",
+      "patchSha256": "96d6c960a6b33b8f743892e34f0588402dabb231b54afeff11b99ef535a44a07",
+      "commit": "432d09e89af4d9468e83b2b160fae47bcd030592",
+      "parent": "39b3e3f19318d5e589e0bae11717e5ce340be201",
+      "tree": "07dbad99fae265beda74f4219b3867b0ddb1ecb4",
+      "signatureVerified": true,
+      "title": "refactor: recovery navigation (phase 229)"
+    },
+    {
+      "phase": 230,
+      "patch": "230-retirement-lifetime.patch",
+      "patchSha256": "4e8010f99f402ed15f36ef367210ca4d3c7644e1bfae7ea0d1ba4bf250573e3e",
+      "commit": "baa252694a46761bda96fa5ddabed1206f0417fd",
+      "parent": "432d09e89af4d9468e83b2b160fae47bcd030592",
+      "tree": "5031b52a530e0afff16df95ebe409ba8bcc5c6b0",
+      "signatureVerified": true,
+      "title": "refactor: retirement lifetime (phase 230)"
+    },
+    {
+      "phase": 231,
+      "patch": "231-recovery-closing-display.patch",
+      "patchSha256": "820f2fb395a7b23e5fffcd6f700a5f9f5b5079ff2632fbda1ec9c8875dcade42",
+      "commit": "e70191e9f21f864f6b8f423c8baf12f1f2d3197d",
+      "parent": "baa252694a46761bda96fa5ddabed1206f0417fd",
+      "tree": "8687b9efe3d698b1435b9f77b47cc93da4076f9f",
+      "signatureVerified": true,
+      "title": "refactor: recovery closing display (phase 231)"
+    },
+    {
+      "phase": 232,
+      "patch": "232-inspect-before-name.patch",
+      "patchSha256": "7733e05046bf2917342785b1360479dff4d7847f2ad29ad12a3535f8678a1a0b",
+      "commit": "31fc7a17be45bccd7ca6d85d405bf53d7f266eff",
+      "parent": "e70191e9f21f864f6b8f423c8baf12f1f2d3197d",
+      "tree": "8a4e53cca87f373cd3b715bac0b0bea13d888dce",
+      "signatureVerified": true,
+      "title": "refactor: inspect before name (phase 232)"
+    },
+    {
+      "phase": 233,
+      "patch": "233-transition-account-display.patch",
+      "patchSha256": "65c981f7076fb2231076babb9cd53af30b585a471a32c9804e151f62f633ef45",
+      "commit": "cf047caea04fc2034f42dae797d49ce61d882e57",
+      "parent": "31fc7a17be45bccd7ca6d85d405bf53d7f266eff",
+      "tree": "8272c0efe73f0a99bc4bcc1490e3a70b9b6011d9",
+      "signatureVerified": true,
+      "title": "refactor: transition account display (phase 233)"
+    },
+    {
+      "phase": 234,
+      "patch": "234-removed-entry-fixture.patch",
+      "patchSha256": "56be02ba80d6ecbcd2568828b7fc7507d960a850b54d0cbd67557258ddc66892",
+      "commit": "68dd65beda60e2f323b6ffe3b1aafcab1b1baac9",
+      "parent": "cf047caea04fc2034f42dae797d49ce61d882e57",
+      "tree": "05f9eb4f20a7337bf56d23cc577a96f4eae1ceb1",
+      "signatureVerified": true,
+      "title": "test: removed entry fixture (phase 234)"
+    },
+    {
+      "phase": 235,
+      "patch": "235-live-credential-cancellation.patch",
+      "patchSha256": "402e31af70bf92dc04b893919cee7c92e9cc9e668f54091cfc2660a79836a0a9",
+      "commit": "3913088310629564cdec5b4c92e26112fff04571",
+      "parent": "68dd65beda60e2f323b6ffe3b1aafcab1b1baac9",
+      "tree": "074808081edcd2114683f0c57a9240f5331757f4",
+      "signatureVerified": true,
+      "title": "refactor: live credential cancellation (phase 235)"
+    },
+    {
+      "phase": 236,
+      "patch": "236-packaged-worker-assets.patch",
+      "patchSha256": "373057b182f240c9b4e19a0f50db0123e253629812f2d2e23343d26832d756b4",
+      "commit": "5728b54c18bf0f1bf060e88d6e5d581e661f2f3e",
+      "parent": "3913088310629564cdec5b4c92e26112fff04571",
+      "tree": "8deff2f60d8a38c72b9c8ce5fd5239ea5e6c98b5",
+      "signatureVerified": true,
+      "title": "test: packaged worker assets (phase 236)"
+    },
+    {
+      "phase": 237,
+      "patch": "237-final-worker-boundary.patch",
+      "patchSha256": "300da80ba252113087e6929c902acf5789c85f9438f7ac855f8e41529900cf57",
+      "commit": "0dff654e93e4bc760fe310ac22812d7d0c498fb7",
+      "parent": "5728b54c18bf0f1bf060e88d6e5d581e661f2f3e",
+      "tree": "de9e0658d7ed7e224aeb27cc6934d3c8bdb67e97",
+      "signatureVerified": true,
+      "title": "docs: final worker boundary (phase 237)"
+    },
+    {
+      "phase": 238,
+      "patch": "238-membership-subscription-fixtures.patch",
+      "patchSha256": "91c410b416b832e734f655ddb9d99d4a005acbbcd77f7e1735f9b84aee776d24",
+      "commit": "4999e2618ed1d491ef5defdaf35378d4c24c7f46",
+      "parent": "0dff654e93e4bc760fe310ac22812d7d0c498fb7",
+      "tree": "b1f24940f7d1249a652ed91008a70e2ecf4f5fa8",
+      "signatureVerified": true,
+      "title": "test: membership subscription fixtures (phase 238)"
+    },
+    {
+      "phase": 239,
+      "patch": "239-completed-worker-placement.patch",
+      "patchSha256": "cd3d65de70fbf325513c9f58ad0d764a114ffc0f628bbdeb34b27ea3e5aefb61",
+      "commit": "d339ffa24b29c58c579a9bc0301793c3a1f41588",
+      "parent": "4999e2618ed1d491ef5defdaf35378d4c24c7f46",
+      "tree": "2072602930fed719569f85516eddb724e0788c68",
+      "signatureVerified": true,
+      "title": "docs: completed worker placement (phase 239)"
+    },
+    {
+      "phase": 240,
+      "patch": "240-worker-conversion-measurements.patch",
+      "patchSha256": "61405bd78cf9856b24bda2ab0d9d013c12db6ce62abf776eed337f0559964ced",
+      "commit": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+      "parent": "d339ffa24b29c58c579a9bc0301793c3a1f41588",
+      "tree": "2745151d47b8c1a4934fd1694b1a183bcb2a6e09",
+      "signatureVerified": true,
+      "title": "docs: worker conversion measurements (phase 240)"
+    }
+  ]
+}

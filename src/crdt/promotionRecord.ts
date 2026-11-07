@@ -55,8 +55,15 @@ import {
 } from './storageCompatibility';
 import { probeDatabase } from './startupStorage';
 import { contentTransaction } from './contentDatabase';
-import type { SessionTask } from './writeSession';
-export interface PromotionRecord {
+import { requireAccountFormatSessionTask, type SessionTask } from './writeSession';
+import {
+  captureInboundReceiptVersion,
+  inboundReceiptVersionFields,
+  inboundReceiptMacTail,
+  requireMonotonicInboundReceiptVersion,
+  type InboundReceiptVersion,
+} from './inboundReceiptVersion';
+export interface PromotionRecord extends InboundReceiptVersion {
   v: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
   kind: 'local-promotion';
   id: string;
@@ -113,6 +120,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
     'stage',
     'credentials',
     'mac',
+    ...inboundReceiptVersionFields(input),
     ...((input as { v?: number })?.v === 6 && Object.hasOwn(input as object, 'captureBootstrap')
       ? ['captureBootstrap']
       : []),
@@ -220,6 +228,7 @@ export const parsePromotion = (input: unknown): PromotionRecord => {
   }
   return {
     v: r['v'] as 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9,
+    ...captureInboundReceiptVersion(r),
     ...([2, 3, 4, 5, 6, 7, 8, 9].includes(r['v'] as number)
       ? { genesis: parseGenesis(r['genesis']) }
       : {}),
@@ -302,6 +311,7 @@ export const promotionPayload = (r: PromotionRecord): Bytes =>
       ...(r.catchup ? [parseContentCheckpoint(r.catchup)] : []),
       ...(r.membership ? [parseInstalledMembership(r.membership)] : []),
       ...(r.captureBootstrap ? [['capture-bootstrap', r.captureBootstrap]] : []),
+      ...inboundReceiptMacTail(r),
     ]),
   );
 const macKey = (root: Bytes, r: PromotionRecord, subtle: SubtleCrypto) =>
@@ -438,6 +448,37 @@ export async function readPromotion(task: SessionTask, slotId: string, code: str
     (await slotCustodyRows(task, slotId)) ?? [],
   );
 }
+/** Internal post-authentication activation only. Reauthenticate before extending the local floor;
+ * neither an owner ticket nor the caller's expected bytes authenticate saved custody. */
+export async function acknowledgePromotionInboundReceiptVersion(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  expectedPayload: Bytes,
+  expectedRecord: CustodyRecord,
+): Promise<PromotionRecord> {
+  requireAccountFormatSessionTask(task, slotId);
+  const state = await readPromotion(task, slotId, code),
+    marker = state.marker;
+  if (!marker || marker.v !== 9 || marker.stage !== 'account-receiving')
+    throw Error('Inbound receipt floor needs receiving custody');
+  const payload = promotionPayload(marker);
+  try {
+    if (!sameBytes(payload, expectedPayload) || !recordEqual(state.record, expectedRecord))
+      throw Error('Inbound receipt floor authority changed');
+  } finally {
+    payload.fill(0);
+  }
+  requireAccountFormatSessionTask(task, slotId);
+  if (marker.inboundReceiptVersion === 1) return marker;
+  const next = await withPromotionRoot(task, state.claim, state.record, code, (root, subtle) =>
+    signPromotion(root, { ...marker, inboundReceiptVersion: 1 }, subtle),
+  );
+  await writePromotion(task, state.claim, state.record, state.record, marker, next, () =>
+    requireAccountFormatSessionTask(task, slotId),
+  );
+  return next;
+}
 /** Internal owner check: authenticate the exact snapshot retained for unchanged-authority reuse. */
 export function authenticatePromotionRows(
   task: SessionTask,
@@ -514,6 +555,7 @@ export async function writePromotion(
   marker: PromotionRecord | null,
   checkCommit?: () => void,
 ) {
+  requireMonotonicInboundReceiptVersion(expected, marker);
   const stored = marker ? task.step(() => storePromotion(marker)) : null;
   const found = await probeDatabase(task, 'done.custody', (db) =>
     contentTransaction(
@@ -545,6 +587,7 @@ export async function writePromotion(
                   : !!cursor)
               )
                 throw Error('Promotion compare changed');
+              requireMonotonicInboundReceiptVersion(expected, marker);
               checkCommit?.();
               if (!recordEqual(old, next)) store.put(next, recordKey(claimScope(claim)));
               if (stored) store.put(stored, storageUpgradeKey(old.slot_id));

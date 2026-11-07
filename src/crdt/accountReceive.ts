@@ -1,3 +1,12 @@
+import { receiveOriginalsFit, type ReceiveOriginalsUsage } from './receiveOriginalsBudget';
+import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
+import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
+import { createWorkerContextQueue, type WorkerContextQueue } from './workerContextQueue';
+import type { AccountMirrorContext } from './accountMirrorMaterial';
+import { eraseWorkerMessage } from './workerChannel';
+import { pageRuntimePorts } from './runtimePorts';
+import { accountWorkerRuntime } from './accountWorkerRuntime';
+import { createAcknowledgedReceiveFinish } from './acknowledgedReceive';
 import {
   hasBaselineReader,
   hasBaselineVerifier,
@@ -5,7 +14,11 @@ import {
   hasRetentionWriter,
   hasAutomaticLocalRetention,
 } from './localBaselineMode';
-import { createAutomaticLocalRetention, type LocalRetentionHint } from './automaticLocalRetention';
+import {
+  createAutomaticLocalRetention,
+  localRetentionInterrupted,
+  type LocalRetentionHint,
+} from './automaticLocalRetention';
 import {
   createAutomaticServiceHistory,
   hasAutomaticServiceHistory,
@@ -16,31 +29,44 @@ import type { PreparedReceiveFinish } from './admissionQueue';
 import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
 import { createAuthorityAuthentication } from './accountAuthority';
-import { authenticateJoinedAccountRows } from './joinedAccount';
-import { authenticatePromotionRows } from './promotionRecord';
+import {
+  authenticateJoinedAccountRows,
+  acknowledgeJoinedInboundReceiptVersion,
+} from './joinedAccount';
+import {
+  authenticatePromotionRows,
+  acknowledgePromotionInboundReceiptVersion,
+} from './promotionRecord';
 import { slotCustodyRows } from './localGenesisRecord';
-import { accountTextMode } from './accountTextMode';
 import {
   MaintenanceInterrupted,
+  addMaintenanceInterruptionConditions,
   isMaintenanceTask,
   reportRetentionProgress,
   type RetentionProgressSink,
 } from './contentMaintenance';
 import { createReceivePageTransport } from './receivePageTransport';
+import { createReceiveRangeTail } from './receiveRangeTail';
+import { createReceiveQuietPages } from './receiveQuietPages';
+import { RECEIVE_SINGLE_PAGE_BYTES } from './receivePrefetch';
+import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
 import type { Diagnostic } from '../../account-protocol/diagnostics';
 import {
   RECEIVE_GROUP_LIMIT,
   packReceivePages,
   unpackReceivePages,
   receiveGroupFits,
+  preparedInboundPageWrites,
 } from './receiveGroup';
 import {
   createReceiveSelection,
+  receiveRangeWriterEnabled,
+  receivePageWidths,
   hasPeerBacklog,
   unresolvedSelfSubmission,
 } from './receiveSelection';
 import { markAccountOpen } from './accountLedgerMetrics';
-import type { OpenedRecord } from './contentRecord';
+import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS, type OpenedRecord } from './contentRecord';
 import { ledgerWorkStart, measureLedgerWork, countLedgerWork } from './accountLedgerMetrics';
 import { accountLedgerMode } from './accountLedgerMode';
 import { accountBatchPolicy } from './accountBatchPolicy';
@@ -115,6 +141,7 @@ import { createVerificationMemo } from './verificationMemo';
 import {
   extendAccountLedger,
   indexVerifiedLedger,
+  accountLedgerIndexUsage,
   sameAccountLedger,
   type AccountLedgerView,
 } from './incrementalAccountLedger';
@@ -131,6 +158,7 @@ import {
 } from './accountSyncState';
 import {
   createSyncScheduler,
+  createReceiveSweep,
   driveOutboundStep,
   idleReceiveInterval,
   type SyncStatus,
@@ -138,6 +166,7 @@ import {
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
 import { startNotifications } from '../account/notifications';
 import { createReceiveScheduler, driveReceiveStep } from './accountReceiveDriver';
+import { createReceiveRepairPolling } from './receiveRepairPolling';
 import type { DriverGate } from './accountDriver';
 /** Private receive owners. Authority and original-update promotion stay inside the held lifetime. */
 import { openAccountCaptureOwner, type CaptureExtension } from './accountCapture';
@@ -171,17 +200,26 @@ import {
   random,
   type Bytes,
 } from './custodyCrypto';
-import { verifyInboundPage, InboundError, type InboundContext } from './accountInbound';
+import {
+  createInboundReceiptTurn,
+  verifyInboundPage,
+  prepareInboundPage,
+  InboundError,
+  type InboundContext,
+} from './accountInbound';
 import {
   applyHistoryReceiveCuts,
   heldInboundContext,
   inspectInbound,
   inspectInboundCooperatively,
   verifyInboundLedger,
+  inboundPositionsAfter,
   contextAt,
   publisherContext,
   publisherState,
   inboundReadCursors,
+  inboundMemoSlots,
+  type InboundReadCursor,
 } from './inboundLedger';
 import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
 import { verifyDelivery, emptyDelivery } from './deliveryRecord';
@@ -193,14 +231,13 @@ import {
 } from './sourceCapture';
 import type { SessionTask } from './writeSession';
 import type { prepareAccountCustody } from './custody';
+import { AdmissionError, MAX_PENDING_BYTES } from './admissionQueue';
 import {
-  createAdmissionOwner,
-  AdmissionError,
-  MAX_PENDING_BYTES,
-  type OwnedReceiveQueue,
-  type OwnedPreparedReceiveQueue,
-} from './admissionQueue';
-import { createAdmittedWorkspace } from './admittedWorkspace';
+  createPageAccountWorkspace,
+  listenToLocalWorkspaceChanges,
+  type AccountWorkspacePort,
+  type AccountWorkspaceFactory,
+} from './accountWorkspacePort';
 import type { AccountWorkspaceOptions } from './accountWorkspace';
 
 const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
@@ -221,21 +258,41 @@ async function openAccountReceiveOwner(
   canReceive: () => boolean = () => true,
   composed = false,
   joined = false,
+  contextQueue?: WorkerContextQueue,
 ) {
   const options = captureAccountOptions(input);
+  const rangeWrites = receiveRangeWriterEnabled(import.meta.env?.['VITE_ACCOUNT_RANGE_RECEIVE']);
   const incremental = ledgerMode === 'incremental';
+  const recordOwnership =
+    incremental && import.meta.env?.['VITE_ACCOUNT_RECORD_OWNERSHIP'] !== '0' ? 'shared' : 'cloned';
   const verified = createVerifiedRecords<AccountLedgerView>({
-    ...(incremental && import.meta.env?.['VITE_ACCOUNT_RECORD_OWNERSHIP'] !== '0'
-      ? { ownResults: true as const }
-      : {}),
+    ...(recordOwnership === 'shared' ? { ownResults: true as const } : {}),
   });
   let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
   let localRetentionHint: LocalRetentionHint | undefined;
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
+    sinceAuditPositions = 0,
+    auditedAt = performance.now(),
+    auditWake: (() => void) | undefined,
+    auditAlive = true,
     auditDue = false,
     auditDeferred = false;
+  const resetSemanticAudit = () => {
+    sinceAudit = sinceAuditPositions = 0;
+    auditedAt = performance.now();
+  };
+  const semanticAuditDue = () =>
+    auditAlive &&
+    incremental &&
+    !baselineReading &&
+    verifiedCounter !== undefined &&
+    (auditDue ||
+      sinceAudit >= WARM_AUDIT_ROWS ||
+      sinceAuditPositions >= WARM_AUDIT_FORCE_POSITIONS ||
+      performance.now() < auditedAt ||
+      performance.now() - auditedAt >= WARM_AUDIT_MS);
   // Keys are fixed; adoption clears every memo before swapping the durable authority context.
   const memo = createVerificationMemo(),
     coverage = createInboundCoverage({
@@ -286,11 +343,40 @@ async function openAccountReceiveOwner(
   let expectedPayload: Bytes = new Uint8Array(),
     expectedRecord: CustodyRecord,
     outstanding: Bytes | undefined;
+  let inboundReceiptVersion: 1 | undefined;
   let outstandingGroup: Bytes[] = [];
+  let outstandingCursor = 0,
+    outstandingAllowance = 1;
+  let rangeTail: ReturnType<typeof createReceiveRangeTail> | undefined;
+  let quietOriginals: ReturnType<typeof createReceiveQuietPages> | undefined;
   const retentionReads = createRetentionReads(() => new ReceiveAuthorityChanged());
   // Composed owners reuse unchanged quiet proofs within the guarded 750 ms budget.
   // Publication deadline latching preserves the two-receiver 2.5s acceptance gate (phase117).
   const receiveSelection = createReceiveSelection(Date.now, composed);
+  const receiveRepair = createReceiveRepairPolling();
+  let readScheduling = new WeakMap<
+    object,
+    { quiet: object | undefined; repair: object | undefined }
+  >();
+  const invalidateReadScheduling = () => {
+    receiveSelection.invalidateQuiet();
+    receiveRepair.invalidate();
+    quietOriginals?.drop();
+    readScheduling = new WeakMap();
+  };
+  const captureReadScheduling = (publisher: string, cursor: InboundReadCursor) => {
+    if (!composed || publisher === base.publisher.id) return undefined;
+    const token = {};
+    readScheduling.set(token, {
+      quiet: receiveSelection.captureQuiet(base.authority, publisher, cursor),
+      repair: receiveRepair.capture(
+        base.authority,
+        publisher,
+        cursor.prefix.observedThrough === cursor.prefix.position,
+      ),
+    });
+    return token;
+  };
   let outstandingQuiet: object | undefined;
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
@@ -366,6 +452,30 @@ async function openAccountReceiveOwner(
   };
   const extension: CaptureExtension = {
     version: 9,
+    audit: {
+      due: semanticAuditDue,
+      delay: () =>
+        !auditAlive || !incremental || baselineReading || verifiedCounter === undefined
+          ? Infinity
+          : semanticAuditDue()
+            ? 0
+            : Math.max(0, auditedAt + WARM_AUDIT_MS - performance.now()),
+      pendingRows: () => (auditAlive && !baselineReading ? sinceAudit : 0),
+      pendingPositions: () => (auditAlive && !baselineReading ? sinceAuditPositions : 0),
+      schedule(wake) {
+        auditWake = wake;
+        wake();
+      },
+      async run(task, owner) {
+        if (!semanticAuditDue()) return true;
+        await assertCurrent(task);
+        auditDue = true;
+        owner.carrier.invalidateWarm();
+        const records = await owner.carrier.load(task);
+        eraseVerified(records);
+        return !auditDue;
+      },
+    },
     ...(hasBaselineReader() ? { readBaseline: true as const } : {}),
     ...(hasBaselineVerifier()
       ? ({
@@ -417,6 +527,7 @@ async function openAccountReceiveOwner(
       : {}),
     async initialize(task, v) {
       invalidateAuthority();
+      inboundReceiptVersion = v.marker.inboundReceiptVersion;
       expectedPayload = promotionPayload({ ...v.marker, v: 9, stage: 'account-receiving' });
       expectedRecord = v.record;
       membershipAnchor = v.marker.admission?.receipt
@@ -463,6 +574,7 @@ async function openAccountReceiveOwner(
     },
     async initializeJoined(task, v) {
       invalidateAuthority();
+      inboundReceiptVersion = v.marker!.inboundReceiptVersion;
       expectedPayload = joinedPayload(v.marker!);
       expectedRecord = v.record;
       membershipAnchor = structuredClone(v.marker!.authority.base);
@@ -500,8 +612,39 @@ async function openAccountReceiveOwner(
         publicKey = verifying;
       });
     },
-    activate: (task, owner) => owner.carrier.enableSpool(task),
-    async validate(task, records, route, counter, view, baseline) {
+    async activate(task, owner) {
+      // Full ordinary startup authentication and old-journal recovery have completed before this
+      // hook. Commit the floor before a writer can reserve or admit a multi-entry receipt.
+      if (rangeWrites && inboundReceiptVersion !== 1) {
+        const nextPayload = joined
+          ? joinedPayload(
+              await acknowledgeJoinedInboundReceiptVersion(
+                task,
+                options.slotId,
+                options.code,
+                expectedPayload,
+                expectedRecord,
+              ),
+            )
+          : promotionPayload(
+              await acknowledgePromotionInboundReceiptVersion(
+                task,
+                options.slotId,
+                options.code,
+                expectedPayload,
+                expectedRecord,
+              ),
+            );
+        invalidateAuthority(true);
+        expectedPayload.fill(0);
+        expectedPayload = nextPayload;
+        inboundReceiptVersion = 1;
+        // The native acknowledgement committed above; only now can this owner read new rows.
+        base.inboundReceiptVersion = 1;
+      }
+      await owner.carrier.enableSpool(task);
+    },
+    async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
       localRetentionHint = undefined;
       if (baseline) {
         // The carrier has either fully replayed the authenticated origin or extended its private
@@ -524,7 +667,7 @@ async function openAccountReceiveOwner(
           verifiedCounter = structuredClone(counter);
           if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
             localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
-          sinceAudit = 0;
+          resetSemanticAudit();
           auditDue = auditDeferred = false;
           memo.clear();
           coverage.clear();
@@ -543,6 +686,7 @@ async function openAccountReceiveOwner(
         records: import('./contentRecord').OpenedRecord[],
         audit = false,
       ): Promise<AccountLedgerView> => {
+        const syntaxTurn = createInboundReceiptTurn();
         const began = performance.now();
         countLedger('full');
         const isolated = audit ? createInboundCoverage() : undefined;
@@ -561,8 +705,15 @@ async function openAccountReceiveOwner(
               : undefined;
         try {
           const census = checkpoint
-              ? await inspectInboundCooperatively(records, route, base, checkpoint)
-              : inspectInbound(records, route, base),
+              ? await inspectInboundCooperatively(
+                  records,
+                  route,
+                  base,
+                  checkpoint,
+                  undefined,
+                  syntaxTurn,
+                )
+              : inspectInbound(records, route, base, undefined, syntaxTurn),
             subtle = subtleFor(task),
             reuse = { memo, current: () => task.step(() => {}) };
           await checkpoint?.();
@@ -576,6 +727,7 @@ async function openAccountReceiveOwner(
               subtle,
               reuse,
               membership,
+              syntaxTurn,
             );
           else if (membership)
             await verifyInstalledMembership(
@@ -585,6 +737,7 @@ async function openAccountReceiveOwner(
               initialEpoch,
               subtle,
               reuse,
+              syntaxTurn,
             );
           await checkpoint?.();
           await verifySpool(
@@ -608,11 +761,19 @@ async function openAccountReceiveOwner(
             reuse,
           );
           await checkpoint?.();
-          const inbound = await verifyInboundLedger(census, records, base, lifetime(task), {
-            memo,
-            coverage: checking,
-            ...(checkpoint ? { checkpoint } : {}),
-          });
+          const inbound = await verifyInboundLedger(
+            census,
+            records,
+            base,
+            lifetime(task),
+            {
+              memo,
+              coverage: checking,
+              ...(checkpoint ? { checkpoint } : {}),
+            },
+            undefined,
+            syntaxTurn,
+          );
           if (composed) {
             const check = (updates: readonly Bytes[]) => checking.check(records, updates);
             if (checkpoint)
@@ -635,17 +796,29 @@ async function openAccountReceiveOwner(
               ]),
               ...census.delivery.spool.events.map((_, i) => 'witness:' + i),
               ...census.delivery.entries.map((e) => 'delivery:' + e.record.seq),
-              ...census.entries.map((e) => 'inbound:' + e.record.seq),
+              ...census.entries.flatMap(inboundMemoSlots),
               ...census.installations.map((e) => 'history:' + e.record.seq),
             ]),
           );
           const result: AccountLedgerView = { delivery, inbound, census };
           if (incremental && !audit) {
-            const indexes = await indexVerifiedLedger(result, records, route, counter, subtle);
+            const indexes = await indexVerifiedLedger(
+              result,
+              records,
+              route,
+              counter,
+              subtle,
+              memo.ownedBytes(),
+              recordOwnership,
+              syntaxTurn,
+            );
             if (indexes) result.indexes = indexes;
           }
+          syntaxTurn.complete(result);
+          if (!audit) resetSemanticAudit();
           return result;
         } finally {
+          syntaxTurn.dispose();
           isolated?.clear();
           measureLedger('full', began);
         }
@@ -659,6 +832,7 @@ async function openAccountReceiveOwner(
           () => task.step(() => {}),
           incremental
             ? async (previous, before, records) => {
+                const syntaxTurn = createInboundReceiptTurn();
                 const began = performance.now();
                 try {
                   const next = await extendAccountLedger(
@@ -670,8 +844,9 @@ async function openAccountReceiveOwner(
                     base,
                     publicKey,
                     subtleFor(task),
-                    { memo, current: () => task.step(() => {}) },
+                    { memo, current: () => task.step(() => {}), recordOwnership },
                     () => coverage.prepare(records) === 'equivalent',
+                    syntaxTurn,
                   );
                   if (!next) return;
                   const checking = coverage.bind(records);
@@ -693,6 +868,7 @@ async function openAccountReceiveOwner(
                         : {}),
                     },
                     { state: previous.inbound, after: before.at(-1)?.seq ?? 0 },
+                    syntaxTurn,
                   );
                   if (composed)
                     advanceSelfReceive(
@@ -704,13 +880,26 @@ async function openAccountReceiveOwner(
                       previous.delivery.acceptedThrough,
                     );
                   const result = { ...next, inbound };
+                  // Recheck the fresh retained graph after replay adds originals/proofs. Dropping
+                  // indexes preserves the verified state and selects the full reference next turn.
+                  if (
+                    !accountLedgerIndexUsage(result, records, memo.ownedBytes(), recordOwnership)
+                      .eligible
+                  )
+                    delete result.indexes;
                   sinceAudit += records.filter((r) => r.seq > (before.at(-1)?.seq ?? 0)).length;
+                  sinceAuditPositions = Math.min(
+                    WARM_AUDIT_FORCE_POSITIONS,
+                    sinceAuditPositions +
+                      inboundPositionsAfter(next.census, before.at(-1)?.seq ?? 0),
+                  );
                   auditDue ||=
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
-                    (sinceAudit >= 1024 &&
-                      records.some((r) => r.kind === 'state' && r.seq > (before.at(-1)?.seq ?? 0)));
+                    semanticAuditDue();
+                  syntaxTurn.complete(result);
                   return result;
                 } finally {
+                  syntaxTurn.dispose();
                   measureLedger('incremental', began);
                 }
               }
@@ -721,7 +910,13 @@ async function openAccountReceiveOwner(
         verifiedCounter = structuredClone(counter);
         // Install only the fully authenticated delta before discretionary reference work.
         // A cancelled audit stays due, but must not migrate onto the next foreground edit.
-        if (auditDue && (!auditDeferred || isMaintenanceTask(task))) {
+        if (
+          auditDue &&
+          (!auditDeferred || isMaintenanceTask(task)) &&
+          (!auditWake ||
+            isMaintenanceTask(task) ||
+            import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every')
+        ) {
           countLedger('audits');
           const auditRows = copyRecords(records),
             result = verified.read(records);
@@ -735,7 +930,7 @@ async function openAccountReceiveOwner(
               captureError('Account ledger reference mismatch');
             }
             countLedger('auditCompletions');
-            sinceAudit = 0;
+            resetSemanticAudit();
             auditDue = auditDeferred = false;
           } catch (e) {
             if (e instanceof MaintenanceInterrupted) {
@@ -758,14 +953,20 @@ async function openAccountReceiveOwner(
         throw e;
       }
       if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
-        localRetentionHint = { revision: 0, records: records.length };
+        localRetentionHint = { revision: localRetentionRevision ?? 0, records: records.length };
     },
     dispose() {
+      auditAlive = false;
+      auditWake = undefined;
+      resetSemanticAudit();
       baselineReading = false;
       baselineShadow?.invalidate();
       baselineShadow = undefined;
       retentionReads.close();
-      receiveSelection.invalidateQuiet();
+      rangeTail?.close();
+      quietOriginals?.close();
+      invalidateReadScheduling();
+      receiveRepair.close();
       outstandingQuiet = undefined;
       authority.dispose();
       membershipAnchor = undefined;
@@ -797,7 +998,10 @@ async function openAccountReceiveOwner(
     invalidateFinalApply,
     checkFinalApply,
     runBaselineShadow,
+    copyMirrorOpening,
   } = await openAccountCaptureOwner(options, principalId, extension, joined);
+  rangeTail = createReceiveRangeTail(carrier.signal);
+  if (composed) quietOriginals = createReceiveQuietPages(carrier.signal);
   invalidateFinalPermission = invalidateFinalApply;
   const checkLocalBaseline: (() => Promise<BaselineShadowResult>) | undefined =
     composed && import.meta.env?.['VITE_ACCOUNT_BASELINE_SHADOW'] === '1'
@@ -875,8 +1079,16 @@ async function openAccountReceiveOwner(
         if (refused) return refused;
         const stamp = retentionAuthority;
         const checkRetained = () => {
-          checkActivity();
-          if (handoff || stamp !== retentionAuthority) throw new MaintenanceInterrupted();
+          const conditions = { handoff: !!handoff, authorityStamp: stamp !== retentionAuthority };
+          try {
+            checkActivity();
+          } catch (cause) {
+            if (cause instanceof MaintenanceInterrupted)
+              addMaintenanceInterruptionConditions(cause, conditions);
+            throw cause;
+          }
+          if (handoff || stamp !== retentionAuthority)
+            throw new MaintenanceInterrupted([conditions]);
         };
         return owner.carrier.prepareHistoryRemoval(
           task,
@@ -891,11 +1103,13 @@ async function openAccountReceiveOwner(
     );
     if (prepared.kind === 'preparation-checkpoint') {
       try {
-        return await runBaselineShadow(async (task, _owner, _route, checkJournal) => {
-          const refused = await retentionReady(task);
-          if (refused) return refused;
-          return prepared.persist(task, () => assertCurrent(task), checkJournal);
-        });
+        const persist = () =>
+          runBaselineShadow(async (task, _owner, _route, checkJournal) => {
+            const refused = await retentionReady(task);
+            if (refused) return refused;
+            return prepared.persist(task, () => assertCurrent(task), checkJournal);
+          });
+        return await (contextQueue ? contextQueue.run(persist) : persist());
       } finally {
         prepared.dispose();
       }
@@ -912,7 +1126,7 @@ async function openAccountReceiveOwner(
           prepared.check();
           checkJournal();
           const release = retentionReads.begin();
-          receiveSelection.invalidateQuiet();
+          invalidateReadScheduling();
           outstandingQuiet = undefined;
           outstanding?.fill(0);
           outstanding = undefined;
@@ -971,7 +1185,7 @@ async function openAccountReceiveOwner(
                 await assertCurrent(task);
               }
               const release = retentionReads.begin();
-              receiveSelection.invalidateQuiet();
+              invalidateReadScheduling();
               outstandingQuiet = undefined;
               outstanding?.fill(0);
               outstanding = undefined;
@@ -1087,6 +1301,9 @@ async function openAccountReceiveOwner(
     _route: CaptureRoute,
     after?: number,
     grouped = false,
+    cached?: (page: Bytes) => void,
+    probesReady?: (probes: { request: Bytes; capture: object }[]) => void,
+    probeSignal?: AbortSignal,
   ) => {
     if (account.detached) throw Error('This local copy is detached from sync');
     const stamp = retentionReads.capture();
@@ -1150,22 +1367,88 @@ async function openAccountReceiveOwner(
             Math.max(1, s.prefix.observedThrough - cursor),
           )
         : 1;
-    const quiet =
-      composed && publisher !== base.publisher.id
-        ? receiveSelection.captureQuiet(base.authority, publisher, s)
-        : undefined;
+    let quiet = captureReadScheduling(publisher, s);
     const requests: Bytes[] = [];
+    const probes: { request: Bytes; capture: object }[] = [];
     try {
-      for (let i = 0; i < count; i++) {
-        const next = { ...r, after: cursor + i, nonce: hex(task.step(() => random(32))) };
-        next.signature = hex(
-          new Uint8Array(
-            await task.wait(() =>
-              subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+      const quietHit =
+        grouped && cached && publisher !== base.publisher.id
+          ? quietOriginals?.take(base.authority, publisher, s)
+          : undefined;
+      const peerRange =
+        rangeWrites &&
+        grouped &&
+        composed &&
+        publisher !== base.publisher.id &&
+        receivePages.entryLimit(publisher) > 1;
+      const previous =
+        !quietHit && peerRange && cached
+          ? rangeTail?.take(base.authority, publisher, cursor)
+          : undefined;
+      const widths = receivePageWidths(peerRange, count, s.prefix.observedThrough - cursor);
+      let offset = 0;
+      if (quietHit) {
+        rangeTail?.drop(publisher);
+        quiet = quietHit.scheduling;
+        requests.push(quietHit.request);
+        cached!(quietHit.page);
+      } else if (previous) {
+        requests.push(previous.request);
+        cached!(previous.page);
+      } else
+        for (const width of widths) {
+          const next = {
+            ...r,
+            after: cursor + offset,
+            limit: width,
+            nonce: hex(task.step(() => random(32))),
+          };
+          offset += width;
+          next.signature = hex(
+            new Uint8Array(
+              await task.wait(() =>
+                subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+              ),
             ),
-          ),
+          );
+          requests.push(encodeInboundRequest(next));
+        }
+      if (grouped && cached && probesReady && !quietHit && !previous && quietOriginals) {
+        const candidates = receiveSelection.quietCandidates(
+          publishers,
+          base.publisher.id,
+          publisher,
+          Math.max(0, INBOUND_BATCH_COUNT - requests.length),
+          { context: base.authority, cursor: (id) => publisherState(all, base, id) },
+          (id, cursor) => quietOriginals!.wanted(base.authority, id, cursor),
         );
-        requests.push(encodeInboundRequest(next));
+        for (const { publisher: candidate, cursor } of candidates) {
+          const scheduling = captureReadScheduling(candidate, cursor)!;
+          const capture = quietOriginals.capture({
+            context: base.authority,
+            publisher: candidate,
+            cursor,
+            scheduling,
+            startedAt: Date.now(),
+            signal: probeSignal ? AbortSignal.any([stamp.signal, probeSignal]) : stamp.signal,
+          });
+          if (!capture) continue;
+          const next = {
+            ...r,
+            publisher: candidate,
+            after: cursor.prefix.position,
+            limit: 1,
+            nonce: hex(task.step(() => random(32))),
+          };
+          next.signature = hex(
+            new Uint8Array(
+              await task.wait(() =>
+                subtleFor(task).sign('Ed25519', signer!, inboundRequestMessage(next)),
+              ),
+            ),
+          );
+          probes.push({ request: encodeInboundRequest(next), capture });
+        }
       }
       await assertCurrent(task);
       return task.step(() => {
@@ -1174,22 +1457,61 @@ async function openAccountReceiveOwner(
         stamp.check();
         outstandingStamp = stamp;
         outstandingQuiet = quiet;
+        outstandingCursor = cursor;
+        outstandingAllowance = count;
         outstandingGroup = requests;
         outstanding = requests[0]!;
+        probesReady?.(probes);
         return outstanding.slice();
       });
     } catch (cause) {
       for (const request of requests) request.fill(0);
+      for (const probe of probes) probe.request.fill(0);
       throw cause;
     }
   };
-  const prepareGroupOwned = () =>
-    runCaptureTask(async (task, owner, route) => {
-      const first = await prepareRead(task, owner, route, undefined, true);
-      first.fill(0);
-      return { requests: outstandingGroup.map((r) => r.slice()), quiet: outstandingQuiet };
-    });
-  const prepareGroup = async () => (await prepareGroupOwned()).requests;
+  const prepareGroupOwned = async (reuse = false, probeSignal?: AbortSignal) => {
+    let cachedPage: Bytes | undefined;
+    let probes: { request: Bytes; capture: object }[] = [];
+    try {
+      return await runCaptureTask(async (task, owner, route) => {
+        const first = await prepareRead(
+          task,
+          owner,
+          route,
+          undefined,
+          true,
+          reuse
+            ? (page) => {
+                cachedPage = page;
+              }
+            : undefined,
+          reuse
+            ? (prepared) => {
+                probes = prepared;
+              }
+            : undefined,
+          probeSignal,
+        );
+        first.fill(0);
+        return {
+          requests: outstandingGroup.map((r) => r.slice()),
+          quiet: outstandingQuiet,
+          cachedPage,
+          probes,
+        };
+      });
+    } catch (cause) {
+      cachedPage?.fill(0);
+      for (const probe of probes) probe.request.fill(0);
+      throw cause;
+    }
+  };
+  const prepareGroup = async () => {
+    rangeTail?.drop();
+    quietOriginals?.drop();
+    return (await prepareGroupOwned()).requests;
+  };
   const receivePages = createReceivePageTransport();
   // Future cursors are only scheduling predictions through an authenticated observed tip.
   // The exact request set remains owned, and no prefix advances before ordered verification.
@@ -1197,71 +1519,139 @@ async function openAccountReceiveOwner(
     const stamp = retentionReads.capture();
     let requests: Bytes[] = [],
       pages: Bytes[] = [];
+    let probes: { request: Bytes; capture: object }[] = [];
     try {
       return await runNetworkTask(async (network) => {
-        const prepared = await prepareGroupOwned();
+        const prepared = await prepareGroupOwned(true, network.signal);
         requests = prepared.requests;
+        probes = prepared.probes;
+        if (prepared.cachedPage) pages = [prepared.cachedPage];
         stamp.check();
         const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
         let attempted = 0;
-        await network.wait(async () => {
-          const collected = await receivePages(
-            requests,
-            signal,
-            {
-              read: (request, index, signal, limit) =>
-                canReceive()
-                  ? privateDeliveryPost(
-                      options.pin,
-                      access ?? operatorToken,
-                      'read-v2',
-                      request,
-                      limit,
-                      signal,
-                      (event) => {
-                        events[index]!.push(event);
-                      },
-                    )
-                  : Promise.resolve(null),
-              batch: (body, signal, limit, unsupported) =>
-                canReceive()
-                  ? privateDeliveryPost(
-                      options.pin,
-                      access ?? operatorToken,
-                      'read-v2-batch',
-                      body,
-                      limit,
-                      signal,
-                      (event) => {
-                        events[0]!.push(event);
-                      },
-                      false,
-                      unsupported,
-                      // Select bounded individual work only after a successful binary response
-                      // exceeds aggregation space. Hints cannot trigger this downgrade.
-                      () => {
-                        // The aggregate's size is a transport choice, not the individual result.
-                        // A failed fallback retains its own retry/refusal classification.
-                        events[0]!.length = 0;
-                        void unsupported('aggregate-limit');
-                      },
-                    )
-                  : Promise.resolve(null),
-            },
-            (page) => {
-              // Unverified hints may shorten collection, never grant progress or authority.
-              try {
-                return decodeInboundPage(page).entries.length > 0;
-              } catch {
-                return false;
-              }
-            },
-            decodeInboundRequest(requests[0]!).publisher,
+        if (!prepared.cachedPage) {
+          const wireRequests = [...requests, ...probes.map((p) => p.request)];
+          rangeTail?.beforeFetch(wireRequests.length);
+          const requestBytes = wireRequests.reduce((n, r) => n + r.length + 4, 0);
+          const wirePositions = wireRequests.reduce(
+            (n, request) => n + decodeInboundRequest(request).limit,
+            0,
           );
-          pages = collected.pages;
-          attempted = collected.attempted;
-        });
+          const reservedWire = {
+            bytes: requestBytes + RECEIVE_SINGLE_PAGE_BYTES + 4,
+            entries: wireRequests.length,
+            positions: wirePositions,
+          };
+          if (!receiveOriginalsFit(reservedWire)) throw Error('Invalid receive wire reservation');
+          if (
+            !receiveOriginalsFit(
+              reservedWire,
+              rangeTail?.reservation ?? { bytes: 0, entries: 0, positions: 0 },
+            )
+          )
+            rangeTail?.drop();
+          const tail = rangeTail?.reservation ?? { bytes: 0, entries: 0, positions: 0 };
+          const tailBytes = tail.bytes;
+          const maxBytes = quietOriginals
+            ? quietOriginals.reserve(tailBytes + reservedWire.bytes, {
+                entries: tail.entries + reservedWire.entries,
+                positions: tail.positions + reservedWire.positions,
+              }) -
+              tailBytes -
+              requestBytes
+            : MAX_PENDING_BYTES;
+          await network.wait(async () => {
+            const collected = await receivePages(
+              wireRequests,
+              signal,
+              {
+                read: (request, index, signal, limit) =>
+                  canReceive()
+                    ? privateDeliveryPost(
+                        options.pin,
+                        access ?? operatorToken,
+                        'read-v2',
+                        request,
+                        limit,
+                        signal,
+                        (event) => {
+                          events[index]!.push(event);
+                        },
+                      )
+                    : Promise.resolve(null),
+                batch: (body, signal, limit, unsupported) =>
+                  canReceive()
+                    ? privateDeliveryPost(
+                        options.pin,
+                        access ?? operatorToken,
+                        'read-v2-batch',
+                        body,
+                        limit,
+                        signal,
+                        (event) => {
+                          events[0]!.push(event);
+                        },
+                        false,
+                        unsupported,
+                        // Select bounded individual work only after a successful binary response
+                        // exceeds aggregation space. Hints cannot trigger this downgrade.
+                        () => {
+                          // The aggregate's size is a transport choice, not the individual result.
+                          // A failed fallback retains its own retry/refusal classification.
+                          events[0]!.length = 0;
+                          void unsupported('aggregate-limit');
+                        },
+                      )
+                    : Promise.resolve(null),
+              },
+              (page) => {
+                // Unverified hints may shorten collection, never grant progress or authority.
+                try {
+                  return decodeInboundPage(page).entries.length > 0;
+                } catch {
+                  return false;
+                }
+              },
+              decodeInboundRequest(requests[0]!).publisher,
+              quietOriginals ? { primaryCount: requests.length, maxBytes } : undefined,
+            );
+            pages = collected.pages;
+            attempted = collected.attempted;
+            try {
+              for (let i = 0; i < (collected.quietPages?.length ?? 0); i++) {
+                const probe = probes[i]!;
+                const page = collected.quietPages![i]!;
+                const wire = {
+                  bytes:
+                    requestBytes +
+                    [...collected.pages, ...collected.quietPages!].reduce(
+                      (n, p) => n + p.length + 4,
+                      0,
+                    ),
+                  entries: wireRequests.length,
+                  positions: wirePositions,
+                };
+                const tail = rangeTail?.reservation ?? { bytes: 0, entries: 0, positions: 0 };
+                const copy = {
+                  bytes: probe.request.length + page.length + 8,
+                  entries: 1,
+                  positions: 1,
+                };
+                // Both wire originals and the proposed independent cache copy are still owned.
+                if (quietOriginals && receiveOriginalsFit(wire, tail, copy)) {
+                  quietOriginals.reserve(wire.bytes + tail.bytes + copy.bytes, {
+                    entries: wire.entries + tail.entries + copy.entries,
+                    positions: wire.positions + tail.positions + copy.positions,
+                  });
+                  quietOriginals.remember(probe.request, page, probe.capture);
+                }
+              }
+            } finally {
+              for (const page of collected.quietPages ?? []) page.fill(0);
+            }
+          });
+        }
         stamp.check();
         // A speculative tail cannot overwrite the diagnostic for the attempted prefix.
         for (const observations of events.slice(0, attempted))
@@ -1279,8 +1669,11 @@ async function openAccountReceiveOwner(
     } catch (cause) {
       for (const request of requests) request.fill(0);
       for (const page of pages) page.fill(0);
+      quietOriginals?.drop();
       stamp.check();
       throw cause;
+    } finally {
+      for (const probe of probes) probe.request.fill(0);
     }
   };
   // Network waits never hold the local writer tail. The request captures actual slot authority;
@@ -1423,7 +1816,7 @@ async function openAccountReceiveOwner(
     check: () => void = () => {},
   ) => {
     const bytes = input.slice();
-    receiveSelection.invalidateQuiet();
+    invalidateReadScheduling();
     return runCaptureTask(async (task, owner, route) => {
       let result: Awaited<ReturnType<typeof verifyHistoryInstall>> | undefined,
         committed = false;
@@ -1539,6 +1932,13 @@ async function openAccountReceiveOwner(
       if (account.detached) return Promise.reject(Error('This local copy is detached from sync'));
       if (!(input instanceof Uint8Array) || !input.length || input.length > READ_PAGE_LIMIT)
         return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive page'));
+      if (outstanding && decodeInboundRequest(outstanding).limit > 1) {
+        if (selfOnly)
+          return Promise.reject(
+            new AdmissionError('receive-refused', 'Self receipt requires the owned publisher'),
+          );
+        return receiveGroup([input], [expectedRequest ?? outstanding], promote);
+      }
       const page = input.slice();
       return runCaptureTask(async (task, owner, route) => {
         const s = await state(task, owner, route);
@@ -1708,6 +2108,36 @@ async function openAccountReceiveOwner(
         await check(task);
         task.step(() => applied(apply));
       });
+    if (accountWorkerRuntime(options.slotId)) {
+      const acknowledged = createAcknowledgedReceiveFinish<AccountMirrorContext>(
+        (work) =>
+          runCaptureTask((task, owned, route) =>
+            work(task, async () => {
+              const { binding, ...material } = await owned.copyMirrorJournalOpening(task);
+              return {
+                ...material,
+                ...(binding ? { binding } : {}),
+                route: {
+                  workspace: route.workspace,
+                  principal: route.principal,
+                  credential: route.credential,
+                  epoch: route.epoch,
+                  generation: route.generation,
+                },
+              };
+            }),
+          ),
+        check,
+        assertContext,
+        () => applied(() => {}),
+        () => {
+          void carrier.close().catch(() => {});
+        },
+        { dispose: eraseWorkerMessage },
+      );
+      finish.acknowledged = acknowledged;
+      finish.acknowledgedWithContext = acknowledged.withContext;
+    }
     if (import.meta.env?.['VITE_ACCOUNT_IMMEDIATE_RECEIVE'] !== '0')
       finish.immediate = (attempt) =>
         checkFinalApply(check, assertContext, (permission) =>
@@ -1722,7 +2152,7 @@ async function openAccountReceiveOwner(
   ) => {
     if (
       account.detached ||
-      inputs.length < 2 ||
+      inputs.length < 1 ||
       inputs.length > RECEIVE_GROUP_LIMIT ||
       expected.length !== inputs.length ||
       inputs.some((b) => !(b instanceof Uint8Array) || !b.length) ||
@@ -1730,19 +2160,52 @@ async function openAccountReceiveOwner(
       expected.some((b) => !(b instanceof Uint8Array) || !b.length || b.length > 4096)
     )
       return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+    if (inputs.length === 1) {
+      try {
+        if (decodeInboundRequest(expected[0]!).limit === 1)
+          return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+      } catch {
+        return Promise.reject(new AdmissionError('receive-refused', 'Invalid receive group'));
+      }
+    }
+    if (!rangeWrites) {
+      try {
+        if (expected.some((request) => decodeInboundRequest(request).limit > 1))
+          return Promise.reject(new AdmissionError('receive-refused', 'Range writing is disabled'));
+      } catch (cause) {
+        return Promise.reject(
+          new AdmissionError('receive-refused', 'Invalid receive group', { cause }),
+        );
+      }
+    }
     const pages = inputs.map((b) => b.slice()),
       requests = expected.map((b) => b.slice());
     return runCaptureTask(async (task, owner, route) => {
       const s = await state(task, owner, route);
       const first = decodeInboundRequest(requests[0]!);
+      const wide = requests.some((request) => decodeInboundRequest(request).limit > 1);
       if (first.epoch < base.authority.tip) throw new ReceiveAuthorityChanged();
       if (composed && first.publisher === base.publisher.id)
         throw new AdmissionError('receive-refused', 'Own reconciliation must remain single-entry');
       const peer = publisherState(s, base, first.publisher);
-      if (s.conflict || peer.conflict || first.after !== peer.prefix.position)
+      if (
+        s.conflict ||
+        peer.conflict ||
+        (!wide && first.after !== peer.prefix.position) ||
+        (wide &&
+          (first.after > peer.prefix.position || first.after + first.limit <= peer.prefix.position))
+      )
         throw new AdmissionError('receive-refused', 'Inbound group prefix changed');
+      if (peer.prefix.position !== outstandingCursor) throw new ReceiveAuthorityChanged();
+      if (
+        !Number.isSafeInteger(outstandingAllowance) ||
+        outstandingAllowance < 1 ||
+        outstandingAllowance > RECEIVE_GROUP_LIMIT
+      )
+        throw new AdmissionError('receive-refused', 'Invalid receive position allowance');
       const stamp = outstandingStamp;
       if (!stamp) throw new ReceiveAuthorityChanged();
+      let expectedAfter = first.after;
       for (let i = 0; i < requests.length; i++) {
         if (
           !outstandingGroup[i] ||
@@ -1752,80 +2215,141 @@ async function openAccountReceiveOwner(
           throw new ReceiveAuthorityChanged();
         stamp.check();
         const r = decodeInboundRequest(requests[i]!);
-        if (
-          r.publisher !== first.publisher ||
-          r.epoch !== first.epoch ||
-          r.after !== first.after + i
-        )
+        if (r.publisher !== first.publisher || r.epoch !== first.epoch || r.after !== expectedAfter)
           throw new AdmissionError('receive-refused', 'Receive group is not contiguous');
+        expectedAfter += r.limit;
       }
       const context = { ...publisherContext(base, first.publisher), prefix: { ...peer.prefix } };
       const results: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
+      const prepared: Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
+      const kinds: string[] = [],
+        counts: number[] = [],
+        verifiedRequests: Bytes[] = [];
       const writes: import('./contentRecord').ContentInput[] = [];
       const updates: Bytes[] = [];
       let committed = false,
         bytes = 0;
       try {
-        for (let i = 0; i < pages.length; i++) {
-          let result: Awaited<ReturnType<typeof verifyInboundPage>> | undefined;
+        pageLoop: for (let i = 0; i < pages.length; i++) {
+          if (results.length === outstandingAllowance) break;
+          const pageRequest = decodeInboundRequest(requests[i]!);
+          const densePage = rangeWrites && pageRequest.limit > 1;
+          let pageResults: readonly Awaited<ReturnType<typeof verifyInboundPage>>[] = [];
           try {
             await task.wait(async () => {
-              result = await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task));
+              pageResults = densePage
+                ? await prepareInboundPage(
+                    context,
+                    requests[i]!,
+                    pages[i]!,
+                    lifetime(task),
+                    outstandingAllowance - results.length,
+                    { bytes: MAX_BATCH_BYTES - bytes, records: MAX_BATCH_RECORDS - writes.length },
+                  )
+                : [await verifyInboundPage(context, requests[i]!, pages[i]!, lifetime(task))];
               // Retain ownership before the final lifetime check can reject.
-              results.push(result);
+              prepared.push(...pageResults);
             });
           } catch (cause) {
             task.step(() => {});
             throw new AdmissionError('receive-refused', String(cause), { cause });
           }
-          if (!result) throw Error('Missing inbound verification result');
-          if (result.kind === 'empty') break;
-          if (result.kind !== 'received')
-            throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
-          const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
-          if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
-            // The single-receipt verifier has already enforced its individual bounds.
-            // Keep only the fitting prefix; this valid tail is fetched again later.
-            result.record.fill(0);
-            for (const update of result.updates) update.fill(0);
-            results.pop();
-            break;
+          // An oversized indexed original is a size scheduling refusal, not a committed or
+          // verified empty page. Settle preparation normally so the owner can narrow and retry.
+          if (!pageResults.length) break;
+          verifiedRequests.push(requests[i]!);
+          if (densePage && pageResults[0]!.kind === 'received') {
+            const framed = preparedInboundPageWrites(pageResults);
+            if (!receiveGroupFits(bytes + framed.bytes, writes.length + framed.writes.length))
+              throw new AdmissionError(
+                'receive-refused',
+                'Prepared page exceeds remaining native bounds',
+              );
+            results.push(...pageResults);
+            kinds.push('received');
+            counts.push(pageResults.length);
+            bytes += framed.bytes;
+            writes.push(...framed.writes);
+            updates.push(...framed.updates);
+            const last = pageResults.at(-1)!;
+            if (last.kind !== 'received')
+              throw new AdmissionError('receive-refused', 'Invalid prepared page');
+            context.prefix = {
+              position: last.position,
+              link: last.link,
+              observedThrough: last.through,
+            };
+            // A native bound can admit only part of this signed page. Later requests
+            // start after the whole requested range, so leave that gap for a fresh turn.
+            if (last.position < pageRequest.after + pageRequest.limit) break pageLoop;
+            continue;
           }
-          bytes += size;
-          writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
-            kind: 'heads',
-            bytes: result.record,
-          });
-          updates.push(...result.updates);
-          context.prefix = {
-            position: result.position,
-            link: result.link,
-            observedThrough: result.through,
-          };
+          for (const [entry, result] of pageResults.entries()) {
+            if (result.kind === 'empty') {
+              kinds.push(result.kind);
+              counts.push(0);
+              break pageLoop;
+            }
+            if (result.kind !== 'received')
+              throw new AdmissionError('receive-refused', 'Unexpected grouped receive result');
+            const size = result.record.length + result.updates.reduce((n, b) => n + b.length, 0);
+            if (!receiveGroupFits(bytes + size, writes.length + result.updates.length + 1)) {
+              // The single-receipt verifier has already enforced its individual bounds.
+              // Keep only the fitting prefix; this valid tail is fetched again later.
+              if (counts[i] === undefined) verifiedRequests.pop();
+              for (const unused of pageResults.slice(entry)) {
+                if ('record' in unused) unused.record.fill(0);
+                if (unused.kind === 'received') for (const update of unused.updates) update.fill(0);
+              }
+              break pageLoop;
+            }
+            results.push(result);
+            if (counts[i] === undefined) {
+              kinds.push(result.kind);
+              counts.push(0);
+            }
+            counts[i] = counts[i]! + 1;
+            bytes += size;
+            writes.push(...result.updates.map((b) => ({ kind: 'update' as const, bytes: b })), {
+              kind: 'heads',
+              bytes: result.record,
+            });
+            updates.push(...result.updates);
+            context.prefix = {
+              position: result.position,
+              link: result.link,
+              observedThrough: result.through,
+            };
+          }
         }
-        const kinds = results.map((r) => r.kind);
         if (!writes.length)
           return task.step(() => {
             promote([]);
-            return { kind: 'empty' as const, recorded: false, status: describe(s), kinds };
+            return {
+              kind: wide && !kinds.length ? ('range-size' as const) : ('empty' as const),
+              recorded: false,
+              status: describe(s),
+              kinds,
+              ...(wide ? { counts, positions: 0 } : {}),
+            };
           });
+        if (results.length > outstandingAllowance)
+          throw new AdmissionError(
+            'receive-refused',
+            'Receive exceeds its native position allowance',
+          );
         const before = await owner.carrier.spoolWitness(task);
         let after = before;
-        for (const result of results)
-          if ('record' in result)
-            after = await task.wait(() =>
-              extendSpoolWitness(after, result.record, subtleFor(task)),
-            );
+        // The completeness witness counts the actual physical heads rows, not logical positions.
+        for (const write of writes)
+          if (write.kind === 'heads')
+            after = await task.wait(() => extendSpoolWitness(after, write.bytes, subtleFor(task)));
         await owner.carrier.appendInbound(task, writes, {
           before,
           after,
           checkCommit: () => {
             stamp.check();
-            if (
-              requests
-                .slice(0, results.length)
-                .some((r) => decodeInboundRequest(r).expires <= Date.now())
-            )
+            if (verifiedRequests.some((r) => decodeInboundRequest(r).expires <= Date.now()))
               throw new ReceiveRequestExpired();
           },
           beforeCommit: async () => {
@@ -1841,13 +2365,19 @@ async function openAccountReceiveOwner(
         return task.step(() => {
           stamp.check();
           promote(updates);
-          return { kind: 'received' as const, recorded: true, status: describe(saved), kinds };
+          return {
+            kind: 'received' as const,
+            recorded: true,
+            status: describe(saved),
+            kinds,
+            ...(wide ? { counts, positions: results.length } : {}),
+          };
         });
       } catch (cause) {
         if (committed) void carrier.close().catch(() => {});
         throw cause;
       } finally {
-        for (const result of results) {
+        for (const result of prepared) {
           if ('record' in result) result.record.fill(0);
           if (result.kind === 'received') for (const b of result.updates) b.fill(0);
         }
@@ -1960,10 +2490,11 @@ async function openAccountReceiveOwner(
               base = nextBase;
               installed = successor;
               receiveSelection.reset();
+              invalidateReadScheduling();
               invalidateAuthority(true);
               expectedPayload = promotionPayload(next);
               verifiedCounter = undefined;
-              sinceAudit = 0;
+              resetSemanticAudit();
               auditDue = auditDeferred = false;
               verified.clear();
               memo.clear();
@@ -2165,8 +2696,9 @@ async function openAccountReceiveOwner(
           base = nextBase;
           membership = nextMembership;
           receiveSelection.reset();
+          invalidateReadScheduling();
           verifiedCounter = undefined;
-          sinceAudit = 0;
+          resetSemanticAudit();
           auditDue = auditDeferred = false;
           verified.clear();
           memo.clear();
@@ -2186,8 +2718,30 @@ async function openAccountReceiveOwner(
       }
     });
   };
+  // Discovery fetch/proof checking remains outside the Window FIFO. Only an actual route change
+  // joins the real final head; native installation keeps its original stamp/expiry/authority checks.
+  const applyMembership = (
+    input: unknown,
+    checkCommit?: () => void,
+    prepared?: DiscoveryHandoff,
+  ) => {
+    if (
+      !contextQueue ||
+      (prepared &&
+        prepared.history.current.tip === base.authority.tip &&
+        prepared.history.current.head === base.authority.head)
+    )
+      return installMembership(input, checkCommit, prepared);
+    const captured = prepared ? prepared.proofs : parseMembershipChain(input);
+    return contextQueue.run(() => installMembership(captured, checkCommit, prepared));
+  };
+  const applySuccessor = (input: unknown, checkCommit?: () => void) => {
+    if (!contextQueue) return adoptSuccessor(input, checkCommit);
+    const captured = parseSuccessor(input);
+    return contextQueue.run(() => adoptSuccessor(captured, checkCommit));
+  };
   const adoptMembership = (input: unknown, checkCommit?: () => void) =>
-    installMembership(input, checkCommit);
+    applyMembership(input, checkCommit);
   let discoveryDue = 0,
     discoveryRevision = 0;
   let discoveryFlight:
@@ -2234,7 +2788,7 @@ async function openAccountReceiveOwner(
           membershipWork(network, prepared.context, prepared.payload),
         ),
       );
-      await installMembership(
+      await applyMembership(
         verified.proofs,
         () => {
           network.step(() => {});
@@ -2328,7 +2882,7 @@ async function openAccountReceiveOwner(
               membershipWork(network, prepared.context, prepared.payload),
             ),
           );
-          const result = await installMembership(
+          const result = await applyMembership(
             answer.response.proofs,
             () => {
               network.step(() => {});
@@ -2409,7 +2963,7 @@ async function openAccountReceiveOwner(
             );
         };
         if (answer.successor) {
-          await adoptSuccessor(answer.successor, checkCommit);
+          await applySuccessor(answer.successor, checkCommit);
           return { kind: 'adopted' as const };
         }
         await runCaptureTask(async (task) => {
@@ -2796,11 +3350,13 @@ async function openAccountReceiveOwner(
         }),
     }) satisfies DeviceRoster,
     publisherCount: () => base.history?.readers.length ?? 1,
+    sweepContext: (): object => base.authority,
     isSelfRequest: (request: Bytes) =>
       composed && decodeInboundRequest(request).publisher === base.publisher.id,
     api,
     account,
     carrier,
+    copyMirrorOpening,
     listCaptures,
     fetchPage,
     checkLocalBaseline,
@@ -2810,21 +3366,78 @@ async function openAccountReceiveOwner(
     prepareGroup,
     receiveGroup,
     preparedPromotion,
-    invalidateQuietReads: receiveSelection.invalidateQuiet,
-    completedRead: (request: Bytes, kind: string, quiet?: object) => {
-      receiveSelection.completedQuiet(quiet, kind);
-      const publisher = decodeInboundRequest(request).publisher;
+    invalidateQuietReads: invalidateReadScheduling,
+    receiveContentHint: () => {
+      receiveSelection.invalidateQuiet();
+      receiveRepair.contentHint();
+      quietOriginals?.drop();
+    },
+    repairReceiveInterval: (idle: number) => receiveRepair.interval(idle),
+    completedRead: (
+      request: Bytes,
+      kind: string,
+      quiet?: object,
+      positions?: number,
+      page?: Bytes,
+      wireUsage?: ReceiveOriginalsUsage,
+    ) => {
+      const read = decodeInboundRequest(request),
+        publisher = read.publisher;
+      if (kind === 'received' && read.limit > 1 && positions === undefined)
+        throw Error('Missing verified range position count');
+      if (positions !== undefined && positions > read.limit)
+        throw Error('Receive credit exceeds the owned request');
       receiveSelection.completed(
         base.history?.readers.map((r) => r.id) ?? [base.publisher.id],
         publisher,
         kind === 'received',
         composed && publisher === base.publisher.id && (kind === 'received' || kind === 'empty'),
+        positions ?? 1,
       );
+      const scheduling = quiet && readScheduling.get(quiet);
+      if (quiet) readScheduling.delete(quiet);
+      receiveSelection.completedQuiet(scheduling?.quiet, kind);
+      receiveRepair.completed(scheduling?.repair, kind);
+      if (
+        kind === 'received' &&
+        read.limit > 1 &&
+        positions &&
+        page &&
+        outstandingStamp &&
+        outstandingCursor + positions < read.after + read.limit
+      ) {
+        rangeTail?.drop();
+        const wire = wireUsage ?? {
+          bytes: request.length + page.length + 8,
+          entries: 1,
+          positions: read.limit,
+        };
+        const copy = { bytes: request.length + page.length + 8, entries: 1, positions: read.limit };
+        // A tail is optional raw transport work; inability to copy it cannot undo accepted writing.
+        if (receiveOriginalsFit(wire, copy)) {
+          quietOriginals?.reserve(wire.bytes + copy.bytes, {
+            entries: wire.entries + copy.entries,
+            positions: wire.positions + copy.positions,
+          });
+          rangeTail?.remember(request, page, {
+            context: base.authority,
+            signal: outstandingStamp.signal,
+            after: outstandingCursor + positions,
+          });
+        }
+      }
+    },
+    narrowRead: (request: Bytes) => {
+      const r = decodeInboundRequest(request);
+      if (!composed || r.publisher === base.publisher.id || r.limit === 1) return false;
+      rangeTail?.drop(r.publisher);
+      receivePages.narrow(r.publisher);
+      return true;
     },
     fetchHistory,
     installHistory,
     createOutbound,
-    adoptSuccessor,
+    adoptSuccessor: applySuccessor,
     adoptMembership,
     refreshAuthority,
     resetDiscovery: () => {
@@ -2833,6 +3446,41 @@ async function openAccountReceiveOwner(
       historyDue = 0;
     },
   };
+}
+
+/** Internal worker factory; ordinary compatibility/factor/passkey and native checks still run. */
+export function openAccountWorkerStore(
+  input: AccountStartupOptions,
+  principalId: string,
+  joined = false,
+) {
+  if (!accountWorkerRuntime(input.slotId)) throw Error('Dedicated worker owner required');
+  return openAccountReceiveOwner(input, principalId, () => true, true, joined);
+}
+
+/** Internal worker composition. Its workspace adapter retains the real Window queue; no UI caller
+ * can use this factory outside an installed, authenticated native worker lifetime. */
+export function openAccountWorkerReceivingWorkspace<W extends AccountWorkspacePort>(
+  input: AccountWorkspaceOptions,
+  factory: AccountWorkspaceFactory<W>,
+  joined = false,
+) {
+  const runtime = accountWorkerRuntime(input.slotId);
+  if (!runtime) throw Error('Dedicated worker owner required');
+  if (!input.networkLogin) throw Error('Composed Worker requires its own account session');
+  // Same refusing legacy adapter as the session host. Only the authenticated scoped access below
+  // can drive network work; no private development bearer is available in this runtime.
+  const refusePrivateAccess: AccountAccess = async () => {
+    throw Error('Private transport is disabled for this account service.');
+  };
+  return composeReceivingWorkspace(
+    input,
+    factory,
+    refusePrivateAccess,
+    true,
+    joined,
+    createWorkerContextQueue(runtime.signal),
+  );
 }
 
 /** Storage-only surface retained for independent conformance and preparation. */
@@ -2847,11 +3495,13 @@ export async function openOwnedAccountReceiveStore(input: AccountStartupOptions)
   });
 }
 
-async function openReceivingWorkspace(
+async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
   input: AccountWorkspaceOptions,
+  createWorkspace: AccountWorkspaceFactory<W>,
   operatorToken?: AccountAccess,
   composed = false,
   joined = false,
+  contextQueue?: WorkerContextQueue,
 ) {
   const driven = operatorToken !== undefined;
   if (driven && !isAccountAccess(operatorToken)) throw Error('Invalid private operator token');
@@ -2861,13 +3511,25 @@ async function openReceivingWorkspace(
     identity: structuredClone(input.identity),
     today: input.today,
   };
+  const nativeOwner = await openAccountReceiveOwner(
+    options,
+    options.identity.id,
+    () => !driven || gate() === 'ready',
+    composed,
+    joined,
+    contextQueue,
+  );
   const {
     access,
     devices,
     deviceId,
     publisherCount,
+    sweepContext,
     invalidateQuietReads,
+    receiveContentHint,
+    repairReceiveInterval,
     completedRead,
+    narrowRead,
     isSelfRequest,
     api,
     account,
@@ -2887,16 +3549,9 @@ async function openReceivingWorkspace(
     installLocalBaseline,
     prepareLocalRemoval,
     localRetentionHint,
-  } = await openAccountReceiveOwner(
-    options,
-    options.identity.id,
-    () => !driven || gate() === 'ready',
-    composed,
-    joined,
-  );
+  } = nativeOwner;
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
-  let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue;
   let removingLocalHistory = false;
   let automaticRetention: ReturnType<typeof createAutomaticLocalRetention> | undefined;
   let automaticHistory: ReturnType<typeof createAutomaticServiceHistory> | undefined;
@@ -2904,38 +3559,13 @@ async function openReceivingWorkspace(
   const preparedRemote = import.meta.env?.['VITE_ACCOUNT_PREPARED_RECEIVE'] !== '0';
   const batching = accountBatchPolicy(import.meta.env?.['VITE_ACCOUNT_BATCH']);
   try {
-    const workspace = await createAdmittedWorkspace(
-      (config) =>
-        createAdmissionOwner(
-          carrier,
-          {
-            ...config,
-            ...(batching.localFlush ? { flushBatch: batching.localFlush } : {}),
-            ...(import.meta.env?.['VITE_ACCOUNT_BACKGROUND_FLUSH'] !== '0'
-              ? { backgroundFlush: true as const }
-              : {}),
-            ...(batching.publication ? { publishReceivePage: true } : {}),
-          },
-          (receive, prepared) => {
-            enqueue = receive;
-            prepare = prepared;
-          },
-        ),
-      {
-        identity: options.identity,
-        deviceLabelId: deviceId,
-        captureSources: true,
-        suppressEmptySources: true,
-        validateReceive: () => {
-          throw Error('Use the owned signed-page receiver');
-        },
-        ...(options.today ? { today: options.today } : {}),
-        ...(options.signal ? { signal: options.signal } : {}),
-      },
-      ledgerMode === 'incremental'
-        ? accountTextMode(import.meta.env?.['VITE_ACCOUNT_TEXT_ADMISSION'])
-        : 'reference',
+    const { workspace, enqueue, prepare } = await createWorkspace(
+      carrier,
+      deviceId,
+      options,
+      nativeOwner,
     );
+    contextQueue?.bind(enqueue);
     if (options.signal?.aborted || workspace.status.state !== 'active') {
       await workspace.close();
       throw Error('Account opening was cancelled');
@@ -2950,7 +3580,7 @@ async function openReceivingWorkspace(
         return 'closed';
       if (workspace.status.state !== 'active' || workspace.status.pressure !== null)
         return 'local-storage';
-      return globalThis.navigator?.onLine === false ? 'offline' : 'ready';
+      return !pageRuntimePorts.activity.online() ? 'offline' : 'ready';
     };
     const receiveHistory = async () => {
       let bytes: Bytes | null = null;
@@ -2968,12 +3598,13 @@ async function openReceivingWorkspace(
       }
     };
     const receivePage = (bytes: Bytes, request?: Bytes) => {
+      type Result = Awaited<ReturnType<typeof api.receivePage>>;
       try {
         return preparedRemote
-          ? prepare(bytes, (page, stage) =>
+          ? prepare<Result>(bytes, (page, stage) =>
               api.receivePage(page, (updates) => stage(updates, preparedPromotion()), request),
             )
-          : enqueue(bytes, (page, promote) => api.receivePage(page, promote, request));
+          : enqueue<Result>(bytes, (page, promote) => api.receivePage(page, promote, request));
       } catch (cause) {
         return Promise.reject(cause);
       }
@@ -2994,6 +3625,8 @@ async function openReceivingWorkspace(
         try {
           if (carrier.signal.aborted)
             throw new AdmissionError('inactive-session', 'Receive owner is closed');
+          if (oversized && narrowRead(request))
+            return { kind: 'unknown' as const, recorded: false };
           if (oversized)
             return {
               kind: 'rejected' as const,
@@ -3045,15 +3678,34 @@ async function openReceivingWorkspace(
                         promote,
                       ),
                     );
+                if (received.kind === 'range-size' && narrowRead(request))
+                  return { kind: 'unknown' as const, recorded: false };
                 for (let i = 0; i < received.kinds.length; i++)
-                  completedRead(requests[i]!, received.kinds[i]!, quiet);
+                  completedRead(requests[i]!, received.kinds[i]!, quiet, received.counts?.[i]);
                 return received;
               } finally {
                 packed.fill(0);
               }
             }
             const received = await receivePage(page, request);
-            completedRead(request, received.kind, quiet);
+            if (received.kind === 'range-size' && narrowRead(request))
+              return { kind: 'unknown' as const, recorded: false };
+            completedRead(
+              request,
+              received.kind,
+              quiet,
+              'positions' in received && typeof received.positions === 'number'
+                ? received.positions
+                : undefined,
+              page,
+              {
+                bytes:
+                  requests.reduce((n, r) => n + r.length + 4, 0) +
+                  pages.reduce((n, p) => n + p.length + 4, 0),
+                entries: requests.length,
+                positions: requests.reduce((n, r) => n + decodeInboundRequest(r).limit, 0),
+              },
+            );
             return received;
           } catch (cause) {
             if (cause instanceof ReceiveAuthorityChanged)
@@ -3081,6 +3733,7 @@ async function openReceivingWorkspace(
                 phase: 'verify',
                 code: 'inbound-size',
               });
+              if (narrowRead(request)) return { kind: 'unknown' as const, recorded: false };
               return {
                 kind: 'rejected' as const,
                 reason: 'inbound-size' as const,
@@ -3209,7 +3862,9 @@ async function openReceivingWorkspace(
                               (cause instanceof MaintenanceInterrupted ||
                                 cause instanceof ReceiveAuthorityChanged)
                             )
-                              return { kind: 'skipped' as const, reason: 'activity-or-journal' };
+                              return cause instanceof MaintenanceInterrupted
+                                ? localRetentionInterrupted(cause)
+                                : { kind: 'skipped' as const, reason: 'activity-or-journal' };
                             throw cause;
                           } finally {
                             removingLocalHistory = false;
@@ -3267,7 +3922,7 @@ async function openReceivingWorkspace(
             workspace.status.durable &&
             workspace.status.pendingItems === 0 &&
             workspace.status.pressure === null &&
-            globalThis.document?.visibilityState !== 'hidden',
+            pageRuntimePorts.activity.visibilityState() !== 'hidden',
           hint: localRetentionHint(),
         }),
         remove: result.removeLocalHistory,
@@ -3280,18 +3935,17 @@ async function openReceivingWorkspace(
       // Input/selection can precede its durable publication. Defer the quiet window immediately;
       // the existing owner guard still interrupts preparation if activity races the attempt.
       const activity = maintenance.wake;
-      globalThis.document?.addEventListener('keydown', activity, true);
-      globalThis.document?.addEventListener('beforeinput', activity, true);
-      globalThis.document?.addEventListener('pointerdown', activity, true);
-      globalThis.document?.addEventListener('visibilitychange', activity);
+      const stopActivity = [
+        pageRuntimePorts.activity.onDocument('keydown', activity, true),
+        pageRuntimePorts.activity.onDocument('beforeinput', activity, true),
+        pageRuntimePorts.activity.onDocument('pointerdown', activity, true),
+        pageRuntimePorts.activity.onDocument('visibilitychange', activity),
+      ];
       carrier.beforeRelease(() => {
         maintenance.dispose();
         changed();
         statusChanged();
-        globalThis.document?.removeEventListener('keydown', activity, true);
-        globalThis.document?.removeEventListener('beforeinput', activity, true);
-        globalThis.document?.removeEventListener('pointerdown', activity, true);
-        globalThis.document?.removeEventListener('visibilitychange', activity);
+        for (const stop of stopActivity) stop();
       });
       maintenance.wake();
     }
@@ -3318,7 +3972,7 @@ async function openReceivingWorkspace(
             !networkLoginNeedsPasskey(options.networkLogin?.getSnapshot()) &&
             workspace.status.durable &&
             workspace.status.pendingItems === 0 &&
-            globalThis.document?.visibilityState !== 'hidden',
+            pageRuntimePorts.activity.visibilityState() !== 'hidden',
           hint: localRetentionHint(),
         }),
         run: (command) => runHistory(command, true),
@@ -3331,28 +3985,29 @@ async function openReceivingWorkspace(
       const localChanged = automaticRetention?.onStatus(maintenance.refresh);
       const serviceChanged = maintenance.onStatus(() => automaticRetention?.refresh());
       const activity = maintenance.activity;
-      globalThis.document?.addEventListener('keydown', activity, true);
-      globalThis.document?.addEventListener('beforeinput', activity, true);
-      globalThis.document?.addEventListener('pointerdown', activity, true);
-      globalThis.document?.addEventListener('visibilitychange', activity);
+      const stopActivity = [
+        pageRuntimePorts.activity.onDocument('keydown', activity, true),
+        pageRuntimePorts.activity.onDocument('beforeinput', activity, true),
+        pageRuntimePorts.activity.onDocument('pointerdown', activity, true),
+        pageRuntimePorts.activity.onDocument('visibilitychange', activity),
+      ];
       carrier.beforeRelease(() => {
         maintenance.dispose();
         changed();
         statusChanged();
         localChanged?.();
         serviceChanged();
-        globalThis.document?.removeEventListener('keydown', activity, true);
-        globalThis.document?.removeEventListener('beforeinput', activity, true);
-        globalThis.document?.removeEventListener('pointerdown', activity, true);
-        globalThis.document?.removeEventListener('visibilitychange', activity);
+        for (const stop of stopActivity) stop();
       });
       maintenance.refresh();
     }
     if (outbound) {
+      const receiveSweep = createReceiveSweep();
       let notifications: ReturnType<typeof startNotifications> | undefined;
       let notificationHealthy = false;
       let unsubscribe: (() => void) | undefined, unsubscribeLocal: (() => void) | undefined;
       let unsubscribeLogin: (() => void) | undefined;
+      const stopActivity: (() => void)[] = [];
       const flushOnHide = () => {
         if (carrier.signal.aborted) return;
         scheduler.wake('flush');
@@ -3366,7 +4021,7 @@ async function openReceivingWorkspace(
         );
       };
       const visibility = () => {
-        if (globalThis.document?.visibilityState === 'hidden') flushOnHide();
+        if (pageRuntimePorts.activity.visibilityState() === 'hidden') flushOnHide();
       };
       const online = () => {
           automaticHistory?.hint();
@@ -3386,23 +4041,32 @@ async function openReceivingWorkspace(
             ? 'sign-in-required'
             : state;
         },
-        receiveInterval: () => idleReceiveInterval(notificationHealthy),
+        receiveInterval: () => repairReceiveInterval(idleReceiveInterval(notificationHealthy)),
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         send: (beforeNewEnvelope) =>
           driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
-        receive: async () => {
-          const authority = await refreshAuthority(operatorToken ?? '');
-          if (authority.kind === 'adopted') scheduler.wake('authority');
+        receive: async (sendDue) => {
+          const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
+            receiveSweep.reset();
+            throw cause;
+          });
+          if (authority.kind === 'adopted') {
+            receiveSweep.reset();
+            scheduler.wake('authority');
+          }
           if (authority.kind === 'unknown' || authority.kind === 'paused') {
+            receiveSweep.reset();
             const state = await api.status();
             return { kind: authority.kind, receivedThrough: state.receivedThrough };
           }
           try {
             if (await receiveHistory()) {
+              receiveSweep.reset();
               const state = await api.status();
               return { kind: 'progress', receivedThrough: state.receivedThrough };
             }
           } catch (cause) {
+            receiveSweep.reset();
             if (
               cause instanceof HistoryInstallSizeError ||
               (cause instanceof AdmissionError && cause.cause instanceof HistoryInstallSizeError)
@@ -3426,13 +4090,12 @@ async function openReceivingWorkspace(
           }
           // One hint concerns the workspace, not a particular publisher. Sweep every
           // eligible stream before choosing the slow idle repair interval.
-          for (let remaining = publisherCount(); ; remaining--) {
-            const step = await driveReceiveStep(result, operatorToken ?? '', gate);
-            if (step.kind !== 'idle') return step;
-            if (remaining <= 1) {
-              return step;
-            }
-          }
+          return receiveSweep.run(
+            sweepContext(),
+            publisherCount(),
+            () => driveReceiveStep(result, operatorToken ?? '', gate),
+            sendDue,
+          );
         },
         detach() {
           notifications?.close();
@@ -3440,10 +4103,7 @@ async function openReceivingWorkspace(
           unsubscribe?.();
           unsubscribeLocal?.();
           unsubscribeLogin?.();
-          globalThis.document?.removeEventListener('visibilitychange', visibility);
-          globalThis.removeEventListener?.('pagehide', flushOnHide, true);
-          globalThis.removeEventListener?.('online', online);
-          globalThis.removeEventListener?.('offline', offline);
+          for (const stop of stopActivity.splice(0)) stop();
         },
       });
       if (automaticRetention || automaticHistory) {
@@ -3469,13 +4129,14 @@ async function openReceivingWorkspace(
           // clearing another lane's integrity halt. Login itself never prompts on this path.
           scheduler.wake(options.networkLogin?.getSnapshot() === 'remembered' ? 'online' : 'gate');
         });
-        unsubscribeLocal = workspace.outgoing((bytes) => {
-          bytes.fill(0);
+        unsubscribeLocal = listenToLocalWorkspaceChanges(workspace, () => {
           scheduler.wake('local');
         });
         if (batching.publication) {
-          globalThis.document?.addEventListener('visibilitychange', visibility);
-          globalThis.addEventListener?.('pagehide', flushOnHide, true);
+          stopActivity.push(
+            pageRuntimePorts.activity.onDocument('visibilitychange', visibility),
+            pageRuntimePorts.activity.onGlobal('pagehide', flushOnHide, true),
+          );
         }
         unsubscribe = workspace.onStatus(() => {
           const current = gate();
@@ -3485,8 +4146,10 @@ async function openReceivingWorkspace(
             scheduler.wake('gate');
           }
         });
-        globalThis.addEventListener?.('online', online);
-        globalThis.addEventListener?.('offline', offline);
+        stopActivity.push(
+          pageRuntimePorts.activity.onGlobal('online', online),
+          pageRuntimePorts.activity.onGlobal('offline', offline),
+        );
         if (!carrier.beforeRelease) throw Error('Missing composed driver cleanup ownership');
         carrier.beforeRelease(scheduler.dispose);
         if (access) {
@@ -3495,8 +4158,11 @@ async function openReceivingWorkspace(
             open: (signal) => access.openNotifications(signal),
             wake: (event) => {
               if (event !== 'content') automaticHistory?.hint();
-              invalidateQuietReads();
-              if (event !== 'content') resetDiscovery();
+              if (event === 'content') receiveContentHint();
+              else {
+                invalidateQuietReads();
+                resetDiscovery();
+              }
               // A fresh subscription handshake proves renewed reachability. Content
               // hints alone never override a failed operation's retry clock.
               scheduler.wake(event === 'ready' ? 'online' : 'remote');
@@ -3557,6 +4223,7 @@ async function openReceivingWorkspace(
         outbound: undefined,
       });
     let unsubscribe: (() => void) | undefined;
+    const stopActivity: (() => void)[] = [];
     const online = () => scheduler.wake('online'),
       offline = () => scheduler.wake('gate');
     const scheduler = createReceiveScheduler({
@@ -3566,8 +4233,7 @@ async function openReceivingWorkspace(
       detach() {
         operatorToken = undefined;
         unsubscribe?.();
-        globalThis.removeEventListener?.('online', online);
-        globalThis.removeEventListener?.('offline', offline);
+        for (const stop of stopActivity.splice(0)) stop();
       },
     });
     try {
@@ -3579,8 +4245,10 @@ async function openReceivingWorkspace(
           scheduler.wake('gate');
         }
       });
-      globalThis.addEventListener?.('online', online);
-      globalThis.addEventListener?.('offline', offline);
+      stopActivity.push(
+        pageRuntimePorts.activity.onGlobal('online', online),
+        pageRuntimePorts.activity.onGlobal('offline', offline),
+      );
       if (!carrier.beforeRelease) throw Error('Missing receive driver cleanup ownership');
       carrier.beforeRelease(scheduler.dispose);
       scheduler.wake('start');
@@ -3607,6 +4275,21 @@ async function openReceivingWorkspace(
 }
 
 /** Private manual v9 editor/receive surface, without automatic network work. */
+function openReceivingWorkspace(
+  input: AccountWorkspaceOptions,
+  operatorToken?: AccountAccess,
+  composed = false,
+  joined = false,
+) {
+  return composeReceivingWorkspace(
+    input,
+    createPageAccountWorkspace,
+    operatorToken,
+    composed,
+    joined,
+  );
+}
+
 export const openOwnedReceivingAccountWorkspace = (input: AccountWorkspaceOptions) =>
   openReceivingWorkspace(input);
 /** Private polling receiver. Raw request/page operations remain internal to this composition. */

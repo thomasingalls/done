@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from './clockSkew.ts';
 import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** One private admission-only successor. Historical evidence, never a live consumption grant. */
 import { closed, accountIdentifier } from './preparation.ts';
@@ -388,7 +389,7 @@ async function verifyDiscovery(
     !Number.isSafeInteger(now) ||
     now < 0 ||
     r.expiresAt <= now ||
-    r.expiresAt - now > DISCOVERY_LIFETIME_MS ||
+    r.expiresAt - now > DISCOVERY_LIFETIME_MS + CLOCK_SKEW_ALLOWANCE_MS ||
     !same(r.pin, base.pin) ||
     r.workspaceId !== first.epoch.workspaceId ||
     r.lineageId !== first.epoch.lineageId ||

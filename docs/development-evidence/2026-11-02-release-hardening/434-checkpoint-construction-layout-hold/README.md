@@ -1,0 +1,7 @@
+# Preserve the remaining checkpoint at the construction layout check — phase434
+
+Continue declared root commands64–82 sequentially after the narrowly repaired receive control. Keep the pinned source population unchanged and stop at the first nonzero. Preserve every result and leave unattempted commands explicitly untested.
+
+Eight commands64–71pass:receive-editor,service-inbound,receive-transport,receive-driver,sync,admission-bounds,activation andcrypto-prep. In72first-authority all inventory, authority, format-contract, admission, slot-verifier,31vector and lint stages pass; only its final formatter rejects constructions.json. There is no timeout or failed security assertion. Ten commands73–82remain unattempted. Independent review verifies all59,466source files and membership in both directions unchanged. The proposed registry layout preserves all99parsed entries and every non-whitespace JSON token. The private reviewer first assumed the direct crypto census emitted a parent summary; retain that failed collector/source, then correct only the assumption and successfully retain all real parent/raw reports. [All attempts and reviewed source identities](./evidence.json).
+
+Failed partial coherent checkpoint, not Stage3closure or Stage5acceptance. All original case, recovery and performance deadlines remain. The nine later full-unit contract commands have not run. No canonical app or old test edits in434, no new lab, signing, push, release preparation, publication or deployment. B native fairness/past-index remains open; pause for commits beforeStage5.

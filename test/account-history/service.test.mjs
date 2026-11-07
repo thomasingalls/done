@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { CLOCK_SKEW_ALLOWANCE_MS } from '../../account-protocol/clockSkew.ts';
 import { randomBytes } from 'node:crypto';
 import { mutate } from '../account-successor/service-fixtures.mjs';
 import { setup } from './service-fixture.mjs';
@@ -14,19 +15,24 @@ import {
 const zero = '00'.repeat(32);
 test('history senders leave clock headroom without weakening service expiry bounds', async (t) => {
   const f = await setup(t);
-  // The server fixture is at 1000; the device is 700 ms ahead, like the affected phone.
+  // A request beyond the approved future allowance still refuses.
   const clientNow = 1700;
-  const old = await f.makeRequest('read', 'catalog', { expiresAt: clientNow + 60000 });
-  assert.deepEqual(await f.exchange(old), { ok: false, refusal: 'unavailable' });
+  const beyond = await f.makeRequest('read', 'catalog', {
+    expiresAt: clientNow + 60000 + CLOCK_SKEW_ALLOWANCE_MS,
+  });
+  assert.deepEqual(await f.exchange(beyond), { ok: false, refusal: 'unavailable' });
   for (const skew of [-5000, 700, 5000]) {
     const expiresAt = 1000 + skew + HISTORY_EXCHANGE_REQUEST_LIFETIME_MS;
     const request = await f.makeRequest('read', 'catalog', { expiresAt });
     const result = await f.exchange(request);
     await f.check(request, result);
   }
-  // No extra grace period at either verifier boundary, including the commit-time guard.
+  // Expiry has no grace; the future boundary includes only the shared clock allowance.
   assert.throws(() => checkHistoryExchangeLifetime(1000, 1000), /expired/);
-  assert.throws(() => checkHistoryExchangeLifetime(61001, 1000), /expired/);
+  assert.throws(
+    () => checkHistoryExchangeLifetime(61001 + CLOCK_SKEW_ALLOWANCE_MS, 1000),
+    /expired/,
+  );
   const expired = await f.makeRequest('read', 'catalog', { expiresAt: 1000 });
   assert.deepEqual(await f.exchange(expired), { ok: false, refusal: 'unavailable' });
 });

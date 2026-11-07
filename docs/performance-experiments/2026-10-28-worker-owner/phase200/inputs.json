@@ -1,0 +1,7 @@
+{
+  "src/crdt/workerLocalGenesis.ts": "2cdf0e81e806bdc96a00d67030b07b8a459633b531d1eefc3e6348564cd1a1f0",
+  "src/crdt/localGenesis.ts": "9f381c1ae94fadcc32acddf5aac3b668dd66c8e0b8561cfbcb1edf9d867aaf42",
+  "src/crdt/localStartup.worker.ts": "10d096c9c3a8b7675742fe6c805868a3b2c21f8b0c996e26e91110fb579c5f7f",
+  "src/crdt/localStartupClient.ts": "29f743e38157af033a00631ef434bd330cf2522d6c230af4fdbf91efa840182f",
+  "test/workerLocalGenesis.test.ts": "cb637dfd274bbc37d147d80c42f4c58672f54d37a028c59a0fcfec68b9be832e"
+}

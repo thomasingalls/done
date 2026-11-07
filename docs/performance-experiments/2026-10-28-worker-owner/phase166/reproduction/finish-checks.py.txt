@@ -1,0 +1,8 @@
+from pathlib import Path
+import subprocess,json,time
+r=Path(__file__).parent;repo=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node';initial=json.loads((r/'phase166-checks-initial.json').read_text());receipt=initial[:-1];assert len(receipt)==9 and all(x['exit']==0 for x in receipt)
+for name in ['scripts/release-validation/check.mjs','scripts/release-validation/plan.mjs']:
+ started=time.time_ns()//1000000
+ with(r/('phase166-final-'+Path(name).stem+'.log')).open('w')as log:q=subprocess.run([node,name],cwd=repo,stdout=log,stderr=subprocess.STDOUT)
+ receipt.append(dict(command=[node,name],startedAt=started,finishedAt=time.time_ns()//1000000,exit=q.returncode));assert q.returncode==0
+(r/'phase166-checks.json').write_text(json.dumps(receipt,indent=2)+'\n')

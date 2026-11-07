@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from './clockSkew.ts';
 import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** A removed credential may learn its own terminal proof, never current content authority. */
 import { closed } from './preparation.ts';
@@ -106,7 +107,7 @@ export async function verifyRemovalDiscoveryRequest(
     !Number.isSafeInteger(now) ||
     now < 0 ||
     r.expiresAt <= now ||
-    r.expiresAt - now > MEMBERSHIP_DISCOVERY_LIFETIME_MS
+    r.expiresAt - now > MEMBERSHIP_DISCOVERY_LIFETIME_MS + CLOCK_SKEW_ALLOWANCE_MS
   )
     throw Error('Removal discovery scope or lifetime changed');
   await proofWork(

@@ -1,3 +1,4 @@
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 import { eraseVerified } from './verifiedRecords';
 import type { AccountBaselineRead } from './localBaselineShadow';
 import { maintenanceTask } from './contentMaintenance';
@@ -86,6 +87,7 @@ import {
   type CustodyScope,
 } from './custodyRecord';
 import {
+  requireExclusiveSessionTask,
   openWriteSession,
   type WriteSession,
   withExclusiveSlot,
@@ -801,6 +803,25 @@ const prepareCustody = (
       factor.fill(0);
     },
     describe: () => ({ ...descriptor(scope, record), generation: keys.generation ?? 1 }),
+    /** Internal worker composition only. Export journal subkeys, never root/content/signing keys. */
+    async copyMirrorJournalOpening(task: SessionTask) {
+      if (!accountWorkerRuntime(authority.slotId))
+        throw Error('Worker journal composition required');
+      const dbName = await task.wait(() => deriveStoreName(scope.principalId, scope.workspaceId));
+      return task.step(() => {
+        if (!keys.journal || !journal || !carrier) throw Error('Journal owner is not initialized');
+        return {
+          scope: { ...scope, storeId: record.store_id, rootId: record.root_id },
+          dbName,
+          generation: keys.generation ?? 1,
+          key: keys.journal.slice(),
+          previous: [...(keys.previousJournals ?? [])].map(([g, k]) => [g, k.slice()] as const),
+          ...(carrier.journalBinding()
+            ? { binding: structuredClone(carrier.journalBinding()) }
+            : {}),
+        };
+      });
+    },
     get journal() {
       return journal!;
     },
@@ -933,6 +954,14 @@ const prepareCustody = (
               task.wait(() => crypto.subtle.verify('HMAC', keys.metadata!, mac, payload)),
           },
         );
+        const initialJournal =
+          initialAccount && accountWorkerRuntime(authority.slotId)
+            ? await task.wait(() =>
+                accountWorkerRuntime(authority.slotId)!.journal.read(
+                  journalPrefix(nameForInitial!),
+                ),
+              )
+            : undefined;
         await carrier.initialize(
           task,
           creation,
@@ -941,6 +970,12 @@ const prepareCustody = (
                 if (!record.initial_account || record.active_rotation || !withJournal || creation)
                   throw Error('Initial account generation is not selected');
                 const prefix = journalPrefix(nameForInitial!);
+                if (initialJournal) {
+                  const fresh = accountWorkerRuntime(authority.slotId)!.journal.pinned(prefix);
+                  if (fresh.entries.length)
+                    throw Error('Unfinished device installation has journalled edits');
+                  return;
+                }
                 for (let i = 0; i < localStorage.length; i++)
                   if (localStorage.key(i)?.startsWith(prefix))
                     throw Error('Unfinished device installation has journalled edits');
@@ -1088,6 +1123,31 @@ export const withPreactiveContentUnderPermit = async <T>(
   }
 };
 
+/** Local retirement-only data read, including after source content removal. No content initialization,
+ * inferred Account era, application permission or keys escape. Caller must verify target coverage. */
+export async function withLocalJournalUnderPermit<T>(
+  task: SessionTask,
+  input: CustodyAuthority,
+  code: string,
+  operation: (entries: readonly import('./journalStore').ObservedEntry[]) => Promise<T>,
+): Promise<T> {
+  const authority = captureAuthority(input);
+  requireExclusiveSessionTask(task, authority.slotId);
+  const owner = prepareCustody(authority, code, false, true);
+  let opened: import('./journalStore').ObservedEntry[] | undefined;
+  try {
+    await owner.initialize(task);
+    opened = await owner.journal.readSnapshot(task);
+    requireExclusiveSessionTask(task, authority.slotId);
+    const result = await task.wait(() => operation(opened!));
+    requireExclusiveSessionTask(task, authority.slotId);
+    return result;
+  } finally {
+    if (opened) eraseJournalSnapshot(opened);
+    owner.dispose();
+  }
+}
+
 /** Internal cold recovery under an already-held lifecycle permit. No writes or keys escape. */
 export const withRecoveryUnderPermit = async <T>(
   task: SessionTask,
@@ -1113,13 +1173,15 @@ export const withRecoveryUnderPermit = async <T>(
     true,
     false,
     validate && validation?.reuseOpened
-      ? async (rows, scope, counter, view, baseline) => {
+      ? async (rows, scope, counter, view, baseline, localRetentionRevision) => {
           scope.step(() => {});
           // The carrier supplies the same identity only after a fresh authenticated read
           // matches both its counter and every sealed row. Never share it across owners.
           if (view && view === validatedView) return;
           validatedView = undefined;
-          await scope.wait(() => validate(rows, scope, counter, view, baseline));
+          await scope.wait(() =>
+            validate(rows, scope, counter, view, baseline, localRetentionRevision),
+          );
           scope.step(() => {
             validatedView = view;
           });
@@ -1243,11 +1305,11 @@ export interface JournalSession extends ContentSession {
   flushJournal(): Promise<JournalFlushReceipt>;
   readonly observedJournalCharacters: number;
 }
-export const openJournalSession = async (
+const openJournalOwner = async (
   input: CustodyAuthority,
   code: string,
   options: { signal?: AbortSignal } = {},
-): Promise<JournalSession> => {
+) => {
   const owner = prepareCustody(input, code, true, true);
   let live;
   try {
@@ -1259,7 +1321,92 @@ export const openJournalSession = async (
   } finally {
     owner.eraseFactor();
   }
+  return { owner, live };
+};
+export const openJournalSession = async (
+  input: CustodyAuthority,
+  code: string,
+  options: { signal?: AbortSignal } = {},
+): Promise<JournalSession> => {
+  const { owner, live } = await openJournalOwner(input, code, options);
   return attachJournal(owner, live);
+};
+
+/** Trusted Local Worker composition: identical native/factor initialization, journal subkeys only.
+ * Root/content/private credential keys and live tasks never leave this realm. */
+export const openLocalWorkerJournalSession = async (
+  input: CustodyAuthority,
+  code: string,
+  options: { signal?: AbortSignal } = {},
+) => {
+  if (accountWorkerRuntime(input.slotId)?.kind !== 'local')
+    throw Error('Local Worker journal composition required');
+  const { owner, live } = await openJournalOwner(input, code, options);
+  return Object.freeze({
+    journal: attachJournal(owner, live),
+    copyOpening: () => live.run((task) => owner.copyMirrorJournalOpening(task)),
+    compactContent: (
+      interrupt: AbortSignal,
+      commit: (
+        audited: import('./contentCompaction').DiskState,
+        covered: StoredRecord[],
+        observation: number,
+      ) => Promise<boolean>,
+    ) =>
+      live
+        .run(async (parent) => {
+          const task = maintenanceTask(parent, interrupt);
+          const checkJournal = async () => {
+            const snapshot = await owner.journal.readSnapshot(task);
+            try {
+              task.step(() => validateContentUpdates(snapshot.map((e) => e.bytes)));
+            } finally {
+              eraseJournalSnapshot(snapshot);
+            }
+          };
+          return owner.carrier.compact(
+            task,
+            () => {
+              throw Error('Local Worker compaction requires an authenticated journal observation');
+            },
+            {
+              checkJournal,
+              removeCovered: (audited, covered) =>
+                owner.journal.withObservation(task, async (id, entries) => {
+                  task.step(() => validateContentUpdates(entries.map((e) => e.bytes)));
+                  const result = await task.wait(() => commit(audited, covered, id));
+                  task.step(() => {});
+                  return result;
+                }),
+            },
+          );
+        })
+        .catch(async (cause: unknown) => {
+          if (cause instanceof ContentError && cause.code === 'missing-content')
+            cause = new ContentError(
+              'repair-required',
+              'Initialized content metadata is missing.',
+              { cause },
+            );
+          if (
+            cause instanceof Error &&
+            'code' in cause &&
+            (cause.code === 'repair-required' || cause.code === 'generation-changed')
+          )
+            await live.close();
+          throw cause;
+        }),
+    withJournalObservation: <T>(
+      operation: (
+        id: number,
+        entries: readonly import('./journalStore').ObservedEntry[],
+        task: SessionTask,
+      ) => Promise<T>,
+    ) =>
+      live.run((task) =>
+        owner.journal.withObservation(task, (id, entries) => operation(id, entries, task)),
+      ),
+  });
 };
 export const attachJournal = (
   owner: ReturnType<typeof prepareCustody>,
@@ -1275,7 +1422,7 @@ export const attachJournal = (
     let firstFailure: JournalError | undefined;
     try {
       // Preserve the existing invocation-time fast path, including the exact captured entry set.
-      snapshot = live.write(() => owner.journal.snapshot());
+      if (!owner.journal.asynchronous) snapshot = live.write(() => owner.journal.snapshot());
     } catch (cause) {
       if (!isJournalChanged(cause)) return Promise.reject(cause);
       firstFailure = cause;

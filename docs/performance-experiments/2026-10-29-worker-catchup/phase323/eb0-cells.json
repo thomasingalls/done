@@ -1,0 +1,28 @@
+[
+  {
+    "eb": "00",
+    "n": 3,
+    "functionalPass": true,
+    "medianDrainMs": 18663.5,
+    "drainsMs": [
+      18682.400146484375,
+      18578.199951171875,
+      18663.5
+    ],
+    "gatePass": true,
+    "diagnostic50": false
+  },
+  {
+    "eb": "11",
+    "n": 3,
+    "functionalPass": true,
+    "medianDrainMs": 20183.699951171875,
+    "drainsMs": [
+      20183.699951171875,
+      19921.199951171875,
+      20473.300048828125
+    ],
+    "gatePass": true,
+    "diagnostic50": false
+  }
+]

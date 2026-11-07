@@ -1,0 +1,646 @@
+{
+  "phase": 448,
+  "date": "2026-11-05",
+  "sourceRevision": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+  "scope": "diagnose failed fairness preflight by separating service and test CPU; no timing acceptance",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/fixtures.ts",
+      "sha256": "5760fc000f8ebba39b5b370832b38b14eb03182ea65620b5c065620cee97efeb",
+      "bytes": 4971
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/server.mjs",
+      "sha256": "22930b1e10b0866e2f96ab4ec8ad8d4e5dbf649d48c0eb33acd35b64747d6dd2",
+      "bytes": 5479
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-continuation.config.ts",
+      "sha256": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "bytes": 446
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/development-server.ts",
+      "sha256": "0d9f161fa1cd20f6dfb89e1a313bbaaa0d81922144d5f5df47db357471f3b2a4",
+      "bytes": 1485
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23",
+      "bytes": 1852
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f",
+      "bytes": 11736
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receivePageTransport.ts",
+      "sha256": "381659b70f376d44fba18da534236ae07119263100cb637b544512ed89225c58",
+      "bytes": 6489
+    }
+  ],
+  "declaration": {
+    "phase": 448,
+    "declaredEpoch": 1793887853.8957272,
+    "question": "Attribute shared Node hot-period CPU to service versus test overhead",
+    "authorization": "operator requests service/test distinction before sparse scheduling",
+    "scope": "one diagnostic case; no acceptance credit",
+    "sourceRevision": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "sourcePins": {
+      "test/inbound-continuation/fairness.spec.ts": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "test/inbound-index/past-index.spec.ts": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "playwright.inbound-continuation.config.ts": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "playwright.inbound-index.config.ts": "9f7ae060eff3538ef31af56b2d20fb5d27d7f0bebc2218b50cc884fec028b2ee"
+    },
+    "observationPins": {
+      "profile448.spec.ts": "c83676680290fe8d0a416b4555bd3dcbffc0ea13a70f25994ba0b7219fe3187b",
+      "observe448.ts": "f675312b330fd2158700291316746a27815bf9c7b5cff0d3cb209f34b3b513c4",
+      "playwright448.config.ts": "98a4eda7bdd4403c8af5a4ede89ad1173339d740693edbb1a8179c638d9f2517"
+    },
+    "inverseByteProof": {
+      "originalSpecSha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "privateSpecSha256": "c83676680290fe8d0a416b4555bd3dcbffc0ea13a70f25994ba0b7219fe3187b",
+      "inverseEditsRestoreOriginalBytes": true,
+      "allAssertionsWaitsDeadlinesAndOfferedEditsUnchanged": true,
+      "acceptedRowsCalls": "same arguments, original return/throw, no extra calls; only wall/process-CPU observations",
+      "profiler": "Node inspector only, not browser CDP",
+      "phase447Observers": "absent"
+    },
+    "frozenBuild": "/private/tmp/done-stage5-hardening-20261105/build-r2",
+    "sameClosedSeed": "/private/tmp/done-stage5-hardening-20261105/preflight-fairness/seed",
+    "maximumAppRuns": 1,
+    "instrumentation": "Node inspector 1000us sampling from hot start through original cutoff, plus synchronous acceptedRows wall/process-CPU counters",
+    "attributionDeclaredBeforeRun": [
+      "acceptedRows ancestry: test accepted-tuple census and assertions",
+      "account-service ancestry: service work, absent acceptedRows ancestry",
+      "private observe448 ancestry: diagnostic bookkeeping, absent acceptedRows/service ancestry",
+      "remaining test and Playwright ancestry: test/harness",
+      "protocol frames without service/test ancestry: explicitly unattributed shared protocol",
+      "VM idle/program/GC and other native: separate; do not silently count as service"
+    ],
+    "weights": "Report sample count and timeDeltas, with process CPU and event-loop utilization; sampling time is not an exact CPU accounting",
+    "phase447NetworkAndWindowObserversAbsent": true,
+    "browser": "same installed Playwright151 as445-447",
+    "allGatesLimitsBudgetsDeadlinesAndChecksUnchanged": true,
+    "hostLogSeconds": 5,
+    "powerLogs": "window only plus complete raw SHA256/size",
+    "stop": "known sparse cutoff failure is diagnostic; any new functional failure stops",
+    "argv": [
+      "env",
+      "INBOUND_CONTINUATION_ROOT=/private/tmp/done-service-overhead-448-20261105/fixture",
+      "INBOUND_CONTINUATION_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-positive",
+      "INBOUND_CONTINUATION_NEGATIVE_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-negative",
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-service-overhead-448-20261105/playwright448.config.ts",
+      "--grep",
+      "continuous native fairness known-backlog normal$",
+      "--max-failures",
+      "1"
+    ]
+  },
+  "review": {
+    "phase": 448,
+    "actualAppRuns": 1,
+    "case": {
+      "title": "continuous native fairness known-backlog normal",
+      "status": "failed",
+      "durationMs": 66208,
+      "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 0\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    20,\u001b[22m\n\u001b[2m    40,\u001b[22m\n\u001b[32m-   60,\u001b[39m\n\u001b[2m  ]\u001b[22m",
+      "location": {
+        "file": "/private/tmp/done-service-overhead-448-20261105/profile448.spec.ts",
+        "column": 62,
+        "line": 267
+      }
+    },
+    "scope": "Node isolate CPU attribution, not acceptance or browser input/peer timing",
+    "hotWallMs": 54153.046630859375,
+    "hotAcceptedRowsCalls": 92,
+    "hotAcceptedRowsSynchronousWallMs": 41134.19658000002,
+    "hotAcceptedRowsProcessCpuMs": 42063.313,
+    "hotProcessCpuMs": 47856.31,
+    "eventLoopUtilization": {
+      "idle": 1023.7372230000001,
+      "active": 53135.08565106921,
+      "utilization": 0.9810974986406109
+    },
+    "sampledSpanMs": 54382.459,
+    "weightedSampleMs": 54382.334,
+    "profileCategories": [
+      {
+        "category": "test acceptedRows",
+        "weightedMs": 40445.743,
+        "percentOfAllSamples": 74.37294434622832,
+        "samples": 32207
+      },
+      {
+        "category": "(idle)",
+        "weightedMs": 8608.334,
+        "percentOfAllSamples": 15.829283825883603,
+        "samples": 6812
+      },
+      {
+        "category": "service",
+        "weightedMs": 3093.585,
+        "percentOfAllSamples": 5.688584458327957,
+        "samples": 2456
+      },
+      {
+        "category": "test/harness",
+        "weightedMs": 980.872,
+        "percentOfAllSamples": 1.8036592544924606,
+        "samples": 768
+      },
+      {
+        "category": "(garbage collector)",
+        "weightedMs": 470.135,
+        "percentOfAllSamples": 0.8644994898527159,
+        "samples": 364
+      },
+      {
+        "category": "other",
+        "weightedMs": 326.996,
+        "percentOfAllSamples": 0.6012908530185556,
+        "samples": 265
+      },
+      {
+        "category": "observer",
+        "weightedMs": 225.292,
+        "percentOfAllSamples": 0.41427423839513766,
+        "samples": 3
+      },
+      {
+        "category": "(program)",
+        "weightedMs": 164.709,
+        "percentOfAllSamples": 0.30287225259585215,
+        "samples": 131
+      },
+      {
+        "category": "shared protocol unattributed",
+        "weightedMs": 66.668,
+        "percentOfAllSamples": 0.12259128120540026,
+        "samples": 54
+      }
+    ],
+    "topSelfFrames": [
+      {
+        "function": "_addStep",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright@1.62.0/node_modules/playwright/lib/worker/workerProcessEntry.js",
+        "generatedLineZeroBased": 986,
+        "weightedMs": 16811.904
+      },
+      {
+        "function": "_findLastPredefinedStep",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright@1.62.0/node_modules/playwright/lib/worker/workerProcessEntry.js",
+        "generatedLineZeroBased": 974,
+        "weightedMs": 11001.541
+      },
+      {
+        "function": "(idle)",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 8608.334
+      },
+      {
+        "function": "callMatcherAsStep",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright@1.62.0/node_modules/playwright/lib/matchers/expect.js",
+        "generatedLineZeroBased": 13301,
+        "weightedMs": 3009.022
+      },
+      {
+        "function": "",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/utilsBundle.js",
+        "generatedLineZeroBased": 24675,
+        "weightedMs": 1583.725
+      },
+      {
+        "function": "captureRawStack",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/coreBundle.js",
+        "generatedLineZeroBased": 9677,
+        "weightedMs": 981.528
+      },
+      {
+        "function": "cloneCallSite",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/utilsBundle.js",
+        "generatedLineZeroBased": 24673,
+        "weightedMs": 873.149
+      },
+      {
+        "function": "wrapCallSite",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/utilsBundle.js",
+        "generatedLineZeroBased": 24683,
+        "weightedMs": 827.794
+      },
+      {
+        "function": "filteredStackTrace",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/coreBundle.js",
+        "generatedLineZeroBased": 9799,
+        "weightedMs": 742.456
+      },
+      {
+        "function": "prepareStackTrace",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/utilsBundle.js",
+        "generatedLineZeroBased": 24739,
+        "weightedMs": 613.368
+      },
+      {
+        "function": "prepare",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 606.253
+      },
+      {
+        "function": "createMatchers",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright@1.62.0/node_modules/playwright/lib/matchers/expect.js",
+        "generatedLineZeroBased": 13282,
+        "weightedMs": 513.491
+      },
+      {
+        "function": "object3.<computed>",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/utilsBundle.js",
+        "generatedLineZeroBased": 24676,
+        "weightedMs": 485.749
+      },
+      {
+        "function": "(garbage collector)",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 470.135
+      },
+      {
+        "function": "writeUtf8String",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 454.249
+      },
+      {
+        "function": "fingerprint",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/account-service/publisherTips.ts",
+        "generatedLineZeroBased": 205,
+        "weightedMs": 382.748
+      },
+      {
+        "function": "parseStackFrame",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/coreBundle.js",
+        "generatedLineZeroBased": 9685,
+        "weightedMs": 312.184
+      },
+      {
+        "function": "decodeSubmission",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/account-protocol/submission.ts",
+        "generatedLineZeroBased": 29,
+        "weightedMs": 234.376
+      },
+      {
+        "function": "post",
+        "url": "node:inspector",
+        "generatedLineZeroBased": 114,
+        "weightedMs": 223.042
+      },
+      {
+        "function": "fileURLToPath",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/coreBundle.js",
+        "generatedLineZeroBased": 9811,
+        "weightedMs": 215.332
+      },
+      {
+        "function": "all",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 203.542
+      },
+      {
+        "function": "decodePositionResponse",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/account-protocol/positionDecision.ts",
+        "generatedLineZeroBased": 66,
+        "weightedMs": 201.843
+      },
+      {
+        "function": "(program)",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 164.709
+      },
+      {
+        "function": "canonical",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/account-service/protocol.ts",
+        "generatedLineZeroBased": 30,
+        "weightedMs": 158.628
+      },
+      {
+        "function": "get",
+        "url": "",
+        "generatedLineZeroBased": -1,
+        "weightedMs": 156.506
+      },
+      {
+        "function": "prepareStackTraceCallback",
+        "url": "node:internal/errors",
+        "generatedLineZeroBased": 130,
+        "weightedMs": 152.248
+      },
+      {
+        "function": "resolve",
+        "url": "node:path",
+        "generatedLineZeroBased": 1244,
+        "weightedMs": 143.417
+      },
+      {
+        "function": "writeChannelMessage",
+        "url": "node:internal/child_process/serialization",
+        "generatedLineZeroBased": 162,
+        "weightedMs": 117.747
+      },
+      {
+        "function": "supportRelativeURL",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright-core@1.62.0/node_modules/playwright-core/lib/utilsBundle.js",
+        "generatedLineZeroBased": 24505,
+        "weightedMs": 115.087
+      },
+      {
+        "function": "publisherContext",
+        "url": "file:///Users/thomasingalls/.codex/worktrees/7fda/done/account-service/publisherTips.ts",
+        "generatedLineZeroBased": 18,
+        "weightedMs": 104.709
+      }
+    ],
+    "acceptedRowsByPeriod": [
+      {
+        "fromMs": 0,
+        "toMs": 10000,
+        "calls": 20,
+        "wallMs": 2715.2046249999985,
+        "maxCallMs": 196.1128749999989
+      },
+      {
+        "fromMs": 10000,
+        "toMs": 20000,
+        "calls": 21,
+        "wallMs": 5605.283415000005,
+        "maxCallMs": 342.0525000000016
+      },
+      {
+        "fromMs": 20000,
+        "toMs": 30000,
+        "calls": 21,
+        "wallMs": 9471.682585000013,
+        "maxCallMs": 574.7976249999992
+      },
+      {
+        "fromMs": 30000,
+        "toMs": 40000,
+        "calls": 15,
+        "wallMs": 9958.564084000005,
+        "maxCallMs": 768.7032090000066
+      },
+      {
+        "fromMs": 40000,
+        "toMs": 60000,
+        "calls": 15,
+        "wallMs": 13383.461871,
+        "maxCallMs": 1052.1325829999914
+      }
+    ],
+    "sourceAssetsSeedExact": true,
+    "phase447ObserversAbsent": true,
+    "allTupleAssertionsRetained": true,
+    "host": {
+      "samples": 14,
+      "swapFirstMiB": 15800.31,
+      "swapLastMiB": 15800.31,
+      "swapIncreases": [],
+      "nonTestAbove100Spans": [],
+      "automaticNoiseRetryTriggered": false
+    },
+    "limitations": [
+      "Sampling weights are diagnostic wall-time attribution, not exact CPU accounting",
+      "process.cpuUsage includes native/background CPU; synchronous helper wall time is the cleaner blocking measure",
+      "service still has real work, but this run does not establish a service performance regression",
+      "No repaired harness or app change has run; no original failure is regraded",
+      "Later archive/Undo/cold unreached"
+    ],
+    "next": "Private reporting-overhead control preserving all four tuple predicates, then omitted sparse scheduling"
+  },
+  "externalDependencyReference": {
+    "path": "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/.pnpm/playwright@1.62.0/node_modules/playwright/lib/worker/workerProcessEntry.js",
+    "sha256": "cc8274565200e5f5aeecc80aef9518526ff82a32c36e2a2b06e445c238cebcc6",
+    "bytes": 75653,
+    "package": "playwright@1.62.0",
+    "linesOneBased": [
+      974,
+      1001
+    ],
+    "observation": "walkParentSteps recursively searches existing step tree before each added step; no dependency change"
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/child.log",
+      "sha256": "b2763d2519a808b043d88985966b0ac1f0e4190b976b672ca89e694e60ec7920",
+      "bytes": 2246,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/host-load.jsonl",
+      "sha256": "708a8db1d124e27c3bc1fd5fa4941859a51bf96e2cc85b5231b20a43e4325737",
+      "bytes": 21605,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/power-assertions-before.txt",
+      "sha256": "64d6d680a35a917e3a225714e6871d4ce4c03df9c589e6878cd221ecbfc27a3b",
+      "bytes": 1674,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/power-log-after.meta.json",
+      "sha256": "7b3671c7c7dea345dc5cb1783e30208b9cd6ac2388ddd8517e51a6f520068530",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/power-log-after.txt",
+      "sha256": "ef406091a35376a6bf8f27992bed4b6ffb174a6d0ca66aeed8b3473435c0e980",
+      "bytes": 468,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/power-log-before.meta.json",
+      "sha256": "542b217cae5d2aed4976200b909910f9cb0766210b5d614039ca21a478bb760a",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/448-service-test-cpu/run.json",
+      "sha256": "23adce1ee88b40dd48f619518db47d49b437874c4909b787f52c46ae74177262",
+      "bytes": 1969,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-declaration.json",
+      "sha256": "f06e0d931c6e9942a1b9ef5b8f0c628c8fd8c458043ddc71f7c7df3c31b57887",
+      "bytes": 3739,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-list.log",
+      "sha256": "c3982e2d94a1e5dc9b463b012ca20ea841d2e864dbbb84c410f0ca79b8e8e828",
+      "bytes": 443,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-playwright-reporting-source.json",
+      "sha256": "a502fed6536b302348e41dd61f5edd50673e39c2b2342911a35bbc761214fb30",
+      "bytes": 455,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-profile-preliminary.json",
+      "sha256": "999967a7448c19e7743a898194040eec016987a7cc42357731599cefedd9888b",
+      "bytes": 7142,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-review.json",
+      "sha256": "70db07e11cc516d94226fc740f0ac5dbe1278b9901c00c6a815bd9b74e053cc5",
+      "bytes": 10661,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-run-result.json",
+      "sha256": "b6d331a38726346eec7d576a8710df604b312ef58ad7e7c161854dae2bf63a1a",
+      "bytes": 2201,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-seed-inventory.json",
+      "sha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+      "bytes": 105480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/448-source-equivalence.json",
+      "sha256": "d6efca862137b8b64c73bccb792c173b35fdbf463563aa821c68d53aa515c202",
+      "bytes": 496,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/fixture/continuous-native-fairness-known-backlog-normal/evidence.json",
+      "sha256": "29a9be04454e1de98a3fb119610d6cd7a546390ca5d65ba9fc7abfac9184badf",
+      "bytes": 1494,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/node448.cpuprofile",
+      "sha256": "a6b083033ea53852f47c8781a6380f271f689769d9ba3db5c1171d90e04ba9af",
+      "bytes": 1118261,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/observation448.json",
+      "sha256": "f3f30ac68d230f146d80719ae03c4fa6d9d428aa3a62a22bcb0acff97ac1fdbc",
+      "bytes": 43854,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/observe448.ts",
+      "sha256": "f675312b330fd2158700291316746a27815bf9c7b5cff0d3cb209f34b3b513c4",
+      "bytes": 1939,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/package.json",
+      "sha256": "a90fc33418afa2b9cbf4768524b021135b965ecdf993457505bfae3ac44a8428",
+      "bytes": 33,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/playwright448.config.ts",
+      "sha256": "98a4eda7bdd4403c8af5a4ede89ad1173339d740693edbb1a8179c638d9f2517",
+      "bytes": 504,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/prepare448.py",
+      "sha256": "357109598364118d6ac87b602a8eec040af6f60b4e7950674a049b4f57e3117c",
+      "bytes": 3124,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/profile448.spec.ts",
+      "sha256": "c83676680290fe8d0a416b4555bd3dcbffc0ea13a70f25994ba0b7219fe3187b",
+      "bytes": 18721,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/record448.py",
+      "sha256": "56465d3d21329c3610b966edda224fd88ae43975005451a3154a96f880f1ae28",
+      "bytes": 9789,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/results448.json",
+      "sha256": "7371d5cc72bb4e17c42a7e2c29a29329c13dca11bd7baaef25827352a5a267f6",
+      "bytes": 9004,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/review448.py",
+      "sha256": "cbbb7ac99341648e3c738c2428f19ad0318a291fe091fe75a49447ed0def6a84",
+      "bytes": 5542,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-service-overhead-448-20261105/run448.py",
+      "sha256": "b770a0ffd6f82b13b61b29468b88e7ffdb8f3c00286fb1bce111d4300cd527e2",
+      "bytes": 6250,
+      "stored": "original local artifact only"
+    }
+  ],
+  "applicationOrCanonicalTestChanges": false,
+  "phase447ObserversAbsent": true,
+  "allGuardsLimitsBudgetsAndDeadlinesUnchanged": true,
+  "originalFailuresRetained": true,
+  "timedMatrixJourneys": 0,
+  "committed": false,
+  "pushed": false
+}

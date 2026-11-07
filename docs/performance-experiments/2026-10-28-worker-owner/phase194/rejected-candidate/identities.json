@@ -1,0 +1,4 @@
+{
+  "src/crdt/localWorkerLifetime.ts": "2c81065d34c7e231c10e623b3990a60c36c8e070612df32f3920c6b0bae36bd8",
+  "test/localSoleWriterFence.test.ts": "318d84ee200f989803e7e3c8877a41bed42e6a424f59dbbe2c9a78e4f62f2c88"
+}

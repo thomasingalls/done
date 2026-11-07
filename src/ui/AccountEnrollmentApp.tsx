@@ -1,18 +1,14 @@
-import { NetworkLogin, prewarmSlotLogin } from '../account/networkLogin';
-import { startNotifications } from '../account/notifications';
 import { WorkspaceUiProvider } from './workspaceUi';
 import { RemoveFromDeviceButton } from './DeviceDataRemoval';
 import { App } from './App';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { rememberedAccounts, type SetupConfig } from '../account/setupProgress';
-import { createAccountEnrollment, isConnectionSlot } from '../account/accountEnrollment';
+import { createUiAccountEnrollment } from './accountEnrollmentRuntime';
+import { isConnectionSlot, pendingDeviceSlot } from '../account/deviceConnectionRoutes';
+import { inspectWorkerStartup, preparePendingDeviceInWorker } from './pendingDeviceWorker';
+import type { WorkerEnrollmentView } from './accountEnrollmentWorker';
 import { newConnectionHref } from '../account/connectionNavigation';
-import {
-  pendingDeviceSlot,
-  preparePendingDevice,
-  type EnrollmentView,
-} from '../account/deviceEnrollment';
-import { inspectLocalStartup, type LocalGenesisEnrollment } from '../crdt/localGenesis';
+import type { LocalGenesisEnrollment } from '../crdt/localGenesis';
 import { WorkspaceBackdrop } from './WorkspaceBackdrop';
 import { parseCeremonyInvitation } from '../../account-protocol/ceremonyRelay';
 import { parseMembershipInvitation } from '../../account-protocol/membershipLocator';
@@ -56,36 +52,29 @@ export function AccountEnrollmentApp({
     [typed, setTyped] = useState('');
   const [invitationLink, setInvitationLink] = useState('');
   const [screen, setScreen] = useState<'editing' | 'devices'>('editing');
-  const [state, setState] = useState<EnrollmentView | null>(null),
+  const [state, setState] = useState<WorkerEnrollmentView | null>(null),
     [progress, setProgress] = useState<EnrollmentProgress | null>(null),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false);
-  const owner = useRef<Awaited<ReturnType<typeof createAccountEnrollment>> | null>(null),
+  const owner = useRef<Awaited<ReturnType<typeof createUiAccountEnrollment>> | null>(null),
     genesis = useRef<LocalGenesisEnrollment | null>(null),
     life = useRef(new AbortController()),
     operating = useRef<Promise<void> | null>(null),
     foreground = useRef(false);
   const pendingRefresh = useRef(false),
     backgroundRefresh = useRef<(() => void) | undefined>(undefined);
-  const login = useRef<NetworkLogin | undefined>(undefined);
-  useEffect(() => {
-    if (!config.networkSessions || !slot || !workspace) return;
-    const next = new NetworkLogin(config.pin, slot);
-    login.current = next;
-    void prewarmSlotLogin(next, slot, life.current.signal);
-    return () => {
-      next.close();
-      if (login.current === next) login.current = undefined;
-    };
-  }, [config, slot, workspace]);
+  const preparation = useRef<Awaited<ReturnType<typeof preparePendingDeviceInWorker>> | null>(null);
+  const ownerSubscription = useRef<() => void>(() => {});
   const navigate = useRef(onNavigate);
   navigate.current = onNavigate;
   const close = useCallback(async () => {
     life.current.abort();
-    login.current?.close();
+    ownerSubscription.current();
     const closing = owner.current?.close();
     genesis.current?.cancel();
     genesis.current = null;
+    const preparationClosing = preparation.current?.close();
+    preparation.current = null;
     setGenerated('');
     setCode('');
     setTyped('');
@@ -93,6 +82,8 @@ export function AccountEnrollmentApp({
     setProgress(null);
     await operating.current;
     await closing;
+    await preparationClosing;
+    await owner.current?.close();
   }, []);
   const step =
     stage === 'choose'
@@ -136,7 +127,7 @@ export function AccountEnrollmentApp({
   useEffect(() => {
     const savedSlot = workspace ? pendingDeviceSlot(workspace) : null;
     if (savedSlot)
-      void inspectLocalStartup(savedSlot, { signal: life.current.signal })
+      void inspectWorkerStartup(savedSlot, life.current.signal)
         .then((s) => {
           if (life.current.signal.aborted) return;
           if (s.kind === 'fresh') setStage('choose');
@@ -168,8 +159,9 @@ export function AccountEnrollmentApp({
       retire();
     };
   }, [config, workspace, close]);
-  const publish = useCallback((next: EnrollmentView) => {
+  const publish = useCallback((next: WorkerEnrollmentView) => {
     if (life.current.signal.aborted) return;
+    if (next.kind === 'locked') setStage('unlock');
     setState((previous) =>
       previous?.kind === next.kind &&
       previous.message === next.message &&
@@ -264,9 +256,8 @@ export function AccountEnrollmentApp({
     backgroundRefresh.current = wake;
     const notifications =
       config.networkSessions && owner.current
-        ? startNotifications({
+        ? owner.current.startNotifications({
             signal: life.current.signal,
-            open: (signal) => owner.current!.openNotifications(signal),
             wake,
             health: (connected) => {
               healthy = connected;
@@ -358,12 +349,14 @@ export function AccountEnrollmentApp({
                     setStage('save');
                     return;
                   }
-                  const next = await preparePendingDevice(workspace, life.current.signal);
+                  const next = await preparePendingDeviceInWorker(workspace, life.current.signal);
                   if (life.current.signal.aborted) {
                     next.enrollment.cancel();
+                    await next.close();
                     return;
                   }
                   setSlot(next.slot);
+                  preparation.current = next;
                   genesis.current = next.enrollment;
                   setGenerated(next.enrollment.displayCode!);
                   setStage('save');
@@ -511,23 +504,33 @@ export function AccountEnrollmentApp({
                   if (genesis.current) {
                     await genesis.current.confirm(entered);
                     genesis.current = null;
+                    await preparation.current?.close();
+                    preparation.current = null;
                     setGenerated('');
                   }
+                  ownerSubscription.current();
                   await owner.current?.close();
-                  owner.current = await createAccountEnrollment(
+                  owner.current = await createUiAccountEnrollment(
                     config,
                     slot,
                     entered,
-                    workspace ? 'new' : 'existing',
-                    workspace ?? undefined,
-                    workspace && invitation ? JSON.parse(atob(invitation)) : undefined,
-                    login.current,
+                    {
+                      role: workspace ? 'new' : 'existing',
+                      ...(workspace ? { workspaceId: workspace } : {}),
+                      ...(workspace && invitation
+                        ? { invitation: JSON.parse(atob(invitation)) }
+                        : {}),
+                      ...(begin !== undefined && begin !== null ? { begin } : {}),
+                    },
                     life.current.signal,
-                    begin ?? undefined,
                     publishProgress,
                   );
-                  publish(await owner.current.refresh());
-                  if (!life.current.signal.aborted) setStage('open');
+                  const active = owner.current;
+                  ownerSubscription.current = active.subscribe(() => publish(active.getSnapshot()));
+                  const next = await active.refresh();
+                  publish(next);
+                  if (!life.current.signal.aborted)
+                    setStage(next.kind === 'locked' || active.requiresUnlock ? 'unlock' : 'open');
                 });
               }}
             >

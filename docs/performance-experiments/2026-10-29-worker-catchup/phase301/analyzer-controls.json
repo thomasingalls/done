@@ -1,0 +1,47 @@
+[
+  {
+    "case": "positive",
+    "exit": 0,
+    "expected": 0
+  },
+  {
+    "case": "input-gate",
+    "exit": 2,
+    "expected": 2
+  },
+  {
+    "case": "peer-gate",
+    "exit": 2,
+    "expected": 2
+  },
+  {
+    "case": "background-gate",
+    "exit": 2,
+    "expected": 2
+  },
+  {
+    "case": "missing-guard",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "case": "pending-archive",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "case": "pending-deadline",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "case": "missing-key",
+    "exit": 1,
+    "expected": 1
+  },
+  {
+    "case": "wrong-variant",
+    "exit": 1,
+    "expected": 1
+  }
+]

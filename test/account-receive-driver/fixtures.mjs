@@ -23,12 +23,14 @@ export async function driverBundle(mode) {
             enforce: 'pre',
             transform(code, id) {
               if (!id.endsWith('/src/crdt/accountReceive.ts')) return;
-              const anchor = 'page = canReceive()';
+              const anchor =
+                'read: (request, index, signal, limit) =>\n                  canReceive()';
               if (code.split(anchor).length !== 2) throw Error('Missing dispatch anchor');
               hits++;
               return code.replace(
                 anchor,
-                `page = (globalThis.receiveDispatchBoundary?.(), ${mode === 'dispatch' ? 'true' : 'canReceive()'})`,
+                `read: (request, index, signal, limit) =>
+                  (globalThis.receiveDispatchBoundary?.(), ${mode === 'dispatch' ? 'true' : 'canReceive()'})`,
               );
             },
           },

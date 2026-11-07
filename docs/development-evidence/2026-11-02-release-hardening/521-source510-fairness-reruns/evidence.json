@@ -1,0 +1,866 @@
+{
+  "phase": 521,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+      "bytes": 2778
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-record-20261107/521-private-files.json",
+      "sha256": "e8f49e6c44b26ca817d229fced1d9b9a6048ba72ebbbfd4572111104f9315cee",
+      "bytes": 469
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/521-declaration.json",
+      "sha256": "81c99b82c9692b88aea13c846d0d7c107fbf0d7085cf3ed13cb07d10e487f482",
+      "bytes": 777
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/521-progress.json",
+      "sha256": "8d70f445ca193c344da7a799e3a6f1850f54a024351b13a5f64d1d0a5f556266",
+      "bytes": 15497
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/521-block.log",
+      "sha256": "ad48c06bb4b38d463511eaa67276c6755909fae5c48e2e4835a9af68d91dda08",
+      "bytes": 5013
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-record-20261107/521-summary.json",
+      "sha256": "e3fe27265d4f16c80e951f54af7abffe20bfa5b9251bd912821bac2281b867f2",
+      "bytes": 15783
+    },
+    {
+      "localPath": "/private/tmp/done-source510-run-control-20261107/run-block.py",
+      "sha256": "c3e7068fc15bb34eff79f5e48879120fb99174c462c9189b314a7f0ae36e4e84",
+      "bytes": 8087
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/result.json",
+      "sha256": "653db19f0a7f4866cd61d6002bc1d989e6c225b08c099cf51547050b8a30e40b",
+      "bytes": 2687598
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/host-review.json",
+      "sha256": "43aec8f9b75b23a0fa8fa112f5cc18c13515c3c704394dd1295714406155b02c",
+      "bytes": 1068
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/readonly-inspection.log",
+      "sha256": "e902bfda50876ea93816aa2ad247c6c93b09cdafeb4ee866f9a0f91bc75246e2",
+      "bytes": 389
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/readonly-end-inspection/native-inspection.json",
+      "sha256": "9391a096f26cca8a9587ae44b25d5c1308e862084860d69eed66dcaf3d1ff85b",
+      "bytes": 1856
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/readonly-end-inspection/inspection-plan.json",
+      "sha256": "74dbfc4656edd6c12da20647cf71e68f1185fcb9d6739438824a540b9693cf82",
+      "bytes": 1097
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/readonly-end-inspection/source-521-r1-fairness-0.json",
+      "sha256": "81ebf4f33ca0f5367049e474427a00c759a9f9adba89f9b9c8ed8998ad8d5131",
+      "bytes": 5677
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/readonly-end-inspection/source-521-r1-fairness-1.json",
+      "sha256": "801928b8c4127477a72e60588ad98ff0193a581d666172461ddfaa5c740abbe8",
+      "bytes": 5663
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/analysis.json",
+      "sha256": "8f72be03bf3e0f3c9c8194e0db70328aadf6d041fb8ed6768a991ed91f574043",
+      "bytes": 28277
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/analysis-run.log",
+      "sha256": "7f634f7245bc5de8afffab4ee6a927fc68315eebf0c9223698873f05c9a3e6f7",
+      "bytes": 849
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/cold-stages.jsonl",
+      "sha256": "7c6939eaee834c425a3c73f71efc0e2736dd05e783b68ed8dba002a095cfe196",
+      "bytes": 298
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness-runner.log",
+      "sha256": "4089ffe8899a0a6e26169d8947403ce78b1e3f7dbbfc62c49a6a1caf552113f2",
+      "bytes": 1814
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r1-fairness/run.json",
+      "sha256": "782d047bb74d99f5e05c5d572a5eefe7cf6af361dbf97db634ebec78cf922cc2",
+      "bytes": 1962
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r1-fairness/host-load.jsonl",
+      "sha256": "b58220d442e2625884b6a523d390916161642ca9197fe396896187344488190f",
+      "bytes": 70846
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r1-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r1-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r1-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r1-fairness/power-log-after.txt",
+      "sha256": "eada2c124e9726a449ce4a45350cdce38fc6b3fa3aad37d088100d4bf0e3c9ce",
+      "bytes": 637
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/result.json",
+      "sha256": "f56d6b203f85370e915b95851e2fbd197698e0a27b58037f8812e1a711ae3daf",
+      "bytes": 2818265
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/host-review.json",
+      "sha256": "981d585ed78f016447ddc1c920abe288b3184abf9e4937b45de271510c96e244",
+      "bytes": 979
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/readonly-inspection.log",
+      "sha256": "47ba638de4b5d0c04233b814e94e672fa1c9959e403f147088fb50e10f57ee44",
+      "bytes": 389
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/readonly-end-inspection/native-inspection.json",
+      "sha256": "2114c89342b657934ae1d49f06983fd88162e39441c2b848f318cc8a77f281a0",
+      "bytes": 1856
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/readonly-end-inspection/inspection-plan.json",
+      "sha256": "77c1a7d322e0a1dedb0367c470e32349008ddc043c9efbff73879558051294d6",
+      "bytes": 1097
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/readonly-end-inspection/source-521-r2-fairness-1.json",
+      "sha256": "3a932cc081e5a54a93607db86f1c55f59b2bb0e52b35e7f15180324d1f3bc3c9",
+      "bytes": 5663
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/readonly-end-inspection/source-521-r2-fairness-0.json",
+      "sha256": "5a8d8a56bed7b77682534488f0ee5678c5c86a176561c89c4495592f58f5c4e3",
+      "bytes": 5677
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/analysis.json",
+      "sha256": "07847ebcbb16ed50fad142fa6b135396db1316fe714793711388b661aab5b7bc",
+      "bytes": 28533
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/analysis-run.log",
+      "sha256": "16ec719977bd942870b51164d46477f73e58c3e22f173d934b291bfa97b2eb7e",
+      "bytes": 841
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/cold-stages.jsonl",
+      "sha256": "7fdcead4bcbd0ab11d59b462c769d785700b02295b7ade4b5c4a48a062287ec6",
+      "bytes": 298
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness-runner.log",
+      "sha256": "a6ea06cb32a51789eb4dd8129ad3c30a7f932b9e35949bc7be071272d741a14b",
+      "bytes": 1814
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r2-fairness/run.json",
+      "sha256": "2a1437005b3250e75e79e52b8b95684a56e8e814aa51b9feb5f81015eaedcc32",
+      "bytes": 1962
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r2-fairness/host-load.jsonl",
+      "sha256": "ed9e6c1e0f503c268f101fb51445f053acb946c8684723cf6d849e53470a8af0",
+      "bytes": 75473
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r2-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r2-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r2-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r2-fairness/power-log-after.txt",
+      "sha256": "b582dfa70d3cbf02061d78f3f89ee66cac630b5ecf3ac43c8686a14160727fce",
+      "bytes": 4565
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/result.json",
+      "sha256": "1cf191dd91ab002e6c237254723104213f8592a50a04a0f82b9a676780f4b4f6",
+      "bytes": 2454436
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/host-review.json",
+      "sha256": "5955473027adf2031725c6bd53d48ab3c84aa39ccf729fb85172576913f21e94",
+      "bytes": 1078
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/readonly-inspection.log",
+      "sha256": "a2ead39aad1184caefd3a7aa006332d45ddbd17d0bc07752db16ad0557bdfa10",
+      "bytes": 389
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/readonly-end-inspection/native-inspection.json",
+      "sha256": "15d06b2e438a219e9980bc9418a8599db64cbb973206a8d51f0976738323503d",
+      "bytes": 1856
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/readonly-end-inspection/inspection-plan.json",
+      "sha256": "92b26b1c062354b4a4969c0e7c5e7de5fd793f047018aa43cd22ea9e0f732f8d",
+      "bytes": 1097
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/readonly-end-inspection/source-521-r3-fairness-0.json",
+      "sha256": "f1162023f477dc7ecc0dfab2e949012794267db971f4d1dd2d1a2fbaf8169cec",
+      "bytes": 5677
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/readonly-end-inspection/source-521-r3-fairness-1.json",
+      "sha256": "d39298211df094b62dc70ca7755623b94cf268988a5a88efcb5e1ab91a2ede36",
+      "bytes": 5663
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/analysis.json",
+      "sha256": "ee0a7ee9d26d4142a32828253a569f100f6ea9d6b29831f77c153fc8c471fb7f",
+      "bytes": 28529
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/analysis-run.log",
+      "sha256": "cb28954717977c6fcc8f6b496f2ddc9e51c6f774a4c5f55bdc109670e8d0b9de",
+      "bytes": 844
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/cold-stages.jsonl",
+      "sha256": "e58f33289ebf5c380418562c55475733ff4710a3034375215bd3e386a4ad8671",
+      "bytes": 298
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness-runner.log",
+      "sha256": "6b3cd795ae67193ac3802e8cca3da8832bdfb47bb2cb1bb7f0ac6a2072e9abee",
+      "bytes": 1814
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r3-fairness/run.json",
+      "sha256": "09e073c54c8a9f26d565de2afd223236361caec4b2a542ba34d5193fb1971959",
+      "bytes": 1962
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r3-fairness/host-load.jsonl",
+      "sha256": "0324628d5bdc2e74cfda65aa87fd769a67004368f29136408e52a1dbca0c0fa0",
+      "bytes": 58185
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r3-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r3-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r3-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/521-r3-fairness/power-log-after.txt",
+      "sha256": "c6924488a1f08bec3ef4324bb302358278e12f8a1b1e955d8e7036cb8c86d2c7",
+      "bytes": 2307
+    }
+  ],
+  "summary": {
+    "phase": 521,
+    "block": "fairness",
+    "source": "plain510",
+    "declaredJourneys": 3,
+    "attempts": 3,
+    "passedAttempts": 3,
+    "allAccepted": true,
+    "failedPredicates": [],
+    "noiseRetries": 0,
+    "noTimedObserversAdded": true,
+    "postRunInspections": 6,
+    "everyInspectionReadOnly": true,
+    "rows": [
+      {
+        "name": "r1-fairness",
+        "key": "521-r1-fairness",
+        "cell": "fairness",
+        "replicate": 1,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-fairness-gates-477-20261106/playwright.config.ts",
+        "frozenSpec": "/private/tmp/done-fairness-gates-477-20261106/continuation.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/result.json",
+        "guards": {
+          "offlineWriterColdProfile": true,
+          "all120Keys": true,
+          "pendingMarkerDurable": true,
+          "automaticPendingWholeExportConvergence": true,
+          "reverseWriting": true,
+          "undoRedo": true,
+          "offlinePeerColdProfile": true,
+          "noCrossAccountMarkers": true
+        },
+        "host": {
+          "samples": 44,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12732.44,
+            "min": 12732.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 40.00414681434631
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 25294,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 1204,
+              "process": "ghostty",
+              "seconds": 0
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 40.00414681434631
+            },
+            {
+              "pid": 21295,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 4.9963860511779785
+            },
+            {
+              "pid": 25084,
+              "process": "Google Chrome",
+              "seconds": 40.00102090835571
+            },
+            {
+              "pid": 22285,
+              "process": "ctkd",
+              "seconds": 0
+            },
+            {
+              "pid": 80054,
+              "process": "T3 Code (Beta) Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/private-profile-Q0",
+            "states": [
+              {
+                "database": "done.fc6ccca3831da7adc9586d6cf7a2d70b",
+                "counterVersion": 5,
+                "revision": 1,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          },
+          {
+            "profile": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/private-profile-Q1",
+            "states": [
+              {
+                "database": "done.cf2384e9649d5c6905fe76959d9f7944",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-fairness-521-20261107/r1-fairness/readonly-end-inspection/native-inspection.json",
+        "accepted": true,
+        "gates": {
+          "all120KeysAtOriginalDeadline": true,
+          "localTypingP95": true,
+          "peerP95": true,
+          "allBackgroundReplay600s": true,
+          "dataGuards": true
+        },
+        "inputP95Ms": 4.5,
+        "peerP95Ms": 1107.099853515625,
+        "peerKeys": 120,
+        "backgroundReplay": [
+          {
+            "label": "H1",
+            "startedAt": 1794044713031,
+            "completedAt": 1794044867097,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H2",
+            "startedAt": 1794044713031,
+            "completedAt": 1794044861534,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H3",
+            "startedAt": 1794044713031,
+            "completedAt": 1794044867605,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H4",
+            "startedAt": 1794044713031,
+            "completedAt": 1794044867598,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H5",
+            "startedAt": 1794044713031,
+            "completedAt": 1794044866068,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "M1",
+            "startedAt": 1794044713031,
+            "completedAt": 1794044722607,
+            "exportEquality": true,
+            "outcome": "passed"
+          }
+        ],
+        "cold": [
+          {
+            "label": "fairness-writer-profile",
+            "ms": 2872,
+            "exact": true
+          },
+          {
+            "label": "fairness-peer-profile",
+            "ms": 2554,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "failedPredicates": []
+      },
+      {
+        "name": "r2-fairness",
+        "key": "521-r2-fairness",
+        "cell": "fairness",
+        "replicate": 2,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-fairness-gates-477-20261106/playwright.config.ts",
+        "frozenSpec": "/private/tmp/done-fairness-gates-477-20261106/continuation.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/result.json",
+        "guards": {
+          "offlineWriterColdProfile": true,
+          "all120Keys": true,
+          "pendingMarkerDurable": true,
+          "automaticPendingWholeExportConvergence": true,
+          "reverseWriting": true,
+          "undoRedo": true,
+          "offlinePeerColdProfile": true,
+          "noCrossAccountMarkers": true
+        },
+        "host": {
+          "samples": 47,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12732.44,
+            "last": 12732.44,
+            "min": 12732.44,
+            "max": 12732.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 160.0053129196167
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 160.0053129196167
+            },
+            {
+              "pid": 28071,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 5.003513813018799
+            },
+            {
+              "pid": 28423,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 27958,
+              "process": "Google Chrome",
+              "seconds": 39.99930191040039
+            },
+            {
+              "pid": 28014,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 22285,
+              "process": "ctkd",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/private-profile-Q0",
+            "states": [
+              {
+                "database": "done.fc6ccca3831da7adc9586d6cf7a2d70b",
+                "counterVersion": 5,
+                "revision": 1,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          },
+          {
+            "profile": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/private-profile-Q1",
+            "states": [
+              {
+                "database": "done.cf2384e9649d5c6905fe76959d9f7944",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-fairness-521-20261107/r2-fairness/readonly-end-inspection/native-inspection.json",
+        "accepted": true,
+        "gates": {
+          "all120KeysAtOriginalDeadline": true,
+          "localTypingP95": true,
+          "peerP95": true,
+          "allBackgroundReplay600s": true,
+          "dataGuards": true
+        },
+        "inputP95Ms": 6.800048828125,
+        "peerP95Ms": 1343,
+        "peerKeys": 120,
+        "backgroundReplay": [
+          {
+            "label": "H1",
+            "startedAt": 1794044930051,
+            "completedAt": 1794045099484,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H2",
+            "startedAt": 1794044930051,
+            "completedAt": 1794045096140,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H3",
+            "startedAt": 1794044930051,
+            "completedAt": 1794045098679,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H4",
+            "startedAt": 1794044930051,
+            "completedAt": 1794045098977,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H5",
+            "startedAt": 1794044930051,
+            "completedAt": 1794045098681,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "M1",
+            "startedAt": 1794044930051,
+            "completedAt": 1794044938520,
+            "exportEquality": true,
+            "outcome": "passed"
+          }
+        ],
+        "cold": [
+          {
+            "label": "fairness-writer-profile",
+            "ms": 3294,
+            "exact": true
+          },
+          {
+            "label": "fairness-peer-profile",
+            "ms": 2602,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "failedPredicates": []
+      },
+      {
+        "name": "r3-fairness",
+        "key": "521-r3-fairness",
+        "cell": "fairness",
+        "replicate": 3,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-fairness-gates-477-20261106/playwright.config.ts",
+        "frozenSpec": "/private/tmp/done-fairness-gates-477-20261106/continuation.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/result.json",
+        "guards": {
+          "offlineWriterColdProfile": true,
+          "all120Keys": true,
+          "pendingMarkerDurable": true,
+          "automaticPendingWholeExportConvergence": true,
+          "reverseWriting": true,
+          "undoRedo": true,
+          "offlinePeerColdProfile": true,
+          "noCrossAccountMarkers": true
+        },
+        "host": {
+          "samples": 36,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12732.44,
+            "last": 12732.44,
+            "min": 12732.44,
+            "max": 12732.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 29.99490714073181
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 29.99490714073181
+            },
+            {
+              "pid": 32032,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 21295,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 24.995457887649536
+            },
+            {
+              "pid": 32091,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 31894,
+              "process": "Google Chrome",
+              "seconds": 59.998814821243286
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 22285,
+              "process": "ctkd",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/private-profile-Q0",
+            "states": [
+              {
+                "database": "done.fc6ccca3831da7adc9586d6cf7a2d70b",
+                "counterVersion": 5,
+                "revision": 1,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          },
+          {
+            "profile": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/private-profile-Q1",
+            "states": [
+              {
+                "database": "done.cf2384e9649d5c6905fe76959d9f7944",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-fairness-521-20261107/r3-fairness/readonly-end-inspection/native-inspection.json",
+        "accepted": true,
+        "gates": {
+          "all120KeysAtOriginalDeadline": true,
+          "localTypingP95": true,
+          "peerP95": true,
+          "allBackgroundReplay600s": true,
+          "dataGuards": true
+        },
+        "inputP95Ms": 9.10009765625,
+        "peerP95Ms": 927.10009765625,
+        "peerKeys": 120,
+        "backgroundReplay": [
+          {
+            "label": "H1",
+            "startedAt": 1794045162673,
+            "completedAt": 1794045284161,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H2",
+            "startedAt": 1794045162673,
+            "completedAt": 1794045281124,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H3",
+            "startedAt": 1794045162673,
+            "completedAt": 1794045282650,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H4",
+            "startedAt": 1794045162673,
+            "completedAt": 1794045281143,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "H5",
+            "startedAt": 1794045162673,
+            "completedAt": 1794045283655,
+            "exportEquality": true,
+            "outcome": "passed"
+          },
+          {
+            "label": "M1",
+            "startedAt": 1794045162673,
+            "completedAt": 1794045171175,
+            "exportEquality": true,
+            "outcome": "passed"
+          }
+        ],
+        "cold": [
+          {
+            "label": "fairness-writer-profile",
+            "ms": 2784,
+            "exact": true
+          },
+          {
+            "label": "fairness-peer-profile",
+            "ms": 2346,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "failedPredicates": []
+      }
+    ],
+    "carryoverRuns": 21,
+    "cumulativeRerunJourneys": 9,
+    "remainingReruns": 6
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

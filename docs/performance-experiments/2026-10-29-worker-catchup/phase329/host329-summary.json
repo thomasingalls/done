@@ -1,0 +1,252 @@
+[
+  {
+    "case": "before329-paired150-d0-reference",
+    "stage": "firstDiff329",
+    "childExit": 1,
+    "samples": 20,
+    "busyMedian": 40.424049372884724,
+    "busyMax": 66.66666666666666,
+    "hostLog": "before329-paired150-d0-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "grow329-maintenance-eligible-paired-fixture",
+    "stage": "grow329",
+    "childExit": 0,
+    "samples": 26,
+    "busyMedian": 36.712800439032385,
+    "busyMax": 68.22244289970209,
+    "hostLog": "grow329-maintenance-eligible-paired-fixture/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r1-d50-immediate-inflight",
+    "stage": "pairedFirst329",
+    "childExit": 0,
+    "samples": 27,
+    "busyMedian": 53.20197044334975,
+    "busyMax": 77.88746298124383,
+    "hostLog": "paired329-r1-d50-immediate-inflight/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r1-d50-coordinated-2000",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 26,
+    "busyMedian": 56.47629269323488,
+    "busyMax": 76.26352015732547,
+    "hostLog": "paired329-r1-d50-coordinated-2000/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r1-d0-coordinated-2000",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 26,
+    "busyMedian": 52.051832770770176,
+    "busyMax": 67.7718571146635,
+    "hostLog": "paired329-r1-d0-coordinated-2000/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r1-d0-immediate-inflight",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 28,
+    "busyMedian": 55.73444643212085,
+    "busyMax": 73.26949930181527,
+    "hostLog": "paired329-r1-d0-immediate-inflight/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r1-d0-reference",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 26,
+    "busyMedian": 56.15564121485164,
+    "busyMax": 73.43843544202754,
+    "hostLog": "paired329-r1-d0-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r1-d50-reference",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 27,
+    "busyMedian": 54.391158476416024,
+    "busyMax": 69.05187835420394,
+    "hostLog": "paired329-r1-d50-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r2-d50-immediate-inflight",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 24,
+    "busyMedian": 45.960778538644675,
+    "busyMax": 60.85064292779426,
+    "hostLog": "paired329-r2-d50-immediate-inflight/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r2-d50-reference",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 25,
+    "busyMedian": 46.43070192881289,
+    "busyMax": 56.04133545310016,
+    "hostLog": "paired329-r2-d50-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r2-d0-immediate-inflight",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 24,
+    "busyMedian": 48.155084591022714,
+    "busyMax": 64.90528414755732,
+    "hostLog": "paired329-r2-d0-immediate-inflight/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r2-d0-coordinated-2000",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 25,
+    "busyMedian": 41.83775164440901,
+    "busyMax": 62.31826329416451,
+    "hostLog": "paired329-r2-d0-coordinated-2000/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r2-d50-coordinated-2000",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 22,
+    "busyMedian": 44.621418130671,
+    "busyMax": 92.67281974006404,
+    "hostLog": "paired329-r2-d50-coordinated-2000/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r2-d0-reference",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 25,
+    "busyMedian": 51.41040921732221,
+    "busyMax": 65.90183559457301,
+    "hostLog": "paired329-r2-d0-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r3-d50-coordinated-2000",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 26,
+    "busyMedian": 48.40392884524998,
+    "busyMax": 68.21491832316474,
+    "hostLog": "paired329-r3-d50-coordinated-2000/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r3-d50-immediate-inflight",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 25,
+    "busyMedian": 50.268763687039616,
+    "busyMax": 68.18272095332671,
+    "hostLog": "paired329-r3-d50-immediate-inflight/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r3-d0-reference",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 23,
+    "busyMedian": 53.56431700517722,
+    "busyMax": 69.65530982267384,
+    "hostLog": "paired329-r3-d0-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r3-d0-coordinated-2000",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 24,
+    "busyMedian": 43.694629076371925,
+    "busyMax": 67.63785686351193,
+    "hostLog": "paired329-r3-d0-coordinated-2000/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r3-d50-reference",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 27,
+    "busyMedian": 45.90457256461232,
+    "busyMax": 59.067357512953365,
+    "hostLog": "paired329-r3-d50-reference/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "paired329-r3-d0-immediate-inflight",
+    "stage": "pairedRest329",
+    "childExit": 0,
+    "samples": 25,
+    "busyMedian": 46.60866126161756,
+    "busyMax": 58.233890214797135,
+    "hostLog": "paired329-r3-d0-immediate-inflight/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "grown329-withheld-repaired-r1",
+    "stage": "grownFirst329",
+    "childExit": 0,
+    "samples": 29,
+    "busyMedian": 41.21272365805169,
+    "busyMax": 49.12940245350217,
+    "hostLog": "grown329-withheld-repaired-r1/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "grown329-withheld-repaired-r2",
+    "stage": "grownRest329",
+    "childExit": 0,
+    "samples": 29,
+    "busyMedian": 40.44117647058823,
+    "busyMax": 51.92689709972189,
+    "hostLog": "grown329-withheld-repaired-r2/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "grown329-withheld-repaired-r3",
+    "stage": "grownRest329",
+    "childExit": 0,
+    "samples": 29,
+    "busyMedian": 42.689709972189114,
+    "busyMax": 49.21673606979972,
+    "hostLog": "grown329-withheld-repaired-r3/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "grown329-withheld-P0-control",
+    "stage": "grownRest329",
+    "childExit": 0,
+    "samples": 34,
+    "busyMedian": 36.062608453851205,
+    "busyMax": 50.417163289630516,
+    "hostLog": "grown329-withheld-P0-control/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  },
+  {
+    "case": "grown329-withheld-unrepaired-P1-control",
+    "stage": "grownRest329",
+    "childExit": 1,
+    "samples": 22,
+    "busyMedian": 32.83392246339118,
+    "busyMax": 46.76557863501483,
+    "hostLog": "grown329-withheld-unrepaired-P1-control/host-load.jsonl",
+    "qualification": "Aggregate host load, not browser-only; top-process samples retained. No quiet-host guarantee or noise exclusion."
+  }
+]

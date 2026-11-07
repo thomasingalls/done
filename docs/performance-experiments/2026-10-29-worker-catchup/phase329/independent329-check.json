@@ -1,0 +1,192 @@
+{
+  "canonicalInputsUnchanged": 1552,
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "frozenMapsVerified": [
+    {
+      "map": "firstDiff329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-before",
+      "count": 447
+    },
+    {
+      "map": "firstDiff329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/before-reference/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "firstDiff329-inputs.json",
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "map": "firstDiff329-inputs.json",
+      "family": "apparatus",
+      "count": 83
+    },
+    {
+      "map": "grow329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+      "count": 447
+    },
+    {
+      "map": "grow329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "grow329-inputs.json",
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "map": "grow329-inputs.json",
+      "family": "apparatus",
+      "count": 85
+    },
+    {
+      "map": "grownFirst329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+      "count": 447
+    },
+    {
+      "map": "grownFirst329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "grownFirst329-inputs.json",
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "map": "grownFirst329-inputs.json",
+      "family": "apparatus",
+      "count": 88
+    },
+    {
+      "map": "grownRest329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+      "count": 447
+    },
+    {
+      "map": "grownRest329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-unrepaired-control",
+      "count": 447
+    },
+    {
+      "map": "grownRest329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "grownRest329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/unrepaired-control-coordinated/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "grownRest329-inputs.json",
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "map": "grownRest329-inputs.json",
+      "family": "apparatus",
+      "count": 88
+    },
+    {
+      "map": "pairedFirst329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+      "count": 447
+    },
+    {
+      "map": "pairedFirst329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-immediate-inflight/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "pairedFirst329-inputs.json",
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "map": "pairedFirst329-inputs.json",
+      "family": "apparatus",
+      "count": 87
+    },
+    {
+      "map": "pairedRest329-inputs.json",
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/source-repaired",
+      "count": 447
+    },
+    {
+      "map": "pairedRest329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-coordinated-2000/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "pairedRest329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-immediate-inflight/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "pairedRest329-inputs.json",
+      "family": "assetRoots",
+      "root": "/private/tmp/done-retained-scope-lab-20261101/repaired-reference/combined-dist",
+      "count": 606
+    },
+    {
+      "map": "pairedRest329-inputs.json",
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "map": "pairedRest329-inputs.json",
+      "family": "apparatus",
+      "count": 87
+    }
+  ],
+  "historicalSupportReconstructions": [
+    {
+      "inputMap": "firstDiff329-inputs.json",
+      "support": "run-stage.py",
+      "originalSha256": "aa094f92c39f37332a6894a1d750934c7088511e9005b540a59b7d79781f96cd",
+      "reconstruction": "run-stage329-before-stop-reconstructed.py",
+      "reconstructionSha256": "aa094f92c39f37332a6894a1d750934c7088511e9005b540a59b7d79781f96cd",
+      "qualification": "Original bytes reconstructed by reversing only later functional-stop additions; matches independently frozen hash."
+    }
+  ],
+  "unrepairedMatchedSourceDifferences": [
+    "src/crdt/inboundLedger.ts"
+  ],
+  "oldInboundSourceExactlyRestored": true,
+  "canonicalInboundHasNoPageTurn": true,
+  "pairedRuns": 18,
+  "pairedOwners": 36,
+  "grownChildExits": [
+    0,
+    0,
+    0,
+    0,
+    1
+  ],
+  "functionalStopPreserved": true,
+  "single500AndDeepAfterStop": "not run",
+  "applicationChanged": false,
+  "labOnly": true,
+  "acceptanceCredit": false
+}

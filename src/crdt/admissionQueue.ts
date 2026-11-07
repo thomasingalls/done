@@ -73,16 +73,70 @@ export interface AdmissionOptions {
   /** Transport-specific authority/shape validation, before persistence. Throw to refuse. */
   readonly validateReceive: (bytes: Bytes) => void;
 }
+/** Internal admission needs these carrier effects, not a native descriptor or raw record API.
+ * A Window mirror may supply verified worker I/O while retaining real synchronous local admission. */
+export type AdmissionCarrier = Pick<
+  JournalSession,
+  | 'state'
+  | 'signal'
+  | 'close'
+  | 'beforeRelease'
+  | 'captureLocal'
+  | 'appendLocal'
+  | 'appendBatch'
+  | 'loadRecovery'
+  | 'flushJournal'
+  | 'observedJournalCharacters'
+> & {
+  compactContent?: (
+    interrupt?: AbortSignal,
+    fence?: MaintenanceFence,
+  ) => ReturnType<JournalSession['compactContent']>;
+};
+/** Actual discretionary maintenance head only; not a native permit or crypto proof. */
+export interface MaintenanceFence {
+  check(): void;
+}
+const maintenanceFences = new WeakMap<MaintenanceFence, AdmissionCarrier>();
+export function requireMaintenanceFence(fence: MaintenanceFence, carrier: AdmissionCarrier): void {
+  if (maintenanceFences.get(fence) !== carrier)
+    throw new AdmissionError('inactive-session', 'Maintenance belongs to another admission owner.');
+  fence.check();
+}
+
 /** Internal composition only. The operation owns verification, persistence and synchronous promotion.
  * Neither this enqueue capability nor its promotion callback is exposed by an application workspace. */
 export type OwnedReceiveQueue = <T>(
   bytes: Bytes,
   commit: (bytes: Bytes, promote: (updates: readonly Bytes[]) => void) => Promise<T>,
 ) => Promise<T>;
+/** A live capability for this exact Window queue head after its own journal flush. */
+export interface AdmissionFence {
+  check(): void;
+}
+const journalFences = new WeakMap<AdmissionFence, AdmissionCarrier>();
+export function requireAdmissionFence(fence: AdmissionFence, carrier: AdmissionCarrier): void {
+  if (journalFences.get(fence) !== carrier)
+    throw new AdmissionError(
+      'inactive-session',
+      'Journal fence belongs to another admission owner.',
+    );
+  fence.check();
+}
+/** Internal only. A prior external durability barrier cannot stand in for this final queue head. */
+export type OwnedJournalFenceQueue = <T>(
+  operation: (fence: AdmissionFence, publish: (updates: readonly Bytes[]) => void) => Promise<T>,
+) => Promise<T>;
 /** Internal only: a complete early check may attempt one synchronous application, never queue it. */
 export interface PreparedReceiveFinish {
   (apply: () => void): Promise<void>;
   immediate?: (attempt: ImmediateReceiveAttempt) => Promise<boolean>;
+  /** Worker-only: retain the real native checking task until asynchronous apply acknowledgment. */
+  acknowledged?: import('./acknowledgedReceive').AcknowledgedReceiveFinish;
+  /** Same one-shot handoff, with narrow journal data copied inside the already-held native task. */
+  acknowledgedWithContext?: (
+    apply: (context: import('./accountMirrorMaterial').AccountMirrorContext) => Promise<void>,
+  ) => Promise<void>;
 }
 /** Private content-only preparation. stage transfers copies after durable readback; finish
  * rechecks owned authority inside the final FIFO job. It must not retain a storage task. */
@@ -185,9 +239,13 @@ const erase = (job: Job) => {
 
 /** Internal seam for controlled tests. Production construction owns an actual JournalSession. */
 export const createAdmissionOwner = async (
-  carrier: JournalSession,
+  carrier: AdmissionCarrier,
   options: AdmissionOptions,
-  bindOwnedReceive?: (enqueue: OwnedReceiveQueue, prepare: OwnedPreparedReceiveQueue) => void,
+  bindOwnedReceive?: (
+    enqueue: OwnedReceiveQueue,
+    prepare: OwnedPreparedReceiveQueue,
+    journalFence: OwnedJournalFenceQueue,
+  ) => void,
 ): Promise<AdmissionSession> => {
   const local = options[localWorkspacePreparation];
   const text = options[accountTextPreparation];
@@ -798,10 +856,23 @@ export const createAdmissionOwner = async (
       busy = true;
       maintenance = 'running';
       notify();
+      let activeMaintenance = true;
+      const fence: MaintenanceFence = Object.freeze({
+        check() {
+          live();
+          if (!activeMaintenance || maintenanceStop !== stop || !busy || maintenance !== 'running')
+            throw new AdmissionError(
+              'inactive-session',
+              'Maintenance is no longer this queue head.',
+            );
+          if (stop.signal.aborted) throw new MaintenanceInterrupted();
+        },
+      });
+      maintenanceFences.set(fence, carrier);
       inFlight = Promise.resolve()
         .then(() => {
           live();
-          return carrier.compactContent(stop.signal);
+          return carrier.compactContent!(stop.signal, fence);
         })
         .then((receipt) => {
           if (state !== 'active') return;
@@ -822,6 +893,8 @@ export const createAdmissionOwner = async (
           // New durable growth (or a fresh open) is required before another attempt.
         })
         .finally(() => {
+          activeMaintenance = false;
+          maintenanceFences.delete(fence);
           maintenanceStop = undefined;
           busy = false;
           inFlight = undefined;
@@ -1096,7 +1169,50 @@ export const createAdmissionOwner = async (
     notify();
     return work;
   };
-  bindOwnedReceive?.(receiveOwned, prepareOwned);
+  const journalFenceOwned: OwnedJournalFenceQueue = <T>(
+    operation: Parameters<OwnedJournalFenceQueue>[0],
+  ) =>
+    receiveOwned<T>(new Uint8Array([1]), async (_input, promote) => {
+      live();
+      const head = queue[0];
+      if (!head || head.kind !== 'remote') throw Error('Journal fence lost its queue head.');
+      // Input can be admitted after an earlier external barrier but before this job becomes head.
+      // Drain any already-started background copy, then flush this head's actual accepted journal.
+      if (backgroundFlush) await backgroundFlush;
+      live();
+      if (queue[0] !== head) throw Error('Journal fence lost its queue head.');
+      await flush();
+      let active = true,
+        published = false;
+      const fence = Object.freeze({
+        check() {
+          live();
+          if (!active || !busy || queue[0] !== head)
+            throw new AdmissionError(
+              'inactive-session',
+              'Journal fence is no longer at its queue head.',
+            );
+        },
+      });
+      journalFences.set(fence, carrier);
+      const publish = (updates: readonly Bytes[]) => {
+        requireAdmissionFence(fence, carrier);
+        if (published) throw Error('Journal fence published twice.');
+        published = true;
+        promote(updates);
+      };
+      try {
+        requireAdmissionFence(fence, carrier);
+        const result = await operation(fence, publish);
+        requireAdmissionFence(fence, carrier);
+        if (!published) publish([]);
+        return result as T;
+      } finally {
+        active = false;
+        journalFences.delete(fence);
+      }
+    });
+  bindOwnedReceive?.(receiveOwned, prepareOwned, journalFenceOwned);
   const barrier = (): Promise<void> => {
     try {
       live();

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, rmSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { build } from 'vite';
 const flush = async () => {
   for (let n = 0; n < 20; n++) await Promise.resolve();
 };
@@ -43,8 +44,36 @@ async function load(t, mode) {
       assert.equal(code.split(from).length, 2, 'Mutation anchor ' + mode);
       code = code.replace(from, to);
     }
-  const file = join(temp, 'scheduler.ts');
-  writeFileSync(file, code);
+  const entry = resolve('src/crdt/accountReceiveDriver.ts');
+  let hits = 0;
+  const built = await build({
+    configFile: false,
+    logLevel: 'error',
+    plugins: [
+      {
+        name: 'actual-scheduler-control-closure',
+        enforce: 'pre',
+        transform(_source, id) {
+          if (id !== entry) return;
+          hits++;
+          return code;
+        },
+      },
+    ],
+    build: {
+      write: false,
+      minify: false,
+      target: 'esnext',
+      lib: { entry, formats: ['es'] },
+    },
+  });
+  assert.equal(hits, 1, 'Actual mutated scheduler is bundled once with its dependencies');
+  const output = (Array.isArray(built) ? built[0] : built).output;
+  assert.equal(output.length, 1, 'Retain the complete scheduler closure');
+  assert.equal(output[0].type, 'chunk');
+  assert.equal(output[0].isEntry, true);
+  const file = join(temp, 'scheduler.mjs');
+  writeFileSync(file, output[0].code);
   return import(pathToFileURL(file).href);
 }
 for (const mode of ['overlap', 'poll', 'halt', 'observer', 'resume'])

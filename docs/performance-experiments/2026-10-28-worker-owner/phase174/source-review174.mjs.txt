@@ -1,0 +1,22 @@
+import{readFileSync,writeFileSync}from'node:fs';import{parseSync}from'/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@babel/core/lib/index.js';import assert from'node:assert/strict';
+const repo='/Users/thomasingalls/.codex/worktrees/7fda/done',old='/private/tmp/done-phase173-replay-g8fxqo94';
+const clean=v=>Array.isArray(v)?v.map(clean):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).filter(([k])=>!['start','end','loc','comments','leadingComments','trailingComments','innerComments','extra'].includes(k)).map(([k,v])=>[k,clean(v)])):v;
+const ast=(root,path)=>clean(parseSync(readFileSync(root+'/'+path,'utf8'),{filename:path,babelrc:false,configFile:false,parserOpts:{plugins:['typescript']}}).program.body),walk=(v,fn)=>{if(!v||typeof v!=='object')return;fn(v);for(const x of Object.values(v))if(Array.isArray(x))x.forEach(y=>walk(y,fn));else if(x&&typeof x==='object')walk(x,fn);};
+const before=ast(old,'src/crdt/windowAccountMirror.ts'),after=ast(repo,'src/crdt/windowAccountMirror.ts'),material=ast(repo,'src/crdt/accountMirrorMaterial.ts');
+const variable=(tree,name)=>{let found;walk(tree,n=>{if(n.type==='VariableDeclarator'&&n.id.name===name)found=n.init});assert(found,name);return found;};
+for(const name of['carrier','task','refreshBudget','io'])assert.deepEqual(variable(before,name),variable(after,name),'Original guarded I/O body '+name);
+for(const name of['fields','ordinaryKey']){const a=variable(before,name),b=variable(material,name);walk(a,n=>{if(n.type==='Identifier'&&n.name==='fail')n.name='mirrorOpeningError';});assert.deepEqual(a,b,'Original key/schema check '+name);}
+const btests=ast(old,'test/windowAccountMirror.test.ts').filter(n=>n.type==='ExpressionStatement'&&n.expression.callee?.name==='it'),atests=ast(repo,'test/windowAccountMirror.test.ts').filter(n=>n.type==='ExpressionStatement'&&n.expression.callee?.name==='it');assert.equal(btests.length,14);assert.deepEqual(atests,btests,'Every original mirror case/assertion retained');
+// Compare the entire original createAdmittedWorkspace call after removing only the added private
+// queue binding and matching existing page-factory publication batching option.
+const findCall=tree=>{let call;walk(tree,n=>{if(n.type==='CallExpression'&&n.callee.name==='createAdmittedWorkspace')call=n;});assert(call);return call;};const original=findCall(before),current=findCall(after),admission=current.arguments[0].body;assert.equal(admission.arguments.length,3);admission.arguments.pop();const props=admission.arguments[1].properties;assert.equal(props.length,original.arguments[0].body.arguments[1].properties.length+1);props.pop();assert.deepEqual(current,original,'Original workspace composition plus reviewed batching/bind');
+const fn=(tree,name)=>tree.find(n=>n.type==='ExportNamedDeclaration'&&n.declaration?.id?.name===name).declaration;
+const originalTry=fn(before,'createWindowAccountMirror').body.body.find(n=>n.type==='TryStatement').block.body;
+const captureTry=fn(material,'takeAccountMirrorOpening').body.body.find(n=>n.type==='TryStatement').block.body;
+const isCall=(n,name)=>n.type==='ExpressionStatement'&&n.expression.callee?.name===name;
+const start=originalTry.findIndex(n=>isCall(n,'fields')),end=originalTry.findIndex(n=>isCall(n,'eraseIncoming'));
+const oldChecks=originalTry.slice(start,end).filter(n=>n.expression?.callee?.property?.name!=='disposeWith');
+walk(oldChecks,n=>{if(n.type==='Identifier'&&n.name==='fail')n.name='mirrorOpeningError';if(n.type==='MemberExpression'&&n.object?.name==='identity'&&n.property?.name==='id'){Object.keys(n).forEach(k=>delete n[k]);Object.assign(n,{type:'Identifier',name:'principalId'});}});
+const captureStart=captureTry.findIndex(n=>isCall(n,'fields')),captureEnd=captureTry.findIndex(n=>n.expression?.callee?.property?.name==='write');
+assert.deepEqual(captureTry.slice(captureStart,captureEnd),oldChecks,'Every original scope/generation/retained-key/binding validation branch');
+const result={originalGuardedCarrierAndTaskBodiesIdentical:true,originalSchemaAndKeyChecksIdentical:true,allOriginalScopeGenerationAndBindingBranchesIdentical:true,all14OriginalTestsAndAssertionsIdentical:true,originalWorkspaceFactoryCallIdenticalExceptInternalBindAndPublicationBatching:true,newHashPurpose:'private same-generation journal-key equality only; no external authentication or receipt credit'};writeFileSync('/private/tmp/done-worker-conversion-20261028/174-source-review.json',JSON.stringify(result,null,2)+'\n');console.log(result);

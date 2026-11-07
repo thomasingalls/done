@@ -1,0 +1,18 @@
+{
+  "runtimeSources": 505,
+  "changedSourceRecords": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/receiveSelection.ts"
+  ],
+  "domainsUnchanged": 199,
+  "specifiedContractsRetained": 78,
+  "openConstructionsUnchanged": 16,
+  "priorManifestRowsRetained": 1033,
+  "newRequiredUncreditedTest": [
+    "test:test/receiveDownloadWidth.test.ts"
+  ],
+  "rowsAfter": 1034,
+  "unresolvedBefore": 486,
+  "unresolvedAfter": 487,
+  "nativeFourPositionAllowanceUnchanged": true
+}

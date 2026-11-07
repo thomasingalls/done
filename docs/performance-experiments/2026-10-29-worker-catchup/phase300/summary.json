@@ -1,0 +1,38 @@
+{
+  "name": "01-signed-withheld",
+  "variant": "S0",
+  "mode": "late",
+  "outcome": "passed",
+  "peerUpperMs": {
+    "n": 120,
+    "p50": 1492.84130859375,
+    "p95": 2142.820068359375,
+    "max": 2855.742431640625
+  },
+  "localUpperMs": {
+    "n": 120,
+    "p50": 4.79296875,
+    "p95": 11.6865234375,
+    "max": 69.95263671875
+  },
+  "markerPeerUpperMs": [
+    1080.862060546875,
+    1724.242431640625,
+    1767.582275390625
+  ],
+  "backlogMs": 150757.4892578125,
+  "gates": {
+    "all120KeysComplete": true,
+    "local16ms": true,
+    "peer2500ms": true,
+    "everyMarker2500ms": true,
+    "fullBacklog600s": true,
+    "finalNewDelivery30s": true,
+    "archiveAndColdGuards": true,
+    "faultExercised": true
+  },
+  "referenceQualification": "no matched153 before for this variant; absolute after gates only",
+  "accepted": true,
+  "localKeysOver16ms": 4,
+  "backendOOMCountersZero": true
+}

@@ -217,7 +217,7 @@ it('does not start work for a closed owner, invalid requests or overlapping call
   for (const input of [
     [],
     [new Uint8Array(0)],
-    Array.from({ length: 5 }, () => bytes(1)),
+    Array.from({ length: 9 }, () => bytes(1)),
     [new Uint8Array(4097)],
   ])
     await expect(transport(input, signal(), api, () => true)).rejects.toThrow();

@@ -1,0 +1,17 @@
+import {readFileSync,writeFileSync}from'node:fs';
+import {census,checkRegistry}from'/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/account-crypto-prep/census.mjs';
+const root='/Users/thomasingalls/.codex/worktrees/7fda/done';
+const before=JSON.parse(readFileSync('/private/tmp/done-runtime-ports-20261028/before/docs/account-crypto/census.json'));
+const after=census(root),registry=JSON.parse(readFileSync(root+'/docs/account-crypto/registry.json'));
+const key=v=>v.kind+':'+v.label;
+if(JSON.stringify(before.domains.map(key))!==JSON.stringify(after.domains.map(key)))throw Error('Domain family changed');
+const oldSources=new Map(before.sources.map(v=>[v.path,v.sha256]));
+const changed=after.sources.filter(v=>oldSources.get(v.path)!==v.sha256).map(v=>v.path);
+const expected=['src/crdt/accountCapture.ts','src/crdt/journalStore.ts','src/crdt/runtimePorts.ts','src/crdt/writeSession.ts'];
+if(JSON.stringify(changed)!==JSON.stringify(expected))throw Error('Unexpected source changes '+changed);
+const errors=checkRegistry(after,registry);if(errors.length)throw Error(errors.join('\n'));
+const domains=after.domains.filter(v=>{
+ const previous=before.domains.find(b=>key(b)===key(v));return JSON.stringify(v)!==JSON.stringify(previous);
+});
+writeFileSync('/private/tmp/done-runtime-ports-20261028/census-review.json',JSON.stringify({beforeSources:before.sources.length,afterSources:after.sources.length,changed,domainLabelsUnchanged:true,changedDomainSites:domains,classificationErrors:errors},null,2)+'\n');
+console.log('Reviewed four source changes; labels/classification unchanged.');

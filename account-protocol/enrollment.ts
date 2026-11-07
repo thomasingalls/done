@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from './clockSkew.ts';
 /** Versioned private preparation. No membership, slot or content grant. */
 import { closed, accountIdentifier } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
@@ -281,7 +282,7 @@ export async function verifyEnrollmentChallenge(
     !Number.isSafeInteger(now) ||
     now < 0 ||
     c.context.expiresAt <= now ||
-    c.context.expiresAt - now > ENROLLMENT_LIFETIME_MS
+    c.context.expiresAt - now > ENROLLMENT_LIFETIME_MS + CLOCK_SKEW_ALLOWANCE_MS
   )
     throw Error('Expired enrollment challenge');
   await verify(pin.authRoot, c.signature, enrollmentChallengeMessage(c.context));

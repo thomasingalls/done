@@ -213,14 +213,21 @@ export function reconcileReceiveEditorReports(directory, sources) {
     assert(readFileSync(join(directory, file)).length, 'Empty receiveEditor auxiliary report');
 }
 
-const sortCaptures = (rows) => {
+const sortCaptures = (rows, initial = []) => {
   assert(Array.isArray(rows));
   assert.equal(new Set(rows.map((c) => c.id)).size, rows.length, 'Duplicate source identity');
   for (const c of rows) {
     assert(typeof c.id === 'string' && c.id.length > 0);
     assert(Array.isArray(c.sources) && c.sources.length > 0);
     for (const source of c.sources) {
-      assert.equal(source.kind, 'human');
+      if (source.kind === 'system') {
+        assert.equal(source.actor, 'system');
+        assert.deepEqual(
+          c,
+          initial.find((entry) => entry.id === c.id),
+          'System source was not present unchanged before the first action',
+        );
+      } else assert.equal(source.kind, 'human');
       assert(typeof source.actor === 'string' && source.actor.length > 0);
       assert(Array.isArray(source.bytes) && source.bytes.length > 0);
       assert(source.bytes.every((n) => Number.isInteger(n) && n >= 0 && n <= 255));
@@ -228,8 +235,12 @@ const sortCaptures = (rows) => {
   }
   return [...rows].sort((a, b) => a.id.localeCompare(b.id));
 };
-const sameCaptures = (a, b) =>
-  assert.deepEqual(sortCaptures(a), sortCaptures(b), 'Source identities or bytes differ');
+const sameCaptures = (a, b, initial) =>
+  assert.deepEqual(
+    sortCaptures(a, initial),
+    sortCaptures(b, initial),
+    'Source identities or bytes differ',
+  );
 function position(observed, through) {
   assert.equal(observed.state, 'ready');
   assert.equal(observed.receivedThrough, through, 'Editor receive position differs');
@@ -247,24 +258,24 @@ export function reconcileReceiveEditorEvidence(r) {
     assert.deepEqual(c.held, { visible: c.initial, queuedVisible: c.initial, resultPending: true });
     assert.equal(c.recovered.visible, (side === 'after' ? 'REMOTE ' : '') + c.initial);
     position(c.recovered.status, side === 'after' ? 1 : 0);
-    sameCaptures(c.recovered.captures, c.before);
+    sameCaptures(c.recovered.captures, c.before, c.before);
     assert.equal(c.result.kind, side === 'before' ? 'received' : 'duplicate');
     assert.equal(c.result.recorded, side === 'before');
     assert.equal(c.final.visible, 'REMOTE ' + c.initial);
     position(c.final.status, 1);
     assert.deepEqual(c.result.status, c.final.status);
     if (side === 'after') assert.deepEqual(c.recovered.status, c.final.status);
-    sameCaptures(c.final.captures, c.before);
+    sameCaptures(c.final.captures, c.before, c.before);
   }
   const early = r['control-early.json'];
   assert.equal(typeof early.initial, 'string');
   assert.deepEqual(early.held, { visible: 'REMOTE ' + early.initial, resultPending: true });
   assert.equal(early.recovered.visible, early.initial);
   position(early.recovered.status, 0);
-  sameCaptures(early.recovered.captures, early.before);
+  sameCaptures(early.recovered.captures, early.before, early.before);
   const relabel = r['control-relabel.json'];
-  const before = sortCaptures(relabel.before),
-    after = sortCaptures(relabel.after);
+  const before = sortCaptures(relabel.before, relabel.before),
+    after = sortCaptures(relabel.after, relabel.before);
   assert.equal(after.length, before.length + 1);
   for (const c of before)
     assert.deepEqual(
@@ -279,7 +290,7 @@ export function reconcileReceiveEditorEvidence(r) {
     relabel.original,
     'Relabeled source is not the original remote update',
   );
-  sameCaptures(relabel.observed.captures, after);
+  sameCaptures(relabel.observed.captures, after, relabel.before);
   assert.equal(relabel.observed.visible, 'REMOTE ' + relabel.initial);
   position(relabel.observed.status, 1);
   const g = r['generated-editor.json'];
@@ -295,7 +306,7 @@ export function reconcileReceiveEditorEvidence(r) {
       through = 0,
       link = '00'.repeat(32);
     // Preserve first observations. Never replace known identities with later bytes.
-    const known = new Map(sortCaptures(h.before).map((c) => [c.id, c]));
+    const known = new Map(sortCaptures(h.before, h.before).map((c) => [c.id, c]));
     for (let i = 0; i < h.actions.length; i++) {
       const action = h.actions[i],
         o = h.observations[i];
@@ -321,7 +332,7 @@ export function reconcileReceiveEditorEvidence(r) {
       assert.equal(o.visible, text, 'Editor action text differs');
       position(o.status, through);
       assert.equal(o.status.link, link, 'Editor link changed without receive');
-      const current = sortCaptures(o.captures);
+      const current = sortCaptures(o.captures, h.before);
       for (const [id, c] of known)
         assert.deepEqual(
           current.find((v) => v.id === id),
@@ -335,6 +346,6 @@ export function reconcileReceiveEditorEvidence(r) {
     assert.equal(h.final.visible, text);
     position(h.final.status, through);
     assert.equal(h.final.status.link, link);
-    sameCaptures(h.final.captures, [...known.values()]);
+    sameCaptures(h.final.captures, [...known.values()], h.before);
   }
 }

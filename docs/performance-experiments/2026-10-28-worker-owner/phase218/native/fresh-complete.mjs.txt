@@ -1,0 +1,28 @@
+import {createFirstDeviceSetup} from './src/account/firstDeviceSetup';
+export function registerFreshComplete(){
+ const lab=window.__nativeFreshLab;
+ lab.registration=async()=>{
+  const owner=window.__nativeFreshOwner;await owner.passkey();
+  if(owner.getSnapshot().kind!=='confirm-passkey')throw Error('registration did not reach confirmation: '+owner.getSnapshot().kind);
+  await owner.passkey();const state=owner.getSnapshot();
+  if(state.kind!=='save-recovery')return{kind:state.kind,error:state.error};
+  window.__nativeFreshRecovery=state.code;owner.savedRecovery();await owner.whenIdle();return{kind:owner.getSnapshot().kind};
+ };
+ lab.finish=()=>{window.__nativeFreshDone=false;window.__nativeFreshPending=window.__nativeFreshOwner.confirmRecovery(window.__nativeFreshRecovery).then(()=>{window.__nativeFreshDone=true},()=>{window.__nativeFreshDone=true});return true};
+ lab.state=()=>{const state=window.__nativeFreshOwner.getSnapshot();return{kind:state.kind,error:state.error,done:window.__nativeFreshDone}};
+ lab.approve=()=>window.__nativeFreshOwner.approvePasskey();
+ lab.editAndCold=async()=>{
+  const owner=window.__nativeFreshOwner;if(owner.getSnapshot().kind==='name')await owner.saveName('Fictional new worker account');
+  const ready=owner.getSnapshot();if(ready.kind!=='ready')throw Error('Native fresh not ready: '+ready.kind);
+  const workspace=ready.workspace,field=workspace.text({kind:'master'}),n=field.read().text.length;
+  const ticket=field.input({name:'insert',text:'New native account retained writing.'},{ranges:[{anchor:n,head:n}],main:0});
+  await ticket.accepted;await workspace.whenDurable();const archive=workspace.exportEntries();await owner.close();
+  const slots=await new Promise((resolve,reject)=>{const q=indexedDB.open('done.slots');q.onerror=()=>reject(q.error);q.onsuccess=()=>{const db=q.result,r=db.transaction('slots').objectStore('slots').getAll();r.onsuccess=()=>{db.close();resolve(r.result)}}});
+  const slot=slots.find(v=>v.id!==window.spec.slotId&&v.id.startsWith('account-')&&v.account);if(!slot)throw Error('fresh slot missing');
+  const page=createFirstDeviceSetup({pin:window.spec.pin,networkSessions:true,membershipContinuation:true},slot.id);
+  await page.inspect();await page.unlock(window.__nativeFreshCode);let cold=page.getSnapshot();
+  if(cold.kind==='name'){await page.saveName('Fictional new worker account');cold=page.getSnapshot()}
+  if(cold.kind!=='ready')throw Error('Page cold not ready: '+cold.kind);
+  try{return{archive,cold:cold.workspace.exportEntries()}}finally{await page.close()}
+ };
+}

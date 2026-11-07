@@ -17213,3 +17213,3550 @@ Current infrastructure main27369a8/offline checks and read-only live identity/PV
 health pass; historical backup failures1484 retained. Source defaults/service automation unchanged;
 general935/389 qualification paused. Final ordinary results recorded with the packet. No image
 publication, infrastructure change, merge, reconciliation or deployment in this preparation.
+
+
+## 2026-10-28 — Phase161: refresh the product backlog after release and record new stalls
+
+Update [product follow-ups](product-backlog.md) against released b6f0160a: distinguish shipped UX,
+local reduction/resumption and backup/catch-up repairs from open product ambitions and disabled
+service-history automation. Preserve the earlier version/check acknowledgment and infrastructure
+PR38's pending documentation review. Record the operator's qualitative startup/sync improvement
+separately from new mobile open/refocus and desktop sustained-typing stalls; no cause or timing is
+established, and finite p95 acceptance does not exclude this report.
+
+Record worker-owned account-runtime and decoupled bounded download/verification/presentation as
+discussion candidates, including synchronous encrypted-journal admission, fresh authority/expiry,
+lock/removal/ownership and input-priority constraints. Source inspection identifies existing page
+execution and grouped receive sequencing, not measured attribution. Documentation only; no product
+decision, runtime/test change, device access, performance experiment, activation or release action.
+Preserve this two-file change as sequential patch161; leave the real index and commits untouched.
+
+
+## 2026-10-28 — Phase162: sustained Goals paragraph and account-owner contention
+
+Use the exact released frontend and copied fictional synced account to offer779 trusted keys at
+150ms cadence independently of renderer acknowledgments. Desktop functional guards pass; mobile
+CPU4x online observes120 long tasks during typing versus zero in the fresh offline control. Desktop
+quiet time has a922ms task. [Evidence, source attribution and scope](performance-experiments/2026-10-28-goals-stalls/phase162/README.md).
+CPU sampling/source-map checks identify record comparisons/projections and private ownership cleanup
+as the largest mapped application weights, without attributing every stall or estimating a speedup.
+Keep the account owner/state together as the proposed worker boundary; record the operator's separate
+download/verified-durable/display queue objective. No runtime/thread/protocol repair is implemented.
+
+Preserve initial TS config/two overlay setup failures, ineffective lifecycle controls, mobile prefix
+guard failure and offline control's15s same-context reopen failure. Independent copied-profile checks
+confirm exact original+Enter+paragraph writing and a separate offline cold reopen; they do not erase
+the failed runs. Native unlocked blur/focus is observed, hidden/suspended Android return is not.
+New diagnostic reproducer/controls have no aggregate credit; old tests/runtime and16ms/2.5s/native
+guards remain unchanged. Freeze sequential patch162 after161; no real staging, signing, push,
+preview update, release preparation, merge, deployment or production-data access.
+
+
+## 2026-10-28 — Phase163: worker-owner contract and native feasibility
+
+Run the actual established first-device account owner in a dedicated worker against copied fictional
+native storage, original crypto/verifiers and real virtual-passkey assertions.14 native browser cases
+and14 new protocol cases pass: exact archive, actual sealed journal before reply, Undo/Redo, normal
+shipping-reader reopen, credential refusal, cancellation, lost acknowledgments, hard loss, quota,
+retirement/navigation, duplicate/queued supervisor and native orphan/mixed-owner fencing.
+[Contract, retained failures and evidence](performance-experiments/2026-10-28-worker-owner/phase163/README.md).
+
+Discover that private Account sessions are exclusive and generic shared Local sessions correctly
+refuse their markers. Keep production unchanged. The lab's explicit reservation/exclusive barrier/
+shared cohort needs a nonqueued native worker join: a retained before control demonstrates deadlock
+if an older exclusive owner queues between the two leases. Final refusal/drain control passes.
+Independently reconstruct all declared transforms;440 source and86 shipping frontend files remain
+exact. Four corrupted-evidence controls refuse; preserve three initial audit construction failures,
+all failed/invalid browser/build attempts and the teardown-timer defect. All65 owned containers removed.
+
+This is an isolated kernel, not a Goals adapter or performance repair. Its shared-memory mailbox,
+lab-only isolation headers, lock modes/port and full small-fixture snapshot replies are not shipping
+choices. Keep synchronous admitted Window journal semantics and separate bounded downloaded/
+verified-durable/display queues in the contract. Explicit production ports, compatible cohort owner
+and admitted Window mirror remain the next integration boundary. No old tests/runtime,16ms/2.5s/30s
+gates, defaults or935/389 paused qualification obligations change. Freeze sequential patch163 after162;
+no real staging, signing, push, preview update, activation, release preparation or deployment.
+
+
+## 2026-10-28 — Phase164: fixed page runtime/lifetime ports with synchronous admission
+
+Extract activity, secure native lifetime/retirement and fresh journal environment into typed ports
+with a frozen internal page adapter. Rewire three owners; retain page execution, exclusive Account/
+joined modes, ordinary compatibility, guard/drain/disposal and synchronous sealed journal admission.
+No caller runtime override or worker/cohort activation. Independent reverse substitutions recover
+the exact remaining three files/public APIs;437 other prior inputs are unchanged.
+[Evidence, retained failures and contract](performance-experiments/2026-10-28-worker-owner/phase164/README.md).
+
+All2225unit cases/one existing skip,14new port regressions,13native lifetime and17journal cases with
+all11mutation controls detected,5native authority/cache/lifecycle cases and111metadata cases pass.
+Build/type/lint/format and package-defined security/vector checks pass. Preserve the initial new-test
+spy failure, read-only census syntax error, native external-dependency refusal, interrupted pnpm
+attempt and initial metadata source-site failure. Native campaigns use a verified materialized
+disposable source copy and retain original assertions/deadlines; both report groups drained.
+
+Review and update only the coordination exclusion's source sites and runtime census, with all crypto
+labels/statuses/contracts retained. Add the required new test without aggregate credit:936/390 now
+blocked; every prior manifest row is identical. No old tests/harnesses, formats, switches or16ms/2.5s/
+30s gates change. Append this outcome before advancing owned backlog status. Freeze patch164 after
+immutable161–163; real index stays empty. No signing, push, preview update, release prep or deployment.
+
+
+## 2026-10-28 — Phase165: native Window/worker cohort with stale-incarnation refusal
+
+Add a coordination-only internal cohort; existing417 runtime sources stay exact and default Account/
+joined factories stay exclusive. A Window reservation/unique anchor/legacy-name barrier and endpoint
+join one nonqueued native worker member. Replayed tickets, same-Window stale incarnations, mixed
+older exclusive ordering and orphaned workers are fenced. Withdraw joins before close; retain native
+exclusion through drain/cleanup and refuse failed physical release. [Evidence](performance-experiments/2026-10-28-worker-owner/phase165/README.md).
+
+14new plus21existing focused unit cases,20native cases across Chromium/Firefox and98metadata cases
+pass; two missing-anchor mutation controls fail at the intended stale-ticket assertion. Preserve
+the original native release-census race, two new fixture type errors and missing-family inventory
+refusal. Replace the racy census with a native barrier whose5s deadline fails closed. No crypto key,
+admission, format or existing-test changes. Both new tests remain uncredited:938/392 blocked; all
+prior rows and gates retained. Freeze165 before the Window mirror slice, keeping real index empty.
+No signing, push, preview change, activation, release preparation or deployment.
+
+
+## 2026-10-28 — Phase166: real admitted Window mirror with verified worker I/O
+
+Add an internal mirror using the original command/admission/Undo queue and synchronous journal codec,
+bound to the opaque native cohort. Only journal subkeys enter the Window, with early erasure hooks;
+actual verified worker recovery/content I/O stays behind guarded asynchronous calls. The queue's
+new structural carrier type emits byte-identical JavaScript. Project only original state/update and
+journal records after full authentication, preserving pending structs/deletions and record identity.
+[Contract, failed attempts and evidence](performance-experiments/2026-10-28-worker-owner/phase166/README.md).
+
+Eight isolated real-account/native Chromium cases pass: zero-RPC same-handler sealed admission with
+the worker held; original Undo/Redo; input during real verification; genuine credential refusal;
+stale incarnation; Window/worker loss; quota commit-first fallback; and lost commit acknowledgment
+with exactly-once unchanged-shipping-reader recovery. Graceful Window/WASM and worker journal-key
+cleanup is observed; hard kill earns no graceful worker-erasure credit. All10 owned containers are
+removed. Five lab-only worker transforms reconstruct exactly and200 built source identities reconcile.
+Full2256unit cases/one existing skip,45focused cases,98metadata cases and six diagnostic wire cases
+pass, alongside build/type/budget/origin-isolation/admission/authority/WASM/lint/format checks. Four
+corrupted-evidence audit controls refuse. Preserve initial test/type/format failures, the bounded
+bootstrap refusal, stale new-test hash and audit/packet construction failures; no old tests change.
+
+Default app execution remains on the page and Account/joined factories remain exclusive. The actual
+worker composition is still isolated lab code: its shared-memory bridge/headers/key getter are not
+shipping APIs or browser requirements. Ordinary async storage messaging, bounded large bootstrap,
+Goals/IME, joined routes, network/maintenance integration and full peer/input gates remain ahead.
+No latency or stall-fix claim.420source census retains all198 domains;940/394 obligations remain
+blocked, including both new tests uncredited, with every prior manifest row retained. Append this
+outcome before advancing owned backlog. Freeze166 after165; no real staging/signing/push, preview
+change, activation, release preparation or deployment.
+
+
+## 2026-10-29 — Phase167: bounded asynchronous Window journal transport
+
+Continue the authorized conversion with a scoped raw encrypted-journal endpoint and bidirectional
+MessagePort channel, replacing neither the existing synchronous append nor any runtime yet. Check
+the actual cohort/index-derived database; page stable ciphertext and compare/remove exact committed
+values in16-entry calls. There is no worker append, decryption or arbitrary storage authority. Bound
+messages/backing allocations, requests, snapshot credits, schema/sequence/incarnation and lifetime;
+erase owned binary replies and refuse stale completions. [Evidence](performance-experiments/2026-10-28-worker-owner/phase167/README.md).
+
+23new/51focused cases,98metadata cases, type/lint/format pass. Preserve the new fixture's generic
+SessionTask type and sparse-array lint refusals; all420 old runtime sources and old tests stay exact.
+New422-source census retains198 domains;942/396 qualification obligations stay blocked, both new
+files uncredited and every prior row retained. Actual browser worker/native owner, admission/receive,
+maintenance and application conversion remain following bounded phases. No latency claim or gate,
+format, activation, preview, real-index, signing/push or release change. Append before owned status.
+
+
+## 2026-10-29 — Phase168: native Account worker without shared-memory shims
+
+Add the actual dedicated-worker entry/client/runtime and bounded exact-record recovery stream.
+Use genuine native cohort leases and original factor/passkey/authority/storage checks. Async scoped
+encrypted journal reads and compare-removal replace the isolated SAB shim; no source transforms.
+Window keeps synchronous sealed admission and original Undo. Lifetime cancellation drains/terminates
+then proves native release; narrow journal subkeys are erased on close. Exact original records,
+including historical states larger than today's append limit, reopen in the shipping reader.
+[Evidence and limitations](performance-experiments/2026-10-28-worker-owner/phase168/README.md).
+
+2289 unit cases/one existing skip,26 native Chromium/Firefox cases,two stale-reservation fault
+controls,eight actual-account Chromium cases,98 metadata checks and affected build/type/security
+checks pass. Full native lifetime campaign13+5 passes. Combined journal campaign passes17 cases but
+four later mutation observers time out; scoped unchanged runs detect all remaining controls. Keep
+that combined failure unresolved, alongside earlier import/type/read-bound and concurrent observer
+failures. One old config fixture waits for intentional deferred persistence; a new gated regression
+proves that ordering without production config changes.17 disposable containers are absent.
+
+426 sources retain198 domain labels/owners; construction references move lines only.945/399
+qualification obligations remain blocked, all prior rows identical and three new files uncredited.
+Default app execution stays on the page. Next fix the low-level runtime import cycle, then wire
+receive/maintenance/application routes and fresh ceremony ownership. No latency claim, gate change,
+service automation, real staging/signing/push, preview or release preparation. Append before status.
+
+
+## 2026-10-29 — Phase169: acyclic low-level worker runtime
+
+Extract unchanged native coordination primitives, dedicated-worker join and journal wire declarations
+into dependency-free homes. Remove low-level ports' cyclic dependency on Window account/storage
+ownership. Preserve old exports/error identity and actual native manager checks. Independent AST
+body comparison and before/after dependency falsifiers pass;63focused,26native Chromium/Firefox,
+98metadata and eight rebuilt actual-account cases pass, with both missing-anchor faults detected.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase169/README.md) retains initial new
+parser fixture/empty selection failures; the previous long journal observer failure stays unresolved.
+429sources retain198domain assignments; only slot-label source home changes. All old obligations
+remain identical, newtestuncredited:946/400blocked. Default app remains on page; continue lifecycle,
+receive/maintenance and ceremony integration before measuring. No gate, format, real-index, service
+automation, preview, signing/push or release change. Append before owned status.
+
+
+## 2026-10-29 — Phase170: bounded Window activity and fixed worker lifecycle ports
+
+Coalesce advisory activity to one request plus bounded latest kind/state samples, preserving observed
+transition order and cancellation. Original100-event handler refused92calls; replacement admits a
+10,000-event burst while leaving seven native MessagePort credits free for owner work. Route existing
+sync/receive/maintenance/notification listeners through fixed runtime ports with owned cleanup; keep
+Node inert when document/listeners are absent. No permission, crypto or retry timing changes.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase170/README.md).
+
+Full2300unit cases/one existing skip,80focused,28native Chromium/Firefox cases,98metadata and six
+unchanged notification-server cases pass, alongside type/lint. Preserve sandbox loopback refusal
+and initial Node strip-only loading failure; authorized disposable listeners/transform-types pass.
+430sources retain198domain assignments; only source lines move. All old obligations remain exact,
+newtestrequired/uncredited:947/401blocked. Combined journal observer failure from168 remains open.
+Default app still runs on the page; continue actual admission/receive, maintenance and ceremonies.
+No performance measurement, gate change, service automation, preview, real index/signing/push or
+release preparation. Append before owned status and freeze sequential patch170 after169.
+
+
+## 2026-10-29 — Phase171: existing Account coordinator over a workspace port
+
+Extract the original admitted page factory and minimal workspace/status/durability port. Keep the
+entire coordinator body AST-identical except binding the factory result; the original factory call
+is identical and admissionQueue bytes stay unchanged. Add a worker-only composition seam behind
+actual runtime/native/account authentication, with default app execution still on the page.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase171/README.md).
+
+Four new/61focused cases and three real-account Chromium cases pass: actual code/passkey opening,
+sealed input/Undo/native close/exact shipping-reader reopen, corrupted genuine assertion refusal and
+wrong-code refusal.214built source bodies match, no transforms; three disposable containers absent.
+Type/lint/format and98metadata cases pass. Keep new fixture byte-type/wrapped-error expectations and
+unused-import failures. No old tests change.431sources retain198domain assignments; source-line
+references only. All old obligations stay exact; new testrequired/uncredited:948/402blocked.
+
+Next add actual queue-head journal fences before hot route/era rebind and worker receive handoffs.
+A previous external durability barrier can be overtaken by input; existing owned receive itself does
+not flush before its callback. Preserve original checks and synchronous admission. Prior journal
+observer failure remains unresolved. No performance claim, gate change, service automation, preview,
+real index/signing/push or release work. Append before owned status; freeze171 after170.
+
+
+## 2026-10-29 — Phase172: genuine Window queue-head journal fence
+
+Add a private opaque capability bound to this live queue head/carrier after its actual journal flush.
+Preserve original admission/flush/receive logic; independent AST review confirms only a new internal
+closure and bind argument. Metadata-only effects use empty ordered handoff without publication.
+Eight new/83focused cases, type/lint and98metadata checks pass. Skip-only-final-flush fault fails the
+precise remaining-entry assertion. Retain earlier new-test timeouts: storage errors stay pending for
+retry; tests now verify that original contract and successful retry without early capability.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase172/README.md).
+
+Original native admission passes all15 ordinary cases and detects3faults; three later controls time
+out during initial fixture setup before assertions. Full combined campaign remains failed. Preserve
+all reports/deadlines; next isolate observer dependence on animation frames versus initialization
+failure, before relying on full native closure. Earlier journal observer errors remain open.
+431sources retain198domain assignments; only lines move. All old obligations stay exact, newtest
+required/uncredited:949/403blocked. No app activation, performance measurement/gate change, service
+automation, preview, real index/signing/push or release work. Continue mirror route/era rebinding and
+async worker handoffs after the observer slice; append before owned status and freeze172 after171.
+
+
+## 2026-10-29 — Phase173: sound native state observation and full campaign closure
+
+Replace17 coordination/storage observer waits with one bounded host-side helper that awaits actual
+async predicate results and does not depend on page rendering/timers. Retain every original predicate,
+assertion, schedule, fault and8s/10s deadline; independent AST reconstruction verifies all scenario
+statements. Three runners hash the newly executed helper. No production/runtime changes.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase173/README.md).
+
+The frozen-page probe does not reproduce absent RAF, so historical timeout causes remain qualified.
+Installed Playwright and both browsers do reproduce false-Promise success; corrected observer rejects
+it and bounds unresolved evaluations/late results. Six new/89focused cases,34native Chromium/Firefox
+cases,98metadata and12adapter cases pass, alongside type/lint. Complete original campaigns now pass:
+admission15+6fault controls, journal17+6, lifetime13+5. Earlier168/172failed combined attempts remain
+recorded; this is new passing closure, not deletion of inconvenient evidence or performance credit.
+
+431runtime sources and198domain assignments remain exact. All prior obligations stay identical; both
+new files required/uncredited:951/405blocked. Return to mirror hot route/era rebinding, then real worker
+receive/maintenance and ceremony/application integration. No latency measurement, gate change, service
+automation, app activation, preview, real index/signing/push or release work. Append before owned status.
+
+
+## 2026-10-29 — Phase174: preserve Window admission through verified context rebinding
+
+Add an internal controller and synchronous closed-schema material capture. Rebind only under this
+carrier's live journal-flushed FIFO head, fixing scope/root/database/incarnation/credential and refusing
+regressing generation/epoch/era or missing bindings. Refresh budget and replace codec/context before
+input resumes, retaining the original canonical/Undo. Check same-generation subkey equality with a
+private hash, erase JS subkeys after WASM import, and abort/drain uncertain authorized transitions.
+Public workspace gains no internal capabilities; mirror publication batching matches the original.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase174/README.md).
+
+All original guarded I/O/task/schema/scope/key/binding checks and14old test/assertion bodies remain
+AST-identical; controlled fixture setup is shared.13new rebind cases pass, and deliberately retaining
+the old era binding fails the exact original pairing check. Full2331unit cases/one existing skip,
+98metadata, type/lint and11rebuilt real-account Worker/page walkthroughs pass.215built bodies match,
+no transforms/SAB; eleven owned containers absent. Retain new fixture unused-import and ES2024 API
+type errors, correcting fixtures without changing the ES2022 target. Actual native maintenance
+transition integration remains next; controlled rebind cases do not claim that evidence.
+
+432sources retain198domain assignments; all old obligations remain exact, newtestrequired/uncredited:
+952/406blocked. Existing16ms/2.5s/all-marker/30s targets unchanged/unmeasured. No default app activation,
+service automation, preview, real index/signing/push or release work. Append before owned status and
+freeze174 after173, then continue actual Worker maintenance, receive/sync and application integration.
+
+## 2026-10-29 — phase175: actual Worker local-history handoff
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase175/README.md). Brand the genuine
+Window controller/root; reserve its actual flushed admission head, perform original native baseline/
+era conversion and retain the Worker reservation until Window context rebinding acknowledges. Lost
+reply/cancel drains without revived input or leaked keys. Capture opening arguments before awaiting;
+ready is one-shot.17 rebuilt actual-account cases,36 native cohort cases,2336 unit cases/one existing
+skip and98 metadata cases pass. A matching test fails on all314 exact phase174 source preimages.
+Preserve that failure and the initial optional-binding type error. Independent AST audit retains old
+cases, rebind/I/O and native receive verification (Worker composed mode enabled).216 emitted source
+bodies match;19 owned containers absent.433sources/198domains,953 obligations/407 unresolved; new test
+uncredited. Default app remains Page; manual maintenance integration is not automatic/latency credit.
+Continue acknowledged receive/sync, resumable preparation, ceremonies and Local/app/offline ownership
+before unchanged16ms/2.5s/all-marker/30s measurements. No signing/push/preview/release or automation.
+
+## 2026-10-29 — phase176: acknowledged native receive finish
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase176/README.md). The internal Worker
+prepared receive re-enters the original fresh checking task, retains it through asynchronous Window
+apply acknowledgment, then rechecks context before clearing pending-promotion exclusion. Cancellation/
+lost acknowledgment closes for cold replay; one-shot finish prevents replay. Original Page/native
+receive AST is independently unchanged except the Worker-only branch. Seven new controlled cases,
+104 focused cases,42 native cohort cases and98 metadata cases pass; early-task-release control fails
+in both browsers. Preserve test-only rejection logs and distinguish the final isolated artifacts from
+earlier shared-directory attempts.434sources/198domains,955 obligations/409 unresolved; new tests
+uncredited. Actual receive transport/application integration is next, no performance/activation credit.
+
+## 2026-10-29 — phase177: actual Worker receiving and original network sessions
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase177/README.md). Original network login,
+signed read verification and native persistence now run inside the internal Worker. Bounded original
+frame transport feeds the real Window prepared queue; a genuine fresh native task remains held
+through final apply acknowledgment. Baseline/manual authority refresh share the existing actual
+fence/rebind/ACK protocol. No session/grant secrets or native permission leave the Worker. Full2375
+unit cases/one existing skip,81 focused,98 metadata/type/lint/format and20 rebuilt real-account cases
+pass, including all17 old cases plus sender-closed peer receive/Undo/cold reopen, confirmed signature
+mutation refusal and lost-apply native drain/exact cold replay.32 owned containers absent;224 emitted
+source bodies match. Preserve failed tests and the correction from ambiguous idle/batching upload
+checks to exact SourceCapsule coverage by accepted native positions. No default activation/performance
+credit.436sources/198domains;957 obligations/411 unresolved, new tests uncredited. Next address joined
+physical/logical mirror scopes, then complete original sync/workspace/maintenance/ceremony/Local/
+offline composition. No preview/staging/signing/push/release/service automation.
+
+## 2026-10-29 — phase178: joined mirror physical/logical identity separation
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase178/README.md). Validate logical
+Account route/actor independently from physical Local custody scope and preserve physical database/
+era bindings. Explicitly fix both logical route fields during rebind. Nine new cases cover legitimate
+distinct scopes and spoofed/malformed/swapped contexts; four fail before repair, and removing only
+the fixed workspace guard makes its test fail. Native verifiers and all old mirror/rebind cases stay
+unchanged. Full2384units/one skip,68 focused,98 metadata/type/lint/format and21 rebuilt native cases
+pass, including the genuinely joined profile's same-handler journal/native readback, Undo, actual era
+handoff and original joined Page cold reopen. Preserve wrong-seed and wrong-archive fixture attempts;
+explicit distinct-ID/enrollment assertions and an independent local Page baseline correct them.
+25 owned containers absent;224 emitted source bodies match.436sources/198domains,958 obligations/412
+unresolved; new test uncredited. Next original workspace/sync composition and fresh context handoff,
+then resumable preparation/ceremonies/Local/offline integration before unchanged performance gates.
+
+## 2026-10-29 — phase179: contextual handoff inside the held final native task
+
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase179/README.md). Ordinary/contextual
+acknowledgments share a one-use guard. Copy narrow journal material directly inside the actual fresh
+checking task; retain it through Window rebind ACK, then guard/apply completion and erase all copies.
+Baseline/authority handoffs use this path without queueing copyMirrorOpening behind themselves. Five
+new controlled cases preserve all7 old cases;2389 units/one skip pass before eraser consolidation,
+final62focused/98metadata/type/lint/format and7 affected actual-account cases pass. Final rebuilt
+source reruns3 primary/joined era/cancel cases;6 original native task cases pass.224 emitted bodies
+match;10 owned containers absent. Retain optional-binding type and shifted construction-line failures;
+line-only repair independently preserves domain homes. Native receive/Page branches remain unchanged
+outside Worker handoff.436sources/198domains,958 obligations/412 blocks exact, no new aggregate credit.
+Continue actual original workspace/sync composition and bounded hints before remaining ownership and
+unchanged performance gates; default Page remains, no preview/staging/signing/push/release/automation.
+
+
+## 2026-10-29 — phase180 bounded Window-to-Worker workspace observations
+
+Keep synchronous Window admission; coalesce scheduling hints without shipping fake updates or lending
+durability. Actual barrier RPC and cancellation remain required.2400 unit cases/one skip,40 focused,
+98 metadata/type/lint/format pass; old native/scheduler AST and obligations retained. Controlled
+protocol evidence, not activation/performance credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase180/README.md).
+
+
+## 2026-10-29 — phase181 composed Worker final-queue handoffs
+
+Prepared native work settles before real Window FIFO; context mutations hold the genuine Window
+journal head through native final verification/rebind/ACK. Original frames, original Undo, no cloned
+proofs.11 new controlled cases/48 focused and98 metadata/type/lint/format pass; initial refusal
+deadlock preserved and repaired without changing deadlines. Native/Page bodies remain exact; default
+app still Page. [Evidence](performance-experiments/2026-10-28-worker-owner/phase181/README.md).
+
+
+## 2026-10-29 — phase182 original composed Account runtime in Worker, default still Page
+
+Use actual authenticated native factory context, original scheduler/access and real Window admission
+queues.2417 unit cases/one skip,24 focused,98 metadata and34 session-client cases pass. Native matrix
+27/28: preserve unresolved joined deep-backlog30s failure and diagnostic verified progress/429.
+Actual publication, primary sender-closed receive, context conversion and credential refusals pass.
+Old checks/obligations remain. Native retirement propagation, automatic context/lifecycle and remaining
+application integration precede activation/performance. [Packet](performance-experiments/2026-10-28-worker-owner/phase182/README.md).
+
+
+## 2026-10-29 — phase183 actual native withdrawal retires the Window mirror
+
+Two native before counterexamples show member released/Window still active with its own hint
+suppressed. Direct actual-owner withdrawal binding and reentrant-safe shutdown repair both; six
+affected native cases,50 unit and98 metadata/type/lint/format checks pass. Existing drain/fences/
+crypto and all prior obligations remain. [Packet](performance-experiments/2026-10-28-worker-owner/phase183/README.md).
+
+
+## 2026-10-29 — phase184 automatic authority/context changes join the real Window head
+
+Discovery/proof checks stay outside FIFO; actual changes use original native install and task-held
+context ACK. Genuine certification3->5 captures source5; prior-source control captures3 and fails.
+Input/flush during a real digest await also passes without message reordering.42 focused/98 metadata/
+type/lint/format and affected native checks pass; invalid reordering probe and setup failures retained.
+Original native/Page checks and obligations retained. Default app still Page;182 deep-backlog outcome
+remains open. [Packet](performance-experiments/2026-10-28-worker-owner/phase184/README.md).
+
+
+## 2026-10-29 — phase185 public Worker session/UI ports
+
+Explicit original login/sync/device/history actions and coalesced public status now have bounded
+ports, without moving authority or durability to cached UI state.33 focused/98 metadata/type/lint/
+format checks pass. Native checks caught fractional retry deadlines refused by the draft bridge;
+original-jitter regression fails before/pass after. Five actual Worker checks now pass including
+sign-out and original cold read; both native runs retained. Default Page, no acceptance claim.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase185/README.md).
+
+
+## 2026-10-29 — phase186 scoped Worker passkey cancellation
+
+Forward the original independent proof cancellation through one scoped Window prompt, rejecting
+late results and retaining original Worker nonce/signature verification.35 focused/98 metadata/
+type/lint/format pass; six native authentication/refusal/publication/session cases pass. A deliberate
+missing-cancel fault fails both targeted regressions. Fault-fixture failures retained and qualified.
+Default Page and all performance/security gates unchanged.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase186/README.md).
+
+
+## 2026-10-29 — phase187 scoped read-only preparation and final progress save
+
+Observe authenticated journal reads without lending pinned write permission. Progress save uses
+actual Window head and original fresh checks/ACK.55 focused/original unit cases,98 metadata/type/
+lint/format pass. Prior-module control refuses worker-lifetime; uninstrumented current Worker saves,
+cold resumes and removes7275 rows, then preserves input/Undo/old-reader exactness. Native retirement
+passes. Stale scheduling predecessor and separate30s catch-up failure retained, not claimed fixed.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase187/README.md).
+
+
+## 2026-10-29 — phase188 maintenance hint matches its native predecessor
+
+Derive the scheduling revision from the existing metadata home after original authenticated
+validation. Counterexample actual1/hint0 fails before; current primary/joined Worker warm/cold paths
+agree, and actual saved-slice/reduction/input/Undo/cold read still pass.72 unit/98 metadata/type/
+lint/format checks pass. Original parsing/crypto/storage/refusals retained; no format/policy change.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase188/README.md).
+
+
+## 2026-10-29 — phase189 post-drain Worker transition presentation
+
+Forward actual native terminal kinds to the existing Window notice store, retaining immediate
+input withdrawal and real cleanup barriers. Fresh authenticated readiness clears only its matching
+notice.36 unit/98 metadata/type/lint/format pass; six real native cases pass. Prior entry/client closes
+cleanly but loses the notice and fails the same5s check. No deletion success inferred from lost reply;
+original catalogue, native checks and key disposal retained. Default Page, no timing credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase189/README.md).
+
+
+## 2026-10-29 — phase190 live Worker capability observations
+
+Forward matching-pin observations through bounded lifecycle-owned callbacks. Actual live Worker
+discovery3->5/source5 passes; prior entry/client stays3 and fails. A late configuration refusal
+regression exposed draft raw-key ownership ordering; current source wipes actual incoming buffers
+and cold reads exactly.23 unit/98 metadata/type/lint/format and eight final native cases pass.
+Original crypto/authority/history/backoff checks retained. Default Page, no performance credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase190/README.md).
+
+
+## 2026-10-29 — phase191 Local native coordination
+
+Actual Local shared roots, Window pin, real per-phase permits, replay refusal and fail-closed cleanup.
+23 unit/98 metadata/type/lint/format, independent Account AST specialization and five final native cases
+pass, including original Account input/Undo/cold-read controls. Eight containers absent. Still Page default;
+no timing/qualification credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase191/README.md).
+
+
+## 2026-10-29 — phase192 retained Local Worker carriers
+
+Original claim/factor/census/crypto in native Worker, bounded raw recovery/subkey handoff, original
+refusal and cancellation, async recovery ownership.53 focused/98 metadata/type/lint/format and four
+final Local native cases pass; original Account control also passes.11 containers absent, Page default,
+conversion incomplete/no timing credit. [Packet](performance-experiments/2026-10-28-worker-owner/phase192/README.md).
+
+
+## 2026-10-29 — phase193 Local Window mirror
+
+Original raw Local admission/Undo with synchronous sealing, native Worker durability and strict owner
+kind separation.36 focused/98 metadata/type/lint/format and five final native cases pass, including
+worker loss and independent old/new-writer CRDT union. Seven containers absent. Default Page, maintenance
+and remaining conversion still pending; no timing credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase193/README.md).
+
+
+## 2026-10-29 — phase194 maintenance boundary falsifier
+
+Rejected a pending-lock barrier after actual Chrome continuation failures and Firefox comparison.
+Complete candidate/source/driver identities, failures and mocks retained. All1368 source/test files and
+metadata homes restored exactly to193;36 focused/98 metadata pass, nine containers absent. Maintenance
+and conversion still pending, no performance credit.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase194/README.md).
+
+
+## 2026-10-29 — phase195 authenticated journal observation boundary
+
+Bounded retained ciphertext, actual native Worker journal authentication/task scope, no pinned
+permission, exact scoped Window comparison and expiry/erasure.33 focused/98 metadata/type/lint/format/
+AST checks and actual Chrome/Firefox observation plus Account/Local controls pass; five containers
+absent. No deletion or default activation, conversion/gates pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase195/README.md).
+
+
+## 2026-10-29 — phase196 Local maintenance commit foundations
+
+Actual expiring queue-head fence and unverified borrowed ciphertext view preserve original owning parser,
+admission and native compaction.96 focused/98 metadata/type/lint/format/independent AST checks and original
+native automatic maintenance/cold exact checks in Chrome/Firefox pass; two containers absent. Worker
+maintenance/default conversion remain. [Packet](performance-experiments/2026-10-28-worker-owner/phase196/README.md).
+
+
+## 2026-10-29 — phase197 Local worker automatic compaction
+
+Original thresholds/crypto/coverage/readback with bounded encrypted census and actual Window final
+transaction, fresh journal equality and interruption/native drain.53 focused/98 metadata/type/lint/
+format/independent Page audit pass. Native Chrome/Firefox stale-journal refusal, fresh retry, foreground
+abort/retry and exact cold writing; original Page/Account controls pass, eight containers absent.
+Default conversion pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase197/README.md).
+
+
+## 2026-10-29 — phase198 automatic Window withdrawal after Worker termination
+
+Actual member observer, cancellation/drain and physical-release distinction.41 focused/98 metadata/
+type/lint/format/independent client audit pass. Chrome Account/Local hard death automatically withdraws
+editing and preserves exact cold sealed replay; Firefox Local death/fresh reopen and normal controls
+pass. Six containers absent; default conversion pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase198/README.md).
+
+
+## 2026-10-29 — phase199 read-only Local startup Worker
+
+Native ceremony supervision without old-slot substitution, strict storage guard, original inspect/
+route/automatic-opener checks and shared read-only census.66 focused/98 metadata/type/lint/format/
+independent audits pass. Final Chrome/Firefox protected/automatic/legacy/coexistence checks preserve
+exact cold writing;18 containers absent. Genesis/protection/application activation remain pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase199/README.md).
+
+
+## 2026-10-29 — phase200 Local creation/resumption in native Worker
+
+Original enrollment/automatic/exclusive/custody/claim checks, display-code-only UI proxy, correlated
+cancel and fresh count.32 focused/98 metadata/type/lint/format/independent audits pass. Chrome/Firefox
+wrong confirmation, one-winner race, protected-data refusal, lost reply and genuine partial creation
+resume preserve original cold writing.12 containers absent; Local protection/default conversion remain.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase200/README.md).
+
+
+## 2026-10-29 — phase201 shared read-only journal transport
+
+Original scoped census/pages/observations extracted with global credits and strict mutation guard
+retained. Ceremony fresh async AEAD with pinned/removal refusal.48 focused/98 metadata/type/lint/format/
+independent audits pass. Native Chrome/Firefox fresh writing/corrupt refusal and original maintenance/
+Account controls preserve cold writing; seven containers absent. Protection/default conversion pending.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase201/README.md).
+
+
+## 2026-10-29 — phase202 native exclusive scope and covered Local journal preparation
+
+Original task identity/lifetime, source AEAD without retired content, exact target-update comparison
+with collision control/CPU checkpoints.63 focused/98 metadata/type/lint/format/independent audits pass.
+Final Chrome/Firefox covered/unrepresented data probes and original controls pass; initial test-buffer
+lifetime failure and qualified negative retained.10 containers absent. No deletion/default activation.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase202/README.md).
+
+
+## 2026-10-29 — phase203 Local protection in the native Worker
+
+Original exclusive copy/readback, exact source coverage/matched cleanup, fresh zero census and original
+opener retirement.55 focused/98 metadata/type/lint/format/audit checks pass; Chrome/Firefox interruption,
+lost reply, physical death/uncopied seal and original maintenance/Account controls pass.10 containers
+absent. Default conversion pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase203/README.md).
+
+
+## 2026-10-29 — phase204 actual Local UI Worker adapter
+
+Original UI through native startup/creation/unlock/protection/editing; late-acquisition shutdown repair.
+37 focused/98 metadata/type/lint/format/audit checks pass. Chrome/Firefox full automatic/protected/retry/
+protection/Undo/cold-writing flows pass; six containers absent. Initial close race retained. Default
+activation pending. [Packet](performance-experiments/2026-10-28-worker-owner/phase204/README.md).
+
+
+## 2026-10-29 — phase205 reusable Account entry and dependency-cycle repair
+
+Original owner body/imports AST exact, one-shot entry guards and high-level protection environment.
+59 focused/98 metadata/type/lint/format/audit checks pass; Chrome7 and Firefox2 controls pass. Candidate
+old packaged cold-reader timeout remains OPEN after isolated repeat; predecessor passes. Eleven candidate
+and one predecessor containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+## 2026-10-29 — phase206 evidence closure for frozen205 implementation
+
+Corrected a packaging-only audit-wording assertion; saved all205 outcomes and bookkeeping in the next
+packet after the implementation freezer ran despite the initial packaging failure. Original205 hash
+retained, current265 built source bodies exact, real index empty; no implementation/test changes.
+[Record](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+## 2026-10-29 — phase207 same physical Worker, fresh Account lifetime
+
+Actual complete ceremony drain, fixed same-realm bounded handoff and fresh native Account opening.
+72 focused/98 metadata/type/lint/format/audit checks pass. Chrome5/Firefox4 functional cases pass;
+exact cold writing/Undo, foreign bootstrap, abort, expiry and lost acknowledgment; nine containers
+absent. Existing blockers retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase207/README.md).
+
+
+## 2026-10-29 — phase208 genuine same-realm approval retention
+
+Native reference/scope/lifetime adapter, original one-use verification and NetworkLogin reuse.31
+focused/98 metadata/type/lint/format/audit checks pass. Chrome genuine approval with/without login
+uses one prompt and exact cold writing; copied approval refuses; unchanged default controls pass.
+Five containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase208/README.md).
+
+
+## 2026-10-29 — phase209 final Account initialization boundary confirmed
+
+Independent consumer trace and268 unchanged built bodies;23 affected original checks pass. Rejected
+an unneeded ceremony journal fallback before adoption; original final commit checks remain.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase209/README.md).
+
+
+## 2026-10-29 — phase210 setup-workspace execution port
+
+Minimal lifecycle/name seam with original Page factory and strengthened late-read guards.44 focused/
+98 metadata/type/lint/format/audit checks pass; actual Page factor/passkey/edit/flush/close/cold reader
+compatibility passes, one container absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase210/README.md).
+
+
+## 2026-10-29 — phase211 owned browser credential port
+
+Shared provider lifecycle and fixed JSON/slot port.35 focused/98 metadata/type/lint/format/audit pass.
+Initial/final Chrome5 verify original credentials/approval/clone/JSON service policy; final Firefox2
+controls pass. Twelve containers absent; async-wrapper correction retained.
+[Packet](performance-experiments/2026-10-28-worker-owner/phase211/README.md).
+
+
+## 2026-10-29 — phase212 idle ceremony contention repair
+
+Before actual two-Window case fails; rebuilt same case and actual handoff pass.50 focused/98 metadata/type/lint/format/exact audit pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase212/README.md). Default remains Page; full conversion and unchanged gates pending.
+
+
+## 2026-10-29 — phase213 setup browser boundary
+
+29 focused/99 metadata/type/lint/format/AST audit pass. Original real Page setup/edit/cold walkthrough passes;1 container absent. Inventory size failure retained and lossless representation checked. [Packet](performance-experiments/2026-10-28-worker-owner/phase213/README.md).
+
+
+## 2026-10-29 — phase214 native setup context
+
+40 focused/99 metadata/type/lint/format/exact audit pass; actual context/approval/clone browser3 pass,3 containers absent. Original cold writing exact, canonical name update admitted synchronously. [Packet](performance-experiments/2026-10-28-worker-owner/phase214/README.md).
+
+
+## 2026-10-29 — phase215 preparation phase and UI data boundary
+
+24 focused/99 metadata/type/lint/format/exact audit pass. Root drain/yield and fixed presentation regressions added; original coordinator body preserved. Helper-only, native integration next. [Packet](performance-experiments/2026-10-28-worker-owner/phase215/README.md).
+
+
+## 2026-10-29 — phase216 original native returning-account setup
+
+39 focused/99 metadata/type/lint/format/exact audit pass. Final Chrome3 returning/edit/cold, wrong-code retry and provider close pass; Firefox2 Local controls pass. Ten containers absent. False zero-IDB expectation and both failed native attempts retained with exact slot-index attribution. [Packet](performance-experiments/2026-10-28-worker-owner/phase216/README.md). DefaultPage; fresh creation and full conversion still pending.
+
+
+## 2026-10-29 — phase217 complete native fresh setup evidence
+
+Production485 bodies unchanged216. Actual fresh registration entry, cancelled-opening/fresh-Worker retry and full new-account approval/edit/original Page cold cases3 pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase217/README.md). Default activation and full conversion remain pending.
+
+
+## 2026-10-29 — phase218 acknowledged presentation lifetime
+
+Initial abort-before-send counterexample retained, final34 focused/99 metadata/type/lint/format/exact audit pass. Actual native creation/retry/provider-close3 pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase218/README.md). Full conversion/default activation still pending.
+
+
+## 2026-10-29 — phase219 enrollment effect boundaries
+
+30 focused/99 metadata/type/lint/format/whole AST audit pass. Actual original Page legacy/membership/selector joined verification/edit/cold3 pass;3 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase219/README.md). Native enrollment host/default activation next.
+
+
+## 2026-10-29 — phase220 shared native UI lifetime
+
+39 focused/99 metadata/type/lint/format/whole-host specialization audit pass. Actual native full fresh/retry/provider-close3 pass;3 containers absent. Original first-device behavior retained, no default activation. [Packet](performance-experiments/2026-10-28-worker-owner/phase220/README.md).
+
+
+## 2026-10-29 — phase221 shared Window ceremony UI
+
+Two before-allocation counterexamples retained; final42 focused/99 metadata/type/lint/format/resource AST audit pass. Actual native returning/full fresh/retry/provider-close4 pass;4 containers absent. [Packet](performance-experiments/2026-10-28-worker-owner/phase221/README.md). Default activation still pending.
+
+
+## 2026-10-29 — phase222: native device-connection controller
+
+Six new cases plus affected coverage:33 focused and99 metadata pass; type/lint/format and unchanged-runtime byte audit pass. Real Chrome joined verification/edit/exact original cold reopen passes. Initial lab initialization-order failure and close-before-completion counterexample retained. Two exact containers absent. New tests uncredited; qualification paused. [Packet](performance-experiments/2026-10-28-worker-owner/phase222/README.md).
+
+
+## 2026-10-29 — phase223: native enrollment notification ownership
+
+Four new cases/25 focused and99 metadata pass. Type/lint/format and independent common-lifetime AST audit pass. Actual Chrome joined edit/cold and service-authorized native notification/cleanup2 pass;2 exact containers absent. Existing controller fixtures add exact notification fields and real compiled-port wiring, retaining all six assertions. [Packet](performance-experiments/2026-10-28-worker-owner/phase223/README.md).
+
+
+## 2026-10-29 — phase224: recovery browser/workspace/routing effect boundaries
+
+Three new port cases/29 focused and99 metadata pass; two unchanged real-browser recovery regressions pass, including lost-commit browser death. Native setup/enrollment controls2 pass;2 containers absent. Type/lint/format and original-body AST/unchanged-boundary audit pass. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase224/README.md).
+
+
+## 2026-10-29 — phase225: same-realm native lost-device recovery controller
+
+Seven new cases/33 focused and99 metadata/type/lint/format pass. All old runtime bytes exact224. Actual Chrome full new-account/upload/native recovery/wrong-code/review/one-passkey/open/original cold check passes;1 exact container absent. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase225/README.md).
+
+
+## 2026-10-29 — phase226: default Local and public setup worker activation
+
+Five new preparation cases/29 focused and99 metadata/type/lint/format pass. Exact screen-specialization/class/body audit pass. Full current frontend built; actual default account opening/Undo/cold and fresh default Local online/offline Worker reopen2 pass;2 exact containers absent. No old tests changed. [Packet](performance-experiments/2026-10-28-worker-owner/phase226/README.md).
+
+
+## 2026-10-29 — phase227: default enrollment screens on native owners
+
+Five new runtime/error cases/25 focused and99 metadata/type/lint/format/audit pass. Actual rebuilt default two-device creation/enrollment/comparison/writing availability and two-way edits pass. Initial duplicate lab import prevented collection, retained; corrected import with unchanged source.1 exact container absent. Existing six native-controller tests retain assertions with error transport fixture fields. [Packet](performance-experiments/2026-10-28-worker-owner/phase227/README.md).
+
+
+## 2026-10-29 — phase228: default recovery screen on same-realm native owner
+
+Five new cases/25 focused and99 metadata/type/lint/format/audit pass. Final clean unmodified default recovery UI cards, Goals-only and empty accounts3 pass, including wrong code/back/review/one fresh passkey/new writing/cancelled reopen/new code entry/offline durability.10 exact containers absent. Stale first-submit test precondition and diagnostic/stale-build failures retained, without changing crypto or weakening refusals. [Packet](performance-experiments/2026-10-28-worker-owner/phase228/README.md).
+
+
+## 2026-10-29 — phase229: recovery reply/navigation race
+
+Two new counterexamples repaired;14 focused/99 metadata/type/lint/format pass. Unchanged browser test passes its former Back guard but exposes later retirement stall; second recovered-device invitation stall remains open. All other runtime bodies exact228. [Packet](performance-experiments/2026-10-28-worker-owner/phase229/README.md).
+
+
+## 2026-10-29 — phase230: retirement continuation ports
+
+Five new cases/27 focused and99 metadata/type/lint pass. Native owner bodies unchanged229;395 clean built bodies exact. Browser detached-copy regression is added but blocked before target by driver startup race (corrected) and remembered-name observation (open). Broader recovery/invitation remains unclosed. [Packet](performance-experiments/2026-10-28-worker-owner/phase230/README.md).
+
+
+## 2026-10-29 — phase231: recovery-to-invitation form transition
+
+Two new counterexamples/21 focused/99 metadata/type/lint pass. Clean unchanged never-paired recovery, snapshot, pruning and new-device enrollment/writing case passes40.6s, retaining every old assertion/deadline. Separate new retirement case blocked earlier by remembered-name mismatch; retained open. [Packet](performance-experiments/2026-10-28-worker-owner/phase231/README.md).
+
+
+## 2026-10-29 — phase232: initial name form lifetime
+
+Six new cases;20 focused/99 metadata/type/lint/format and two clean name durability browser cases pass. One old constructor snapshot fixture updated, refusal assertions retained. Separate retirement case advances to lost returning-account action wording, left open.395 clean source bodies exact. [Packet](performance-experiments/2026-10-28-worker-owner/phase232/README.md).
+
+
+## 2026-10-29 — phase233: fresh detached continuation verified
+
+Three new cases/27 focused/99 metadata/type/lint pass. Clean full promotion-device retirement, NEW-factor detached reopen, local edit, cold durability and zero delivery/notification browser case passes24.3s. Unchanged comprehensive test remains blocked at stale transient-editor entry expectation; retained. [Packet](performance-experiments/2026-10-28-worker-owner/phase233/README.md).
+
+
+## 2026-10-29 — phase234: comprehensive recovery compatibility
+
+Two-file narrow entry fixture, no runtime change. Comprehensive both-device detachment, local cold/no-network writing, later enrollment/rotation/recovery passes1.2minutes.99 metadata/type/lint pass; pre-existing formatter line deliberately retained. Invalid first harness copy/run preserved separately. [Packet](performance-experiments/2026-10-28-worker-owner/phase234/README.md).
+
+
+## 2026-10-29 — phase235: live credential cancellation
+
+Cancellation transport repaired: six new cases,36 focused,99 metadata/type/lint and all12 unchanged browser compatibility cases pass. Before failures preserved; no old test edits. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).
+
+
+## 2026-10-29 — phase236: packaged offline Worker assets
+
+Packaged precache exact bytes and both protected offline cold-write flows pass all three unchanged cases/deadlines after narrow filename fixture repair. Artifact exact235; before failure retained. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).
+
+
+## 2026-10-29 — phase237: Worker boundary and inconvenient results
+
+Runtime boundary mapped. Native matrix5pass/3fail; full units2731pass/3exact config fixture failures/one existing skip. Preserve deep30s and post-maintenance15s cold-open failures; read-only diagnosis next. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).
+
+
+## 2026-10-29 — phase238: exact configuration fixture
+
+Four config expectations repaired in three old tests; every other byte/assertion retained.16 focused private-access/config/subscription/order cases pass. No runtime change. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).
+
+
+## 2026-10-29 — phase239: Worker placement complete, measure next
+
+Worker placement complete.2734unit cases pass/one existing skip;99metadata/type/lint/contracts/bundle/origin checks pass. Cold15s guard still fails but editor appears~21s with active durable canonical owner. Deep joined30s remains open. Begin unchanged performance measurements. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).
+
+
+## 2026-10-29 — phase240: Worker measurements retain the acceptance block
+
+Completed Worker candidate measured. Two functional peer journeys and all archive/cold guards pass; localp958.317/4.904ms, peerp951710.721/2041.809ms, but normal final marker2835.760ms blocks acceptance. Full backlog203.610/195.437s versus earlier~100s remains a throughput concern. Both779-event Goals diagnostics preserve text/Undo/cold writing, zero paragraph long tasks but latency/return tails remain. Independent audit and exact-container cleanup preserved. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).
+
+
+## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
+
+Committed and independently verified all80patches161–240; tip0ab9cbc8. Frozen matched catch-up protocol, both exact source builds and apparatus QA. No timed comparison outcome yet; malformed smoke refusal preserved and corrected to the actual POST contract. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).
+
+
+## 2026-10-29 — phase242: matched catch-up comparison
+
+Four matched ABBA functional/cold/archive journeys pass. Worker backlog+4.03%/+3.07% in the two pairs; all local/peerp95 budgets pass, three late-marker misses keep acceptance blocked. Six exact containers absent. No runtime/test changes. Matched comparison completed before marker attribution. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).
+
+
+## 2026-10-29 — phase243: late-marker attribution protocol
+
+Matched results frozen242 before attribution. Coarse raw timeline identifies publication plus receiver sweep wait. Prepared isolated trace build: reverse edits recover863 exact signed inputs,397 source-map bodies match; workload/assertions unchanged. Two guarded source-preparation anchor failures retained before any diagnostic journey. No diagnostic outcome yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).
+
+
+## 2026-10-30 — phase244: invalid midnight diagnostic retained
+
+Phase243 diagnostic fails original30s final-delivery; both backlog checks complete but archive/cold not reached. Observed frozen card after real midnight explains calendar-invalid fixture; detailed collector was after failed assertion and lost events. Exact container absent. Failure and limitations retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).
+
+
+## 2026-10-30 — phase245: corrected diagnostic apparatus
+
+Prepared separate phase245 diagnostic with unchanged source/assets. Apparatus correction addsUTC civil calendar, pre-marker freeze/editing guards and failure-safe metadata capture; no gate outcome yet, no credit from this instrumented run. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).
+
+
+## 2026-10-30 — phase246: late-marker attribution closed
+
+Completed matched-first then marker attribution. Corrected diagnostic passes all original functional/archive/offline-cold guards,123 trusted inputs and zero trace overflow; sender starts265ms late, envelope/submission383/200ms, receiver hint→writer selection560ms. Midnight invalid trajectory and two analysis-assumption failures retained. No runtime/test edits, source0ab9cbc8 intact; exact lab resources absent. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).
+
+
+## 2026-10-30 — phase247: due-send yield contract
+
+Demonstrated old scheduler misses due send between completed publisher checks: only[0] sends at300ms instead of[0,300]. Own new test cleanup first masked failure with timeout; retained and repaired cleanup, precise assertion then fails. No old test or product edit. Contract/proposed regression and fixed benchmark plan archived. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).
+
+
+## 2026-10-30 — phase248: due-send publisher-check yield
+
+Implemented bounded due-send yielding in two runtime files;23 new/95 focused,2757 full unit cases pass with one existing skip;108 metadata/types/lint/format/seven contracts pass. Four deliberate faults detected and isolated sources restored. All1024 old manifest rows unchanged, new test required/uncredited. Timer/review/formatter construction mistakes retained. Browser comparison next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).
+
+
+## 2026-10-30 — phase249: matched due-send comparison apparatus
+
+Both248 comparison clients rebuilt,396map bodies each/125assets exact. Actual isolated service/config/HTML/shutdown and1test discovery pass. Missing metadata decoder alias caught in static review and restored before execution. Four-case apparatus/protocol frozen; no timed outcomes yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).
+
+
+## 2026-10-30 — phase250: due-send comparison outcomes
+
+Four matched249 journeys complete with full writing/archive/offline-cold guards. Normal after passes every gate; withheld after late2526.722ms fails. Backlog ratios1.150156/1.081875 and upload counts68→109/65→104 retained. Independent reconstruction and exact cleanup pass; rare local maxima remain. No concurrent changes or retries. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).
+
+
+## 2026-10-30 — phase251: existing verified-selection control
+
+Five original native guard cases pass without changes/skips, including authority inventory tamper/resume/audit refusal/cold preservation. Same-source1artifact built and maps/assets checked; exact0artifact/references retained, signed fixed server and readiness/discovery pass. Three new control journeys frozen; no timed result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).
+
+
+## 2026-10-30 — phase252: verified-selection control outcomes
+
+Same-source control enabled156.551/145.927s versus disabled236.067/244.416s, later disabled timed281.117s then15s cold-opening guard fails. Enabled withheld peer/markers/cold pass but localp9538.222ms fails16. All raw failures retained; actual beforeinput→DOMp950.8ms narrows attribution only. Exact resources absent; no source change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).
+
+
+## 2026-10-30 — phase253: input-delay attribution protocol
+
+Prepared and discovered1 metadata-only input diagnostic, armed after fictional unlock. Original gates/deadlines retained, finally-safe bounded metadata and no factors/writing/proofs recorded. Source stays248 and warm1artifact251; no diagnostic result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).
+
+
+## 2026-10-30 — phase254: pre-event input-delay attribution
+
+253 native diagnostic retains local25.166ms failure; peer/markers/archive/offline-cold pass. Trusted creation→keydownp950.6ms, beforeinput→DOM0.7ms; offered→creation24.066ms. Eight slow keys, four driver-gap overlaps, no save overlap and metadatahandlermax0.135ms. No product edit; exact cleanup complete. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).
+
+
+## 2026-10-30 — phase255: native delivery crossover protocol
+
+Prepared/discovered1same-source native delivery crossover, deterministic paired plan and exact-input/archive/cold guards. No timing outcome yet; original25/38ms gate failures and physical-input limits retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).
+
+
+## 2026-10-30 — phase256: keyboard crossover result
+
+255crossover completes full native/archive/offline guards; all120inputp9531.828ms fails16. Playwright60keyp9519.503 versusCDP43.923, no API-fix signal. Exact resources absent; source248unchanged. Host quiet confirmed after this run. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).
+
+
+## 2026-10-30 — phase257: baseline scope correction
+
+Verified released warm default using source, Dockerfile and compiled flag evidence; recorded reported host-work windows against runner epochs. Original results/failed deadlines retained. No product or old-test changes; corrected production-flag ABBA and public/deep cases are next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).
+
+
+## 2026-10-30 — phase258: production baseline apparatus
+
+Both exact signed clients rebuilt310/396mapped bodies and86/125assets; release flag parity, source/assets, discovery and isolated readiness/shutdown smoke pass. Protocol/input hashes frozen before timing. Original full comparison still pending, no acceptance claim. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).
+
+
+## 2026-10-30 — phase259: production baseline outcomes
+
+Four fixed production-flag normal-hint journeys pass all480keys/12markers/archive/offline-cold and16ms/2.5s/30s/600s gates. Page118.039/101.335s, Worker130.438/102.403s; mixed>1.10signal. Five owncontainers/browsers absent. Updated brief archived/read; no runtime change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).
+
+
+## 2026-10-30 — phase260: production cold compatibility apparatus
+
+Prepared original4case productionflag compatibility rerun.396source bodies/125shipping assets exact; release compiledflag parity, pinned helper closure,4case discovery and readiness/shutdown smoke pass. Failed setup searches/listings retained; no timed result yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).
+
+
+## 2026-10-30 — phase261: production cold compatibility outcomes
+
+Original4case productionflag rerun finishes1pass/3fail, no retry. Native maintenance completes/removes7275 entries/revision2 and preserves input/Undo, then original15s publiccold fails. Deepjoined reaches447at30s with0receivefailures. Five owncontainers/browsers absent; no runtime/oldtest changes. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).
+
+
+## 2026-10-30 — phase262: quiet-host input protocol
+
+Both248source profiles rebuilt396mapped bodies, releaseflag parity with named warm0exception and original diagnostic closure checked. Discovery/readiness/shutdown pass; fixed3journey protocol/hash frozen before timing. No runtime/test change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).
+
+
+## 2026-10-30 — phase263: quiet-host input outcomes
+
+Three fixed quiet controls complete all native/archive/cold guards. Originaldefault142.373s/input10.906ms passes; diagnosticwarm0fails3.327smarker; diagnosticdefaultfails17.034msinput. Timing decomposition/actualcallback rates retained, four owncontainers/browsers absent. No runtime/oldtest edit; all prior failures retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).
+
+
+## 2026-10-30 — phase264: disposable request-budget protocol
+
+Frozen original deepjoined budgetprobe with exact clientassets/one-line serverpolicy diff. Effective64/session,64/process and allotherlimitsverified; discovery/readiness/shutdown pass. No timed outcome yet. Later normalcardfixture needs civil-window refresh before900scases. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).
+
+
+## 2026-10-30 — phase265: disposable request-budget outcome
+
+Frozen budgetprobe runs once and retains original30sfailure at703positions,0receivefailures. Last200responsesall200; effectivepolicy64/session/64processverified. Bothowncontainers/browsersabsent. Productionlimits/code/testsunchanged; no acceptance/releaseclaim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).
+
+
+## 2026-10-30 — phase266: public cold-open attribution protocol
+
+Frozen two-case coldprofile apparatus,396exactsourcebodies/125frontendassets, original16/session64/processverified. Two observercontracttests and actualWorkerbusy-loopCPU smoke pass; swallowed-gatefaultdetected. Discovery/readiness/shutdown pass. No timedcoldoutcome or productchange. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).
+
+
+## 2026-10-30 — phase267: partial public cold-open attribution
+
+Two original cold diagnostics finish1pass/1fail, allpartialresultsretained. ActualfirstDeviceOwnermetrics valid; CPUprofilemissing duewrongtarget. Secondmaintenance/reduction/Undo succeeds then15sfails and90scensored withfixedpublicfallback. Three owncontainers/browsersabsent. No product/oldtestchange. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).
+
+
+## 2026-10-30 — phase268: actual cold owner/error protocol
+
+Frozen correctedowner/errortrace with397actualvariantmappedbodies and125frontendassets. Original16/session64/process verified, fivecontracts/discovery/readiness/shutdown pass. No timedresult or repositoryruntime/testchange;267partialattempt preserved. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).
+
+
+## 2026-10-30 — phase269: cold CPU and recovery compatibility target
+
+Correctedtwo-case diagnostic finishes1pass/1fail. FirstactualWorkerCPU/sourcemapattribution retained; secondearlyclose preventsprofilebut enum/locations isolate recoveryheaderguard. Three owncontainers/browsersabsent. No productfixoroldtestedit yet; originalgatefailuresallretained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).
+
+
+## 2026-10-30 — phase270: baseline recovery red contract
+
+Captured exact red regression/sourcehash before repair:9cases,2expectedvalidbaselinefailures/7negativepasses. Formattedonlynewtestfile andheldbyteswithcheckpoint; repositoryparser/oldtestsunchanged. No repair acceptance yet. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).
+
+
+## 2026-10-30 — phase271: baseline recovery compatibility repair
+
+Implementednarrowrecoverycompatibility/new9cases.65focused/full2766unitpass(oneexisting skip),145metadataunits/sevencontracts/types/scopedlint/formatpass. Independentmetadata503sources/all1025oldrowsintact/newrequireduncreditedtestaddsblocked480. Oldtestsuntouched. Nativeafterwalkthroughstillpending, no fullfix/releaseclaim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).
+
+
+## 2026-10-30 — phase272: repaired native walkthrough protocol
+
+Prepared actualcandidate afterwalkthrough:sourcebytes396maps/125frontendassets exact, releaseflags/defaultlimitsverified, fourcase discovery/readiness/shutdown pass. No timedafteroutcome yet. Allbeforeevidence preserved; no oldtest/productsourcechange beyond271. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).
+
+
+## 2026-10-30 — phase273: repaired native walkthrough outcome
+
+Originalnativeafter4cases finish2pass/2fail. Senderclosedcontrol and fullcoveredhistoryremoved publiccold/exactarchive/Undo pass; deep30s and unreducedcontextcold15sremain. Five owncontainers/browsersabsent. Repair271nowverifiednative; allbeforefailures preserved. No oldtestedit or releaseprep. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).
+
+
+## 2026-10-30 — phase274: unreduced baseline exact-evidence contract
+
+Recorded 23-case real-crypto unreduced v3/v4 red regression: nine discriminating failures and fourteen passes; setup and negative corruption controls pass. Initial attempt and exact test/source hashes retained. New test held outside executable checkout until repair; no old test or runtime change. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase274/README.md).
+
+
+## 2026-10-30 — phase275: unreduced same-carrier exact reuse
+
+Implemented same-carrier unreduced exact reuse plus 23 new regressions. 70 focused and 2,789 full unit cases pass (one existing skip); three guard fault controls, types/lint/format and seven repository contracts pass. Metadata preserves every old obligation, adds one required blocked row; two sandboxed process-control failures retained, unchanged 38-case stage suite passes natively. Actual cold timing remains next. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase275/README.md).
+
+
+## 2026-10-30 — phase276: unreduced cold after-check protocol
+
+Rebuilt and checked 396 source bodies/125 public assets, compiled release flag parity and unchanged limits. Original two cold cases discover; container readiness and shutdown smoke pass. Timed after-result remains pending. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).
+
+
+## 2026-10-30 — phase277: native cold after-check outcome
+
+Both original native cold after-checks pass without diagnostic hooks or raised limits: previously failing context/rebind and full resumable removal7275/revision2/input/Undo/exact archive. Three own containers/browsers absent. Original failures retained; no exact cold-time or phone claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).
+
+
+## 2026-10-30 — phase278: deep traffic attribution protocol
+
+Prepared exact-client deep traffic observer with at/headersAt, decoded after/limit for individual and batch requests, explicit bounds and six passing contracts. One-case discovery and actual container readiness/shutdown pass; original deep timing result pending. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).
+
+
+## 2026-10-30 — phase279: deep request trace outcome
+
+Original deep joined trace fails30s at451received/zero receive failures. Captured249HTTPrequests/589signed single-entry reads,10batch429s, at/headersAt and request extents with zero dropped/malformed. Both own containers/browsers absent; raw outcome and before failure retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).
+
+
+## 2026-10-30 — phase280: multi-entry reader contract
+
+Recorded25-case independent real-crypto range red evidence:7fail/18pass at existing one-entry/codec boundaries. Archived the superseded aggregate sketch and exact indexed test bytes before product change; no old test/runtime edit or failing executable test added. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).
+
+
+## 2026-10-30 — phase281: diagnostic work-count protocol
+
+Prepared requested diagnostic work-count/live-publish artifact:396source bodies/125public assets, sole profile flag exception verified, four observer contracts/two-case discovery/container readiness and shutdown pass. No timed result or code change yet; normal comparison held. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).
+
+
+## 2026-10-30 — phase282: diagnostic work-count outcome
+
+Requested diagnostic confirms2full/3exact at both editor milestones; original case started-to-editor7.420s (8.150s Worker-clock milestone). One actual unreduced v3 source publishes in22.378s, admission17ms/flush154ms, +10full/+17exact with3status polls included. Full archive guards pass;3own containers/browsers absent. No acceptance or steady-state gain claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).
+
+
+## 2026-10-30 — phase283: range and reader coverage contract
+
+Extended reader-first red evidence to33cases:15fail/18pass. Reproduced reader-ID-as-epoch, delivery fallthrough and incremental fallback; real prior fixtures/indexing succeed. Added real4/8 ranges, native retention and cold/full/incremental consumer tests. Exact source/tag inventory and test bytes archived; old tests/runtime untouched. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).
+
+
+## 2026-10-30 — phase284: development range reader
+
+Development range reader/all consumers implemented;36new tests,12sensitive fault controls, final2825unitpass/oneexisting skip,119metadata units,7contracts/types/lint/format pass. Preserve failed self-step fixture and initially survived cold-index fault; stronger fixture detects it. Only old test edit is exact open15→16/list addition; all old assertions remain. Writer disabled, no latency/compatibility/release qualification. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase284/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase285
+
+Phase285: bounded composed peer range writer. Seven new cases, three detected faults,159focused/2832full Vitest passes plus oneexisting skip,11unchanged native group cases,119metadata and7contracts pass. All78specified obligations retained; new test is required/uncredited. Actual deep4/8 and stale/rollback behavior pending; no release work. See [phase285](./performance-experiments/2026-10-29-worker-catchup/phase285/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase286
+
+Phase286 freezes the exact285runtime deep comparison inputs. QA matches396source bodies/125frontend assets; six observer contracts and actual-service smoke pass. No timed result yet; all gates remain. See [phase286](./performance-experiments/2026-10-29-worker-catchup/phase286/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase287
+
+Phase287: rebuilt default-budget deep4 failed30s at position747/zero native receive failures, versus before451.349HTTP/331reads, all200; limit4used183times. Full at/headersAt/extent trace retained. No completion/Undo/cold or acceptance credit; no rate-limit increase justified. See [phase287](./performance-experiments/2026-10-29-worker-catchup/phase287/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase288
+
+Phase288:8new bounded-preparation regression cases,7expected failures/1pass against existing full-range behavior. Old strict range cases retained. No implementation or acceptance claim; type-only fixture corrections retained in raw attempts. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase289
+
+Phase289: eight bounded-preparation cases, three detected faults,89focused and2840full Vitest passes plus oneexisting skip; stronger signature-count assertion passes in focused rerun.119metadata/7contracts and affected final inventory checks pass. API remains unwired; no native8or acceptance claim. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase290
+
+Phase290: development8download/four-position admission and raw-tail ownership.9new cases/3detected faults,131focused/2849full Vitest passes plus oneexisting skip;11unchanged native group cases,119metadata/7contracts/types/lint/format pass. Actual deep8/composed fallback/fairness and rollback still open; no acceptance credit. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase291
+
+Phase291: turn-aligned bulk width.2new cases red→green, one detected alignment fault,133affected units/119metadata/7contracts/types/lint/format pass. Full2849/native11evidence remains290; actual final8measurement follows. No acceptance credit. See [phase291](./performance-experiments/2026-10-29-worker-catchup/phase291/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase292
+
+Phase292: final8comparison source/build/observer inputs frozen.398compiled bodies/125frontend assets,6observer contracts and isolated service smoke checked. No timed result yet. See [phase292](./performance-experiments/2026-10-29-worker-catchup/phase292/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase293
+
+Phase293: deep8failed30s at719/zero receive failures.236reads versus4range331, but4made747progress. Complete at/headersAt/extent trace retained, no429; downstream marker/Undo/cold guards not reached. No acceptance credit. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase294
+
+Phase294: Page64diagnostic inputs frozen. Exact291runtime/398compiled bodies/125frontend assets, one-line lab policy and actual64startup limits,6observer contracts/service smoke checked. No timed result yet. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase295
+
+Phase295: actual Page syncing/no owner Worker confirmed; lab64deepfailed30s at707/zero receive failures.233reads all200, no429, complete at/headersAt trace. Marker/Undo/cold guards not reached; no normal/default acceptance credit. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase296
+
+Phase296: rerunnable fresh-root civil-day recipe and original generator/helpers frozen. Positive preflight passes; overwrite/short-window controls refuse. No fresh fixture generated yet. Old measurement gates/assertions retained; no source/old test edits. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase297
+
+Phase297: real fresh-day H6/M2/Q2fixture with1024/256/32accepted backlogs generated in17.2min. App guards pass; outer empty-file assertion failed, corrected in isolated verifier.4verifier controls pass; unchanged output independently verified with source/assets/native policy hashes. No performance credit. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase298
+
+Phase298: six role checks and actual old/new role audit pass; four verifier controls pass. Generated bytecode removed explicitly and future writes disabled. Final full current runtime2851pass/oneexisting skip. No new timing or release claim. See [phase298](./performance-experiments/2026-10-29-worker-catchup/phase298/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase299
+
+Phase299: three exact client closures/compiled flags and fresh-fixture adapters checked; default16/64actual service smoke and discovery pass. Missing serializer discovered/restored before any timing. No timed result yet; fixed four-case gate protocol frozen. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase300
+
+Phase300: signed0abwithheld passes all original gates/native/archive/offline-cold checks. Inputp9511.687ms/max69.953, peerp952142.820ms/max2855.742, worstmarker1767.582ms, backlog150.757s. Fault exercised/120keys/3markers and zero backendOOM confirmed; raw compressed evidence retained. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase301
+
+Phase301: browser preflight refused before timing; same digest restored after absent-image smoke failure, fresh smoke passes. Pinned382browser files/6symlinks and nine analyzer sensitivity controls checked. No runtime change or timing claim. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase302
+
+Phase302: native/archive/offline-cold pass, independent inputp9518.749ms fails16ms; peerp952269.683ms/allmarkers pass, backlog184.013s. Original and compressed raw evidence retained. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase303
+
+Phase303: matched248withheld all gates/native/cold pass; inputp9512.728ms, peer2181.561ms, worstmarker1793.272ms, backlog143.973s versus302184.013s. Raw and one-pair descriptive analysis retained. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase304
+
+Phase304: current291normal native/archive/cold pass; input11.715ms/peer1583.005ms p95, lastmarker3354.092ms fails2.5s, backlog266.948s. Raw evidence retained, no acceptance. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase305
+
+Phase305: genuine10device fairness functional/durability/Undo/isolation/cold checks pass; inputp9528.400ms, peer6460.400ms and five large600sbacklogs fail. Frozen cohort complete, raw evidence preserved; no acceptance. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase306
+
+Phase306: default-off guard,4new cases/66affected units/2detected faults/11native cases/98metadata/7contracts/types/lint/format pass. Full run2853pass/2storage-compatibility failures/oneexisting skip retained; unchanged7cases pass alone afterward. No full-suite acceptance claim. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase307
+
+Phase307: approved fictional-only lab lane complete, 10screen runs/3ablations/oneactualWorker CPU
+profile/realv5publication and frozen original-gate challenge, with every failed/invalid attempt
+retained. Best deep18.561s, no-unsafe-format ablation23.481s; winning stack fails cold and
+withheld2.5sgates, fairnessinput16.100ms misses16. Actualv5publish648.104ms observer-inclusive;
+22.378sv3is artificiallab state. No lab code/build lands or qualification credit; see
+[phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).
+
+Phase307 closeout checks:266raw copies/original hashes, all frozen apparatus,10design rows and
+3ablations independently agree; seven repository contracts and diff whitespace checks pass.
+
+### 2026-10-31 — Worker catch-up phase308
+
+Completed the operator-directed fictional-only G/V/R/D lab: all 65 application journeys,
+three fixture preparations, six metadata inspections on profile copies, and every failed or
+unexposed attempt are retained. All 777 raw copies match their originals. Eight native deep
+milestones and 26 raw latency journeys were independently recomputed. The one quiet full unit
+run reports 2,855 passed tests, one existing skip and 283 files; its post-run wrapper error and
+uncaptured child exit remain qualified. All 1,552 canonical unit inputs are unchanged.
+
+G+V+R passes the three original deep gates in 19.221, 19.628 and 23.256 seconds. V remains an
+unproven immutability assumption. Five old maintenance runs lack the required overlap. The
+larger fixture achieves 112–120 overlapping keys, but all six runs miss the unchanged 120-second
+completion deadline; their counter remains v2 and cold reopening is not reached. R still has
+the initial idle miss and post-drain p95 of 2.560/2.553 seconds. The first named-hint comparison
+was unexposed; a private gateway repair and a new declared comparison show modest traffic savings
+with mixed peer latency. The complete-page receipt note covers all ten direct readers; no format
+was built. Only evidence and documentation enter this phase, with no runtime/test changes or
+promotion credit. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).
+
+Phase308 closeout: all seven repository contract checks and whitespace/link checks pass.
+Only the three planned closeout appends differ from the prior prepared series; no runtime or
+test source changed, and the real index has no staged content.
+
+
+### 2026-10-31 — Worker catch-up phase309
+
+Completed the ordered unfixed maintenance trace screen in a new fictional-only lab root.
+One unchanged full unit run passes283files/2,855tests/one existing skip with actual child
+exit0 captured by Python. All timed cases retain five-second external host/process-name logs
+under the operator-approved remaining Firefox/WindowServer activity.
+
+Both grown typing journeys retain120overlapping keys, exact archive and Undo, but miss the
+unchanged120smaintenance wait. Idle-with-polls also times out. With only periodic idle polls
+paused, the unchanged algorithm completes after11attempts/10saved deltas in36.012s from its
+first attempt and passes actual offline cold reopen. This contradicts the predicted continued
+verification stall, so work stops before S/Y/P or later screens. Four journeys,66attempts and
+14interruptions are retained:12poll-driven membership-discovery arrivals and two typing-driven
+flushes, all queue-priority-only. Many late attempts complete hundreds of misses; the one-miss
+estimate is not general, though observed on each late reader.
+
+Only evidence/documentation enter the patch; all1,552canonical inputs and all777prior raw
+originals plus phase308source/assets match. Seven repository contracts and evidence/link checks
+pass; real index empty. No guard, deadline, format, manifest, runtime or old test changes, no
+qualification/landing credit and no hardening. See
+[phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase310
+
+Reader-only paused-poll cases close the309scope gap. A,Soff,misses120swith late first misses
+2.307–2.346s/one new entry each; B,Son,completes2793new checks in its second attempt then
+hits PreparationCapacity. Durable bytes28.713/28.213MB; B transient map33.543MBagainst33.554MBcap.
+Both reach verifying, neither reaches cold. All34attempt records and host-contended runs retained;
+no acceptance or hardening. Canonical inputs unchanged; evidence/docs only. See
+[phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase311
+
+Eight SxYgrown journeys plus selected-arm reader-idle/polls-on retained. S1Y1alone completes
+writer/cold in both normal+withheld; S1Y0passeswithheld/failsnormal, otherarmsfailwriter120s.
+Three journeys/six profiles pass actualofflinecold; five fail beforecold. Every16owner is
+reported, zero NEWstarts duringtyping/readerdraindetected. Readerconfirmationcapacity-halts
+at33.543MBmap,28.213MBdurable; no reader completes in observed windows. Alloriginalabsolute
+latency/overlap/backlog predicates pass, no qualification/oldrelative credit. Evidence/docs
+only; no hardening. See
+[phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).
+
+### 2026-10-31 — Phase312: P lab prototype and interior-cut/native cold evidence
+
+Built the isolated, default-off dense signed-page prototype, retaining full per-entry/fresh checks, full-prefix comparison Voff, logical limits/audits and physical witnesses. Final strict closure typecheck and56focused checks pass. Genuine authenticated interior-page handoff suffix persists over a v5 baseline and cold-opens exactly in the IndexedDB test implementation; native browser partial-cut/refetch plus fresh-owner reopen also pass, with their distinct scopes recorded. All nine unit attempts and four browser attempts retained; failures before cold include missing fixture/config closure, new-probe call/advancement errors, incorrect barrier assumptions and safe tail invalidation. No no-F cold failure. Evidence/docs only, no hardening or acceptance. Old-tab/rollback/conversion/handoff-version/final-schema and full physical interior-cut/process-reopen proof remain open. See [phase312](./performance-experiments/2026-10-29-worker-catchup/phase312/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase313: paired dense-writer cohorts and all12deep screen runs
+
+Prepared genuine paired2,048-position writer cohorts with Poff/on and identical other profiles; both exact/unreduced. Retained two pre-browser missing-serializer failures and both successful preparations. Ran the predeclared mixed-order P×V screen, three/arm. P1V0reaches1,025positions in19.268/22.011/19.764s; all cold exact. P0V0's third33.468smiss fails that cell, despite eventual functional completion/cold. All12actual fresh-owner cold reopens pass; no no-Fcold failure. Ponstores1,704.5versus13,506.3plaintextbytes/position and reduces measured full-comparison time~5s→~1s; full comparison retained. Host33–55%aggregatebusy medians remain qualified; every run kept. Expanded index charge and all stage/per100/token/duplicate-page results preserved. Evidence/docs only, no acceptance or hardening. See [phase313](./performance-experiments/2026-10-29-worker-catchup/phase313/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase314: dense receipts resolve observed grown-writer capacity, reader scope retained
+
+All eight declared paired grown cells retained. Every Poffwriter hits the unchanged32MiBpreparation cap and fails completion; Ponwriters complete in all four and pass both actual offline profile reopens. All four Ponruns also meet measured input/peer/marker/overlap/backlog/final-delivery predicates. One Ponreader completes below20MB; others are censored by the original writer-controlled window, never counted as completion. Opened-record memo component shrinks~28.4→4.25MB; full per-entry inbound memo remains~14.4MB. No new attempt starts during typing/drain. Poffwithheldrun04also misses peer p95 at2,618ms; retained. No no-Fcold failure. Evidence/docs only,no qualification or hardening. See [phase314](./performance-experiments/2026-10-29-worker-catchup/phase314/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase315: R1s post-drain margin, normal-traffic expectation remains open
+
+All six declared dose cells retained, functional and12offline-profile cold checks pass. R1500post-drainp95=2,514/2,450ms: first fails2.5sdespite all-keyp95passing. R1000withheld=1,908/1,951ms; both normal metric runs also pass. Carry1000in the lab, with increased quiet reads/tokens qualified. Normal5/2rearms form continuous windows covering96.9%/50.7%oftyping; interval selections are not actual fired-timer counts, and unchanged normal traffic is unproved without a matched control. Maintenance completion is censored by the original late flow; no wait changed. No no-Fcold failure, no hardening or credit. See[phase315](./performance-experiments/2026-10-29-worker-catchup/phase315/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase316: common3,072cohort, generation deadline and continuation retained
+
+Original real-UI extension fails its unchanged30minute deadline after991confirmed additional positions with a992ndoffered. First closed-profile continuation verifies all992characters offline and settles the pending upload, then fails a fixture focus helper; corrected idempotent continuation finishes the last32under unchanged waits. All three attempts preserved, no no-Fcold failure. Independent archive reader confirms exactly the authorized1,024-character target change, all other actors/accounts unchanged, accepted+1,024, sender closed and counterv2. Same fresh behindH1will actually write P0/P1during four3,072reader diagnostics; unused actor2intakes omitted by explicit pre-cell addendum. Evidence/docs only,no credit/hardening. See[phase316](./performance-experiments/2026-10-29-worker-catchup/phase316/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase317: 3,072-position reader/index diagnostic
+
+All four predeclared real3,072 reader diagnostics retained. Full per-run index fallback, map-family/durable bytes, timing curve, interruptions and cold exposure recorded; capacity throws remain owner-error/halted, not parked. Reopen behavior traced without building a fix. S landing explicitly requires specific skipped/capacity mapping and reopened-journal coverage. Two Roff normal controls declared before D pairs. Evidence/docs only, no credit or hardening. See[phase317](./performance-experiments/2026-10-29-worker-catchup/phase317/README.md). Completion recorded before queue advance.
+
+Phase317 measurement limitation: all four detailed event buffers filled before the boundary, so exact first fallback positions and late native per100costs are unmeasured. Retained uncapped scalars/network show77versus1full ledger checks and a P0cursor bend at2,400–2,600; those do not replace the missing event. Dense-on27.887MBfits, but one of two reader maintenance windows times out; no qualification claim.
+
+### 2026-10-31 — Phase318: named hints and matched normal repair controls
+
+All eight predeclared normal runs pass functional,16cold and measured predicates. Roff2controls versus R1000/Doff3arms show no added token/quiet-read cost in these windows, with0Ractivations in all3R1000/Doffarms; prior315normal episodes remain. Dspeeds H1in all3pairs(~7.5sin the two less-contended pairs), removing/defering unrelated quiet-peer probes; H2mostlyunchanged. Source/build/gates unchanged. Continue smallest selected Doffstack to3rep original/grown challenge; no hardening or credit. See[phase318](./performance-experiments/2026-10-29-worker-catchup/phase318/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase319: original fixture and declared gate challenge
+
+Recreated genuine current-civil original1024single-entry caught-up H2profile through real sync, whole archive exact/counterv2/onlyH2changed; retained distinct grown2048and native/Goals prepared-v5preconditions. Added observation-only cold-stop markers and explicit old-fixture selector; independent ASTchecks preserve all old expectation/test/wait nodes and existing config hashes. Declared30original+6separate grown runs before start, unchanged gates/deadlines,3percell/onefailfailscell; per-owner interruption/retry reporting. Evidence/docs only, no hardening or credit. See[phase319](./performance-experiments/2026-10-29-worker-catchup/phase319/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase320: all thirty-six frozen lab journeys and landing requirements
+
+All36declared journeys retained, functional/cold guards pass, no no-Fcold failure. Eight of ten original cells meet all predicates; both old1024maintenance cells fail unchanged>=60overlap in all3runs(19–31keys), all other predicates pass. Both separate grown cells pass3/3including85–120overlap,120swriter completion,16msinput/2.5speer/markers/cold. Late withheld post-drainp95=1.832/1.710/1.824s. Grown writers finish40.8–76.7safterlastkey;32priority interruptions/retry clocks recorded, no startsduringtyping/drain, readercompletion1/6otherscensored. Capacity mapping/reopen and separate landing contracts documented; exact3072index fallback remains unmeasured due event overflow. No hardening, credit or release work. See[phase320](./performance-experiments/2026-10-29-worker-catchup/phase320/README.md). Completion recorded before queue advance.
+
+### 2026-10-31 — Phase321: grown reader completion observation
+
+Six predeclared grown diagnostics on unchanged313assets/stack retain the original writer wait, then observe both owners to completion/halt/absolute120safterlastkey before original cold. All6readers(43.982–90.905s)and6writers(53.123–79.245s)complete inside120s; zero capacity/halts,12coldchecks exact. Five readers finish4.263–22.817safter writers. Perowner attempts/jobs/retry clocks/journal peaks retained;38priority10sclocks, no new startsduringtyping/drain. Application source/build unchanged, only observation spec copy; no gate credit/hardening. See[phase321](./performance-experiments/2026-10-29-worker-catchup/phase321/README.md). Completion recorded before queue advance.
+
+### 2026-11-01 — Phase322: observed deep baseline and cold-stop evidence
+
+Pre-build reading retains rotation/maintenance journal fences, current-document Undo and scoped preparation checks. Six unprofiled G8/R1000/SY11/P1V0D0deep1025 journeys cold-exact: 0ms23.098/24.369/25.300s,50ms49.441/52.993/49.957s(all50msmiss30s). First page-profile diagnostic drains23.336sbut fails original cold passkey withNotAllowedError; global no-Fcold rule stops immediately. Eight earlier Docker-unavailable attempts retained. Window sampled nonidle0.563sof25.864s; new spans partly attribute prior remainder,4.0–4.4sremain unresolved. 75msaddendum, candidate builds and ablationsnotreached. Evidence/docs only, canonical1552unchanged,nohardening/credit/release. See[phase322](./performance-experiments/2026-10-29-worker-catchup/phase322/README.md). Completion recorded before queue advance.
+
+### 2026-11-01 — Phase 323: idle-check/read-ahead lab evidence
+
+The attached-profiler control passes exact cold;322’s failure remains recorded. Three-per-cell 50 ms E×B screen: median 45.607 s plain, 33.389 s E, 28.979 s B,25.253 s both, all cold-exact;50 ms is diagnostic. Matched 0 ms both 20.184 s is 8.1%slower than 18.664 s plain, all 30 s/cold pass. Six normal live journeys pass measured input/peer/marker/cold predicates. Worker profile identifies repeated record handling; B’s logical index charge rises 8.6→14.3 MB. Twelve grown withheld timing withdrawals retain every original predicate and per-owner outcome; zero extra priority delay trades more interrupted attempts for earlier completions. The unexecuted 60 s draft is preserved and corrected before any withdrawal. Actual saved H Goals is 5000 characters despite nominal 13000 request.133 focused tests/strict TS pass; all 1552 canonical source inputs unchanged. Evidence/docs only, no hardening/credit/release. See [phase323](./performance-experiments/2026-10-29-worker-catchup/phase323/README.md). Completion recorded before queue advance.
+
+### 2026-11-01 — Phase 324: owned-page parsing lab, cold-stop evidence
+
+Built the private parsed-page reuse prototype and recorded baseline call counts; 139 focused cases and strict TS results are retained with limitations. The native interior-cut probe reopens exact. First deep E1B0P1 journey drains 1,025 positions in 17.4225 s, then fresh-owner replay fails with “Inbound verification refused: expired.” The runner stops immediately; 26 screen journeys and all later stages remain unrun. Read-only inspection identifies the prototype losing the original stored-mode distinction when passing the physical record via a new argument; no repair or rerun follows. No matched speedup, winner or cap prediction. All 1,552 canonical source inputs unchanged, real index empty. Evidence/docs only, no credit/hardening/release. See [phase324](./performance-experiments/2026-10-29-worker-catchup/phase324/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase 325: sender-wait addendum declared, execution blocked
+
+Recorded the operator's third no-quiet/in-flight coalescing arm beside coordinated-2000 and reference. Declared 18 mixed journeys: three per arm for both devices typing 300 keys/device at 150 ms and one writer typing 120 keys at 500 ms. Matched October concurrency shape, explicit per-direction latency, accepted positions per 100 keys, network units and measured offline cold opens. Protocol only: no treatment built or journey run; phase 324 cold failure still blocks execution. All 1,552 canonical source inputs unchanged. See [phase325](./performance-experiments/2026-10-29-worker-catchup/phase325/README.md). Declaration recorded before queue advance.
+
+### 2026-11-01 — Phase 326: repaired stored replay and repeated lab evidence
+
+Repaired only the private prototype’s stored/live gates and received-result invariant. Aged P0/P1 controls cover all four stored callers; the deliberate old omission fails five selected controls, and the 31-real-second interior-cut cold probe passes. Focused replay run157 cases/15 files and sender run153/11 plus strict TS pass; no full-suite claim. All27 repeated deep journeys pass exact cold; every0ms run meets30s; amended predeclared rule selects E1B1P1 (14.126s/20.773s medians at0/50ms) for later lab work only. Both Worker CPU+unforced-GC heap profiles and3 live journeys pass cold, but all3 grown withheld writers halt owner-error during building, with no measured capacity refusal; reader/cold are censored. All27 revised sender journeys and every earlier apparatus/exposed failure are retained; paired workspace closures remain unresolved and no sender default is selected. All1,552 canonical inputs unchanged; evidence/docs only, no credit/hardening/release. See [phase326](./performance-experiments/2026-10-29-worker-catchup/phase326/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase327: capture the native close behind paired-writing failure
+
+Added only private lab observations for every Window fail origin, pre-termination Worker trace and both-direction per-channel high-water/quota evidence. First reference and separate tagged reference reproduce Device1 closure after7.57/7.72s of typing; coordinated control preserves full writing/Undo and exact offline cold. Tagged cause is ContentError repair-required from scheduled warm audit, with mapped stack at localBaselineReuse.compare's full-versus-incremental ledger guard. Window fail callbacks occur after programmatic close; no queue-full and all observed peaks <=3out/2in, below8. Stream drops remain explicit. Five new controls plus existing focused tests pass85/9files on each variant; strictTS passes. All1,552 canonical inputs unchanged. No fix/guard/default change, landing, credit or hardening. [Phase327](./performance-experiments/2026-10-29-worker-catchup/phase327/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase 328: correct running-log provenance
+
+Separated phase327's empty running preservation-log snapshot from its completed log. The empty snapshot is explicitly reconstructed from matching original raw and gzip hashes; all212 final artifact copies verify. Patch327 stays immutable; no run, trace, metric, app/test source, guard or gate changes. [Correction](./performance-experiments/2026-10-29-worker-catchup/phase328/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase329: mixed dense/legacy retained-record scope
+
+Pre-repair warm audit first differs at inbound.peers.map#3.retained[7].envelope; two real-crypto full/continuation controls fail, including first>0. Private record-scoped turn repair passes P0/P1 controls,122focused cases/17files and strictTS. All18paired journeys complete actual maintenance on both owners and36exactofflinecoldchecks; all6latencycellsfail(peer/markers18of18,input1of18). Three repaired grown withheld runs and P0 pass all measured predicates/both cold; matched unrepairedP1 halts owner-error with integrity guard at localBaselineReplay:596. Functional stop leaves Device1single500/deep control unrun. All25runs/failures/hostlogs preserved,1552canonicalinputs unchanged,indexempty. Evidence/docs only; no landing/default/hardening/credit. [Phase329](./performance-experiments/2026-10-29-worker-catchup/phase329/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase330: checkpoint experiment stops at an incorrect harness precondition
+
+Declared12matched return journeys and6loaded checkpoint/admission companions, with observation-only private source/build and no guarantee/default change. First apparatus preparation compares still-offline C's deliberately pre-backlog profile to A's completed1024archive; the missing target suffix triggers the archive stop before any history request/create/admit. Child1/runner5 retained, no rerun; all requested timings remain unmeasured. Agent setup mistake, no established install defect/data loss.142inert evidence files verified;1552canonicalinputs unchanged,indexempty. [Phase330](./performance-experiments/2026-10-29-worker-catchup/phase330/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase331: resumed repaired controls
+
+All3Device1single500policy controls preserve full writing/Undo/both offlinecold; latency predicates remain separately recorded. One repairedE1B1P1deep0control commits1025by14.585s,30sgate and originalcold/Undo pass. Exact329assets/source reused,1552canonicalinputs unchanged,indexempty; allfourruns/hostlogs retained. No credit/default/hardening/landing. [Phase331](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase332: matched admitted checkpoint return
+
+Both native preparations normally catch C up and preserve1334accepted rows byte-for-byte. All12Breturn and6loaded primary journeys preserve archives/Undo/24cold owners. Unlock→visible medians18.939→2.363s(0ms),26.243→2.760s(50ms); snapshot17,741cipherbytes. Install input n0/1unexposed. Loaded Create/Verify tail input38–94samples,p955.597–8.294ms. Two harness/download-observation failures, offline diagnostic and accounting corrections retained; no20download-limit claim or export-delivery qualification.23attempts, allfrozeninputs/1552canonical unchanged,indexempty,noapp/default/hardening/credit. [Phase332](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md). Outcome recorded before queue advance.
+
+### 2026-11-01 — Phase333: idle-start warm-audit lab screen
+
+Completed12declared paired journeys on329fixture; all complete writing/Undo/both automatic maintenance120s and24offlinecoldowners exact. Full semantic audit during typing observed 1times; every latency predicate/marker/cell remains separately recorded, no acceptance credit.45focusedtests and stricttypecheck pass; failed preflight/typecheck retained.1552canonicalinputs unchanged,indexempty; no runtime patch/default/format/gate change. [Phase333](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md). Outcome recorded before queue advance.
+
+### 2026-11-02 — Phase334: signed prepared series and traced slow direction
+
+Signed93preparedcommits241–333inorder, verifiedeverytree,parentandSSHsignature;head2c92793c,cleanbeforeanalysis,no push. Trace-only analysis of30existingpairedjourneys finds Device2’s8.49–10.49sinstrumented prefix spans plus a separate receiver imbalance: Device1 admits64positions during0msimmediatetyping whileDevice2 starts95–96sends; fiveemptychecks/sixsends separate aG8peer revisit by6.009s. Complete native accounting agreeswithfinalprefixes; high-volume prefixevents truncate, aggregatecounterscontinue. No newrun/app/default/format/gate change or acceptancecredit. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md). Outcome recorded before queue advance.
+
+## 2026-11-02 — Hardening 335: narrow preparation capacity mapping
+
+All five preparation ceilings use the existing parked capacity path, preserving journals and bounds. Content-free owner diagnostics distinguish LocalBaselineError. Five real-site injections, native encrypted-journal reopen/byte preservation and halt controls pass: 55 focused cases, strict types. Harness/type failures retained. [Evidence](development-evidence/2026-11-02-release-hardening/335-capacity/README.md). Outcome recorded before advancing the active hardening slice.
+
+## 2026-11-02 — Hardening 336: measure preparation slices from fresh work
+
+Start the existing two-second clock at the first fresh receipt miss, preserving every interruption/expiry/capacity guard and atomic check. Replayed-prefix progress, fresh bound and quiet/drain scheduling controls pass with existing owner/storage/mutation regressions:37focusedcases. [Evidence](development-evidence/2026-11-02-release-hardening/336-fresh-slice/README.md). Recorded before advancing to Y.
+
+## 2026-11-02 — Hardening 337: stopped on the unfinished Y retry path
+
+First Y positive unit controls unexpectedly halt maintenance: a new interruption metadata WeakMap is shadowed by the existing numeric interruption counter, so `.get` throws. Typecheck independently identifies that defect and an incomplete new journal-test fixture. Retained6failed/34passedresults; stopped without fixing the implementation under the operator’s rule. No app/timed run.335capacity and336fresh-slice patches remain ready; Stage1fullsuite and later stages have not run. [Stop evidence](development-evidence/2026-11-02-release-hardening/337-priority-stop/README.md).
+
+## 2026-11-02 — Hardening 337 resumed: typed priority retry
+
+The operator narrowed functional stops to hardened app evidence and specified the two unchanged retry/progress controls. Renaming the new metadata map and completing the new journal fixture restores both files (25cases, hashes verified). Typed priority-only outcomes now use ten seconds; all mixed/unknown/non-priority conditions retain sixty seconds and quiet/drain guards.53focusedcases and strict types pass. Earlier stop/red evidence preserved. [Checks](development-evidence/2026-11-02-release-hardening/337-priority/README.md). Recorded before starting the Stage1full-suite checkpoint.
+
+## 2026-11-02 — Hardening 338: Stage 1 units pass; browser checkpoint held
+
+Y’s53focusedcases and strict types pass; full units287files/2,880passed/one existing skip pass on locked self-contained dependencies. Both operator-protected test files remain byte-identical to HEAD. Reviewed census/required-test inventory and one capacity-wording expectation are reconciled without guard or exclusion changes. Native lifecycle and25subsequent full-check commands pass. Application-startup reports10passed/5failed: three stale status expectations, one unresolved offline-opening ready timeout at the existing5s assertion, and one interrupted-creation control with unconfirmed fault delivery. Hold further hardening under the app/cold-opening rule; no confirmed data loss or regression attribution, no Stage5result. Every failed attempt/environment refusal remains. [Checkpoint](development-evidence/2026-11-02-release-hardening/338-stage1-checkpoint/README.md). Recorded before advancing the active state to this hold.
+
+
+### Stage 1 full-check census completed; checkpoint remains red
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 339 · **Stage:** operator hardening Stage 1
+
+**Exit.** Ran all 43 previously unrun commands in the pinned environment: 24 passed, 19 failed. The complete command list, raw log, browser reports and failed-stage evidence are preserved in [phase 339](development-evidence/2026-11-02-release-hardening/339-full-check-census/README.md). Nested stages behind failed prerequisites remain unrun.
+
+**Notes.** This amends phase 338: the editor storage-status expectations are current, not stale strings; the Window fault has not established a Worker storage refusal. Both expected messages and every old browser test remain unchanged. Built-preview offline unlock passed separately. Six contract wrappers hit their unchanged 120-second full-unit deadline; the earlier full-unit pass does not waive that failure. Signed-base comparison and dev-fixture diagnosis follow before any app change or Stage 2. Outcome recorded before advancing our active state back into progress.md.
+
+
+### Signed-base attribution and development offline asset setup
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 340 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Every failed browser case reproduces on signed base 89b11fe2 in the matched environment, including the counter module's pre-browser build failure. The base also reaches the unchanged 120-second unit-wrapper deadline. The dev offline trace identifies unavailable Worker assets, the handled Worker load error and the existing five-second cleanup wait. A test-only cache-header fixture makes the original offline identity test pass with startup.spec.ts byte-identical and every assertion/deadline retained. Ten inventory controls pass with all counts/dispositions preserved.
+
+**Notes.** [Evidence](development-evidence/2026-11-02-release-hardening/340-offline-fixture/README.md) keeps the failed diagnostic import, all comparison results and load logs. Built-preview offline unlock passed independently. No application source changes, Stage 1-only regression attribution, waived wrapper deadline or green-checkpoint claim. Recorded before advancing to native Worker fault delivery.
+
+
+### Native Worker fault delivery restores the original browser controls
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 341 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** The full startup/editor suite passes 15/15, including 20 generated cold histories; cut passes 8/8 across desktop/Android. Test-only faults reach real Worker IndexedDB transactions and observe their aborts. Independent AST comparison preserves all 298 original expect-expression nodes and the explicit timeout call. Types, formatting, configured lint and ten inventory controls pass. [Evidence](development-evidence/2026-11-02-release-hardening/341-native-worker-faults/README.md).
+
+**Notes.** Preserve the earlier typecheck/config-placement failure, its test-only repair into vite/, and environment/lint qualifications. All app sources remain unchanged after Stage 1, and both operator-protected old unit controls remain unchanged. Unrelated baseline harness and wrapper failures still block the full checkpoint. Outcome recorded before advancing to those remaining fixtures.
+
+
+### Current omission controls reach the actual guards again
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 342 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Twenty-one existing cases pass after test-only mutation/probe rebinding and complete scheduler bundling. Original case assertions, negative controls, uniqueness checks and deadlines remain. Formatting, configured lint and ten inventory controls pass; counts/dispositions and every application source remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/342-omission-controls/README.md).
+
+**Notes.** Preserve the failed exporter draft and fix its rename census without relaxing replay checks. Remaining historical/network fixtures, asset naming, formatting, stale receipts and existing 120-second full-unit wrappers still block the checkpoint. Outcome recorded before advancing to them.
+
+
+### Approved runtime asset distinction and unchanged crypto inventory values
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 343 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Applied the exact operator-approved upgrade policy patch. The actual predicate refuses all eight phase236 examples. Upgrade checks pass 8 cases with the existing predecessor skip unchanged. The first-authority command passes in full after a parsed-JSON-identical formatting repair; all construction/status/obligation values remain. Ten inventory controls and all case dispositions/counts remain. [Evidence](development-evidence/2026-11-02-release-hardening/343-reviewed-inventory-and-assets/README.md).
+
+**Notes.** Preserve the automatic-review rejection, restored proposal, subsequent explicit approval and failed-before-evaluation diagnostic import. No app source or security/runtime format change. The full checkpoint remains red for the remaining historical/network fixtures and old unit-wrapper deadline; refresh existing receipts after documentation settles. Recorded before advancing our active state.
+
+
+### Historical oversized writer uses its original coherent source graph
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 344 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Both old R-01 sealed/submitted cases pass within their unchanged 240-second deadlines, preserving all writing, size-refusal, retry-budget and cold assertions. Independently reproduce the pinned archive and match all 168 files plus bundle identity. Four adapter tests and ten inventory controls pass; classifications/counts and aggregate blocks remain. [Evidence](development-evidence/2026-11-02-release-hardening/344-historical-writer/README.md).
+
+**Notes.** The runner hashes the shared builder. Replace source-shape expectations with the genuine complete historical bridge, retaining old metadata pins and limits; no aggregate credit inferred. No app source changed. The generated receive fixture and unit-wrapper deadlines still hold the checkpoint. Recorded before advancing the active slice.
+
+
+### Generated HTTP fixture repaired; actual report source guard holds the checkpoint
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 345 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** All five native receive-transport stages pass, including 16 seeded histories, with original case/child deadlines and exact writing/prefix/source/cold assertions. All 55 wrapper unit cases pass. Actual-report reconciliation remains red: the unchanged old guard accepts human sources only, while every native setup includes a system initializer. [Evidence and retained refusal](development-evidence/2026-11-02-release-hardening/345-receive-model-guard-hold/README.md).
+
+**Notes.** Repair the missing batch HTTP mock and model grouped progress independently of the app result. Keep framing, false-progress and corruption controls and the 4 MiB artifact cap. Do not widen the source-kind guard. Under the operator's stop rule, hold for that policy boundary; no Stage2, app change, commit or release work. Six existing 120-second full-unit wrapper timeouts and stale whole-tree receipts remain. Outcome recorded before updating the active slice.
+
+
+### Active checkpoint status reflects the source-kind hold
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 346 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Correct the active YAML status and blocker to match phase345's recorded actual-report hold. Clarify that phase339's unchanged-old-test statement described that census, before the later recorded and approved fixture repairs. No test, evidence result, requirement or application code changes. The immutable phase345 artifact remains intact.
+
+
+### Narrow initial system-source report exception is approved and tested
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 347 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Actual HTTP/editor reports reconcile; 15 wrapper cases pass with all old controls and explicit new-system/other-actor/changed-byte controls. The same initial source is confirmed in all 10 real driver histories, permitting the identical rule there. Every later capture remains human-only; exact initial capture continuity remains. [Evidence](development-evidence/2026-11-02-release-hardening/347-initial-system-source/README.md).
+
+**Notes.** Preserve the driver aggregate's newly reached moved dispatch-anchor failure and the passing standalone generated histories. No runtime or deadline change. Record the closed policy hold before advancing to test-only dispatch attribution and the remaining unit-wrapper deadlines.
+
+
+### Final-dispatch native controls target the current read decision
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 348 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** The stale injection reproduces on signed base. After test-only rebinding, both offline/pressure controls distinguish zero ordinary requests from one mutant request. The entire six-stage driver campaign and its real-report reconciliation pass. Rehash all 1,547 execution pins; the original native test file and case deadlines are unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/348-final-dispatch-fixture/README.md).
+
+**Notes.** No app or guard changes. Inventory/format/lint pass. Record this outcome before moving to the unchanged unit-wrapper deadlines and final receipt/campaign reruns.
+
+
+### Original full-unit deadline passes after a test-only task-boundary repair
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 349 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Original command/default fork pool/two workers passes within the unchanged 120 seconds: 108.6 seconds, 288 files, 2,882 passed plus the same skip. All 287 old unit files are byte-identical; two new cascade/omission cases and the 28 affected property/regression cases pass. Strict types, format/lint and inventory/census controls pass. [All attempts and independent checks](development-evidence/2026-11-02-release-hardening/349-unit-task-boundary/README.md).
+
+**Notes.** Correct the old base comparison's report environment, preserving both failed corrected runs. Preserve and drop the insufficient thread-pool proposal. Only the unit replica helper changes from timer wait to task yield; application, configuration, assertions, generated populations, Undo settings, limits and deadlines remain. Complete nested campaign exits and fresh receipts are still pending. Record before advancing to those reruns.
+
+
+### Complete-command reruns reach another copied scheduler dependency failure
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 350 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Geometry (228 passed/32 old skips), transport and service-inbound pass in full. Sync passes its native stage (25 passed/6 old skips), then five copied scheduler controls fail to load missing dependencies. The source-closure failure reproduces on signed base. [Every result and remaining command](development-evidence/2026-11-02-release-hardening/350-campaign-rerun-checkpoint/README.md).
+
+**Notes.** The observer stops before later commands for classification. This is a harness precondition failure; no app failure or guard change. Keep the complete list and all logs, then repair the test-only source closure before resuming the remaining ten commands and receipt refresh. Outcome recorded before advancing active state.
+
+
+### Sync scheduler closure repaired; self-omission control held for review
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 351 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** Five scheduler controls pass after genuine graph bundling and two scoped anchor updates. The native witness fixture now creates its real legacy receipt and its original ordinary/mutant cold assertions pass; both dispatch controls pass. All old assertions/deadlines remain. [Every run and stopped boundary](development-evidence/2026-11-02-release-hardening/351-sync-control-boundary/README.md).
+
+**Notes.** Stop on the existing self-omission control: baseline refuses correctly, and removing its original byte check still reaches the current delivery conflict defense rather than the expected position1. No additional guard is omitted, no old assertion is relaxed, classification remains unrun, and the full sync command is not green. This is a control-sensitivity hold on synthetic inconsistent data. No runtime changes. Record before marking the active slice blocked for the operator's control-scope decision.
+
+
+### Layered self control stops at durable-progress authority
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 352 · **Stage:** operator hardening Stage 1 checkpoint
+
+**Exit.** The approved baseline and single-omission assertions pass: integrity versus both-lane conflict, position0, active editor, exact content/inbound preservation. The single omission records one conflict decision, reported separately. Both uniquely anchored omissions still yield position0, not the required1; stop at that predicate. [Every run, storage observation and live path](development-evidence/2026-11-02-release-hardening/352-layered-self-control/README.md).
+
+**Notes.** The self-only path does not append inbound data, and removing recordResponse removes its only decision write; the scheduler derives progress from authenticated storage. No fake progress/acknowledgment or additional omission is introduced. Preserve the first transient-state observation failure and corrected terminal run. Worker compatibility receive path identified; its original control and classification remain unrun under the explicit stop. No app changes. Record before advancing the active hold.
+
+
+### Real Worker omission discriminates; classification and full sync pass
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch353 · **Stage:** operator hardening Stage1 checkpoint
+
+**Exit.** Retire the operator-corrected double arm; retain352 as evidence, not a third discriminating check. Keep the normal composed baseline/single refusal outcomes. A genuine Worker/Window/native-storage control restores the original self-envelope omission's advance-to1 expectation; its baseline refuses at0 with exact native records unchanged. Classification closes as expected. All5 native controls and the complete six-stage sync command pass:76 cases plus6 existing skips, including8 generated histories. [Evidence, failed fixture attempts and normal-use reachability](development-evidence/2026-11-02-release-hardening/353-worker-self-control/README.md).
+
+**Limit.** The normal UI's own stream uses composed selfOnly plus recordResponse, not the retained explicit Worker receive handoff. Actual report reconciliation hits sync's existing initial-system guard. An unapplied narrow review patch, including constrained lost-reply status vocabulary, passes the real reports and focused negative controls; await the operator before changing that guard. Preserve the older optional global-lint failure separately; all touched code files pass lint. No app change, deadline change or release credit. Record before advancing the active hold.
+
+
+### Approved narrow sync consumer reconciles retained native evidence
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch354 · **Stage:** operator hardening Stage1 checkpoint
+
+**Exit.** Apply the exact approved patch;8 sync-wrapper tests pass. Initial system captures require actor system and byte-identical preservation; every new source stays human. Lost-reply network status is constrained to its affected retrying lane and positive failures, preserving the actual lost-HTTP proof. The retained full native campaign now reconciles under the canonical consumer, with all1,551 historical pins checked and the one changed consumer-test pin explicitly read from phase353's immutable replay. No new native run or app change claimed. [Evidence](development-evidence/2026-11-02-release-hardening/354-approved-sync-reports/README.md).
+
+**Next.** Ten remaining contract commands, then existing receipt/trace refresh; Stage2 remains behind the complete Stage1 checkpoint. Record before advancing progress.
+
+
+### Six contract commands pass; custody mutation preconditions need diagnosis
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch355 · **Stage:**operator hardening Stage1 checkpoint
+
+**Exit.** Transport, service custody, promotion, ledger, counter and store complete commands pass. Recovery's full units pass105.05s under120s; its only failure is the unchanged, previously deferred recovery-entry formatting. The AST-identical one-file proposal remains unapplied pending approval. Local custody passes13 baseline cases but two mutants time out before assertions. The same two errors reproduce on clean signed89b11fe2, while an earlier pass used an identical candidate runtime source map. No errors are credited as detection. [All results and evidence](development-evidence/2026-11-02-release-hardening/355-contract-checkpoint-census/README.md).
+
+**Next.** Diagnose the custody harness, preserving every assertion/deadline; then complete local custody, checkpoint and local provenance, plus the pending recovery format decision and receipt/trace refresh. No app/source change or Stage2; record before advancing progress.
+
+
+### Approved recovery declaration formatting applies exactly
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch356 · **Stage:**operator hardening Stage1 checkpoint
+
+**Exit.** Apply the exact approved one-file patch; the original50-file recovery format stage passes. The reviewed complete TypeScript AST is unchanged. The broader formatting patch stays deferred; no assertions, deadlines or runtime changes. The whole recovery command still needs rerunning after custody diagnosis. [Evidence](development-evidence/2026-11-02-release-hardening/356-approved-recovery-format/README.md). Record before advancing progress.
+
+
+### Custody state observation is independent of frames and awaits false asynchronous results
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch357 · **Stage:**operator hardening Stage1 checkpoint
+
+**Exit.** The complete local-custody command passes. Native15/15 includes all13 original cases and2 permanent observer regressions; all5 original mutations fail their original named assertions. The repaired helper awaits asynchronous predicates and polls nonvisual state under the unchanged8000ms total bound, clearing timers on exit. All60 old assertion arguments, mutation definitions and old case definitions/order are unchanged. Two declared old-policy faults fail exact new assertions, then restore the good helper. [Every failed attempt, before-fix pass, sensitivity control and source proof](development-evidence/2026-11-02-release-hardening/357-custody-state-observer/README.md).
+
+**Limits.** Keep the intermittent pre-repair pass and failed first fault-injection draft; do not claim every historical timeout's unique cause is proven. No app/guard/deadline change. The broader formatting deferral is preserved. Recovery, checkpoint, local provenance and receipt/trace refresh remain; record before advancing progress.
+
+
+### Stage1 segmented full-command checkpoint closes
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch358 · **Stage:**operator hardening Stage1
+
+**Exit.** Recovery,checkpoint and local provenance complete commands pass;all4,564source pins match. Together with340–357this closes the83-command segmented checkpoint. No single final monolithic pnpm check exit is claimed. Six receipt producers and traceability pass (101claims,28/28defects,9debts);refresh again after this record because receipts bind the tree. Stage1canonical sources remain exact337bytes. [Results and limits](development-evidence/2026-11-02-release-hardening/358-stage1-closed/README.md).
+
+**Limit.** First recovery rerun hit the unchanged120s full-unit deadline;unchanged retry passed109.41s. Keep both;cause and reliable deadline margin remain unresolved. Broader formatting stays deferred. No trust,format,guard,budget or deadline change;no Stage5credit. Record before advancing progress to Stage2.
+
+
+### R1000 uses bounded owner-local evidence and the existing idle scheduler
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 359 · **Stage:** operator hardening Stage 2
+
+**Exit.** Verified quiet discovery without an intervening hint arms 1-second idle reconciliation for 30 seconds. Hot reads do not arm it; first-miss delay, retry backoff, halts, fairness and maintenance readiness remain. Fourteen new and 92 existing focused cases pass, with strict types, scoped lint/format and inventory checks. Two declared faults fail their exact intended regressions and restore good bytes. [Evidence and limits](development-evidence/2026-11-02-release-hardening/359-receive-repair-polling/README.md).
+
+**Limit.** No performance or Stage 5 credit. All verification and commit paths remain; state is ephemeral and erased on owner/authority/clock invalidation. Stage 2's full-suite checkpoint follows E. The Stage 1 final-tree receipt refresh passed and is preserved. Record before advancing progress.
+
+
+### E primitives bound quiet originals and fresh transport together
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 360 · **Stage:** operator hardening Stage 2
+
+**Exit.** Raw quiet cache, generation/erasure/cursor guards and shared response reservation pass 127 focused cases, strict types, scoped lint/format and inventory checks. Two declared faults fail exact assertions and restore source. Quiet proof age is now measured from request capture, under the unchanged 750 ms bound; one old expiry test follows that explicitly approved contract and adds the former later point as a non-reuse check. [Evidence](development-evidence/2026-11-02-release-hardening/360-quiet-original-primitives/README.md).
+
+**Limit.** Cache and extended transport are not yet wired into the owner. No new rows, server/wire change or Stage 5 credit. Next is E owner integration, then the full Stage 2 checkpoint. Record before advancing progress.
+
+
+### E consumes bounded quiet originals only at the native publisher turn
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 361 · **Stage:** operator hardening Stage 2
+
+**Exit.** Quiet-peer speculation uses spare existing wire slots and exact original bytes; consume requires fresh authenticated state and the unchanged native verifier/commit path. Own checks, fairness, send yielding, 750 ms age and shared byte reservations remain. All 169 focused cases, types, scoped quality and inventory checks pass; the own-stream fault fails its intended assertion and restores source. [Evidence](development-evidence/2026-11-02-release-hardening/361-quiet-owner-integration/README.md).
+
+**Limit.** The required Stage 2 full-suite checkpoint follows; no app/performance acceptance is inferred from these focused checks. Range writing remains off, and Stage 3's wider B reservations remain separate. No server/wire, format, sender or deployment change. Record before advancing progress.
+
+
+### Stage 2 source census is refreshed without reclassifying obligations
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 362 · **Stage:** operator hardening Stage 2 checkpoint
+
+**Exit.** The first root check stops at stale source bookkeeping before units/native stages. Review finds six R/E source identities and one relocated diagnostic line; all 199 labels, construction properties/statuses and obligations remain. The generator, authority check, all 12 registry controls, formatter and inventory checks pass. Program/test bytes remain identical to the failed-check declaration. [Evidence](development-evidence/2026-11-02-release-hardening/362-reviewed-source-census/README.md).
+
+**Next.** Rerun the original full check after this record. The Stage 2 checkpoint is not yet green; no runtime or security-policy change. Record before advancing progress.
+
+
+### Stage 2 checkpoint retains a clear-observer timeout beside the full passing retry
+
+**Date:** 2026-11-02 · **Commit:** pending sequential evidence patch 364 (test diagnostics frozen as 363) · **Stage:** operator hardening Stage 2 checkpoint
+
+**Exit.** First 26 root commands pass, including 292 unit files/2,927 cases/one old skip in 110.71s. Local clear passes 17 positive cases but times out after three mutation-observer errors. Signed-base and current selected comparisons pass, and the full current retry passes 17 cases/five original mutation detections in 85.619s under the original 120s. The failed attempt remains; no unique cause or reliable deadline margin is established. [Evidence](development-evidence/2026-11-02-release-hardening/363-checkpoint-clear-timeout/README.md).
+
+**Change and next.** Only failure-time content-free diagnostics; all 73 assertion arguments, waits, case/mutation definitions and deadlines remain. New-block formatting is AST-identical to the actually tested source, whose historical pin is checked. App/protocol bytes remain unchanged. Continue the 56 unrun commands after receipt refresh; Stage 2 is not yet closed. Record before advancing progress.
+
+
+### Stage 2 trim checkpoint preserves an observer timeout and the complete retry
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 365 · **Stage:** operator hardening Stage 2
+
+**Outcome.** All 21 positive trim cases pass on the first attempt; three initialization observers then time out before the named mutation checks, and the 120-second stage deadline expires. Three signed-base comparisons pass and detect their original mutations. The full current retry passes 21 cases/eight mutations in 95.138s under the original 120s. Cause and reliable margin remain unresolved. [Evidence](development-evidence/2026-11-02-release-hardening/365-trim-checkpoint/README.md).
+
+**Change and next.** Only failure-time content-free test diagnostics; 61 original assertion argument ASTs, all waits, deadlines and catalogue definitions remain. No app/protocol change. Continue the 55 unrun root commands from storage:properties after exact-tree receipt refresh. Stage 2 remains open.
+
+
+### Stage 2 receive hardening closes its segmented full-suite checkpoint
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 366 · **Stage:** operator hardening Stage 2
+
+**Exit.** All 83 original root commands have successful executions on the same R/E app sources, including the final 55 commands run sequentially. Ten final-segment unit children pass 292 files/2,927 cases/one old skip under the unchanged 120s deadline; geometry passes 228 with 32 old skips. Native/contract source pins agree, and all 12,550 checkpoint-start input pins remain exact except the two test diagnostic scripts and their reviewed inventory. [Every command, failed attempt reference, source pin and host log](development-evidence/2026-11-02-release-hardening/366-stage2-closed/README.md).
+
+**Limits.** This is a segmented checkpoint, not one final monolithic check exit. Clear and trim observer timeouts remain beside their full passing retries; their causes and reliable margins are unresolved. No guard, deadline, skip or construction classification was relaxed. Broader formatting stays deferred. No new format, Stage 5 credit, RAM claim or release preparation.
+
+**Next.** Write and hand over Stage 3.1's format contract. Stage 4 may proceed while the operator decides; new rows remain unauthorized. Outcome recorded before advancing this seat's progress document.
+
+
+### Stage 3.1 proposes the bounded receipt contract and stops for its operator decision
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 367 · **Stage:** operator hardening Stage 3.1, documentation only
+
+**Exit.** The [concrete contract](account-inbound-page-receipts.md) covers binary layout/bounds, reader census, compatibility floor, old tabs, handoff, rollback, existing-format evidence, accounting and reader-first ordering. Independent arithmetic confirms its 239-byte header and required ten reader homes. Source review pins released codec/parsers and later v2 introduction. [Evidence and limitations](development-evidence/2026-11-02-release-hardening/367-format-contract/README.md).
+
+**Boundary.** This completes the paper handoff only. It grants no format/writer permission, has no code/test change and earns no timing or release credit. Stage 3 waits for the operator; proceed only with independent Stage 4 in the meantime. The Stage 2 segmented checkpoint remains source-equivalent; refresh exact-tree documentation receipts. Outcome recorded before advancing this seat's active state.
+
+
+### Stage 4 scheduling primitives preserve the audit boundaries before integration
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 368 · **Stage:** independent Stage 4, primitives only
+
+**Exit.** Thirteen new policy cases and 70 existing cases pass; types/scoped quality and reviewed inventory/authority/registry checks pass. Missing-cap and missing-close controls each fail their exact assertion, with restored source hashes. All older app/test bytes remain exact. The new module is unwired and changes no running-app behavior. [Evidence](development-evidence/2026-11-02-release-hardening/368-audit-start-policy/README.md).
+
+**Next.** Integrate the existing timer and real native queue settlement/physical pressure, then prove interruption/oracle/lifecycle behavior and close the full-suite checkpoint. Stage3 format approval remains pending; no format, benchmark, gate or release work. The paper handoff's normative checks and refreshed exact-tree receipts passed and are preserved here.
+
+
+### Stage 4 timer ownership checks scheduling again at the native queue head
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 369 · **Stage:** independent Stage 4, coordinator unwired
+
+**Exit.** Fourteen new coordinator cases/73 focused cases pass with types, scoped quality, registry, authority and reviewed inventory. Queue-head and timer-close omission controls fail their exact named assertions and restore the source. Earlier new-file formatting and incorrect test-selection attempts remain recorded. The helper is unwired; all previous runtime source hashes are exact. [Evidence](development-evidence/2026-11-02-release-hardening/369-audit-timer-coordinator/README.md).
+
+**Next.** Wire actual physical pressure and native queue settlement, prove the unchanged oracle/interrupt behavior, then close the Stage4 full-suite checkpoint. No Stage3.2 implementation before format approval, no performance or Stage5 credit.
+
+
+### Stage 4 connects idle-start scheduling to the existing native audit owner
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 370 · **Stage:** independent Stage4, integration
+
+**Exit.** The owner uses the fixed input port, actual foreground settlement and physical pressure from both audit caches. Ninety-four focused cases/seven files pass; typecheck/scoped quality, inventory/authority and one sensitive pressure omission control pass. Complete native audit-body and closure ASTs are unchanged after scheduling readiness. Earlier development failures stay recorded. [Evidence](development-evidence/2026-11-02-release-hardening/370-idle-audit-integration/README.md).
+
+**Limits/next.** Native owner lifecycle/disagreement regression coverage and the Stage4 full-suite checkpoint remain. No format work before approval, no timing or Stage5 claim. Audit lag can reach about 1,024 physical rows, and the unchanged full comparison still blocks receive; earlier lab cost is recorded as proposed RC debt.
+
+
+### Stage 4 native owner tests retain the oracle under idle scheduling
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 371 · **Stage:** independent Stage4, native regressions
+
+**Exit.** Both real native audit cases pass with exact cold writing. Foreground and oracle omissions each fail their specific assertion through the final suite registration; app bytes remain exact370. All62 wrapper cases pass after eight reviewed count/title literal updates, including the earlier353 Worker-control denominator. Every other old assertion/deadline and all31 old native cases stay exact ASTs. [Evidence](development-evidence/2026-11-02-release-hardening/371-native-idle-audit/README.md).
+
+**Limits/next.** Earlier harness/count/optional formatting failures remain; broad formatting stays deferred. Stage4's full-suite checkpoint is next. Format approval is pending, and no Stage3.2, performance, release or deployment work occurred.
+
+
+### Stage 4 partial checkpoint reveals unconsumed audit pressure
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 372 · **Stage:** Stage4 development, checkpoint held
+
+**Evidence.** First18 original root commands pass, including295 unit files/2,957 passing cases/one existing skip in104.75s under120s and all native storage campaigns through journal. All start pins remain exact. The coordinator was ended only after the current child passed; no campaign was cancelled. A focused new real-crypto unit case then demonstrates7 reported rows versus14 owed before a fresh suffix is consumed. Its test source/failure are retained, and the original file is restored. [Evidence](development-evidence/2026-11-02-release-hardening/372-pressure-counterexample/README.md).
+
+**Next.** Correct only private scheduling pressure to include the unconsumed physical suffix without double counting, add the regression, then restart the full checkpoint on fixed source. No completed Stage4/full-suite claim, guard/format/deadline change, app-journey failure, performance or release work.
+
+
+### Stage 4 counts the fresh physical suffix before consuming it
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch373 · **Stage:** Stage4 bounded repair
+
+**Exit.** The new permanent regression now reports14 for seven consumed plus seven fresh rows, before and after continuation. All95 focused cases pass; types/scoped quality/inventory and the exact omission control pass. All old validation, comparison, commit, erasure/lifecycle and test ASTs remain exact outside private scheduling metadata. [Evidence](development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md).
+
+**Next.** Restart the full checkpoint on fixed source, retaining372's partial run and failed before case. No policy ceiling, format, guard, trust, deadline or release change.
+
+
+### Stage 3.1 receives the operator's writer-on format decision
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch374 · **Stage:** format decision only
+
+The operator approved all of Stage3.2 under the receipt contract, with writing on in this release. The same-tree writer-off rollback image must open dense-row profiles, including from a stale tab. Stage6 must explicitly record pre-release-build lockout for devices that wrote dense rows. [Approved contract](account-inbound-page-receipts.md). No dependent code, image, publication or deployment is claimed. The current editor-admission checkpoint failure/diagnostic rerun is being recorded before format implementation starts.
+
+
+### Stage4 checkpoint preserves the older headless frame failure before approved format work
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch374 · **Stage:**functional checkpoint/evidence; not closed
+
+**Evidence.** Twenty root commands pass, including295 unit files/2,958 cases/one skip in103.57s under120s. Editor's12 normal cases pass; mutation observers/actionability fail. Full signed-base history reproduces the observer failure, while its shorter selection detects allthree original mutations. Two post-failure probes see zero frames in200ms with a visible/enabled normal-size Retry button. Underlying cause/display sleep remains unconfirmed; no error is counted as detection. [All13 attempts and limits](development-evidence/2026-11-02-release-hardening/374-format-approval-and-frame-blocker/README.md).
+
+**Disposition.** All attempted polling/focus/browser treatments are removed; all original runtime/harness/test bytes are exact373. Only the operator-approved format decision and records change. The full functional checkpoint and62 remaining commands remain open. Proceed with independently hardening the approved codec; no binary writing or artifact is enabled, and no Stage5/performance/release credit is claimed. The Mac-state question remains pending.
+
+
+### Approved binary page receipt codec isolated from live writing
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch375 · **Stage:**Stage3.2 codec
+
+**Exit.** The approved bounded binary schema/classifier has independent byte/extent/property controls; all126 focused cases pass, plus types/scoped quality/registry/inventory. Three omissions fail their exact assertions. Old codec guards and legacy bytes remain exact. No live reader/writer or native/Stage5 claim. [Evidence](development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md).
+
+**Next.** Harden the authenticated compatibility floor before binary effects, then the remaining approved Stage3.2 contract. Stage4's frame checkpoint and same-tree writer-off artifact proof remain open.
+
+
+### Promotion custody preserves the approved encoding floor
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch376 · **Stage:**Stage3.2 floor core
+
+**Exit.** Closed floor parsing, exact legacy and tagged HMAC bytes, retained encoding and central monotonic promotion-write guards pass85 focused cases,10 old promotion/retained cases,19 parser/control cases and two exact omission controls. Old guards/CAS/commit ASTs remain exact. One pre-existing mutation anchor is repaired after signed-base reproduction, keeping all test assertions. [Evidence](development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md).
+
+**Limit.** No floor installation or native old-tab/artifact/Stage5 proof. Joined/retained-reading integration and the remaining approved format contract continue; Stage4 frame checkpoint stays open.
+
+
+### Joined custody and retained readings preserve the encoding floor
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch377 · **Stage:**Stage3.2 floor metadata
+
+**Exit.** Five private-parser/writer Node cases,43 focused unit cases, two exact omission controls and types/quality/registry/inventory pass. Old authentication/CAS/commit/parser ASTs remain exact apart from named floor additions. No floor installation or binary effects. [Evidence](development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md).
+
+**Checkpoint clarification.** With Mac awake, an added outer command wrapper cancelled the editor stage at53.7s after setup. The original repository owner, retaining its120s stage and every existing resource/startup/cleanup limit, then passes12normal cases and detects all3mutants. Old failures remain; no causal frame repair or full-checkpoint/Stage5 success is claimed.
+
+
+### Bound the format transition to an original native task
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch378 · **Stage:**Stage3.2 provenance core
+
+**Exit.** The unwired guard distinguishes original exclusive scopes and exact Account joined scopes from arbitrary shared, copied, Local or expired tasks. All34 focused wiring cases and two exact omission controls pass, with types/quality/registry/inventory. Old acquisition/compatibility/lifecycle/native callback ASTs remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md).
+
+**Limit.** Test-only compatibility/authentication stubs provide no native or Account authority proof. Real native ownership/old-tab tests, authenticated floor installation and every remaining Stage3.2 obligation are still required.
+
+
+### Real native scopes discriminate the format-task boundary
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch379 · **Stage:**Stage3.2 native coordination controls
+
+**Exit.** Four Chromium/Firefox cases verify real Page/Worker grant identity, the old shared holder's startup exclusion, generic shared refusal and retained slot ownership through abort/drain. An omitted startup barrier fails the named early-member data assertion. All runtime and old-test bytes stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md).
+
+**Limit.** Coordination only: a test-only private native acquisition seam skips custody/authentication. No authenticated floor installation, saved writing, old real-data profile or rollback proof is claimed.
+
+
+### Full editor campaign passes at matched deadlines with display on
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch380 · **Stage:**operator-directed checkpoint evidence
+
+**Exit.** At374-20's exact2,400s outer and the unchanged120s stage,12normal cases pass and3mutants detect. All33 actual CoreGraphics samples report display on; no off transition appears during the command in the retained power log. Editor/scenario/worker/browser source and every wait/assertion remain exact. All prior failures remain. [Evidence](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md).
+
+**Correction and next.** The earlier377 quick retry incorrectly used a120s whole-command wrapper, leaving only54s after setup, so it was not a matched full display-on result. Per the operator, subsequent native campaigns use caffeinate -d and display-state host samples. Continue the functional checkpoint and approved format hardening; no Stage5, release or causality claim.
+
+
+### Display-controlled full checkpoint reaches geometry and stops with three failures
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch381 · **Stage:**functional checkpoint, notStage5
+
+**Outcome.** The first40of83original commands pass under caffeinate -d, including complete editor12normal/3mutants, clear/trim, legacy and app startup/offline. Geometry then has225pass/32oldskip/3fail;42commands remain unrun. All49,874input pins stay exact, the index is empty and all1,181display samples across runs are on, with no within-run power-log off event. [Reports, comparisons, traces and limitations](development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md).
+
+**Failures preserved.** Exact signed base reproduces swipe focus; its old cut faults fail later without reaching Worker. Base app with current approved fault fixture passes228cases. Six traced unchanged hardened cut repeats pass without reproducing or clearing the full-run failure. Cut's pre-clipboard active-state refusal is observed; seed-flush attribution remains hypothetical. Dependency-relocation and preflight-helper failures are retained.
+
+**Next/hold.** The unapplied two-file fixture proposal changes a seed-drain precondition and captures focus at the native gesture boundary; operator approval is pending because the display instruction forbids wait/assertion changes. No app, test, wait, assertion, deadline or guard change was applied. Record this outcome before replacing this seat's active state. Full checkpoint and remaining Stage3.2/Stage5 work remain open; no publication.
+
+
+### Geometry fixture review hold closes with operator conditions
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch382 · **Authority:**operator reply to381 fixture proposal
+
+The operator approves validation/application with an actual immediate-Goals-focus regression control: remove only its220ms timer; if touchend misses it, observe data-goals becoming open. Measure each seed-drain wait on base and hardened apps, retain both faults and show the Worker abort and Cut refusal. Then full geometry and remaining42commands. The381 failures remain. This records closure of the approval hold, not a passing repair.
+
+
+### Geometry fixture repair passes full base/hardened campaigns and actual regression control
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch382 · **Stage:**approved test-only checkpoint repair
+
+**Exit.** Both complete campaigns pass228cases/32existing skips. Removing only the real Goals focus timer makes both projects fail the new touchend guard with focused=true; ordinary app observes false. Independent AST reconstruction confirms the actual source mutation and every retained old expectation except the approved observation replacement. App and native fault helper bytes stay exact. [Every run and per-case timing](development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md).
+
+**Cut evidence.** All eight base/hardened fault cases record an initial pending seed, a completed drain, one journal refusal and one Worker attempt with actual abort confirmed. Base waits120.6–457.9ms; hardened127.9–635.4ms, including poll/IPC time. Cut safety, retry/discard and cold checks remain. These are not controlled flush-performance estimates; old381producer attribution stays inferred.
+
+**Checks/limits.** Types/scoped lint/format and reviewed planning/source inventories pass without changed counts, dispositions or blocks. Optional full lint reports only immutable archived study/reproduction errors; logs remain. Prior381failures remain. Outcome recorded before advancing progress to the remaining42commands; no Stage5 or release credit.
+
+
+### Remaining checkpoint commands and unit failures are fully inventoried
+
+**Date:** 2026-11-03 · **Commit:** pending sequential patch 383 · **Stage:** functional checkpoint evidence; hardening remains open
+
+**Exit.** All 42 remaining root commands attempted: 33 pass; nine stop at unchanged 120-second full-unit deadlines after all preceding stages pass. Downstream stages remain unrun. Both transport attempts and counter's codec-property failure remain. [Reports, diagnostics and bounds](development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md).
+
+**Evidence.** The unchanged codec file passes12cases, property4200ms. The whole-suite verbose diagnostic reports2577passing cases/one existing skip across231of298files before its unchanged120s stop;67files have no case report and no final summary exists. No failing case is reported there; it does not clear the earlier red result. All50846start pins stay exact, no file is added during execution, index empty, all display samples on. Six actual receipt producers repair freshness without hand edits; a private collector schema error is preserved and the completed store result recovered without a rerun.
+
+**Limits.** Outcome recorded before advancing this seat's progress. This is failure-list closure, not a green checkpoint or Stage5 credit. No app/test/assertion/wait/deadline/limit/budget/trust/format/status change in383. Hold remaining format integration at the functional checkpoint; no release activity.
+
+
+### Exhaustive codec coverage and unit-duration observation are prepared
+
+**Date:** 2026-11-03 · **Commit:** pending patch384 · **Stage:** canonical test/observation preparation
+
+**Exit.** The actual callback visits all72logicalextents once with both old byte assertions; all29expect statements and the other11tests stay exact. Independent last/first enumeration agrees with the entire old128-tuple raw generator domain. Real codec12/12, types, scoped lint, format, census and10inventory controls pass. [All evidence](development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md).
+
+**Observation.** Nine runners add only a monotonic start and unit-timing.json write; all old runner AST/summary/timers/commands and120s limits are exact after stripping those two statements. New host logs explicitly include fseventsd CPU/RSS and swap each5s. Actual unit sidecars await the nine runs. Input pins/source-line/syntax metadata refresh is independently bounded; no count, obligation or block changes. Initial over-strict helper reviews remain.
+
+**Hold.** Fresh readback still shows original PID354/144days/100%CPU/about7GiB RSS despite the reported restart. Nine cleaned-host retries remain unstarted pending host recovery; no240s guard applied.383remains red and immutable. Outcome recorded before advancing progress. No app change or release credit.
+
+
+### All nine cleaned-host commands pass at the original unit hang guard
+
+**Date:** 2026-11-03 · **Commit:** pending patch385 · **Stage:** segmented functional checkpoint cleared
+
+**Exit.** Nine complete root commands74–82 pass, including every preceding native/contract stage, full unit suite, vectors, lint and format. Each unit run passes298files/2985cases/one existing skip. Actual unit process times104.723–110.332s remain below120s; the approved240s fallback is unused. [All nine durations, raw reports and host logs](development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md).
+
+**Identity and host.** All52133start pins exact, no canonical additions during execution, index empty, predecessor hashes exact. Only progress differed from frozen384 at the start; actual receipt producers refreshed before running. New daemon PID88698 remains small; all675display samples are on and none records a power-log off event. CPU and swap ranges are retained without a continuous-idle or isolated causal-speed claim.
+
+**Limits.** All83root commands now have passing segments across381/382/383/385; this is not a final monolithic hardened-build check or Stage5 acceptance.383failures remain. The restart and approved exhaustive driver both differ. No app/protocol/test or deadline change in385. Outcome recorded before advancing progress to remaining approved format hardening.
+
+
+### Page startup acknowledges the authenticated inbound-receipt compatibility floor
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch386 · **Stage:**partial Stage3.2
+
+**Exit.** Existing post-authentication activation commits a fresh-MAC, exact-snapshot floor under the original native owner and unchanged CAS. Five actual Page controls and five unchanged joined-parser controls pass; ACK omission fails its named assertion. Authentication denial, native abort/retry, stale payload, copied/shared task and tampering after initial authentication refuse without blessing storage. Exact writing/custody, repeat and cold writer-off source opening pass. [Evidence](development-evidence/2026-11-02-release-hardening/386-authenticated-floor-activation/README.md).
+
+**Checks.** Full unit298files/2985cases/one existing skip,105.42s at120s; types, scoped quality, registry and inventory pass. Old guard/native-CAS ASTs exact after only declared additions. Expected source-census and dependent-pin failures preserved and corrected after review; no old tests/obligations removed.240s unused.
+
+**Limits.** Genuine Worker/Joined activation, old artifacts, all metadata rewrites, dense rows and same-tree rollback image remain; source-only writer-off cold is narrower evidence. All further gates remain. Outcome recorded before advancing this seat's progress.
+
+
+### Real original and Joined Worker owners reopen marked custody
+
+**Date:**2026-11-03 · **Commit:**pending sequential patch387 · **Stage:**partial Stage3.2, test-only
+
+**Exit.** One actual packaged-app/private-service/virtual-WebAuthn journey creates and connects two devices, observes real Worker cohorts, exchanges writing both ways and reauthenticates both after lock/navigation. Expected writing and the floor survive. Types, scoped quality/format and inventory controls pass. No runtime or old test changes;386's full-unit pass remains the unchanged runtime baseline. [Evidence](development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md).
+
+**Preserved failures/limits.** The initial harness prefix query included valid exclusive supervisor/member names; exact slot selection and a separate supervisor assertion repair it without app/wait/deadline changes. Unmapped-family inventory refusal is preserved and the new required config is registered without altering old dispositions. This does not isolate the first floor write's task mode, establish binary/archive export or writer-off image behavior, close old-reader/lifecycle controls or earn Stage5 credit. Outcome recorded before this seat's progress update.
+
+
+### Stored verification mode is independent of legacy record reencoding
+
+**Date:**2026-11-03 · **Commit:**pending patch388 · **Stage:**partial Stage3.2 core
+
+**Exit.** Six new actual-verifier Node controls pass after four preparatory failures, and the live-only omission fails its named aged-original assertion. Stored empty/duplicate, bad signature/prefix/owner and altered legacy bytes refuse. Public live expiry and all old checks remain. Whole-verifier AST matches the prior source after removing only declared mode substitutions. [Evidence](development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md).
+
+**Checks/limits.** Full unit298files/2985cases/one existing skip passes106.61s at120s;240s unused. All16current Node/native floor/stored controls, types, scoped quality, registry and inventory pass. No old tests or obligations change. Binary stored reader/received-kind, all four aged callers/interior-cut cold and remaining format/fence/rollback/gates still required. No new row format or release credit. Outcome recorded before progress advances.
+
+
+### Receipt home exposes bounded admitted logical views
+
+**Date:**2026-11-03 · **Commit:**pending patch389 · **Stage:**partial Stage3.2, unwired syntax
+
+**Exit.** One home provides admitted count, true request epoch, actual index/position/link/original-byte views and physical+entry memo slots; future inbound versions are update-required there. Eight independent cases cover all72extents and legacy/interior/ownership/address controls.93focused cases pass; all existing codec guard ASTs exact. [Evidence](development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md).
+
+**Checks/limits.** Full299files/2993cases/one existing skip passes107.81s at120s. Types, scoped quality, registry/inventory pass; before-classification and new-generator typecheck failures preserved. No old tests or obligations changed. Every actual reader/floor scope, owned-page reuse, physical/logical accounting, binary writer and final gates remain; no syntax trust or release credit. Outcome recorded before progress advances.
+
+
+### Capture original receipt syntax once per physical codec turn
+
+**Date:**2026-11-03 · **Commit:**pending patch390 · **Stage:**partial Stage3.2
+
+**Exit.** Exact original syntax is shared only within one owned physical extent; public bytes/shapes and every prior codec predicate/semantic guard remain. Four new count controls fail before and all five pass after;98focused checks pass. Full300files/2998cases/one existing skip passes109.01s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md).
+
+**Limits.** Syntax grants no verification trust. Types, scoped quality, registry/inventory pass; private proposal-shape error retained. All verifier/reader/floor/memo/writer integration and final gates remain. No timed performance, RAM or release credit. Outcome recorded before progress advances.
+
+
+### Keep authenticated native and retained-reading receipt scopes independent
+
+**Date:**2026-11-03 · **Commit:**pending patch391 · **Stage:**partial Stage3.2
+
+**Exit.** Native contexts retain the authenticated floor only after its commit; retained readings use their own floor and cannot borrow the parent's. Verifier capture refuses unknown floors before key copies. New scoped syntax entry refuses unmarked binary receipts without granting verification trust. Five new controls fail before, six pass after;45focused, full301files/3004cases/one existing skip (108.31s at120s),10Page/parser cases and one genuine rebuilt Worker/Joined cold journey pass. [Evidence](development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md).
+
+**Limits.** Every actual binary semantic consumer and memo scope still needs integration. First floor write task mode, old artifacts, dense stored/writer, full archive, rollback images and final gates remain. Old app AST/guards exact after declared additions; private comment-review failure retained. Outcome recorded before progress advances.
+
+
+### Verify one saved binary extent with record-scoped owned originals
+
+**Date:**2026-11-03 · **Commit:**pending patch392 · **Stage:**partial Stage3.2, unwired bulk core
+
+**Exit.** Private captured saved mode checks every admitted entry and full metadata, shares only within-turn wire checks, preserves aggregate bounds and failure erasure, and returns one physical receipt without per-position v2 encoding.12new cases cover signed aged/interior pages, actual parser/crypto counts, scopes, mutable callers and erasure.10fail before against the real old verifier;109focused pass after. Full302files/3016cases/one existing skip passes107.46s at120s. Six old stored-core cases pass; the anchored omission fails expired as intended. [Evidence](development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md).
+
+**Limits.** Old verifier/codec AST exact after declared additions; one test-only source anchor changes, all old assertions/deadlines exact. App readers, all four aged callers, memo/index/accounting, native binary cold/writer/G8/B, rollback/old artifacts and final gates remain. No native commit trust or qualification credit. Outcome recorded before progress advances.
+
+
+### Retain one receipt proof under every actual entry address
+
+**Date:**2026-11-04 · **Commit:**pending patch393 · **Stage:**partial Stage3.2, unwired memo extension
+
+**Exit.** One owned receipt graph is addressed by all ordered actual entry slots, isolated from single-slot keys and recipient clones. Any missing address drops the proof. Common check retains all old exact-input/context/current/revision/erasure actions. Buffer-capacity accounting deduplicates actual backing storage without a RAM claim. Twelve new cases cover72extents;10fail before,74focused pass after. Full303files/3028cases/one existing skip passes108.23s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md).
+
+**Preserved development results/limits.** Initial typecheck finds the independent journal port; keep its old contract exact until its adapter is hardened. Added sparse-array unit fails before indexed capture fixes it; the earlier108.13s intermediate pass remains. No old test or journal guard changes. Receipt consumers, durable adapter, readers/accounting, writer/G8/B, cold/rollback/old artifacts and final gates remain. Outcome recorded before wholesale replacement of this seat's active state; other seat untouched.
+
+
+### Authenticate one compact page proof in the preparation journal
+
+**Date:**2026-11-04 · **Commit:**pending patch394 · **Stage:**partial Stage3.2, adapter before semantic consumers
+
+**Exit.** The closed local role binds physical sequence and every contiguous actual entry index. One physical receipt plus received results/originals is stored without full-page repetition. Existing authentication/input/import/current/slice/capacity and old result roles remain exact; the new owned-buffer observer counts encoded storage once. Thirteen new cases cover72extents. All99affected controls and full304files/3041cases/one existing skip pass109.26s at120s;240s unused. [Evidence](development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md).
+
+**Preserved failures/limits.** Initial11red/1green controls and a pending-rejection fixture observer gap, two new byte-type errors, a stale capacity-injection anchor and a new sparse-fixture lint error remain. Only that old test helper's injection literal changes; all guards/cases/assertions/deadlines remain. The final equivalent sparse-fixture syntax passes all13cases after the full run, with runtime bytes unchanged. Semantic readers/writer, format lifecycle/cold/rollback and final gates remain; no performance/RAM/acceptance claim. Outcome recorded before updating this seat's active state.
+
+
+### Reuse exact saved-receipt evidence without repeating whole-page result storage
+
+**Date:** 2026-11-04 · **Commit:** pending patch 395 · **Stage:** partial Stage3.2, saved verifier only
+
+**Exit.** Optional native/journal proof reuse binds the floor, current owner, exact raw/key/retained evidence and every original entry address. Fresh verification keeps all prior checks; portable old memos take the verified fallback. Returned binary projections share one independent physical buffer. Eight new controls fail5/pass3 before;70 focused and full305files/3049cases/one existing skip pass110.00s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md).
+
+**Preserved development failure/limits.** First integration erases a selected legacy original on a warm hit; the permanent equality control fails, then passes after keeping the delivered index. All attempts remain. Existing live/stored helpers and the per-entry loop are independently AST-checked; no old test changes. Semantic readers/writer and all format/cold/rollback/final-gate obligations remain. No performance/RAM or acceptance credit. Outcome recorded before updating this seat's active state.
+
+
+### Replay every admitted page entry under one physical ledger witness
+
+**Date:** 2026-11-04 · **Commit:** pending patch 396 · **Stage:** partial Stage3.2, ledger readers
+
+**Exit.** Binary census/full replay keeps one physical witness and checks/retains each actual entry. Interior firstEntry and dense-then-legacy continuation agree, including seq=position. Shared epoch/disposition classification handles binary/future tags; memo retention uses actual indices. Binary indexing stays on the verified reference until its bounds are hardened. Eight new cases fail before;92 focused and full306files/3057cases/one existing skip pass109.76s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md).
+
+**Preserved development results/limits.** Keep the old malformed-carrier refusal without editing its test. Preserve the109.96s intermediate checkpoint and the review reorder failure (8new red/84old green), then final pass. Final focused selection corrects a nonexistent earlier filename; initial/final bookkeeping stay preserved. All other guard bodies are independently AST-compared. Remaining reading/cut/owned-parse/index/writer/lifecycle/rollback/final-gate obligations stay open; no performance or acceptance claim. Outcome recorded before updating this seat's active state.
+
+
+### Preserve handoff snapshot and cut checks across a page interior
+
+**Date:** 2026-11-04 · **Commit:** pending patch 397 · **Stage:** partial Stage3.2, second stored reader
+
+**Exit.** Every admitted handoff entry verifies/applies in order. Covered snapshot and cut-link checks remain; one self-contained suffix header can start inside the original signed page, with exact original frames and indices. Legacy bytes stay exact; gap/order/erasure guards remain. Eight new controls fail before;78 focused and full307files/3065cases/one existing skip pass110.02s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md).
+
+**Limits.** Unit cut metadata models the caller's already-authenticated precondition, not an admission proof. Clock-aged new-document reconstruction is not actual31s native cold evidence. No old test edits or397 implementation reds. Remaining retained/replacement readers, mixed/index/writer/lifecycle/rollback/final gates stay open. Outcome recorded before updating this seat's active state.
+
+
+### Bound retained reading work before expanding a page
+
+**Date:** 2026-11-04 · **Commit:** pending patch398 · **Stage:** partial Stage3.2
+
+**Exit.** Original and later retained readings count logical entries against the existing4096 ceiling, keeping physical4096 and64 streams. The bounded header is a work count only; full authentication/decoding remains. Reading floors stay independent and original contexts forward their own. Six new controls fail before; final52 focused and full308files/3072cases/one existing skip pass110.49s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md).
+
+**Limits.** Intermediate unused-local type error retained. No old test edits. Actual multi-entry v3/replacement replay and all subsequent native/index/writer/lifecycle gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Replay every saved entry after a replacement baseline
+
+**Date:** 2026-11-04 · **Commit:** pending patch399 · **Stage:** partial Stage3.2
+
+**Exit.** Later v3 membership readings replay every saved entry, retain one physical receipt and keep certification, checkpoint, publisher-set and final-prefix checks. Genuine full certification/two-publisher controls pass;49 focused,14 unchanged legacy and full309files/3079cases/one existing skip pass111.96s at120s. Initial new-fixture mistakes and discriminating before-run remain. [Evidence](development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md).
+
+**Limits.** No old test edits. Clock aging is not actual native cold evidence. Replacement source and subsequent mixed/index/writer/lifecycle/final gates stay open. Outcome recorded before updating this seat's active state.
+
+
+### Replay saved replacement pages under the original accepted cuts
+
+**Date:** 2026-11-04 · **Commit:** pending patch400 · **Stage:** partial Stage3.2
+
+**Exit.** Every saved entry uses the original accepted-cut guard and logical4096 ceiling; live remains single-entry. Genuine rotation/two-publisher/interior-cut/resumption controls pass. A test-only boundary and isolated omission discriminate the new logical preflight. Final58 focused,14 unchanged legacy and full310files/3088cases/one existing skip pass113.97s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md).
+
+**Limits.** New-fixture tip and owned-byte type errors retained; no old test edits. All four stored-reader aged semantics are covered, but actual native cold/lifecycle, mixed/index/writer/rollback/final gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Bound index work and actual owned buffers before binary eligibility
+
+**Date:** 2026-11-04 · **Commit:** pending patch401 · **Stage:** partial Stage3.2
+
+**Exit.** Logical32768 and owned-buffer32MiB guards add conservative fallback while all old physical/visible checks remain. Memo and index share the exact393 accountant; the native owner includes its memo and fresh replay graph. Seven of eight controls fail before; final82 focused,4 unchanged generation and full311files/3096cases/one existing skip pass114.00s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/401-index-owned-bounds/README.md).
+
+**Limits.** Binary fallback remains. Buffer capacity excludes object/string/transient memory and is no RAM claim. No old test edits. Recording-script error and uncredited premature producer run retained. Subsequent binary/mixed/owned-parse/writer/lifecycle/final gates stay open. Outcome recorded before updating this seat's active state.
+
+
+**Phase401 qualification, 2026-11-04 (before freezing).** Static review of `createVerifiedRecords` found that non-owning mode clones the view and then separately copies records. The candidate-graph union measured in401 is exact for shared ownership, not this subsequent duplication. Actual accounting across both modes stays open; fix clone-mode accounting before binary eligibility. The passing unit/source results remain, with this explicit limit. No additional timing measurement or acceptance credit.
+
+
+### Close prospective ownership accounting for cloned cache installation
+
+**Date:** 2026-11-04 · **Commit:** pending patch402 · **Stage:** partial Stage3.2
+
+**Exit.** The401 clone-mode qualification is closed: the actual unchanged constructors match shared union versus cloned view plus separately copied records. One existing ownership expression drives installation and initial/extend/final budget checks. Six controls fail before;89 focused,4 unchanged generation and full312files/3103cases/one existing skip pass113.93s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md).
+
+**Limits.** Fixture-observer contamination and AST finder mistake preserved and corrected; no old test edits or app failure. Binary fallback remains. Per-load/mixed/dual-audit/writer/lifecycle/final gates stay open. No RAM/performance acceptance claim. Outcome recorded before updating this seat's active state.
+
+
+### Build a bounded binary index after full verification
+
+**Date:** 2026-11-04 · **Commit:** pending patch403 · **Stage:** partial Stage3.2
+
+**Exit.** Binary full-history indexing requires explicit owner proof-byte observation and retains all bounds. Epoch uses the raw-byte classifier. Three controls discriminate fallback; a fourth uses genuine certification after a fixture refusal. Final93 focused,4 unchanged generation and full313files/3107cases/one existing skip pass114.04s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md).
+
+**Limits.** Fixture/recording failures preserved. No old test edits. Index construction is not native cold/MAC/lease evidence. Binary append fallback and all later mixed/owned-parse/dual-audit/writer/lifecycle/final gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Share closed ledger capture and preserve buffer ownership
+
+**Date:** 2026-11-04 · **Commit:** pending patch404 · **Stage:** partial Stage3.2
+
+**Exit.** Raw fixed-header work and scoped record capture share existing guards/projection. The census catch remains exact. Keep one owned binary backing, erase unused legacy raw/decoded-entry copies and refused buffers. Final101 focused,4 unchanged generation and full314files/3115cases/one existing skip pass114.16s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md).
+
+**Limits.** Initial retained-backing erasure caused11 unit reds; corrected. One old error-surface failure corrected without changing its test. Before expectation mistake and all versions remain; no old test edits. Append binary fallback and later hardening/gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Extend binary page indexes under exact prefix and logical bounds
+
+**Date:** 2026-11-04 · **Commit:** pending patch405 · **Stage:** partial Stage3.2
+
+**Exit.** Genuine binary then legacy continuation equals independent full replay and signed originals. Old prefix/canonical/authority/witness/reducer bounds remain, with fixed-header preflight before expansion, owner proof-byte observation and precise fallback/cleanup. Final107 focused,4 unchanged generation and full315files/3121cases/one existing skip pass116.13s at120s. [Evidence](development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md).
+
+**Limits.** Anchor miss/stale-source run, new byte-container assertion and type-only review normalization retained. Added sixth cleanup case has no before credit. No old test edits or native MAC/performance claim. All later owned-syntax/property/writer/lifecycle/final gates remain. Outcome recorded before updating this seat's active state.
+
+
+### Preserve mixed receipt replay and permanently detect stale dense originals
+
+**Date:** 2026-11-04 · **Commit:** pending patch406 · **Stage:** partial Stage3.2
+
+**Exit.** Four new controls compare full and per-record/indexed replay for genuine two-publisher mixed binary/v2/v1 histories. The test-only stale-turn fault discriminates and corrupts exactly the retained sequence as expected; baseline passes. All1867prior code/test/script files remain exact. Types,111 focused,4 unchanged generation and full317files/3125cases/one existing skip pass126.44s using the approved240s full-unit hang guard. The120s timeout, new-test development failures and actual sample counts remain. [Evidence](development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md).
+
+**Correction.** The display was unobservable inside the sandbox, not established off. The operator's caffeinate-d assertion was active; outside-sandbox observations confirm three awake displays. No display assertion/deadline was bypassed.
+
+**Limits.** Other-reader properties and later format/writer/lifecycle/final gates stay open; no runtime/old-test edits or performance/native-cold/acceptance credit. This outcome precedes replacing this seat's active state.
+
+
+### Exercise mixed physical receipts through all four saved semantic callers
+
+**Date:** 2026-11-04 · **Commit:** pending patch407 · **Stage:** partial Stage3.2
+
+**Exit.** Three additional properties cover retained membership, handoff and replacement, complementing406's full/indexed ledger property. Independent signed originals, every selected update, complete canonical state and the relevant accepted cuts remain. All old tests and app code stay byte-exact; only two test helpers change. Types,138 focused,18 unchanged legacy and full318files/3128cases/one existing skip pass122.51s at the approved240s full-unit guard. [Evidence](development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md).
+
+**Limits.** Initial new-test callback type errors remain;18histories include13random/5examples, not exhaustive coverage. Handoff's no-checkpoint property does not claim admission proof; old real-cut checks pass separately. This is aged-clock unit replay, not physical31s/native-cold or performance acceptance. Indirect/final owned-writer/lifecycle/gate work stays. Recorded before replacing this seat's active state.
+
+
+### Review indirect binary receipt readers and exercise whole/reduced recovery
+
+**Date:**2026-11-04 · **Commit:**pending patch408 · **Stage:**partial Stage3.2
+
+**Exit.** Indirect source/authority/recovery/baseline/journal/Worker/export paths are mapped, with their old-owner fences left as explicit lifecycle obligations. Four controls exercise full logical replay, selected frontier and exact writing through pure and encrypted fake-IndexedDB reduction/reopen; absent/future floors refuse. Types and61focused pass; registry/inventory/quality checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md).
+
+**Limits.** The new type-model error and regressing-through fixture failures remain; only fixture assertions/framing changed, not app guards. No new full-suite/browser-cold/lease/rollback/performance credit. Latest full checkpoint stays407. Outcome recorded before this seat advances to owned syntax.
+
+
+### Harden one physical receipt's explicit parsed-syntax lifetime
+
+**Date:**2026-11-04 · **Commit:**pending patch409 · **Stage:**partial Stage3.2
+
+**Exit.** An isolated owner-local parser lifetime shares inspection with one saved verification under exact row/byte/floor checks, private decoded originals, current guards and explicit transfer/erasure. All18fresh signature checks remain while original decoding drops from2to1 in the discriminating unit control.13controls include a permanent layered final-byte omission. Types,180focused,18unchanged legacy and full320files/3145cases/one existing skip pass122.33s at approved240s. [Evidence](development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md).
+
+**Limits.** Initial memo/callback ownership failure remains and is repaired only on the new path; the13thfault has no before credit. Existing default/live helpers and all old tests stay exact. App owners are not wired yet; no timing/RAM/activation/acceptance claim. Outcome precedes advancing this seat to integration.
+
+
+### Connect optional owned-syntax ports through saved readers
+
+**Date:**2026-11-04 · **Commit:**pending patch410 · **Stage:**partial Stage3.2
+
+**Exit.** Brand-checked census, epoch and ledger ports retain exact/current/floor checks and all verification. Seven controls pass; types,187focused,18legacy and321unit files/3152cases/one existing skip pass123.80s at240s. Four default paths and other guards remain AST-exact after declared normalization; old tests stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md).
+
+**Limits.** Actual app owners remain unwired; no performance/activation proof. Outcome precedes advancing this seat.
+
+
+### Own parsed receipts within full and reduced loads
+
+**Date:**2026-11-04 · **Commit:**pending patch411 · **Stage:**partial Stage3.2
+
+**Exit.** Actual full/native/reduced callbacks now own per-load syntax; five controls and192focused/18legacy cases pass. Existing operations and guards are AST-exact after explicit scope normalization. [Evidence](development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
+
+**Limits.** No actual browser cold, image, activation, latency or RAM credit. Native continuation and live pages/dense writer, dual audit, G8/B and lifecycle/old artifacts/cold/rollback remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Own new receipt syntax within ledger continuations
+
+**Date:**2026-11-04 · **Commit:**pending patch412 · **Stage:**partial Stage3.2
+
+**Exit.** New-only scopes now cover native and reduced-owner continuations. Four controls pass;205focused/18legacy plus full323files/3161cases/one skip pass124.19s. Existing operations/guards remain AST-exact after explicit normalization. [Evidence](development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
+
+**Limits.** No physical browser cold, image, activation, timing or RAM credit. Live owned parsing/dense writer, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No trust/format/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Own canonical live originals through verification and encoding
+
+**Date:**2026-11-04 · **Commit:**pending patch413 · **Stage:**partial Stage3.2
+
+**Exit.** A live range and bound codecs now share one exact captured syntax lifetime;17decodes become1 with all18signature checks. Nine controls,251focused/18legacy cases and repository checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).
+
+**Limits.** No native dense writer, physical cold, image, activation, latency or RAM credit. Snapshot copies deliberately preserve exact mutation checks; no RAM saving is claimed. Dense native writing, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Prepare one bounded dense receipt per verified prefix
+
+**Date:**2026-11-04 · **Commit:**pending patch414 · **Stage:**partial Stage3.2
+
+**Exit.** The new isolated preparation API shares one self-contained physical receipt across each verified prefix and retains live expiry, all entry checks and erasure. Nine controls and260focused/18legacy cases pass; old default/stored operations remain AST-exact. [Evidence](development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
+
+**Limits.** Native writing remains unwired. No physical browser cold, activation, image, latency or RAM credit. Native framing/witness/atomic commit, dual audit, G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Frame flagged dense receives as atomic physical page writes
+
+**Date:**2026-11-04 · **Commit:**pending patch415 · **Stage:**partial Stage3.2
+
+**Exit.** The flagged writer frames one physical receipt per verified page prefix and keeps all native commit fences. Five controls and final326file/3184case/one-skip checkpoint pass131.96s; unchanged legacy native/cold and all8old mutation controls pass. [Evidence](development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
+
+**Limits.** Two new native fixture attempts failed preconditions: the storage-only conformance owner deliberately cannot request peer ranges. The first build-define diagnosis was wrong; the composed/own-stream guard is the cause and stays unchanged. Both attempts and the withdrawn new fixture are retained, with zero binary native credit. A read-only AST review metadata difference (undefined source range on an aliased import) was normalized as location metadata only. Actual composed peer/Worker binary transaction, physical31s cold, floor lifecycle, dual audit, G8/B, old artifacts/rollback and Stage5/6 remain. No timing/RAM/activation/image credit, format/trust/wire/default/limit/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Track logical audit pressure alongside physical rows
+
+**Date:**2026-11-04 · **Commit:**pending patch416 · **Stage:**partial Stage3.2
+
+**Exit.** Reduced-owner and scheduler logical pressure now forces an attempt at1,024positions independently of physical rows. Nine controls,314focused/18legacy and full327files/3193cases/one skip pass129.74s. Existing guards and old tests remain. [Evidence](development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
+
+**Limits.** Unreduced native full-oracle pressure/idle integration is still open, so this does not close the complete dual audit item. No composed peer/Worker binary transaction, physical31s cold, image, activation, timing or RAM credit. G8/B, floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/budget/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Schedule the unreduced semantic oracle in the guarded warm-audit lane
+
+**Date:**2026-11-04 · **Commit:**pending patch417 · **Stage:**partial Stage3.2
+
+**Exit.** The unreduced full oracle now runs in the existing guarded idle-audit job. Two new native regressions, a discriminating comparison omission, two unchanged native cases,72focused cases and full327files/3193pass/one skip pass. Full suite136.43s; no guard or deadline change. [Evidence](development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
+
+**Limits.** The generic oracle-disagreement hook does not close the later actual dense stale-turn/Worker control. No composed-peer binary native transaction, physical31s interior cold, final rollback image, RAM or performance acceptance credit. G8/B, format-floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain. No format/trust/wire/budget/gate change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Separate eight-position native turns from four-position wire requests
+
+**Date:**2026-11-04 · **Commit:**pending patch418 · **Stage:**partial Stage3.2
+
+**Exit.** G8 and actual four-position request planning are hardened with five new controls. Seven old boundary fixtures retain all cases/assertions/seeds/deadlines. Final164focused and full328files/3198pass/one skip pass129.49s; all prior failures retained. [Evidence](development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).
+
+**Limits.** Combined cache/tail/wire eight-entry/32-position reservations remain the next phase, so this is not complete B coverage. No real composed-peer binary native transaction,31s interior cold, rollback image, RAM or timing acceptance credit. Floor lifecycle, old artifacts/cold/rollback and Stage5/6 remain; no wire/service change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Bound cache tail and wire originals together
+
+**Date:**2026-11-04 · **Commit:**pending patch419 · **Stage:**partial Stage3.2
+
+**Exit.** Shared originals accounting now covers cache, tail, wire and temporary retained copies at8entries/32positions/4MiB. Six new cases,162focused cases and full329files/3204pass/one skip pass128.78s. Native authentication/commit and old tests remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
+
+**Limits.** This phase establishes bounded canonical source and isolated controls, not measured B performance or a real composed-peer dense transaction. Binary Worker/peer floor lifecycle,31s interior cold, old artifacts, actual stale-turn audit and same-tree writer-off rollback image remain. No RAM or timing acceptance claim, format/trust/service/wire/rate/gate/deadline change, commit or deployment. Outcome precedes advancing this seat.
+
+
+### Forward an explicit default-off dense writer selector through Vite and Docker
+
+**Date:**2026-11-04 · **Commit:**pending patch420 · **Stage:**partial Stage3.2
+
+**Exit.** The selected writer flag now has a strict explicit Vite path and Docker ARG/ENV forwarding, ordinary default0 and unchanged readers. Six new build controls plus existing policies total21passing cases, with types/bookkeeping checks green. Runtime source is byte-identical to419. [Evidence](development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
+
+**Limits.** Production-mode unit compilation is not an image or lifecycle proof. The same-tree writer-off rollback image, real marked/dense/stale-tab opening, ordinary legacy operation and cold/Undo are still required. Latest full unit checkpoint remains419:329files/3204pass/one skip128.78s; it predates the new six-case build test. Real peer/Worker B fairness/past-index and Stage5/6 remain. No format/trust/runtime/limit/gate/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Prove real Worker dense cuts expired replay and exact cold writing
+
+**Date:**2026-11-04 · **Commit:**pending patch421 · **Stage:**partial Stage3.2
+
+**Exit.** Real original/Joined Worker dense cuts, firstEntry2 tails,31s request expiry, offline cold exactness, local Undo and pending-journal recovery pass in both directions. Native observer is read-only and syntax-only. All app guards/source remain unchanged; failed harness attempts are preserved and the new family is required. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+
+**Limits.** The lower allowance is a test-only Worker fixture; this gives no RAM/performance or unmodified-image rollback acceptance credit. Multi-request partial cuts, binary retained-reading installation, every floor rewrite/lost reply, frozen old Page/Worker/stale tabs, actual stale-turn idle audit and same-tree writer-off image remain. Stage5 full gates and Stage6 are not run. No format/trust/rate/gate/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Native cut byte-caption correction before421 freeze
+
+**Date:**2026-11-04 · **Commit:**pending patch421
+
+The two self-contained extents are7,531bytes each original-to-Joined and7,529bytes each reverse. The unfrozen caption incorrectly generalized the first size. Raw results were checked and the caption corrected; prior artifacts remain. No app/test byte or result changed. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+
+
+### Stop a dense multi-request turn at its verified native prefix
+
+**Date:**2026-11-04 · **Commit:**pending patch422 · **Stage:**partial Stage3.2
+
+**Exit.** The before-failing eight-upload native regression passes after a loop-control-only repair; all three native cases and the330-file full unit checkpoint pass. Existing helpers/case bodies and every other runtime byte are independently checked unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
+
+**Limits.** This is bounded correctness evidence, not final-image, RAM or performance acceptance. Binary retained-reading installation, every floor rewrite/lost reply, frozen old Page/Worker/stale tabs, actual stale-turn idle audit, B fairness/past-index and the same-tree writer-off rollback image remain. Stage5/6 are not complete. No format/trust/server/wire/limit/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Acknowledge authenticated retained-reading format before native installation
+
+**Date:**2026-11-04 · **Commit:**pending patch423 · **Stage:**partial Stage3.2
+
+**Exit.** Before-refused genuine binary retained-reading installation now passes with the writer off and on. Native floor acknowledgment precedes copying, with all prior authentication/CAS/commit guards preserved. Both real-app cold/Undo cases and the full330-file unit checkpoint pass. [Evidence](development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).
+
+**Limits.** Fixture construction supplies a valid approved retained format; the ordinary ceremony still emits its ordinary one-position saved receipts. This is not a same-tree rollback image, old-artifact/stale-tab, lost-reply, RAM or performance acceptance result. Every floor rewrite/interruption lifecycle, actual stale-turn idle audit, B fairness/past-index and final image proofs remain; Stage5/6 remain. No format/trust/server/wire/limit/deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Prove durable floor acknowledgment survives a lost installation reply
+
+**Date:**2026-11-04 · **Commit:**pending patch424 · **Stage:**partial Stage3.2
+
+**Exit.** A genuine loss after the floor CAS leaves authenticated floor1 before any binary copy, then retries with unchanged retained reading and exact cold/Undo writing. Omitting only the CAS fails the same test at the saved-floor assertion. Runtime449 and prior test/helper1,119 hashes remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).
+
+**Limits.** This is an isolated native reply-loss control, not an ordinary artifact rollback or stale-tab proof. Full floor rewriter/membership/removal lifecycle checks, frozen old Page/Worker artifacts, actual mixed stale-turn idle audit, B fairness/past-index and the same-tree writer-off image remain. Stage5/6 are not complete. No format/trust/server/wire/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Prove the genuine mixed-receipt idle audit closes a stale retained-page owner
+
+**Date:**2026-11-04 · **Commit:**pending patch425 · **Stage:**partial Stage3.2
+
+**Exit.** The actual dense-to-legacy retained-original fault is detected by the genuine idle full oracle and closes the owner. Baseline passes. Both retain all accepted writing through exact offline cold reopening; no global clock or guard change and no performance acceptance credit. [Evidence](development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).
+
+**Limits.** This is an isolated correctness control, not a timing gate or RAM result. Frozen old Page/Worker and stale-tab artifacts, full marker rewrite/membership/removal lifecycle checks, B fairness/past-index and same-tree writer-off image rollback remain. Stage5/6 are not complete. No format/trust/server/wire/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Freeze exact old Page and Worker readers alongside current writer profiles
+
+**Date:**2026-11-04 · **Commit:**pending patch426 · **Stage:**partial Stage3.2
+
+**Exit.** Two immutable old readers and current ordinary writer0/1 assets are built and identified. Every old blob/mode and57,907 current source files remain exact. The unsafe dependency purge was refused and avoided; all final artifact checks pass. [Evidence](development-evidence/2026-11-02-release-hardening/426-frozen-compatibility-artifacts/README.md).
+
+**Limits.** Build/provenance evidence only. These are recompiled compatibility assets, not published production bytes, final Docker images, stale-tab/cold observations or performance acceptance. Old active/queued/cold reader exclusion, pending-writing recovery, marker-rewrite lifecycles, writer-off image rollback and Stage5/6 remain. No source trust, format, server/wire, limit, gate or deadline change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+**Phase426 evidence packing correction (before freeze).** The initial collector recursively copied pinned historical trees into this new record. Their canonical home is Git. Keep complete independently checked blob/mode manifests, actual build logs, asset hashes and the recipe in the record; retain exported trees and the initial unfrozen record in private/tmp. No run/source/test or earlier phase changes. This correction precedes the seat update.
+
+
+### Prove frozen old-owner exclusion and marked-store refusal without losing pending writing
+
+**Date:**2026-11-04 · **Commit:**pending patch427 · **Stage:**partial Stage3.2
+
+**Exit.** Frozen old active owners are excluded before floor activation; old pending writing survives ownership transfer. Queued old native readers and complete old marked-store unlocks refuse. Current Undo and exact offline persisted-profile cold reopen retain all writing and floor1. [Evidence](development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
+
+**Limits.** Not a timing gate, published-old-byte comparison, service-worker adoption test, RAM result or Docker rollback proof. The queued native probe uses exact old source in the stale Window; no queued old Worker execution claim. All earlier setup and fixture failures remain evidence. Marker rewrite/membership/removal lifecycles, B fairness/past-index, same-tree writer-off images and Stage5/6 remain. No runtime, old test, trust, format, server/wire, budget, gate, limit, deadline or default change; no commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Exercise authenticated marker rewrites and expose the joined rotation floor gap
+
+**Date:**2026-11-04 · **Commit:**pending patch428 · **Stage:**partial Stage3.2
+
+**Exit.** The ordinary floor rewrite/removal lifecycles pass. The independently marked retained-reading control reveals a missing authenticated encoding floor in rotation validation; freeze this counterexample for the next in-scope repair. [Evidence](development-evidence/2026-11-02-release-hardening/428-authenticated-floor-rewrite-counterexample/README.md).
+
+**Limits.** Stage3.2 remains blocked on that real rotation compatibility defect; the extra retained-reading run is red and stays recorded. This is correctness evidence, not a gate, RAM result, Docker rollback proof or release candidate. Marker routing census is not semantic authority evidence. No canonical runtime or old helper/test change, trust/format/server/wire/budget/limit/gate/deadline/default change, commit, publication or deployment. B fairness/past-index, same-tree writer-off images and Stage5/6 remain. Outcome precedes advancing this seat.
+
+
+**Phase428 pre-freeze metadata correction.** The retained-arm raw report records progress24,926ms, original removal22,389ms and the Joined activation refusal17,151ms. Two transcribed durations in the unfrozen narrative were inaccurate; the corrected record/progress now uses the raw values. Original draft metadata and every run remain retained. This changes no result, case, deadline or acceptance claim.
+
+
+### Carry the authenticated receipt floor into native rotation validation
+
+**Date:**2026-11-04 · **Commit:**pending patch429 · **Stage:**partial Stage3.2
+
+**Exit.** The real marked-reading rotation counterexample now passes through the intended interruption and successful retry. All six native lifecycle cases,55focused controls,5Joined guards and the330-file full unit checkpoint pass; existing verification and native commit checks remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/429-rotation-authenticated-receipt-floor/README.md).
+
+**Limits.** Functional hardening evidence only, not performance acceptance, RAM proof or final rollback-image validation. B fairness/past-index, same-tree writer-on/off images, coherent broader checkpoints and Stage5/6 remain. No format/trust/server/wire/budget/limit/gate/deadline/sender-default change, publication, deployment or computer use. Outcome precedes advancing this seat.
+
+
+### Validate same-tree ARM64 writer and compatible reader-only rollback images
+
+**Date:**2026-11-04 · **Commit:**pending patch430 · **Stage:**partial Stage3.2
+
+**Exit.** Both local same-tree ARM64 images pass actual final-runtime suites and two-container smoke. Compatible writer0 opens dense data from a preloaded tab, writes fresh legacy receipts and retains exact writing/Undo/offline disk cold and floor1. [Evidence](development-evidence/2026-11-02-release-hardening/430-same-tree-arm64-reader-rollback/README.md).
+
+**Limits.** Unsigned hardening snapshots with explicit base-dirty/source fingerprints, not published or signed release artifacts. Client/storage rollback uses host Node24 APIs; actual containers have separate suites/smoke. No old-server rollback, physical phone/real-account timing, SW-adoption, RAM, vulnerability-scan or Stage5 credit. Catalogue registration is the sole later build-input delta; publication requires its separate signed-source artifact procedure. B fairness/past-index, coherent Stage3/4 checkpoints and Stage5/6 remain. No runtime/old-test, format/trust/server-wire/budget/limit/gate/deadline/default change, commit, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Apply the approved full-unit hang guard without changing case or performance deadlines
+
+**Date:**2026-11-04 · **Commit:**pending patch431 · **Stage:**partial Stage3.2
+
+**Exit.** The nine full-suite stages now use the already approved240s hang guard. Exact inverse source review and all62 existing wrapper controls pass; per-case/native/performance deadlines and runtime source remain unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).
+
+**Limits.** Guard-only harness maintenance under an existing conditional operator approval, not a new gate relaxation or performance result. Full campaign execution, coherent Stage3/4 checkpoint and Stage5/6 remain. No crypto/format/trust/budget/limit/sender/default change, new lab, commit, publication or deployment. The latest full unit remains429’s330files/3,210pass/one skip128.35s. Outcome precedes advancing this seat.
+
+
+### Preserve the functional checkpoint at the stale receive-control anchor
+
+**Date:**2026-11-04 · **Commit:**pending patch432 · **Stage:**partial Stage3.2
+
+**Exit.** 63commands pass; the receive campaign stops on an obsolete indentation-only mutation anchor after51focused and16other native cases pass. All58,881source files remain exact in both directions. Preserve the failure, narrow the repair to two spaces, then complete the remaining checkpoint. B fairness/past-index and the commit pause remain explicit. [Evidence](development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
+
+**Limits.** Failed partial functional checkpoint, not Stage3closure or Stage5/performance/format/RAM/release acceptance. All original predicates and native deadlines remain; only the previously approved240s full-unit hang guard is used. The nine contract full-unit stages have not run yet. Existing broad formatter deferral remains untouched. No new lab, source optimization, computer use, signing, push, publication or deployment. B native fairness/past-index remains open, and the operator now requires its bounded functional evidence before Stage5, followed by a pause for commits. Outcome precedes advancing this seat.
+
+
+### Refresh only the receive joint-control indentation anchor
+
+**Date:**2026-11-04 · **Commit:**pending patch433 · **Stage:**partial Stage3.2
+
+**Exit.** The indentation-only fixture repair restores all17native receive cases plus51focused cases, with no app code, assertion, omission scope or deadline change. [Evidence](development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).
+
+**Limits.** Functional regression/harness evidence only; no continuous B fairness, actual past-index fallback or Stage5 credit. The remaining19root commands are still unrun. No signing, release preparation, push, publication, deployment or computer use. Outcome precedes advancing this seat.
+
+
+### Preserve the remaining checkpoint at the construction layout check
+
+**Date:**2026-11-04 · **Commit:**pending patch434 · **Stage:**partial Stage3.2
+
+**Exit.** Eight more root commands pass;first-authority stops at JSON layout after its functional/security checks pass. Preserve that failure and ten unattempted commands. All source pins remain exact. [Evidence](development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).
+
+**Limits.** Failed partial coherent checkpoint, not Stage3closure or Stage5acceptance. All original case, recovery and performance deadlines remain. The nine later full-unit contract commands have not run. No canonical app or old test edits in434, no new lab, signing, push, release preparation, publication or deployment. B native fairness/past-index remains open; pause for commits beforeStage5. Outcome precedes advancing this seat.
+
+
+### Normalize construction registry layout without changing its tokens
+
+**Date:**2026-11-04 · **Commit:**pending patch435 · **Stage:**partial Stage3.2
+
+**Exit.** The first-authority format check is green with only registry layout and its derived inventory hash changed; all construction tokens and security obligations stay exact. [Evidence](development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
+
+**Limits.** Bookkeeping correction only; no app, test body, assertion, format contract, deadline, trust or gate change. The failed434attempt remains. Ten commands73–82remain; B functional fairness/past-index is still open. The broader deferred test/harness formatting patch remains untouched. No Stage5, signing, push, release preparation, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Complete the functional checkpoint with actual full-unit times
+
+**Date:**2026-11-05 · **Commit:**pending patch436 · **Stage:**partial Stage3.2
+
+**Exit.** The coherent functional checkpoint has passing segments for all83commands, with unchanged runtime source since429 and actual full-unit times131.05–145.64s. Only the approved recovery full-unit guard/timing and exact derived inventory change in436. [Evidence](development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
+
+**Limits.** Functional checkpoint only, not Stage3closure or Stage5/performance/format/RAM/release acceptance. All original functional/security/performance predicates and focused deadlines stay; only the already approved full-unit hang guard is240s. Continuous native B fairness/past-index remains open and has no prior functional credit; private apparatus drafts have not been built/run. No new lab, computer use, signing, push, release preparation, publication or deployment. The operator requires a commit pause beforeStage5. Outcome precedes advancing this seat.
+
+
+### Prove continuous native B fairness with normal and withheld hints
+
+**Date:**2026-11-05 · **Commit:**pending patch437 · **Stage:**partial Stage3.2
+
+**Exit.** Continuous native B fairness is established for both initial conditions with normal/withheld hints, actual productive wire batches, independent accepted/native positions, a sensitive unfair-selector control, exact Undo and ordinary offline process-cold. App runtime is unchanged since429. [Evidence](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
+
+**Limits.** Functional contract evidence only: no input/peer latency, performance, Stage5, RAM, release or aggregate acceptance credit. No lab code or switches land; test entries/controls never enter ordinary app assets. Ordinary release-profile assets remain byte-exact. Actual32MiB index fallback is still open for the next bounded phase. Earlier failed attempts and the negative sparse-liveness failure are preserved, with no timeout/assertion/security/rate-limit changes. No real staging, signing, push, publication, deployment or computer use. The operator requires a commit pause beforeStage5. Outcome precedes advancing this seat.
+
+
+### Hold actual past-index credit after bounded fixture setup fails
+
+**Date:**2026-11-05 · **Commit:**pending patch438 · **Stage:**partial Stage3.2
+
+**Exit.** The actual-index test apparatus is source-reviewed, but genuine fixture preparation fails the original900s budget and the native index/cold case is unrun. Actual past-index remains an explicit preStage5blocker; fairness437stays established separately. [Evidence](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
+
+**Limits.** No past-index, performance, Stage5, RAM, release or aggregate acceptance credit. This is a failed preparation checkpoint, not Stage3.2closure or a green new native suite. Do not infer absence of transient sync halts from helpers that used public retries without retaining cached lane status; the next bounded phase adds that observation and genuine producer quiet. Build identity invalidation is retained, not narrowed. All900/120/15guards, production limits/profile and security checks stay. Earlier failures remain, including the first failed independent asset review. No new lab, real staging/signing, push, publication, deployment or computer use. Commit pause is still required beforeStage5. Outcome precedes advancing this seat.
+
+
+### Preserve the native index preparation blocker before the commit pause
+
+**Date:**2026-11-05 · **Commit:**pending patch439 · **Stage:**partial Stage3.2
+
+**Exit.** Continuous native B fairness is established separately in437. Actual past-index fallback is still unproved: final setup times out before the unchanged native cap/continuation/cold case. Preserve the failure and pause for commits; Stage5stays blocked. [Evidence](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
+
+**Limits.** No actual-index, post-cap continuation, cold, performance, RAM, release or Stage5credit. This is a failed fixture-preparation checkpoint, not a green new native suite or Stage3.2closure. The underlying preparation cost remains unresolved; busy CPU is not a root-cause diagnosis. The expected capacity park is retained as a genuine limit finding, not hidden or changed to success. All900/120/15deadlines,32MiB index, journal limits, quiet/retry policies, flags, service, wire and security guards remain. No new lab phase, app change, real staging/signing, push, publication, deployment or computer use. Earlier attempts and original lab roots remain untouched. PAUSE FOR COMMITS; do not begin Stage5fixtures or cells. Outcome precedes advancing this seat.
+
+
+### Bind a test-only index ceiling and prepare a genuine native backlog
+
+**Date:**2026-11-05 · **Commit:**pending patch440 · **Stage:**partial Stage3.2
+
+**Exit.** Production/test ceiling binding and the small genuine backlog are ready. This bounded phase establishes no actual fallback or cold result: the native reader waits for clarification of two hardcoded32MiBthreshold literals, and native capacity observation waits for display-on. Commit work stays deferred. [Evidence](development-evidence/2026-11-02-release-hardening/440-index-ceiling-binding/README.md).
+
+**Limits.** No past-index fallback, subsequent reference continuation, cold, performance, RAM, release or Stage5credit yet. The complete returning-reader assertion body has not changed or run. Its two numeric thresholds require clarification under the operator's explicit keep-body-unchanged instruction. The producer capacity observer/protocol is prepared but unbuilt/unrun; its exact ceiling and size remain unknown.439already demonstrates320fully admitted/durable/witnessed post-park replacements through15additional positions.438/439figures and real-scale index time/RAM are recorded as Stage6debt; no preparation-cost diagnosis or fix starts. The1MiBvalue is test-only; all production limits, rate budgets, clocks, guards, format and900/120/15deadlines remain. No browser execution while display-off, new lab, computer use, agents, staging/signing, push, publication or deployment. Commits remain deferred and all prior roots/failures stay intact. Outcome precedes advancing this seat.
+
+
+### Prove native past-index continuation against an exact served build
+
+**Date:**2026-11-05 · **Commit:**pending patch441 · **Stage:**partial Stage3.2
+
+**Exit.** Bounded native past-index fallback and subsequent dense continuation, exact positions/writing, Undo and ordinary offline cold pass. Exact served-build record controls also pass. Together with437continuous native fairness, this closes the two questioned functional B obligations; no Stage5orreal-scale performance/RAM credit is claimed. [Evidence](development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).
+
+**Limits.** The lower1MiBceiling is a distinct test-only Worker build. Production remains32MiB, with identical eligibility/control-flow code proven in440; real-scale index time/RAM and438/439failed preparation costs remain Stage6debt. The first crossing is a legacy receipt; the claimed B coverage is the actual17dense positions received after that crossing, not an invented dense first refusal. Stage5frozen/report-only cells remain owed. Capacity observation is still a separate next task and will not fix preparation or change a ceiling. All rates, flags, guards, format, logical bounds and900/120/15deadlines remain. No new lab, computer use, agents, real staging/signing, push, release prep, publication or deployment. Commits remain deferred; all earlier failures/roots stay immutable. Outcome precedes advancing this seat.
+
+
+### Identify the parked producer ceiling and preserve post-park writing
+
+**Date:**2026-11-05 · **Commit:**pending patch442 · **Stage:**partial Stage3.2
+
+**Exit.** The reproduced park is the existing4MiBencoded-baseline ceiling, not either32MiB/131072entry preparation-journal guard. Writing remains active and durable, publishes at position50and reaches an exact witness archive after the park. Record this as Stage6debt with no fix; native B proof remains closed in437/441. [Evidence](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
+
+**Limits.** This is a frozen-profile reproduction:439did not record the original throw site/size, so do not backfill historical telemetry. Its earlier320post-park replacements/15positions are retained separately. A single new edit and exact receiving do not establish unlimited growth, completed maintenance, eventual retry success, phone performance, input/peer latency or RAM saving. Real-scale production32MiBindex time/RAM and438/439setup failures remain debt. No preparation-cost diagnosis, limit/format/guard/catch/retry/default/service/wire change, new lab, computer use, agents, staging/signing, push, release prep, publication or deployment. The observed scripts stay private evidence and do not enter app/runtime modules. Commits remain deferred; Stage5and Stage6landing work have not run. Outcome precedes advancing this seat.
+
+
+### Signed hardening sequence — phases 335–442
+
+**Date:** 2026-11-05 · **Phase:** 443 · **Scope:** commit bookkeeping only.
+
+**Outcome.** The operator-authorized sequence of 108 frozen patches is committed
+in order, with each parent, staged tree and SSH signature independently checked.
+The cumulative checkout matches the isolated replay and is clean after phase442.
+The [signed checkpoint](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/README.md)
+contains the immutable patch-to-commit mapping and verification results. Earlier
+failed attempts and evidence remain unchanged. This adds no app or test change,
+no Stage5credit and no push, publication or deployment. Stage5remains paused for
+operator resumption after the commit checkpoint; Stage6is later work.
+
+
+### Rebuilt hardening history without tracked evidence objects
+
+**Date:** 2026-11-05 · **Phase:** revised 443 · **Scope:** operator-authorized local history and evidence storage.
+
+The 108 phase commits 335–442 are re-signed in their original order with exact messages
+and author dates. Every replacement tree removes only the specified object paths;
+all local object bytes and all phase manifests/README bytes remain intact. The
+original history is retained on the never-push local backup branch. The
+[rebuild checkpoint](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/REBUILD.md)
+records the new mapping, verification, fresh source identity and tested future
+capture policy. Power logs are windowed with full-log hash/size; committed source
+inputs are referenced by commit and path. Display checks and their result logic
+remain unchanged. Stage 5 is still paused; no push, publication or deployment.
+
+
+### Record effective snapshot capacity and repeated-attempt cost debt
+
+**Date:**2026-11-05 · **Commit:**pending patch444 · **Stage:**partial Stage3.2
+
+**Exit.** The Stage6debt home now records effective snapshot capacity below2MiBafter overhead and possible repeated capacity-refused attempts behind the60sretry clock. Both are source-derived mechanisms; per-attempt costs remain unmeasured alongside438/439preparation and production-index time/RAM. Prior frozen evidence stays unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
+
+**Limits.** Per-attempt wall/CPU cost, repeated-attempt cadence,438/439preparation attribution and real-scale32MiBindex time/RAM remain unmeasured. The74.4s442journey is not an individual-attempt measurement. Binary encoding or a different limit requires an operator format/limit decision. No code/test/guard/format/limit/retry change, fix, Stage5run, commit, push, publication or deployment. Outcome precedes advancing this seat.
+
+
+### Stage 5 preflight held on native sparse-publisher liveness
+
+**Date:** 2026-11-05 · **Phase:** 445 · **Scope:** narrowed Stage 5 preflight.
+
+The operator accepts the 432–436 app checkpoint and narrows preflight. Typecheck,
+lint after the explicitly approved three archival-path exclusions, the 330-file /
+3,210-test unit pass (137.46s; existing one skip), inventory/policy checks, the
+windowed-capture dry run and frozen release-profile build pass. The initial lint
+failure and copied-context pnpm precondition failure are retained. The normal
+package build script passes unchanged with pinned existing tools, without pnpm's
+attempted context reinstall. Shipping assets have no lab/observation markers.
+
+The fresh three-device seed passes. The first positive fairness case fails:
+continuous known-backlog normal receives sparse markers20and40but not60before the
+hot writer stops. Its scheduled45s writing phase contains90hot edits and sparse offers at
+keys20/40/60. Four remaining fairness cases and past-index do not run. The host
+log has no noise-triggered retry: Firefox111.3%occurs at one sample only; swap
+falls16,520.31→16,512.31MiBwith no increases. Preserve the failed predicate.
+Archive/Undo/cold assertions after that point were not reached; durable loss or
+owner closure is not established. No app/test-body repair or timed Stage5journey
+occurs. Stop for the next bounded liveness diagnosis/decision. Stage6landing
+results remain unavailable. All earlier results, original roots and object bytes
+remain intact. Outcome precedes advancing this seat.
+
+
+### Repeat the unchanged fairness case before tracing
+
+**Date:** 2026-11-05 · **Phase:** 446 · **Scope:** explicit one-case retry.
+
+The operator-authorized retry reproduces445's same sparse-liveness failure:
+20/40arrive,60is absent before hot writing stops (original assertion line261;
+67.987s). Source, frozen assets and both closed seeds remain exact. Swap stays
+16,064.31MiB; no sustained non-test>100%CPUinterval is observed. Retain both app
+failures and all host logs. Two controller/collection failures before execution
+and one review-field failure are retained separately; exactly one app test ran.
+Later archive/Undo/cold remain unobserved. No code, case, assertion, deadline,
+guard or limit change; no tracing or timed matrix starts. [Record](./development-evidence/2026-11-02-release-hardening/446-fairness-retry/README.md).
+Outcome precedes advancing this seat. No commit, push or deployment.
+
+
+### Trace the third sparse write through receiving and the Window mirror
+
+**Date:** 2026-11-05 · **Phase:** 447 · **Scope:** observation-only diagnosis.
+
+One exact-fixture/frozen-asset diagnostic again fails the original sparse cutoff
+(68.418 s). Sparse position 20 is accepted and its returned envelope digest matches
+the saved service tuple. It reaches every final Window view; the receiver's first
+visibility is 24.255 s after the offer and 41.4 ms after the original cutoff.
+Its final prepare/apply/reply takes 3.4 ms. Native commit/readback precedes prepare
+by the unchanged code contract, without a direct commit timestamp or cold proof.
+
+The receiver repeatedly asks for sparse writing after a hot primary. Three
+complete replies return only hot pages, omitting the quiet suffix; two other
+bodies remain unknown. This is consistent with the unchanged 250 ms batch work
+cap. The shared test/service Node process becomes busy and response latency grows,
+but CPU attribution is still open. No native eight-position violation or durable
+loss is established. All response statuses are 200; no hot-interval owner-close
+message occurs. Swap is flat; the noise retry does not trigger.
+
+Preserve the collection-only ESM failure, observer binary-body limitations and
+review classification correction. All guards, assertions, waits, budgets and
+deadlines stay. Earlier failures remain red; archive/Undo/cold stay unreached.
+[Record](./development-evidence/2026-11-02-release-hardening/447-sparse-publication-mirror-trace/README.md).
+Outcome precedes advancing this seat. Documentation-only sequential patch; no app
+repair, Stage 5 timing credit, commit, push or deployment.
+
+
+### Attribute the shared Node stall to test reporting
+
+**Date:** 2026-11-05 · **Phase:** 448 · **Scope:** failing-preflight CPU diagnosis.
+
+One exact-fixture/frozen-asset diagnostic again fails the original sparse cutoff,
+without phase447's browser observers. The original 92 accepted-row checks consume
+41.134 s synchronously in a 54.153 s hot interval. Their ancestry accounts for
+74.37% of weighted profile samples, service ancestry 5.69%. Playwright step-parent
+search/creation dominates; its pinned source explains growing reporting work.
+All tuple assertions remain. Maximum check time reaches 1.052 s. Swap is flat;
+no noise retry triggers. No app change, guard relaxation or timing credit follows.
+
+[Record](./development-evidence/2026-11-02-release-hardening/448-service-test-attribution/README.md).
+Keep all earlier failures; later archive/Undo/cold remain unreached. The next
+bounded diagnostic retains the tuple predicates with lightweight strict assertions
+in a private fixture, proves its controls, then examines sparse scheduling. Outcome
+precedes advancing this seat. No commit, push or deployment.
+
+
+### Preserve tuple guards while isolating reporting and sparse scheduling
+
+**Date:** 2026-11-05 · **Phase:** 449 · **Scope:** private causal/scheduling control.
+
+All four accepted-tuple predicates and decoders remain while strict Node assertions
+replace only per-row reporting in a private helper. Seven old/new guard cases,
+both SQL branches and twelve exact-production-helper scheduling cases pass,
+including false-empty-credit sensitivity and 750 ms expiry. The one unchanged app
+case passes every original sparse, native fairness, archive, Undo, batch and cold
+assertion (59.550 s). Three sparse observations arrive about one second after the
+offers. Census wall time is 0.668 s over 93 hot calls, versus profiled448's 41.134 s
+over92. No application speedup or timing acceptance is claimed.
+
+Omitted quiet work earns no proof and retains a native sparse turn after eight hot
+positions; that bound is logical, not wall time. No independent native fairness
+or missing-writing defect is shown. All 218 observable batch replies are complete;
+13 other bodies stay unknown. The test's shared-loop reporting explains the
+principal blockage without requiring a server, wire or security change.
+
+Retain the controller postcondition failure: a read-only guard query created new
+WAL/SHM sidecars beside the original seed. Pre-existing bytes and the journey seed
+are unchanged. Preserve only those new sidecars in449 artifacts, restore the exact
+frozen seed, then pass a guard-only retry on a private database copy. No second
+app journey. The independent final review verifies all pins and exact seeds.
+[Record](./development-evidence/2026-11-02-release-hardening/449-sparse-scheduling-control/README.md).
+Outcome precedes advancing this seat. Canonical tests/app remain unchanged;
+next is the narrow harness repair and original preflight. No Stage5 timing credit,
+commit, push or deployment; all earlier failures remain intact.
+
+
+### Apply the approved census repair and stop at its population checkpoint
+
+**Date:** 2026-11-05 · **Phase:** 450 · **Scope:** approved test-only repair.
+
+Exactly four Playwright checks become strict Node assertions, with whole-file
+inverse proof and no decoder/SQL/branch/return changes. The permanent original
+oracle is byte-bound; all eight copied-private-database guard cases pass, including
+source sidecar absence. Typecheck and lint pass. Required test registration and
+planning snapshot retain every old obligation, but the selected census/policy
+command fails one of16tests: actual2,573 versus proposed2,570 at general-tests.test.mjs:36.
+The three-case difference is unresolved; preserve the failure instead of raising
+the expectation. Stop at this first failure, per the operator's instruction.
+
+[Record](./development-evidence/2026-11-02-release-hardening/450-census-repair-checkpoint/README.md).
+No browser specs or timings run; the measured-path assertion audit remains
+incomplete and no host handshake starts. Record the unchanged250ms batch-cap
+logical/wall-time distinction in the Stage6plan. No app/security/gate/budget change,
+commit, push or deployment. Freeze a non-green sequential checkpoint. Outcome
+precedes replacing this seat's active state.
+
+
+### Reconcile the three older cases before updating the denominator
+
+**Date:** 2026-11-05 · **Phase:** 451 · **Scope:** reviewed population provenance.
+
+All279existing reviewed stages project to2,562cases at the last counter update
+and2,565now. Exactly three IDs were added, none removed: phase353'sWorker self
+omission control and phase371'stwo native idle-audit controls. Six registration
+inputs remain byte-identical; case IDs agree with the current manifest in both
+directions. Add450's8guards to get2,573, not2,570. Change only the denominator
+title/value and planning snapshot. The exact failed census/policy command now
+passes16/16tests. Keep450'sfailure and the two corrected private-reader analysis
+errors. [Record](./development-evidence/2026-11-02-release-hardening/451-reviewed-population-reconciliation/README.md).
+
+No test removal, skip, deadline, guard, budget or app change. Outcome precedes
+advancing the active seat; continue the operator's requested unchanged browser
+preflight in the next bounded phase. No timed credit, commit, push or deploy.
+
+
+### Close the unchanged native importer preflight after census reconciliation
+
+**Date:** 2026-11-05 · **Phase:** 452 · **Scope:** approved once-each browser checks.
+
+All15cases pass, including all five fairness cases and the actual unfair-build
+sensitivity, genuine past-index refusal/continuation, dense/group cuts, idle audit
+and old Page/Worker ownership. Six fresh builds pass; runtime source matches445.
+Original assertions/deadlines and genuine old artifacts stay unchanged; source
+and all three seed inventories remain exact after each block. No retry or timed
+credit. [Record](./development-evidence/2026-11-02-release-hardening/452-native-importer-preflight/README.md).
+
+Outcome precedes advancing this seat. Next complete the measured-path assertion
+audit and current timed apparatus, then request the quiet-host window. No runtime,
+security, gate, budget or limit change; no commit, push or deployment.
+
+
+### Audit timed assertions and isolate the gateway wrapper before composition
+
+**Date:** 2026-11-05 · **Phase:** 453 · **Scope:** static apparatus audit, untimed transport.
+
+No acceptedRows reference occurs in the19inventoried frozen apparatus files.
+Selected callbacks have no per-ledger-row Playwright matcher, but archive export
+retains a per-ZIP-file assertion that overlaps some fairness measurements. Keep
+it. The old gateway shares the test worker even though the API is containerized;
+a separate child wrapper passes exact asset/forwarding/refusal/close controls.
+No account/profile journey or performance credit. Preserve the private parser
+startup error and corrected Babel inventory. [Record](./development-evidence/2026-11-02-release-hardening/453-timed-path-assertion-audit/README.md).
+
+Outcome precedes updating the seat. Actual final harness closure/process binding,
+report-only adapters and real-sync fixture refresh still precede timings; do not
+claim the final apparatus is already audited. No app or assertion change, no
+commit/push/deploy, and all Stage5gates and the quiet-host handshake stay.
+
+
+### Bind current Stage5API and isolated gateway without changing shipping bytes
+
+**Date:** 2026-11-05 · **Phase:** 454 · **Scope:** untimed apparatus binding.
+
+Restore the exact retained local ARM64image; all122APIruntime files match current
+source. Build a separate canonical-owner test entry and retain every452shipping
+file exact. A separate gateway child and bounded API container pass the transport
+smoke. Keep the failed overlay construction, before service/app start, and its
+corrected retry. No gate, budget, service/wire, format or application change.
+[Record](./development-evidence/2026-11-02-release-hardening/454-current-runtime-apparatus/README.md).
+
+The old private lab fixtures are absent; next rebuild fictional unequal cohorts
+through actual current setup and accepted edits, then bind the final selected
+closure before timings/host handshake. No timed credit, commit, push or deploy.
+Outcome precedes advancing the active seat.
+
+
+### Hold Stage5at a real enrollment refusal during fresh fixture preparation
+
+**Date:** 2026-11-05 · **Phase:** 455 · **Scope:** fictional current-date cohort setup.
+
+First certify H6and exact archives, then retain a harness readiness failure from
+SWapp-shell navigation. Repair only the test-document navigation bypass through
+the existing authenticator CDPsession, restoring normal handling before owner
+open. Preserve the earlier config-list failure as well. The fresh retry then
+refuses candidate enrollment with “Expired enrollment challenge”; its unchanged
+waiting/display assertion fails. Stop all further app runs and timings under
+the governing functional-refusal rule. [Record](./development-evidence/2026-11-02-release-hardening/455-enrollment-refusal-hold/README.md).
+
+A private copy of the closed DB shows the expiry remains583,588.6msafter the
+host run ended. The message also covers a challenge too far in the future;
+clock disagreement is plausible but unmeasured, not an established diagnosis.
+Source DB/inventory stays exact. No expiry, assertion, deadline, gate, budget or
+app change. No timed credit, real-account access, commit, push or deploy. Outcome
+precedes advancing the seat to this explicit hold; all earlier passes/failures
+remain. Native456adapter preparation stays unexecuted until the refusal is resolved.
+
+
+### Measure the same-container clock without an app journey
+
+**Date:** 2026-11-06 · **Phase:** 456 · **Scope:** operator-requested clock diagnostic.
+
+Sixteen clock replies begin60msafter the unchanged454runtime starts. Container
+minus Mac midpoint median is−7ms, conservative intersection[−8,−6]ms, at1–4ms
+round trips. Thus this fresh run does not confirm a service lead in455; its cause
+remains qualified. No browser or application HTTP request, clock change or timing
+credit. [Record](./development-evidence/2026-11-02-release-hardening/456-container-clock-offset/README.md).
+
+Outcome precedes advancing the seat. Next implement the operator-approved six
+future-only skew bounds and unit controls; no expired/signature/lifetime-constant
+change. Keep earlier failed roots. No commit, push or deployment.
+
+
+### Harden the six approved future-time bounds and preserve strict expiry
+
+**Date:** 2026-11-06 · **Phase:** 457 · **Scope:** operator-approved product repair.
+
+Six protocol sites share120000msfuture tolerance. Exact inverse bytes retain all
+expired, signature, lifetime-constant, scope and authority logic. Thirty signed
+boundary/signature controls pass, as do394affected existing Node cases, types,
+lint and16census/policy cases. Full Vitest passes331files/3,218tests and the one
+existing skip in126.36sunder240s. Reviewed population adds exactly30IDs and removes
+none:2,603cases,281stages,96Node protocol cases. Four old future fixtures track
+the approved boundary; no old assertion/test is removed.
+[Record](./development-evidence/2026-11-02-release-hardening/457-future-clock-tolerance/README.md).
+
+Retain prior red development/fixture/census attempts and old deferred tail
+formatting; no policy/guard workaround. Outcome precedes advancing the seat.
+Next bind rebuilt clients/effective server bytes and rerun455on the current date.
+No app/timed journey, commit, push or deployment in this phase.
+
+
+### Rebind both clients and effective API to the repaired protocol
+
+**Date:** 2026-11-06 · **Phase:** 458 · **Scope:** frozen build and untimed binding.
+
+Full release-profile build and corrected separate test-entry build pass. No lab
+or observation hooks enter shipping assets. The API'sold430image is explicitly
+only a foundation; a read-only protocol overlay supplies the six changed files
+and new shared constant. All123effective runtime files are source-bound, with
+unchanged container/resources/ports/limits and separate gateway. Exact byte and
+mount/process smoke passes. Retain the first test-config dependency-resolution
+failure and corrected build. [Record](./development-evidence/2026-11-02-release-hardening/458-repaired-runtime-bindings/README.md).
+
+Outcome precedes advancing the seat. Rerun455seed with root/date bindings only,
+then continue Stage5under the original gates and host handshake. No app/browser
+or timed journey, release-image claim, commit, push or deployment.
+
+
+### Rebuild the fictional cohort and expose its incomplete Goals paste
+
+**Date:** 2026-11-06 · **Phase:** 459 · **Scope:** untimed fixture preparation.
+
+Existing seed checks pass for ten devices across H/M/Q, with1,024/256/32 genuine
+accepted backlog positions. Preserve the earlier tooling-SW agent and initial
+presentation-prefix failures and their wrapper-only repairs; no app byte,
+assertion, limit or deadline changes. Enrollment no longer refuses on this run.
+[Record](./development-evidence/2026-11-02-release-hardening/459-seed-goals-footprint-hold/README.md).
+
+The Goals audit finds H only1,000 of13,407 intended bytes; historical323H was
+5,000 despite nominal13,000. M/Q are complete. Immediate navigation after a
+chunked paste is plausible; accepted-data loss is not proved. Prepare, but do
+not apply, the narrow exact-completion/export assertion patch. The standing
+assertion-change rule requires operator approval and a workload decision before
+another app run. No timed gates started. Outcome precedes advancing the seat to
+this hold; all private seed roots stay intact. No commit, push or deployment.
+
+
+### Complete the approved Goals fixture before Stage5 timings
+
+**Date:** 2026-11-06 · **Phase:** 460 · **Scope:** fictional setup only.
+
+The approved exact-completion assertions pass. H/M/Q hold exactly
+13,407/4,157/1,049 Goals bytes, with ten devices and 1,024/256/32 genuine accepted
+backlog positions. Reconstruct the approved patch plus only the new private
+output destination; config and all 137 prior artifact references stay exact.
+Same app/API, browser, flags, limits and deadlines. Wrapper 728.70s, exit0, no
+refusal. [Record](./development-evidence/2026-11-02-release-hardening/460-complete-goals-cohort/README.md).
+
+This repairs the fixture workload, not a proved application data-loss cause.
+Historical H was 5,000 bytes and phase459 was 1,000: qualify later comparisons.
+No timed credit. Outcome precedes advancing the seat to native cases and remaining
+wrapper/fixture checks. Host handshake remains for tight cells. No commit, push
+or deployment.
+
+
+### Pass the three native Stage5 cells in three replicates
+
+**Date:** 2026-11-06 · **Phase:** 461 · **Scope:** nine hardened gate journeys.
+
+Native context, resumable history and closed-sender deep receive each pass3/3.
+Deep intervals:19.264/19.317/19.459s against30s. All reopens exact; maximum9.688s
+against15s. Seven original test/helper chunks retain every assertion and wait.
+Full13,407-byte H Goals fixture; no matched-size claim against historical5,000.
+[Record](./development-evidence/2026-11-02-release-hardening/461-native-gate-block/README.md).
+
+Preserve both wrapper failures and their fresh retries: temporary-page import
+before app open, and wrong Page-owner cleanup method after exact cold. Same
+pinned serializer/barriers/assertion; canonical workspace close;125shipping files
+byte-identical. Preserve the reporter error after passing r2 context, and its
+report-only repair. No app source, guard, limit, gate or deadline change. Every
+raw attempt/host/power record remains local and hashed, without binary objects.
+
+Outcome precedes advancing the seat. Nine of36 blocking journeys complete;
+27 remain plus report-only work. Tight-cell host handshake and maintenance
+writer fixtures remain. No commit, push or deployment.
+
+
+### Pass normal and withheld late-writing gates in three replicates
+
+**Date:** 2026-11-06 · **Phase:** 462 · **Scope:** six Stage5 gate journeys.
+
+Both cells pass3/3 with the original analyzer and unchanged predicates. Input
+p953.21–3.62ms; normal peer0.95–0.99s; withheld peer1.80–1.88s; worst marker1.31s.
+Every archive/offline reopen is exact. Both-drained exposure20–32keys per run;
+withheld post-drain p951.89–1.94s. The whole post-typing remainder bounds each
+cold stage below15s, without adding a wait or claiming individual durations.
+[Record](./development-evidence/2026-11-02-release-hardening/462-late-gate-block/README.md).
+
+Retain all raw runs, five-second host logs and windowed power data. All5,656prior
+private files stay exact. No failures or noise reruns. Correct only the private
+461sidecar's hardcoded0to its canonical9; keep the old sidecar and frozen patch/
+tree unchanged. Outcome precedes advancing the seat. Fifteen of36blocking
+journeys complete;21and report-only work remain. Host block released. Prepare
+maintenance fixtures next. No app change, commit, push or deployment.
+
+
+### Prepare the original maintenance writer through real sync
+
+**Date:** 2026-11-06 · **Phase:** 463 · **Scope:** untimed fixture preparation.
+
+H2genuinely catches1,024positions and matches the complete archive before capture.
+Original assertions/deadlines and unreduced counter2check pass. Every other actor,
+archive, date and backlog remains exact. Private SQL copies show1,335accepted
+rows before/after: no accepted writing added. [Record](./development-evidence/2026-11-02-release-hardening/463-old-maintenance-fixture/README.md).
+
+Outcome precedes advancing the seat. Stage5still15/36blocking journeys complete;
+this is setup only. Grow2,048through real edits next, then prepare its writer.
+No app source, gate, limit, deadline, commit, push or deployment change.
+
+
+### Grow the larger maintenance cohort through real accepted writing
+
+**Date:** 2026-11-06 · **Phase:** 464 · **Scope:** untimed fixture growth.
+
+Add1,024real inputs, each durable and accepted at an exact+1prefix:1,030→2,054.
+Full target text/export are exact; only the target append changes the archive.
+Goals remains13,407bytes. Reader snapshots and other accounts stay exact. Backlog
+becomes2,048, retaining its seed-boundary prefix. [Record](./development-evidence/2026-11-02-release-hardening/464-grown-real-writing/README.md).
+
+Setup passes under the unchanged30-minute bound, wrapper1,307.25s; no performance
+credit or prep-cost diagnosis. Keep the new bookkeeping-prefix error and failed
+premature freeze; fix records only, without an app rerun or test change. Outcome
+precedes advancing the seat. Prepare the joined writer next. Stage5still15/36
+blocking journeys complete. No app source, guard, limit, commit, push or deployment.
+
+
+### Prepare the grown maintenance writer through real sync
+
+**Date:** 2026-11-06 · **Phase:** 465 · **Scope:** untimed fixture preparation.
+
+H2receives the complete2,048workload and matches the whole archive, then is
+captured unreduced at counter2. Original16assertion-call/wait ASTs and deadlines
+stay. Other actors, archives, dates and backlog remain exact. Private SQL copies
+show2,359accepted rows before/after: no added writing. [Record](./development-evidence/2026-11-02-release-hardening/465-grown-maintenance-fixture/README.md).
+
+Outcome precedes advancing the seat. Both fixtures are ready; Stage5still15/36
+blocking journeys complete. The operator cleared the next six old-maintenance
+runs. No app source, guard, gate, limit, deadline, commit, push or deploy change.
+
+
+### Preserve the expired old-fixture saved-slice prerequisite
+
+**Date:** 2026-11-06 · **Phase:** 466 · **Scope:** one precondition-only attempt.
+
+No typing starts: the old90s wait requires a saved slice, but maintenance completes
+once in2.920s with no save/halt. Reader catch-up succeeds in23.943s. No later
+checks or input/peer metrics exist; no gate credit. Host data does not trigger the
+fixed noise rerun. [Record](./development-evidence/2026-11-02-release-hardening/466-old-saved-prerequisite/README.md).
+
+Stop and preserve the attempt. The operator approves the concrete old-only
+amendment: require active verification with unfinished backlog, make saved-slice
+presence informational, retain every other gate/wait. Grown/native resumability
+stays unchanged. Apply in a fresh467root. Outcome precedes advancing the seat.
+Stage5still15/36passing journeys;21remain. No app source, limit or deployment change.
+
+
+### Stop at the actual maintenance completion failure after the fixture amendment
+
+**Date:** 2026-11-06 · **Phase:** 467 · **Scope:** one old-normal gate journey.
+
+Apply the approved two-file patch exactly in a fresh root. The case reaches120
+keys and passes actual preparation/backlog, complete archive-plus-append and
+Undo/peer convergence. Partial input p953.377ms, peer0.874s, all markers below
+0.755s. The unchanged120s completion wait expires: seven interrupted attempts,
+zero completions; cold not reached. [Record](./development-evidence/2026-11-02-release-hardening/467-maintenance-completion-stop/README.md).
+
+After typing, six starts at+23.95/+40.49/+56.30/+72.74/+90.52/+107.44s leave at
+durability with activity-or-journal and reported0ms. Public data cannot name the
+guard/job or configured retry clock. No qualifying unrelated-load/swap trigger
+is established. Stop under the explicit120s/retry-wait instruction, without
+changing any guard/deadline or running the remaining five cases. Outcome precedes
+advancing the seat. Stage5:15pass,1fail,20unrun; old-normal cell fails. No app
+source change, release prep, commit, push or deployment.
+
+
+### Trace immediate maintenance retries to warm-audit queue priority
+
+**Date:** 2026-11-06 · **Phase:** 468 · **Scope:** failed-gate diagnosis only.
+
+The fresh observation-only run reproduces seven interruptions and zero
+completions at the unchanged 120-second wait. All 120 keys, exact archive and
+Undo/peer convergence pass; cold is not reached. Every workspace durability
+barrier and native journal flush succeeds. The six post-input retries stop
+before the preparation callback because a warm-audit queue arrival changes the
+preparation-priority token. Each is a fresh interruption, not a retained rejected
+promise, and selects the existing 10-second priority-only retry floor.
+[Record](./development-evidence/2026-11-02-release-hardening/468-maintenance-priority-trace/README.md).
+
+The private observation diff reverses exactly to four canonical files; 51
+assertion/wait call ASTs remain exact and prior evidence is unchanged. Five
+existing focused unit files pass all 85 cases without edits. Every failed
+attempt and the proof-script import repair remain recorded. No acceptance
+credit, canonical source/test change, guard, limit or deadline change.
+
+Outcome precedes advancing the active seat. Stage 5 stays 15 passing, one failed,
+20 unrun. Next is a bounded audit/preparation scheduling repair with an integration
+regression and uninstrumented gate rerun; no repair started here. No commit,
+push, release preparation or deployment.
+
+
+### Arbitrate warm audit and preparation before native queue entry
+
+**Date:** 2026-11-06 · **Phase:** 469 · **Scope:** bounded scheduling repair.
+
+Warm audit and read-only preparation now take per-owner FIFO turns. Foreground
+work bypasses the lane and retains every original interruption guard. An audit
+attempt still follows the same due/forced rules, waits behind the current
+preparation, and precedes later slices. No native task/proof or later mutation
+is covered by scheduling permission; owner abort and cleanup retain lifetime
+ownership. [Record](./development-evidence/2026-11-02-release-hardening/469-maintenance-arbitration/README.md).
+
+Eight new regressions pass; removing serialization in a private control makes
+the held-journal audit-entry test fail as expected. All 115 focused cases pass;
+the complete 332-file suite passes 3,226 cases plus the existing skip in 128.63s.
+Types, lint and 16 census/policy controls pass. All 47 original guard conditions
+and 26 throw arguments match; seven policy/guard files stay byte-identical.
+Exact population adds eight IDs, removes none, and preserves release blocks.
+Runtime census classification is unchanged; reviewed source hashes refresh.
+
+Outcome precedes updating the active seat. Keep failed before runs; no timing
+credit yet. Next build the uninstrumented client and rerun maintenance under the
+same guards/deadlines. No commit, push, release preparation or deployment.
+
+
+### Confirm the maintenance scheduling repair in the unchanged app case
+
+**Date:** 2026-11-06 · **Phase:** 470 · **Scope:** first uninstrumented repair rerun.
+
+The byte-identical approved old-normal case passes all ten analyzer predicates.
+Maintenance completes 26.212s after the last key, versus no completion at 120s
+before the repair. Exact archive, 120 keys, Undo/peer convergence and both
+ordinary offline cold exports pass. Input p95 3.384ms, peer p95 796.318ms; every
+marker <785ms; backlog 32.485s. No separate cold durations are claimed.
+[Record](./development-evidence/2026-11-02-release-hardening/470-maintenance-repair-confirmation/README.md).
+
+The ordinary release-profile build passes all standard checks and contains no
+lab/observation code. Only the two phase 469 runtime files differ from phase 458;
+API/flags/limits stay exact. Keep all prior failures and all raw host/profile
+records. No app/test, guard or deadline change in this phase.
+
+Outcome precedes advancing the seat. One blocking journey passes on this repaired
+candidate; earlier-source results are not silently carried forward as final
+acceptance. Next finish the remaining old-maintenance replicates after the host
+handshake. No commit, push, release preparation or deployment.
+
+
+### Pass both original maintenance cells on the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 471 · **Scope:** five remaining runs, combined
+with the first phase 470 normal for three replicates per cell.
+
+All five pass; normal and withheld each finish 3/3. Maintenance completes
+25.692–34.719s after the last key within the unchanged 120s wait. Worst input
+p95 is 3.696ms, peer p95 1,847.544ms and marker 1,776.694ms. Every full archive,
+Undo/peer convergence, actual preparation, 120-key and ordinary offline cold
+check passes. [Record](./development-evidence/2026-11-02-release-hardening/471-maintenance-gate-block/README.md).
+
+No source/test/build or guard/deadline changes and no replacement runs. All
+original analyzer predicates plus the two explicit old-only amendments stay.
+Old overlap34–47 is information; grown >=60 remains required. Each combined
+cold/remaining-work segment is bounded below7.199s using original clock brackets;
+individual cold timings are not invented. The ten private bindings,125shipping
+assets,2,891prior private files and phase469working source remain exact.
+
+Every run and host/power/profile record remains. Swap is constant and all display
+samples are on. The two maintenance cells pass on this repaired source; earlier
+candidate results are not transferred. Outcome precedes updating the seat.
+Six of36 blocking journeys pass;30 and the report-only/Stage6 work remain.
+The timed block ends; no commit, push, release preparation or deployment.
+
+
+### Pass grown maintenance with >=60 overlap and both owners observed
+
+**Date:** 2026-11-06 · **Phase:** 472 · **Scope:** three normal and three withheld
+journeys on the exact repaired source and ordinary assets.
+
+Both cells pass 3/3 with 112–120 overlapping keys and the saved-preparation
+condition exercised. All twelve owner completions are observed: writers at
+31.712–38.321s and readers at38.175–62.404s after the last key. Worst input p95
+5.079ms, peer p95 1,600.451ms, marker1,952.412ms. Every archive/Undo/cold guard
+passes; the longest inclusive cold interval is3.309s. No capacity status or
+starts during typing/reader drain are observed. Native journal bytes and exact
+interruption/retry-job data remain unavailable, not invented.
+[Record](./development-evidence/2026-11-02-release-hardening/472-grown-maintenance-gates/README.md).
+
+Keep the first normal attempt: both cold exports pass in its partial record,
+but an optional final observer reads an intentionally closed page and prevents
+final result save. It earns no acceptance credit. The private helper is repaired
+with four controls; live errors still throw. A fresh-root retry passes. Preserve
+the pre-app driver-generation error too. No app, case assertion/wait, gate,
+guard or deadline change; no old-fixture exemption applied to grown. The
+125shipping assets and original metric formulas remain exact.
+
+Outcome precedes advancing the seat. Twelve of36 blocking journeys now pass
+on this repaired source;24 remain plus report-only/Stage6 work. Continue with
+native gates, subject to the requested next host handshake. No commit, push,
+release preparation or deployment.
+
+
+### Rebind the standalone native delegate to the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 473 · **Scope:** apparatus readiness only.
+
+The native test entry rebuild passes with only root bindings changed from its
+corrected phase 461 form. All125ordinary shipping files remain exact;42tool-only
+assets are separate. Native cases/config/seed helper are byte-identical and all
+three tests collect. No app/source/assertion/gate/deadline change and no native
+execution credit yet. [Record](./development-evidence/2026-11-02-release-hardening/473-native-delegate-refresh/README.md).
+
+Outcome precedes advancing the seat. Twelve of36 blocking journeys pass.
+Next run the nine declared native journeys after the requested quiet-host
+readiness, then other frozen cells if unblocked. No commit, push, release
+preparation or deployment.
+
+
+### Pass all native Stage 5 cells on the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 474 · **Scope:** nine native journeys.
+
+Context, resumable history and deep catch-up each pass 3/3 with unchanged bodies
+and gates. Deep intervals: 21.852 / 19.529 / 21.659s against 30s. All twelve cold
+stages are exact; maximum 9.764s against 15s. Native era/rebind, genuine saved
+slice/reduction, subsequent input/Undo, accepted source before sender close and
+native receive/Window application guards all pass. No native input/peer p95
+claim. [Record](./development-evidence/2026-11-02-release-hardening/474-native-gate-block/README.md).
+
+No failure, replacement run, profiler, new build/source, assertion or deadline
+change. The phase 473 delegate manifest remains exact. All host/windowed power
+and raw profile/state records are retained locally behind hashes, without new
+object copies. Outcome precedes advancing the seat. Twenty-one of36 blocking
+journeys pass on this repaired source; fifteen remain plus report-only/Stage6.
+Proceed with live catch-up under the confirmed quiet window. No commit, push,
+release preparation or deployment.
+
+
+### Pass all live catch-up gates on the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 475 · **Scope:** six original late journeys.
+
+Normal and withheld-hint cells each pass3/3 with the exact original analyzer,
+case/app bindings and unchanged gates. Max input p954.765ms, peer1.994s, marker
+1.530s. Full backlog and archive guards and both offline cold profiles pass.
+[Record](./development-evidence/2026-11-02-release-hardening/475-live-catchup-gates/README.md).
+
+Post-both-drain exposure is20and3keys in two withheld runs; all others are
+unexposed for that specific question. Preserve that limitation, all raw runs and
+host logs. All pass, so no noise-rule retry. No source/build/assertion/wait/gate
+change. Outcome precedes advancing the seat:27/36 blocking journeys pass on the
+repaired source, nine plus report-only/Stage6 remain. Prepare fairness/Goals with
+the next separate host handshake. No commit, push or deployment.
+
+
+### Prepare real HTTP observations for unchanged fairness assertions
+
+**Date:** 2026-11-06 · **Phase:** 476 · **Scope:** test apparatus only.
+
+Seven observer controls and the actual isolated-container preflight pass. Keep
+the sandbox failure and the earlier request-end attribution failure. The test
+observer records true statuses/request digests/refusal fields, explicitly outside
+service internals; no empty trace or zero substitution. Original fairness case,
+config/analyzer guards and metric formulas stay exact; API source/wire/limits
+stay. [Record](./development-evidence/2026-11-02-release-hardening/476-fairness-http-observer/README.md).
+
+Correct only in this append-only record the475README range typo: actual unchanged
+raw/summary counts are120/117/116, range116–120. No new journey or credit. Outcome
+precedes seat update. Candidate27/36; fairness/Goals/report-only/Stage6 remain.
+No app change, commit, push or deployment.
+
+
+### Finish the multi-account fairness block on repaired source
+
+**Date:** 2026-11-06 · **Phase:** 477 · **Scope:** three Stage5 fairness journeys.
+
+Cell outcome: **pass3/3**. All original device/account,120-key, pending durability,
+automatic post-load convergence, reverse-writing/Undo and offline cold guards
+remain. Exact case/analyzer, source and ordinary assets; actual test-only HTTP
+observations with explicit provenance. Every run/metric and failed predicate is
+in the [record](./development-evidence/2026-11-02-release-hardening/477-fairness-gates/README.md).
+
+No app change, profiler, guard/wait/deadline change, favorable rerun or missing
+observation substituted with zero. Outcome precedes advancing the seat. Thirty
+of36declared blocking journeys are complete; six Goals and all report-only work
+plus Stage6remain. Ask the separate Goals host handshake. No commit, push or
+deployment.
+
+
+### Finish desktop and simulated-mobile Goals journeys
+
+**Date:** 2026-11-06 · **Phase:** 478 · **Scope:** six original Goals cells.
+
+Outcome: **pass3/3 each**. Exact779-character paragraph/return input, Undo/Redo and
+lock/reload archives remain checked on unchanged source/assets and original case/
+analyzer. Each beforeinput/rAF timing and tail is in the
+[record](./development-evidence/2026-11-02-release-hardening/478-goals-journeys/README.md).
+These original diagnostics are not the mutation16msorpeer2.5sgate; mobile4xis
+not a physical-phone measurement. HGoals actual13,407UTF8bytes.
+
+Keep every run, host/windowed power record and qualification. No source/build,
+assertion/wait/deadline or gate change. Outcome precedes advancing the seat.
+All36declared blocking journeys have now run; ten named report-only journeys and
+Stage6remain. No commit, push or deployment.
+
+
+### Roll up the36source-matched blocking journeys and expose report-only gaps
+
+**Date:** 2026-11-06 · **Phase:** 479 · **Scope:** evidence/preparation only.
+
+All12cells pass3/3 with original applicable predicates; reference frozen471/472/
+474/475/477/478summaries. No older-source transfer or erasure of the ungraded
+472harness attempt. Ten report-only journeys remain. The old sender harness
+requires an unshipped idle hook; prepare, but do not apply, the narrow packaged-
+Worker/public-send-state replacement. Six isolated callback controls pass; keep
+the loader failure. Audit overlap is unpublished with LEDGER_PROFILE=0 and cannot
+be inferred from retention status. [Record](./development-evidence/2026-11-02-release-hardening/479-report-only-preparation/README.md).
+
+Outcome precedes advancing the seat. Ask the operator's readiness-source decision
+and report-only audit-observation choice, as the Stage5guard rule requires. No
+new app measurement, guard/source/build/limit/deadline change, commit or deploy.
+
+
+### Build and check the approved report-only observation artifact
+
+**Date:** 2026-11-06 · **Phase:** 480 · **Scope:** private build/harness only.
+
+The operator's readiness patch is applied. Ordinary inverse rebuild reproduces
+125release assets;2,046canonical inputs stay exact. A separate private build
+marks unreduced full reference and reduced semantic audits, with inverse-byte
+proof and conservatively recomputed verifier identity. Seven observation and
+six actual-callback controls pass. No new gate credit or profile/guard/limit/
+deadline change. [Record](./development-evidence/2026-11-02-release-hardening/480-observed-report-build/README.md).
+
+Keep the import-discovery failure and two wrong-Worker-binding preflights; their
+writing was exact. Actual provenance identifies this joined fixture's packaged
+enrollment owner, not the assumed recovery or general account route. Bind only
+that exact owner. Two final actual preflights pass archive/collector/readiness;
+no audit exposure claimed. Outcome precedes advancing the seat.36blocking passes
+stand; ten named report-only journeys remain. No canonical test edit, commit,
+push or deployment.
+
+
+### Prepare the common legal-format grown sender fixture
+
+**Date:** 2026-11-06 · **Phase:** 481 · **Scope:** real sync/public-input preparation.
+
+Both original archives catch up exactly. Only two canonical Scheduled additions
+are admitted, then the byte-identical329growth body types100keys and preserves
+known padding/full exports. Growth2852rows meets1536; final owners2873/2695meet
+1024each. All original thresholds and600scase remain. Current2048base history/
+13,407-byteGoals is explicitly not a byte-matched old lab fixture.
+[Record](./development-evidence/2026-11-02-release-hardening/481-common-sender-fixture/README.md).
+
+Retain the first offscreen pointer apparatus failure, verified disposable cleanup
+and fresh passing setup. No app refusal/loss is established. No stored-row edits,
+performance credit or source/guard/deadline change. Outcome precedes advancing
+the seat. Declare sender report-only cases and ask the next quiet-host handshake.
+All36blocking passes stand; ten reports and Stage6remain. No commit or deployment.
+
+
+### Complete sender reports and retain all paired latency misses
+
+**Date:** 2026-11-06 · **Phase:** 482 · **Scope:** six report-only journeys.
+
+All six functional and twelve offline cold/edit/Undo checks pass. Single500Device1
+passes every numeric predicate3/3. Paired150fails peer/every-marker2.5s3/3; peer
+p952.521–2.568s. Retain every direction and marker. No noise reruns or source/
+policy/guard/default/limit/deadline changes. [Record](./development-evidence/2026-11-02-release-hardening/482-sender-report-block/README.md).
+
+Audit observations are genuine, complete-prefix/no-overflow, after typing only;
+no full completion before pre-cold snapshot. Not-completed/censored attempts
+are not full-oracle cost or idle-starvation proof. Original foreground guard
+work follows typing. Eight metric/eight interpretation controls retain original
+formulas; unavailable lab counters are null. Outcome precedes seat update.
+36blocking passes stand;6of10reports done. Continue50msdeep/3072under the user's
+remaining quiet-host authorization, then Stage6and stop. No commit or deploy.
+
+
+### Complete all three50msdeep reports with exact native/cold guards
+
+**Date:** 2026-11-06 · **Phase:** 483 · **Scope:** three report-only journeys.
+
+All native/Undo/cold checks pass; completion40.010/39.412/39.987s. All miss the
+report-only30ssample; retain every miss. Cold max1.957s. Original0msblocking case
+and36/36passes remain. Reuse native offline lifecycle readiness and the original
+326report120sobservation; no lab hold/go, profiler or runtime change. This kickoff
+is not matched to the prior0mscase's early receive during opening.
+[Record](./development-evidence/2026-11-02-release-hardening/483-deep50-reports/README.md).
+
+Outcome precedes seat update. Nine of ten reports complete; one3072reader with
+exact uncapped fallback counter remains, then Stage6. All host/traffic/profile
+records remain. No commit, push or deployment.
+
+
+### Prepare the production-ceiling index observation build
+
+**Date:** 2026-11-06 · **Phase:** 484.
+
+The private production-32-MiB observer and native inspector builds pass. Five controls pass; all 2,046 canonical inputs match, and the two observed copies inverse to original bytes. The ordinal is uncapped BigInt with explicit failure reporting. No gate credit or canonical change.
+[Record](./development-evidence/2026-11-02-release-hardening/484-production-index-observer/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Stop the final index fixture on a Worker request failure
+
+**Date:** 2026-11-06 · **Phase:** 485.
+
+Growing the final report fixture fails at the native composition-status RPC after 76 confirmed additional positions. Read-only stopped-state SQL contains 77 more accepted decisions; no writing-loss or owner-closure claim follows. Exact Worker error code was not captured. Preserve the 139.286s failed run and stop without an app retry or fix. The 3072 report and Stage6 remain incomplete; prior36 blocking passes and nine completed reports remain recorded.
+[Record](./development-evidence/2026-11-02-release-hardening/485-grown-fixture-worker-request-stop/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Capture the exact composition-status Worker refusal
+
+**Date:** 2026-11-06 · **Phase:** 486.
+
+The same-position reproduction captures message-bound on compositionStatuscall273. Last success has2,130spool positions and2,169captures; Window state is active at catch. Six capture/transport controls pass; earlier control-development failures remain. The exact ceiling/site remains to be observed. All167served asset identities and originalrecipe guards/deadlines remain exact; no acceptance credit.
+[Record](./development-evidence/2026-11-02-release-hardening/486-composition-status-error-code/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Identify the composition-status reply ceiling without changing its guard
+
+**Date:** 2026-11-06 · **Phase:** 487.
+
+The directly bound observer proves compositionStatus success-reply serialization hits the bytes ceiling at 1,048,620 accounted bytes / 36,539 visited nodes. Exact negative reply code:message-bound. The handler delivery acceptedThrough2130; Window workspace active at catch. Six controls pass; 125 ordinary files and all guards and deadlines unchanged. First unexposed private-root binding attempt retained, corrected only in a fresh diagnostic build. No fixture repair, archive/cold claim or acceptance credit.
+[Record](./development-evidence/2026-11-02-release-hardening/487-composition-status-reply-ceiling/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Repair only the grown-fixture acceptance poll
+
+**Date:** 2026-11-06 · **Phase:** 488.
+
+The approved grow recipe changes exactly its per-position accessor. Six permanent regression controls pass, including restoration of the poisoned old RPC. The source inverses to the frozen485hash; all acceptance checks, snapshots and deadlines remain byte-identical. The first full-status baseline call stays. Correct the second opinion: the487bWorker guard row exists and reached page console capture. Next run a fresh2,048fixture, then the3,072reader report and Stage6.
+[Record](./development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve the fresh3072fixture preparation result
+
+**Date:** 2026-11-06 · **Phase:** 489.
+
+The fresh recipe exhausts the unchanged30-minute setup ceiling before1,024extra edits. Preserve all confirmed prefixes, independent stopped-service acceptances and the timeout. Full archive/cold/3,072checks were not reached. Do not extend the deadline or substitute a smaller workload. Record the final report as unexposed and carry the limitation into Stage6; prior36blocking passes and9reports remain.
+[Record](./development-evidence/2026-11-02-release-hardening/489-grown3072-setup-deadline/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Record the unexposed production-index report
+
+**Date:** 2026-11-06 · **Phase:** 490.
+
+The3,072reader journey is unexposed because fixture preparation stops at2,738positions under its unchanged30-minute ceiling.690independent service acceptances match690poll confirmations. The next per-position check was cut short by the global deadline. Counter controls pass6/6; reader, index, archive, Undo and cold results remain unavailable. Carry this report-only debt into Stage6without changing limits or substituting a smaller workload.
+[Record](./development-evidence/2026-11-02-release-hardening/490-index-report-unavailable/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Write the Stage 6 handoff with the unexposed report explicit
+
+**Date:** 2026-11-06 · **Phase:** 491.
+
+The Stage 6 landing report lists every final blocking journey (36 pass), nine valid report-only journeys with six latency-miss cells, and the unexposed 3,072-position report. The unchanged 30-minute setup confirms 690 new positions; missing index/Undo/archive/cold results remain unavailable. The report records target/component checks, earlier failures, lab comparisons, physical/RAM/capacity/audit/sender debts, all 55 Worker reply classifications, flag defaults and valid rollback combinations. All 2,046 app inputs and 125 ordinary assets remain exact. The fixture-only expression and six permanent controls are prepared; no app guard or deadline changed. Final signed image preparation remains separate. Stop after this report.
+[Record](./development-evidence/2026-11-02-release-hardening/491-landing-report/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Resume fixture growth diagnosis from preserved evidence
+
+**Date:** 2026-11-06 · **Phase:** 492.
+
+The saved690confirmation timestamps show a threshold-shaped cost increase: roughly1.1sper edit early,3.4–3.9slater. Record index byte fallback as an unconfirmed hypothesis and declare a bounded fresh-profile trace. No new app run or guard change. Prior491report stays immutable.
+[Record](./development-evidence/2026-11-02-release-hardening/492-fixture-growth-existing-evidence/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Trace the publication proposal fallback at the growth cliff
+
+**Date:** 2026-11-06 · **Phase:** 493.
+
+The fresh bounded trace passes298positions and full archive checks. Detached proposal index accounting first exceeds32MiBat additional294; publication waits jump from1.22sto3.34swhile admission/durability remain small. The live graph remains24.3MBeligible and main full replay stays1. Source-bound attribution identifies the safe full-delivery fallback in submission/response persistence, not live-index loss. Next prepare a fresh producer through real automatic local reduction within the same overall setup budget.
+[Record](./development-evidence/2026-11-02-release-hardening/493-publication-proposal-cliff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Prepare the growth fixture through normal producer reduction
+
+**Date:** 2026-11-06 · **Phase:** 494.
+
+The producer-precondition recipe and nine permanent controls pass. Its inverse proof recovers the complete original grow recipe. Normal automatic local reduction must preserve all writing, accepted server tuples and the old readers, and survive native owner reopen. Reduction plus all 1,024 original edits share the same 1,800-second case. The full setup is next.
+[Record](./development-evidence/2026-11-02-release-hardening/494-maintained-producer-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve the post-maintenance growth acknowledgment failure
+
+**Date:** 2026-11-06 · **Phase:** 495.
+
+Normal automatic producer maintenance completes in 93.905 s and survives native reopen with exact writing and unchanged server tuples. Growth then confirms 101 edits, averaging 383.69 ms between acknowledgments, but the next unchanged 30 s check fails at expected 2,156 versus actual 2,155. A strict stopped-service-copy observer confirms no extra acceptance. Cause and owner state remain unresolved, so stop; no 3,072 reader or cold run begins.
+[Record](./development-evidence/2026-11-02-release-hardening/495-maintained-growth-stop/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Amend the landing handoff with the new growth stop
+
+**Date:** 2026-11-06 · **Phase:** 496.
+
+The Stage 6 amendment preserves every earlier journey and adds the measured detached-proposal fallback plus the new post-maintenance publication stop. The 3,072 returning-reader run remains unstarted; its case keeps every original check/deadline and six counter controls pass. The current candidate is not cleared for landing. No new app source, format, trust, limit or deadline change.
+[Record](./development-evidence/2026-11-02-release-hardening/496-growth-stop-handoff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Observe the maintained producer past the prior stalled position
+
+**Date:** 2026-11-06 · **Phase:** 497.
+
+The fresh observed diagnostic passes 160 accepted positions and full archive/ordinary reopen checks in 153.423 s. HTTP responses are all 200 and no channel/Window error is captured. Phase 495 is not reproduced and remains unresolved. Acknowledgment work grows across the run; plan four genuine 256-edit producer sessions with independently checked automatic local reduction inside the same overall setup deadline.
+[Record](./development-evidence/2026-11-02-release-hardening/497-post-maintenance-diagnostic/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Bound producer fixture growth through normal lifetimes
+
+**Date:** 2026-11-06 · **Phase:** 498.
+
+The four-session fixture recipe and ten controls pass. Exact inverse proof retains all original 1,024 edit/durability/position assertions and final data checks. Genuine native lifetimes permit ordinary local reduction after each 256 edits; all work shares the original setup clock. Error/status observation stays fixture-only. Full setup is next.
+[Record](./development-evidence/2026-11-02-release-hardening/498-session-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve the online fixture maintenance precondition timeout
+
+**Date:** 2026-11-06 · **Phase:** 499.
+
+The session fixture stops before writing at its unchanged 120 s maintenance precondition. Twelve attempts reach coverage but do not complete. Workspace is active/durable; HTTP responses are all200 and no channel error is captured. Independent private-copy checks retain every server tuple and the full captured Window archive. Classify this as apparatus preconditioning, retain the failure, and use a normal offline interval during local reduction without changing any deadline or Stage5gate.
+[Record](./development-evidence/2026-11-02-release-hardening/499-session-precondition-timeout/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Isolate fixture reduction using ordinary offline mode
+
+**Date:** 2026-11-06 · **Phase:** 500.
+
+The fixture-only offline preparation recipe and thirteen controls pass, with exact inverse recovery of phase498. It uses actual browser offline state only while the supported canonical local reducer runs, reconnecting before each normal owner reopen and all writing. All original assertions and deadlines remain, with no online gate credit.
+[Record](./development-evidence/2026-11-02-release-hardening/500-offline-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Capture the idle-send stall with durable Window state
+
+**Date:** 2026-11-06 · **Phase:** 501.
+
+The active/durable idle-send symptom reproduces after582newacceptedpositions, with no error response or owner/channel failure. The failed Window contains583extracharacters and the full disposableprofile is saved. Two maintenance/reopen boundaries preserve all data and service tuples. Next distinguish actual pendingwriting from coalesced source coverage using a normal fully caught-up witness; no app defect is assumed from position count alone.
+[Record](./development-evidence/2026-11-02-release-hardening/501-idle-publication-stall/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Confirm the last edit is absent from committed service history
+
+**Date:** 2026-11-06 · **Phase:** 502.
+
+The valid fully caught-up witness contains only582newcharacters, while the failed Window contains583. Every sourceposition7–2636 is present in a read-only native receipt census, all other writing is exact, and servertuples remain unchanged. Coalescing is ruledout. Two harnessprecondition failures stay preserved. Stop on the confirmedpublicationfailure; sourcecapture/selection and localnotification scheduling remain unisolated.
+[Record](./development-evidence/2026-11-02-release-hardening/502-publication-coverage/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Amend Stage 6 with the confirmed unpublished edit
+
+**Date:** 2026-11-06 · **Phase:** 503.
+
+The Stage6amendment preserves all earlier gates and records a confirmed unpublishededit: independent source-complete witness has582newchars while senderWindow has583. Noapp source changed and all2046buildinputs remain exact. Fixture maintenance becomes bounded through ordinary offline preparation, but full3072report remains blocked. Stop without weakening the original position assertion or any guard/deadline.
+[Record](./development-evidence/2026-11-02-release-hardening/503-publication-stop-handoff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Recover the saved pending edit before releasing submission
+
+**Date:** 2026-11-06 · **Phase:** 504.
+
+The corrected native diagnostic cold-recovers all583edits in877msbefore anysubmit, issuesnonewinput, and accepts exactlyone extraenvelope afterrelease. All prior server tuples/localwriting remainexact. First apparatus serialization/bodydecoder failure stays. Noordinarycoldgate or power-lossclaim; nextis private sourceavailability/notification/scheduler tracing.
+[Record](./development-evidence/2026-11-02-release-hardening/504-pending-edit-reopen/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Build the private source and scheduler observation entry
+
+**Date:** 2026-11-06 · **Phase:** 505.
+
+The private six-file source/scheduler observation build passes with exact inverse anchors, release flags and125ordinaryassets. The first staticanchorfailure stays. Noappsource orguardchanges andno gatecredit. Nexta bounded live reproduction oncopiedfailedstorage will observe sourcecapture,persistence,selection andnotifications.
+[Record](./development-evidence/2026-11-02-release-hardening/505-source-scheduler-probe/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Locate the stalled edit in stale source selection
+
+**Date:** 2026-11-06 · **Phase:** 506.
+
+The exact localcapsuleispersistedat18907–18908 andbothnotification/retryreachtheWorker. Sendrunsafterdurabilitybutselectsnone:113-source semanticviewmissesthe capsulethatnative114-capsulecataloguecontains. Thislocates theknownfailureinstaleselectionratherthanmissingwakeup. Nexttestthe interruptedbaselineview handoff deterministicallybeforeeditingappcode.
+[Record](./development-evidence/2026-11-02-release-hardening/506-stale-source-selection/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Interrupted baseline projection counterexample
+
+**Date:** 2026-11-07 · **Phase:** 507.
+
+Added five deterministic real-crypto/IndexedDB controls. Three fail before repair against an independent forced full replay; two warm-path controls pass. Both before attempts remain evidence. No app source changed and no gate credit claimed.
+[Record](./development-evidence/2026-11-02-release-hardening/507-baseline-projection-counterexample/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Discard an uninstalled baseline continuation
+
+**Date:** 2026-11-07 · **Phase:** 508.
+
+Applied conditional private-view invalidation after a returned continuation cannot finish installation. All 149 focused cases pass. The private flag-only negative control fails precisely the repeated-interruption case; all old tests are unchanged. Existing source checks and erasure statements are inverse-byte exact.
+[Record](./development-evidence/2026-11-02-release-hardening/508-baseline-projection-repair/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Baseline projection repair coherent checkpoint
+
+**Date:** 2026-11-07 · **Phase:** 509.
+
+Closed the coherent checkpoint: 333 unit files, 3,231 passed plus the existing skip, 128.18s; types/lint/changed-format and 21 inventory/policy controls pass. Applied both exact operator-approved bookkeeping patches. Independent population review adds five IDs, removes none and preserves every aggregate block. All failed checks remain evidence.
+[Record](./development-evidence/2026-11-02-release-hardening/509-projection-repair-checkpoint/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Unobserved projection-repair build
+
+**Date:** 2026-11-07 · **Phase:** 510.
+
+Built all 2,047 canonical inputs with the original release flags and no probes: 125 ordinary assets, 42 separate native assets. Build, bundle budget, origin isolation and exact ordinary-asset preservation pass. No normal-gate or current-date fixture credit.
+[Record](./development-evidence/2026-11-02-release-hardening/510-projection-repair-build/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Plain Worker publication confirmation and native cold apparatus limit
+
+**Date:** 2026-11-07 · **Phase:** 511.
+
+On three independent copied states, the plain repaired Worker recovers the pending edit and accepts 128 further edits; independent service positions, full archives and Undo are exact. All three terminal results stay failed for the private-tool offline bootstrap, plus a failed prerequisite-only control. No app cold credit. Follow the ordinary cold procedure on the fresh report fixture instead of changing SW behavior.
+[Record](./development-evidence/2026-11-02-release-hardening/511-projection-publication-confirmation/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Current fixture reaches setup deadline
+
+**Date:** 2026-11-07 · **Phase:** 512.
+
+Fresh current-date fixture remains unexposed: first attempt fails native-navigation precondition; fresh retry reaches overall 1,800s setup ceiling at observed sourceprefix3061 while awaiting3062. Eleven 14.4–15.9s reductions pass exactness; no publication stall or data loss observed. Both attempts and load logs remain. No index report started.
+[Record](./development-evidence/2026-11-02-release-hardening/512-current-fixture-setup-deadline/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Cached-status cadence repair for preparation
+
+**Date:** 2026-11-07 · **Phase:** 513.
+
+Prepared the fixture-only fixed25ms cached-status cadence with the original exact prefix/30s wait, case1800s and reduction120s. Four controls pass; inverse bytes recover the entire prior recipe. Added only initial/last acceptance observations. App source, build, network and production scheduling remain exact.
+[Record](./development-evidence/2026-11-02-release-hardening/513-fixture-status-cadence/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Current 3072-position fixture completes within setup ceiling
+
+**Date:** 2026-11-07 · **Phase:** 514.
+
+Completed the current-date fresh fixture in 1628.033s under the original1800s ceiling: exactly3072 accepted edits, prefix6→3078, three devices, Goals13407bytes. Eleven reductions preserve archives/serverrows/old-reader snapshots; ordinary producer reopen exact. No report or new timed-gate credit yet. Prior failures retained and last-wait censoring clarified.
+[Record](./development-evidence/2026-11-02-release-hardening/514-complete-current3072-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Rebase the approved index observer over repaired canonical source
+
+**Date:** 2026-11-07 · **Phase:** 515.
+
+Rebased six approved observations over repaired canonical inputs with exact inverse-source checks; app/native and raw inspector builds pass, production32MiB unchanged. Six uncapped-counter controls pass. The original reader case retains every assertion and deadline after identity-only rebinding. No normal-gate credit.
+[Record](./development-evidence/2026-11-02-release-hardening/515-repaired-index-observer-build/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### 3072 reader and ordinary offline cold pass
+
+**Date:** 2026-11-07 · **Phase:** 516.
+
+The original3072reader report passes all checks: exact service/native positions7–3078, fullarchive, Undo, floor1, rawobserverunchanged, exact772eventcounter. Open519ms; catchup54216ms; ordinarysameprofileofflinecold5958ms. No indexfallbackthroughdrain; peakcharged25969753bytes under33554432. Encodedsource receipts5185602bytes/769rows, notRAM/totaldisk. One report-onlyjourney; olderblockingmatrixsourcebindingstays.
+[Record](./development-evidence/2026-11-02-release-hardening/516-complete3072-reader-report/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Bounded repaired-source and completed-reader handoff
+
+**Date:** 2026-11-07 · **Phase:** 517.
+
+Closed the bounded stale-projection repair and missing3072report handoff. Five new sensitive regressions,149 focused and3231 fullunit cases pass; current fixture completes under1800s; original3072reader/cold/positions/archive/Undo report passes. Explicitly retain old-source binding of36timedblockingjourneys and all prior failures; no current release clearance. Limits/flags/securitychecks unchanged. Patches507–517 prepared, no staging/signing/push/publication/deployment.
+[Record](./development-evidence/2026-11-02-release-hardening/517-repaired-source-handoff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Read-only source reachability and carryover handoff
+
+**Date:** 2026-11-07 · **Phase:** 518.
+
+Operator replaced 517’s blanket matrix rerun with a read-only reachability check and stop. Independently verified all 125 ordinary files per build: after exact chunk/date/verifier normalization, the only executable insertion is `if (logical) clearView();` in six Worker assets plus deviceDataRemoval. Derived maps and service-worker cache fields are separately bound. Inspected ten unique start states and all 33 saved end profiles on copies, with the existing native digest and metadata seam: source bytes unchanged, every native before/after digest equal, no app/network execution. All starts revision0; nine non-maintenance runs end reduced (native-resumable ×3, fairness ×3, Goals r2-mobile4x/r3-desktop/r3-mobile4x). Three native-context ends are revision1 complete and statically excluded; three native-deep ephemeral publishers lack saved ends, explicitly unproven. Twelve maintenance writer and six grown reader installation traces start after last key and peer marker; old readers show no install through measured traffic, later completion timestamps unavailable. Fresh-owner ordinary cold first loads are full reads. No timed runs or new journeys. Carryover remains the operator’s decision. Post-reduction typing cost/frequency of forced full reauthentication is the one unmeasured effect of508.
+[Record](./development-evidence/2026-11-02-release-hardening/518-readonly-source-reachability/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Operator source510 carryover and bounded rerun declaration
+
+**Date:** 2026-11-07 · **Phase:** 519.
+
+Recorded the operator’s explicit carryover of seven cells/21runs to source510 citing518. Declared the five remaining cells/15runs before starting, preserving frozen fixtures/specs/analyzers and original gates/deadlines/noise rules. Verified125 ordinary510 files plus42 separate unobserved native-tool assets. Post-run readonly metadata inspection runs only on copies after each timer wrapper exits. Fresh quiet-host handshake required beforeGoals. No app/gate/limit/format change or new timed observation.
+[Record](./development-evidence/2026-11-02-release-hardening/519-source510-carryover-plan/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Source510 native bounded rerun block
+
+**Date:** 2026-11-07 · **Phase:** 520.
+
+Completed 6 declared frozen native journeys on plain510, 6/6 passing attempts, 0 noise retries; all applicable predicates retained. After each run, inspected only copies of saved end profiles; original bytes and native record digests unchanged. No timed observer or app/gate/limit/format change. 6/15 reruns complete alongside21operator-carried runs. Post-reduction typing cost remains unmeasured.
+[Record](./development-evidence/2026-11-02-release-hardening/520-source510-native-reruns/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Source510 fairness bounded rerun block
+
+**Date:** 2026-11-07 · **Phase:** 521.
+
+Completed 3 declared frozen fairness journeys on plain510, 3/3 passing attempts, 0 noise retries; all applicable predicates retained. After each run, inspected only copies of saved end profiles; original bytes and native record digests unchanged. No timed observer or app/gate/limit/format change. 9/15 reruns complete alongside21operator-carried runs. Post-reduction typing cost remains unmeasured.
+[Record](./development-evidence/2026-11-02-release-hardening/521-source510-fairness-reruns/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Source510 Goals Undo guard failure and bounded stop
+
+**Date:** 2026-11-07 · **Phase:** 522.
+
+Ran three of six declared frozen Goals journeys after the fresh quiet-host reply. Desktopr1 and mobile4xr1 pass; desktopr2 fails the original immediate Undo text-change assertion at stall.spec.ts:90, after exactParagraph and returnInputPreserved pass. No recorded page error; Redo/export/cold not reached. Failure is not noise-eligible: swapflat, displayon, maximumhighCPUstreak5.004s. Saved failure profile v2/revision0/complete excludes508’s reducedwarmcatch; underlying cause remains unproved (eventualUndo versus immediateMirror/assertion timing). Allthree endprofiles inspectedonlyoncopies, native/sourcebytesunchanged. No source/test/gate/wait/limit/formatchange, observeraddition orretry. Three laterGoalsruns remainunrun. Total12/15reruns attempted,11pass1fail;21carried remainseparate. RecordStage6amendment andstop.
+[Record](./development-evidence/2026-11-02-release-hardening/522-source510-goals-undo-stop/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Stage6amendment:21carried,11passing reruns, Undo guard stop
+
+**Date:** 2026-11-07 · **Phase:** 523.
+
+AmendedStage6with actualscoped outcome:21operator-carried runs,15plannedreruns,12attempted(11pass/1fail),3unrun. Native-resumable/deep/fairness3eachpass; Goalsdesktopr1/mobile4xr1pass; desktopr2failsoriginalimmediateUndoassertion. Goalsdesktopcellfails, mobile4xcellincomplete. Fixedhostnoisecriterionnotmet, noretry. All15savedendprofiles inspectedonlyoncopies aftertimers, original/nativebytesunchanged. Failedprofilev2/revision0/complete excludes508reducedcatch; eventualUndo versus immediateassertion/mirrorrace remainsunresolved. Post-reductiontyping/full-reauthfrequency andinput/peercost remainsunmeasureddebt; oldStage6debts/misses/rollbackrestrictions remain. Noapp/test/gate/wait/limit/formatchange. STOPforoperator; matrixnotcleared, nofurtherjourney orreleaseaction.
+[Record](./development-evidence/2026-11-02-release-hardening/523-source510-stage6-undo-hold/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Undo diagnostic: literal busy trigger unavailable; saved traffic traced
+
+**Date:** 2026-11-07 · **Phase:** 524.
+
+OutsideStage5, declared six standalone A/B probes on plain510 with frozen522prelude/waits unchanged. First A reachedreturn!but literal Windowmaintenance=running neveroccurred in120s; noUndo/Redo pressed.1772public observations allmaintenanceabsent,pendingpeak2,finalUndo781. Code:WindowAccountMirror carrier lackscompactContent, soadmissionQueue cannotpublishrunning. AskedoperatorwhetherusependingItems>0 orstop; othertriesheld, noABCconclusion. Saved-only trafficread: r2submitERR_ABORTED22.939ms; nextrequest+16.149svsr1+3.994s. Prior-read-to-next gaps19.538s/17.045s fithealthy15–20sidleclock, causalitynotproved. BothsavedpublisherDBs58acceptedvsseed1 and57recordedsubmits, nofailedservice metrics; exactabortreasonunsaved/unknown. Noapp/spec/assertion/wait/gate/limitchange,noStage5credit.
+[Record](./development-evidence/2026-11-02-release-hardening/524-undo-diagnostic-trigger-hold/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Undo pending-queue diagnostic: eventual application, immediate-read race
+
+**Date:** 2026-11-07 · **Phase:** 525.
+
+Completed operator-amended outsideStage5diagnostic,3busyA/3idleB onplain510, no trafficinjection ornewgatecredit. Correctionretainedwith524: Windowcarrierhasno compactContent; localappendLocalissynchronous; remoteownedreceiveholdsheadthroughcommit, countedinpendingItems. All3Ausefirstpositivepublicsampleaftersyncwithin20swindow,andremainbusy atactualkeydown. Depth781each; immediatefalse3/3A; textfirstobserved57.4/61.9/29.6msafterkey, afterpending0. IdleBfirstobserved241.3/56.0/30.4ms; B3alsoimmediatefalsewithpending0butdurablebecamefalsebeforekey andWorkerverifying. All6Undoexactlyremove!, Redoexactlyrestoretext/depth; no10snonresponseorzerodepth. Conclusion(a), withpollingboundsandnoexclusiveprepresspendingcausationclaim. SavedERR_ABORTEDsourceunknown; idleclockfitqualifiedandoldrecordsunchanged. Noapp/spec/assertion/wait/gate/limitchangeorGoalsrerun. Stage5remains523incomplete; STOPoperator.
+[Record](./development-evidence/2026-11-02-release-hardening/525-undo-pending-diagnostic/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Operator-approved bounded Goals Undo/Redo guard and new frozen spec
+
+**Date:** 2026-11-07 · **Phase:** 526.
+
+Recorded explicitoperator guardchange after525(a): onlytwoimmediateUndo/Redo reads become expect.poll timeout2500; addthreshold-free driverelapsed fields frombeforekeypress topollsuccess. Newfrozen specf57e393f748093d2f4fe45de2dce849038adbaa2872c0b17376b50fed13b35ff; old764f8ca9…immutable. Inverseproof onlylines90/91differ; helpers/config/fixture/analyzer/ordinaryassets exact. Operatorcarries522r1desktop/mobile4x stricterpasses. Fourremainingr2/r3desktop/mobile4xruns declaredonplain510; freshquiet-host replyrecorded, allothergates/deadlines/noiserules unchanged. Per-runreadonlyendpointinspectionretained. Noappchange ornewtimedobserver. Next527thenStage6amendmentandstop.
+[Record](./development-evidence/2026-11-02-release-hardening/526-goals-bounded-undo-guard/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Four remaining Goals replicates pass the approved bounded Undo/Redo guards
+
+**Date:** 2026-11-07 · **Phase:** 527.
+
+All four declared desktop/mobile4x r2/r3 journeys pass on plain 510 under the new frozen Goals spec. All 779 input events and original paragraph, return, archive and cold checks pass; Undo/Redo elapsed diagnostics are retained without a new threshold. Four saved endpoint profiles were inspected only on copies, with exact original-file and native-record identities. No noise retry or app change. The old immediate-read failure remains recorded, and the two stricter r1 passes retain explicit operator carryover authority. Next: Stage 6 amendment, then stop.
+[Record](./development-evidence/2026-11-02-release-hardening/527-goals-bounded-undo-reruns/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Stage 6 amendment completes the supported source 510 matrix and stops for the operator
+
+**Date:** 2026-11-07 · **Phase:** 528.
+
+The scoped matrix is complete: 36 supported passing rows across 12 cells, comprising 21 explicit source carryovers, nine native/fairness reruns, two stricter Goals r1 carries, and four fresh amended-guard Goals passes. Fifteen distinct passing plain 510 executions and one retained failed immediate-read attempt are distinguished. The old 522-r2 failure remains immutable with the accepted 525 immediate-read-race disposition. Saved endpoint copies remain read-only exact. Added the requested unknown ERR_ABORTED cause and unmeasured Undo main-thread cost debts; preserved the unmeasured post-reduction typing cost, all historical report qualifications, flags and rollback warning. No app change. Stop for operator; no further run or release action.
+[Record](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve current-main Node security baseline and complete release preflight
+
+**Date:** 2026-11-07 · **Phase:** 529.
+
+Reconciled signed hardening head with the already-approved Node 24.22.1 main branch. No app/protocol/storage/verifier/lockfile source changes. Full Node24.22 units pass 3,231 with one existing skip in 333 files; full adapter retry passes178 after the approved three-value fixture correction. Preserve all first failures and 17 private proposal controls. Fifteen source-site line references are byte-proved metadata-only repairs. Inventory retains every old obligation and all release blocks (1,102/551 unresolved). Fresh current-tree traceability receipts wait for the clean signed source and exact assets. Merge ready for signature, then immutable ARM64 artifact checks; no publication/deployment.
+[Record](./development-evidence/2026-11-07-hardened-release/529-current-main-release-baseline/README.md).
+
+Outcome precedes active-seat update.
+
+
+### Prepare and test the signed ARM64 Worker/receive candidate and compatible rollback
+
+**Date:** 2026-11-08 · **Phase:** 530.
+
+Built and retained the exact candidate and compatible writer-off ARM64 images from signed source 759890ca. All 2,049 build inputs, 125 frontend files and 123 packaged server sources per image are exact. Each image passes 38 runtime cases and its container smoke. Stale-tab dense/legacy/offline-cold rollback and the production → candidate → reader → candidate rehearsal pass, including automatic reduction, queued/offline writing, Undo and full archive equality. All 58 executable bundles agree with source 510 after declared provenance/disabled-profile metadata normalizations; source-map contents agree and both workers regenerate exactly. Six fresh same-source receipts clear traceability. Read-only production checks preserve the Deployment/PVC/identity and observe healthy backup status. Failed preliminary apparatus and receipt checks remain visible. No new Stage 5/phone/RAM/aggregate credit is claimed; RC debts remain. Next: sign the documentation checkpoint, verify unchanged inputs, refresh current-tip checks and open the application PR. The operator retains publication and both merge handoffs.
+[Record](./development-evidence/2026-11-07-hardened-release/530-signed-arm64-candidate/README.md).
+
+Outcome precedes active-seat update.

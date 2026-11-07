@@ -1,0 +1,143 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/7fda/done
+
+ ❯ test/boundedInboundPreparation.test.ts (8 tests | 7 failed) 519ms
+   × eight downloaded entries prepare at most four verified positions and retain original indexed bytes 42ms
+   × continuation reauthenticates the same original against a fresh native prefix after rotation 6ms
+   × partial-turn allowance cannot silently admit the rest of an eight-entry page 21ms
+   × fresh continuation refuses expiry, changed native link, old retained evidence and a consumed page 7ms
+   × an invalid selected entry returns no prefix, while unselected tail grants no verification 18ms
+   × bounded preparation returns a fitting prefix at the existing record cap; full verification still refuses 158ms
+   × an original page too large for one indexed receipt requests narrower work without granting a result 262ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > eight downloaded entries prepare at most four verified positions and retain original indexed bytes
+AssertionError: expected [ { kind: 'received', …(6) }, …(7) ] to have a length of 4 but got 8
+
+- Expected
++ Received
+
+- 4
++ 8
+
+ ❯ test/boundedInboundPreparation.test.ts:64:17
+     62|   const x = fixture(),
+     63|     first = await prepare(x.context, x.request, x.page);
+     64|   expect(first).toHaveLength(4);
+       |                 ^
+     65|   for (const [index, result] of first.entries()) {
+     66|     expect(result.kind).toBe('received');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > continuation reauthenticates the same original against a fresh native prefix after rotation
+Error: Inbound verification refused: prefix
+ ❯ fail src/crdt/accountInbound.ts:116:9
+    114| }
+    115| function fail(reason: InboundError['reason']): never {
+    116|   throw new InboundError(reason);
+       |         ^
+    117| }
+    118| const captureBytes = (bytes: Bytes, limit: number): Bytes => {
+ ❯ Module.verifyInboundRange src/crdt/accountInbound.ts:522:66
+ ❯ prepare test/boundedInboundPreparation.test.ts:21:15
+ ❯ test/boundedInboundPreparation.test.ts:79:22
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > partial-turn allowance cannot silently admit the rest of an eight-entry page
+AssertionError: expected [ 1, 2, 3, 4, 5, 6, 7, 8 ] to deeply equal [ 1, 2 ]
+
+- Expected
++ Received
+
+  [
+    1,
+    2,
++   3,
++   4,
++   5,
++   6,
++   7,
++   8,
+  ]
+
+ ❯ test/boundedInboundPreparation.test.ts:92:89
+     90| it('partial-turn allowance cannot silently admit the rest of an eight-…
+     91|   const x = fixture();
+     92|   expect((await prepare(x.context, x.request, x.page, live, 2)).map((r…
+       |                                                                                         ^
+     93|     1, 2,
+     94|   ]);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > fresh continuation refuses expiry, changed native link, old retained evidence and a consumed page
+AssertionError: expected [Function] to throw error including 'expired' but got 'Inbound verification refused: prefix'
+
+Expected: "expired"
+Received: "Inbound verification refused: prefix"
+
+ ❯ test/boundedInboundPreparation.test.ts:102:77
+    100|   let c = x.context;
+    101|   for (const e of x.entries.slice(0, 4)) c = forward(c, e);
+    102|   await expect(prepare(c, x.request, x.page, { ...live, now: () => 400…
+       |                                                                             ^
+    103|     'expired',
+    104|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > an invalid selected entry returns no prefix, while unselected tail grants no verification
+Error: Envelope signature mismatch
+ ❯ verifyNetworkEnvelope account-protocol/envelope.ts:302:11
+    300|     !(await subtle.verify('Ed25519', signer, e.sig, envelopeSignatureM…
+    301|   )
+    302|     throw Error('Envelope signature mismatch');
+       |           ^
+    303|   return e;
+    304| }
+ ❯ openNetworkEnvelope account-protocol/envelope.ts:316:15
+ ❯ openInboundEntry src/crdt/accountInbound.ts:352:16
+ ❯ verify src/crdt/accountInbound.ts:439:21
+ ❯ Module.verifyInboundRange src/crdt/accountInbound.ts:534:22
+ ❯ test/boundedInboundPreparation.test.ts:127:10
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > bounded preparation returns a fitting prefix at the existing record cap; full verification still refuses
+Error: Inbound verification refused: size
+ ❯ fail src/crdt/accountInbound.ts:116:9
+    114| }
+    115| function fail(reason: InboundError['reason']): never {
+    116|   throw new InboundError(reason);
+       |         ^
+    117| }
+    118| const captureBytes = (bytes: Bytes, limit: number): Bytes => {
+ ❯ Module.verifyInboundRange src/crdt/accountInbound.ts:547:69
+ ❯ test/boundedInboundPreparation.test.ts:137:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯
+
+ FAIL  test/boundedInboundPreparation.test.ts > an original page too large for one indexed receipt requests narrower work without granting a result
+Error: Invalid inbound record
+ ❯ invalid src/crdt/inboundRecord.ts:44:9
+     42| }
+     43| const invalid = (): never => {
+     44|   throw Error('Invalid inbound record');
+       |         ^
+     45| };
+     46| function validatedFields(e: InboundRecord) {
+ ❯ encodeInboundRecord src/crdt/inboundRecord.ts:103:44
+ ❯ verify src/crdt/accountInbound.ts:464:20
+ ❯ Module.verifyInboundRange src/crdt/accountInbound.ts:534:22
+ ❯ test/boundedInboundPreparation.test.ts:175:12
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 1 passed (8)
+   Start at  17:21:37
+   Duration  1.01s (transform 228ms, setup 50ms, import 321ms, tests 519ms, environment 0ms)

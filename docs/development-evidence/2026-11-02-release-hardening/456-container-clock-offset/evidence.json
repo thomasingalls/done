@@ -1,0 +1,309 @@
+{
+  "phase": 456,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-protocol/enrollment.ts",
+      "sha256": "bdc9e083eecc61cdb6407fb7059d7c0e6e507392228f464cce1c48494fafb5fc",
+      "bytes": 13357
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/account/enrollmentChallenge.ts",
+      "sha256": "63f3a80ceb3e5fbd1261005d3db721d6caf7bd8a3025d3a6ebea21752fa40640",
+      "bytes": 1872
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/enrollment.ts",
+      "sha256": "7068ada51cd9de4c59c5aa0904694465d388f424b16f298c5cda16454477baa6",
+      "bytes": 21584
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/sample.mjs",
+      "sha256": "13c17aff2c8ed706b343800ddccdeb56724225fd286cfa87551f6956126769d2",
+      "bytes": 3647
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/record456.py",
+      "sha256": "19cb5a0070322309839ea419e1a1aebf3d0395ff2656fa2dedf43802135a93fb",
+      "bytes": 6112
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/456-clock-samples.json",
+      "sha256": "f3a8637cffa46522da68ffe9ce32c388287fafc9d85fb7ce3875febc975d87e2",
+      "bytes": 4827
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/startup/container-identity.json",
+      "sha256": "4e06c310addbd909fd517f17c1a8c6caaa3abedbb4deb5f785ff71fa17aa2d36",
+      "bytes": 1571
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/startup/container.cid",
+      "sha256": "3ae09b77c2f5705d0baba85fea0143716ee95ea855dfda1d9b8435a4425f17c8",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/startup/docker-command.json",
+      "sha256": "ee1357a85055db52a4fff6b7b18d9e49e1b0f9761ced84ecf64313dffd377f9d",
+      "bytes": 687
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/startup/process-placement.json",
+      "sha256": "29072c4e2140707dfc9ef985a7fa707f043522636a2f5405af78a120faeee246",
+      "bytes": 503
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-456-20261106/startup/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/child.log",
+      "sha256": "6754547ed55d46dbe1d8cac88228491fbe0fb9e6b38da78f6a4b631ddabaacd1",
+      "bytes": 240
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/host-load.jsonl",
+      "sha256": "a0feb5da9338025b21c0b5d1b825820768f4c2087d233046f24618c1fe27b50b",
+      "bytes": 3049
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/power-assertions-before.txt",
+      "sha256": "81e9af292d2e04a26779ab3da7f1b7cfd6a679111fedcd994fa4b9d21fc8effb",
+      "bytes": 1681
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/power-log-after.meta.json",
+      "sha256": "a4c971947a4945cfb5cb1fda49af296c949a519c1b13abea14fb3f31fa7e6be0",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/power-log-after.txt",
+      "sha256": "839e97c55711f84d4e8d24157ad79b6d473dabedfda8a9b73204b94001e9d566",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/power-log-before.meta.json",
+      "sha256": "f86db5cbf29b78fd4bde3be9eba908cae7df2bffc9d13b4c5e297f41d16a6813",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/456-container-clock/run.json",
+      "sha256": "825cc746e45f39f949dbe8ee6e72ae5a185b72b38c2340d92257276b798d9aae",
+      "bytes": 839
+    }
+  ],
+  "clock": {
+    "phase": 456,
+    "date": "2026-11-06",
+    "scope": "same actual API container startup, no browser/app request",
+    "startedHostAt": 1793949825341,
+    "apiReadyHostAt": 1793949828992,
+    "firstSampleHostAt": 1793949829052,
+    "startupToFirstSampleMs": 60,
+    "samples": [
+      {
+        "sample": 1,
+        "hostBefore": 1793949829052,
+        "containerNow": 1793949829045,
+        "hostAfter": 1793949829053,
+        "roundTripMs": 1,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -6,
+        "midpointOffsetMs": -7.5
+      },
+      {
+        "sample": 2,
+        "hostBefore": 1793949829179,
+        "containerNow": 1793949829173,
+        "hostAfter": 1793949829180,
+        "roundTripMs": 1,
+        "offsetLowerMs": -8,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -6.5
+      },
+      {
+        "sample": 3,
+        "hostBefore": 1793949829307,
+        "containerNow": 1793949829301,
+        "hostAfter": 1793949829310,
+        "roundTripMs": 3,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7.5
+      },
+      {
+        "sample": 4,
+        "hostBefore": 1793949829435,
+        "containerNow": 1793949829430,
+        "hostAfter": 1793949829438,
+        "roundTripMs": 3,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -4,
+        "midpointOffsetMs": -6.5
+      },
+      {
+        "sample": 5,
+        "hostBefore": 1793949829565,
+        "containerNow": 1793949829559,
+        "hostAfter": 1793949829568,
+        "roundTripMs": 3,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7.5
+      },
+      {
+        "sample": 6,
+        "hostBefore": 1793949829694,
+        "containerNow": 1793949829689,
+        "hostAfter": 1793949829698,
+        "roundTripMs": 4,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -4,
+        "midpointOffsetMs": -7
+      },
+      {
+        "sample": 7,
+        "hostBefore": 1793949829825,
+        "containerNow": 1793949829820,
+        "hostAfter": 1793949829829,
+        "roundTripMs": 4,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -4,
+        "midpointOffsetMs": -7
+      },
+      {
+        "sample": 8,
+        "hostBefore": 1793949829956,
+        "containerNow": 1793949829950,
+        "hostAfter": 1793949829959,
+        "roundTripMs": 3,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7.5
+      },
+      {
+        "sample": 9,
+        "hostBefore": 1793949830086,
+        "containerNow": 1793949830081,
+        "hostAfter": 1793949830090,
+        "roundTripMs": 4,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -4,
+        "midpointOffsetMs": -7
+      },
+      {
+        "sample": 10,
+        "hostBefore": 1793949830216,
+        "containerNow": 1793949830211,
+        "hostAfter": 1793949830219,
+        "roundTripMs": 3,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -4,
+        "midpointOffsetMs": -6.5
+      },
+      {
+        "sample": 11,
+        "hostBefore": 1793949830346,
+        "containerNow": 1793949830340,
+        "hostAfter": 1793949830349,
+        "roundTripMs": 3,
+        "offsetLowerMs": -10,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7.5
+      },
+      {
+        "sample": 12,
+        "hostBefore": 1793949830475,
+        "containerNow": 1793949830469,
+        "hostAfter": 1793949830476,
+        "roundTripMs": 1,
+        "offsetLowerMs": -8,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -6.5
+      },
+      {
+        "sample": 13,
+        "hostBefore": 1793949830602,
+        "containerNow": 1793949830596,
+        "hostAfter": 1793949830604,
+        "roundTripMs": 2,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7
+      },
+      {
+        "sample": 14,
+        "hostBefore": 1793949830730,
+        "containerNow": 1793949830724,
+        "hostAfter": 1793949830732,
+        "roundTripMs": 2,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7
+      },
+      {
+        "sample": 15,
+        "hostBefore": 1793949830858,
+        "containerNow": 1793949830852,
+        "hostAfter": 1793949830860,
+        "roundTripMs": 2,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7
+      },
+      {
+        "sample": 16,
+        "hostBefore": 1793949830986,
+        "containerNow": 1793949830980,
+        "hostAfter": 1793949830988,
+        "roundTripMs": 2,
+        "offsetLowerMs": -9,
+        "offsetUpperMs": -5,
+        "midpointOffsetMs": -7
+      }
+    ],
+    "summary": {
+      "samples": 16,
+      "containerMinusHostMidpointMedianMs": -7,
+      "midpointMinMs": -7.5,
+      "midpointMaxMs": -6.5,
+      "intersectionLowerMs": -8,
+      "intersectionUpperMs": -6,
+      "consistentIntersection": true,
+      "allSamplesProveContainerLead": false,
+      "rttMinMs": 1,
+      "rttMaxMs": 4
+    },
+    "observerExit": {
+      "code": 0,
+      "signal": null
+    },
+    "stderr": "",
+    "method": "Host Date.now brackets a Date.now reply in persistent docker exec; +/-1ms rounding; midpoint is estimate, bracket is conservative. No clocks, service source, trust, limit or stored data changed."
+  },
+  "browserOrAppRequests": 0,
+  "timedMatrixJourneysStarted": 0,
+  "inference": "Current offset is negative and does not prove the prior455lead; preserve that uncertainty",
+  "next": "operator-approved shared120000ms allowance on future-bound only, six protocols and requested unit controls"
+}

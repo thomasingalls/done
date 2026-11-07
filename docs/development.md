@@ -241,3 +241,10 @@ Keep evidence in the established repository evidence directories, decisions and 
 append-only journals, and active work in the owning seat's progress document. Optional tools and
 their storage conventions do not replace these homes. Finish bookkeeping before minting
 tree-bound execution receipts, and rerun the relevant checks after the tree changes.
+
+
+## macOS native browser display state
+
+Run macOS native browser campaigns under `caffeinate -d`, retaining actual display-power state in each five-second external host-load sample. This is the operator's2026-11-03 host-condition instruction, following the [matched full editor run](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md). The command `caffeinate -d pnpm storage:editor` illustrates the wrapper; every existing stage, outer, startup, cleanup, wait and assertion bound stays unchanged. In particular,374-20's editor outer budget is2,400s and its inner stage is120s; the full-unit outer budget remains120s.
+
+Use actual display metadata rather than treating an idle-sleep assertion or process liveness as proof that the display is on. The retained lightweight CoreGraphics observer records display asleep/active state without screen capture or UI control; unavailable state stays unknown. Preserve display-off failures and qualify them as host evidence, never as successful mutation detection. Other platforms' gates are unchanged.

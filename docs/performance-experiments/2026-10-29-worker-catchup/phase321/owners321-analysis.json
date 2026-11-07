@@ -1,0 +1,4507 @@
+[
+  {
+    "name": "owners321-01-r1-normal",
+    "replicate": 1,
+    "withhold": false,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "P": 1,
+    "V": 0,
+    "D": 0,
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793471150.0458188,
+    "finishedAt": 1793471339.316205,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793471327412.611,
+        "sampleReturnedAt": 1793471327414.4678,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 10,
+          "interruptions": 5,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793471332430.4463,
+        "sampleReturnedAt": 1793471332432.883,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 8,
+          "interruptions": 3,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793471332937.634,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471335646.6555
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793471335842.993,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471338327.711
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 83507.37426757812,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471331639.3,
+        "attemptsThroughCutoff": 8,
+        "attemptsCaptured": 8,
+        "interruptedAttemptsThroughCutoff": 3,
+        "interruptionConditionsByJob": {
+          "accountReceive.ts:2487:prepared": 3
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "reader",
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471275014,
+            "notBefore": 1793471293379,
+            "endedAt": 1793471283383.9001,
+            "nextAttempt": 4,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10005.39990234375,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "reader",
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471275014,
+            "notBefore": 1793471309645,
+            "endedAt": 1793471299650.7,
+            "nextAttempt": 6,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10010.800048828125,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "reader",
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471275014,
+            "notBefore": 1793471326532,
+            "endedAt": 1793471316538.7,
+            "nextAttempt": 8,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10010.10009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19948022,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 2861,
+            "bytes": 4425737
+          },
+          "witness": {
+            "entries": 649,
+            "bytes": 106326
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2179,
+            "bytes": 15113621
+          },
+          "coverage": {
+            "entries": 2180,
+            "bytes": 300840
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 8,
+          "createdAt": 1793471326998,
+          "lookupMisses": 120,
+          "hitDecodeMs": 89.29997444152832,
+          "importFinishedAt": 1793471327006.8,
+          "entries": 7874,
+          "pending": 120,
+          "hits": 7767,
+          "misses": 120,
+          "bytes": 19948022,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4353.599998474121,
+          "firstMissAt": 1793471329118.2,
+          "firstMiss": {
+            "entries": 7754,
+            "pending": 0,
+            "hits": 7766,
+            "misses": 0,
+            "bytes": 19528284,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 2120.199998855591
+          },
+          "families": {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 15113621
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          },
+          "disposedAt": 1793471331351.6
+        },
+        "peakDurablePayloadBytesThroughCutoff": 19593131,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 77,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 8,
+            "elapsedMs": 5090
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "reader",
+          "observedAt": 1793471332430.4463,
+          "sampleReturnedAt": 1793471332432.883,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "reader",
+          "startedAt": 1793471332937.634,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471335646.6555
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      },
+      {
+        "role": "writer",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 79244.87426757812,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471327376.8,
+        "attemptsThroughCutoff": 10,
+        "attemptsCaptured": 10,
+        "interruptedAttemptsThroughCutoff": 5,
+        "interruptionConditionsByJob": {
+          "accountCapture.ts:615:flushJournal": 1,
+          "accountReceive.ts:2487:prepared": 5
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "writer",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471198643,
+            "notBefore": 1793471198951,
+            "endedAt": 1793471188952.3,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 69198.19995117188,
+            "censoredAt120s": false,
+            "afterLastKey": false
+          },
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "writer",
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471258140,
+            "notBefore": 1793471268355,
+            "endedAt": 1793471258358.8,
+            "nextAttempt": 4,
+            "nextInside120sWindow": true,
+            "actualGapMs": 16800.10009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "writer",
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471275149,
+            "notBefore": 1793471285763,
+            "endedAt": 1793471275768.2,
+            "nextAttempt": 5,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10005.10009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "writer",
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471275149,
+            "notBefore": 1793471301812,
+            "endedAt": 1793471291817.9001,
+            "nextAttempt": 7,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10008.699951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-01-r1-normal",
+            "role": "writer",
+            "attempt": 9,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471275149,
+            "notBefore": 1793471321820,
+            "endedAt": 1793471311826.3,
+            "nextAttempt": 10,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10010.699951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19308574,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 3437,
+            "bytes": 4257046
+          },
+          "witness": {
+            "entries": 1132,
+            "bytes": 185670
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 123,
+            "bytes": 8994
+          },
+          "delivery": {
+            "entries": 246,
+            "bytes": 145199
+          },
+          "link": {
+            "entries": 123,
+            "bytes": 16866
+          },
+          "inbound": {
+            "entries": 2052,
+            "bytes": 14394154
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 9,
+          "createdAt": 1793471322294,
+          "lookupMisses": 788,
+          "hitDecodeMs": 77.69995880126953,
+          "importFinishedAt": 1793471322301.5,
+          "entries": 9292,
+          "pending": 788,
+          "hits": 8637,
+          "misses": 788,
+          "bytes": 19308574,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4784.10000038147,
+          "firstMissAt": 1793471324101.7,
+          "firstMiss": {
+            "entries": 8504,
+            "pending": 0,
+            "hits": 8511,
+            "misses": 0,
+            "bytes": 16917585,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1807.7000007629395
+          },
+          "families": {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793471327078.1
+        },
+        "peakDurablePayloadBytesThroughCutoff": 17007105,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 68,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 10,
+            "elapsedMs": 5539
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "writer",
+          "observedAt": 1793471327412.611,
+          "sampleReturnedAt": 1793471327414.4678,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 10,
+            "interruptions": 5,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "writer",
+          "startedAt": 1793471335842.993,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471338327.711
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      }
+    ],
+    "typingFinishedAt": 1793471248131.9258,
+    "cutoffAt": 1793471368131.9258,
+    "observation": {
+      "diagnosticOnly": true,
+      "acceptanceCredit": false,
+      "cutoffAt": 1793471368131.9258,
+      "lastKeyReferenceAt": 1793471248131.9258,
+      "startedAt": 1793471327412.092,
+      "pollMs": 1000,
+      "samples": [
+        {
+          "role": "reader",
+          "observedAt": 1793471327412.216,
+          "sampleReturnedAt": 1793471327414.375,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "writer",
+          "observedAt": 1793471327412.611,
+          "sampleReturnedAt": 1793471327414.4678,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 10,
+            "interruptions": 5,
+            "completions": 1
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471328416.5889,
+          "sampleReturnedAt": 1793471328418.2053,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471329420.336,
+          "sampleReturnedAt": 1793471329422.1177,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471330424.3274,
+          "sampleReturnedAt": 1793471330426.1084,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471331426.5588,
+          "sampleReturnedAt": 1793471331428.206,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471332430.4463,
+          "sampleReturnedAt": 1793471332432.883,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          }
+        }
+      ],
+      "terminal": {
+        "writer": {
+          "role": "writer",
+          "observedAt": 1793471327412.611,
+          "sampleReturnedAt": 1793471327414.4678,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 10,
+            "interruptions": 5,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "reader": {
+          "role": "reader",
+          "observedAt": 1793471332430.4463,
+          "sampleReturnedAt": 1793471332432.883,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        }
+      },
+      "endedAt": 1793471332432.8992
+    },
+    "overlapKeysInformation": 120,
+    "originalFunctionalOutcome": "passed",
+    "originalError": null,
+    "originalWriterWaitSatisfied": true,
+    "originalColdGuard": true,
+    "hostBusyMedian": 36.84734954165006,
+    "hostBusyMaximum": 48.90612569610183,
+    "noAcceptanceVerdict": true,
+    "timingQualification": "Native performanceEpoch minus Node typingFinishedAt, as in320; one-second status samples bound observation, not exact completion. No gate credit."
+  },
+  {
+    "name": "owners321-02-r1-withheld",
+    "replicate": 1,
+    "withhold": true,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "P": 1,
+    "V": 0,
+    "D": 0,
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793471340.0430899,
+    "finishedAt": 1793471527.845868,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793471503028.4468,
+        "sampleReturnedAt": 1793471503030.2258,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 9,
+          "interruptions": 4,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793471521142.7488,
+        "sampleReturnedAt": 1793471521144.9192,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 9,
+          "interruptions": 4,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793471521490.4026,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471524161.177
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793471524357.0178,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471526808.9624
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 90905.02197265625,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471521103.5,
+        "attemptsThroughCutoff": 9,
+        "attemptsCaptured": 9,
+        "interruptedAttemptsThroughCutoff": 4,
+        "interruptionConditionsByJob": {
+          "accountReceive.ts:1608:status": 2,
+          "accountReceive.ts:2487:prepared": 2
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "reader",
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451739,
+            "notBefore": 1793471463095,
+            "endedAt": 1793471453100.1,
+            "nextAttempt": 2,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10259.199951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "reader",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451739,
+            "notBefore": 1793471474370,
+            "endedAt": 1793471464375.1,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10009.599853515625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "reader",
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451739,
+            "notBefore": 1793471499585,
+            "endedAt": 1793471489591.7,
+            "nextAttempt": 7,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10007.10009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "reader",
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451739,
+            "notBefore": 1793471515882,
+            "endedAt": 1793471505888.9,
+            "nextAttempt": 9,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10008.7001953125,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19844215,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 2849,
+            "bytes": 4353527
+          },
+          "witness": {
+            "entries": 637,
+            "bytes": 104358
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2178,
+            "bytes": 15084130
+          },
+          "coverage": {
+            "entries": 2179,
+            "bytes": 300702
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 9,
+          "createdAt": 1793471516379,
+          "lookupMisses": 230,
+          "hitDecodeMs": 82.69999694824219,
+          "importFinishedAt": 1793471516385.6,
+          "entries": 7848,
+          "pending": 230,
+          "hits": 7631,
+          "misses": 230,
+          "bytes": 19844215,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4456.5,
+          "firstMissAt": 1793471518477,
+          "firstMiss": {
+            "entries": 7618,
+            "pending": 0,
+            "hits": 7630,
+            "misses": 0,
+            "bytes": 19133104,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 2098
+          },
+          "families": {
+            "opened": {
+              "entries": 2849,
+              "bytes": 4353527
+            },
+            "witness": {
+              "entries": 637,
+              "bytes": 104358
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2178,
+              "bytes": 15084130
+            },
+            "coverage": {
+              "entries": 2179,
+              "bytes": 300702
+            }
+          },
+          "disposedAt": 1793471520835.5
+        },
+        "peakDurablePayloadBytesThroughCutoff": 19196795,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 75,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 9,
+            "elapsedMs": 5206
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "reader",
+          "observedAt": 1793471521142.7488,
+          "sampleReturnedAt": 1793471521144.9192,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "reader",
+          "startedAt": 1793471521490.4026,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471524161.177
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      },
+      {
+        "role": "writer",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 72804.22192382812,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471503002.7,
+        "attemptsThroughCutoff": 9,
+        "attemptsCaptured": 9,
+        "interruptedAttemptsThroughCutoff": 4,
+        "interruptionConditionsByJob": {
+          "accountCapture.ts:615:flushJournal": 1,
+          "accountReceive.ts:2487:prepared": 3
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "writer",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471380704,
+            "notBefore": 1793471381011,
+            "endedAt": 1793471371012.5,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 80765.5,
+            "censoredAt120s": false,
+            "afterLastKey": false
+          },
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "writer",
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451763,
+            "notBefore": 1793471466323,
+            "endedAt": 1793471456327.9,
+            "nextAttempt": 5,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10010.199951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "writer",
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451763,
+            "notBefore": 1793471482047,
+            "endedAt": 1793471472052.2,
+            "nextAttempt": 7,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10006.099853515625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-02-r1-withheld",
+            "role": "writer",
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471451763,
+            "notBefore": 1793471497775,
+            "endedAt": 1793471487781.4,
+            "nextAttempt": 9,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10009.10009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19300635,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 3432,
+            "bytes": 4251550
+          },
+          "witness": {
+            "entries": 1127,
+            "bytes": 184845
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 122,
+            "bytes": 8920
+          },
+          "delivery": {
+            "entries": 244,
+            "bytes": 143793
+          },
+          "link": {
+            "entries": 122,
+            "bytes": 16728
+          },
+          "inbound": {
+            "entries": 2052,
+            "bytes": 14394154
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 9,
+          "createdAt": 1793471498283,
+          "lookupMisses": 502,
+          "hitDecodeMs": 94.89997482299805,
+          "importFinishedAt": 1793471498291.7,
+          "entries": 9278,
+          "pending": 502,
+          "hits": 8909,
+          "misses": 502,
+          "bytes": 19300635,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4428.099998474121,
+          "firstMissAt": 1793471500130.4,
+          "firstMiss": {
+            "entries": 8776,
+            "pending": 0,
+            "hits": 8783,
+            "misses": 0,
+            "bytes": 17935099,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1847.3999996185303
+          },
+          "families": {
+            "opened": {
+              "entries": 3432,
+              "bytes": 4251550
+            },
+            "witness": {
+              "entries": 1127,
+              "bytes": 184845
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 122,
+              "bytes": 8920
+            },
+            "delivery": {
+              "entries": 244,
+              "bytes": 143793
+            },
+            "link": {
+              "entries": 122,
+              "bytes": 16728
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793471502711.0999
+        },
+        "peakDurablePayloadBytesThroughCutoff": 18031457,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 70,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 9,
+            "elapsedMs": 5212
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "writer",
+          "observedAt": 1793471503028.4468,
+          "sampleReturnedAt": 1793471503030.2258,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "writer",
+          "startedAt": 1793471524357.0178,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471526808.9624
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      }
+    ],
+    "typingFinishedAt": 1793471430198.478,
+    "cutoffAt": 1793471550198.478,
+    "observation": {
+      "diagnosticOnly": true,
+      "acceptanceCredit": false,
+      "cutoffAt": 1793471550198.478,
+      "lastKeyReferenceAt": 1793471430198.478,
+      "startedAt": 1793471503027.9346,
+      "pollMs": 1000,
+      "samples": [
+        {
+          "role": "reader",
+          "observedAt": 1793471503028.0483,
+          "sampleReturnedAt": 1793471503030.1484,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "writer",
+          "observedAt": 1793471503028.4468,
+          "sampleReturnedAt": 1793471503030.2258,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471504030.913,
+          "sampleReturnedAt": 1793471504032.579,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471505034.6914,
+          "sampleReturnedAt": 1793471505036.4182,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471506039.2502,
+          "sampleReturnedAt": 1793471506041.2288,
+          "status": {
+            "phase": "idle",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471507042.807,
+          "sampleReturnedAt": 1793471507044.899,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471508044.8813,
+          "sampleReturnedAt": 1793471508058.141,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471509060.5273,
+          "sampleReturnedAt": 1793471509071.2847,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471510072.9058,
+          "sampleReturnedAt": 1793471510079.913,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471511082.387,
+          "sampleReturnedAt": 1793471511090.5103,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471512092.5994,
+          "sampleReturnedAt": 1793471512094.701,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471513096.9407,
+          "sampleReturnedAt": 1793471513103.3276,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471514105.849,
+          "sampleReturnedAt": 1793471514113.7163,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471515114.8176,
+          "sampleReturnedAt": 1793471515121.5747,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471516123.7048,
+          "sampleReturnedAt": 1793471516125.777,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "reading",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471517128.4316,
+          "sampleReturnedAt": 1793471517130.4043,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471518132.5159,
+          "sampleReturnedAt": 1793471518134.1345,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471519136.2415,
+          "sampleReturnedAt": 1793471519138.231,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471520140.4128,
+          "sampleReturnedAt": 1793471520142.1902,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471521142.7488,
+          "sampleReturnedAt": 1793471521144.9192,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          }
+        }
+      ],
+      "terminal": {
+        "writer": {
+          "role": "writer",
+          "observedAt": 1793471503028.4468,
+          "sampleReturnedAt": 1793471503030.2258,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "reader": {
+          "role": "reader",
+          "observedAt": 1793471521142.7488,
+          "sampleReturnedAt": 1793471521144.9192,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        }
+      },
+      "endedAt": 1793471521144.93
+    },
+    "overlapKeysInformation": 84,
+    "originalFunctionalOutcome": "passed",
+    "originalError": null,
+    "originalWriterWaitSatisfied": true,
+    "originalColdGuard": true,
+    "hostBusyMedian": 24.741653418124002,
+    "hostBusyMaximum": 47.04708699122107,
+    "noAcceptanceVerdict": true,
+    "timingQualification": "Native performanceEpoch minus Node typingFinishedAt, as in320; one-second status samples bound observation, not exact completion. No gate credit."
+  },
+  {
+    "name": "owners321-03-r2-withheld",
+    "replicate": 2,
+    "withhold": true,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "P": 1,
+    "V": 0,
+    "D": 0,
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793471528.578091,
+    "finishedAt": 1793471702.109857,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793471680120.254,
+        "sampleReturnedAt": 1793471680122.786,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 8,
+          "interruptions": 3,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793471695207.059,
+        "sampleReturnedAt": 1793471695214.639,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 8,
+          "interruptions": 3,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793471695612.4822,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471698312.5042
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793471698498.5483,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471700964.3552
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 76456.91137695312,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471694700,
+        "attemptsThroughCutoff": 8,
+        "attemptsCaptured": 8,
+        "interruptedAttemptsThroughCutoff": 3,
+        "interruptionConditionsByJob": {
+          "accountReceive.ts:1608:status": 2,
+          "accountReceive.ts:2487:prepared": 1
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-03-r2-withheld",
+            "role": "reader",
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471640505,
+            "notBefore": 1793471651739,
+            "endedAt": 1793471641736,
+            "nextAttempt": 2,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10254.699951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-03-r2-withheld",
+            "role": "reader",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471640505,
+            "notBefore": 1793471663010,
+            "endedAt": 1793471653007.7,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10006.7001953125,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-03-r2-withheld",
+            "role": "reader",
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471640505,
+            "notBefore": 1793471689583,
+            "endedAt": 1793471679581.9001,
+            "nextAttempt": 8,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10011.0,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19881736,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 2853,
+            "bytes": 4377613
+          },
+          "witness": {
+            "entries": 641,
+            "bytes": 105014
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2179,
+            "bytes": 15096771
+          },
+          "coverage": {
+            "entries": 2180,
+            "bytes": 300840
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 8,
+          "createdAt": 1793471690105.1,
+          "lookupMisses": 123,
+          "hitDecodeMs": 92.10003471374512,
+          "importFinishedAt": 1793471690113,
+          "entries": 7858,
+          "pending": 123,
+          "hits": 7748,
+          "misses": 123,
+          "bytes": 19881736,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4318,
+          "firstMissAt": 1793471692201.9001,
+          "firstMiss": {
+            "entries": 7735,
+            "pending": 0,
+            "hits": 7747,
+            "misses": 0,
+            "bytes": 19538451,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 2096.800001144409
+          },
+          "families": {
+            "opened": {
+              "entries": 2853,
+              "bytes": 4377613
+            },
+            "witness": {
+              "entries": 641,
+              "bytes": 105014
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 15096771
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          },
+          "disposedAt": 1793471694423.1
+        },
+        "peakDurablePayloadBytesThroughCutoff": 19603136,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 77,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 8,
+            "elapsedMs": 5106
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "reader",
+          "observedAt": 1793471695207.059,
+          "sampleReturnedAt": 1793471695214.639,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "reader",
+          "startedAt": 1793471695612.4822,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471698312.5042
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      },
+      {
+        "role": "writer",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 61819.111572265625,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471680062.2002,
+        "attemptsThroughCutoff": 8,
+        "attemptsCaptured": 8,
+        "interruptedAttemptsThroughCutoff": 3,
+        "interruptionConditionsByJob": {
+          "accountCapture.ts:615:flushJournal": 1,
+          "accountReceive.ts:2487:prepared": 2
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-03-r2-withheld",
+            "role": "writer",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471568757,
+            "notBefore": 1793471569059,
+            "endedAt": 1793471559055.7002,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 81796.19995117188,
+            "censoredAt120s": false,
+            "afterLastKey": false
+          },
+          {
+            "case": "owners321-03-r2-withheld",
+            "role": "writer",
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471640853,
+            "notBefore": 1793471655357,
+            "endedAt": 1793471645356.3,
+            "nextAttempt": 5,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10004.400146484375,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-03-r2-withheld",
+            "role": "writer",
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471640853,
+            "notBefore": 1793471674764,
+            "endedAt": 1793471664763.7002,
+            "nextAttempt": 8,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10007.89990234375,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19308574,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 3437,
+            "bytes": 4257046
+          },
+          "witness": {
+            "entries": 1132,
+            "bytes": 185670
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 123,
+            "bytes": 8994
+          },
+          "delivery": {
+            "entries": 246,
+            "bytes": 145199
+          },
+          "link": {
+            "entries": 123,
+            "bytes": 16866
+          },
+          "inbound": {
+            "entries": 2052,
+            "bytes": 14394154
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 8,
+          "createdAt": 1793471675202.8,
+          "lookupMisses": 538,
+          "hitDecodeMs": 92.60000610351562,
+          "importFinishedAt": 1793471675210.7002,
+          "entries": 9292,
+          "pending": 538,
+          "hits": 8887,
+          "misses": 538,
+          "bytes": 19308574,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4547.700000762939,
+          "firstMissAt": 1793471677062.2002,
+          "firstMiss": {
+            "entries": 8754,
+            "pending": 0,
+            "hits": 8761,
+            "misses": 0,
+            "bytes": 17813960,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1859.3999996185303
+          },
+          "families": {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793471679750.5
+        },
+        "peakDurablePayloadBytesThroughCutoff": 17908233,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 70,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 8,
+            "elapsedMs": 5290
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "writer",
+          "observedAt": 1793471680120.254,
+          "sampleReturnedAt": 1793471680122.786,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "writer",
+          "startedAt": 1793471698498.5483,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471700964.3552
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      }
+    ],
+    "typingFinishedAt": 1793471618243.0886,
+    "cutoffAt": 1793471738243.0886,
+    "observation": {
+      "diagnosticOnly": true,
+      "acceptanceCredit": false,
+      "cutoffAt": 1793471738243.0886,
+      "lastKeyReferenceAt": 1793471618243.0886,
+      "startedAt": 1793471680119.5535,
+      "pollMs": 1000,
+      "samples": [
+        {
+          "role": "reader",
+          "observedAt": 1793471680119.7139,
+          "sampleReturnedAt": 1793471680122.6868,
+          "status": {
+            "phase": "idle",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "writer",
+          "observedAt": 1793471680120.254,
+          "sampleReturnedAt": 1793471680122.786,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471681123.2512,
+          "sampleReturnedAt": 1793471681128.9558,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471682129.621,
+          "sampleReturnedAt": 1793471682137.358,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471683139.5825,
+          "sampleReturnedAt": 1793471683144.568,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471684145.7925,
+          "sampleReturnedAt": 1793471684150.6497,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471685152.8926,
+          "sampleReturnedAt": 1793471685159.8616,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471686160.258,
+          "sampleReturnedAt": 1793471686165.2644,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471687167.386,
+          "sampleReturnedAt": 1793471687171.9585,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471688172.922,
+          "sampleReturnedAt": 1793471688180.0037,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471689180.8179,
+          "sampleReturnedAt": 1793471689187.2827,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471690189.5469,
+          "sampleReturnedAt": 1793471690191.26,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "opening",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471691193.6223,
+          "sampleReturnedAt": 1793471691195.2622,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471692197.4382,
+          "sampleReturnedAt": 1793471692199.112,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471693201.274,
+          "sampleReturnedAt": 1793471693202.9973,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471694203.7078,
+          "sampleReturnedAt": 1793471694205.4238,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471695207.059,
+          "sampleReturnedAt": 1793471695214.639,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          }
+        }
+      ],
+      "terminal": {
+        "writer": {
+          "role": "writer",
+          "observedAt": 1793471680120.254,
+          "sampleReturnedAt": 1793471680122.786,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "reader": {
+          "role": "reader",
+          "observedAt": 1793471695207.059,
+          "sampleReturnedAt": 1793471695214.639,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        }
+      },
+      "endedAt": 1793471695214.6755
+    },
+    "overlapKeysInformation": 83,
+    "originalFunctionalOutcome": "passed",
+    "originalError": null,
+    "originalWriterWaitSatisfied": true,
+    "originalColdGuard": true,
+    "hostBusyMedian": 26.07218840454233,
+    "hostBusyMaximum": 41.38617805218084,
+    "noAcceptanceVerdict": true,
+    "timingQualification": "Native performanceEpoch minus Node typingFinishedAt, as in320; one-second status samples bound observation, not exact completion. No gate credit."
+  },
+  {
+    "name": "owners321-04-r2-normal",
+    "replicate": 2,
+    "withhold": false,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "P": 1,
+    "V": 0,
+    "D": 0,
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793471702.840357,
+    "finishedAt": 1793471881.881648,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793471853917.0193,
+        "sampleReturnedAt": 1793471853918.8633,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 9,
+          "interruptions": 4,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793471875083.611,
+        "sampleReturnedAt": 1793471875085.2844,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 8,
+          "interruptions": 3,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793471875494.7983,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471878201.4644
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793471878405.2874,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793471880832.9531
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 82459.39379882812,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471875044.3,
+        "attemptsThroughCutoff": 8,
+        "attemptsCaptured": 8,
+        "interruptedAttemptsThroughCutoff": 3,
+        "interruptionConditionsByJob": {
+          "accountReceive.ts:2487:prepared": 3
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "reader",
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471815462,
+            "notBefore": 1793471833591,
+            "endedAt": 1793471823595.8,
+            "nextAttempt": 4,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10010.89990234375,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "reader",
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471815462,
+            "notBefore": 1793471850505,
+            "endedAt": 1793471840510.6,
+            "nextAttempt": 6,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10007.800048828125,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "reader",
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471815462,
+            "notBefore": 1793471869761,
+            "endedAt": 1793471859766.7,
+            "nextAttempt": 8,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10001.60009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19948020,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 2861,
+            "bytes": 4425737
+          },
+          "witness": {
+            "entries": 649,
+            "bytes": 106326
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2179,
+            "bytes": 15113619
+          },
+          "coverage": {
+            "entries": 2180,
+            "bytes": 300840
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 7,
+          "createdAt": 1793471855824.8,
+          "lookupMisses": 245,
+          "hitDecodeMs": 90.80002403259277,
+          "importFinishedAt": 1793471855831.5,
+          "entries": 7874,
+          "pending": 245,
+          "hits": 7642,
+          "misses": 245,
+          "bytes": 19948020,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 3939.199998855591,
+          "firstMissAt": 1793471857967.5,
+          "firstMiss": {
+            "entries": 7629,
+            "pending": 0,
+            "hits": 7641,
+            "misses": 0,
+            "bytes": 19081987,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 2142.699998855591
+          },
+          "families": {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 15113619
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          },
+          "disposedAt": 1793471859764
+        },
+        "peakDurablePayloadBytesThroughCutoff": 19145771,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 76,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 8,
+            "elapsedMs": 5275
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "reader",
+          "observedAt": 1793471875083.611,
+          "sampleReturnedAt": 1793471875085.2844,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "reader",
+          "startedAt": 1793471875494.7983,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471878201.4644
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      },
+      {
+        "role": "writer",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 61306.393798828125,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793471853891.3,
+        "attemptsThroughCutoff": 9,
+        "attemptsCaptured": 9,
+        "interruptedAttemptsThroughCutoff": 4,
+        "interruptionConditionsByJob": {
+          "accountCapture.ts:615:flushJournal": 1,
+          "accountReceive.ts:2809:deliveryStatus": 1,
+          "accountReceive.ts:2487:prepared": 2
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "writer",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471743082,
+            "notBefore": 1793471743393,
+            "endedAt": 1793471733394.7,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 69196.0,
+            "censoredAt120s": false,
+            "afterLastKey": false
+          },
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "writer",
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471814041,
+            "notBefore": 1793471814334,
+            "endedAt": 1793471804337.8,
+            "nextAttempt": 4,
+            "nextInside120sWindow": true,
+            "actualGapMs": 11285.0,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "writer",
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471815608,
+            "notBefore": 1793471829207,
+            "endedAt": 1793471819211.0999,
+            "nextAttempt": 6,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10011.0,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-04-r2-normal",
+            "role": "writer",
+            "attempt": 8,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471815608,
+            "notBefore": 1793471848704,
+            "endedAt": 1793471838709,
+            "nextAttempt": 9,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10004.699951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19308574,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 3437,
+            "bytes": 4257046
+          },
+          "witness": {
+            "entries": 1132,
+            "bytes": 185670
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 123,
+            "bytes": 8994
+          },
+          "delivery": {
+            "entries": 246,
+            "bytes": 145199
+          },
+          "link": {
+            "entries": 123,
+            "bytes": 16866
+          },
+          "inbound": {
+            "entries": 2052,
+            "bytes": 14394154
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 9,
+          "createdAt": 1793471849144.9,
+          "lookupMisses": 515,
+          "hitDecodeMs": 83.79998970031738,
+          "importFinishedAt": 1793471849152.7,
+          "entries": 9292,
+          "pending": 515,
+          "hits": 8910,
+          "misses": 515,
+          "bytes": 19308574,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4458.300001144409,
+          "firstMissAt": 1793471851007.8,
+          "firstMiss": {
+            "entries": 8777,
+            "pending": 0,
+            "hits": 8784,
+            "misses": 0,
+            "bytes": 17899874,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1862.900001525879
+          },
+          "families": {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793471853603.2
+        },
+        "peakDurablePayloadBytesThroughCutoff": 17994927,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 70,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 9,
+            "elapsedMs": 5177
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "writer",
+          "observedAt": 1793471853917.0193,
+          "sampleReturnedAt": 1793471853918.8633,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "writer",
+          "startedAt": 1793471878405.2874,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793471880832.9531
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      }
+    ],
+    "typingFinishedAt": 1793471792584.9062,
+    "cutoffAt": 1793471912584.9062,
+    "observation": {
+      "diagnosticOnly": true,
+      "acceptanceCredit": false,
+      "cutoffAt": 1793471912584.9062,
+      "lastKeyReferenceAt": 1793471792584.9062,
+      "startedAt": 1793471853916.416,
+      "pollMs": 1000,
+      "samples": [
+        {
+          "role": "reader",
+          "observedAt": 1793471853916.5706,
+          "sampleReturnedAt": 1793471853918.7021,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "writer",
+          "observedAt": 1793471853917.0193,
+          "sampleReturnedAt": 1793471853918.8633,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471854921.48,
+          "sampleReturnedAt": 1793471854923.0781,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471855924.0005,
+          "sampleReturnedAt": 1793471855926.879,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "opening",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471856927.0828,
+          "sampleReturnedAt": 1793471856928.773,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471857931.0596,
+          "sampleReturnedAt": 1793471857933.0144,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471858933.1414,
+          "sampleReturnedAt": 1793471858934.8806,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471859936.8984,
+          "sampleReturnedAt": 1793471859938.8533,
+          "status": {
+            "phase": "idle",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471860941.2068,
+          "sampleReturnedAt": 1793471860948.0295,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471861949.4087,
+          "sampleReturnedAt": 1793471861956.011,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471862958.396,
+          "sampleReturnedAt": 1793471862966.0605,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471863967.6116,
+          "sampleReturnedAt": 1793471863974.2185,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471864976.7952,
+          "sampleReturnedAt": 1793471865030.7014,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471866032.4966,
+          "sampleReturnedAt": 1793471866039.1106,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471867040.3093,
+          "sampleReturnedAt": 1793471867048.1843,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471868050.4585,
+          "sampleReturnedAt": 1793471868056.684,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471869057.696,
+          "sampleReturnedAt": 1793471869064.6267,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471870066.7834,
+          "sampleReturnedAt": 1793471870068.581,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "reading",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471871070.7427,
+          "sampleReturnedAt": 1793471871072.2449,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471872073.225,
+          "sampleReturnedAt": 1793471872074.8882,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471873077.016,
+          "sampleReturnedAt": 1793471873078.671,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471874080.8982,
+          "sampleReturnedAt": 1793471874082.5156,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793471875083.611,
+          "sampleReturnedAt": 1793471875085.2844,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          }
+        }
+      ],
+      "terminal": {
+        "writer": {
+          "role": "writer",
+          "observedAt": 1793471853917.0193,
+          "sampleReturnedAt": 1793471853918.8633,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "reader": {
+          "role": "reader",
+          "observedAt": 1793471875083.611,
+          "sampleReturnedAt": 1793471875085.2844,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 8,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        }
+      },
+      "endedAt": 1793471875085.2952
+    },
+    "overlapKeysInformation": 120,
+    "originalFunctionalOutcome": "passed",
+    "originalError": null,
+    "originalWriterWaitSatisfied": true,
+    "originalColdGuard": true,
+    "hostBusyMedian": 30.83465189873418,
+    "hostBusyMaximum": 45.78025477707006,
+    "noAcceptanceVerdict": true,
+    "timingQualification": "Native performanceEpoch minus Node typingFinishedAt, as in320; one-second status samples bound observation, not exact completion. No gate credit."
+  },
+  {
+    "name": "owners321-05-r3-normal",
+    "replicate": 3,
+    "withhold": false,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "P": 1,
+    "V": 0,
+    "D": 0,
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793471882.6208682,
+    "finishedAt": 1793472042.919188,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793472035935.9976,
+        "sampleReturnedAt": 1793472035938.3286,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 5,
+          "interruptions": 0,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793472035936.4607,
+        "sampleReturnedAt": 1793472035938.2383,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 9,
+          "interruptions": 4,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793472036441.6365,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793472039180.4214
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793472039377.771,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793472041853.0967
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 43982.366455078125,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793472016411.5,
+        "attemptsThroughCutoff": 5,
+        "attemptsCaptured": 5,
+        "interruptedAttemptsThroughCutoff": 0,
+        "interruptionConditionsByJob": {},
+        "retryClocks": [],
+        "peakMapBytesObserved": 19948020,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 2861,
+            "bytes": 4425737
+          },
+          "witness": {
+            "entries": 649,
+            "bytes": 106326
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2179,
+            "bytes": 15113619
+          },
+          "coverage": {
+            "entries": 2180,
+            "bytes": 300840
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 5,
+          "createdAt": 1793472011712.1,
+          "lookupMisses": 112,
+          "hitDecodeMs": 82.10000419616699,
+          "importFinishedAt": 1793472011720,
+          "entries": 7874,
+          "pending": 112,
+          "hits": 7775,
+          "misses": 112,
+          "bytes": 19948020,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4414.10000038147,
+          "firstMissAt": 1793472013840.5,
+          "firstMiss": {
+            "entries": 7762,
+            "pending": 0,
+            "hits": 7774,
+            "misses": 0,
+            "bytes": 19556966,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 2128.5
+          },
+          "families": {
+            "opened": {
+              "entries": 2861,
+              "bytes": 4425737
+            },
+            "witness": {
+              "entries": 649,
+              "bytes": 106326
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2179,
+              "bytes": 15113619
+            },
+            "coverage": {
+              "entries": 2180,
+              "bytes": 300840
+            }
+          },
+          "disposedAt": 1793472016126.1
+        },
+        "peakDurablePayloadBytesThroughCutoff": 19621881,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 77,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 5,
+            "elapsedMs": 5158
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "reader",
+          "observedAt": 1793472035935.9976,
+          "sampleReturnedAt": 1793472035938.3286,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 5,
+            "interruptions": 0,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "reader",
+          "startedAt": 1793472036441.6365,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793472039180.4214
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      },
+      {
+        "role": "writer",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 63474.66650390625,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793472035903.8,
+        "attemptsThroughCutoff": 9,
+        "attemptsCaptured": 9,
+        "interruptedAttemptsThroughCutoff": 4,
+        "interruptionConditionsByJob": {
+          "accountCapture.ts:615:flushJournal": 2,
+          "accountReceive.ts:2487:prepared": 2
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-05-r3-normal",
+            "role": "writer",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471922927,
+            "notBefore": 1793471923235,
+            "endedAt": 1793471913236,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 69205.09985351562,
+            "censoredAt120s": false,
+            "afterLastKey": false
+          },
+          {
+            "case": "owners321-05-r3-normal",
+            "role": "writer",
+            "attempt": 3,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471993406,
+            "notBefore": 1793471993703,
+            "endedAt": 1793471983707.2,
+            "nextAttempt": 4,
+            "nextInside120sWindow": true,
+            "actualGapMs": 11299.0,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-05-r3-normal",
+            "role": "writer",
+            "attempt": 5,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471994994,
+            "notBefore": 1793472010214,
+            "endedAt": 1793472000218,
+            "nextAttempt": 6,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10011.300048828125,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-05-r3-normal",
+            "role": "writer",
+            "attempt": 7,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793471994994,
+            "notBefore": 1793472026213,
+            "endedAt": 1793472016218.3,
+            "nextAttempt": 8,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10007.0,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19308574,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 3437,
+            "bytes": 4257046
+          },
+          "witness": {
+            "entries": 1132,
+            "bytes": 185670
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 123,
+            "bytes": 8994
+          },
+          "delivery": {
+            "entries": 246,
+            "bytes": 145199
+          },
+          "link": {
+            "entries": 123,
+            "bytes": 16866
+          },
+          "inbound": {
+            "entries": 2052,
+            "bytes": 14394154
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 9,
+          "createdAt": 1793472031230.8,
+          "lookupMisses": 481,
+          "hitDecodeMs": 85.40000915527344,
+          "importFinishedAt": 1793472031237.8,
+          "entries": 9292,
+          "pending": 481,
+          "hits": 8944,
+          "misses": 481,
+          "bytes": 19308574,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4397.89999961853,
+          "firstMissAt": 1793472033083.9,
+          "firstMiss": {
+            "entries": 8811,
+            "pending": 0,
+            "hits": 8818,
+            "misses": 0,
+            "bytes": 18021781,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1853.1000003814697
+          },
+          "families": {
+            "opened": {
+              "entries": 3437,
+              "bytes": 4257046
+            },
+            "witness": {
+              "entries": 1132,
+              "bytes": 185670
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 123,
+              "bytes": 8994
+            },
+            "delivery": {
+              "entries": 246,
+              "bytes": 145199
+            },
+            "link": {
+              "entries": 123,
+              "bytes": 16866
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793472035628.7
+        },
+        "peakDurablePayloadBytesThroughCutoff": 18117415,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 71,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 9,
+            "elapsedMs": 5105
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "writer",
+          "observedAt": 1793472035936.4607,
+          "sampleReturnedAt": 1793472035938.2383,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "writer",
+          "startedAt": 1793472039377.771,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793472041853.0967
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      }
+    ],
+    "typingFinishedAt": 1793471972429.1335,
+    "cutoffAt": 1793472092429.1335,
+    "observation": {
+      "diagnosticOnly": true,
+      "acceptanceCredit": false,
+      "cutoffAt": 1793472092429.1335,
+      "lastKeyReferenceAt": 1793471972429.1335,
+      "startedAt": 1793472035935.8384,
+      "pollMs": 1000,
+      "samples": [
+        {
+          "role": "reader",
+          "observedAt": 1793472035935.9976,
+          "sampleReturnedAt": 1793472035938.3286,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 5,
+            "interruptions": 0,
+            "completions": 1
+          }
+        },
+        {
+          "role": "writer",
+          "observedAt": 1793472035936.4607,
+          "sampleReturnedAt": 1793472035938.2383,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          }
+        }
+      ],
+      "terminal": {
+        "reader": {
+          "role": "reader",
+          "observedAt": 1793472035935.9976,
+          "sampleReturnedAt": 1793472035938.3286,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 5,
+            "interruptions": 0,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "writer": {
+          "role": "writer",
+          "observedAt": 1793472035936.4607,
+          "sampleReturnedAt": 1793472035938.2383,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 9,
+            "interruptions": 4,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        }
+      },
+      "endedAt": 1793472035938.348
+    },
+    "overlapKeysInformation": 120,
+    "originalFunctionalOutcome": "passed",
+    "originalError": null,
+    "originalWriterWaitSatisfied": true,
+    "originalColdGuard": true,
+    "hostBusyMedian": 32.590972360310204,
+    "hostBusyMaximum": 44.875621890547265,
+    "noAcceptanceVerdict": true,
+    "timingQualification": "Native performanceEpoch minus Node typingFinishedAt, as in320; one-second status samples bound observation, not exact completion. No gate credit."
+  },
+  {
+    "name": "owners321-06-r3-withheld",
+    "replicate": 3,
+    "withhold": true,
+    "bits": "10101",
+    "SY": "11",
+    "repairMs": 1000,
+    "P": 1,
+    "V": 0,
+    "D": 0,
+    "config": "grown-maintenance.config.ts",
+    "fileFilter": "test/account-continuation-lab/phase321/grown-maintenance.spec.ts",
+    "fixture": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-P1/fixture.json",
+    "result": "result.json",
+    "diagnosticOnly": true,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts",
+      "test/account-continuation-lab/phase321/grown-maintenance.spec.ts"
+    ],
+    "childExit": 0,
+    "startedAt": 1793472043.654135,
+    "finishedAt": 1793472217.050124,
+    "outcome": "passed",
+    "error": null,
+    "coldFailure": false,
+    "guards": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true,
+      "maintenanceFinishesAfterInput": true,
+      "bothOfflineColdProfilesExact": true,
+      "noColdStorageReinjection": true
+    },
+    "ownerObservation": {
+      "writer": {
+        "role": "writer",
+        "observedAt": 1793472187115.3572,
+        "sampleReturnedAt": 1793472187117.2275,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 7,
+          "interruptions": 2,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      },
+      "reader": {
+        "role": "reader",
+        "observedAt": 1793472210237.7224,
+        "sampleReturnedAt": 1793472210241.3457,
+        "status": {
+          "phase": "idle",
+          "stage": "complete",
+          "attempts": 7,
+          "interruptions": 3,
+          "completions": 1
+        },
+        "kind": "completion-observed"
+      }
+    },
+    "ownerCold": [
+      {
+        "role": "reader",
+        "startedAt": 1793472210640.533,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793472213337.1755
+      },
+      {
+        "role": "writer",
+        "startedAt": 1793472213544.9507,
+        "outcome": "passed",
+        "archiveExact": true,
+        "completedAt": 1793472215974.2183
+      }
+    ],
+    "positionsAt30": null,
+    "timeTo700Ms": null,
+    "timeTo1025Ms": null,
+    "deep30Pass": null,
+    "externalLoadLog": "host-load.jsonl",
+    "owners": [
+      {
+        "role": "reader",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 75939.44165039062,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793472209873.5999,
+        "attemptsThroughCutoff": 7,
+        "attemptsCaptured": 7,
+        "interruptedAttemptsThroughCutoff": 3,
+        "interruptionConditionsByJob": {
+          "accountReceive.ts:1608:status": 2,
+          "accountReceive.ts:2487:prepared": 1
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-06-r3-withheld",
+            "role": "reader",
+            "attempt": 1,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793472156604,
+            "notBefore": 1793472167947,
+            "endedAt": 1793472157951.4,
+            "nextAttempt": 2,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10371.300048828125,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-06-r3-withheld",
+            "role": "reader",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793472156604,
+            "notBefore": 1793472179344,
+            "endedAt": 1793472169348.8,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10010.89990234375,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          },
+          {
+            "case": "owners321-06-r3-withheld",
+            "role": "reader",
+            "attempt": 6,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793472156604,
+            "notBefore": 1793472204258,
+            "endedAt": 1793472194264.4,
+            "nextAttempt": 7,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10005.60009765625,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19844580,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 2849,
+            "bytes": 4355762
+          },
+          "witness": {
+            "entries": 637,
+            "bytes": 104358
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 1,
+            "bytes": 72
+          },
+          "delivery": {
+            "entries": 2,
+            "bytes": 1209
+          },
+          "link": {
+            "entries": 1,
+            "bytes": 136
+          },
+          "inbound": {
+            "entries": 2177,
+            "bytes": 15082398
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 6,
+          "createdAt": 1793472190435.0999,
+          "lookupMisses": 988,
+          "hitDecodeMs": 77.89997291564941,
+          "importFinishedAt": 1793472190441.4,
+          "entries": 7846,
+          "pending": 988,
+          "hits": 6871,
+          "misses": 988,
+          "bytes": 19844580,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 3826.400001525879,
+          "firstMissAt": 1793472192139,
+          "firstMiss": {
+            "entries": 6858,
+            "pending": 0,
+            "hits": 6870,
+            "misses": 0,
+            "bytes": 16453683,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1703.900001525879
+          },
+          "families": {
+            "opened": {
+              "entries": 2849,
+              "bytes": 4355762
+            },
+            "witness": {
+              "entries": 637,
+              "bytes": 104358
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 1,
+              "bytes": 72
+            },
+            "delivery": {
+              "entries": 2,
+              "bytes": 1209
+            },
+            "link": {
+              "entries": 1,
+              "bytes": 136
+            },
+            "inbound": {
+              "entries": 2177,
+              "bytes": 15082398
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793472194261.5999
+        },
+        "peakDurablePayloadBytesThroughCutoff": 16510911,
+        "maximumSavedDeltas": 3,
+        "maximumSavedChunks": 64,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 7,
+            "elapsedMs": 5603
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "reader",
+          "observedAt": 1793472210237.7224,
+          "sampleReturnedAt": 1793472210241.3457,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "reader",
+          "startedAt": 1793472210640.533,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793472213337.1755
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      },
+      {
+        "role": "writer",
+        "endpoint": "completed-within120s",
+        "completionAfterLastKeyMs": 53122.841796875,
+        "completedWithin120s": true,
+        "nativeCompletionAt": 1793472187057,
+        "attemptsThroughCutoff": 7,
+        "attemptsCaptured": 7,
+        "interruptedAttemptsThroughCutoff": 2,
+        "interruptionConditionsByJob": {
+          "accountCapture.ts:615:flushJournal": 1,
+          "accountReceive.ts:2487:prepared": 1
+        },
+        "retryClocks": [
+          {
+            "case": "owners321-06-r3-withheld",
+            "role": "writer",
+            "attempt": 2,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793472084449,
+            "notBefore": 1793472084756,
+            "endedAt": 1793472074757.5,
+            "nextAttempt": 3,
+            "nextInside120sWindow": true,
+            "actualGapMs": 82018.40014648438,
+            "censoredAt120s": false,
+            "afterLastKey": false
+          },
+          {
+            "case": "owners321-06-r3-withheld",
+            "role": "writer",
+            "attempt": 4,
+            "priorityOnly": true,
+            "scheduledRetryMs": 10000,
+            "quietUntilAtScheduling": 1793472156768,
+            "notBefore": 1793472172609,
+            "endedAt": 1793472162613.9001,
+            "nextAttempt": 5,
+            "nextInside120sWindow": true,
+            "actualGapMs": 10007.199951171875,
+            "censoredAt120s": false,
+            "afterLastKey": true
+          }
+        ],
+        "peakMapBytesObserved": 19296664,
+        "peakMapFamilies": {
+          "opened": {
+            "entries": 3427,
+            "bytes": 4249526
+          },
+          "witness": {
+            "entries": 1122,
+            "bytes": 184020
+          },
+          "admission-prefix": {
+            "entries": 1,
+            "bytes": 81
+          },
+          "spool": {
+            "entries": 121,
+            "bytes": 8846
+          },
+          "delivery": {
+            "entries": 242,
+            "bytes": 142883
+          },
+          "link": {
+            "entries": 121,
+            "bytes": 16590
+          },
+          "inbound": {
+            "entries": 2052,
+            "bytes": 14394154
+          },
+          "coverage": {
+            "entries": 2178,
+            "bytes": 300564
+          }
+        },
+        "peakJournalSnapshot": {
+          "id": 7,
+          "createdAt": 1793472182336.2002,
+          "lookupMisses": 455,
+          "hitDecodeMs": 87.29999351501465,
+          "importFinishedAt": 1793472182344.8,
+          "entries": 9264,
+          "pending": 455,
+          "hits": 8942,
+          "misses": 455,
+          "bytes": 19296664,
+          "entryCap": 131072,
+          "byteCap": 33554432,
+          "sliceMs": 2000,
+          "elapsedMs": 4427.60000038147,
+          "firstMissAt": 1793472184220,
+          "firstMiss": {
+            "entries": 8809,
+            "pending": 0,
+            "hits": 8816,
+            "misses": 0,
+            "bytes": 18103094,
+            "entryCap": 131072,
+            "byteCap": 33554432,
+            "sliceMs": 2000,
+            "elapsedMs": 1883.7999992370605
+          },
+          "families": {
+            "opened": {
+              "entries": 3427,
+              "bytes": 4249526
+            },
+            "witness": {
+              "entries": 1122,
+              "bytes": 184020
+            },
+            "admission-prefix": {
+              "entries": 1,
+              "bytes": 81
+            },
+            "spool": {
+              "entries": 121,
+              "bytes": 8846
+            },
+            "delivery": {
+              "entries": 242,
+              "bytes": 142883
+            },
+            "link": {
+              "entries": 121,
+              "bytes": 16590
+            },
+            "inbound": {
+              "entries": 2052,
+              "bytes": 14394154
+            },
+            "coverage": {
+              "entries": 2178,
+              "bytes": 300564
+            }
+          },
+          "disposedAt": 1793472186763.8
+        },
+        "peakDurablePayloadBytesThroughCutoff": 18200609,
+        "maximumSavedDeltas": 4,
+        "maximumSavedChunks": 72,
+        "preparationByteCap": 33554432,
+        "capacityRefusalsThroughCutoff": 0,
+        "haltedAtCapture": false,
+        "haltWithin120s": false,
+        "haltAfterLastKeyMs": null,
+        "lastStatus": {
+          "phase": "idle",
+          "progress": {
+            "stage": "complete",
+            "attempt": 7,
+            "elapsedMs": 5175
+          }
+        },
+        "lastOutcome": {
+          "kind": "removed"
+        },
+        "terminalSample": {
+          "role": "writer",
+          "observedAt": 1793472187115.3572,
+          "sampleReturnedAt": 1793472187117.2275,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "nativeTraceOverflow": 0,
+        "newStartsDuringTyping": [],
+        "newStartsDuringReaderDrain": [],
+        "cold": {
+          "role": "writer",
+          "startedAt": 1793472213544.9507,
+          "outcome": "passed",
+          "archiveExact": true,
+          "completedAt": 1793472215974.2183
+        },
+        "journalPeakQualification": "Observed import/disposal snapshots through pre-cold capture; an active journal may be a lower bound. Durable bytes are saved delta payload, not encrypted disk usage."
+      }
+    ],
+    "typingFinishedAt": 1793472133934.1582,
+    "cutoffAt": 1793472253934.1582,
+    "observation": {
+      "diagnosticOnly": true,
+      "acceptanceCredit": false,
+      "cutoffAt": 1793472253934.1582,
+      "lastKeyReferenceAt": 1793472133934.1582,
+      "startedAt": 1793472187114.7058,
+      "pollMs": 1000,
+      "samples": [
+        {
+          "role": "reader",
+          "observedAt": 1793472187114.8455,
+          "sampleReturnedAt": 1793472187117.2634,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 5,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "writer",
+          "observedAt": 1793472187115.3572,
+          "sampleReturnedAt": 1793472187117.2275,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 1
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472188118.1907,
+          "sampleReturnedAt": 1793472188120.034,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 5,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472189121.9888,
+          "sampleReturnedAt": 1793472189123.7368,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 5,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472190125.8733,
+          "sampleReturnedAt": 1793472190127.4832,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "durability",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472191129.1033,
+          "sampleReturnedAt": 1793472191130.757,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472192132.868,
+          "sampleReturnedAt": 1793472192134.5508,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472193136.7185,
+          "sampleReturnedAt": 1793472193138.4763,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "verifying",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472194138.7056,
+          "sampleReturnedAt": 1793472194140.6675,
+          "status": {
+            "phase": "running",
+            "reason": "preparation-saved",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 2,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472195142.1782,
+          "sampleReturnedAt": 1793472195147.1414,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472196153.4841,
+          "sampleReturnedAt": 1793472196159.8755,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472197161.21,
+          "sampleReturnedAt": 1793472197167.0127,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472198167.7988,
+          "sampleReturnedAt": 1793472198170.1929,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472199171.8909,
+          "sampleReturnedAt": 1793472199178.4475,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472200180.735,
+          "sampleReturnedAt": 1793472200187.1265,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472201188.482,
+          "sampleReturnedAt": 1793472201196.4539,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472202196.9448,
+          "sampleReturnedAt": 1793472202198.8953,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472203201.3828,
+          "sampleReturnedAt": 1793472203208.2603,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472204210.6396,
+          "sampleReturnedAt": 1793472204215.462,
+          "status": {
+            "phase": "waiting",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 6,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472205217.5764,
+          "sampleReturnedAt": 1793472205219.3027,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472206221.6433,
+          "sampleReturnedAt": 1793472206223.3997,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472207225.4143,
+          "sampleReturnedAt": 1793472207227.2822,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "verifying",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472208229.4282,
+          "sampleReturnedAt": 1793472208231.1626,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472209233.4712,
+          "sampleReturnedAt": 1793472209235.1611,
+          "status": {
+            "phase": "running",
+            "reason": "activity-or-journal",
+            "stage": "coverage",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 0
+          }
+        },
+        {
+          "role": "reader",
+          "observedAt": 1793472210237.7224,
+          "sampleReturnedAt": 1793472210241.3457,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 1
+          }
+        }
+      ],
+      "terminal": {
+        "writer": {
+          "role": "writer",
+          "observedAt": 1793472187115.3572,
+          "sampleReturnedAt": 1793472187117.2275,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 7,
+            "interruptions": 2,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        },
+        "reader": {
+          "role": "reader",
+          "observedAt": 1793472210237.7224,
+          "sampleReturnedAt": 1793472210241.3457,
+          "status": {
+            "phase": "idle",
+            "stage": "complete",
+            "attempts": 7,
+            "interruptions": 3,
+            "completions": 1
+          },
+          "kind": "completion-observed"
+        }
+      },
+      "endedAt": 1793472210241.367
+    },
+    "overlapKeysInformation": 80,
+    "originalFunctionalOutcome": "passed",
+    "originalError": null,
+    "originalWriterWaitSatisfied": true,
+    "originalColdGuard": true,
+    "hostBusyMedian": 26.872947241508335,
+    "hostBusyMaximum": 48.458498023715414,
+    "noAcceptanceVerdict": true,
+    "timingQualification": "Native performanceEpoch minus Node typingFinishedAt, as in320; one-second status samples bound observation, not exact completion. No gate credit."
+  }
+]

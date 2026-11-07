@@ -1,0 +1,38 @@
+{
+  "all36Reached": true,
+  "all36FunctionalAndColdGuardsPass": true,
+  "actualNoFColdFailures": 0,
+  "independentlyBalancedObservedColdStages": 24,
+  "sourceArtifactAndHarnessHashesStillExact": true,
+  "originalAnalyzersByteExact": true,
+  "oldFixtureHashesExact": true,
+  "originalPredicateFailures": {
+    "final-gate-r1-old-maintenance-normal": [
+      "atLeast60KeysDuringCatchup"
+    ],
+    "final-gate-r1-old-maintenance-withheld": [
+      "atLeast60KeysDuringCatchup"
+    ],
+    "final-gate-r2-old-maintenance-normal": [
+      "atLeast60KeysDuringCatchup"
+    ],
+    "final-gate-r2-old-maintenance-withheld": [
+      "atLeast60KeysDuringCatchup"
+    ],
+    "final-gate-r3-old-maintenance-normal": [
+      "atLeast60KeysDuringCatchup"
+    ],
+    "final-gate-r3-old-maintenance-withheld": [
+      "atLeast60KeysDuringCatchup"
+    ]
+  },
+  "allSixGrownPredicatesPass": true,
+  "allSixLatePostDrainTargetsPass": true,
+  "grownOwnerRows": 12,
+  "grownInterruptedAttempts": 32,
+  "grownInterruptionConditions": 33,
+  "noGrownAttemptsStartDuringTypingOrReaderDrain": true,
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "nonPriority60sRetryCoverage": "Not exposed here; keep60, requires separate hardening controls"
+}

@@ -1,0 +1,464 @@
+[
+  {
+    "name": "grown-maintenance-1-normal",
+    "kind": "maintenance",
+    "mode": "maintenance",
+    "withhold": false,
+    "bits": "1110",
+    "config": "grown-maintenance.config.ts",
+    "fixture": "grown2048",
+    "replicate": 1,
+    "civilCohort": "2026-10-31",
+    "fixtureBacklog": 2048,
+    "artifactDir": "grown-maintenance-1-normal",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "functionalExit": 1,
+    "startedAt": 1793407061.994964,
+    "finishedAt": 1793407294.314603,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "analysisExit": 1,
+    "peerMs": {
+      "n": 120,
+      "p50": 787.311767578125,
+      "p95": 1069.9521484375,
+      "max": 1251.36865234375
+    },
+    "localMs": {
+      "n": 120,
+      "p50": 2.799560546875,
+      "p95": 4.71533203125,
+      "max": 8.38232421875
+    },
+    "markerPeerMs": [
+      793.334228515625,
+      677.547607421875,
+      975.24365234375
+    ],
+    "keysDuringBacklog": 120,
+    "backlogMs": 94017.546875,
+    "failedError": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "guardsReached": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "maintenanceAttempts": 10,
+    "maintenanceCompletions": 0,
+    "maintenanceStatus": {
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "verifying",
+        "attempt": 10,
+        "elapsedMs": 783
+      }
+    },
+    "counterVersionAfterFailure": 2,
+    "cold": "not reached",
+    "accepted": false,
+    "qualification": "Supplemental descriptive metrics from failed full cases. Strict original analyzer failure retained; maintenance120s deadline not changed; no cold or acceptance credit. No unmatched old153 relative credit.",
+    "diagnosticPredicates": {
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "atLeast60KeysDuringCatchup": true,
+      "fullBacklog600s": true,
+      "maintenanceCompletes": false,
+      "originalColdGuard": "not reached"
+    }
+  },
+  {
+    "name": "grown-maintenance-2-withheld",
+    "kind": "maintenance",
+    "mode": "maintenance",
+    "withhold": true,
+    "bits": "1110",
+    "config": "grown-maintenance.config.ts",
+    "fixture": "grown2048",
+    "replicate": 1,
+    "civilCohort": "2026-10-31",
+    "fixtureBacklog": 2048,
+    "artifactDir": "grown-maintenance-2-withheld",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "functionalExit": 1,
+    "startedAt": 1793407295.240596,
+    "finishedAt": 1793407514.928788,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "analysisExit": 1,
+    "peerMs": {
+      "n": 120,
+      "p50": 1078.666259765625,
+      "p95": 1465.429443359375,
+      "max": 1681.686767578125
+    },
+    "localMs": {
+      "n": 120,
+      "p50": 2.883544921875,
+      "p95": 4.26220703125,
+      "max": 8.58251953125
+    },
+    "markerPeerMs": [
+      1199.290771484375,
+      771.772216796875,
+      1452.4248046875
+    ],
+    "keysDuringBacklog": 120,
+    "backlogMs": 78791.33422851562,
+    "failedError": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "guardsReached": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "maintenanceAttempts": 10,
+    "maintenanceCompletions": 0,
+    "maintenanceStatus": {
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "opening",
+        "completed": 0,
+        "total": 4967,
+        "attempt": 10,
+        "elapsedMs": 530
+      }
+    },
+    "counterVersionAfterFailure": 2,
+    "cold": "not reached",
+    "accepted": false,
+    "qualification": "Supplemental descriptive metrics from failed full cases. Strict original analyzer failure retained; maintenance120s deadline not changed; no cold or acceptance credit. No unmatched old153 relative credit.",
+    "diagnosticPredicates": {
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "atLeast60KeysDuringCatchup": true,
+      "fullBacklog600s": true,
+      "maintenanceCompletes": false,
+      "originalColdGuard": "not reached"
+    }
+  },
+  {
+    "name": "grown-maintenance-3-withheld",
+    "kind": "maintenance",
+    "mode": "maintenance",
+    "withhold": true,
+    "bits": "1110",
+    "config": "grown-maintenance.config.ts",
+    "fixture": "grown2048",
+    "replicate": 2,
+    "civilCohort": "2026-10-31",
+    "fixtureBacklog": 2048,
+    "artifactDir": "grown-maintenance-3-withheld",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "functionalExit": 1,
+    "startedAt": 1793407515.852549,
+    "finishedAt": 1793407734.9113238,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "analysisExit": 1,
+    "peerMs": {
+      "n": 120,
+      "p50": 1122.56982421875,
+      "p95": 1642.22021484375,
+      "max": 2713.008056640625
+    },
+    "localMs": {
+      "n": 120,
+      "p50": 2.764404296875,
+      "p95": 3.414306640625,
+      "max": 5.0966796875
+    },
+    "markerPeerMs": [
+      1334.91552734375,
+      940.648681640625,
+      1135.9560546875
+    ],
+    "keysDuringBacklog": 112,
+    "backlogMs": 70592.50024414062,
+    "failedError": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "guardsReached": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "maintenanceAttempts": 16,
+    "maintenanceCompletions": 0,
+    "maintenanceStatus": {
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "opening",
+        "completed": 0,
+        "total": 4972,
+        "attempt": 16,
+        "elapsedMs": 568
+      }
+    },
+    "counterVersionAfterFailure": 2,
+    "cold": "not reached",
+    "accepted": false,
+    "qualification": "Supplemental descriptive metrics from failed full cases. Strict original analyzer failure retained; maintenance120s deadline not changed; no cold or acceptance credit. No unmatched old153 relative credit.",
+    "diagnosticPredicates": {
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "atLeast60KeysDuringCatchup": true,
+      "fullBacklog600s": true,
+      "maintenanceCompletes": false,
+      "originalColdGuard": "not reached"
+    }
+  },
+  {
+    "name": "grown-maintenance-4-normal",
+    "kind": "maintenance",
+    "mode": "maintenance",
+    "withhold": false,
+    "bits": "1110",
+    "config": "grown-maintenance.config.ts",
+    "fixture": "grown2048",
+    "replicate": 2,
+    "civilCohort": "2026-10-31",
+    "fixtureBacklog": 2048,
+    "artifactDir": "grown-maintenance-4-normal",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "functionalExit": 1,
+    "startedAt": 1793407735.8213131,
+    "finishedAt": 1793407970.324267,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "analysisExit": 1,
+    "peerMs": {
+      "n": 120,
+      "p50": 771.81591796875,
+      "p95": 1085.254638671875,
+      "max": 1166.93994140625
+    },
+    "localMs": {
+      "n": 120,
+      "p50": 2.819580078125,
+      "p95": 3.837890625,
+      "max": 8.2685546875
+    },
+    "markerPeerMs": [
+      752.811279296875,
+      744.534912109375,
+      716.640380859375
+    ],
+    "keysDuringBacklog": 120,
+    "backlogMs": 96378.02270507812,
+    "failedError": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "guardsReached": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "maintenanceAttempts": 12,
+    "maintenanceCompletions": 0,
+    "maintenanceStatus": {
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "verifying",
+        "attempt": 12,
+        "elapsedMs": 832
+      }
+    },
+    "counterVersionAfterFailure": 2,
+    "cold": "not reached",
+    "accepted": false,
+    "qualification": "Supplemental descriptive metrics from failed full cases. Strict original analyzer failure retained; maintenance120s deadline not changed; no cold or acceptance credit. No unmatched old153 relative credit.",
+    "diagnosticPredicates": {
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "atLeast60KeysDuringCatchup": true,
+      "fullBacklog600s": true,
+      "maintenanceCompletes": false,
+      "originalColdGuard": "not reached"
+    }
+  },
+  {
+    "name": "grown-maintenance-5-normal",
+    "kind": "maintenance",
+    "mode": "maintenance",
+    "withhold": false,
+    "bits": "1110",
+    "config": "grown-maintenance.config.ts",
+    "fixture": "grown2048",
+    "replicate": 3,
+    "civilCohort": "2026-10-31",
+    "fixtureBacklog": 2048,
+    "artifactDir": "grown-maintenance-5-normal",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "functionalExit": 1,
+    "startedAt": 1793407971.294394,
+    "finishedAt": 1793408213.19553,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "analysisExit": 1,
+    "peerMs": {
+      "n": 120,
+      "p50": 830.67236328125,
+      "p95": 1126.757568359375,
+      "max": 1300.04541015625
+    },
+    "localMs": {
+      "n": 120,
+      "p50": 2.903076171875,
+      "p95": 4.0869140625,
+      "max": 16.471923828125
+    },
+    "markerPeerMs": [
+      950.934814453125,
+      892.9765625,
+      854.409423828125
+    ],
+    "keysDuringBacklog": 120,
+    "backlogMs": 103546.8115234375,
+    "failedError": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "guardsReached": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "maintenanceAttempts": 13,
+    "maintenanceCompletions": 0,
+    "maintenanceStatus": {
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "opening",
+        "completed": 0,
+        "total": 4967,
+        "attempt": 13,
+        "elapsedMs": 586
+      }
+    },
+    "counterVersionAfterFailure": 2,
+    "cold": "not reached",
+    "accepted": false,
+    "qualification": "Supplemental descriptive metrics from failed full cases. Strict original analyzer failure retained; maintenance120s deadline not changed; no cold or acceptance credit. No unmatched old153 relative credit.",
+    "diagnosticPredicates": {
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "atLeast60KeysDuringCatchup": true,
+      "fullBacklog600s": true,
+      "maintenanceCompletes": false,
+      "originalColdGuard": "not reached"
+    }
+  },
+  {
+    "name": "grown-maintenance-6-withheld",
+    "kind": "maintenance",
+    "mode": "maintenance",
+    "withhold": true,
+    "bits": "1110",
+    "config": "grown-maintenance.config.ts",
+    "fixture": "grown2048",
+    "replicate": 3,
+    "civilCohort": "2026-10-31",
+    "fixtureBacklog": 2048,
+    "artifactDir": "grown-maintenance-6-withheld",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/grown-maintenance.config.ts"
+    ],
+    "functionalExit": 1,
+    "startedAt": 1793408214.1590028,
+    "finishedAt": 1793408436.7903712,
+    "outcome": "failed",
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "analysisExit": 1,
+    "peerMs": {
+      "n": 120,
+      "p50": 1134.3408203125,
+      "p95": 1518.2158203125,
+      "max": 1769.385498046875
+    },
+    "localMs": {
+      "n": 120,
+      "p50": 2.993408203125,
+      "p95": 7.264404296875,
+      "max": 18.672119140625
+    },
+    "markerPeerMs": [
+      1421.277587890625,
+      1465.001953125,
+      1061.181884765625
+    ],
+    "keysDuringBacklog": 120,
+    "backlogMs": 81435.28149414062,
+    "failedError": "TimeoutError: page.waitForFunction: Timeout 120000ms exceeded.",
+    "guardsReached": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "maintenanceAttempts": 7,
+    "maintenanceCompletions": 0,
+    "maintenanceStatus": {
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "reading",
+        "attempt": 7,
+        "elapsedMs": 90
+      }
+    },
+    "counterVersionAfterFailure": 2,
+    "cold": "not reached",
+    "accepted": false,
+    "qualification": "Supplemental descriptive metrics from failed full cases. Strict original analyzer failure retained; maintenance120s deadline not changed; no cold or acceptance credit. No unmatched old153 relative credit.",
+    "diagnosticPredicates": {
+      "local16ms": true,
+      "peer2500ms": true,
+      "everyMarker2500ms": true,
+      "atLeast60KeysDuringCatchup": true,
+      "fullBacklog600s": true,
+      "maintenanceCompletes": false,
+      "originalColdGuard": "not reached"
+    }
+  }
+]

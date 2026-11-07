@@ -1,0 +1,60 @@
+{
+  "phase": 354,
+  "operatorApproval": "Apply 353-sync-report-review.patch as written; then carry on",
+  "approvedPatchSha256": "2c71ff5eda94012b79082a4cb6b25b8555baa887e6b44d6199be76c66d9d3cdb",
+  "focusedWrapperTestsPassed": 8,
+  "actualReconciliation": {
+    "status": "passed",
+    "directory": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T16-52-45.675Z",
+    "sourcePinsIndependentlyChecked": 1551,
+    "pinExceptions": [
+      {
+        "path": "test/release-validation/campaign-wrappers.test.mjs",
+        "origin": "immutable phase353 replay",
+        "reason": "approved report-consumer regression tests changed after the native campaign; not executed by that campaign"
+      }
+    ],
+    "newNativeCampaign": false,
+    "canonicalApplicationUnchangedAfterStage1": true,
+    "approvedPatchSha256": "2c71ff5eda94012b79082a4cb6b25b8555baa887e6b44d6199be76c66d9d3cdb"
+  },
+  "newNativeCampaign": false,
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/354-approved-sync-report-controls/child.log",
+      "artifact": "objects/beff9c193edde6c2ea5c2f49cff2eb7d93fdd610b37e3046565fe2817810e92a.gz",
+      "sha256": "beff9c193edde6c2ea5c2f49cff2eb7d93fdd610b37e3046565fe2817810e92a",
+      "bytes": 981
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/354-approved-sync-report-controls/run.json",
+      "artifact": "objects/23e1ebfc69bbae5b07a8460cd62b0959717e95842efa5f43666256731595a6e8.gz",
+      "sha256": "23e1ebfc69bbae5b07a8460cd62b0959717e95842efa5f43666256731595a6e8",
+      "bytes": 453
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/354-approved-sync-report-controls/host-load.jsonl",
+      "artifact": "objects/397aeef0ee455ee7429f3352a00db0ac11f57e72149f06d166e0b9ae3263bd58.gz",
+      "sha256": "397aeef0ee455ee7429f3352a00db0ac11f57e72149f06d166e0b9ae3263bd58",
+      "bytes": 76
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/354-actual-reconciliation.json",
+      "artifact": "objects/0bad5f257c92374fba69dd1965920db86c8e692531e6279ca18cdcf2f8a4c812.gz",
+      "sha256": "0bad5f257c92374fba69dd1965920db86c8e692531e6279ca18cdcf2f8a4c812",
+      "bytes": 635
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/check354.mjs",
+      "artifact": "objects/6a45db0c1d81b0d43cf5836c8e9dca4cfd08ae81b383a667d5466867e71009f0.gz",
+      "sha256": "6a45db0c1d81b0d43cf5836c8e9dca4cfd08ae81b383a667d5466867e71009f0",
+      "bytes": 2089
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/353-sync-report-review.patch",
+      "artifact": "objects/2c71ff5eda94012b79082a4cb6b25b8555baa887e6b44d6199be76c66d9d3cdb.gz",
+      "sha256": "2c71ff5eda94012b79082a4cb6b25b8555baa887e6b44d6199be76c66d9d3cdb",
+      "bytes": 7052
+    }
+  ]
+}

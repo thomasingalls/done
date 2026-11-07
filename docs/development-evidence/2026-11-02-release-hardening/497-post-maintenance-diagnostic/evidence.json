@@ -1,0 +1,201 @@
+{
+  "diagnosticAppRuns": 1,
+  "allFunctionalChecksPassed": true,
+  "noGateCredit": true,
+  "allGuardsAndDeadlinesPreserved": true,
+  "phase": 497,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerChannel.ts",
+      "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+      "bytes": 9454
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-post-maintenance-trace-497-20261106/497-private-files.json",
+      "sha256": "fc0b29e20d187adfd78675dab1adc1c3ae4a4a7a4a5764e7d261db598b58376d",
+      "bytes": 5846
+    },
+    {
+      "localPath": "/private/tmp/done-post-maintenance-trace-497-20261106/497-declaration.json",
+      "sha256": "07e5ba736602415727f4de52960ddd636b4696b792ece4ab3870c213bf5b51c4",
+      "bytes": 1152
+    },
+    {
+      "localPath": "/private/tmp/done-post-maintenance-trace-497-20261106/497-summary.json",
+      "sha256": "ca8c5ec4f26e9007d50dfcc85632ac85df562b0721f4942303cd406130857634",
+      "bytes": 2289
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/child.log",
+      "sha256": "f8d47376b17ee44644c9aa0366a77aceea805bfb0a3a6e5c4c69ef00d2f62727",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/host-load.jsonl",
+      "sha256": "116de0f4657a93a1c7d33e19f0aaf4f0c57aed3e4f105b739f5dc6f5b99e59e1",
+      "bytes": 48882
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/power-assertions-before.txt",
+      "sha256": "8eb0132f45a62bacba4cb154ab470f23c0a45d9a8788681c0d5c636652312d7d",
+      "bytes": 1680
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/power-log-after.meta.json",
+      "sha256": "55cf5d3d5eeb58bdc4b3d147c12a8e4426482938294143e4b4a6bf6c12074522",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/power-log-after.txt",
+      "sha256": "5cb1d4b3c67b5fb954bcb11ee6459a30d72da2cbc2b7c529f6b1a94036af7820",
+      "bytes": 776
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/power-log-before.meta.json",
+      "sha256": "67d9859bbb7f337c2bb03ab5cad94aa9824c1df9f2f9cec5e9aced5f4e0401f9",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/497-post-maintenance-trace/run.json",
+      "sha256": "a89f10190a0cd83e2e986ac438e32a422e2e3ce8f0e6e96c756a421eda31d447",
+      "bytes": 1649
+    }
+  ],
+  "summary": {
+    "phase": 497,
+    "outcome": "160edit diagnostic passes; prior101stall not reproduced",
+    "accepted": 160,
+    "elapsedMs": 153422.57523536682,
+    "preparationMs": 45356,
+    "sourceBefore": 2054,
+    "sourceAfter": 2214,
+    "httpResponses": 225,
+    "httpNon200": [],
+    "requestFailures": [
+      {
+        "kind": "requestfailed",
+        "id": 5,
+        "at": 1794005497640,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 22,
+        "at": 1794005498223,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 89,
+        "at": 1794005518525,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 148,
+        "at": 1794005544978,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 165,
+        "at": 1794005557030,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 25,
+        "at": 1794005584229,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 215,
+        "at": 1794005586535,
+        "error": "net::ERR_ABORTED"
+      },
+      {
+        "kind": "requestfailed",
+        "id": 219,
+        "at": 1794005587245,
+        "error": "net::ERR_ABORTED"
+      }
+    ],
+    "channelErrors": [],
+    "statusPollChanges": 342,
+    "blockGapMeansMs": [
+      {
+        "first": 1,
+        "last": 32,
+        "mean": 284.61290322580646
+      },
+      {
+        "first": 33,
+        "last": 64,
+        "mean": 401.375
+      },
+      {
+        "first": 65,
+        "last": 96,
+        "mean": 532.09375
+      },
+      {
+        "first": 97,
+        "last": 128,
+        "mean": 690.375
+      },
+      {
+        "first": 129,
+        "last": 160,
+        "mean": 705.875
+      }
+    ],
+    "allArchiveChecks": {
+      "exactDiagnostic160Accepted": true,
+      "fullTargetExact": true,
+      "allUnrelatedWritingExact": true,
+      "Goals13407": true,
+      "onlyOriginalPublisherRefreshed": true
+    },
+    "newGateCredit": false,
+    "no3072Fixture": true,
+    "appSourceChanged": false,
+    "prior495FailureStillUnresolved": true,
+    "observationLimit": "negative-reply observer read top-level code instead of value.code; no negative eventsoccurred, so no errorcode claim. Additional per-edit snapshot roundtrip and trace writes alter timing; no causal gain or resolution claimed."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

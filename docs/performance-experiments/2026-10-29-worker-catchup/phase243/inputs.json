@@ -1,0 +1,19 @@
+{
+  "marker-protocol.md": "8aed12aac62dd3a76994f63613691460df207d112fe44a33403cafdb731bcf0f",
+  "coarse-marker.py": "656341b889e6759edaa2f80cc297b92561ef9d28d276139f6e2962515f966db9",
+  "coarse-marker.json": "d553a019cafef500252a398d7faecb65421460f23d02101734036e8c961fcae7",
+  "prepare-marker.py": "cf1049471de18febeaa9c90cc6e900e8cdb4063a43df274959a0a7e234863807",
+  "prepare-marker-attempt1.py": "0dce9de94a62546f4800994bebcf864786c75f34a757aa61eb6aee4841365622",
+  "prepare-marker-attempt2.py": "cdbb982b05e1390b12381c75ad7faa06f8245f3cfe6bda1426fff328b624c144",
+  "marker-helper.ts": "903063d5baa42e45188f710e66fbacb26a558bce899bfebd73f4f025cd942404",
+  "marker-edits.json": "69fced5605940b1677cb926eaf6cd72c536aa0c095a88562f428ffe45d2328d4",
+  "marker-source.patch": "4a2df17708020310dc4becdeaf2cbf083eba954f43950aec555b5d7b1f8a8a7e",
+  "marker-qa.py": "759fa19235962b8805ac045770ad8fdcb68dec9a2b564040d578dadd8f4319f8",
+  "marker-qa.json": "e904ee8207cf476448d3bb3872ddff5c1ec114e6b6a3640c808ca7809f371ded",
+  "marker-build.log": "ca3a322fb5ec733ecf4833eece5f7630e073c959b08f70be225dadc69fc89093",
+  "marker-build-receipt.json": "2caa3176a6a41b168e0cb36c018d9f9c237e6586fe7f108878d7b07aeeb4511d",
+  "marker-assets.json": "ae3892a4cccc876bfa910f380f55cdbeaf701962037188e1a55b6d525287b9b3",
+  "packet243.py": "7b654df68429bdfcfa82a25569cf2787808cc3ef839b900f84d6edf309d1cd3a",
+  "harness/test/account-continuation-lab/marker.spec.ts": "00ea82c28e16ea2547d865834181672b17d9addd829e41ebfbd1a093c20f767c",
+  "harness/test/account-continuation-lab/marker.config.ts": "e228a74799169cc091979e0b67b6b0f9b3c0239ca7c7194683a5cd2edf10cf28"
+}

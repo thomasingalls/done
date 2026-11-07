@@ -1,0 +1,11 @@
+# Closed ledger capture — phase 404
+
+The new raw-byte work counter shares the exact existing fixed-header bound body and decodes no request/page. It grants no body validity or trust. The opaque legacy wire contract, floor/magic/length/width/safe-integer and all codec guards remain. A raw/scoped ledger capture and native census share one private projection; no supplied parser object becomes a verification permission. The old census syntax catch stays in its original scope, with all metadata/order/witness/epoch/coverage/crypto/replay actions unchanged.
+
+Binary original frames are subviews of one owned receipt backing. Keep that backing while the returned view owns its frames; erase decoded-entry copies. Legacy frames are independently owned, so their unused raw copy erases. Refusal erases all captured buffers and preserves caller raw bytes. No additional original-frame copy or process-local registry is introduced.
+
+Eight controls cover all72 extents, no full-frame decode, bounded work versus corrupt-body validity, metadata, alias ownership and success/refusal erasure, legacy v1/v2, own floors/future versions and unrelated canonical/noncanonical rows. The original seven before cases showed four reds/three greens: two absent-API cases, one real refusal cleanup and one wrong new binary-erasure expectation. No defect credit for that expectation or matched-before credit for the added eighth case. Initial cleanup erased the retained binary backing (11 unit reds); corrected. One old misplaced-message failure then exposed the moved catch; restored its exact scope. Every failure/version remains. No old test edits.
+
+Final101 focused controls,4 unchanged generation/index cases and full314files/3115cases/one existing skip pass114.16s (command114.667s), at120s;240s unused. Types, quality,17 registry checks, inventory and10 controls pass. Two source hashes, no domain/construction/site moves, one required eight-case file and every old obligation remain. [Attempts and identities](./evidence.json).
+
+Binary append still takes the full reference. Per-load syntax/mixed permanent faults, dual audit units, writer/G8/B, compatibility/actual cold/rollback and final gates remain. No lab, trust/format/wire/default/limit/deadline change, performance/RAM/acceptance claim, commit, publication or deployment.

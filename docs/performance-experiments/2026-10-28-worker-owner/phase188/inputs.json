@@ -1,0 +1,8 @@
+{
+  "src/crdt/localBaselineMetadata.ts": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+  "src/crdt/contentStore.ts": "2f54719561c419b67236e90db1dba8fe8a034a9196bf8504b60fff5bcc608027",
+  "src/crdt/custody.ts": "f4771774a4a3ce611d4b652f9828daf5ea68500b4f6ae7ccf4b376bf9d9621a9",
+  "src/crdt/accountCapture.ts": "88f35d41937457f3e36512d9dbee69be90deec73ed49fd4e621ddcd79f3ca163",
+  "src/crdt/accountReceive.ts": "e8199735171d39631786eecc15b3320c424612ca6bf4efae0d8c02b0c3965fe1",
+  "test/localRetentionRevisionHint.test.ts": "45bbce37d892feb76255422c2193972b296557a7c58bfbf28c87d6b69ab71d6b"
+}

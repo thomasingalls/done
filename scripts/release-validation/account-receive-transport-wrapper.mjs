@@ -2,6 +2,10 @@ import { createHash } from 'node:crypto';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import {
+  decodeInboundBatch,
+  decodeInboundBatchPages,
+} from '../../account-protocol/inboundBatch.ts';
 import { generatedNodeDeclarations } from './census.mjs';
 import { vitestStage } from './vitest-adapter.mjs';
 export const receiveTransportCampaign = 'scripts/account-receive-transport/run.mjs';
@@ -206,14 +210,21 @@ export function reconcileReceiveTransportReports(directory, sources) {
     assert(readFileSync(join(directory, file)).length, 'Empty receive-transport auxiliary report');
 }
 
-const sortCaptures = (rows) => {
+const sortCaptures = (rows, initial = []) => {
   assert(Array.isArray(rows));
   assert.equal(new Set(rows.map((c) => c.id)).size, rows.length, 'Duplicate source identity');
   for (const c of rows) {
     assert(typeof c.id === 'string' && c.id.length > 0);
     assert(Array.isArray(c.sources) && c.sources.length > 0);
     for (const source of c.sources) {
-      assert.equal(source.kind, 'human');
+      if (source.kind === 'system') {
+        assert.equal(source.actor, 'system');
+        assert.deepEqual(
+          c,
+          initial.find((entry) => entry.id === c.id),
+          'System source was not present unchanged before the first action',
+        );
+      } else assert.equal(source.kind, 'human');
       assert(typeof source.actor === 'string' && source.actor.length > 0);
       assert(Array.isArray(source.bytes) && source.bytes.length > 0);
       assert(source.bytes.every((n) => Number.isInteger(n) && n >= 0 && n <= 255));
@@ -221,17 +232,24 @@ const sortCaptures = (rows) => {
   }
   return [...rows].sort((a, b) => a.id.localeCompare(b.id));
 };
-const sameCaptures = (a, b) =>
-  assert.deepEqual(sortCaptures(a), sortCaptures(b), 'Source identities or bytes differ');
+const sameCaptures = (a, b, initial) =>
+  assert.deepEqual(
+    sortCaptures(a, initial),
+    sortCaptures(b, initial),
+    'Source identities or bytes differ',
+  );
 const hash = (v) => createHash('sha256').update(v).digest('hex');
-const frame = (wire, domain, n) => {
+const frameBytes = (wire) => {
   assert(
     typeof wire === 'string' &&
       wire.length > 0 &&
       wire.length <= 262144 &&
       /^(?:[0-9a-f]{2})+$/.test(wire),
   );
-  const text = Buffer.from(wire, 'hex').toString(),
+  return Buffer.from(wire, 'hex');
+};
+const frame = (wire, domain, n) => {
+  const text = frameBytes(wire).toString(),
     v = JSON.parse(text);
   assert.equal(JSON.stringify(v), text);
   assert.equal(v[0], domain);
@@ -270,10 +288,12 @@ export function reconcileReceiveTransportEvidence(r) {
   }
   const g = r['generated.json'];
   assert.equal(g.status, 'passed');
+  assert.equal(g.model, 'grouped-http-v2');
   assert.equal(g.seed, 9112042);
   assert.equal(g.runs, 16);
   assert.equal(g.histories.length, 16);
-  const coverage = {};
+  const coverage = {},
+    transports = { single: 0, batch: 0 };
   for (const h of g.histories) {
     assert.equal(h.completed, true);
     assert.equal(typeof h.initial, 'string');
@@ -287,7 +307,7 @@ export function reconcileReceiveTransportEvidence(r) {
       position = 0,
       link = '00'.repeat(32),
       requestIndex = 0;
-    const known = new Map(sortCaptures(h.before).map((c) => [c.id, c]));
+    const known = new Map(sortCaptures(h.before, h.before).map((c) => [c.id, c]));
     for (const [i, action] of h.actions.entries()) {
       assert(['receive', 'local', 'lost', 'corrupt', 'restart', 'compact'].includes(action));
       coverage[action] = (coverage[action] ?? 0) + 1;
@@ -296,31 +316,63 @@ export function reconcileReceiveTransportEvidence(r) {
       if (['receive', 'lost', 'corrupt'].includes(action)) {
         const req = h.requests[requestIndex++];
         assert.equal(req.mode, action);
-        const q = frame(req.request, 'done/private-read/v2', 15),
-          page = frame(req.candidatePage, 'done/private-read-page/v2', 7);
-        assert.equal(q[10], position, 'HTTP request did not follow durable progress');
-        assert.equal(q[11], 1);
-        assert.equal(page[2], hash(Buffer.from(req.request, 'hex')));
-        assert.equal(page[3], count);
-        assert.equal(page[4], position + 1);
-        assert.equal(page[5].length, 1);
-        assert.equal(page[5][0][0], h.wires[position], 'HTTP original wire changed');
-        assert.match(req.link, /^[0-9a-f]{64}$/);
+        assert.equal(typeof req.batch, 'boolean');
+        const requests = req.batch
+          ? decodeInboundBatch(new Uint8Array(frameBytes(req.request)))
+          : [frameBytes(req.request)];
+        assert.equal(requests.length, req.pages.length);
+        assert(requests.length >= 1 && requests.length <= 4);
+        if (req.batch) assert(requests.length > 1);
+        transports[req.batch ? 'batch' : 'single']++;
+        let offered = 0,
+          offeredLink = link;
+        const kinds = [];
+        for (const [index, wire] of requests.entries()) {
+          const entry = req.pages[index];
+          assert.equal(Buffer.from(wire).toString('hex'), entry.request);
+          const q = frame(entry.request, 'done/private-read/v2', 15),
+            page = frame(entry.candidatePage, 'done/private-read-page/v2', 7),
+            at = position + index,
+            present = at < count;
+          assert.equal(q[10], at, 'HTTP request did not follow durable progress');
+          assert(at <= count);
+          assert.equal(q[11], 1);
+          assert.equal(page[2], hash(Buffer.from(entry.request, 'hex')));
+          assert.equal(page[3], count);
+          assert.equal(page[4], at + (present ? 1 : 0));
+          assert.equal(page[5].length, present ? 1 : 0);
+          assert.match(entry.link, /^[0-9a-f]{64}$/);
+          if (present) {
+            assert.equal(page[5][0][0], h.wires[at], 'HTTP original wire changed');
+            assert.notEqual(entry.link, offeredLink);
+            offeredLink = entry.link;
+            offered++;
+          } else assert.equal(entry.link, offeredLink);
+          kinds.push(present ? 'received' : 'empty');
+        }
         if (action === 'receive') {
-          assert.equal(req.responseBody, req.candidatePage);
-          assert.equal(o.outcome.kind, 'received');
-          assert.equal(o.outcome.recorded, true);
+          const delivered = req.batch
+            ? decodeInboundBatchPages(new Uint8Array(frameBytes(req.responseBody)))
+            : [frameBytes(req.responseBody)];
+          assert.deepEqual(
+            delivered.map((b) => Buffer.from(b).toString('hex')),
+            req.pages.map((p) => p.candidatePage),
+            'HTTP response differs from the exact original pages',
+          );
+          assert.equal(o.outcome.kind, offered ? 'received' : 'empty');
+          assert.equal(o.outcome.recorded, offered > 0);
           assert.deepEqual(o.outcome.status, o.status);
-          text = `R${position} ` + text;
-          position++;
-          assert.notEqual(req.link, link);
-          link = req.link;
+          if (req.batch) assert.deepEqual(o.outcome.kinds, kinds);
+          for (let n = 0; n < offered; n++) text = `R${position++} ` + text;
+          link = offeredLink;
         } else if (action === 'lost') {
           assert.equal(req.responseBody, null);
           assert.equal(o.outcome.kind, 'unknown');
+          assert.equal(o.outcome.recorded, false);
         } else {
           assert.equal(req.responseBody, Buffer.from('bad page').toString('hex'));
-          assert.match(o.outcome.error, /AdmissionError/);
+          if (req.batch) assert.equal(o.outcome.error, 'Error: Invalid inbound batch');
+          else assert.match(o.outcome.error, /AdmissionError/);
         }
       } else {
         assert.equal(o.outcome, null);
@@ -332,7 +384,7 @@ export function reconcileReceiveTransportEvidence(r) {
         { state: 'ready', receivedThrough: position, observedThrough: position ? count : 0, link },
         'HTTP receipt status differs',
       );
-      const current = sortCaptures(o.captures);
+      const current = sortCaptures(o.captures, h.before);
       for (const [id, c] of known)
         assert.deepEqual(
           current.find((v) => v.id === id),
@@ -344,11 +396,14 @@ export function reconcileReceiveTransportEvidence(r) {
       for (const c of added) known.set(c.id, c);
     }
     assert.equal(requestIndex, h.requests.length, 'Unmatched HTTP request');
+    assert.equal(position, count, 'HTTP history did not receive every published original');
     assert.equal(h.final.visible, text);
     assert.deepEqual(h.final.status, h.observations.at(-1).status);
-    sameCaptures(h.final.captures, [...known.values()]);
+    sameCaptures(h.final.captures, [...known.values()], h.before);
   }
   assert.deepEqual(g.coverage, coverage);
+  assert.deepEqual(g.transports, transports);
+  assert(transports.single > 0 && transports.batch > 0, 'Missing HTTP transport coverage');
   for (const action of ['receive', 'local', 'lost', 'corrupt', 'restart', 'compact'])
     assert(coverage[action] > 0, 'Missing generated HTTP action');
 }

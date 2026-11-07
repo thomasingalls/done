@@ -1,0 +1,346 @@
+{
+  "phase": 483,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase326/apparatus/harness/test/account-continuation-lab/worker-owner.spec.ts.gz",
+      "sha256": "563bbf02ac752a49b53b30c12feee6c69658f7c8a4a0476b299eca1e1b279063",
+      "bytes": 29724
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "sha256": "8df457606b6b980c68e75c8836522e46831c92dff7dfeca5e64855ebfe817289",
+      "bytes": 28474
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/483-private-files.json",
+      "sha256": "c68a1ebc0b9fdb64e79cfb5ef34ae2bc71e0a02d3d9f35eb9cbadba9e319634c",
+      "bytes": 195580
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/483-summary.json",
+      "sha256": "14ea5ab3d50a59a410daa0694cfa632df4bc8a2bb67debe68b3c7824a841b04c",
+      "bytes": 3787
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/483-declaration.json",
+      "sha256": "50f1cb8d9dea939f63939ab0ee2d98fe621fecfe3501fd584aad67ba7f0af33f",
+      "bytes": 1922
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/483-preparation.json",
+      "sha256": "645275daaf6d79d024479501f9dd5546a19a49fb22b46057c678eebf9001fad1",
+      "bytes": 1392
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/483-progress.json",
+      "sha256": "fde331fc04df3a300cced6691c5a0cf8ef2d3bd84c9ad64a3923d7ed381c0140",
+      "bytes": 3131
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/483-body-binding-proof.json",
+      "sha256": "21b97023e44e3a7f1e632785f7b0bd7c465ebfc05c646b371fbd4902a15022fb",
+      "bytes": 561
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/record483.py",
+      "sha256": "af4dd8250d81f6c5f12bd6c62c836a93c74be7b105e4d57978a5870def8c435a",
+      "bytes": 8773
+    },
+    {
+      "localPath": "/private/tmp/done-deep50-reports-483-20261106/run483.py",
+      "sha256": "c39294edd992a2be688417d64363988ec76ec712d678c083036aadfe57595581",
+      "bytes": 3299
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/child.log",
+      "sha256": "06919bbc30ef75051d13d86b3a27b707106258bc25d601cf315f1be0fe1c213f",
+      "bytes": 394
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/host-load.jsonl",
+      "sha256": "551d2fa899c6e50493a7fd040ed1d0cc6bda8316f17f4765f922e447ccc97967",
+      "bytes": 18632
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/power-assertions-before.txt",
+      "sha256": "9beb74a46e1e44868bb77a2214c0d36c2882475b0a4a83247fa09eeaa6d4bd9a",
+      "bytes": 1614
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/power-log-after.meta.json",
+      "sha256": "b257ec061fbf51eb19497a2b7086cf8f8cfd2b138404186826248b2bc054c434",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/power-log-after.txt",
+      "sha256": "ded4926079dd574b9b8834c75b22d6b549992f875174b826540ba08de957ac3c",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/power-log-before.meta.json",
+      "sha256": "0691f9bc429652bc4156b7dfcf0beb59f3b9d29f53b5a5846e449da4ebee8036",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r1-deep50/run.json",
+      "sha256": "59f5d3ac428516fbc2213447d53552a79902fb61d51f78d7e5f7b6ad68176ce0",
+      "bytes": 2132
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/child.log",
+      "sha256": "de3496b2cd11a667ce7e50f2db8400afa40d3119cc233dd50ae2640a53312513",
+      "bytes": 394
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/host-load.jsonl",
+      "sha256": "2ffe84dc8a9c119cd1684a7823206712be65913258572d7ebf822009bfcab62d",
+      "bytes": 17181
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/power-assertions-before.txt",
+      "sha256": "c094670079745cde6af81a007e423007cc20880d4adb64d0bca68435bff518b9",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/power-log-after.meta.json",
+      "sha256": "98f4b16f8deada6174a5cae1887de67ce30bed5cb4a5e1a1f10ed037d636d52f",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/power-log-after.txt",
+      "sha256": "6e2e5abe3f7aee86d52833994806031e51deef9a30a1dfb472ea51424b8d8482",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/power-log-before.meta.json",
+      "sha256": "1485d743b6cad1862e2bb644b1319b1b1c7aef4be75b7542a63baedb226c5be6",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r2-deep50/run.json",
+      "sha256": "5d1914e32f54a1ef1b55b8ed176654459ef3df42e3b202db5c5b118e56d2bbc9",
+      "bytes": 2132
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/child.log",
+      "sha256": "26565361259a3e6bbd35034f6c9c2581f9c11731d2ba86dfd8bd1c3bd3289483",
+      "bytes": 394
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/host-load.jsonl",
+      "sha256": "959f4026b22b5df8f93dd346e956bae8e81b114f6476f5707f8b9cd9c005f060",
+      "bytes": 18631
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/power-assertions-before.txt",
+      "sha256": "fe7915fcbff985635fc27dbd21fd85917bfe63ef49c95aabbace944144e34e95",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/power-log-after.meta.json",
+      "sha256": "4128d11d8e09165be69a1a612936868babc09f3e030241b9bb4b85334affea4e",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/power-log-after.txt",
+      "sha256": "4965dde105a745aa0124a7b60c17580cd174f71e76302b71ac18ab90bd52e8b7",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/power-log-before.meta.json",
+      "sha256": "a9f6426c53de4cb272bf9f1781ae17ed25e31f3fa67eea68c76a223949f45611",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/483-r3-deep50/run.json",
+      "sha256": "497d982bd521fba8aa3bac7665c038b37b7ce0f6152b8bc44a32b1fa8db6539e",
+      "bytes": 2131
+    }
+  ],
+  "summary": {
+    "phase": 483,
+    "rows": [
+      {
+        "name": "r1-deep50",
+        "replicate": 1,
+        "rttMs": 50,
+        "caseMs": 180000,
+        "wrapperSeconds": 240,
+        "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+        "directory": "composed-receive-1",
+        "reportOnly": true,
+        "key": "483-r1-deep50",
+        "childExit": 0,
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "nativeOfflineSchedulingHeldBeforeTiming": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "drainMs": 40010.38232421875,
+        "markerVisibleAt30": false,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1936,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "deep30ReportOnly": false
+      },
+      {
+        "name": "r2-deep50",
+        "replicate": 2,
+        "rttMs": 50,
+        "caseMs": 180000,
+        "wrapperSeconds": 240,
+        "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+        "directory": "composed-receive-1",
+        "reportOnly": true,
+        "key": "483-r2-deep50",
+        "childExit": 0,
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "nativeOfflineSchedulingHeldBeforeTiming": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "drainMs": 39412.01318359375,
+        "markerVisibleAt30": false,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1942,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "deep30ReportOnly": false
+      },
+      {
+        "name": "r3-deep50",
+        "replicate": 3,
+        "rttMs": 50,
+        "caseMs": 180000,
+        "wrapperSeconds": 240,
+        "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+        "directory": "composed-receive-1",
+        "reportOnly": true,
+        "key": "483-r3-deep50",
+        "childExit": 0,
+        "outcome": "passed",
+        "error": null,
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "nativeOfflineSchedulingHeldBeforeTiming": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "drainMs": 39987.04541015625,
+        "markerVisibleAt30": false,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1957,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "deep30ReportOnly": false
+      }
+    ],
+    "allNativeAndColdGuardsPass": true,
+    "reportOnlyThirtySecondsPassed": 0,
+    "drainMs": [
+      40010.38232421875,
+      39412.01318359375,
+      39987.04541015625
+    ],
+    "coldMaxMs": 1957,
+    "rttMs": 50,
+    "blockingMatrixUnchanged": 36,
+    "totalReportOnlyCompleted": 9,
+    "remainingReportOnly": 1,
+    "remaining": "one3072returning reader with exact first-index-fallback counter",
+    "timingQualification": "Native offline lifecycle parks sync before timing; online starts real receive, no app/lab hold switch. Original0msnative timings allowed receive during opening and are not a matched latency-effect estimate. Original326report30s sample/120s wait retained;0ms30sblocking case unchanged."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 3,
+  "hostAuthorization": "operator Mac quiet for anything remaining",
+  "plainNativeDelegate": "same canonical473composition and470ordinary assets; no observed480audit variant or profiler needed here",
+  "originalNativeGuardColdTailInverseExact": true,
+  "unchangedDeadlines": "original326report30s sample/120s observation;180s native case/240s wrapper;15scold; original0ms30sgate untouched",
+  "newRuntimeOrCanonicalTestChange": false,
+  "committed": false,
+  "pushed": false
+}

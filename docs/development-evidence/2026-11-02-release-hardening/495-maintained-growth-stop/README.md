@@ -1,0 +1,13 @@
+# Phase 495 — maintenance succeeds; subsequent growth stalls
+
+The declared fresh fixture setup stops after 182.75 seconds, within the same 1,800-second case and 1,860-second wrapper. It does **not** produce a 3,072-position fixture. The original 30-second per-position assertion fails: expected 2,156, observed 2,155. Preserve this attempt and stop under the hardening app-failure rule. Do not classify an unexplained publication stall as a harmless fixture timeout.
+
+The producer's ordinary automatic local maintenance completes in 93.905 seconds over eleven attempts. Its native hint changes from revision 0 / 14,466 records to revision 1 / zero retained rows. The full archive and all accepted server credential/position/digest tuples remain exact. Closing and reopening the native owner preserves both the new baseline and full writing. This whole precondition takes 94.543 seconds and counts inside the original setup clock. No server history was pruned.
+
+Afterward, 101 individually confirmed edits advance the source from position 2,054 to 2,155. The 100 inter-acceptance gaps average 383.69 ms, with a 735 ms maximum. This is a failed fixture setup, not gate credit or proof of a completed speed improvement. The next edit passes the recipe's local admission/durability steps but never reaches the next service acknowledgment within its unchanged 30-second check.
+
+A separate strict observer opens a private copy of the stopped service database. It confirms exactly 101 new contiguous accepted positions and no in-flight extra acceptance. Both decision tables contain only accepted decisions; that does not exclude a network refusal outside those tables. The run collected neither the next request trace nor an owner error code, so the cause, owner lifecycle and post-close local writing are unresolved. No claim of data loss or owner closure is made. Do not infer that the Window mirror alone was stale: the service copy also stops at 2,155.
+
+All 2,046 canonical source inputs and 167 served files match the ordinary phase 470/473 manifests. There is no profiler, lab factor, app change or altered limit. All nine untouched actor snapshots and the source fixture remain byte-identical. Five-second external host logs show display on throughout and swap unchanged at 12,828.44 MiB. The independent database observer passes without opening an app or starting the API.
+
+The prepared returning-reader case and its six counter controls remain unrun against a 3,072 fixture. The original final archive, Undo and offline cold steps are not reached, and no credit is invented for them. Next work needs to identify this post-maintenance publication failure before another growth attempt. No commit, push or deployment.

@@ -1,0 +1,57 @@
+{
+  "canonicalSourceChanges": false,
+  "noProfiler": true,
+  "hostAuthorization": "quiet for all remaining work",
+  "phase": 484,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite/inboundIndexFixture.config.ts",
+      "sha256": "b3a61cb644a794fb949bbabc72bc47875f67f91c584f6f10b7fbea08e9ef43ef",
+      "bytes": 7990
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-index-report-484-20261106/484-private-files.json",
+      "sha256": "2ccde94300dee75c73bfe6ccb96c5a52cd37344a9e10eaba1a93f1b44106e694",
+      "bytes": 497304
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-484-20261106/484-build-proof.json",
+      "sha256": "b8e7c42f13723c91d44c4fb6042576bca40c2fe8bee7a21452709a95d22436aa",
+      "bytes": 25036
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-484-20261106/484-final-hook-proof.json",
+      "sha256": "f0f0c9881d80d165e0c572ac655d6df83c483a6169dcd3216096c59681d4aad2",
+      "bytes": 736
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-484-20261106/484-index-controls.log",
+      "sha256": "0121b0b9e9e7e8f09d7c5a554017920369940920c34b61176d3be8589f2c60ac",
+      "bytes": 752
+    }
+  ],
+  "summary": {
+    "buildPassed": true,
+    "controlsPassed": 5,
+    "indexBytes": 33554432,
+    "sourceInverseByteExact": true,
+    "sourceChanges": 2,
+    "nativeOrdinal": "uncapped BigInt decimal",
+    "gateCredit": false,
+    "remainingReports": 1
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

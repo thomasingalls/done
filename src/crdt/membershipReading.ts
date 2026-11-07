@@ -7,6 +7,11 @@ import {
 } from './handoffHistory';
 /** Replay a later device's retained baseline and each independent publisher prefix. */
 import { closed } from '../../account-protocol/preparation';
+import {
+  captureInboundReceiptVersion,
+  inboundReceiptVersionFields,
+  type InboundReceiptVersion,
+} from './inboundReceiptVersion';
 import { same } from '../../account-protocol/admission';
 import { unhex } from '../../account-protocol/recovery';
 import {
@@ -27,8 +32,13 @@ import {
   type AdmissionHistory,
 } from '../../account-protocol/admissionHistory';
 import { openContentCheckpoint } from './contentCheckpoint';
-import { verifyStoredInbound, type InboundContext, type InboundLifetime } from './accountInbound';
-import { INBOUND_RECORD_LIMIT } from './inboundRecord';
+import {
+  verifyStoredInboundReceipt,
+  type InboundContext,
+  type InboundLifetime,
+} from './accountInbound';
+import { INBOUND_RECORD_LIMIT, inboundReceiptEventWork } from './inboundRecord';
+import { eraseVerified } from './verifiedRecords';
 import { Y, hasPendingUpdates } from './yjs';
 import type { Bytes } from './custodyCrypto';
 import {
@@ -52,7 +62,7 @@ import { historyMembership, historyGeneration } from '../../account-protocol/adm
 import { openReplacementCheckpoint } from './replacementCheckpoint';
 
 export const MEMBERSHIP_READING_EVENTS = 4096;
-interface ReadingFields {
+interface ReadingFields extends InboundReceiptVersion {
   epoch: number;
   head: string;
   streams: { publisher: string; events: string[]; prefix: InboundContext['prefix'] }[];
@@ -92,19 +102,21 @@ export function membershipReadingPrefix(
   };
 }
 export function captureMembershipReading(input: unknown): MembershipReading {
-  const r = closed(input, [
-    'v',
-    'epoch',
-    'head',
-    'checkpoint',
-    'admission',
-    'streams',
-    ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
-    ...((input as { v?: unknown; history?: unknown } | null)?.v === 2 &&
-    (input as { history?: unknown }).history !== undefined
-      ? ['history']
-      : []),
-  ]);
+  const floor = captureInboundReceiptVersion(input),
+    r = closed(input, [
+      'v',
+      'epoch',
+      'head',
+      'checkpoint',
+      'admission',
+      'streams',
+      ...inboundReceiptVersionFields(input),
+      ...((input as { v?: unknown } | null)?.v === 3 ? ['binding'] : []),
+      ...((input as { v?: unknown; history?: unknown } | null)?.v === 2 &&
+      (input as { history?: unknown }).history !== undefined
+        ? ['history']
+        : []),
+    ]);
   if (
     (r['v'] !== 2 && r['v'] !== 3) ||
     !Number.isSafeInteger(r['epoch']) ||
@@ -120,7 +132,8 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     (!r['admission'] || typeof r['admission'] !== 'object' || Array.isArray(r['admission']))
   )
     throw Error('Invalid later reader admission');
-  let count = 0;
+  let count = 0,
+    logicalCount = 0;
   const streams = r['streams'].map((value) => {
     const s = closed(value, ['publisher', 'events', 'prefix']);
     unhex(s['publisher'], 16);
@@ -135,6 +148,8 @@ export function captureMembershipReading(input: unknown): MembershipReading {
         !/^[0-9a-f]+$/.test(wire)
       )
         throw Error('Invalid later reader event');
+      if ((logicalCount += inboundReceiptEventWork(wire, floor)) > MEMBERSHIP_READING_EVENTS)
+        throw Error('Later reader history limit');
       return wire;
     });
     const p = closed(s['prefix'], ['position', 'link', 'observedThrough']);
@@ -174,6 +189,7 @@ export function captureMembershipReading(input: unknown): MembershipReading {
     epoch: r['epoch'] as number,
     head: r['head'] as string,
     streams,
+    ...captureInboundReceiptVersion(r),
   };
 }
 export async function verifyReplacementReading(
@@ -267,6 +283,7 @@ export async function replayMembershipReading(
     for (const stream of reading.streams) {
       const publisher = historyPublisher(history, stream.publisher);
       const context: InboundContext = {
+        ...captureInboundReceiptVersion(reading),
         baseline: { kind: 'content-checkpoint', id },
         ...(reading.v === 3 ? { baselineHeads: reading.checkpoint.heads } : {}),
         service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
@@ -300,15 +317,34 @@ export async function replayMembershipReading(
           lifetime.assertCurrent();
           const bytes = unhex(wire, wire.length / 2);
           try {
-            const result = await verifyStoredInbound(context, bytes, lifetime);
-            if (result.kind !== 'received') throw Error('Invalid retained publisher event');
-            records.push({ record: result.record, updates: result.updates });
-            for (const u of result.updates) Y.applyUpdate(doc, u);
-            context.prefix = {
-              position: result.position,
-              link: result.link,
-              observedThrough: result.through,
-            };
+            const receipt = await verifyStoredInboundReceipt(context, bytes, lifetime);
+            let retained = false;
+            try {
+              const updates: Bytes[] = [];
+              for (const selected of receipt.entries) {
+                lifetime.assertCurrent();
+                const result = selected.result;
+                if (result.kind !== 'received') throw Error('Invalid retained publisher event');
+                updates.push(...result.updates);
+                for (const u of result.updates) Y.applyUpdate(doc, u);
+                context.prefix = {
+                  position: result.position,
+                  link: result.link,
+                  observedThrough: result.through,
+                };
+              }
+              records.push({ record: receipt.record, updates });
+              retained = true;
+            } finally {
+              if (!retained) receipt.record.fill(0);
+              for (const selected of receipt.entries) {
+                if ('record' in selected.result && selected.result.record !== receipt.record)
+                  selected.result.record.fill(0);
+                if (!retained && selected.result.kind === 'received')
+                  for (const update of selected.result.updates) update.fill(0);
+                eraseVerified(selected.original);
+              }
+            }
           } finally {
             bytes.fill(0);
           }

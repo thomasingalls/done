@@ -1,0 +1,26 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {gunzipSync} from 'node:zlib';
+import {basename,join} from 'node:path';
+import {SourceMap} from 'node:module';
+const root='/private/tmp/done-goals-stall-20261028', name=process.argv[2]??'02-desktop-profile', dir=join(root,name);
+const p=JSON.parse(gunzipSync(readFileSync(join(dir,'main.cpuprofile.gz'))));
+const maps=new Map();
+function location(f){
+ if(!f.url.startsWith('http://localhost:53781/assets/'))return {file:f.url||`(${f.functionName})`,line:f.lineNumber+1,name:f.functionName,mapped:false};
+ const file=basename(new URL(f.url).pathname);let map=maps.get(file);
+ if(map===undefined){try{map=new SourceMap(JSON.parse(readFileSync('/private/tmp/done-resumable-release-20261028/frontend/assets/'+file+'.map','utf8')))}catch{map=null}maps.set(file,map)}
+ const e=map?.findEntry(f.lineNumber,f.columnNumber);
+ return e&&'originalSource'in e?{file:e.originalSource,line:e.originalLine+1,name:e.name??f.functionName,mapped:true}:{file:f.url,line:f.lineNumber+1,name:f.functionName,mapped:false};
+}
+const nodes=new Map(p.nodes.map(n=>[n.id,n])),parents=new Map();
+for(const n of p.nodes)for(const id of n.children??[])parents.set(id,n.id);
+const self=new Map(),inclusive=new Map();let total=0;
+for(let i=0;i<p.samples.length;i++){
+ const id=p.samples[i],us=p.timeDeltas[i]??0;total+=us;self.set(id,(self.get(id)??0)+us);
+ let at=id;const seen=new Set();while(at&&!seen.has(at)){seen.add(at);inclusive.set(at,(inclusive.get(at)??0)+us);at=parents.get(at);}
+}
+const grouped=new Map();for(const [id,us]of self){const l=location(nodes.get(id).callFrame),k=JSON.stringify(l),g=grouped.get(k)??{...l,selfMs:0};g.selfMs+=us/1000;grouped.set(k,g);}
+const byFile=new Map();for(const x of grouped.values())byFile.set(x.file,(byFile.get(x.file)??0)+x.selfMs);
+const result={scope:'Diagnostic sampling residence; CPU profiling overhead and idle sample weights retained. No exclusive timing or causal speedup claim.',samples:p.samples.length,profileWallMs:(p.endTime-p.startTime)/1000,sampledWeightMs:total/1000,topSelf:[...grouped.values()].sort((a,b)=>b.selfMs-a.selfMs).slice(0,60),byFile:[...byFile].sort((a,b)=>b[1]-a[1]),topInclusive:[...inclusive].sort((a,b)=>b[1]-a[1]).slice(0,60).map(([id,us])=>({...location(nodes.get(id).callFrame),inclusiveMs:us/1000})),nodes:p.nodes.map(n=>({id:n.id,...location(n.callFrame),selfUs:self.get(n.id)??0,inclusiveUs:inclusive.get(n.id)??0,parent:parents.get(n.id)}))};
+writeFileSync(join(dir,'profile-analysis.json'),JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({byFile:result.byFile.slice(0,22),topSelf:result.topSelf.slice(0,16),topInclusive:result.topInclusive.filter(x=>x.mapped).slice(0,18)},null,2));

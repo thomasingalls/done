@@ -5,9 +5,14 @@ import {
   PREPARATION_VALUE_BYTES,
 } from './preparationValue';
 import { fields, hex, type Bytes } from './custodyCrypto';
-import type { VerificationMemo } from './verificationMemo';
+import type { ReceiptVerificationMemo } from './verificationMemo';
+import { captureInboundReceiptSyntax, inboundReceiptViews } from './inboundRecord';
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import type { BaselineAuthentication } from './localBaselineReplay';
 import { eraseVerified, sameBytes } from './verifiedRecords';
+import { PreparationCapacity } from './preparationCapacity';
+export { PreparationCapacity } from './preparationCapacity';
 
 const DOMAIN = 'done/local-preparation/draft-1';
 export const PREPARATION_SLICE_MS = 2000;
@@ -15,11 +20,6 @@ export const PREPARATION_ENTRIES = 131072;
 export class PreparationPause extends Error {
   constructor() {
     super('Preparation slice saved before continuing');
-  }
-}
-export class PreparationCapacity extends Error {
-  constructor() {
-    super('Preparation receipt budget exceeded');
   }
 }
 interface Receipt {
@@ -48,7 +48,122 @@ function resultObject(v: unknown, keys: string[]) {
   return v as Record<string, unknown>;
 }
 
+/** Closed local-journal roles. They identify exact evidence, never a page alias or authority. */
+function pageRole(slot: string) {
+  const m = /^inbound-page:([1-9][0-9]*):(0|[1-9][0-9]*):([1-9][0-9]*)$/.exec(slot);
+  if (!m || slot.length > 128) return;
+  const sequence = Number(m[1]),
+    first = Number(m[2]),
+    count = Number(m[3]);
+  if (
+    !Number.isSafeInteger(sequence) ||
+    first >= READ_COUNT_LIMIT ||
+    count > READ_COUNT_LIMIT ||
+    first + count > READ_COUNT_LIMIT
+  )
+    return;
+  return { sequence, first, count };
+}
+function indexedInboundSlot(slot: string) {
+  const m = /^inbound:([1-9][0-9]*):(0|[1-9][0-9]*)$/.exec(slot);
+  if (!m || slot.length > 128) return;
+  const sequence = Number(m[1]),
+    index = Number(m[2]);
+  if (!Number.isSafeInteger(sequence) || index >= READ_COUNT_LIMIT) return;
+  return { sequence, index };
+}
+function pageSlot(addresses: readonly string[]): string {
+  if (!Array.isArray(addresses) || addresses.length < 1 || addresses.length > READ_COUNT_LIMIT)
+    return invalid();
+  let sequence = 0,
+    first = 0;
+  for (let offset = 0; offset < addresses.length; offset++) {
+    const address = addresses[offset];
+    if (typeof address !== 'string') return invalid();
+    const part = indexedInboundSlot(address);
+    if (!part) return invalid();
+    if (offset === 0) {
+      sequence = part.sequence;
+      first = part.index;
+    }
+    if (part.sequence !== sequence || part.index !== first + offset) return invalid();
+  }
+  const slot = `inbound-page:${sequence}:${first}:${addresses.length}`;
+  if (!pageRole(slot)) return invalid();
+  return slot;
+}
+function validatePageResult(slot: string, value: unknown) {
+  const role = pageRole(slot),
+    v = resultObject(value, ['record', 'entries']);
+  if (!role || !(v['record'] instanceof Uint8Array) || !Array.isArray(v['entries']))
+    return invalid();
+  const raw = v['record'];
+  if (!(raw.buffer instanceof ArrayBuffer)) return invalid();
+  const captured = captureInboundReceiptSyntax(
+    new Uint8Array(raw.buffer, raw.byteOffset, raw.byteLength),
+  );
+  try {
+    if (!captured || captured.receipt.kind !== 'page') return invalid();
+    const record = captured.receipt.record,
+      views = inboundReceiptViews(captured);
+    if (
+      record.firstEntry !== role.first ||
+      record.entryCount !== role.count ||
+      v['entries'].length !== role.count
+    )
+      return invalid();
+    let bytes = v['record'].length,
+      records = 1,
+      offset = 0;
+    for (const { entryIndex, event } of views.entries()) {
+      const entry = resultObject(v['entries'][offset++], ['index', 'original', 'result']),
+        original = resultObject(entry['original'], ['envelope', 'proof']),
+        result = resultObject(entry['result'], [
+          'kind',
+          'updates',
+          'actor',
+          'position',
+          'link',
+          'through',
+        ]),
+        actor = resultObject(result['actor'], ['id', 'kind']),
+        selected = captured.originals.page.entries[entryIndex]!;
+      if (
+        entry['index'] !== entryIndex ||
+        result['kind'] !== 'received' ||
+        result['position'] !== event.position ||
+        result['link'] !== event.link ||
+        result['through'] !== captured.originals.page.through ||
+        !Array.isArray(result['updates']) ||
+        !result['updates'].every((b) => b instanceof Uint8Array) ||
+        typeof actor['id'] !== 'string' ||
+        !['human', 'system'].includes(String(actor['kind'])) ||
+        !(original['envelope'] instanceof Uint8Array) ||
+        !(original['proof'] instanceof Uint8Array) ||
+        !sameBytes(original['envelope'], selected.envelope) ||
+        !sameBytes(original['proof'], selected.proof)
+      )
+        return invalid();
+      bytes += result['updates'].reduce((n, b: Uint8Array) => n + b.length, 0);
+      records += result['updates'].length;
+      if (bytes > MAX_BATCH_BYTES || records > MAX_BATCH_RECORDS) return invalid();
+    }
+  } finally {
+    eraseVerified(captured);
+  }
+}
+function pageInput(slot: string, value: unknown, inputs: readonly Uint8Array[]) {
+  if (!pageRole(slot)) return;
+  const v = resultObject(value, ['record', 'entries']);
+  if (
+    !(v['record'] instanceof Uint8Array) ||
+    !(inputs[0] instanceof Uint8Array) ||
+    !sameBytes(v['record'], inputs[0])
+  )
+    invalid();
+}
 function validSlot(s: string) {
+  if (pageRole(s) || indexedInboundSlot(s)) return true;
   if (s === 'admission-prefix' || /^coverage:[0-9a-f]{64}$/.test(s)) return true;
   const m = /^(opened|witness|spool|link|delivery|inbound|history):((?:0|[1-9][0-9]*))$/.exec(s);
   return (
@@ -62,6 +177,7 @@ function validateResult(slot: string, bytes: Bytes) {
   const value = decodePreparationValue(bytes),
     family = slot.split(':')[0];
   try {
+    if (family === 'inbound-page') validatePageResult(slot, value);
     if (family === 'opened' && !(value instanceof Uint8Array)) invalid();
     if (['spool', 'coverage', 'admission-prefix'].includes(family!) && value !== undefined)
       invalid();
@@ -238,9 +354,12 @@ export function createPreparationJournal(options: {
   };
   const entries = new Map<string, Receipt>(),
     pending = new Map<string, Receipt>();
-  const began = (options.now ?? performance.now.bind(performance))();
+  // Reopening and authenticating a saved prefix must not exhaust the next fresh slice.
+  // The wall clock starts on its first miss; existing atomic verification/interrupt guards stay.
+  let began: number | undefined;
   let closed = false,
     bytes = 0,
+    ownedBytes = 0,
     misses = 0,
     hits = 0,
     revision = 0,
@@ -248,19 +367,101 @@ export function createPreparationJournal(options: {
   const now = options.now ?? performance.now.bind(performance);
   const slice = options.sliceMs ?? PREPARATION_SLICE_MS;
   if (!Number.isFinite(slice) || slice <= 0) invalid();
-  const memo: VerificationMemo = {
+  const check = async <T>(
+    slot: string,
+    context: string,
+    input: readonly Uint8Array[],
+    verify: () => Promise<T>,
+    assert: () => void,
+  ): Promise<T> => {
+    current();
+    assert();
+    if (!validSlot(slot)) invalid();
+    started = true;
+    const at = revision,
+      captured = input.map((b) => new Uint8Array(b));
+    const unchanged = () => {
+      current();
+      assert();
+      if (at !== revision) throw Error('Preparation journal changed');
+      if (input.length !== captured.length || input.some((b, i) => !sameBytes(b, captured[i]!)))
+        throw Error('Preparation input changed');
+    };
+    let frame: Bytes | undefined;
+    try {
+      frame = encodePreparationValue([DOMAIN, 'input', options.context, slot, context, captured]);
+      let digest: string;
+      try {
+        digest = hex(new Uint8Array(await crypto.subtle.digest('SHA-256', frame)));
+      } finally {
+        frame.fill(0);
+        frame = undefined;
+      }
+      unchanged();
+      const prior = entries.get(slot);
+      if (prior?.digest === digest) {
+        hits++;
+        const value = decodePreparationValue(prior.result);
+        try {
+          pageInput(slot, value, captured);
+          return value as T;
+        } catch (error) {
+          eraseVerified(value);
+          throw error;
+        }
+      }
+      const freshAt = now();
+      began ??= freshAt;
+      if (pending.size && freshAt - began >= slice) throw new PreparationPause();
+      const value = await verify();
+      let result: Bytes | undefined;
+      try {
+        unchanged();
+        result = encodePreparationValue(value);
+        validateResult(slot, result);
+        pageInput(slot, value, captured);
+        const nextBytes =
+          bytes -
+          (prior ? prior.result.length + prior.slot.length + 64 : 0) +
+          result.length +
+          slot.length +
+          64;
+        if ((!prior && entries.size >= PREPARATION_ENTRIES) || nextBytes > PREPARATION_VALUE_BYTES)
+          throw new PreparationCapacity();
+        ownedBytes += result.length - (prior?.result.length ?? 0);
+        prior?.result.fill(0);
+        const receipt = { slot, digest, result };
+        entries.set(slot, receipt);
+        pending.set(slot, receipt);
+        bytes = nextBytes;
+        misses++;
+        result = undefined;
+        return structuredClone(value);
+      } finally {
+        result?.fill(0);
+        eraseVerified(value);
+      }
+    } finally {
+      frame?.fill(0);
+      eraseVerified(captured);
+    }
+  };
+  const memo: ReceiptVerificationMemo = {
     clear() {
       revision++;
       for (const r of entries.values()) r.result.fill(0);
       entries.clear();
       pending.clear();
       bytes = 0;
+      ownedBytes = 0;
     },
     retain() {
       /* A fixed-capture receipt journal retains its completed work until disposal. */
     },
-    async check<T>(
-      slot: string,
+    ownedBytes: () => ownedBytes,
+    check,
+    async checkReceipt<T>(
+      addresses: readonly string[],
       context: string,
       input: readonly Uint8Array[],
       verify: () => Promise<T>,
@@ -268,67 +469,7 @@ export function createPreparationJournal(options: {
     ): Promise<T> {
       current();
       assert();
-      if (!validSlot(slot)) invalid();
-      started = true;
-      const at = revision,
-        captured = input.map((b) => new Uint8Array(b));
-      const unchanged = () => {
-        current();
-        assert();
-        if (at !== revision) throw Error('Preparation journal changed');
-        if (input.length !== captured.length || input.some((b, i) => !sameBytes(b, captured[i]!)))
-          throw Error('Preparation input changed');
-      };
-      let frame: Bytes | undefined;
-      try {
-        frame = encodePreparationValue([DOMAIN, 'input', options.context, slot, context, captured]);
-        let digest: string;
-        try {
-          digest = hex(new Uint8Array(await crypto.subtle.digest('SHA-256', frame)));
-        } finally {
-          frame.fill(0);
-          frame = undefined;
-        }
-        unchanged();
-        const prior = entries.get(slot);
-        if (prior?.digest === digest) {
-          hits++;
-          return decodePreparationValue(prior.result) as T;
-        }
-        if (pending.size && now() - began >= slice) throw new PreparationPause();
-        const value = await verify();
-        let result: Bytes | undefined;
-        try {
-          unchanged();
-          result = encodePreparationValue(value);
-          validateResult(slot, result);
-          const nextBytes =
-            bytes -
-            (prior ? prior.result.length + prior.slot.length + 64 : 0) +
-            result.length +
-            slot.length +
-            64;
-          if (
-            (!prior && entries.size >= PREPARATION_ENTRIES) ||
-            nextBytes > PREPARATION_VALUE_BYTES
-          )
-            throw new PreparationCapacity();
-          prior?.result.fill(0);
-          const receipt = { slot, digest, result };
-          entries.set(slot, receipt);
-          pending.set(slot, receipt);
-          bytes = nextBytes;
-          misses++;
-          result = undefined;
-          return structuredClone(value);
-        } finally {
-          result?.fill(0);
-          eraseVerified(value);
-        }
-      } finally {
-        frame?.fill(0);
-        eraseVerified(captured);
-      }
+      return check(pageSlot(addresses), context, input, verify, assert);
     },
   };
   return Object.freeze({
@@ -352,6 +493,7 @@ export function createPreparationJournal(options: {
         entries.set(r.slot, { ...r, result: r.result.slice() });
       }
       bytes = count;
+      ownedBytes = [...entries.values()].reduce((n, r) => n + r.result.length, 0);
     },
     async delta(auth: Pick<BaselineAuthentication, 'sign'>) {
       current();

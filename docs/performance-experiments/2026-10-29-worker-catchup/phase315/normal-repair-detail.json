@@ -1,0 +1,63 @@
+[
+  {
+    "name": "repair-05-normal-R1000",
+    "activations": [
+      {
+        "typingOffsetMs": 1840.082275390625,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 3,
+        "previousHintCounter": 3
+      },
+      {
+        "typingOffsetMs": 23362.982421875,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 46,
+        "previousHintCounter": 46
+      },
+      {
+        "typingOffsetMs": 29499.182373046875,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 58,
+        "previousHintCounter": 58
+      },
+      {
+        "typingOffsetMs": 30990.88232421875,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 61,
+        "previousHintCounter": 61
+      },
+      {
+        "typingOffsetMs": 44127.282470703125,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 88,
+        "previousHintCounter": 88
+      }
+    ],
+    "qualification": "All are during other-publisherH0drain on the live writer publisher; counters match on successive quiet reads, as the approved Rpredicate requires. This does not prove loss of a network hint or count actual timer firings."
+  },
+  {
+    "name": "repair-06-normal-R1000",
+    "activations": [
+      {
+        "typingOffsetMs": 29361.493896484375,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 56,
+        "previousHintCounter": 56
+      },
+      {
+        "typingOffsetMs": 40188.7939453125,
+        "afterH1Drain": false,
+        "publisherSha256": "10247f5e4816d9fa586b88b4496f17f05e12314883aa34aeb4a77f18ad5a5ba7",
+        "quietHintCounter": 78,
+        "previousHintCounter": 78
+      }
+    ],
+    "qualification": "All are during other-publisherH0drain on the live writer publisher; counters match on successive quiet reads, as the approved Rpredicate requires. This does not prove loss of a network hint or count actual timer firings."
+  }
+]

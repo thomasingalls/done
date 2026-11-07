@@ -1,0 +1,33 @@
+{
+  "oneCommonHistory": true,
+  "sourceFixtureSha256": "e8d39c4e9a24654c00c0011f96419c04a43cf1428050d98e265f2282e2b4f806",
+  "fixtureSha256": "8a31bdff48ea941b81299b592718f6e79154908d2886df96ff029c14bdaaad5e",
+  "oldBacklog": 2048,
+  "newBacklog": 3072,
+  "confirmedNewAcceptedPositions": 1024,
+  "newTargetCharacters": 1024,
+  "onlyAuthorizedArchiveTargetChanged": true,
+  "allOtherActorsAndAccountsUnchanged": true,
+  "senderClosed": true,
+  "senderNativeCensus": [
+    {
+      "stores": {
+        "content": 3110,
+        "heads": 9236,
+        "meta": 1,
+        "outbound": 9257
+      },
+      "counterVersion": 2
+    }
+  ],
+  "coldProfileOpenSucceededAndInitialArchiveAssertionPassed": true,
+  "elapsedSecondsSuccessfulContinuation": 78.6234838962555,
+  "firstAttemptExit": 1,
+  "firstAttemptDeadlineMs": 1800000,
+  "offlineAdditionalRecovered": 992,
+  "resumeSettledAdditional": 992,
+  "resumeSettledAccepted": 3045,
+  "allPreviouslyConfirmedWritingColdExact": true,
+  "apparatusOnly": true,
+  "acceptanceCredit": false
+}

@@ -80,7 +80,7 @@ it('keeps ordinary deferrals quiet and preserves native collapsed Data', async (
   }
 });
 for (const [reason, text] of [
-  ['capacity', 'snapshot is too large'],
+  ['capacity', 'preparation or snapshot size limit'],
   ['history-required', 'history needed'],
   ['ineligible', 'not ready for a safe reduction'],
 ] as const)

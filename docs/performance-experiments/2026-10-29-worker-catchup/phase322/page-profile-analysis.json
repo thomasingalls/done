@@ -1,0 +1,1220 @@
+{
+  "profileDurationMs": 25864.033,
+  "observedDrainClipMs": 23380,
+  "diagnosticTailMs": 2484.033,
+  "samples": 17448,
+  "wholeIdleMs": 25301.038999999848,
+  "drainIdleMs": 22857.700999999957,
+  "drainNonIdleSampledMs": 522.2989999999999,
+  "rows": [
+    {
+      "function": "(idle)",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 25301.038999999848,
+      "throughDrainObserverMs": 22857.700999999957
+    },
+    {
+      "function": "(program)",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 193.16599999999994,
+      "throughDrainObserverMs": 188.88299999999995
+    },
+    {
+      "function": "f",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 4292,
+      "original": {
+        "source": "../../source/src/crdt/workerChannel.ts",
+        "line": 121,
+        "column": 19,
+        "name": null
+      },
+      "wholeProfileMs": 39.54500000000001,
+      "throughDrainObserverMs": 39.54500000000001
+    },
+    {
+      "function": "",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 50.621,
+      "throughDrainObserverMs": 25.598
+    },
+    {
+      "function": "vb",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 173026,
+      "original": {
+        "source": "../../source/src/lib/temporal.ts",
+        "line": 43,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 15.695000000000002,
+      "throughDrainObserverMs": 15.695000000000002
+    },
+    {
+      "function": "postMessage",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 15.408999999999999,
+      "throughDrainObserverMs": 15.408999999999999
+    },
+    {
+      "function": "encodeInto",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 13.786000000000001,
+      "throughDrainObserverMs": 13.786000000000001
+    },
+    {
+      "function": "structuredClone",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 13.386999999999999,
+      "throughDrainObserverMs": 13.386999999999999
+    },
+    {
+      "function": "(garbage collector)",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 13.808,
+      "throughDrainObserverMs": 12.284
+    },
+    {
+      "function": "$",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 23777,
+      "original": {
+        "source": "../../source/src/crdt/yjs.ts",
+        "line": 182,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 9.18,
+      "throughDrainObserverMs": 9.18
+    },
+    {
+      "function": "text",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 1060,
+      "original": {
+        "source": "../../source/src/crdt/admittedWorkspace.ts",
+        "line": 996,
+        "column": 4,
+        "name": null
+      },
+      "wholeProfileMs": 9.161,
+      "throughDrainObserverMs": 9.161
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 2675,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 344,
+        "column": 101,
+        "name": null
+      },
+      "wholeProfileMs": 8.949000000000002,
+      "throughDrainObserverMs": 8.949000000000002
+    },
+    {
+      "function": "Kk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 102327,
+      "original": {
+        "source": "../../source/src/crdt/workspaceBridge.ts",
+        "line": 13,
+        "column": 9,
+        "name": null
+      },
+      "wholeProfileMs": 7.609,
+      "throughDrainObserverMs": 7.609
+    },
+    {
+      "function": "",
+      "url": "",
+      "line": 1,
+      "column": 0,
+      "wholeProfileMs": 5.793,
+      "throughDrainObserverMs": 5.793
+    },
+    {
+      "function": "queueMicrotask",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 4.611,
+      "throughDrainObserverMs": 4.611
+    },
+    {
+      "function": "request",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 5767,
+      "original": {
+        "source": "../../source/src/crdt/workerChannel.ts",
+        "line": 238,
+        "column": 4,
+        "name": null
+      },
+      "wholeProfileMs": 4.571,
+      "throughDrainObserverMs": 4.571
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 23371,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 2816,
+        "column": 16,
+        "name": null
+      },
+      "wholeProfileMs": 4.547,
+      "throughDrainObserverMs": 4.547
+    },
+    {
+      "function": "a",
+      "url": "http://localhost:53781/worker-app/assets/custodyCrypto-sz2TtCLC.js",
+      "line": 1,
+      "column": 227,
+      "original": {
+        "source": "../../source/src/crdt/rangeLab.ts",
+        "line": 7,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 4.545,
+      "throughDrainObserverMs": 4.545
+    },
+    {
+      "function": "L",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 51,
+      "column": 21776,
+      "original": {
+        "source": "../../source/src/crdt/admittedWorkspace.ts",
+        "line": 617,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 4.425,
+      "throughDrainObserverMs": 4.425
+    },
+    {
+      "function": "Mr",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 2399,
+      "original": {
+        "source": "../../source/src/crdt/workerChannel.ts",
+        "line": 12,
+        "column": 16,
+        "name": null
+      },
+      "wholeProfileMs": 4.359,
+      "throughDrainObserverMs": 4.359
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/custodyCrypto-sz2TtCLC.js",
+      "line": 1,
+      "column": 1924,
+      "original": {
+        "source": "../../source/src/crdt/rangeLab.ts",
+        "line": 26,
+        "column": 80,
+        "name": null
+      },
+      "wholeProfileMs": 4.293,
+      "throughDrainObserverMs": 4.293
+    },
+    {
+      "function": "evaluate",
+      "url": "",
+      "line": 305,
+      "column": 10,
+      "wholeProfileMs": 4.287,
+      "throughDrainObserverMs": 4.287
+    },
+    {
+      "function": "_",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 2313,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 130,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 3.089,
+      "throughDrainObserverMs": 3.089
+    },
+    {
+      "function": "nk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 85882,
+      "original": {
+        "source": "../../source/src/crdt/workerFrameStream.ts",
+        "line": 21,
+        "column": 9,
+        "name": null
+      },
+      "wholeProfileMs": 3.0599999999999996,
+      "throughDrainObserverMs": 3.0599999999999996
+    },
+    {
+      "function": "now",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 3.057,
+      "throughDrainObserverMs": 3.057
+    },
+    {
+      "function": "Vo",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 11988,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 9362,
+        "column": 26,
+        "name": null
+      },
+      "wholeProfileMs": 3.057,
+      "throughDrainObserverMs": 3.057
+    },
+    {
+      "function": "re",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 40487,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 479,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 3.0469999999999997,
+      "throughDrainObserverMs": 3.0469999999999997
+    },
+    {
+      "function": "read",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 1146,
+      "original": {
+        "source": "../../source/src/crdt/admittedWorkspace.ts",
+        "line": 1002,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 3.042,
+      "throughDrainObserverMs": 3.042
+    },
+    {
+      "function": "za",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 43228,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 5614,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 3.041,
+      "throughDrainObserverMs": 3.041
+    },
+    {
+      "function": "workspacePrepare",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 101178,
+      "original": {
+        "source": "../../source/src/crdt/windowWorkspaceQueues.ts",
+        "line": 73,
+        "column": 10,
+        "name": null
+      },
+      "wholeProfileMs": 3.041,
+      "throughDrainObserverMs": 3.041
+    },
+    {
+      "function": "sessionStatus",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 110854,
+      "original": {
+        "source": "../../source/src/crdt/accountWorkerClient.ts",
+        "line": 280,
+        "column": 24,
+        "name": null
+      },
+      "wholeProfileMs": 3.033,
+      "throughDrainObserverMs": 3.033
+    },
+    {
+      "function": "si",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 20413,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1873,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 3.017,
+      "throughDrainObserverMs": 3.017
+    },
+    {
+      "function": "$e",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 5283,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js",
+        "line": 105,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 2.811,
+      "throughDrainObserverMs": 2.811
+    },
+    {
+      "function": "xb",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 173278,
+      "original": {
+        "source": "../../source/src/lib/date.ts",
+        "line": 29,
+        "column": 26,
+        "name": null
+      },
+      "wholeProfileMs": 2.7089999999999996,
+      "throughDrainObserverMs": 2.7089999999999996
+    },
+    {
+      "function": "v",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 2438,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 260,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 2.628,
+      "throughDrainObserverMs": 2.628
+    },
+    {
+      "function": "Ns",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 25026,
+      "original": {
+        "source": "../../source/src/crdt/yjs.ts",
+        "line": 284,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 2.549,
+      "throughDrainObserverMs": 2.549
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 51,
+      "column": 23240,
+      "original": {
+        "source": "../../source/src/crdt/admittedWorkspace.ts",
+        "line": 745,
+        "column": 23,
+        "name": null
+      },
+      "wholeProfileMs": 2.406,
+      "throughDrainObserverMs": 2.406
+    },
+    {
+      "function": "Li",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 23540,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 2847,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 1.694,
+      "throughDrainObserverMs": 1.694
+    },
+    {
+      "function": "ie",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 41181,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 543,
+        "column": 25,
+        "name": null
+      },
+      "wholeProfileMs": 1.635,
+      "throughDrainObserverMs": 1.635
+    },
+    {
+      "function": "get",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 11457,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 577,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.606,
+      "throughDrainObserverMs": 1.606
+    },
+    {
+      "function": "emit",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 952,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/observable.js",
+        "line": 80,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.589,
+      "throughDrainObserverMs": 1.589
+    },
+    {
+      "function": "Nr",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 3425,
+      "original": {
+        "source": "../../source/src/crdt/workerChannel.ts",
+        "line": 57,
+        "column": 16,
+        "name": null
+      },
+      "wholeProfileMs": 1.55,
+      "throughDrainObserverMs": 1.55
+    },
+    {
+      "function": "Jk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 102873,
+      "original": {
+        "source": "../../source/src/crdt/workspaceBridge.ts",
+        "line": 40,
+        "column": 9,
+        "name": null
+      },
+      "wholeProfileMs": 1.548,
+      "throughDrainObserverMs": 1.548
+    },
+    {
+      "function": "lk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 88035,
+      "original": {
+        "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+        "line": 16,
+        "column": 16,
+        "name": null
+      },
+      "wholeProfileMs": 1.546,
+      "throughDrainObserverMs": 1.546
+    },
+    {
+      "function": "update",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 99863,
+      "original": {
+        "source": "../../source/src/crdt/accountSessionBridge.ts",
+        "line": 460,
+        "column": 4,
+        "name": null
+      },
+      "wholeProfileMs": 1.541,
+      "throughDrainObserverMs": 1.541
+    },
+    {
+      "function": "_callObserver",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 39643,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 5109,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.536,
+      "throughDrainObserverMs": 1.536
+    },
+    {
+      "function": "Eb",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 173598,
+      "original": {
+        "source": "../../source/src/lib/date.ts",
+        "line": 85,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 1.535,
+      "throughDrainObserverMs": 1.535
+    },
+    {
+      "function": "serialize",
+      "url": "",
+      "line": 175,
+      "column": 18,
+      "wholeProfileMs": 1.533,
+      "throughDrainObserverMs": 1.533
+    },
+    {
+      "function": "decode",
+      "url": "",
+      "line": 0,
+      "column": -1,
+      "wholeProfileMs": 1.531,
+      "throughDrainObserverMs": 1.531
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 7870,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/iterator.js",
+        "line": 45,
+        "column": 52,
+        "name": null
+      },
+      "wholeProfileMs": 1.531,
+      "throughDrainObserverMs": 1.531
+    },
+    {
+      "function": "o",
+      "url": "http://localhost:53781/worker-app/assets/custodyCrypto-sz2TtCLC.js",
+      "line": 1,
+      "column": 257,
+      "original": {
+        "source": "../../source/src/crdt/rangeLab.ts",
+        "line": 8,
+        "column": 23,
+        "name": null
+      },
+      "wholeProfileMs": 1.529,
+      "throughDrainObserverMs": 1.529
+    },
+    {
+      "function": "accept",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 87006,
+      "original": {
+        "source": "../../source/src/crdt/workerFrameStream.ts",
+        "line": 109,
+        "column": 4,
+        "name": null
+      },
+      "wholeProfileMs": 1.528,
+      "throughDrainObserverMs": 1.528
+    },
+    {
+      "function": "De",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 1847,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 39,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.527,
+      "throughDrainObserverMs": 1.527
+    },
+    {
+      "function": "write",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 11272,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 9225,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.525,
+      "throughDrainObserverMs": 1.525
+    },
+    {
+      "function": "Lk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 95586,
+      "original": {
+        "source": "../../source/src/crdt/accountSessionBridge.ts",
+        "line": 74,
+        "column": 9,
+        "name": null
+      },
+      "wholeProfileMs": 1.523,
+      "throughDrainObserverMs": 1.523
+    },
+    {
+      "function": "de",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 47078,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 966,
+        "column": 23,
+        "name": null
+      },
+      "wholeProfileMs": 1.523,
+      "throughDrainObserverMs": 1.523
+    },
+    {
+      "function": "ox",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 176398,
+      "original": {
+        "source": "../../source/src/crdt/days.ts",
+        "line": 412,
+        "column": 37,
+        "name": null
+      },
+      "wholeProfileMs": 1.522,
+      "throughDrainObserverMs": 1.522
+    },
+    {
+      "function": "ke",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 1924,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/encoding.js",
+        "line": 71,
+        "column": 22,
+        "name": null
+      },
+      "wholeProfileMs": 1.522,
+      "throughDrainObserverMs": 1.522
+    },
+    {
+      "function": "o",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 100812,
+      "original": {
+        "source": "../../source/src/crdt/windowWorkspaceQueues.ts",
+        "line": 39,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 1.521,
+      "throughDrainObserverMs": 1.521
+    },
+    {
+      "function": "read",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 247682,
+      "original": {
+        "source": "../../lab/main.mjs",
+        "line": 19,
+        "column": 1123,
+        "name": null
+      },
+      "wholeProfileMs": 1.52,
+      "throughDrainObserverMs": 1.52
+    },
+    {
+      "function": "b",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 39951,
+      "original": {
+        "source": "../../source/src/crdt/accountWorkerCohort.ts",
+        "line": 133,
+        "column": 10,
+        "name": null
+      },
+      "wholeProfileMs": 1.519,
+      "throughDrainObserverMs": 1.519
+    },
+    {
+      "function": "Er",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 7810,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/iterator.js",
+        "line": 29,
+        "column": 30,
+        "name": null
+      },
+      "wholeProfileMs": 1.518,
+      "throughDrainObserverMs": 1.518
+    },
+    {
+      "function": "writeInfo",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 14950,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1043,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.518,
+      "throughDrainObserverMs": 1.518
+    },
+    {
+      "function": "ai",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 20266,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1837,
+        "column": 24,
+        "name": null
+      },
+      "wholeProfileMs": 1.517,
+      "throughDrainObserverMs": 1.517
+    },
+    {
+      "function": "Jr",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 17004,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 1326,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 1.515,
+      "throughDrainObserverMs": 1.515
+    },
+    {
+      "function": "Bk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 97168,
+      "original": {
+        "source": "../../source/src/crdt/accountSessionBridge.ts",
+        "line": 151,
+        "column": 16,
+        "name": null
+      },
+      "wholeProfileMs": 1.513,
+      "throughDrainObserverMs": 1.513
+    },
+    {
+      "function": "I",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 38224,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 326,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 1.511,
+      "throughDrainObserverMs": 1.511
+    },
+    {
+      "function": "L",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 38710,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 354,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 1.51,
+      "throughDrainObserverMs": 1.51
+    },
+    {
+      "function": "qi",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 25464,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 3187,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 1.51,
+      "throughDrainObserverMs": 1.51
+    },
+    {
+      "function": "D",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 1,
+      "column": 5427,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js",
+        "line": 245,
+        "column": 27,
+        "name": null
+      },
+      "wholeProfileMs": 1.51,
+      "throughDrainObserverMs": 1.51
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 104178,
+      "original": {
+        "source": "../../source/src/crdt/workspaceBridge.ts",
+        "line": 160,
+        "column": 23,
+        "name": null
+      },
+      "wholeProfileMs": 1.508,
+      "throughDrainObserverMs": 1.508
+    },
+    {
+      "function": "As",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 24361,
+      "original": {
+        "source": "../../source/src/crdt/yjs.ts",
+        "line": 235,
+        "column": 33,
+        "name": null
+      },
+      "wholeProfileMs": 1.508,
+      "throughDrainObserverMs": 1.508
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 86060,
+      "original": {
+        "source": "../../source/src/crdt/workerFrameStream.ts",
+        "line": 27,
+        "column": 16,
+        "name": null
+      },
+      "wholeProfileMs": 1.508,
+      "throughDrainObserverMs": 1.508
+    },
+    {
+      "function": "tk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 85742,
+      "original": {
+        "source": "../../source/src/crdt/workerFrameStream.ts",
+        "line": 16,
+        "column": 19,
+        "name": null
+      },
+      "wholeProfileMs": 1.507,
+      "throughDrainObserverMs": 1.507
+    },
+    {
+      "function": "parseEvaluationResultValue",
+      "url": "",
+      "line": 106,
+      "column": 35,
+      "wholeProfileMs": 1.507,
+      "throughDrainObserverMs": 1.507
+    },
+    {
+      "function": "Mb",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 174247,
+      "original": {
+        "source": "../../source/src/crdt/days.ts",
+        "line": 129,
+        "column": 23,
+        "name": null
+      },
+      "wholeProfileMs": 1.506,
+      "throughDrainObserverMs": 1.506
+    },
+    {
+      "function": "get state",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 40045,
+      "original": {
+        "source": "../../source/src/crdt/accountWorkerCohort.ts",
+        "line": 140,
+        "column": 10,
+        "name": null
+      },
+      "wholeProfileMs": 1.505,
+      "throughDrainObserverMs": 1.505
+    },
+    {
+      "function": "",
+      "url": "",
+      "line": 1,
+      "column": 1,
+      "wholeProfileMs": 1.504,
+      "throughDrainObserverMs": 1.504
+    },
+    {
+      "function": "ue",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 46766,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 939,
+        "column": 27,
+        "name": null
+      },
+      "wholeProfileMs": 1.503,
+      "throughDrainObserverMs": 1.503
+    },
+    {
+      "function": "toUint8Array",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 24074,
+      "original": {
+        "source": "../../source/src/crdt/yjs.ts",
+        "line": 211,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.503,
+      "throughDrainObserverMs": 1.503
+    },
+    {
+      "function": "Ua",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 43745,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 5707,
+        "column": 26,
+        "name": null
+      },
+      "wholeProfileMs": 1.503,
+      "throughDrainObserverMs": 1.503
+    },
+    {
+      "function": "writeString",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 24183,
+      "original": {
+        "source": "../../source/src/crdt/yjs.ts",
+        "line": 217,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 1.501,
+      "throughDrainObserverMs": 1.501
+    },
+    {
+      "function": "Wb",
+      "url": "http://localhost:53781/worker-app/assets/accountAuthorityInventory-Bd4sp88j.js",
+      "line": 2,
+      "column": 174989,
+      "original": {
+        "source": "../../source/src/crdt/days.ts",
+        "line": 187,
+        "column": 13,
+        "name": null
+      },
+      "wholeProfileMs": 1.472,
+      "throughDrainObserverMs": 1.472
+    },
+    {
+      "function": "Ei",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 21837,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 2513,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 1.352,
+      "throughDrainObserverMs": 1.352
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 38334,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 331,
+        "column": 26,
+        "name": null
+      },
+      "wholeProfileMs": 1.276,
+      "throughDrainObserverMs": 1.276
+    },
+    {
+      "function": "sk",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 52,
+      "column": 87817,
+      "original": {
+        "source": "../../source/src/crdt/workerFrameStream.ts",
+        "line": 172,
+        "column": 22,
+        "name": null
+      },
+      "wholeProfileMs": 1.257,
+      "throughDrainObserverMs": 1.257
+    },
+    {
+      "function": "n",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 51,
+      "column": 23027,
+      "original": {
+        "source": "../../source/src/crdt/admittedWorkspace.ts",
+        "line": 732,
+        "column": 10,
+        "name": null
+      },
+      "wholeProfileMs": 1.255,
+      "throughDrainObserverMs": 1.255
+    },
+    {
+      "function": "",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 5,
+      "column": 11319,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/@codemirror+state@6.7.1/node_modules/@codemirror/state/dist/index.js",
+        "line": 1443,
+        "column": 41,
+        "name": null
+      },
+      "wholeProfileMs": 1.248,
+      "throughDrainObserverMs": 1.248
+    },
+    {
+      "function": "get status",
+      "url": "http://localhost:53781/worker-app/assets/index-Dd2gQk0I.js",
+      "line": 11,
+      "column": 50753,
+      "original": {
+        "source": "../../source/src/crdt/admissionQueue.ts",
+        "line": 1249,
+        "column": 8,
+        "name": null
+      },
+      "wholeProfileMs": 1.061,
+      "throughDrainObserverMs": 1.061
+    },
+    {
+      "function": "Ki",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 2,
+      "column": 25170,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 3159,
+        "column": 6,
+        "name": null
+      },
+      "wholeProfileMs": 0.047,
+      "throughDrainObserverMs": 0.047
+    },
+    {
+      "function": "mergeWith",
+      "url": "http://localhost:53781/worker-app/assets/contentCompaction-DsHNUuqF.js",
+      "line": 4,
+      "column": 17988,
+      "original": {
+        "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+        "line": 10062,
+        "column": 2,
+        "name": null
+      },
+      "wholeProfileMs": 0.008,
+      "throughDrainObserverMs": 0.008
+    },
+    {
+      "function": "_promiseAwareJsonValueNoThrow",
+      "url": "",
+      "line": 327,
+      "column": 31,
+      "wholeProfileMs": 1.209,
+      "throughDrainObserverMs": 0
+    },
+    {
+      "function": "innerSerialize",
+      "url": "",
+      "line": 186,
+      "column": 23,
+      "wholeProfileMs": 4.852,
+      "throughDrainObserverMs": 0
+    },
+    {
+      "function": "isTypedArray",
+      "url": "",
+      "line": 65,
+      "column": 21,
+      "wholeProfileMs": 2.984,
+      "throughDrainObserverMs": 0
+    }
+  ],
+  "qualification": "Self samples on Window main thread only; (program)/unknown/native costs remain. Approximate clip aligns the acknowledged Profiler.start timestamp with CDP monotonic profile origin; start bracket was not recorded. Profile includes harness polling and observation code. Tail includes snapshot collection and is excluded from drain CPU estimate. CPU samples are not exclusive wall-time attribution or evidence about Worker CPU. No acceptance credit; this run failed cold passkey authentication."
+}

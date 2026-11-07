@@ -1,3 +1,4 @@
+import { inboundReceiptEventWork } from '../crdt/inboundRecord';
 import {
   readHandoffHistory,
   verifyHandoffHistoryAdvance,
@@ -224,7 +225,11 @@ export async function loadMembershipWriting(
         if (reading.v === 2)
           await verifyMembershipCheckpointAdmission(reading.admission, reading.checkpoint, history);
         let fetched = 0,
-          count = reading.streams.reduce((n, s) => n + s.events.length, 0);
+          count = reading.streams.reduce(
+            (n, s) =>
+              n + s.events.reduce((sum, wire) => sum + inboundReceiptEventWork(wire, reading), 0),
+            0,
+          );
         for (const [i, stream] of reading.streams.entries()) {
           const context = replay.contexts[i]!;
           for (;;) {

@@ -178,6 +178,7 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
   }
   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
   if (networkSessions) {
+    const capabilityListeners = new Set<() => void>();
     // Public protocol selection is a hint, never account authority. Refresh without delaying
     // offline opening. Owners read the getter when discovering, so an already-open editor can
     // notice an upgraded host. Only a matching pinned service may update this hint.
@@ -187,7 +188,16 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
           if (!current || !current.networkSessions || !samePin(current.pin, pin)) return;
           // The live scheduling hint must not wait behind a mounted Account's exclusive
           // permit. Persisting it is optional and still needs the ordinary metadata gate.
-          membershipContinuation = current.membershipContinuation;
+          if (membershipContinuation !== current.membershipContinuation) {
+            membershipContinuation = current.membershipContinuation;
+            for (const listener of [...capabilityListeners]) {
+              try {
+                listener();
+              } catch {
+                /* Observers own their errors, never the config write. */
+              }
+            }
+          }
           await retainDiscoveryHints(() => {
             if (localStorage.getItem(PIN_KEY) !== retained)
               throw Error('Account service configuration changed during discovery');
@@ -200,6 +210,12 @@ export async function loadPackagedConfig(): Promise<SetupConfig | null> {
     return {
       pin,
       networkSessions: true,
+      onMembershipContinuationChange: (listener: () => void) => {
+        capabilityListeners.add(listener);
+        return () => {
+          capabilityListeners.delete(listener);
+        };
+      },
       get membershipContinuation() {
         return membershipContinuation;
       },

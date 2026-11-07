@@ -1,0 +1,17 @@
+{
+  "analyze.mjs": "e7fd9a59de316bc4421b715896067bb345b18647b40c7889131e02d5a6645e3e",
+  "analysis.json": "92d59fbba858d82851a9989b458e38d67fd54a996e3b3710529d0527f82ad8b5",
+  "analysis.log": "2244e01e176be449288713ac768b7d3583d553e2dd8945a0199eab623a38f667",
+  "cleanup.json": "b20ced357364ec7d2ba63199f7c8adfa029e8f54e908608cc1c308b757023ea8",
+  "run.log": "cb94f633fc413e41022cd6f311be8e97c3db2960e7ddc7c7b926443006a3fe2b",
+  "actual-owner-trace-01/receipt.json": "eda832efa74de8f4eff9cc0baac409e525a8636921411b5487d2ea3b41762c96",
+  "actual-owner-trace-01/console.log": "2059cae8a5277bfad4d37e60cd3b3d60a114e254b0ba891070e28d8710bfc068",
+  "actual-owner-trace-01/composed-context/result.json": "4ed69066615c10decee8a14f4e5b08b16be7d801500afdf0637003f6c73b911a",
+  "actual-owner-trace-01/composed-context/container-identity.json": "90f1901ced9e8fb0fc3997deb59e65fbaec4e8f2d155bc4919d52fcadd84a3f9",
+  "actual-owner-trace-01/composed-context/docker-command.json": "4e83bbd73451d0e0b40f8c90e1d7ebd109abaa0e0881ff7779d9fbadff4ccc2c",
+  "actual-owner-trace-01/composed-context/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+  "actual-owner-trace-01/worker-resumable-history/result.json": "8095808e97163b819ff3f51ada41dce86bb3b9bd1f2a9c54e79324e4be2a8786",
+  "actual-owner-trace-01/worker-resumable-history/container-identity.json": "acbd3f130940f4230cb3022ed23f7e53b928cc480f667937b8f9e57a223b681c",
+  "actual-owner-trace-01/worker-resumable-history/docker-command.json": "5af4f67e974ef42acb4653c8744b5b0b534cd29bea4b09e8ab25c24458a2e5ac",
+  "actual-owner-trace-01/worker-resumable-history/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b"
+}

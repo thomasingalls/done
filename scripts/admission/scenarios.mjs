@@ -1,3 +1,5 @@
+import { waitForState } from '../storage-conformance/observe.mjs';
+const OBSERVATION_TIMEOUT_MS = 10000;
 import { isDeepStrictEqual } from 'node:util';
 export async function runCase(definition, env) {
   const assertions = [],
@@ -23,19 +25,21 @@ export async function runCase(definition, env) {
   const snapshot = (p) => call(p, 'snapshot');
   const page = async () => {
     const p = await context.newPage();
-    p.setDefaultTimeout(10000);
+    p.setDefaultTimeout(OBSERVATION_TIMEOUT_MS);
     p.on('pageerror', (e) => pageErrors.push(e.message));
     await p.goto(env.url);
-    await p.waitForFunction(() => window.admission);
+    await waitForState(p, () => window.admission, undefined, OBSERVATION_TIMEOUT_MS);
     return p;
   };
   const settled = async (p, id, isBase = false) => {
-    await p.waitForFunction(
+    await waitForState(
+      p,
       ({ id, isBase }) =>
         ['resolved', 'rejected'].includes(
           (isBase ? window.content : window.admission).snapshot().entries[id]?.status,
         ),
       { id, isBase },
+      OBSERVATION_TIMEOUT_MS,
     );
     return (isBase ? await base(p, 'snapshot') : await snapshot(p)).entries[id];
   };
@@ -48,9 +52,20 @@ export async function runCase(definition, env) {
     await call(p, 'open', id, code);
     await done(p, id);
   };
-  const gate = (p) => p.waitForFunction(() => window.content.snapshot().gates.includes('sealed'));
+  const gate = (p) =>
+    waitForState(
+      p,
+      () => window.content.snapshot().gates.includes('sealed'),
+      undefined,
+      OBSERVATION_TIMEOUT_MS,
+    );
   const blocked = (p) =>
-    p.waitForFunction(() => window.admission.snapshot().sessions.s.status.state === 'blocked');
+    waitForState(
+      p,
+      () => window.admission.snapshot().sessions.s.status.state === 'blocked',
+      undefined,
+      OBSERVATION_TIMEOUT_MS,
+    );
   const crash = async (p) => {
     const cdp = await context.newCDPSession(p),
       died = p.waitForEvent('crash');
@@ -269,7 +284,12 @@ export async function runCase(definition, env) {
       case 'C03.timer': {
         await call(a, 'submit', 'local', 'A');
         check('initially-journal-only', (await snapshot(a)).sessions.s.status.durable, false);
-        await a.waitForFunction(() => window.admission.snapshot().sessions.s.status.durable);
+        await waitForState(
+          a,
+          () => window.admission.snapshot().sessions.s.status.durable,
+          undefined,
+          OBSERVATION_TIMEOUT_MS,
+        );
         check('timer-committed', (await base(a, 'inventory')).content.length, 1);
         check('timer-cleaned', Object.keys(await journal(a, 'inventory')).length, 0);
         break;

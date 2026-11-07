@@ -1,0 +1,8 @@
+{
+  "stack": "G8,R1500,S1Y1,P1,V0,D0",
+  "basis": "All four exploratory grown cells satisfy measured predicates, writer120s and both actual offline cold profiles; all three P1V0deep30 pass",
+  "readerQualification": "One reader completion; other reader windows censored, not universal completion proof",
+  "noAcceptanceCredit": true,
+  "noHardening": true,
+  "next": "Declared R1500/1000 screen, then3072,Dpairs,alloriginal/grownthree-replicatecells"
+}

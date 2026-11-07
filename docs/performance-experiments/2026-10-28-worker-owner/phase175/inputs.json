@@ -1,0 +1,11 @@
+{
+  "src/crdt/workerLocalBaseline.ts": "541f077221f1f52bfccaffdebe9e0e10a69bc601038d652e21547cb1c88fbdec",
+  "src/crdt/accountReceive.ts": "cf7243fd06201b8ec8a164a44e00bc51ac1a12913ed6a69c618f3c4a3f1011a7",
+  "src/crdt/accountOwner.worker.ts": "ebae2e85bc104f809dc8434967e6ed7a3c01885af48ec3ec31d5bcb3c86ac592",
+  "src/crdt/accountWorkerClient.ts": "1b12e0e912c9c51549142341a348a5cf64dd9425a3b25f61c61095833a5549c0",
+  "src/crdt/accountWorkerRuntime.ts": "a6ce19fae3aefe2692091b3e66e47ab602130fc0ef92a9b3b58b6fb680777aa6",
+  "src/crdt/windowAccountMirror.ts": "6f0adadd39e12604662dc0ccaa98f09298a6f0d75a9c91774432ee0f7830cc79",
+  "test/workerLocalBaseline.test.ts": "89bec46a4ee7fab6124041593f51006afce34fa7c881045f9826224a62fc4f42",
+  "test/windowAccountMirrorRebind.test.ts": "9a1bd9cecb59d7bf670d542de4d0adb7699e623dda3a0a5738fc48d9f0537c83",
+  "test/account-worker-cohort/runtime.spec.ts": "b192dbd1a6878dc0d86462037992810f443d7fcf29bd7146304a9951c40afc5d"
+}

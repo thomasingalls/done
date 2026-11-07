@@ -1,0 +1,15 @@
+# Phase 322 — pre-build contract reading (evidence only)
+
+Yjs updates commute; publisher chains, accepted-state authority and journal generations do not. No lab result earns qualification credit and no lab source/build lands.
+
+Rotation: `windowWorkspaceQueues.workspaceFence` holds the real Window FIFO journal fence across `workspaceCommit` and context rebind. `admissionQueue.journalFenceOwned` drains the actual accepted journal at the queue head; `windowAccountMirror.rebind` checks physical/logical scope, credential, generation, epoch, era and key identity under that fence. Keep this path unchanged.
+
+Undo: ordinary receive applies original frames to the current document with remote origin, preserving the current Undo manager, never replacing it with a prepared snapshot. It needs ordered final application and a live native acknowledgment, not the existing six-message protocol as such. Worker verification/storage commit/readback already precede page preparation. Collapsing that bridge must retain the original finish capability, current-authority checks before/after application, one flight, bounds and cold-on-uncertainty behavior. Local edits remain synchronously sealed against committed state.
+
+Maintenance: expensive read-only preparation already runs outside the page FIFO. Final removal/era rebind still flushes and fences the actual local journal and checks current inventory, counter, witness, authority and handoff state. Keep that fence, and context-changing operations, intact.
+
+Unsaved work: queue arrival increments preparationActivity, a priority-yield mechanism rather than an authority proof. Other interruption conditions include suspension, shadow activity, journal, handoff and authority changes. On any thrown interruption the scoped observation/task is invalidated and erased. A PreparationPause can export a bounded, authenticated delta while the task is still live, then save it under fresh checks. Saving an arbitrary partial memo after a throw would bypass that boundary. Previously completed durable slices survive and are authenticated and matched on reopen. A checkpoint before a pure-priority yield could be designed separately; it is not licensed by Yjs commutativity and is not this experiment.
+
+Fetch-ahead: current prepareRead owns one outstanding request group; independent preparation cannot overwrite it. Speculation may retain only bounded original request/page bytes under expiry, owner and retention cancellation. Verification may do independent crypto concurrently, but chain acceptance and final witness/ledger/authorization/commit checks stay in chain order. No publisher advances and no local edit consumes an uncommitted speculative state. Four active network requests per session remains the limit.
+
+Capacity mapping remains a separate landing requirement: PreparationCapacity currently becomes owner-error and halts that controller; a fresh reopened controller authenticates saved slices and may retry and meet the same cap. No capacity fix is included here.

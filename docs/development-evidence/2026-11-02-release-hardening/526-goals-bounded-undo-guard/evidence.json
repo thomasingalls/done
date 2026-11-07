@@ -1,0 +1,116 @@
+{
+  "explicitOperatorGuardChange": true,
+  "frozenExperimentSpecChanged": true,
+  "canonicalAppChanged": false,
+  "phase": 526,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/windowAccountMirror.ts",
+      "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8",
+      "bytes": 12104
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-record-20261107/526-private-files.json",
+      "sha256": "633889c960b4084258c9de128325fa01f0c53fac3ca1e8dd9accf59399f1691d",
+      "bytes": 451
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-record-20261107/526-summary.json",
+      "sha256": "95ddb2a79f94b9dc681c1d6bb6f39c7945b85147af1807dc2313fffa71631965",
+      "bytes": 972
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-20261107/526-spec-proof.json",
+      "sha256": "c9f90e5128778b784c7a0a562bfcd2a0ec340b677db54bcbb0164ede0ee0581d",
+      "bytes": 3296
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-20261107/526-approved-guard.patch",
+      "sha256": "3c556b601210c6d2895227333520cf1dd9b5bcfc5831cca8283be5aeb310245d",
+      "bytes": 1467
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-20261107/stall.spec.ts",
+      "sha256": "f57e393f748093d2f4fe45de2dce849038adbaa2872c0b17376b50fed13b35ff",
+      "bytes": 10527
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-20261107/527-declaration.json",
+      "sha256": "3c9b5e7ccdc2361480c5da72bcc9fc83e5604c16acf9cd90df0d048e7a3f4d6e",
+      "bytes": 52767
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-527-20261107/goals-host-handshake.json",
+      "sha256": "6b7d10f6c2445f29e1848ca6303c69543b07cc48bdc773ba3d7051c39287c016",
+      "bytes": 211
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-527-20261107/527-declaration.json",
+      "sha256": "53f75817c94c176786be77febc3aff84aec09d6bcb47ee1c8b6bae74029be784",
+      "bytes": 1025
+    },
+    {
+      "localPath": "/private/tmp/done-goals-remaining-control-20261107/run.py",
+      "sha256": "4626b1adeb2bc7805da065bf00caa47c2b6a100b2676028dbbc1e0c685420d6e",
+      "bytes": 8241
+    }
+  ],
+  "summary": {
+    "phase": 526,
+    "approvedGuardChange": true,
+    "oldSpec": {
+      "path": "/private/tmp/done-goals-gates-478-20261106/stall.spec.ts",
+      "sha256": "764f8ca9a5b6b3c650cd54da0f2b79c4949730d00b3a6dd113aceda61d508de4",
+      "bytes": 10337
+    },
+    "newFrozenSpec": {
+      "path": "/private/tmp/done-goals-guard-526-20261107/stall.spec.ts",
+      "sha256": "f57e393f748093d2f4fe45de2dce849038adbaa2872c0b17376b50fed13b35ff",
+      "bytes": 10527
+    },
+    "onlyChangedLines": [
+      90,
+      91
+    ],
+    "inverseByteProof": true,
+    "allOtherSpecHelpersFixtureAnalyzerAssetsExact": true,
+    "UndoRedoPollTimeoutMs": 2500,
+    "diagnosticFields": [
+      "undoPollElapsedMs",
+      "redoPollElapsedMs"
+    ],
+    "diagnosticThreshold": null,
+    "operatorCarries": [
+      "522-r1-goals-desktop",
+      "522-r1-goals-mobile4x"
+    ],
+    "remainingRuns": [
+      "r2-goals-desktop",
+      "r2-goals-mobile4x",
+      "r3-goals-desktop",
+      "r3-goals-mobile4x"
+    ],
+    "quietHostConfirmed": true,
+    "appChange": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

@@ -1,0 +1,603 @@
+{
+  "capBytes": 33554432,
+  "logicalWorkCap": 32768,
+  "rows": [
+    {
+      "label": "screen326-r1-d0-E0B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 13851.919893302727,
+      "interceptBytes": 138467.31416251324,
+      "maximumAbsoluteResidualBytes": 5941.634988795966,
+      "predictedDensePositionAt32MiB": 2412.37062755422,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 2412.37062755422,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "01",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r1-d50-E1B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 13851.919893302727,
+      "interceptBytes": 138467.31416251324,
+      "maximumAbsoluteResidualBytes": 5941.634988795966,
+      "predictedDensePositionAt32MiB": 2412.37062755422,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 2412.37062755422,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": false,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r1-d50-E1B0P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 4079.662663917322,
+      "interceptBytes": 154061.83062288584,
+      "maximumAbsoluteResidualBytes": 5209.264189694077,
+      "predictedDensePositionAt32MiB": 8187.042145613538,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8187.042145613538,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": true,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r1-d50-E1B0P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 8229.218189880508,
+      "interceptBytes": 147428.02681572083,
+      "maximumAbsoluteResidualBytes": 5515.764936517924,
+      "predictedDensePositionAt32MiB": 4059.5598758415426,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 4059.5598758415426,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": false,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r1-d0-E1B1P1",
+      "observedDensePositionRange": [
+        207,
+        1019
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 3874.908037480003,
+      "interceptBytes": 143255.13789904024,
+      "maximumAbsoluteResidualBytes": 5987.571908836719,
+      "predictedDensePositionAt32MiB": 8622.44382032599,
+      "predictedDensePositionAt32768LogicalWork": 16257.716438054393,
+      "predictedFirstIndexLimitDensePosition": 8622.44382032599,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r1-d0-E1B0P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 8229.218189880508,
+      "interceptBytes": 147428.02681572083,
+      "maximumAbsoluteResidualBytes": 5515.764936517924,
+      "predictedDensePositionAt32MiB": 4059.5598758415426,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 4059.5598758415426,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r1-d0-E1B1P0",
+      "observedDensePositionRange": [
+        207,
+        1022
+      ],
+      "uniquePoints": 108,
+      "chargedBytesPerAdditionalDensePosition": 13503.420034033303,
+      "interceptBytes": 195372.80301796552,
+      "maximumAbsoluteResidualBytes": 51213.162313681096,
+      "predictedDensePositionAt32MiB": 2470.4155771579076,
+      "predictedDensePositionAt32768LogicalWork": 16336.478782134836,
+      "predictedFirstIndexLimitDensePosition": 2470.4155771579076,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r1-d50-E1B1P1",
+      "observedDensePositionRange": [
+        207,
+        1022
+      ],
+      "uniquePoints": 105,
+      "chargedBytesPerAdditionalDensePosition": 3851.54550723069,
+      "interceptBytes": 159382.2933429205,
+      "maximumAbsoluteResidualBytes": 4921.577397518791,
+      "predictedDensePositionAt32MiB": 8670.55825874651,
+      "predictedDensePositionAt32768LogicalWork": 16346.76607256677,
+      "predictedFirstIndexLimitDensePosition": 8670.55825874651,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r1-d0-E1B0P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 4079.662663917322,
+      "interceptBytes": 154061.83062288584,
+      "maximumAbsoluteResidualBytes": 5209.264189694077,
+      "predictedDensePositionAt32MiB": 8187.042145613538,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8187.042145613538,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": true,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r2-d0-E1B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 106,
+      "chargedBytesPerAdditionalDensePosition": 13670.014384411359,
+      "interceptBytes": 161080.41079576593,
+      "maximumAbsoluteResidualBytes": 45849.56675700657,
+      "predictedDensePositionAt32MiB": 2442.8175896643124,
+      "predictedDensePositionAt32768LogicalWork": 16349.895191709424,
+      "predictedFirstIndexLimitDensePosition": 2442.8175896643124,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r2-d0-E1B1P1",
+      "observedDensePositionRange": [
+        207,
+        1021
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 3862.05418970406,
+      "interceptBytes": 149349.11400545947,
+      "maximumAbsoluteResidualBytes": 4522.558306695428,
+      "predictedDensePositionAt32MiB": 8649.56348231724,
+      "predictedDensePositionAt32768LogicalWork": 16297.312583803687,
+      "predictedFirstIndexLimitDensePosition": 8649.56348231724,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r2-d50-E1B1P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 3845.0342318125904,
+      "interceptBytes": 155753.8309304025,
+      "maximumAbsoluteResidualBytes": 5191.149925317615,
+      "predictedDensePositionAt32MiB": 8686.184870017425,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8686.184870017425,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r2-d0-E1B0P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 8229.218189880508,
+      "interceptBytes": 147428.02681572083,
+      "maximumAbsoluteResidualBytes": 5515.764936517924,
+      "predictedDensePositionAt32MiB": 4059.5598758415426,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 4059.5598758415426,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r2-d0-E1B0P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 4079.662663917322,
+      "interceptBytes": 154061.83062288584,
+      "maximumAbsoluteResidualBytes": 5209.264189694077,
+      "predictedDensePositionAt32MiB": 8187.042145613538,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8187.042145613538,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": true,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r2-d50-E1B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 104,
+      "chargedBytesPerAdditionalDensePosition": 13833.987981442133,
+      "interceptBytes": 118678.93796673231,
+      "maximumAbsoluteResidualBytes": 24620.222913986538,
+      "predictedDensePositionAt32MiB": 2416.9280114227577,
+      "predictedDensePositionAt32768LogicalWork": 16349.901640291318,
+      "predictedFirstIndexLimitDensePosition": 2416.9280114227577,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": false,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r2-d0-E0B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 13851.919893302727,
+      "interceptBytes": 138467.31416251324,
+      "maximumAbsoluteResidualBytes": 5941.634988795966,
+      "predictedDensePositionAt32MiB": 2412.37062755422,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 2412.37062755422,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "01",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r2-d50-E1B0P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 4079.662663917322,
+      "interceptBytes": 154061.83062288584,
+      "maximumAbsoluteResidualBytes": 5209.264189694077,
+      "predictedDensePositionAt32MiB": 8187.042145613538,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8187.042145613538,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": true,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r2-d50-E1B0P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 8229.218189880508,
+      "interceptBytes": 147428.02681572083,
+      "maximumAbsoluteResidualBytes": 5515.764936517924,
+      "predictedDensePositionAt32MiB": 4059.5598758415426,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 4059.5598758415426,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": false,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r3-d0-E1B1P1",
+      "observedDensePositionRange": [
+        207,
+        1021
+      ],
+      "uniquePoints": 105,
+      "chargedBytesPerAdditionalDensePosition": 3865.073263403028,
+      "interceptBytes": 148938.3780132439,
+      "maximumAbsoluteResidualBytes": 5599.820052264724,
+      "predictedDensePositionAt32MiB": 8642.913431497203,
+      "predictedDensePositionAt32768LogicalWork": 16293.450441693349,
+      "predictedFirstIndexLimitDensePosition": 8642.913431497203,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r3-d50-E1B1P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 104,
+      "chargedBytesPerAdditionalDensePosition": 3847.5522574632314,
+      "interceptBytes": 155625.15518246638,
+      "maximumAbsoluteResidualBytes": 4620.885432648007,
+      "predictedDensePositionAt32MiB": 8680.533650981011,
+      "predictedDensePositionAt32768LogicalWork": 16349.891401703691,
+      "predictedFirstIndexLimitDensePosition": 8680.533650981011,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r3-d50-E1B0P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 8229.218189880508,
+      "interceptBytes": 147428.02681572083,
+      "maximumAbsoluteResidualBytes": 5515.764936517924,
+      "predictedDensePositionAt32MiB": 4059.5598758415426,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 4059.5598758415426,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": false,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r3-d0-E1B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 106,
+      "chargedBytesPerAdditionalDensePosition": 13653.536500232933,
+      "interceptBytes": 197515.70560673252,
+      "maximumAbsoluteResidualBytes": 35016.718733243644,
+      "predictedDensePositionAt32MiB": 2443.0971634216667,
+      "predictedDensePositionAt32768LogicalWork": 16349.902206306031,
+      "predictedFirstIndexLimitDensePosition": 2443.0971634216667,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r3-d0-E1B0P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 8229.218189880508,
+      "interceptBytes": 147428.02681572083,
+      "maximumAbsoluteResidualBytes": 5515.764936517924,
+      "predictedDensePositionAt32MiB": 4059.5598758415426,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 4059.5598758415426,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r3-d0-E0B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 13851.919893302727,
+      "interceptBytes": 138467.31416251324,
+      "maximumAbsoluteResidualBytes": 5941.634988795966,
+      "predictedDensePositionAt32MiB": 2412.37062755422,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 2412.37062755422,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "01",
+      "pp": false,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r3-d50-E1B1P0",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 104,
+      "chargedBytesPerAdditionalDensePosition": 13833.987981442133,
+      "interceptBytes": 118678.93796673231,
+      "maximumAbsoluteResidualBytes": 24620.222913986538,
+      "predictedDensePositionAt32MiB": 2416.9280114227577,
+      "predictedDensePositionAt32768LogicalWork": 16349.901640291318,
+      "predictedFirstIndexLimitDensePosition": 2416.9280114227577,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": false,
+      "rtt": 50
+    },
+    {
+      "label": "screen326-r3-d0-E1B0P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 4079.662663917322,
+      "interceptBytes": 154061.83062288584,
+      "maximumAbsoluteResidualBytes": 5209.264189694077,
+      "predictedDensePositionAt32MiB": 8187.042145613538,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8187.042145613538,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": true,
+      "rtt": 0
+    },
+    {
+      "label": "screen326-r3-d50-E1B0P1",
+      "observedDensePositionRange": [
+        207,
+        1023
+      ],
+      "uniquePoints": 103,
+      "chargedBytesPerAdditionalDensePosition": 4079.662663917322,
+      "interceptBytes": 154061.83062288584,
+      "maximumAbsoluteResidualBytes": 5209.264189694077,
+      "predictedDensePositionAt32MiB": 8187.042145613538,
+      "predictedDensePositionAt32768LogicalWork": 16349.888614034677,
+      "predictedFirstIndexLimitDensePosition": 8187.042145613538,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "10",
+      "pp": true,
+      "rtt": 50
+    },
+    {
+      "label": "grown326-withheld-r1:reader",
+      "observedDensePositionRange": [
+        206,
+        1378
+      ],
+      "uniquePoints": 150,
+      "chargedBytesPerAdditionalDensePosition": 4031.623756591363,
+      "interceptBytes": 74571.52604352357,
+      "maximumAbsoluteResidualBytes": 44027.98009865568,
+      "predictedDensePositionAt32MiB": 8304.311735245568,
+      "predictedDensePositionAt32768LogicalWork": 15776.440522531424,
+      "predictedFirstIndexLimitDensePosition": 8304.311735245568,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "grown": true
+    },
+    {
+      "label": "grown326-withheld-r1:writer",
+      "notMeasured": "insufficient bounded pre-drain index observations",
+      "points": 0,
+      "eb": "11",
+      "pp": true,
+      "grown": true
+    },
+    {
+      "label": "grown326-withheld-r2:reader",
+      "observedDensePositionRange": [
+        207,
+        1396
+      ],
+      "uniquePoints": 153,
+      "chargedBytesPerAdditionalDensePosition": 4006.6200780178483,
+      "interceptBytes": 81599.3030888727,
+      "maximumAbsoluteResidualBytes": 36835.34076143266,
+      "predictedDensePositionAt32MiB": 8354.38150988121,
+      "predictedDensePositionAt32768LogicalWork": 15857.269140184206,
+      "predictedFirstIndexLimitDensePosition": 8354.38150988121,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "grown": true
+    },
+    {
+      "label": "grown326-withheld-r2:writer",
+      "notMeasured": "insufficient bounded pre-drain index observations",
+      "points": 0,
+      "eb": "11",
+      "pp": true,
+      "grown": true
+    },
+    {
+      "label": "grown326-withheld-r3:reader",
+      "observedDensePositionRange": [
+        207,
+        1357
+      ],
+      "uniquePoints": 151,
+      "chargedBytesPerAdditionalDensePosition": 4033.274644228242,
+      "interceptBytes": 68850.34631541045,
+      "maximumAbsoluteResidualBytes": 44066.80232934351,
+      "predictedDensePositionAt32MiB": 8302.331134727867,
+      "predictedDensePositionAt32768LogicalWork": 15778.976641899453,
+      "predictedFirstIndexLimitDensePosition": 8302.331134727867,
+      "measuredPastCap": false,
+      "model": "OLS charged/logical work against aggregate dense positions during drain, n200..1900; no claim for other update/page mixes or future maintenance resets",
+      "eb": "11",
+      "pp": true,
+      "grown": true
+    },
+    {
+      "label": "grown326-withheld-r3:writer",
+      "notMeasured": "insufficient bounded pre-drain index observations",
+      "points": 0,
+      "eb": "11",
+      "pp": true,
+      "grown": true
+    }
+  ],
+  "qualification": "Predictions for this lab receipt/account/update mix. Incoming dense position is not publisher cursor or total account history. Index charge is not heap. Fallback at the predicted position has not been measured. Failure/maintenance/cold verdicts are unchanged.",
+  "labOnly": true,
+  "acceptanceCredit": false
+}

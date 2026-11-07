@@ -1,0 +1,10 @@
+from pathlib import Path
+import subprocess,json
+root=Path('/private/tmp/done-worker-conversion-20261028/native187');rows=[]
+for f in root.rglob('container.cid'):
+ cid=f.read_text().strip();assert len(cid)==64 and all(c in'0123456789abcdef'for c in cid)
+ p=subprocess.run(['docker','inspect',cid],capture_output=True,text=True)
+ if p.returncode==0:
+  d=json.loads(p.stdout)[0];assert any(m.get('Destination')=='/experiment'and m.get('Source')==str(root)for m in d['Mounts']);subprocess.run(['docker','rm','-f',cid],check=True,capture_output=True)
+ q=subprocess.run(['docker','inspect',cid],capture_output=True);assert q.returncode!=0;rows.append({'case':str(f.parent.relative_to(root)),'id':cid,'absent':True})
+Path('/private/tmp/done-worker-conversion-20261028/187-owned-containers.json').write_text(json.dumps(rows,indent=2)+'\n');print(len(rows),'owned containers absent')

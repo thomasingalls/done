@@ -1,0 +1,12 @@
+[
+  {
+    "fault": "default-on",
+    "failedCases": 2,
+    "detected": true
+  },
+  {
+    "fault": "bypass-disabled-plan",
+    "failedCases": 1,
+    "detected": true
+  }
+]

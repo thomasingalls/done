@@ -1,4 +1,8 @@
 import {
+  encodeInboundBatch,
+  encodeInboundBatchPages,
+} from '../../account-protocol/inboundBatch.ts';
+import {
   boundsCampaign,
   boundsCampaignStage,
   boundsSteps,
@@ -1392,7 +1396,10 @@ function receiveEditorEvidence() {
     id,
     sources: [{ actor: '11'.repeat(16), kind: 'human', bytes }],
   });
-  const before = [capsule('startup')],
+  const before = [
+      capsule('startup'),
+      { id: 'system-initial', sources: [{ actor: 'system', kind: 'system', bytes: [0, 1] }] },
+    ],
     original = [1, 2, 3],
     extra = capsule('local', original);
   const status = (n) => ({
@@ -1638,7 +1645,28 @@ test('160 generated receive-editor corruptions reject lost text, false receipt p
     (h) => h.final.captures.pop(),
     (h) => (h.final.visible += 'L'),
     (h) => (h.observations[3].status.link = 'cc'.repeat(32)),
+    (h) => {
+      for (const rows of [...h.observations.map((o) => o.captures), h.final.captures]) {
+        const source = rows.find((c) => c.id === 'local')?.sources[0];
+        if (source) {
+          source.kind = 'system';
+          source.actor = 'system';
+        }
+      }
+    },
+    (h) => {
+      for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures])
+        rows.find((c) => c.id === 'system-initial').sources[0].actor = 'other-actor';
+    },
+    (h) =>
+      h.observations[0].captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
+    (h) => h.final.captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
   ];
+  for (const alter of alters) {
+    const bad = structuredClone(r);
+    alter(bad['generated-editor.json'].histories[0]);
+    assert.throws(() => reconcileReceiveEditorEvidence(bad));
+  }
   fc.assert(
     fc.property(fc.nat(9), fc.nat(alters.length - 1), (i, k) => {
       const bad = structuredClone(r);
@@ -1677,7 +1705,10 @@ function receiveTransportEvidence() {
       id,
       sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
     }),
-    before = [capsule('startup')],
+    before = [
+      capsule('startup'),
+      { id: 'system-initial', sources: [{ actor: 'system', kind: 'system', bytes: [0, 1] }] },
+    ],
     local = capsule('local');
   const actions = [
     'lost',
@@ -1687,6 +1718,7 @@ function receiveTransportEvidence() {
     'compact',
     'restart',
     'receive',
+    'receive',
     'restart',
   ];
   const h = {
@@ -1694,7 +1726,7 @@ function receiveTransportEvidence() {
     completed: true,
     initial: 'base',
     before,
-    wires: ['aa', 'bb'],
+    wires: ['aa', 'bb', 'cc'],
     observations: [],
     requests: [],
   };
@@ -1705,46 +1737,76 @@ function receiveTransportEvidence() {
   const status = () => ({
     state: 'ready',
     receivedThrough: through,
-    observedThrough: through ? 2 : 0,
+    observedThrough: through ? 3 : 0,
     link,
   });
   for (const action of actions) {
     let outcome = null;
     if (['lost', 'corrupt', 'receive'].includes(action)) {
-      const q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
-      q[10] = through;
-      q[11] = 1;
-      const request = Buffer.from(JSON.stringify(q)).toString('hex'),
-        nextLink = (through ? 'bb' : 'aa').repeat(32),
-        page = [
-          'done/private-read-page/v2',
-          2,
-          createHash('sha256').update(Buffer.from(request, 'hex')).digest('hex'),
-          2,
-          through + 1,
-          [[h.wires[through], 'proof']],
-          'signature',
-        ],
-        candidatePage = Buffer.from(JSON.stringify(page)).toString('hex');
+      const width = through === 0 || through === 3 ? 1 : Math.min(2, 3 - through),
+        batch = width > 1,
+        pages = Array.from({ length: width }, (_, index) => {
+          const at = through + index,
+            present = at < 3,
+            q = ['done/private-read/v2', 2, ...Array(13).fill('fixture')];
+          q[10] = at;
+          q[11] = 1;
+          const request = Buffer.from(JSON.stringify(q)).toString('hex'),
+            nextLink = present ? ['aa', 'bb', 'cc'][at].repeat(32) : link,
+            page = [
+              'done/private-read-page/v2',
+              2,
+              createHash('sha256').update(Buffer.from(request, 'hex')).digest('hex'),
+              3,
+              at + (present ? 1 : 0),
+              present ? [[h.wires[at], 'proof']] : [],
+              'signature',
+            ];
+          return {
+            request,
+            candidatePage: Buffer.from(JSON.stringify(page)).toString('hex'),
+            link: nextLink,
+          };
+        }),
+        request = batch
+          ? Buffer.from(
+              encodeInboundBatch(pages.map((p) => new Uint8Array(Buffer.from(p.request, 'hex')))),
+            ).toString('hex')
+          : pages[0].request,
+        response = batch
+          ? Buffer.from(
+              encodeInboundBatchPages(
+                pages.map((p) => new Uint8Array(Buffer.from(p.candidatePage, 'hex'))),
+              ),
+            ).toString('hex')
+          : pages[0].candidatePage;
       h.requests.push({
         mode: action,
+        batch,
         request,
-        candidatePage,
+        pages,
         responseBody:
           action === 'lost'
             ? null
             : action === 'corrupt'
               ? Buffer.from('bad page').toString('hex')
-              : candidatePage,
-        link: nextLink,
+              : response,
       });
       if (action === 'receive') {
-        text = `R${through} ` + text;
-        through++;
-        link = nextLink;
-        outcome = { kind: 'received', recorded: true, status: status() };
-      } else if (action === 'lost') outcome = { kind: 'unknown' };
-      else outcome = { error: 'AdmissionError: invalid page' };
+        const progress = Math.min(width, 3 - through);
+        for (let n = 0; n < progress; n++) text = `R${through++} ` + text;
+        link = pages.at(-1).link;
+        outcome = {
+          kind: progress ? 'received' : 'empty',
+          recorded: progress > 0,
+          status: status(),
+          ...(batch ? { kinds: pages.map(() => 'received') } : {}),
+        };
+      } else if (action === 'lost') outcome = { kind: 'unknown', recorded: false };
+      else
+        outcome = {
+          error: batch ? 'Error: Invalid inbound batch' : 'AdmissionError: invalid page',
+        };
     } else if (action === 'local') {
       text += 'L';
       current.push(local);
@@ -1763,10 +1825,12 @@ function receiveTransportEvidence() {
   const r = {
     'generated.json': {
       status: 'passed',
+      model: 'grouped-http-v2',
       seed: 9112042,
       runs: 16,
       histories: Array.from({ length: 16 }, () => structuredClone(h)),
       coverage,
+      transports: { single: 48, batch: 32 },
     },
   };
   for (const mode of ['queue', 'flight', 'bound', 'drain'])
@@ -1966,9 +2030,41 @@ test('160 generated receive-transport corruptions reject false progress, source 
     (h) => h.final.captures.pop(),
     (h) => (h.final.visible += 'L'),
     (h) => (h.requests[0].request += '00'),
-    (h) => (h.requests[2].responseBody = h.requests[2].candidatePage),
+    (h) => (h.requests[2].responseBody = h.requests[2].pages[0].candidatePage),
     (h) => (h.wires[0] = 'bb'),
+    (h) => h.requests.find((r) => r.batch && r.mode === 'receive').pages.reverse(),
+    (h) => {
+      const r = h.requests.find((r) => r.batch && r.mode === 'receive');
+      r.responseBody = r.responseBody.slice(0, -2);
+    },
+    (h) => {
+      const r = h.requests.find((r) => r.batch && r.mode === 'receive');
+      r.request = r.pages[0].request;
+    },
+    (h) => h.observations[6].outcome.kinds.pop(),
+    (h) => (h.observations[7].outcome.recorded = true),
+    (h) => {
+      for (const rows of [...h.observations.map((o) => o.captures), h.final.captures]) {
+        const source = rows.find((c) => c.id === 'local')?.sources[0];
+        if (source) {
+          source.kind = 'system';
+          source.actor = 'system';
+        }
+      }
+    },
+    (h) => {
+      for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures])
+        rows.find((c) => c.id === 'system-initial').sources[0].actor = 'other-actor';
+    },
+    (h) =>
+      h.observations[0].captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
+    (h) => h.final.captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
   ];
+  for (const alter of alters) {
+    const bad = structuredClone(r);
+    alter(bad['generated.json'].histories[0]);
+    assert.throws(() => reconcileReceiveTransportEvidence(bad));
+  }
   fc.assert(
     fc.property(fc.nat(15), fc.nat(alters.length - 1), (i, k) => {
       const bad = structuredClone(r);
@@ -2006,7 +2102,10 @@ function receiveDriverEvidence() {
       id,
       sources: [{ actor: '11'.repeat(16), kind: 'human', bytes: [0, 0] }],
     }),
-    before = [capsule('startup')],
+    before = [
+      capsule('startup'),
+      { id: 'system-initial', sources: [{ actor: 'system', kind: 'system', bytes: [0, 1] }] },
+    ],
     local = capsule('local');
   const actions = ['lost', 'offline', 'halt', 'local', 'publish', 'publish', 'restart'];
   const h = {
@@ -2332,7 +2431,28 @@ test('160 generated receive-driver corruptions reject skipped durable queries, f
     (h) => (h.requests[0].request += '00'),
     (h) => (h.requests[4].responseBody = h.requests[4].candidatePage),
     (h) => (h.wires[0] = 'bb'),
+    (h) => {
+      for (const rows of [...h.observations.map((o) => o.captures), h.final.captures]) {
+        const source = rows.find((c) => c.id === 'local')?.sources[0];
+        if (source) {
+          source.kind = 'system';
+          source.actor = 'system';
+        }
+      }
+    },
+    (h) => {
+      for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures])
+        rows.find((c) => c.id === 'system-initial').sources[0].actor = 'other-actor';
+    },
+    (h) =>
+      h.observations[0].captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
+    (h) => h.final.captures.find((c) => c.id === 'system-initial').sources[0].bytes.push(99),
   ];
+  for (const alter of alters) {
+    const bad = structuredClone(r);
+    alter(bad['generated-native.json'].histories[0]);
+    assert.throws(() => reconcileReceiveDriverEvidence(bad));
+  }
   fc.assert(
     fc.property(fc.nat(9), fc.nat(alters.length - 1), (i, k) => {
       const bad = structuredClone(r);
@@ -2552,37 +2672,107 @@ function syncEvidence() {
       { mutant: true, opened: true, master: 'base', status: status('offline') },
     ],
   };
+  const records = [{ kind: 'update', gen: 1, seq: 1, bytes: [1, 2] }];
+  const record = (tag, index, tail = []) => ({
+    kind: 'heads',
+    gen: 1,
+    seq: index,
+    bytes: [...Buffer.from(JSON.stringify([tag, ...tail]))],
+  });
+  const baselineStatus = status('retrying');
+  baselineStatus.send.reason = 'network-unavailable';
+  baselineStatus.receive = { ...baselineStatus.receive, phase: 'blocked', reason: 'integrity' };
   const baseline = {
     mode: 'baseline',
     advanced: false,
     editorState: 'active',
-    status: status('blocked'),
+    status: baselineStatus,
+    reads: 1,
+    initial: 'base',
+    visible: 'base',
+    storage: { before: records, after: records, newDeliveryDecisions: 0 },
   };
   for (const mode of ['self', 'classification']) {
-    const s = status('blocked');
-    s.receive.receivedThrough = mode === 'self' ? 1 : 0;
+    const s = status(mode === 'self' ? 'blocked' : 'closed');
+    for (const lane of ['send', 'receive'])
+      s[lane].reason = mode === 'self' ? 'conflict' : 'closed';
     r['control-' + mode + '.json'] = {
       effective: true,
       observations: [
         baseline,
         {
           mode,
-          advanced: mode === 'self',
+          advanced: false,
           editorState: mode === 'self' ? 'active' : 'closed',
           status: s,
+          reads: 1,
+          initial: 'base',
+          visible: mode === 'self' ? 'base' : null,
+          storage: {
+            before: records,
+            after:
+              mode === 'self'
+                ? [
+                    ...records,
+                    record('done/account-delivery/v1', 2, [...Array(8).fill(null), 'response']),
+                  ]
+                : records,
+            newDeliveryDecisions: mode === 'self' ? 1 : 0,
+          },
         },
       ],
     };
   }
-  return r;
+  const nativeRows = [{ store: 'content', keys: [1], values: [{ ct: [4, 5] }] }];
+  r['control-worker-self.json'] = {
+    effective: true,
+    observations: [false, true].map((mutant) => {
+      const asset = '/assets/accountOwner.worker-' + (mutant ? 'mutant' : 'baseline') + '.js';
+      const received = {
+        state: 'ready',
+        receivedThrough: 1,
+        observedThrough: 1,
+        link: 'ab'.repeat(32),
+      };
+      return {
+        mutant,
+        initial: 'base',
+        result: mutant ? { kind: 'received', recorded: true, status: received } : null,
+        status: mutant ? received : null,
+        error: mutant ? null : 'WorkerChannelError: Worker operation could not finish.',
+        errorCode: mutant ? null : 'closed',
+        mirrorState: mutant ? 'active' : 'closing',
+        closedState: 'closed',
+        visible: mutant ? 'REMOTE base' : null,
+        workerUrl: 'http://localhost:1234' + asset,
+        before: records,
+        after: mutant ? [...records, record('done/account-inbound/v1', 2)] : records,
+        nativeBefore: nativeRows,
+        nativeAfter: mutant
+          ? [...nativeRows, { store: 'heads', keys: [2], values: [{ ct: [9] }] }]
+          : nativeRows,
+        bundle: {
+          guardCount: 1,
+          omissionCount: mutant ? 1 : 0,
+          entry: '/done.js',
+          assets: ['/done.js', asset].map((path) => ({
+            path,
+            bytes: 100,
+            sha256: 'ab'.repeat(32),
+          })),
+        },
+      };
+    }),
+  };
+  return JSON.parse(JSON.stringify(r));
 }
-test('sync wrapper binds all six commands, 81 cases and inherited browser process ownership', () => {
+test('sync wrapper binds all six commands, 84 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-sync');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 81);
+  assert.equal(s.expect.cases.length, 84);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 600000, 90000, 150000, 450000],
@@ -2599,7 +2789,7 @@ test('sync wrapper binds all six commands, 81 cases and inherited browser proces
   assert.equal(s.fixture.kind, 'chromium-cdp');
   assert.equal(s.processPolicy, 'inherited-group-v1');
   assert.deepEqual(s.fileOutputs.required, syncReports);
-  assert.equal(syncReports.length, 28);
+  assert.equal(syncReports.length, 29);
   assert(m.rows.some((r) => r.kind === 'command' && r.requires?.includes(s.id)));
   for (const change of [
     { env: { MODE: 'other' } },
@@ -2766,6 +2956,95 @@ test('160 generated sync corruptions reject rewritten retries, reused nonces, lo
     { seed: 150971, numRuns: 160 },
   );
 });
+function syncInitialSystemEvidence() {
+  const r = syncEvidence();
+  for (const h of r['generated-native.json'].histories) {
+    const id = h.before[0].id;
+    for (const rows of [h.before, ...h.observations.map((o) => o.captures), h.final.captures]) {
+      const source = rows.find((c) => c.id === id).sources[0];
+      source.kind = 'system';
+      source.actor = 'system';
+    }
+  }
+  return r;
+}
+test('sync report accepts only unchanged initial system captures with the system actor', () => {
+  const r = syncInitialSystemEvidence();
+  reconcileSyncEvidence(r);
+  for (const change of [
+    (h) => {
+      h.before[0].sources[0].actor = 'other';
+    },
+    (h) => {
+      const added = h.observations[0].captures.find((c) => !h.before.some((b) => b.id === c.id));
+      added.sources[0].kind = 'system';
+      added.sources[0].actor = 'system';
+    },
+    (h) => {
+      h.observations[0].captures[0].sources[0].bytes[0] = 99;
+    },
+    (h) => {
+      h.final.captures[0].sources[0].bytes[0] = 99;
+    },
+  ]) {
+    const v = JSON.parse(JSON.stringify(r));
+    change(v['generated-native.json'].histories[0]);
+    assert.throws(() => reconcileSyncEvidence(v));
+  }
+});
+test('sync report accepts the network reason only on the observed lost reply retry lane', () => {
+  const r = syncEvidence();
+  for (const h of r['generated-native.json'].histories) {
+    for (const o of h.observations)
+      if (o.action.startsWith('lost-')) {
+        const lane = o.action === 'lost-send' ? 'send' : 'receive';
+        o.transition[lane].reason = 'network-unavailable';
+      }
+  }
+  reconcileSyncEvidence(r);
+  const firstLost = (v) =>
+    v['generated-native.json'].histories[0].observations.find((o) => o.action.startsWith('lost-'));
+  for (const change of [
+    (o, lane) => {
+      o.transition[lane].phase = 'idle';
+    },
+    (o, lane) => {
+      o.transition[lane].failures = 0;
+    },
+    (o, lane) => {
+      o.transition[lane === 'send' ? 'receive' : 'send'].reason = 'network-unavailable';
+    },
+  ]) {
+    const v = JSON.parse(JSON.stringify(r));
+    const o = firstLost(v),
+      lane = o.action === 'lost-send' ? 'send' : 'receive';
+    change(o, lane);
+    assert.throws(() => reconcileSyncEvidence(v));
+  }
+});
+test('sync layered and Worker controls require their distinct refusals, storage and original advance', () => {
+  const r = syncEvidence();
+  reconcileSyncEvidence(r);
+  const changes = [
+    (v) => (v['control-self.json'].observations[1].status.send.reason = 'integrity'),
+    (v) =>
+      v['control-self.json'].observations[1].storage.after.push({
+        kind: 'update',
+        gen: 1,
+        seq: 3,
+        bytes: [42],
+      }),
+    (v) => (v['control-worker-self.json'].observations[1].visible = 'base'),
+    (v) => (v['control-worker-self.json'].observations[1].status.receivedThrough = 0),
+    (v) => (v['control-worker-self.json'].observations[0].nativeAfter[0].values[0].ct[0] = 99),
+  ];
+  for (const change of changes) {
+    // Report serialization must break fixture aliases, just like separate on-disk observations.
+    const v = JSON.parse(JSON.stringify(r));
+    change(v);
+    assert.throws(() => reconcileSyncEvidence(v));
+  }
+});
 test('160 generated sync control corruptions reject ineffective scheduler, dispatch, witness and self-stream controls', () => {
   const r = syncEvidence();
   reconcileSyncEvidence(r);
@@ -2779,8 +3058,17 @@ test('160 generated sync control corruptions reject ineffective scheduler, dispa
     (r) => (r['control-dispatch-pressure.json'].observations[1].closed.send.phase = 'blocked'),
     (r) => (r['control-overlap.json'].observations[1].disposed.timers = 1),
     (r) => (r['control-witness.json'].observations[0].opened = true),
-    (r) => (r['control-self.json'].observations[1].advanced = false),
+    (r) => (r['control-self.json'].observations[1].advanced = true),
     (r) => (r['control-classification.json'].observations[1].editorState = 'active'),
+    (r) => (r['control-self.json'].observations[1].status.receive.reason = 'integrity'),
+    (r) => (r['control-self.json'].observations[1].visible += 'REMOTE'),
+    (r) => (r['control-self.json'].observations[1].storage.after[0].bytes = [99]),
+    (r) => (r['control-self.json'].observations[1].storage.newDeliveryDecisions = 0),
+    (r) => (r['control-worker-self.json'].observations[1].result.status.receivedThrough = 0),
+    (r) => (r['control-worker-self.json'].observations[1].result.recorded = false),
+    (r) => (r['control-worker-self.json'].observations[0].nativeAfter = []),
+    (r) => (r['control-worker-self.json'].observations[1].bundle.omissionCount = 0),
+    (r) => r['control-worker-self.json'].observations[1].after.pop(),
     (r) => r['generated-native.json'].coverage['lost-send']--,
   ];
   fc.assert(

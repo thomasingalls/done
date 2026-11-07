@@ -1,0 +1,117 @@
+{
+  "phase": 464,
+  "date": "2026-11-06",
+  "scope": "untimed actual growth of2048cohort",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkerClient.ts",
+      "sha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3",
+      "bytes": 23879
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-grown-build-464-20261106/464-private-files.json",
+      "sha256": "662a93bb2ba84c7fdd9ba1c1bbd164b7f565888c394c31d5f135620d6c528968",
+      "bytes": 4685
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-grown-build-464-20261106/464-fixture-proof.json",
+      "sha256": "8c5b3c1b8ea633a3559f55abae0c4bbfc552a11e1dbf03a7497b9b4231178f9f",
+      "bytes": 317
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-grown-build-464-20261106/464-declaration.json",
+      "sha256": "16fb98136927982400376bf48f9ec7d606f53ed392627f331862db995f0ca0b7",
+      "bytes": 948
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-grown-build-464-20261106/464-record-development-attempt.json",
+      "sha256": "dac9399c3984f2646fa1a243b1b3b6c037ed88b67f02bb0d1afe4f28c137c852",
+      "bytes": 341
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/child.log",
+      "sha256": "fd1e007a34e79aad22fe14ce0a0e821daa4639c7c0270933f938260e5feddbde",
+      "bytes": 1163
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/host-load.jsonl",
+      "sha256": "b56bbbe9350db201784ce89b7d0c45b9beb046fb9d4e11e7cd38517e591f7634",
+      "bytes": 408141
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/power-assertions-before.txt",
+      "sha256": "51407ad15f9c5a27675cf0906301ff44bb1eb756c1be5b2ee8a6f1c3274f1921",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/power-log-after.meta.json",
+      "sha256": "0a6ec062ba8aff8061da616dcc18931ca657d6e15be620344eb23c1d9282c85f",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/power-log-after.txt",
+      "sha256": "62e2745af1e18d3d56f02cc364187f60836e72295cb8d723a1249c350f38f54a",
+      "bytes": 3299
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/power-log-before.meta.json",
+      "sha256": "29d1c2d627873e17d7a29d6acc1b49a8753060537509d745af0a2b8784394d6d",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/464-grow-2048-real-writing/run.json",
+      "sha256": "35cd4088015a33e33d769985ff288c127a9e69899add8e29f83c4443344d0d1d",
+      "bytes": 1584
+    }
+  ],
+  "proof": {
+    "realAdditionalAccepted": 1024,
+    "before": 1030,
+    "after": 2054,
+    "seedBoundaryPrefixPreserved": true,
+    "originalReadersByteExact": true,
+    "otherAccountsExact": true,
+    "GoalsBytes": 13407,
+    "fullArchiveOnlyTargetAppend": true,
+    "setupWrapperSeconds": 1307.245365858078,
+    "timedAcceptanceCredit": false
+  },
+  "privateFiles": 22,
+  "appOrGuardOrLimitChanges": false,
+  "recordDevelopmentFailure": "Initial new bookkeeping assumed expected string was only digits; it also has the original42-character boundary. Correct it to original expected plus1024. First freezer stops before any patch because record files were absent. No app/test assertion changed, and no app rerun.",
+  "timedMatrixJourneysStarted": 0,
+  "stage5BlockingCompletedBeforePhase": 15,
+  "next": "original2048writer-preparation recipe; original assertions/deadlines retained",
+  "committed": false,
+  "pushed": false
+}

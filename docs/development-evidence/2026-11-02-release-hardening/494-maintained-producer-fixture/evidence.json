@@ -1,0 +1,53 @@
+{
+  "fixtureOnly": true,
+  "gateCredit": false,
+  "allGuardsAndDeadlinesPreserved": true,
+  "phase": 494,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSessionBridge.ts",
+      "sha256": "c057b11c014a5e4ede6cada63dbb991e7bc963ddd5690761d09a50facee40af0",
+      "bytes": 16906
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-maintained-fixture-494-20261106/494-private-files.json",
+      "sha256": "51938610afdddf1380f032e6aaae87d96ff877016a619c34e86e9933095a655a",
+      "bytes": 1881
+    },
+    {
+      "localPath": "/private/tmp/done-maintained-fixture-494-20261106/494-recipe-proof.json",
+      "sha256": "cb789155e01626b2e23e7caa4087e65fec6c9e9da17ecf3aadcb06f784b7df94",
+      "bytes": 756
+    },
+    {
+      "localPath": "/private/tmp/done-maintained-fixture-494-20261106/494-regressions.log",
+      "sha256": "827356cc4f9191884ef58e2fcbc78676e957d1ed393827b4b9dcf84e6cbdff2f",
+      "bytes": 823
+    }
+  ],
+  "summary": {
+    "regressionControlsPassed": 9,
+    "originalRecipeRecoveredExactly": true,
+    "appSourceChanged": false,
+    "originalSetupDeadlineMs": 1800000,
+    "preparationWaitMs": 120000,
+    "growthPositions": 1024,
+    "serverHistoryPreserved": true,
+    "oldReaderSnapshotsPreserved": true,
+    "appRunPending": true
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

@@ -1,0 +1,97 @@
+{
+  "ready": true,
+  "port": 53110,
+  "node": "v24.18.0",
+  "cgroup": {
+    "cpu.max": "100000 100000",
+    "cpu.stat": "usage_usec 626148\nuser_usec 530360\nsystem_usec 95787\nnice_usec 0\nnr_periods 7\nnr_throttled 6\nthrottled_usec 182181\nnr_bursts 0\nburst_usec 0",
+    "memory.max": "1073741824",
+    "memory.swap.max": "0",
+    "memory.current": "75489280",
+    "memory.peak": "75489280",
+    "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+    "pids.max": "128"
+  },
+  "Id": "49d63636583b5f96c481fe9261d280a5d73f9e0b67a1c6a2067439c509edd6a5",
+  "Image": "sha256:1869aa2c05c0e6ba5b6c3b85df7bf9bca50a4692c80201fe5af39424c2a37cbf",
+  "Config": {
+    "User": "502:20",
+    "Entrypoint": [
+      "/usr/local/bin/node"
+    ],
+    "Cmd": [
+      "/experiment/container-service.mjs"
+    ]
+  },
+  "HostConfig": {
+    "NanoCpus": 1000000000,
+    "Memory": 1073741824,
+    "MemorySwap": 1073741824,
+    "PidsLimit": 128,
+    "ReadonlyRootfs": true,
+    "CapDrop": [
+      "ALL"
+    ],
+    "SecurityOpt": [
+      "no-new-privileges"
+    ]
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/private/tmp/done-goals-stall-20261028",
+      "Destination": "/experiment",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/private/tmp/done-goals-stall-20261028/03-mobile4x/state",
+      "Destination": "/state",
+      "Mode": "rw",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/thomasingalls/.codex/worktrees/7fda/done/account-protocol",
+      "Destination": "/app/account-protocol",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/thomasingalls/.codex/worktrees/7fda/done/account-service",
+      "Destination": "/app/account-service",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs",
+      "Destination": "/app/docs",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts",
+      "Destination": "/app/scripts",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/Users/thomasingalls/.codex/worktrees/7fda/done/src",
+      "Destination": "/app/src",
+      "Mode": "ro",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ]
+}

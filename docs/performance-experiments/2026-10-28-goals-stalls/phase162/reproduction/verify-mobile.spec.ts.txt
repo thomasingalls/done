@@ -1,0 +1,11 @@
+import {test,expect,chromium}from'@playwright/test';
+import {readFileSync,writeFileSync,cpSync,mkdirSync}from'node:fs';import{join}from'node:path';
+import{start,stop}from'./runtime.mjs';import{restoreAuthenticator,openSaved}from'./devices';import{exported,archiveIdentity}from'./common';
+const root='/private/tmp/done-goals-stall-20261028',out=process.env['FAIR_OUT']!,run=process.env['VERIFY_RUN']??'03-mobile4x',offline=process.env['VERIFY_OFFLINE']==='1';
+test('independent persisted mobile writing equals original plus intended Enter and paragraph',async()=>{
+ mkdirSync(out,{recursive:true});const fixture=JSON.parse(readFileSync('/private/tmp/done-envelope-projection-20261028/prepared-fixture/fixture.json','utf8')),account=fixture.accounts.find((a:any)=>a.label==='H'),saved=account.actors[2],workload=JSON.parse(readFileSync(root+'/workload.json','utf8'));let ctx:any;
+ const result:any={outcome:'starting',scope:'Copied failed-run profile and service state, no storage reinjection; independent writing guard, no timing acceptance'};
+ try{cpSync(root+'/'+run+'/state',out+'/state',{recursive:true,errorOnExist:true});cpSync(root+'/'+run+'/private-profile',out+'/private-profile',{recursive:true,errorOnExist:true});await start(out+'/state','/private/tmp/done-resumable-release-20261028/frontend');
+ ctx=await chromium.launchPersistentContext(out+'/private-profile',{executablePath:process.env['CHROMIUM_PATH']!,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000},headless:true,offline});const p=ctx.pages()[0]??await ctx.newPage();await restoreAuthenticator(p,saved.credentials);await p.goto('/');await openSaved(p,saved.code,true);const archive=await exported(p),expected={...account.archive,'master.md':account.archive['master.md']+'\n'+workload.paragraph+(run.startsWith('04')?'!':'')};expect(archive).toEqual(expected);result.originalPlusIntendedEnterAndAll779Characters=true;result.offline=offline;result.run=run;result.archive=archiveIdentity(archive);result.outcome='passed';
+ }catch(e){result.outcome='failed';result.error=String(e);throw e;}finally{writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');await ctx?.close().catch(()=>{});await stop();}
+});

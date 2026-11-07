@@ -1,0 +1,466 @@
+[
+  {
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "stream": 0,
+    "before": {
+      "peerP50": [
+        2186.8662109375,
+        1979.384765625,
+        1896.393310546875
+      ],
+      "peerP95": [
+        5603.98681640625,
+        4777.93359375,
+        4584.726318359375
+      ],
+      "inputP95": [
+        5.982666015625,
+        8.267333984375,
+        7.960693359375
+      ],
+      "positions100": [
+        5.666666666666667,
+        6.0,
+        6.0
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        1612.107666015625,
+        1612.987060546875,
+        1621.524658203125
+      ],
+      "peerP95": [
+        2552.1064453125,
+        2565.790283203125,
+        2564.54248046875
+      ],
+      "inputP95": [
+        8.270751953125,
+        8.430419921875,
+        9.034912109375
+      ],
+      "positions100": [
+        7.333333333333333,
+        7.333333333333333,
+        7.333333333333333
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "coordinated-2000",
+    "rtt": 0,
+    "stream": 1,
+    "before": {
+      "peerP50": [
+        2094.2939453125,
+        1954.6142578125,
+        2037.397216796875
+      ],
+      "peerP95": [
+        5537.866455078125,
+        5085.9521484375,
+        5191.812255859375
+      ],
+      "inputP95": [
+        5.8125,
+        7.348876953125,
+        7.531005859375
+      ],
+      "positions100": [
+        7.333333333333333,
+        7.333333333333333,
+        7.333333333333333
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        1819.2080078125,
+        1832.721923828125,
+        1786.407958984375
+      ],
+      "peerP95": [
+        2816.537353515625,
+        2810.15380859375,
+        2740.89111328125
+      ],
+      "inputP95": [
+        8.3291015625,
+        8.70703125,
+        9.107177734375
+      ],
+      "positions100": [
+        7.333333333333333,
+        7.333333333333333,
+        7.333333333333333
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "stream": 0,
+    "before": {
+      "peerP50": [
+        2119.94580078125,
+        2412.12060546875,
+        2120.513916015625
+      ],
+      "peerP95": [
+        4913.6103515625,
+        6245.498291015625,
+        5051.38037109375
+      ],
+      "inputP95": [
+        5.72265625,
+        12.294921875,
+        4.464111328125
+      ],
+      "positions100": [
+        5.666666666666667,
+        5.666666666666667,
+        6.0
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        1711.4072265625,
+        1696.375244140625,
+        1692.4775390625
+      ],
+      "peerP95": [
+        2695.44970703125,
+        2658.171630859375,
+        2647.936767578125
+      ],
+      "inputP95": [
+        8.53857421875,
+        6.291748046875,
+        8.50341796875
+      ],
+      "positions100": [
+        7.333333333333333,
+        7.333333333333333,
+        7.333333333333333
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "coordinated-2000",
+    "rtt": 50,
+    "stream": 1,
+    "before": {
+      "peerP50": [
+        2659.606201171875,
+        2813.630126953125,
+        2185.954345703125
+      ],
+      "peerP95": [
+        6504.367919921875,
+        7151.412353515625,
+        5810.45703125
+      ],
+      "inputP95": [
+        5.364990234375,
+        13.591064453125,
+        3.975830078125
+      ],
+      "positions100": [
+        7.333333333333333,
+        7.333333333333333,
+        7.333333333333333
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        1970.06201171875,
+        1951.665283203125,
+        1954.519775390625
+      ],
+      "peerP95": [
+        3016.634521484375,
+        2967.18212890625,
+        2945.802734375
+      ],
+      "inputP95": [
+        6.460693359375,
+        7.227783203125,
+        7.75146484375
+      ],
+      "positions100": [
+        7.333333333333333,
+        7.333333333333333,
+        7.333333333333333
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "stream": 0,
+    "before": {
+      "peerP50": [
+        2924.849853515625,
+        2386.432373046875,
+        2640.225830078125
+      ],
+      "peerP95": [
+        5323.659912109375,
+        4569.613525390625,
+        6040.130859375
+      ],
+      "inputP95": [
+        6.795166015625,
+        4.22265625,
+        4.508056640625
+      ],
+      "positions100": [
+        12.0,
+        13.333333333333334,
+        13.333333333333334
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        1985.473388671875,
+        2214.846435546875,
+        1935.120361328125
+      ],
+      "peerP95": [
+        3700.212158203125,
+        3744.22509765625,
+        3678.7373046875
+      ],
+      "inputP95": [
+        3.574951171875,
+        3.9853515625,
+        4.11083984375
+      ],
+      "positions100": [
+        17.333333333333332,
+        17.333333333333332,
+        17.333333333333332
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "immediate-inflight",
+    "rtt": 0,
+    "stream": 1,
+    "before": {
+      "peerP50": [
+        14635.798583984375,
+        14351.165283203125,
+        12333.83837890625
+      ],
+      "peerP95": [
+        25027.099365234375,
+        24734.0849609375,
+        24530.05859375
+      ],
+      "inputP95": [
+        6.233154296875,
+        4.220947265625,
+        4.440185546875
+      ],
+      "positions100": [
+        28.333333333333332,
+        31.0,
+        31.666666666666668
+      ],
+      "anyPeerP50In12000To15000": true,
+      "anyPeerP95AtLeast12000": true,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        10263.462158203125,
+        10486.565673828125,
+        11918.02783203125
+      ],
+      "peerP95": [
+        17241.354736328125,
+        17589.48291015625,
+        20038.123291015625
+      ],
+      "inputP95": [
+        3.731201171875,
+        3.647705078125,
+        3.8486328125
+      ],
+      "positions100": [
+        32.0,
+        32.333333333333336,
+        32.0
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": true,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "stream": 0,
+    "before": {
+      "peerP50": [
+        3087.510986328125,
+        2783.666259765625,
+        2826.994384765625
+      ],
+      "peerP95": [
+        6894.213134765625,
+        5386.811767578125,
+        5496.91748046875
+      ],
+      "inputP95": [
+        5.30078125,
+        4.9365234375,
+        4.343017578125
+      ],
+      "positions100": [
+        11.0,
+        11.666666666666666,
+        11.0
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        2317.86279296875,
+        2457.09814453125,
+        2730.2802734375
+      ],
+      "peerP95": [
+        4615.082763671875,
+        4720.63671875,
+        5043.253662109375
+      ],
+      "inputP95": [
+        3.782470703125,
+        4.067626953125,
+        4.02197265625
+      ],
+      "positions100": [
+        15.333333333333334,
+        15.333333333333334,
+        15.333333333333334
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": false,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  },
+  {
+    "policy": "immediate-inflight",
+    "rtt": 50,
+    "stream": 1,
+    "before": {
+      "peerP50": [
+        12359.59765625,
+        11993.954345703125,
+        12106.270751953125
+      ],
+      "peerP95": [
+        24810.822998046875,
+        22482.12060546875,
+        22930.872314453125
+      ],
+      "inputP95": [
+        4.66845703125,
+        4.51611328125,
+        4.818115234375
+      ],
+      "positions100": [
+        24.0,
+        24.666666666666668,
+        24.0
+      ],
+      "anyPeerP50In12000To15000": true,
+      "anyPeerP95AtLeast12000": true,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "after": {
+      "peerP50": [
+        10633.0888671875,
+        10707.58203125,
+        10875.009521484375
+      ],
+      "peerP95": [
+        17251.163818359375,
+        17530.802734375,
+        17226.55908203125
+      ],
+      "inputP95": [
+        3.696044921875,
+        3.723876953125,
+        3.60986328125
+      ],
+      "positions100": [
+        25.666666666666668,
+        26.0,
+        26.0
+      ],
+      "anyPeerP50In12000To15000": false,
+      "anyPeerP95AtLeast12000": true,
+      "anyInputP95AtLeast1422": false,
+      "anyInputP95Over16": false
+    },
+    "qualification": "descriptive frozen329 contrast, not contemporaneous matched instrumentation; no credit"
+  }
+]

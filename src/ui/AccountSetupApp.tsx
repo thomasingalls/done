@@ -1,3 +1,4 @@
+import { createWorkerFirstDeviceSetup } from './firstDeviceSetupWorker';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { createFirstDeviceSetup, type SetupConfig } from '../account/firstDeviceSetup';
 import { WorkspaceUiProvider } from './workspaceUi';
@@ -163,7 +164,11 @@ export function Setup({
   onConnectDevice: () => void;
   takeInitialCode?: () => string | undefined;
 }) {
-  const [owner] = useState(() => createFirstDeviceSetup(config, slotId, takeInitialCode));
+  const [owner] = useState(() =>
+    config.networkSessions
+      ? createWorkerFirstDeviceSetup(config, slotId, takeInitialCode)
+      : createFirstDeviceSetup(config, slotId, takeInitialCode),
+  );
   const state = useSyncExternalStore(owner.subscribe, owner.getSnapshot);
   const heading = useRef<HTMLHeadingElement>(null);
   const [inspected, setInspected] = useState(false);

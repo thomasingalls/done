@@ -1,3 +1,4 @@
+import { inboundReceiptEventWork } from './inboundRecord';
 import { hasBaselineReader, hasBaselineVerifier } from './localBaselineMode';
 import { authorityClaim, type AccountAuthorityRows } from './accountAuthorityInventory';
 import { countLedgerWork, markAccountOpen } from './accountLedgerMetrics';
@@ -64,6 +65,13 @@ import {
 } from './localGenesisRecord';
 import { parseRecord, recordKey, recordEqual, type CustodyRecord } from './custodyRecord';
 import { storageUpgradeKey } from './storageCompatibility';
+import {
+  captureInboundReceiptVersion,
+  inboundReceiptVersionFields,
+  withInboundReceiptScope,
+  requireMonotonicInboundReceiptVersion,
+  type InboundReceiptVersion,
+} from './inboundReceiptVersion';
 import { withPromotionRoot, signRecord } from './promotionRecord';
 import { hex, utf8, hkdf, fields, openCredential, type Bytes } from './custodyCrypto';
 import { contentTransaction } from './contentDatabase';
@@ -82,7 +90,7 @@ import { capturedRecovery, type CaptureRoute } from './sourceCapture';
 import { replayRecovery } from './admissionDocument';
 import { Y, coversGenesis, hasPendingUpdates } from './yjs';
 import { requireAccountAccess } from './accountAccess';
-import { withJoinedSlot, type SessionTask } from './writeSession';
+import { withJoinedSlot, requireAccountFormatSessionTask, type SessionTask } from './writeSession';
 import type { AccountStartupOptions } from './accountStartup';
 import type { ContentReaderState } from '../account/contentReader';
 import type { InstalledContentKey } from '../account/ceremonyVault';
@@ -94,7 +102,7 @@ import {
   type InstalledMembership,
 } from './accountMembership';
 
-interface JoinedFields {
+interface JoinedFields extends InboundReceiptVersion {
   kind: 'certified-account-device';
   slotId: string;
   claimMac: string;
@@ -146,6 +154,7 @@ export const joinedKeyHash = (marker: JoinedRecord) =>
       ? membershipDeliveryHash(laterCertification(marker).epoch.delivery)
       : contentDeliveryHash(marker.authority.certification.epoch.delivery);
 export const joinedPayload = (r: JoinedRecord) => {
+  inboundReceiptVersionFields(r);
   const { mac: _mac, ...payload } = r;
   return utf8(JSON.stringify(payload));
 };
@@ -170,6 +179,7 @@ function parseJoined(input: unknown): JoinedRecord {
     'reading',
     'key',
     'mac',
+    ...inboundReceiptVersionFields(input),
     ...(Object.hasOwn(input as object, 'membership') ? ['membership'] : []),
   ]);
   if (
@@ -234,6 +244,7 @@ function parseJoined(input: unknown): JoinedRecord {
     'active',
     'events',
     'prefix',
+    ...inboundReceiptVersionFields(r['reading']),
     ...((r['reading'] as { history?: unknown })?.history === undefined ? [] : ['history']),
   ]);
   if (
@@ -242,6 +253,13 @@ function parseJoined(input: unknown): JoinedRecord {
     !Array.isArray(reading['events']) ||
     reading['events'].length > 4096 ||
     reading['events'].some((e) => typeof e !== 'string')
+  )
+    throw Error('Incomplete retained reader');
+  if (
+    (reading['events'] as string[]).reduce(
+      (n, wire) => n + inboundReceiptEventWork(wire, reading),
+      0,
+    ) > 4096
   )
     throw Error('Incomplete retained reader');
   return {
@@ -349,6 +367,8 @@ async function writeJoined(
   record: CustodyRecord = state.record,
   check?: () => void,
 ) {
+  requireMonotonicInboundReceiptVersion(state.marker, next);
+  requireMonotonicInboundReceiptVersion(state.marker?.reading, next.reading);
   const found = await probeDatabase(task, 'done.custody', (db) =>
     contentTransaction(
       db,
@@ -374,6 +394,8 @@ async function writeJoined(
                 !same(requests[2]!.result ?? null, state.marker)
               )
                 throw Error('Certified device compare changed');
+              requireMonotonicInboundReceiptVersion(state.marker, next);
+              requireMonotonicInboundReceiptVersion(state.marker?.reading, next.reading);
               check?.();
               if (!recordEqual(record, state.record)) store.put(record, recordKey(scope));
               store.put(next, storageUpgradeKey(next.slotId));
@@ -395,6 +417,56 @@ async function signJoined(task: SessionTask, state: JoinedState, code: string, n
       ),
     ),
   }));
+}
+/** Internal post-authentication activation; the native CAS preserves all original custody and
+ * retained reading. A locally supplied expected payload never replaces its fresh authentication. */
+export async function acknowledgeJoinedInboundReceiptVersion(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  expectedPayload: Bytes,
+  expectedRecord: CustodyRecord,
+): Promise<JoinedRecord> {
+  return acknowledgeJoinedReceiptFloor(
+    task,
+    slotId,
+    code,
+    expectedPayload,
+    expectedRecord,
+    'active',
+  );
+}
+async function acknowledgeJoinedReceiptFloor(
+  task: SessionTask,
+  slotId: string,
+  code: string,
+  expectedPayload: Bytes,
+  expectedRecord: CustodyRecord,
+  phase: JoinedRecord['phase'],
+): Promise<JoinedRecord> {
+  requireAccountFormatSessionTask(task, slotId);
+  const state = await readJoinedAccount(task, slotId, code),
+    marker = state.marker;
+  if (!marker || marker.phase !== phase)
+    throw Error(`Inbound receipt floor needs ${phase} certified custody`);
+  const payload = joinedPayload(marker);
+  try {
+    if (
+      payload.length !== expectedPayload.length ||
+      !payload.every((v, i) => v === expectedPayload[i]) ||
+      !recordEqual(state.record, expectedRecord)
+    )
+      throw Error('Inbound receipt floor authority changed');
+  } finally {
+    payload.fill(0);
+  }
+  requireAccountFormatSessionTask(task, slotId);
+  if (marker.inboundReceiptVersion === 1) return marker;
+  const next = await signJoined(task, state, code, { ...marker, inboundReceiptVersion: 1 });
+  await writeJoined(task, state, next, state.record, () =>
+    requireAccountFormatSessionTask(task, slotId),
+  );
+  return next;
 }
 /** Approval writes must rebind the active joined marker in the same native transaction. */
 export async function writeJoinedApproval(
@@ -576,6 +648,7 @@ export async function joinedContext(task: SessionTask, state: JoinedState, key: 
           ),
   );
   const base: InboundContext = {
+    ...captureInboundReceiptVersion(marker),
     baseline: { kind: 'content-checkpoint', id: await joinedBaselineHash(marker) },
     ...(joinedBaselineHeads(marker) ? { baselineHeads: joinedBaselineHeads(marker)! } : {}),
     service: { id: a.base.pin.serviceId, origin: a.base.pin.origin },
@@ -661,7 +734,7 @@ async function baseline(task: SessionTask, state: JoinedState, key: Bytes) {
     openContentCheckpoint(marker.reading.checkpoint, key, marker.authority),
   );
   const peer: InboundContext = {
-    ...base,
+    ...withInboundReceiptScope(base, marker.reading),
     history: original,
     creatingCredential: original.credential,
     publisher: { ...base.publisher, id: original.credential, publicKey: original.signingKey },
@@ -918,6 +991,28 @@ export async function verifyJoinedAccount(task: SessionTask, options: AccountSta
       markAccountOpen('authorized');
       if (!same((await readJoinedAccount(task, options.slotId, options.code)).marker, marker))
         throw Error('Certified device changed during unlock');
+      if (
+        marker.phase === 'installing' &&
+        captureInboundReceiptVersion(marker.reading).inboundReceiptVersion === 1
+      ) {
+        // The retained reading has already passed baseline, factor and authority checks.
+        // Its own format scope does not authorize native rows until this fresh MAC-bound CAS.
+        const payload = joinedPayload(marker);
+        try {
+          marker = await acknowledgeJoinedReceiptFloor(
+            task,
+            options.slotId,
+            options.code,
+            payload,
+            state.record,
+            'installing',
+          );
+          state.marker = marker;
+          b.base = { ...b.base, ...captureInboundReceiptVersion(marker) };
+        } finally {
+          payload.fill(0);
+        }
+      }
       const scope = claimScope(state.claim),
         { local, slot } = await destination(task, state);
       if (marker.phase === 'installing') {

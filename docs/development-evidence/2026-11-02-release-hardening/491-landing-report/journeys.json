@@ -1,0 +1,3516 @@
+{
+  "blocking": [
+    {
+      "phase": 471,
+      "run": "r1-old-maintenance-normal",
+      "cell": "old-maintenance-normal",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.38427734375,
+      "peerP95Ms": 796.318359375,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 471,
+      "run": "r1-old-maintenance-withheld",
+      "cell": "old-maintenance-withheld",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.18017578125,
+      "peerP95Ms": 1829.595947265625,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 471,
+      "run": "r2-old-maintenance-normal",
+      "cell": "old-maintenance-normal",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.529541015625,
+      "peerP95Ms": 796.352783203125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 471,
+      "run": "r2-old-maintenance-withheld",
+      "cell": "old-maintenance-withheld",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.483642578125,
+      "peerP95Ms": 1847.54443359375,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 471,
+      "run": "r3-old-maintenance-normal",
+      "cell": "old-maintenance-normal",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.6962890625,
+      "peerP95Ms": 816.707275390625,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 471,
+      "run": "r3-old-maintenance-withheld",
+      "cell": "old-maintenance-withheld",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.530029296875,
+      "peerP95Ms": 1830.456787109375,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 472,
+      "run": "r1-grown-normal-harness-retry",
+      "cell": "grown-normal",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.607421875,
+      "peerP95Ms": 1030.139892578125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 472,
+      "run": "r1-grown-withheld",
+      "cell": "grown-withheld",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 4.42041015625,
+      "peerP95Ms": 1473.400390625,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 472,
+      "run": "r2-grown-normal",
+      "cell": "grown-normal",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 5.079345703125,
+      "peerP95Ms": 1031.1826171875,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 472,
+      "run": "r2-grown-withheld",
+      "cell": "grown-withheld",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.92138671875,
+      "peerP95Ms": 1584.940673828125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 472,
+      "run": "r3-grown-normal",
+      "cell": "grown-normal",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.896240234375,
+      "peerP95Ms": 1015.44921875,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 472,
+      "run": "r3-grown-withheld",
+      "cell": "grown-withheld",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 4.145751953125,
+      "peerP95Ms": 1600.450927734375,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r1-native-context",
+      "cell": "native-context",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r1-native-resumable",
+      "cell": "native-resumable",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r1-native-deep",
+      "cell": "native-deep",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": 21851.720947265625,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r2-native-context",
+      "cell": "native-context",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r2-native-resumable",
+      "cell": "native-resumable",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r2-native-deep",
+      "cell": "native-deep",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": 19528.53955078125,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r3-native-context",
+      "cell": "native-context",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r3-native-resumable",
+      "cell": "native-resumable",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 474,
+      "run": "474-r3-native-deep",
+      "cell": "native-deep",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": 21659.15478515625,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 475,
+      "run": "r1-late-normal",
+      "cell": "late-normal",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.955078125,
+      "peerP95Ms": 1033.3603515625,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 475,
+      "run": "r1-late-withheld",
+      "cell": "late-withheld",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.212646484375,
+      "peerP95Ms": 1779.78173828125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 475,
+      "run": "r2-late-normal",
+      "cell": "late-normal",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.71044921875,
+      "peerP95Ms": 1037.58984375,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 475,
+      "run": "r2-late-withheld",
+      "cell": "late-withheld",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 4.48095703125,
+      "peerP95Ms": 1937.68017578125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 475,
+      "run": "r3-late-normal",
+      "cell": "late-normal",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 3.853271484375,
+      "peerP95Ms": 1029.259033203125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 475,
+      "run": "r3-late-withheld",
+      "cell": "late-withheld",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 4.765380859375,
+      "peerP95Ms": 1994.494384765625,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 477,
+      "run": "r1-fairness",
+      "cell": "fairness",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 7.60009765625,
+      "peerP95Ms": 841.39990234375,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 477,
+      "run": "r2-fairness",
+      "cell": "fairness",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 6.89990234375,
+      "peerP95Ms": 799.7001953125,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 477,
+      "run": "r3-fairness",
+      "cell": "fairness",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": 8.5,
+      "peerP95Ms": 892.099853515625,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": null,
+      "goalsRafP95Ms": null,
+      "qualification": "Original applicable predicates; no new metric substituted"
+    },
+    {
+      "phase": 478,
+      "run": "r1-goals-desktop",
+      "cell": "goals-desktop",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": 6.501953125,
+      "goalsRafP95Ms": 15.41455078125,
+      "qualification": "Original Goals diagnostic, no mutation16ms/peer gate"
+    },
+    {
+      "phase": 478,
+      "run": "r1-goals-mobile4x",
+      "cell": "goals-mobile4x",
+      "replicate": 1,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": 4.272705078125,
+      "goalsRafP95Ms": 32.660888671875,
+      "qualification": "Original Goals diagnostic, no mutation16ms/peer gate"
+    },
+    {
+      "phase": 478,
+      "run": "r2-goals-desktop",
+      "cell": "goals-desktop",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": 6.49755859375,
+      "goalsRafP95Ms": 17.5625,
+      "qualification": "Original Goals diagnostic, no mutation16ms/peer gate"
+    },
+    {
+      "phase": 478,
+      "run": "r2-goals-mobile4x",
+      "cell": "goals-mobile4x",
+      "replicate": 2,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": 4.15673828125,
+      "goalsRafP95Ms": 32.556640625,
+      "qualification": "Original Goals diagnostic, no mutation16ms/peer gate"
+    },
+    {
+      "phase": 478,
+      "run": "r3-goals-desktop",
+      "cell": "goals-desktop",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": 6.367431640625,
+      "goalsRafP95Ms": 17.63525390625,
+      "qualification": "Original Goals diagnostic, no mutation16ms/peer gate"
+    },
+    {
+      "phase": 478,
+      "run": "r3-goals-mobile4x",
+      "cell": "goals-mobile4x",
+      "replicate": 3,
+      "originalPredicatesPassed": true,
+      "inputP95Ms": null,
+      "peerP95Ms": null,
+      "deepMs": null,
+      "goalsBeforeinputP95Ms": 4.2890625,
+      "goalsRafP95Ms": 32.5185546875,
+      "qualification": "Original Goals diagnostic, no mutation16ms/peer gate"
+    }
+  ],
+  "reportOnlySender": [
+    {
+      "name": "r1-single500-device1",
+      "key": "482-r1-single500-device1",
+      "workload": "single500-device1",
+      "replicate": 1,
+      "policy": "coordinated-2000",
+      "keysPerWriter": 120,
+      "gapMs": 500,
+      "rttMs": 0,
+      "functional": true,
+      "metricPredicates": {
+        "functional": true,
+        "coldExact": true,
+        "allOfferedKeysObserved": true,
+        "trustedFocusedVisible": true,
+        "input16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "cold15s": true
+      },
+      "failedPredicates": [],
+      "directions": [
+        {
+          "stream": 0,
+          "keysOffered": 120,
+          "commandsOffered": 123,
+          "actualKeyIntervalsMs": {
+            "n": 119,
+            "p50": 500.03271484375,
+            "p95": 502.063232421875,
+            "max": 525.5
+          },
+          "dispatchLatenessMs": {
+            "n": 120,
+            "p50": 1.439208984375,
+            "p95": 3.0908203125,
+            "max": 26.496826171875
+          },
+          "latency": {
+            "local": {
+              "n": 120,
+              "p50": 2.810302734375,
+              "p95": 3.693359375,
+              "max": 8.26513671875
+            },
+            "peer": {
+              "n": 120,
+              "p50": 750.820068359375,
+              "p95": 875.012939453125,
+              "max": 1023.838134765625
+            }
+          },
+          "markerLatency": {
+            "local": [
+              3.19140625,
+              7.08544921875,
+              2.53271484375
+            ],
+            "peer": [
+              754.468017578125,
+              736.06201171875,
+              745.909423828125
+            ]
+          },
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.023193359375,
+            1.755859375
+          ],
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.2998046875,
+            1.49951171875
+          ],
+          "beforeinputCount": 123,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 119,
+          "positionsPer100Keys": 99.16666666666667,
+          "positionsPer100InputCommands": 96.7479674796748,
+          "acceptedRowDelta": 119
+        }
+      ],
+      "cold": [
+        {
+          "actor": 1,
+          "navigationStartedAt": 1793997274728.6357,
+          "unlockStartedAt": 1793997274810.4907,
+          "editableAt": 1793997279669.2283,
+          "unlockToEditableMs": 4858.737548828125,
+          "navigationToEditableMs": 4940.592529296875,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        },
+        {
+          "actor": 2,
+          "navigationStartedAt": 1793997280697.0166,
+          "unlockStartedAt": 1793997280758.7927,
+          "editableAt": 1793997285602.4543,
+          "unlockToEditableMs": 4843.66162109375,
+          "navigationToEditableMs": 4905.437744140625,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        }
+      ],
+      "requestedSignedReadUnits": 890,
+      "writeAttempts": 119,
+      "httpStatus": {
+        "200": 534
+      },
+      "fullAudits": [
+        {
+          "actor": 1,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.710693359375,
+            3.33642578125
+          ],
+          "snapshotEvents": [
+            0,
+            0,
+            2
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3714,
+              "startHostBounds": [
+                1793997269822.8638,
+                1793997269827.911
+              ],
+              "endHostBounds": [
+                1793997271761.2637,
+                1793997271766.3108
+              ],
+              "elapsedMs": 1938.39990234375,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        },
+        {
+          "actor": 2,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.357666015625,
+            3.078369140625
+          ],
+          "snapshotEvents": [
+            0,
+            0,
+            0
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        }
+      ],
+      "nativeBudgetCounters": null,
+      "nativeQuietReads": null,
+      "host": {
+        "samples": 21,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12836.44,
+          "last": 12836.44,
+          "min": 12836.44,
+          "max": 12836.44
+        },
+        "swapGrowth": false,
+        "knownNonTestHighCPU": [],
+        "allHighCPUStreaks": [
+          {
+            "pid": 52553,
+            "process": "Codex (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 86624,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 86677,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 87803,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          }
+        ],
+        "eligibleNoiseRetry": false
+      }
+    },
+    {
+      "name": "r1-paired150",
+      "key": "482-r1-paired150",
+      "workload": "paired150",
+      "replicate": 1,
+      "policy": "coordinated-2000",
+      "keysPerWriter": 300,
+      "gapMs": 150,
+      "rttMs": 0,
+      "functional": true,
+      "metricPredicates": {
+        "functional": true,
+        "coldExact": true,
+        "allOfferedKeysObserved": true,
+        "trustedFocusedVisible": true,
+        "input16ms": true,
+        "peer2500ms": false,
+        "everyMarker2500ms": false,
+        "cold15s": true
+      },
+      "failedPredicates": [
+        "peer2500ms",
+        "everyMarker2500ms"
+      ],
+      "directions": [
+        {
+          "stream": 0,
+          "keysOffered": 300,
+          "commandsOffered": 303,
+          "actualKeyIntervalsMs": {
+            "n": 299,
+            "p50": 149.99609375,
+            "p95": 153.105712890625,
+            "max": 157.241943359375
+          },
+          "dispatchLatenessMs": {
+            "n": 300,
+            "p50": 1.487060546875,
+            "p95": 4.3671875,
+            "max": 12.605224609375
+          },
+          "latency": {
+            "local": {
+              "n": 300,
+              "p50": 3.205078125,
+              "p95": 6.802001953125,
+              "max": 9.27197265625
+            },
+            "peer": {
+              "n": 300,
+              "p50": 1608.322509765625,
+              "p95": 2535.522216796875,
+              "max": 2730.451416015625
+            }
+          },
+          "markerLatency": {
+            "local": [
+              3.613037109375,
+              3.040283203125,
+              3.580078125
+            ],
+            "peer": [
+              2571.195068359375,
+              1009.722412109375,
+              870.162353515625
+            ]
+          },
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.23291015625,
+            1.545166015625
+          ],
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.114990234375,
+            1.52734375
+          ],
+          "beforeinputCount": 303,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 22,
+          "positionsPer100Keys": 7.333333333333333,
+          "positionsPer100InputCommands": 7.260726072607261,
+          "acceptedRowDelta": 22
+        },
+        {
+          "stream": 1,
+          "keysOffered": 300,
+          "commandsOffered": 303,
+          "actualKeyIntervalsMs": {
+            "n": 299,
+            "p50": 149.924560546875,
+            "p95": 152.6708984375,
+            "max": 158.01171875
+          },
+          "dispatchLatenessMs": {
+            "n": 300,
+            "p50": 1.51953125,
+            "p95": 4.0986328125,
+            "max": 11.478271484375
+          },
+          "latency": {
+            "peer": {
+              "n": 300,
+              "p50": 1619.674560546875,
+              "p95": 2567.829345703125,
+              "max": 2908.354248046875
+            },
+            "local": {
+              "n": 300,
+              "p50": 3.117919921875,
+              "p95": 6.34619140625,
+              "max": 13.68798828125
+            }
+          },
+          "markerLatency": {
+            "peer": [
+              2918.395263671875,
+              1041.386962890625,
+              1069.905029296875
+            ],
+            "local": [
+              2.87744140625,
+              3.669189453125,
+              2.58740234375
+            ]
+          },
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.23291015625,
+            1.545166015625
+          ],
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.114990234375,
+            1.52734375
+          ],
+          "beforeinputCount": 303,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 22,
+          "positionsPer100Keys": 7.333333333333333,
+          "positionsPer100InputCommands": 7.260726072607261,
+          "acceptedRowDelta": 22
+        }
+      ],
+      "cold": [
+        {
+          "actor": 1,
+          "navigationStartedAt": 1793997358526.3806,
+          "unlockStartedAt": 1793997358601.0989,
+          "editableAt": 1793997363474.0396,
+          "unlockToEditableMs": 4872.940673828125,
+          "navigationToEditableMs": 4947.658935546875,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        },
+        {
+          "actor": 2,
+          "navigationStartedAt": 1793997364491.0842,
+          "unlockStartedAt": 1793997364552.8677,
+          "editableAt": 1793997369412.474,
+          "unlockToEditableMs": 4859.6064453125,
+          "navigationToEditableMs": 4921.389892578125,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        }
+      ],
+      "requestedSignedReadUnits": 321,
+      "writeAttempts": 44,
+      "httpStatus": {
+        "200": 218
+      },
+      "fullAudits": [
+        {
+          "actor": 1,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.9228515625,
+            2.24853515625
+          ],
+          "snapshotEvents": [
+            0,
+            1,
+            8
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3914,
+              "startHostBounds": [
+                1793997350604.6514,
+                1793997350608.8228
+              ],
+              "endHostBounds": [
+                1793997353388.2515,
+                1793997353392.4229
+              ],
+              "elapsedMs": 2783.60009765625,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": true,
+                  "possibleOverlap": true,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "2",
+              "site": "ledger-reference",
+              "physicalRows": 3921,
+              "startHostBounds": [
+                1793997354611.9514,
+                1793997354616.1228
+              ],
+              "endHostBounds": [
+                1793997354694.7515,
+                1793997354698.9229
+              ],
+              "elapsedMs": 82.800048828125,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "3",
+              "site": "ledger-reference",
+              "physicalRows": 3928,
+              "startHostBounds": [
+                1793997355812.3516,
+                1793997355816.523
+              ],
+              "endHostBounds": [
+                1793997355845.3516,
+                1793997355849.523
+              ],
+              "elapsedMs": 33,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "4",
+              "site": "ledger-reference",
+              "physicalRows": 3930,
+              "startHostBounds": [
+                1793997356979.1514,
+                1793997356983.3228
+              ],
+              "endHostBounds": [
+                1793997357123.0515,
+                1793997357127.223
+              ],
+              "elapsedMs": 143.900146484375,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        },
+        {
+          "actor": 2,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.50146484375,
+            2.21630859375
+          ],
+          "snapshotEvents": [
+            0,
+            1,
+            6
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3736,
+              "startHostBounds": [
+                1793997350905.3835,
+                1793997350909.1013
+              ],
+              "endHostBounds": [
+                1793997353697.9836,
+                1793997353701.7014
+              ],
+              "elapsedMs": 2792.60009765625,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "2",
+              "site": "ledger-reference",
+              "physicalRows": 3738,
+              "startHostBounds": [
+                1793997354916.3835,
+                1793997354920.1013
+              ],
+              "endHostBounds": [
+                1793997355000.6836,
+                1793997355004.4014
+              ],
+              "elapsedMs": 84.300048828125,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "3",
+              "site": "ledger-reference",
+              "physicalRows": 3747,
+              "startHostBounds": [
+                1793997356448.8835,
+                1793997356452.6013
+              ],
+              "endHostBounds": [
+                1793997356823.3835,
+                1793997356827.1013
+              ],
+              "elapsedMs": 374.5,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        }
+      ],
+      "nativeBudgetCounters": null,
+      "nativeQuietReads": null,
+      "host": {
+        "samples": 17,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12836.44,
+          "last": 12836.44,
+          "min": 12836.44,
+          "max": 12836.44
+        },
+        "swapGrowth": false,
+        "knownNonTestHighCPU": [],
+        "allHighCPUStreaks": [
+          {
+            "pid": 88010,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 85968,
+            "process": "com.apple.Virtualization.VirtualMachine",
+            "seconds": 0
+          },
+          {
+            "pid": 88050,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 423,
+            "process": "WindowServer",
+            "seconds": 0
+          },
+          {
+            "pid": 89181,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          }
+        ],
+        "eligibleNoiseRetry": false
+      }
+    },
+    {
+      "name": "r2-single500-device1",
+      "key": "482-r2-single500-device1",
+      "workload": "single500-device1",
+      "replicate": 2,
+      "policy": "coordinated-2000",
+      "keysPerWriter": 120,
+      "gapMs": 500,
+      "rttMs": 0,
+      "functional": true,
+      "metricPredicates": {
+        "functional": true,
+        "coldExact": true,
+        "allOfferedKeysObserved": true,
+        "trustedFocusedVisible": true,
+        "input16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "cold15s": true
+      },
+      "failedPredicates": [],
+      "directions": [
+        {
+          "stream": 0,
+          "keysOffered": 120,
+          "commandsOffered": 123,
+          "actualKeyIntervalsMs": {
+            "n": 119,
+            "p50": 499.9833984375,
+            "p95": 502.4560546875,
+            "max": 505.588623046875
+          },
+          "dispatchLatenessMs": {
+            "n": 120,
+            "p50": 1.458740234375,
+            "p95": 3.664794921875,
+            "max": 14.177734375
+          },
+          "latency": {
+            "local": {
+              "n": 120,
+              "p50": 2.95166015625,
+              "p95": 3.927001953125,
+              "max": 9.193359375
+            },
+            "peer": {
+              "n": 120,
+              "p50": 759.560791015625,
+              "p95": 885.397216796875,
+              "max": 1107.1591796875
+            }
+          },
+          "markerLatency": {
+            "local": [
+              3.19384765625,
+              2.865478515625,
+              2.853271484375
+            ],
+            "peer": [
+              795.14599609375,
+              716.417724609375,
+              757.405517578125
+            ]
+          },
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.26904296875,
+            1.559326171875
+          ],
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.22119140625,
+            1.474365234375
+          ],
+          "beforeinputCount": 123,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 119,
+          "positionsPer100Keys": 99.16666666666667,
+          "positionsPer100InputCommands": 96.7479674796748,
+          "acceptedRowDelta": 119
+        }
+      ],
+      "cold": [
+        {
+          "actor": 1,
+          "navigationStartedAt": 1793997453663.8047,
+          "unlockStartedAt": 1793997453726.2708,
+          "editableAt": 1793997458570.1973,
+          "unlockToEditableMs": 4843.926513671875,
+          "navigationToEditableMs": 4906.392578125,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        },
+        {
+          "actor": 2,
+          "navigationStartedAt": 1793997459986.8965,
+          "unlockStartedAt": 1793997460089.4006,
+          "editableAt": 1793997465499.6123,
+          "unlockToEditableMs": 5410.211669921875,
+          "navigationToEditableMs": 5512.7158203125,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        }
+      ],
+      "requestedSignedReadUnits": 895,
+      "writeAttempts": 119,
+      "httpStatus": {
+        "200": 540
+      },
+      "fullAudits": [
+        {
+          "actor": 1,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -2.647705078125,
+            2.796875
+          ],
+          "snapshotEvents": [
+            0,
+            0,
+            2
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3714,
+              "startHostBounds": [
+                1793997448816.0032,
+                1793997448821.4478
+              ],
+              "endHostBounds": [
+                1793997450760.2031,
+                1793997450765.6477
+              ],
+              "elapsedMs": 1944.199951171875,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        },
+        {
+          "actor": 2,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.48974609375,
+            2.368896484375
+          ],
+          "snapshotEvents": [
+            0,
+            0,
+            0
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        }
+      ],
+      "nativeBudgetCounters": null,
+      "nativeQuietReads": null,
+      "host": {
+        "samples": 19,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12836.44,
+          "last": 12836.44,
+          "min": 12836.44,
+          "max": 12836.44
+        },
+        "swapGrowth": false,
+        "knownNonTestHighCPU": [],
+        "allHighCPUStreaks": [
+          {
+            "pid": 89411,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 85968,
+            "process": "com.apple.Virtualization.VirtualMachine",
+            "seconds": 0
+          },
+          {
+            "pid": 89454,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 91855,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 92387,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          }
+        ],
+        "eligibleNoiseRetry": false
+      }
+    },
+    {
+      "name": "r2-paired150",
+      "key": "482-r2-paired150",
+      "workload": "paired150",
+      "replicate": 2,
+      "policy": "coordinated-2000",
+      "keysPerWriter": 300,
+      "gapMs": 150,
+      "rttMs": 0,
+      "functional": true,
+      "metricPredicates": {
+        "functional": true,
+        "coldExact": true,
+        "allOfferedKeysObserved": true,
+        "trustedFocusedVisible": true,
+        "input16ms": true,
+        "peer2500ms": false,
+        "everyMarker2500ms": false,
+        "cold15s": true
+      },
+      "failedPredicates": [
+        "peer2500ms",
+        "everyMarker2500ms"
+      ],
+      "directions": [
+        {
+          "stream": 0,
+          "keysOffered": 300,
+          "commandsOffered": 303,
+          "actualKeyIntervalsMs": {
+            "n": 299,
+            "p50": 150.00439453125,
+            "p95": 153.021484375,
+            "max": 166.628662109375
+          },
+          "dispatchLatenessMs": {
+            "n": 300,
+            "p50": 2.361083984375,
+            "p95": 5.0107421875,
+            "max": 17.9873046875
+          },
+          "latency": {
+            "local": {
+              "n": 300,
+              "p50": 3.26220703125,
+              "p95": 6.89306640625,
+              "max": 10.5986328125
+            },
+            "peer": {
+              "n": 300,
+              "p50": 1608.808837890625,
+              "p95": 2533.592041015625,
+              "max": 2779.424560546875
+            }
+          },
+          "markerLatency": {
+            "local": [
+              3.510986328125,
+              2.8203125,
+              2.767578125
+            ],
+            "peer": [
+              2569.3876953125,
+              990.096923828125,
+              861.744140625
+            ]
+          },
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.28125,
+            1.62060546875
+          ],
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.157958984375,
+            1.712646484375
+          ],
+          "beforeinputCount": 303,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 22,
+          "positionsPer100Keys": 7.333333333333333,
+          "positionsPer100InputCommands": 7.260726072607261,
+          "acceptedRowDelta": 22
+        },
+        {
+          "stream": 1,
+          "keysOffered": 300,
+          "commandsOffered": 303,
+          "actualKeyIntervalsMs": {
+            "n": 299,
+            "p50": 150.05810546875,
+            "p95": 153.48046875,
+            "max": 156.128173828125
+          },
+          "dispatchLatenessMs": {
+            "n": 300,
+            "p50": 2.275634765625,
+            "p95": 4.758544921875,
+            "max": 16.99658203125
+          },
+          "latency": {
+            "peer": {
+              "n": 300,
+              "p50": 1636.62939453125,
+              "p95": 2553.6005859375,
+              "max": 2931.94140625
+            },
+            "local": {
+              "n": 300,
+              "p50": 3.222900390625,
+              "p95": 7.00537109375,
+              "max": 40.352783203125
+            }
+          },
+          "markerLatency": {
+            "peer": [
+              2945.7880859375,
+              1023.601318359375,
+              1054.5048828125
+            ],
+            "local": [
+              2.86474609375,
+              3.278076171875,
+              3.58154296875
+            ]
+          },
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.28125,
+            1.62060546875
+          ],
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.157958984375,
+            1.712646484375
+          ],
+          "beforeinputCount": 303,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 22,
+          "positionsPer100Keys": 7.333333333333333,
+          "positionsPer100InputCommands": 7.260726072607261,
+          "acceptedRowDelta": 22
+        }
+      ],
+      "cold": [
+        {
+          "actor": 1,
+          "navigationStartedAt": 1793997540596.106,
+          "unlockStartedAt": 1793997540664.686,
+          "editableAt": 1793997545537.3286,
+          "unlockToEditableMs": 4872.642578125,
+          "navigationToEditableMs": 4941.22265625,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        },
+        {
+          "actor": 2,
+          "navigationStartedAt": 1793997546589.1006,
+          "unlockStartedAt": 1793997546651.6196,
+          "editableAt": 1793997551534.9795,
+          "unlockToEditableMs": 4883.35986328125,
+          "navigationToEditableMs": 4945.87890625,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        }
+      ],
+      "requestedSignedReadUnits": 321,
+      "writeAttempts": 44,
+      "httpStatus": {
+        "200": 218
+      },
+      "fullAudits": [
+        {
+          "actor": 1,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.6533203125,
+            2.339599609375
+          ],
+          "snapshotEvents": [
+            0,
+            1,
+            8
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3914,
+              "startHostBounds": [
+                1793997532179.1604,
+                1793997532183.1533
+              ],
+              "endHostBounds": [
+                1793997535027.0605,
+                1793997535031.0535
+              ],
+              "elapsedMs": 2847.900146484375,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": true,
+                  "possibleOverlap": true,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "2",
+              "site": "ledger-reference",
+              "physicalRows": 3921,
+              "startHostBounds": [
+                1793997536078.2605,
+                1793997536082.2534
+              ],
+              "endHostBounds": [
+                1793997536330.1604,
+                1793997536334.1533
+              ],
+              "elapsedMs": 251.89990234375,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "3",
+              "site": "ledger-reference",
+              "physicalRows": 3928,
+              "startHostBounds": [
+                1793997537385.6604,
+                1793997537389.6533
+              ],
+              "endHostBounds": [
+                1793997537456.8604,
+                1793997537460.8533
+              ],
+              "elapsedMs": 71.199951171875,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "4",
+              "site": "ledger-reference",
+              "physicalRows": 3930,
+              "startHostBounds": [
+                1793997538599.0605,
+                1793997538603.0535
+              ],
+              "endHostBounds": [
+                1793997538770.5605,
+                1793997538774.5535
+              ],
+              "elapsedMs": 171.5,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        },
+        {
+          "actor": 2,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.660400390625,
+            3.541259765625
+          ],
+          "snapshotEvents": [
+            0,
+            1,
+            7
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3736,
+              "startHostBounds": [
+                1793997532488.659,
+                1793997532493.8606
+              ],
+              "endHostBounds": [
+                1793997535333.4587,
+                1793997535338.6604
+              ],
+              "elapsedMs": 2844.7998046875,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": true,
+                  "possibleOverlap": true,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "2",
+              "site": "ledger-reference",
+              "physicalRows": 3738,
+              "startHostBounds": [
+                1793997536400.9587,
+                1793997536406.1604
+              ],
+              "endHostBounds": [
+                1793997536644.659,
+                1793997536649.8606
+              ],
+              "elapsedMs": 243.7001953125,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "3",
+              "site": "ledger-reference",
+              "physicalRows": 3747,
+              "startHostBounds": [
+                1793997538016.9587,
+                1793997538022.1604
+              ],
+              "endHostBounds": [
+                1793997538461.9587,
+                1793997538467.1604
+              ],
+              "elapsedMs": 445,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "4",
+              "site": "ledger-reference",
+              "physicalRows": 3754,
+              "startHostBounds": [
+                1793997539481.2588,
+                1793997539486.4604
+              ],
+              "endHostBounds": [
+                1793997539671.2588,
+                null
+              ],
+              "elapsedMs": null,
+              "complete": null,
+              "censoredActiveAtPreCold": true,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        }
+      ],
+      "nativeBudgetCounters": null,
+      "nativeQuietReads": null,
+      "host": {
+        "samples": 17,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12836.44,
+          "last": 12836.44,
+          "min": 12836.44,
+          "max": 12836.44
+        },
+        "swapGrowth": false,
+        "knownNonTestHighCPU": [],
+        "allHighCPUStreaks": [
+          {
+            "pid": 96559,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 423,
+            "process": "WindowServer",
+            "seconds": 4.998337984085083
+          },
+          {
+            "pid": 99864,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12393,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12410,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          }
+        ],
+        "eligibleNoiseRetry": false
+      }
+    },
+    {
+      "name": "r3-single500-device1",
+      "key": "482-r3-single500-device1",
+      "workload": "single500-device1",
+      "replicate": 3,
+      "policy": "coordinated-2000",
+      "keysPerWriter": 120,
+      "gapMs": 500,
+      "rttMs": 0,
+      "functional": true,
+      "metricPredicates": {
+        "functional": true,
+        "coldExact": true,
+        "allOfferedKeysObserved": true,
+        "trustedFocusedVisible": true,
+        "input16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "cold15s": true
+      },
+      "failedPredicates": [],
+      "directions": [
+        {
+          "stream": 0,
+          "keysOffered": 120,
+          "commandsOffered": 123,
+          "actualKeyIntervalsMs": {
+            "n": 119,
+            "p50": 500.11572265625,
+            "p95": 502.715576171875,
+            "max": 506.444091796875
+          },
+          "dispatchLatenessMs": {
+            "n": 120,
+            "p50": 2.35400390625,
+            "p95": 3.91064453125,
+            "max": 13.03955078125
+          },
+          "latency": {
+            "local": {
+              "n": 120,
+              "p50": 2.991943359375,
+              "p95": 3.58544921875,
+              "max": 5.786376953125
+            },
+            "peer": {
+              "n": 120,
+              "p50": 739.930908203125,
+              "p95": 844.033935546875,
+              "max": 1015.08984375
+            }
+          },
+          "markerLatency": {
+            "local": [
+              3.502197265625,
+              3.45654296875,
+              2.881591796875
+            ],
+            "peer": [
+              759.21044921875,
+              726.564697265625,
+              739.889892578125
+            ]
+          },
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.471923828125,
+            1.418701171875
+          ],
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.18017578125,
+            1.57470703125
+          ],
+          "beforeinputCount": 123,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 119,
+          "positionsPer100Keys": 99.16666666666667,
+          "positionsPer100InputCommands": 96.7479674796748,
+          "acceptedRowDelta": 119
+        }
+      ],
+      "cold": [
+        {
+          "actor": 1,
+          "navigationStartedAt": 1793997636155.5417,
+          "unlockStartedAt": 1793997636234.3115,
+          "editableAt": 1793997641091.1204,
+          "unlockToEditableMs": 4856.808837890625,
+          "navigationToEditableMs": 4935.57861328125,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        },
+        {
+          "actor": 2,
+          "navigationStartedAt": 1793997642110.0042,
+          "unlockStartedAt": 1793997642178.1965,
+          "editableAt": 1793997647014.553,
+          "unlockToEditableMs": 4836.3564453125,
+          "navigationToEditableMs": 4904.548828125,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        }
+      ],
+      "requestedSignedReadUnits": 887,
+      "writeAttempts": 119,
+      "httpStatus": {
+        "200": 536
+      },
+      "fullAudits": [
+        {
+          "actor": 1,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.619873046875,
+            2.251708984375
+          ],
+          "snapshotEvents": [
+            0,
+            0,
+            2
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3714,
+              "startHostBounds": [
+                1793997631316.7483,
+                1793997631320.6199
+              ],
+              "endHostBounds": [
+                1793997633247.5483,
+                1793997633251.42
+              ],
+              "elapsedMs": 1930.800048828125,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        },
+        {
+          "actor": 2,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.557861328125,
+            2.17333984375
+          ],
+          "snapshotEvents": [
+            0,
+            0,
+            0
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        }
+      ],
+      "nativeBudgetCounters": null,
+      "nativeQuietReads": null,
+      "host": {
+        "samples": 19,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12836.44,
+          "last": 12836.44,
+          "min": 12836.44,
+          "max": 12836.44
+        },
+        "swapGrowth": false,
+        "knownNonTestHighCPU": [],
+        "allHighCPUStreaks": [
+          {
+            "pid": 12468,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12512,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12667,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12688,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          }
+        ],
+        "eligibleNoiseRetry": false
+      }
+    },
+    {
+      "name": "r3-paired150",
+      "key": "482-r3-paired150",
+      "workload": "paired150",
+      "replicate": 3,
+      "policy": "coordinated-2000",
+      "keysPerWriter": 300,
+      "gapMs": 150,
+      "rttMs": 0,
+      "functional": true,
+      "metricPredicates": {
+        "functional": true,
+        "coldExact": true,
+        "allOfferedKeysObserved": true,
+        "trustedFocusedVisible": true,
+        "input16ms": true,
+        "peer2500ms": false,
+        "everyMarker2500ms": false,
+        "cold15s": true
+      },
+      "failedPredicates": [
+        "peer2500ms",
+        "everyMarker2500ms"
+      ],
+      "directions": [
+        {
+          "stream": 0,
+          "keysOffered": 300,
+          "commandsOffered": 303,
+          "actualKeyIntervalsMs": {
+            "n": 299,
+            "p50": 150.076171875,
+            "p95": 152.62353515625,
+            "max": 160.990234375
+          },
+          "dispatchLatenessMs": {
+            "n": 300,
+            "p50": 2.2890625,
+            "p95": 4.501953125,
+            "max": 13.998291015625
+          },
+          "latency": {
+            "local": {
+              "n": 300,
+              "p50": 3.301025390625,
+              "p95": 6.732421875,
+              "max": 8.50830078125
+            },
+            "peer": {
+              "n": 300,
+              "p50": 1587.542724609375,
+              "p95": 2520.77978515625,
+              "max": 2716.4306640625
+            }
+          },
+          "markerLatency": {
+            "local": [
+              2.89697265625,
+              4.472900390625,
+              2.639404296875
+            ],
+            "peer": [
+              2569.025146484375,
+              997.80126953125,
+              871.267822265625
+            ]
+          },
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.27978515625,
+            1.5244140625
+          ],
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.10791015625,
+            1.50146484375
+          ],
+          "beforeinputCount": 303,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 22,
+          "positionsPer100Keys": 7.333333333333333,
+          "positionsPer100InputCommands": 7.260726072607261,
+          "acceptedRowDelta": 22
+        },
+        {
+          "stream": 1,
+          "keysOffered": 300,
+          "commandsOffered": 303,
+          "actualKeyIntervalsMs": {
+            "n": 299,
+            "p50": 150.027587890625,
+            "p95": 152.580810546875,
+            "max": 158.94775390625
+          },
+          "dispatchLatenessMs": {
+            "n": 300,
+            "p50": 2.457763671875,
+            "p95": 5.09912109375,
+            "max": 11.866455078125
+          },
+          "latency": {
+            "peer": {
+              "n": 300,
+              "p50": 1623.081787109375,
+              "p95": 2538.044921875,
+              "max": 2935.622314453125
+            },
+            "local": {
+              "n": 300,
+              "p50": 3.093505859375,
+              "p95": 6.167724609375,
+              "max": 7.96142578125
+            }
+          },
+          "markerLatency": {
+            "peer": [
+              2945.599365234375,
+              1033.946044921875,
+              1062.86962890625
+            ],
+            "local": [
+              2.927734375,
+              6.17431640625,
+              3.2978515625
+            ]
+          },
+          "peerMissingKeys": [],
+          "peerClockOffsetMs": [
+            -1.27978515625,
+            1.5244140625
+          ],
+          "localMissingKeys": [],
+          "localClockOffsetMs": [
+            -1.10791015625,
+            1.50146484375
+          ],
+          "beforeinputCount": 303,
+          "trustedFocusedVisible": true,
+          "acceptedPositions": 22,
+          "positionsPer100Keys": 7.333333333333333,
+          "positionsPer100InputCommands": 7.260726072607261,
+          "acceptedRowDelta": 22
+        }
+      ],
+      "cold": [
+        {
+          "actor": 1,
+          "navigationStartedAt": 1793997719811.8733,
+          "unlockStartedAt": 1793997719880.6062,
+          "editableAt": 1793997724754.2173,
+          "unlockToEditableMs": 4873.611083984375,
+          "navigationToEditableMs": 4942.343994140625,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        },
+        {
+          "actor": 2,
+          "navigationStartedAt": 1793997725771.2869,
+          "unlockStartedAt": 1793997725836.2812,
+          "editableAt": 1793997730701.981,
+          "unlockToEditableMs": 4865.69970703125,
+          "navigationToEditableMs": 4930.694091796875,
+          "archiveExact": true,
+          "offlineEditUndoExact": true
+        }
+      ],
+      "requestedSignedReadUnits": 321,
+      "writeAttempts": 44,
+      "httpStatus": {
+        "200": 218
+      },
+      "fullAudits": [
+        {
+          "actor": 1,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.630859375,
+            2.199462890625
+          ],
+          "snapshotEvents": [
+            0,
+            1,
+            8
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3914,
+              "startHostBounds": [
+                1793997711947.5005,
+                1793997711951.3308
+              ],
+              "endHostBounds": [
+                1793997714735.8005,
+                1793997714739.6309
+              ],
+              "elapsedMs": 2788.300048828125,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": true,
+                  "possibleOverlap": true,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "2",
+              "site": "ledger-reference",
+              "physicalRows": 3921,
+              "startHostBounds": [
+                1793997715804.7007,
+                1793997715808.531
+              ],
+              "endHostBounds": [
+                1793997716039.7007,
+                1793997716043.531
+              ],
+              "elapsedMs": 235,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "3",
+              "site": "ledger-reference",
+              "physicalRows": 3928,
+              "startHostBounds": [
+                1793997717045.7007,
+                1793997717049.531
+              ],
+              "endHostBounds": [
+                1793997717164.2007,
+                1793997717168.031
+              ],
+              "elapsedMs": 118.5,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "4",
+              "site": "ledger-reference",
+              "physicalRows": 3930,
+              "startHostBounds": [
+                1793997718259.9006,
+                1793997718263.731
+              ],
+              "endHostBounds": [
+                1793997718495.6006,
+                1793997718499.431
+              ],
+              "elapsedMs": 235.699951171875,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        },
+        {
+          "actor": 2,
+          "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+          "clockOffsetBoundsMs": [
+            -1.4482421875,
+            2.0947265625
+          ],
+          "snapshotEvents": [
+            0,
+            1,
+            6
+          ],
+          "noOverflowOrFailure": true,
+          "sameWorkerOrigin": true,
+          "allPrefixObservationsRetained": true,
+          "fullAudits": [
+            {
+              "id": "1",
+              "site": "ledger-reference",
+              "physicalRows": 3736,
+              "startHostBounds": [
+                1793997712235.2053,
+                1793997712238.7483
+              ],
+              "endHostBounds": [
+                1793997715029.8054,
+                1793997715033.3484
+              ],
+              "elapsedMs": 2794.60009765625,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "2",
+              "site": "ledger-reference",
+              "physicalRows": 3738,
+              "startHostBounds": [
+                1793997716114.7053,
+                1793997716118.2483
+              ],
+              "endHostBounds": [
+                1793997716338.3054,
+                1793997716341.8484
+              ],
+              "elapsedMs": 223.60009765625,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            },
+            {
+              "id": "3",
+              "site": "ledger-reference",
+              "physicalRows": 3747,
+              "startHostBounds": [
+                1793997717689.3054,
+                1793997717692.8484
+              ],
+              "endHostBounds": [
+                1793997718187.9053,
+                1793997718191.4482
+              ],
+              "elapsedMs": 498.599853515625,
+              "complete": false,
+              "censoredActiveAtPreCold": false,
+              "windows": {
+                "typing": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                },
+                "typingThroughDelivery": {
+                  "definiteOverlap": false,
+                  "possibleOverlap": false,
+                  "boundaryAmbiguous": false
+                }
+              }
+            }
+          ],
+          "typingAuditOverlap": false,
+          "typingPossibleAuditOverlap": false
+        }
+      ],
+      "nativeBudgetCounters": null,
+      "nativeQuietReads": null,
+      "host": {
+        "samples": 17,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12836.44,
+          "last": 12836.44,
+          "min": 12836.44,
+          "max": 12836.44
+        },
+        "swapGrowth": false,
+        "knownNonTestHighCPU": [],
+        "allHighCPUStreaks": [
+          {
+            "pid": 12748,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12810,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          },
+          {
+            "pid": 12967,
+            "process": "Google Chrome Helper (Renderer)",
+            "seconds": 0
+          }
+        ],
+        "eligibleNoiseRetry": false
+      }
+    }
+  ],
+  "reportOnlyDeep50": [
+    {
+      "name": "r1-deep50",
+      "replicate": 1,
+      "rttMs": 50,
+      "caseMs": 180000,
+      "wrapperSeconds": 240,
+      "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+      "directory": "composed-receive-1",
+      "reportOnly": true,
+      "key": "483-r1-deep50",
+      "childExit": 0,
+      "outcome": "passed",
+      "error": null,
+      "guards": {
+        "exactSourceAcceptedBeforeSenderClosed": true,
+        "nativeOfflineSchedulingHeldBeforeTiming": true,
+        "noNativeReceiveFailureAfterMarker": true,
+        "automaticNativePeerReceiveAndWindowApply": true,
+        "peerExcludedFromLocalUndo": true,
+        "originalAccountReaderColdExact": true
+      },
+      "drainMs": 40010.38232421875,
+      "markerVisibleAt30": false,
+      "coldFailure": false,
+      "cold": [
+        {
+          "label": "original-account-reader",
+          "ms": 1936,
+          "exact": true
+        }
+      ],
+      "cold15s": true,
+      "deep30ReportOnly": false
+    },
+    {
+      "name": "r2-deep50",
+      "replicate": 2,
+      "rttMs": 50,
+      "caseMs": 180000,
+      "wrapperSeconds": 240,
+      "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+      "directory": "composed-receive-1",
+      "reportOnly": true,
+      "key": "483-r2-deep50",
+      "childExit": 0,
+      "outcome": "passed",
+      "error": null,
+      "guards": {
+        "exactSourceAcceptedBeforeSenderClosed": true,
+        "nativeOfflineSchedulingHeldBeforeTiming": true,
+        "noNativeReceiveFailureAfterMarker": true,
+        "automaticNativePeerReceiveAndWindowApply": true,
+        "peerExcludedFromLocalUndo": true,
+        "originalAccountReaderColdExact": true
+      },
+      "drainMs": 39412.01318359375,
+      "markerVisibleAt30": false,
+      "coldFailure": false,
+      "cold": [
+        {
+          "label": "original-account-reader",
+          "ms": 1942,
+          "exact": true
+        }
+      ],
+      "cold15s": true,
+      "deep30ReportOnly": false
+    },
+    {
+      "name": "r3-deep50",
+      "replicate": 3,
+      "rttMs": 50,
+      "caseMs": 180000,
+      "wrapperSeconds": 240,
+      "grep": "composed Worker catches accepted peer writing after sender closes actor 1$",
+      "directory": "composed-receive-1",
+      "reportOnly": true,
+      "key": "483-r3-deep50",
+      "childExit": 0,
+      "outcome": "passed",
+      "error": null,
+      "guards": {
+        "exactSourceAcceptedBeforeSenderClosed": true,
+        "nativeOfflineSchedulingHeldBeforeTiming": true,
+        "noNativeReceiveFailureAfterMarker": true,
+        "automaticNativePeerReceiveAndWindowApply": true,
+        "peerExcludedFromLocalUndo": true,
+        "originalAccountReaderColdExact": true
+      },
+      "drainMs": 39987.04541015625,
+      "markerVisibleAt30": false,
+      "coldFailure": false,
+      "cold": [
+        {
+          "label": "original-account-reader",
+          "ms": 1957,
+          "exact": true
+        }
+      ],
+      "cold15s": true,
+      "deep30ReportOnly": false
+    }
+  ],
+  "reportOnly3072": {
+    "phase": 490,
+    "status": "not-exposed",
+    "readerAppJourneysStarted": 0,
+    "requiredBacklog": 3072,
+    "availableFreshBacklog": 2738,
+    "setupGlobalDeadlineMs": 1800000,
+    "perPositionDeadlineMsUnchanged": 30000,
+    "lastConfirmationToWrapperEndMs": 1969.43603515625,
+    "exposureQualification": "last confirmation was~1.97sbefore wrapper completion; the next30spoll was cut short by global setup deadline, not shown to exhaust its own30s",
+    "readerMetrics": {
+      "drainMs": null,
+      "coldMs": null,
+      "firstIndexFallbackPosition": null,
+      "indexBytes": null,
+      "receiptBytesPerPosition": null,
+      "undoExact": null,
+      "archive3072Exact": null
+    },
+    "counterControlsPassed": 6,
+    "observerBuildHome": "484-production-index-observer",
+    "noSmallerWorkloadSubstituted": true,
+    "blockingMatrixPassed": 36,
+    "validReportJourneys": 9,
+    "missingReportJourneys": 1,
+    "operatorRule": "3,072cell is report-only; unavailability is explicit debt, never a pass or waiver",
+    "next": "completeStage6landingreport with missing real-scale index result, then stop"
+  },
+  "supersededNativeBefore469": [
+    {
+      "replicate": 1,
+      "cell": "native-context",
+      "attempt": "r1-native-context-import-retry",
+      "outcome": "passed",
+      "catchupWaitMs": null,
+      "cold": [
+        {
+          "label": "public-shipping",
+          "ms": 9688,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "actualNativeEraAndWindowRebindReadable": true,
+        "unchangedShippingReaderExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 1,
+      "cell": "native-resumable",
+      "attempt": "r1-native-resumable",
+      "outcome": "passed",
+      "catchupWaitMs": null,
+      "cold": [
+        {
+          "label": "saved-slice-reopen",
+          "ms": 7631,
+          "exact": true
+        },
+        {
+          "label": "public-shipping",
+          "ms": 2606,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "networkSchedulingParkedForLocalOnlyWork": true,
+        "savedSliceColdReopened": true,
+        "realHistoryRemoved": true,
+        "originalInputAndUndoAfterReduction": true,
+        "unchangedShippingReaderExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 1,
+      "cell": "native-deep",
+      "attempt": "r1-native-deep-close-retry",
+      "outcome": "passed",
+      "catchupWaitMs": 19264.040283203125,
+      "cold": [
+        {
+          "label": "original-account-reader",
+          "ms": 1855,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "exactSourceAcceptedBeforeSenderClosed": true,
+        "noNativeReceiveFailureAfterMarker": true,
+        "automaticNativePeerReceiveAndWindowApply": true,
+        "peerExcludedFromLocalUndo": true,
+        "originalAccountReaderColdExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 2,
+      "cell": "native-context",
+      "attempt": "r2-native-context",
+      "outcome": "passed",
+      "catchupWaitMs": null,
+      "cold": [
+        {
+          "label": "public-shipping",
+          "ms": 9664,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "actualNativeEraAndWindowRebindReadable": true,
+        "unchangedShippingReaderExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 2,
+      "cell": "native-resumable",
+      "attempt": "r2-native-resumable",
+      "outcome": "passed",
+      "catchupWaitMs": null,
+      "cold": [
+        {
+          "label": "saved-slice-reopen",
+          "ms": 7508,
+          "exact": true
+        },
+        {
+          "label": "public-shipping",
+          "ms": 2574,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "networkSchedulingParkedForLocalOnlyWork": true,
+        "savedSliceColdReopened": true,
+        "realHistoryRemoved": true,
+        "originalInputAndUndoAfterReduction": true,
+        "unchangedShippingReaderExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 2,
+      "cell": "native-deep",
+      "attempt": "r2-native-deep",
+      "outcome": "passed",
+      "catchupWaitMs": 19316.80859375,
+      "cold": [
+        {
+          "label": "original-account-reader",
+          "ms": 1828,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "exactSourceAcceptedBeforeSenderClosed": true,
+        "noNativeReceiveFailureAfterMarker": true,
+        "automaticNativePeerReceiveAndWindowApply": true,
+        "peerExcludedFromLocalUndo": true,
+        "originalAccountReaderColdExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 3,
+      "cell": "native-context",
+      "attempt": "r3-native-context",
+      "outcome": "passed",
+      "catchupWaitMs": null,
+      "cold": [
+        {
+          "label": "public-shipping",
+          "ms": 9612,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "actualNativeEraAndWindowRebindReadable": true,
+        "unchangedShippingReaderExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 3,
+      "cell": "native-resumable",
+      "attempt": "r3-native-resumable",
+      "outcome": "passed",
+      "catchupWaitMs": null,
+      "cold": [
+        {
+          "label": "saved-slice-reopen",
+          "ms": 7554,
+          "exact": true
+        },
+        {
+          "label": "public-shipping",
+          "ms": 2589,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "networkSchedulingParkedForLocalOnlyWork": true,
+        "savedSliceColdReopened": true,
+        "realHistoryRemoved": true,
+        "originalInputAndUndoAfterReduction": true,
+        "unchangedShippingReaderExact": true
+      },
+      "latencyFailures": []
+    },
+    {
+      "replicate": 3,
+      "cell": "native-deep",
+      "attempt": "r3-native-deep",
+      "outcome": "passed",
+      "catchupWaitMs": 19458.771240234375,
+      "cold": [
+        {
+          "label": "original-account-reader",
+          "ms": 1889,
+          "exact": true
+        }
+      ],
+      "guards": {
+        "exactSourceAcceptedBeforeSenderClosed": true,
+        "noNativeReceiveFailureAfterMarker": true,
+        "automaticNativePeerReceiveAndWindowApply": true,
+        "peerExcludedFromLocalUndo": true,
+        "originalAccountReaderColdExact": true
+      },
+      "latencyFailures": []
+    }
+  ],
+  "supersededLiveBefore469": [
+    {
+      "name": "r1-late-normal",
+      "cell": "late-normal",
+      "replicate": 1,
+      "inputP95ms": 3.21240234375,
+      "peerP95ms": 951.816162109375,
+      "markerMs": [
+        693.55615234375,
+        822.330810546875,
+        959.66162109375
+      ],
+      "backlogMs": 53129.47265625,
+      "keysAfterReaderDrain": 40,
+      "keysAfterBothDrains": 23,
+      "bothColdExact": true,
+      "postTypingThroughWrapperFinishMs": 10249.346435546875,
+      "withheldFacts": null,
+      "gates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      },
+      "postReaderDrainPeerMs": {
+        "n": 40,
+        "p95": 816.54052734375,
+        "max": 823.65234375
+      },
+      "postBothDrainsPeerMs": {
+        "n": 23,
+        "p95": 764.582763671875,
+        "max": 776.844970703125
+      }
+    },
+    {
+      "name": "r1-late-withheld",
+      "cell": "late-withheld",
+      "replicate": 1,
+      "inputP95ms": 3.269775390625,
+      "peerP95ms": 1839.681396484375,
+      "markerMs": [
+        1174.8076171875,
+        936.619873046875,
+        934.70751953125
+      ],
+      "backlogMs": 49081.767333984375,
+      "keysAfterReaderDrain": 62,
+      "keysAfterBothDrains": 31,
+      "bothColdExact": true,
+      "postTypingThroughWrapperFinishMs": 11122.09521484375,
+      "withheldFacts": {
+        "ready": 1,
+        "hint": 0,
+        "content": 119,
+        "heartbeat": 6,
+        "withheld": 119
+      },
+      "gates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      },
+      "postReaderDrainPeerMs": {
+        "n": 62,
+        "p95": 1900.212890625,
+        "max": 1996.516357421875
+      },
+      "postBothDrainsPeerMs": {
+        "n": 31,
+        "p95": 1937.01318359375,
+        "max": 1996.516357421875
+      }
+    },
+    {
+      "name": "r2-late-normal",
+      "cell": "late-normal",
+      "replicate": 2,
+      "inputP95ms": 3.62353515625,
+      "peerP95ms": 989.127685546875,
+      "markerMs": [
+        743.207763671875,
+        853.906494140625,
+        1111.0029296875
+      ],
+      "backlogMs": 53666.764892578125,
+      "keysAfterReaderDrain": 38,
+      "keysAfterBothDrains": 22,
+      "bothColdExact": true,
+      "postTypingThroughWrapperFinishMs": 10235.933349609375,
+      "withheldFacts": null,
+      "gates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      },
+      "postReaderDrainPeerMs": {
+        "n": 38,
+        "p95": 802.362548828125,
+        "max": 841.919189453125
+      },
+      "postBothDrainsPeerMs": {
+        "n": 22,
+        "p95": 751.23779296875,
+        "max": 798.170166015625
+      }
+    },
+    {
+      "name": "r2-late-withheld",
+      "cell": "late-withheld",
+      "replicate": 2,
+      "inputP95ms": 3.5771484375,
+      "peerP95ms": 1801.650634765625,
+      "markerMs": [
+        1028.786376953125,
+        656.367919921875,
+        1267.965576171875
+      ],
+      "backlogMs": 49153.426025390625,
+      "keysAfterReaderDrain": 62,
+      "keysAfterBothDrains": 31,
+      "bothColdExact": true,
+      "postTypingThroughWrapperFinishMs": 10331.445068359375,
+      "withheldFacts": {
+        "ready": 1,
+        "hint": 0,
+        "content": 118,
+        "heartbeat": 6,
+        "withheld": 118
+      },
+      "gates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      },
+      "postReaderDrainPeerMs": {
+        "n": 62,
+        "p95": 1904.00927734375,
+        "max": 2039.32080078125
+      },
+      "postBothDrainsPeerMs": {
+        "n": 31,
+        "p95": 1904.00927734375,
+        "max": 2008.461181640625
+      }
+    },
+    {
+      "name": "r3-late-normal",
+      "cell": "late-normal",
+      "replicate": 3,
+      "inputP95ms": 3.560791015625,
+      "peerP95ms": 983.123291015625,
+      "markerMs": [
+        613.280029296875,
+        784.4345703125,
+        939.50439453125
+      ],
+      "backlogMs": 54674.7177734375,
+      "keysAfterReaderDrain": 41,
+      "keysAfterBothDrains": 20,
+      "bothColdExact": true,
+      "postTypingThroughWrapperFinishMs": 10250.904541015625,
+      "withheldFacts": null,
+      "gates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      },
+      "postReaderDrainPeerMs": {
+        "n": 41,
+        "p95": 920.421142578125,
+        "max": 967.21630859375
+      },
+      "postBothDrainsPeerMs": {
+        "n": 20,
+        "p95": 789.943115234375,
+        "max": 874.65576171875
+      }
+    },
+    {
+      "name": "r3-late-withheld",
+      "cell": "late-withheld",
+      "replicate": 3,
+      "inputP95ms": 3.359619140625,
+      "peerP95ms": 1876.719970703125,
+      "markerMs": [
+        1308.341064453125,
+        812.599609375,
+        1074.52099609375
+      ],
+      "backlogMs": 48589.943115234375,
+      "keysAfterReaderDrain": 62,
+      "keysAfterBothDrains": 32,
+      "bothColdExact": true,
+      "postTypingThroughWrapperFinishMs": 10220.158935546875,
+      "withheldFacts": {
+        "ready": 1,
+        "hint": 0,
+        "content": 118,
+        "heartbeat": 6,
+        "withheld": 118
+      },
+      "gates": {
+        "all120KeysComplete": true,
+        "local16ms": true,
+        "peer2500ms": true,
+        "everyMarker2500ms": true,
+        "fullBacklog600s": true,
+        "finalNewDelivery30s": true,
+        "archiveAndColdGuards": true,
+        "faultExercised": true
+      },
+      "postReaderDrainPeerMs": {
+        "n": 62,
+        "p95": 1914.017822265625,
+        "max": 2126.808837890625
+      },
+      "postBothDrainsPeerMs": {
+        "n": 32,
+        "p95": 1891.6455078125,
+        "max": 1914.017822265625
+      }
+    }
+  ],
+  "priorEvidenceIndex": [
+    {
+      "phase": 445,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/445-stage5-preflight-hold/evidence.json",
+      "sha256": "a483c635e5b65f9e8f0fffc380eb8ca830ef8964c1a85b078025fc4378cfa4c9",
+      "bytes": 93978,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "445-stage5-preflight-hold"
+    },
+    {
+      "phase": 446,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/446-fairness-retry/evidence.json",
+      "sha256": "c7dd664ccd53c6d06563e7118c06b48a5955b1c50684394cf748ac331aeb0e83",
+      "bytes": 19565,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "446-fairness-retry"
+    },
+    {
+      "phase": 447,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/447-sparse-publication-mirror-trace/evidence.json",
+      "sha256": "d00934eb042515a8a0d417e37ee40432a4475c9d7f3f906da9cc25b71277e0fc",
+      "bytes": 27525,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "447-sparse-publication-mirror-trace"
+    },
+    {
+      "phase": 448,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/448-service-test-attribution/evidence.json",
+      "sha256": "ae62afa0a476b7289b20cd84bc67997c69e026cda4f8a0d02d22c9afd998f40d",
+      "bytes": 26136,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "448-service-test-attribution"
+    },
+    {
+      "phase": 449,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/449-sparse-scheduling-control/evidence.json",
+      "sha256": "be7a118f4f1463d12a913d852af1807fd069a80545710737c0d4c6b3020bdcfc",
+      "bytes": 42300,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "449-sparse-scheduling-control"
+    },
+    {
+      "phase": 450,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/450-census-repair-checkpoint/evidence.json",
+      "sha256": "66b6d6f0adc3b168848a1567cf0d59bb0c94214a5029aca35b121f9043d2bc88",
+      "bytes": 24369,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "450-census-repair-checkpoint"
+    },
+    {
+      "phase": 451,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/451-reviewed-population-reconciliation/evidence.json",
+      "sha256": "e4454dfa28bf5fdd4ad259d93653567375fe6498cd3e1fdbfac314cfb2886f5b",
+      "bytes": 15518,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "451-reviewed-population-reconciliation"
+    },
+    {
+      "phase": 452,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/452-native-importer-preflight/evidence.json",
+      "sha256": "c3ff1a8dba740b4b3c2a07787e25a2b25d2358fa236f883ff756bda9f842af8c",
+      "bytes": 48589,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "452-native-importer-preflight"
+    },
+    {
+      "phase": 453,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/453-timed-path-assertion-audit/evidence.json",
+      "sha256": "c6894da7c961c0ca01d8e152a46398b3eae6b03887ce3bb2c0c6bad469464889",
+      "bytes": 14352,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "453-timed-path-assertion-audit"
+    },
+    {
+      "phase": 454,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/454-current-runtime-apparatus/evidence.json",
+      "sha256": "7ebd2f9c77b475c670ce208bf14d318b14547d179e44438d80d5073a877bb401",
+      "bytes": 47834,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "454-current-runtime-apparatus"
+    },
+    {
+      "phase": 455,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/455-enrollment-refusal-hold/evidence.json",
+      "sha256": "c6003c2f0b4cac64840b6a633449b36aeaae348d21472eae5d92758871f3abe1",
+      "bytes": 19166,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "455-enrollment-refusal-hold"
+    },
+    {
+      "phase": 456,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/456-container-clock-offset/evidence.json",
+      "sha256": "d58c0482e8fa2c7c1c5221484269cc29737f45b1d58c39adaab7a3cec8698a5a",
+      "bytes": 10134,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "456-container-clock-offset"
+    },
+    {
+      "phase": 457,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/457-future-clock-tolerance/evidence.json",
+      "sha256": "83e94f546a3382b56d0bdfae1bcb2645b2fac23bbe09187edc308a7e27c5d58d",
+      "bytes": 52675,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "457-future-clock-tolerance"
+    },
+    {
+      "phase": 458,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/458-repaired-runtime-bindings/evidence.json",
+      "sha256": "a5956686523af21651dd85bdc7e1b88fae70cd243d67227362b4138da8794968",
+      "bytes": 73897,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "458-repaired-runtime-bindings"
+    },
+    {
+      "phase": 459,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/459-seed-goals-footprint-hold/evidence.json",
+      "sha256": "f329e398bae0a8dc7ea59fc17725e22af4c9901b4d3c3e26b1fdcdd487bc1ede",
+      "bytes": 38822,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "459-seed-goals-footprint-hold"
+    },
+    {
+      "phase": 460,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/460-complete-goals-cohort/evidence.json",
+      "sha256": "56622a75d2e626f3604a834333bace8b8cda6a0cd6b90bd7c9b9f1e4a18bda6c",
+      "bytes": 10356,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "460-complete-goals-cohort"
+    },
+    {
+      "phase": 461,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/461-native-gate-block/evidence.json",
+      "sha256": "d12c3b902f47eb70c0c106d7c94eee210f82ddd9649513a3e2109002d4981d27",
+      "bytes": 38008,
+      "matrixStarted": null,
+      "reportStarted": null,
+      "sourceHome": "461-native-gate-block"
+    },
+    {
+      "phase": 462,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/462-late-gate-block/evidence.json",
+      "sha256": "5472b190f13b5a2a5a82f913b0bce598ed514eb751ef2df5fd2ba6d3025f13c6",
+      "bytes": 28184,
+      "matrixStarted": 6,
+      "reportStarted": null,
+      "sourceHome": "462-late-gate-block"
+    },
+    {
+      "phase": 463,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/463-old-maintenance-fixture/evidence.json",
+      "sha256": "a516b49a2bb59b7b89d83c233e3ef4f0808053f7c196687164e72a8eec091489",
+      "bytes": 4698,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "463-old-maintenance-fixture"
+    },
+    {
+      "phase": 464,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/464-grown-real-writing/evidence.json",
+      "sha256": "279e2565ef9a8507119b9e25f2b9b5bf56ee87b62e2d5bd13a0d871527a5ca4b",
+      "bytes": 4907,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "464-grown-real-writing"
+    },
+    {
+      "phase": 465,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/465-grown-maintenance-fixture/evidence.json",
+      "sha256": "8a9f0128970e70a3ca910c0182618d9ecfe8b1aabc0de55c6be862558f6b34ed",
+      "bytes": 4673,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "465-grown-maintenance-fixture"
+    },
+    {
+      "phase": 466,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/466-old-saved-prerequisite/evidence.json",
+      "sha256": "a77db89b1ce539745c823b21322e25c57019621d34b5551941e939f62f7efd5e",
+      "bytes": 7602,
+      "matrixStarted": 1,
+      "reportStarted": null,
+      "sourceHome": "466-old-saved-prerequisite"
+    },
+    {
+      "phase": 467,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/467-maintenance-completion-stop/evidence.json",
+      "sha256": "a95fc5533c614f8b044a35cc3baf77315b06d27a302aee5565917f0a13a1e75b",
+      "bytes": 9048,
+      "matrixStarted": 1,
+      "reportStarted": null,
+      "sourceHome": "467-maintenance-completion-stop"
+    },
+    {
+      "phase": 468,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/468-maintenance-priority-trace/evidence.json",
+      "sha256": "b54795fe2cae4ba7991562bfebccc8c7e56610715a7f6bc9df3351ee1682e7a1",
+      "bytes": 22508,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "468-maintenance-priority-trace"
+    },
+    {
+      "phase": 469,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/469-maintenance-arbitration/evidence.json",
+      "sha256": "f8023881e34a2b972145358603ac6da110d3a9919e7bb7171a83dfa6cb79353a",
+      "bytes": 30920,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "469-maintenance-arbitration"
+    },
+    {
+      "phase": 470,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/470-maintenance-repair-confirmation/evidence.json",
+      "sha256": "07a8f9506810e7507e4568486771c01148b6cfdeb9673b0847409100df6d2fb4",
+      "bytes": 12109,
+      "matrixStarted": 1,
+      "reportStarted": null,
+      "sourceHome": "470-maintenance-repair-confirmation"
+    },
+    {
+      "phase": 471,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/471-maintenance-gate-block/evidence.json",
+      "sha256": "bb59d16be4fd8444c474e113c1b9f44170e3fed009ba3489da2035be420e2543",
+      "bytes": 33478,
+      "matrixStarted": 5,
+      "reportStarted": null,
+      "sourceHome": "471-maintenance-gate-block"
+    },
+    {
+      "phase": 472,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/472-grown-maintenance-gates/evidence.json",
+      "sha256": "b7b90974e8725d7de7fc1327c8d5ee0358d2452ce7e28cca4b9575e05c104418",
+      "bytes": 81672,
+      "matrixStarted": 7,
+      "reportStarted": null,
+      "sourceHome": "472-grown-maintenance-gates"
+    },
+    {
+      "phase": 473,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/473-native-delegate-refresh/evidence.json",
+      "sha256": "2a6f7407585bb177fcd281a1bfdf8dbdde788e71c1f9b817a8c53958049762de",
+      "bytes": 13970,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "473-native-delegate-refresh"
+    },
+    {
+      "phase": 474,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/474-native-gate-block/evidence.json",
+      "sha256": "87a1f295ce0f058b769d1f2989377f10d5d11abe4f6198e444d5d90d49cc2932",
+      "bytes": 33365,
+      "matrixStarted": 9,
+      "reportStarted": null,
+      "sourceHome": "474-native-gate-block"
+    },
+    {
+      "phase": 475,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/475-live-catchup-gates/evidence.json",
+      "sha256": "786c4b9fbb04b59ad9cb670b7f3924551c78d4653e8c313ea4aea719b8071953",
+      "bytes": 35980,
+      "matrixStarted": 6,
+      "reportStarted": null,
+      "sourceHome": "475-live-catchup-gates"
+    },
+    {
+      "phase": 476,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/476-fairness-http-observer/evidence.json",
+      "sha256": "fe7fa2957855509abb3918ab2deeefafea961b8ef879695b1fa8724fc8be6820",
+      "bytes": 7198,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "476-fairness-http-observer"
+    },
+    {
+      "phase": 477,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/477-fairness-gates/evidence.json",
+      "sha256": "4fc5b49f6b7365ac604de1fe2159f5ad2669aa11ba7e5a7bafaf73fc23947005",
+      "bytes": 20158,
+      "matrixStarted": 3,
+      "reportStarted": null,
+      "sourceHome": "477-fairness-gates"
+    },
+    {
+      "phase": 478,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/478-goals-journeys/evidence.json",
+      "sha256": "7c7e6788028f3335518a1719c81984ed5e65ef1c1aaedb5266a9dd29fd45e586",
+      "bytes": 39476,
+      "matrixStarted": 6,
+      "reportStarted": null,
+      "sourceHome": "478-goals-journeys"
+    },
+    {
+      "phase": 479,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/479-report-only-preparation/evidence.json",
+      "sha256": "0f04dc30cce9a6ea2b7ba4f35883ba21c58624391180ef899a56e5c91a6e140f",
+      "bytes": 5924,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "479-report-only-preparation"
+    },
+    {
+      "phase": 480,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/480-observed-report-build/evidence.json",
+      "sha256": "bffab9883db390f9a4f0e27d2ff71df8031147504c625528aceaaf1cdcaa6cfa",
+      "bytes": 46656,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "480-observed-report-build"
+    },
+    {
+      "phase": 481,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/481-common-sender-fixture/evidence.json",
+      "sha256": "777a8b3389cb8b755bf6b793d1da08e9f09b9bbe48f2ef5d5c847c6c99a0fb3b",
+      "bytes": 12495,
+      "matrixStarted": 0,
+      "reportStarted": null,
+      "sourceHome": "481-common-sender-fixture"
+    },
+    {
+      "phase": 482,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/482-sender-report-block/evidence.json",
+      "sha256": "3941e842affa9f1b3bd4f3b4d9799f13f04a8ba09f49cedebcee6c5e7086e8dc",
+      "bytes": 82854,
+      "matrixStarted": 0,
+      "reportStarted": 6,
+      "sourceHome": "482-sender-report-block"
+    },
+    {
+      "phase": 483,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/483-deep50-reports/evidence.json",
+      "sha256": "ea30437dd4ddf0e90fe90096cc1cfc8b4393016830ca9a53a36ebb97ef06568f",
+      "bytes": 13773,
+      "matrixStarted": 0,
+      "reportStarted": 3,
+      "sourceHome": "483-deep50-reports"
+    },
+    {
+      "phase": 484,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/484-production-index-observer/evidence.json",
+      "sha256": "d71e1a75e8a9e057530d8d44d9556b642272392afaeca240108e922ec15d07cd",
+      "bytes": 1924,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "484-production-index-observer"
+    },
+    {
+      "phase": 485,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/485-grown-fixture-worker-request-stop/evidence.json",
+      "sha256": "b140813683150c46677a2b294b3c62fc3d7adb0aa2d7959a198bc5705d27fbd9",
+      "bytes": 6251,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "485-grown-fixture-worker-request-stop"
+    },
+    {
+      "phase": 486,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/486-composition-status-error-code/evidence.json",
+      "sha256": "4ced76d69065b2d46f59668bc9ad5de00c3df53ca1b7711abae8e7dac497e762",
+      "bytes": 6029,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "486-composition-status-error-code"
+    },
+    {
+      "phase": 487,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/487-composition-status-reply-ceiling/evidence.json",
+      "sha256": "082da84afa036424291dd6af42a1ea1b49e260df24249bf63e6ce25a60acf926",
+      "bytes": 14829,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "487-composition-status-reply-ceiling"
+    },
+    {
+      "phase": 488,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/evidence.json",
+      "sha256": "2537692ab0099036674adc80b8449e9678ddc6b76973d2d35faac9f383e428ef",
+      "bytes": 2795,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "488-bounded-fixture-status"
+    },
+    {
+      "phase": 489,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/489-grown3072-setup-deadline/evidence.json",
+      "sha256": "0f6a9106658f287e8389e3c71bd393935d8e527e5c4db25d26e82b51a6ed8a6c",
+      "bytes": 6836,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "489-grown3072-setup-deadline"
+    },
+    {
+      "phase": 490,
+      "path": "docs/development-evidence/2026-11-02-release-hardening/490-index-report-unavailable/evidence.json",
+      "sha256": "1c02f362d50fed027958ffd999f9512a7e36c4dd377c032ac0c2ab7530311160",
+      "bytes": 2751,
+      "matrixStarted": 0,
+      "reportStarted": 0,
+      "sourceHome": "490-index-report-unavailable"
+    }
+  ],
+  "qualification": "Report-only latency misses retained; earlier source passes do not transfer; Goals retain diagnostic predicates; no deployment credit."
+}

@@ -1,0 +1,76 @@
+{
+  "reportOnlyJourneysStarted": 0,
+  "appCodeChanges": false,
+  "limitsOrDeadlinesChanged": false,
+  "noAcceptanceCredit": true,
+  "phase": 490,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86",
+      "bytes": 22390
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerFrameStream.ts",
+      "sha256": "c22fad4ad96e0dc90b70d5e952b039ab98babb6dd6f53279524ee550a0936941",
+      "bytes": 5818
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-index-report-490-20261106/490-private-files.json",
+      "sha256": "3587691a16acadc009600f8a67b75be7f0eea5ebb3ce985651b8d36e004848da",
+      "bytes": 2244
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-490-20261106/490-declaration.json",
+      "sha256": "8ae5956a536d0c00a42718875da898a179a55d2d43a3d9e0c15d500394e2b0cb",
+      "bytes": 1306
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-490-20261106/490-counter-controls.log",
+      "sha256": "fec0f8da2af910e63f9a2e4ee7b990993142decce572ecb671d68f391ff3059f",
+      "bytes": 426
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-490-20261106/490-summary.json",
+      "sha256": "d813878f73ea429d86c11acf8e1d2718906f4a0a4c83c689bb9a81e9e121dd0b",
+      "bytes": 1070
+    }
+  ],
+  "summary": {
+    "phase": 490,
+    "status": "not-exposed",
+    "readerAppJourneysStarted": 0,
+    "requiredBacklog": 3072,
+    "availableFreshBacklog": 2738,
+    "setupGlobalDeadlineMs": 1800000,
+    "perPositionDeadlineMsUnchanged": 30000,
+    "lastConfirmationToWrapperEndMs": 1969.43603515625,
+    "exposureQualification": "last confirmation was~1.97sbefore wrapper completion; the next30spoll was cut short by global setup deadline, not shown to exhaust its own30s",
+    "readerMetrics": {
+      "drainMs": null,
+      "coldMs": null,
+      "firstIndexFallbackPosition": null,
+      "indexBytes": null,
+      "receiptBytesPerPosition": null,
+      "undoExact": null,
+      "archive3072Exact": null
+    },
+    "counterControlsPassed": 6,
+    "observerBuildHome": "484-production-index-observer",
+    "noSmallerWorkloadSubstituted": true,
+    "blockingMatrixPassed": 36,
+    "validReportJourneys": 9,
+    "missingReportJourneys": 1,
+    "operatorRule": "3,072cell is report-only; unavailability is explicit debt, never a pass or waiver",
+    "next": "completeStage6landingreport with missing real-scale index result, then stop"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

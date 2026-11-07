@@ -1,0 +1,9 @@
+# Phase 514 — complete current-date 3,072 fixture
+
+The fresh November 7 three-device account completes all 3,072 real, individually admitted, durable and server-accepted edits from prefix 6 through 3,078. The case completes in 1628.033 seconds, below the unchanged 1,800-second ceiling. Every position retains its exact 30-second acceptance check. The final ordinary app reopen and full archive check pass; Goals is exactly 13,407 bytes.
+
+All eleven local reductions complete below their original 120-second bounds. Each proves unchanged writing and accepted service rows across reduction/reopen. Both returning-reader snapshots remain byte-identical. No service history is pruned. The recipe contains no test-date override, raw storage edits, weakened predicate or production change. Its only wait adjustment is phase 513's cached Window-status sampling cadence; production flags, budgets and app bytes stay at the phase 510 plain build.
+
+The earlier setup and native-tool bootstrap failures remain. Qualification to phase 512 wording: its final individual wait was censored by the overall case deadline, so it did not prove whether that last edit would later progress. This fresh complete run establishes progress for this new fixture; it does not rewrite the failed attempt or isolate a general production speed gain from cadence alone.
+
+This is preparation, not a blocking timed gate or the missing reader report. The one-account/three-device fixture carries no new multi-account fairness claim. Next rebase the six already approved index observations onto the same repaired canonical source, then run the original report body: all 3,072 service/native logical positions, exact archive, Undo, production 32 MiB index, uncapped counter and ordinary same-profile offline cold. Earlier 36 timed-gate passes still bind the older source.

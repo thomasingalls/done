@@ -1,0 +1,16 @@
+{
+  "case": "grow329-maintenance-eligible-paired-fixture",
+  "childExit": 0,
+  "nativeGrowthKeys": 700,
+  "keyIntervalMs": 150,
+  "actualPolicy": "coordinated-2000",
+  "actualWriters": 1,
+  "knownWritingAdded": " seed329: followed by 700 g characters on SA card only",
+  "savedPhysicalRowsByDevice": [
+    1675,
+    3089
+  ],
+  "fullArchiveComparedBeforeSaving": true,
+  "scope": "Apparatus preparation, not a sender-study run",
+  "metadataCaveat": "Original grow plan inherited unused policy=reference/writers=2/keys=300 template fields. The frozen grow spec hardcodes one writer/700 native keys and build flags identify coordinated. Preserve the original plan unchanged; it is not a 300-key reference measurement."
+}

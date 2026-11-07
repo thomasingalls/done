@@ -1,0 +1,99 @@
+import assert from 'node:assert/strict';
+import{acceptedRows}from'/Users/thomasingalls/.codex/worktrees/7fda/done/test/inbound-native/fixtures';
+import{validatePreparation}from'./preparation-validation.mjs';
+import {test,expect} from '@playwright/test';
+import {readFileSync,writeFileSync,mkdirSync,cpSync} from 'node:fs';
+import {join} from 'node:path';
+import {start,stop} from '/private/tmp/done-stage5-rebind-458-20261106/runtime.mjs';
+import {seedProfile} from '/private/tmp/done-stage5-gates-461-20261106/seed-profile';
+import {restoreAuthenticator,credentials,openSaved} from '/private/tmp/done-stage5-rebind-458-20261106/harness/devices';
+import {card,exported,archiveIdentity,lock} from '/private/tmp/done-stage5-rebind-458-20261106/harness/common';
+const out=process.env.FAIR_OUT!;
+test('grow3072 through actual individually accepted writing without altering old reader profiles',async({browser})=>{
+  const fixture=JSON.parse(readFileSync('/private/tmp/done-stage5-grown-prepare-465-20261106/grown-fixture/fixture.json','utf8'));
+  const account=fixture.accounts.find((a:any)=>a.label==='H'),saved=account.actors[0];
+  const result:any={outcome:'starting',apparatusOnly:true,acceptanceCredit:false,accepted:[],guards:{}};
+  mkdirSync(out,{recursive:true,mode:0o700});
+  const save=()=>writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');
+  let context:any;
+  try{
+    expect(account.backlog).toBe(2048);expect(new Date().toISOString().slice(0,10)).toBe(account.date);
+    cpSync(fixture.state,join(out,'state'),{recursive:true,errorOnExist:true});
+    await start(join(out,'state'),process.env.FAIR_DIST!);
+    context=await browser.newContext({baseURL:'http://localhost:53781',viewport:{width:1440,height:1000},timezoneId:'UTC'});
+    await seedProfile(context,saved.storage);const page=await context.newPage(),auth=await restoreAuthenticator(page,saved.credentials);
+    await page.goto('/test/hardening-stage5/index.html');await page.waitForFunction(()=>(globalThis as any).__nativeCheckpoint);
+    const before=await page.evaluate(async({code,joined})=>{
+      const g=globalThis as any;g.spec={...await g.__nativeCheckpoint.metadata(),code,joined};
+      g.b=g.__nativeCheckpoint.create(g.spec,'composed');await g.b.opening;
+      const target=g.b.workspace.read().cards.find((c:any)=>c.text.startsWith('Fair H target:'));
+      if(!target)throw Error('Expected current fixture target');g.targetId=target.id;
+      return{text:g.b.workspace.text({kind:'card',id:target.id}).read().text,prefix:(await g.b.compositionStatus()).delivery.acceptedThrough};
+    },{code:saved.code,joined:false});
+    expect(before.text).toContain(account.expected);result.before=before.prefix;result.targetBeforeLength=before.text.length;save();
+    // Genuine existing automatic local reduction; inside the original case's1800sclock.
+    const normalize=(a:any[])=>[...a].sort((x,y)=>x.path.localeCompare(y.path));
+    const archiveBefore=normalize(await page.evaluate(()=>(globalThis as any).b.workspace.exportEntries()));
+    expect(archiveBefore).toEqual(normalize(Object.entries(account.archive).map(([path,content])=>({path,content}))));
+    const serverBefore=acceptedRows(join(out,'state')).map(x=>x.key).sort();
+    const hintBefore=await page.evaluate(()=>(globalThis as any).b.historyStatus());
+    const preparationBegan=Date.now();result.preparation={beforeHint:hintBefore,startedAt:preparationBegan,statuses:[]};save();
+    await expect.poll(async()=>{
+      const state=await page.evaluate(()=>{const b=(globalThis as any).b;return{local:b.session.session.devices.localHistory?.status,workspace:b.workspace.status};});
+      if(!state.local)throw Error('Expected existing automatic local reduction');
+      if(state.local.phase==='halted'||state.local.phase==='closed')throw Error('Local maintenance '+state.local.phase+':'+state.local.reason);
+      if(state.local.reason==='capacity')throw Error('Fixture producer reduction parked at unchanged capacity');
+      if(state.workspace.state!=='active')throw Error('Fixture producer admission '+state.workspace.state);
+      result.preparation.statuses.push({at:Date.now(),...state.local});save();
+      return state.local.progress?.stage==='complete'&&state.local.phase!=='running';
+    },{timeout:120000,intervals:[250,500]}).toBe(true);
+    const reducedHint=await page.evaluate(()=>(globalThis as any).b.historyStatus());
+    const archiveAfter=normalize(await page.evaluate(()=>(globalThis as any).b.workspace.exportEntries()));
+    const serverAfter=acceptedRows(join(out,'state')).map(x=>x.key).sort();
+    result.preparation.completedAt=Date.now();result.preparation.elapsedMs=Date.now()-preparationBegan;result.preparation.reducedHint=reducedHint;save();
+    await page.evaluate(()=>(globalThis as any).b.close());
+    await page.reload();await page.waitForFunction(()=>(globalThis as any).__nativeCheckpoint);
+    const reopened=await page.evaluate(async({code,joined})=>{
+      const g=globalThis as any;g.spec={...await g.__nativeCheckpoint.metadata(),code,joined};g.b=g.__nativeCheckpoint.create(g.spec,'composed');await g.b.opening;
+      const card=g.b.workspace.read().cards.find((c:any)=>c.text.startsWith('Fair H target:'));if(!card)throw Error('Reduced target absent');g.targetId=card.id;
+      return{archive:g.b.workspace.exportEntries(),hint:await g.b.historyStatus()};
+    },{code:saved.code,joined:false});
+    await expect.poll(()=>page.evaluate(()=>(globalThis as any).b.session.session.sync.status.send.acceptedThrough),{timeout:30000,intervals:[25,50,100]}).toBe(before.prefix);
+    validatePreparation({archiveBefore,archiveAfter,archiveReopened:normalize(reopened.archive),serverBefore,serverAfter,beforeHint:hintBefore,reducedHint,reopenedHint:reopened.hint});
+    result.preparation.reopenedHint=reopened.hint;result.preparation.archiveUnchanged=true;result.preparation.serverAcceptedSetUnchanged=true;result.preparation.completeThroughReopenMs=Date.now()-preparationBegan;save();
+    let addition='',lastInput=0;
+    for(let i=0;i<1024;i++){
+      const wait=125-(Date.now()-lastInput);if(wait>0)await page.waitForTimeout(wait);lastInput=Date.now();
+      const value=String(i%10);addition+=value;
+      await page.evaluate(async value=>{
+        const g=globalThis as any,w=g.b.workspace;
+        window.dispatchEvent(new InputEvent('beforeinput',{inputType:'insertText',data:value}));
+        const field=w.text({kind:'card',id:g.targetId}),text=field.read().text;
+        await field.input({name:'insert',text:value},{ranges:[{anchor:text.length,head:text.length}],main:0}).accepted;
+        await w.whenDurable();g.b.retrySend();
+      },value);
+      await expect.poll(()=>page.evaluate(async()=>(globalThis as any).b.session.session.sync.status.send.acceptedThrough),{timeout:30000,intervals:[25,50,100]}).toBe(before.prefix+i+1);
+      result.accepted.push({position:before.prefix+i+1,at:Date.now()});
+      if((i+1)%64===0){console.log('Additional accepted positions',i+1);save();}
+    }
+    const full=before.text+addition;
+    expect(await page.evaluate(()=>(globalThis as any).b.workspace.text({kind:'card',id:(globalThis as any).targetId}).read().text)).toBe(full);
+    await page.evaluate(()=>(globalThis as any).b.close());
+    await page.goto('/');await openSaved(page,saved.code,false);await page.getByLabel('Go to date',{exact:true}).fill(account.date);
+    await expect(card(page,'H')).toContainText(account.expected+addition);
+    const archive=await exported(page),day='days/'+account.date+'.md';
+    expect(archive[day]).toContain(full);
+    const clean={...archive,[day]:archive[day]!.replace(full,before.text)};
+    expect(clean).toEqual(account.archive);expect(archive['master.md']).toBe(account.archive['master.md']);
+    expect(Buffer.byteLength(archive['master.md']!)).toBe(13407);
+    await lock(page);account.actors[0]={...saved,storage:await context.storageState({indexedDB:true}),credentials:await credentials(auth)};
+    await context.close();context=undefined;await stop();
+    account.backlog=3072;account.expected+=addition;account.archive=archive;fixture.state=join(out,'state');
+    const destination=join(out,'prepared-fixture');mkdirSync(destination,{mode:0o700});
+    writeFileSync(join(destination,'fixture.json'),JSON.stringify(fixture),{mode:0o600});
+    result.after=before.prefix+1024;result.archive=archiveIdentity(archive);
+    result.guards={exactAdditional1024Accepted:true,fullTargetExact:true,allUnrelatedWritingExact:true,Goals13407:true,onlyOriginalPublisherRefreshed:true};
+    result.fixturePath=join(destination,'fixture.json');result.outcome='passed';save();
+  }catch(error){result.outcome='failed';result.error=String(error);save();throw error;}
+  finally{await context?.close().catch(()=>{});await stop();}
+});

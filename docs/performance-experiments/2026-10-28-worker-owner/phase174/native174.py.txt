@@ -1,0 +1,9 @@
+from pathlib import Path
+import shutil
+old=Path('/private/tmp/done-worker-conversion-20261028/native171');r=old.with_name('native174');r.mkdir();(r/'lab').mkdir()
+for f in(old/'lab').iterdir():
+ if f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules'),target_is_directory=True)
+for name in ['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in[r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))

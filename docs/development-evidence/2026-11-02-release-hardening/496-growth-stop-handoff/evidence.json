@@ -1,0 +1,64 @@
+{
+  "stage6Amendment": true,
+  "gateCredit": false,
+  "appSourceChanged": false,
+  "noFurtherAppRun": true,
+  "phase": 496,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-index-report-496-20261106/496-private-files.json",
+      "sha256": "477b908462c66db8cc35947d5780e4e1bb563bf6ac4e1bc49ccd610e38e562ff",
+      "bytes": 2036
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-496-20261106/496-case-proof.json",
+      "sha256": "13ba2b93871c9d1578b0579c418810807d09833b3cf1ccb76f24362950cca0bd",
+      "bytes": 423
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-496-20261106/496-counter-controls.log",
+      "sha256": "03756ec8562db8fec9e708f3acb9cb3842e8a62c3b1b94745b99d1f97fa21ed2",
+      "bytes": 431
+    },
+    {
+      "localPath": "/private/tmp/done-index-report-496-20261106/496-summary.json",
+      "sha256": "b296ae8bc84325aaaa9c29a90e97f4681542ba13a90c1cd48599d9910e34575e",
+      "bytes": 801
+    }
+  ],
+  "summary": {
+    "phase": 496,
+    "purpose": "Stage6 amendment after growth diagnosis and failed maintained fixture",
+    "priorBlockingJourneysPassed": 36,
+    "priorReportJourneysValid": 9,
+    "priorReportLatencyMissesPreserved": 6,
+    "new3072ReaderJourneysStarted": 0,
+    "new3072ReportAvailable": false,
+    "preparedCounterControlsPassed": 6,
+    "preparedCaseOriginalChecksAndDeadlinesByteExact": true,
+    "newCanonicalAppChanges": false,
+    "guardOrLimitChanges": false,
+    "deadlineChanges": false,
+    "candidateClearedForLanding": false,
+    "stop": "unexplained post-maintenance publication acknowledgment stall",
+    "patches492To495": [
+      "492-fixture-growth-existing-evidence.patch",
+      "493-publication-proposal-cliff.patch",
+      "494-maintained-producer-fixture.patch",
+      "495-maintained-growth-stop.patch"
+    ]
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

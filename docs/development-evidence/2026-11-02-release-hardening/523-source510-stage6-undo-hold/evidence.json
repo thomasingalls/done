@@ -1,0 +1,169 @@
+{
+  "phase": 523,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+      "bytes": 2778
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineReuse.ts",
+      "sha256": "1a54dffcb5108fc332f2ea4ce2dbcd0ca7e2662f11f0f381ca87168f5f674a6b",
+      "bytes": 10493
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source510-stage6-523-20261107/523-private-files.json",
+      "sha256": "dab25f9cdbac8f147147f27ae0c962c36382508d6a1804dd65a2425351421383",
+      "bytes": 656
+    },
+    {
+      "localPath": "/private/tmp/done-source510-stage6-523-20261107/523-journeys.json",
+      "sha256": "dcec63571147c487965d178802fd511480ffd476e8ab664c05e76c6f70b987c3",
+      "bytes": 57818
+    },
+    {
+      "localPath": "/private/tmp/done-source510-stage6-523-20261107/523-summary.json",
+      "sha256": "5a8b7e1847565cd57db0368967fb2586fdfcffb3dbfe79de4c836f1bca1f3523",
+      "bytes": 1870
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-source510-rerun-519-20261107/519-declaration.json",
+      "sha256": "75b640a12be2622b54741a53fa142e7b167d1b05f20045466baeca97537057da",
+      "bytes": 54289
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-record-20261107/520-summary.json",
+      "sha256": "f798911a57479ba0c0d5300743ff54ce1cb2263cc8939558e6be67f744cfbfac",
+      "bytes": 15380
+    },
+    {
+      "localPath": "/private/tmp/done-source510-fairness-521-record-20261107/521-summary.json",
+      "sha256": "e3fe27265d4f16c80e951f54af7abffe20bfa5b9251bd912821bac2281b867f2",
+      "bytes": 15783
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-record-20261107/522-summary.json",
+      "sha256": "06118b38d5b91d839439999c09a7241ac28edd08620d2ec097a89f8c956065d0",
+      "bytes": 11274
+    },
+    {
+      "localPath": "/private/tmp/done-source510-run-control-20261107/amend-stage6-held.py",
+      "sha256": "5c5b1c9bf9b0945eec25707beae7725ded3dcde7d64f8bf293f9d878acdaf685",
+      "bytes": 15746
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/goals-host-handshake.json",
+      "sha256": "d360dbbe61aa42b127598d1742593ef38afdc06045d0f9207b2a7626c519d9bb",
+      "bytes": 277
+    }
+  ],
+  "summary": {
+    "phase": 523,
+    "source": "plain510",
+    "operatorCarriedRuns": 21,
+    "plannedRerunJourneys": 15,
+    "rerunAttempts": 12,
+    "passingReruns": 11,
+    "failedReruns": 1,
+    "unrunReruns": 3,
+    "passingMatrixRows": 32,
+    "matrixAccepted": false,
+    "failedCell": "goals-desktop",
+    "incompleteCell": "goals-mobile4x",
+    "failedPredicate": "frozen Undo immediate text-change assertion",
+    "noiseRetryEligible": false,
+    "newSavedEndProfilesInspected": 15,
+    "postReductionTypingCostUnmeasured": true,
+    "noAppGateLimitFormatChanges": true,
+    "operatorStop": true,
+    "cells": {
+      "fairness": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "goals-desktop": {
+        "pass": 1,
+        "fail": 1,
+        "notRun": 1,
+        "status": "FAIL"
+      },
+      "goals-mobile4x": {
+        "pass": 1,
+        "fail": 0,
+        "notRun": 2,
+        "status": "incomplete"
+      },
+      "grown-normal": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "grown-withheld": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "late-normal": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "late-withheld": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "native-context": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "native-deep": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "native-resumable": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "old-maintenance-normal": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      },
+      "old-maintenance-withheld": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0,
+        "status": "pass"
+      }
+    }
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

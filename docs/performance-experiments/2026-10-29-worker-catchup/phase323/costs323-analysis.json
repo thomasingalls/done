@@ -1,0 +1,1532 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "deepCells": {
+    "eb50-00": {
+      "n": 3,
+      "allFunctional": true,
+      "allColdExact": true,
+      "gateApplied": false,
+      "all30s": null,
+      "medianDrainMs": 45606.900146484375,
+      "drainMs": [
+        44778.699951171875,
+        45684.699951171875,
+        45606.900146484375
+      ],
+      "medianTokens": 481,
+      "tokens": [
+        478,
+        482,
+        481
+      ],
+      "medianIndexCharge": 8571434,
+      "medianAppendedPlainBytes": 1747150,
+      "medianMessages": 7776,
+      "hostMedianRange": [
+        20.61917047033141,
+        22.450999802019396
+      ]
+    },
+    "eb50-01": {
+      "n": 3,
+      "allFunctional": true,
+      "allColdExact": true,
+      "gateApplied": false,
+      "all30s": null,
+      "medianDrainMs": 28979,
+      "drainMs": [
+        28947.300048828125,
+        28979,
+        29903.2001953125
+      ],
+      "medianTokens": 276,
+      "tokens": [
+        276,
+        274,
+        281
+      ],
+      "medianIndexCharge": 14314923,
+      "medianAppendedPlainBytes": 1622878,
+      "medianMessages": 6680,
+      "hostMedianRange": [
+        21.50779817142199,
+        22.402575873753015
+      ]
+    },
+    "eb50-10": {
+      "n": 3,
+      "allFunctional": true,
+      "allColdExact": true,
+      "gateApplied": false,
+      "all30s": null,
+      "medianDrainMs": 33389.39990234375,
+      "drainMs": [
+        33387.89990234375,
+        33755.800048828125,
+        33389.39990234375
+      ],
+      "medianTokens": 479,
+      "tokens": [
+        479,
+        482,
+        476
+      ],
+      "medianIndexCharge": 8571434,
+      "medianAppendedPlainBytes": 1747150,
+      "medianMessages": 7752,
+      "hostMedianRange": [
+        21.271671751811652,
+        22.840119165839127
+      ]
+    },
+    "eb50-11": {
+      "n": 3,
+      "allFunctional": true,
+      "allColdExact": true,
+      "gateApplied": false,
+      "all30s": null,
+      "medianDrainMs": 25252.5,
+      "drainMs": [
+        24798.89990234375,
+        25252.5,
+        25824.89990234375
+      ],
+      "medianTokens": 287,
+      "tokens": [
+        287,
+        288,
+        286
+      ],
+      "medianIndexCharge": 14296060,
+      "medianAppendedPlainBytes": 1623849,
+      "medianMessages": 6892,
+      "hostMedianRange": [
+        21.685549592526343,
+        39.13473250809986
+      ]
+    },
+    "eb0-00": {
+      "n": 3,
+      "allFunctional": true,
+      "allColdExact": true,
+      "gateApplied": true,
+      "all30s": true,
+      "medianDrainMs": 18663.5,
+      "drainMs": [
+        18682.400146484375,
+        18578.199951171875,
+        18663.5
+      ],
+      "medianTokens": 360,
+      "tokens": [
+        360,
+        360,
+        360
+      ],
+      "medianIndexCharge": 8571427,
+      "medianAppendedPlainBytes": 1747150,
+      "medianMessages": 6100,
+      "hostMedianRange": [
+        34.63347862060441,
+        36.05529836184348
+      ]
+    },
+    "eb0-11": {
+      "n": 3,
+      "allFunctional": true,
+      "allColdExact": true,
+      "gateApplied": true,
+      "all30s": true,
+      "medianDrainMs": 20183.699951171875,
+      "drainMs": [
+        20183.699951171875,
+        19921.199951171875,
+        20473.300048828125
+      ],
+      "medianTokens": 276,
+      "tokens": [
+        270,
+        276,
+        276
+      ],
+      "medianIndexCharge": 14197348,
+      "medianAppendedPlainBytes": 1625789,
+      "medianMessages": 6786,
+      "hostMedianRange": [
+        35.05115393523356,
+        37.14572751060976
+      ]
+    }
+  },
+  "liveCells": {
+    "00": {
+      "n": 3,
+      "allMeasuredPredicates": true,
+      "inputP95Ms": [
+        3.636474609375,
+        3.6552734375,
+        3.63037109375
+      ],
+      "peerP95Ms": [
+        766.371826171875,
+        763.618896484375,
+        779.2587890625
+      ],
+      "tokens": [
+        1498,
+        1499,
+        1489
+      ],
+      "quietReads": [
+        [
+          654,
+          158
+        ],
+        [
+          653,
+          156
+        ],
+        [
+          651,
+          154
+        ]
+      ],
+      "repairActivations": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "postDrainKeys": [
+        52,
+        48,
+        52
+      ],
+      "postDrainP95Ms": [
+        699.167724609375,
+        738.69921875,
+        663.676513671875
+      ],
+      "drains": [
+        {
+          "H1": 39084.41650390625,
+          "H2": 41095.712646484375
+        },
+        {
+          "H1": 40632.749755859375,
+          "H2": 41142.864990234375
+        },
+        {
+          "H1": 39085.439697265625,
+          "H2": 40100.747802734375
+        }
+      ]
+    },
+    "11": {
+      "n": 3,
+      "allMeasuredPredicates": true,
+      "inputP95Ms": [
+        4.242919921875,
+        4.272705078125,
+        3.350341796875
+      ],
+      "peerP95Ms": [
+        789.306640625,
+        835.155029296875,
+        781.5498046875
+      ],
+      "tokens": [
+        1284,
+        1287,
+        1290
+      ],
+      "quietReads": [
+        [
+          658,
+          177
+        ],
+        [
+          648,
+          193
+        ],
+        [
+          668,
+          172
+        ]
+      ],
+      "repairActivations": [
+        [
+          0,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "postDrainKeys": [
+        59,
+        56,
+        61
+      ],
+      "postDrainP95Ms": [
+        681.860107421875,
+        716.7041015625,
+        653.8427734375
+      ],
+      "drains": [
+        {
+          "H1": 35559.053466796875,
+          "H2": 39090.8994140625
+        },
+        {
+          "H1": 37096.334716796875,
+          "H2": 41120.17919921875
+        },
+        {
+          "H1": 34561.80908203125,
+          "H2": 37587.021240234375
+        }
+      ]
+    }
+  },
+  "fairness": [
+    {
+      "run": "eb50-r1-E0B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1917.046630859375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1906.04052734375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1720.585205078125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 47,
+          "requestedPositions": 47,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1892.386474609375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 47,
+          "requestedPositions": 47,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1888.164306640625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 9,
+          "requestedPositions": 9,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5586.62548828125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r1-E1B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 864.435546875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 864.435546875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 130,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 130,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1038.652099609375,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 34,
+          "requestedPositions": 34,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 929.34375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 884.142578125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 5,
+          "requestedPositions": 5,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5194.642578125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r1-E1B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 51,
+          "requestedPositions": 51,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2514.762451171875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 50,
+          "requestedPositions": 50,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2514.762451171875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 2444.17724609375,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 47,
+          "requestedPositions": 47,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2725.54638671875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 49,
+          "requestedPositions": 49,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2270.238525390625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 7,
+          "requestedPositions": 7,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5436.7177734375,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r1-E0B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 32,
+          "requestedPositions": 32,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 979.707763671875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1313.858642578125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 130,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 130,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1703.46533203125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1129.842041015625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1064.773681640625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 6,
+          "requestedPositions": 6,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5363.9853515625,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r2-E0B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1172.57177734375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1109.4677734375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 130,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 130,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1342.659912109375,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1124.973876953125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 30,
+          "requestedPositions": 30,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1122.41748046875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 6,
+          "requestedPositions": 6,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5319.586669921875,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r2-E1B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 51,
+          "requestedPositions": 51,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2529.151611328125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 51,
+          "requestedPositions": 51,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2529.151611328125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 2433.267578125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 50,
+          "requestedPositions": 50,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2279.61962890625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2279.61962890625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 7,
+          "requestedPositions": 7,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5422.41357421875,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r2-E1B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 842.114990234375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 842.114990234375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 131,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 131,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 741.1845703125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1011.195556640625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 34,
+          "requestedPositions": 34,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1227.995361328125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 5,
+          "requestedPositions": 5,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5268.385986328125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r2-E0B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 49,
+          "requestedPositions": 49,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1635.623046875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 49,
+          "requestedPositions": 49,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1629.55615234375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1631.505126953125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1826.4287109375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1827.944091796875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 9,
+          "requestedPositions": 9,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5654.245361328125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r3-E1B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 49,
+          "requestedPositions": 49,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2326.40869140625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 49,
+          "requestedPositions": 49,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2326.40869140625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 2380.833251953125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2070.49267578125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 2070.49267578125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 7,
+          "requestedPositions": 7,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5350.658203125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r3-E0B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 49,
+          "requestedPositions": 49,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1704.77685546875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1709.599853515625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1659.08642578125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1690.669189453125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 48,
+          "requestedPositions": 48,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1698.3515625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 9,
+          "requestedPositions": 9,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5541.6083984375,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r3-E0B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 962.981689453125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 967.73291015625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 130,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 130,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 1687.604736328125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 32,
+          "requestedPositions": 32,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1139.12451171875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 32,
+          "requestedPositions": 32,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1087.805908203125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 6,
+          "requestedPositions": 6,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5368.30126953125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb50-r3-E1B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 35,
+          "requestedPositions": 35,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 950.037841796875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 34,
+          "requestedPositions": 34,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 950.037841796875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 131,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 131,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 909.935791015625,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 34,
+          "requestedPositions": 34,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 950.037841796875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 976.662353515625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 5,
+          "requestedPositions": 5,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5308.15380859375,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb0-r1-E0B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 942.99609375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 886.427978515625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 364.739990234375,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 928.55224609375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 21,
+          "requestedPositions": 21,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 914.648193359375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 4,
+          "requestedPositions": 4,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5144.97900390625,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb0-r1-E1B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 807.21337890625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 906.3935546875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 135,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 135,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 555.37939453125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 807.21337890625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 28,
+          "requestedPositions": 28,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 933.142578125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 4,
+          "requestedPositions": 4,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5112.617431640625,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb0-r2-E1B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 805.564697265625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 805.564697265625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 133,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 133,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 577.279541015625,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 31,
+          "requestedPositions": 31,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 805.564697265625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 32,
+          "requestedPositions": 32,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 798.740234375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 4,
+          "requestedPositions": 4,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5163.743408203125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb0-r2-E0B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 932.6494140625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1058.932373046875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 418.2646484375,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 886.12548828125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 891.742431640625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 4,
+          "requestedPositions": 4,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5096.286376953125,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb0-r3-E0B0",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1021.21044921875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 1010.091552734375,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 258,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 258,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 388.612060546875,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 996.83251953125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 22,
+          "requestedPositions": 22,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 997.034423828125,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 4,
+          "requestedPositions": 4,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5097.6103515625,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    },
+    {
+      "run": "eb0-r3-E1B1",
+      "publishers": [
+        {
+          "publisher": "0b72105a5169495c9d0ee449c303de50",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 783.72607421875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "6539fd50d7b811c828195aa258fb9903",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 783.72607421875,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "7bc524d8892706c37bee339148dc4ee6",
+          "reads": 130,
+          "requestedPositions": 1025,
+          "cursors": {
+            "n": 130,
+            "first": 5,
+            "last": 1029
+          },
+          "maxRequestGapMs": 483.82861328125,
+          "classification": "advancing"
+        },
+        {
+          "publisher": "8415f169f863454f2be068b172be03b8",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 819.92041015625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "a446947a56e94f43055db5d0f929548a",
+          "reads": 33,
+          "requestedPositions": 33,
+          "cursors": [
+            1
+          ],
+          "maxRequestGapMs": 819.92041015625,
+          "classification": "stationary"
+        },
+        {
+          "publisher": "e56050c395a32a17991a24d31c4187e5",
+          "reads": 4,
+          "requestedPositions": 4,
+          "cursors": [
+            2
+          ],
+          "maxRequestGapMs": 5250.22265625,
+          "classification": "stationary"
+        }
+      ],
+      "qualification": "HTTP request-start gaps through final commit, not native proof-consumption delay or a guaranteed liveness deadline. Quiet reuse750ms is eligibility, own5000ms and G8 native scheduling unchanged."
+    }
+  ]
+}

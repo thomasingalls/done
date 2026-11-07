@@ -1,0 +1,601 @@
+{
+  "phase": 477,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-fairness.py.gz",
+      "sha256": "b9c21c0344830a2c0581cfc437c023eb08e60293fbc1d774bd308642f7b3b4e3",
+      "bytes": 2195
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/harness/test/account-continuation-lab/continuation.spec.ts.gz",
+      "sha256": "005705853d4743e399a0b9bed58d148a59d79033f7d6c123ba53c22d548711a2",
+      "bytes": 5447
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/477-private-files.json",
+      "sha256": "2ce05fa1d0f555e5feb9d351c342b61939f957776d567b785da27df0d775ec35",
+      "bytes": 595989
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/477-summary.json",
+      "sha256": "8a2b3020ad84949eefc25731963ba124053ce59aae94d1afda20a9c5dd144675",
+      "bytes": 9466
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/477-declaration.json",
+      "sha256": "24e7134e65a0ea864bd9077cb2655aa7e7590b810c9ba674794471a05654440b",
+      "bytes": 1269
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/477-progress.json",
+      "sha256": "4c485bfe7be14f59eefbc44f21b6cf955c834f699e00ec1951e7bf6fa1d75347",
+      "bytes": 8232
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/477-preparation.json",
+      "sha256": "0d4a4ebe3742e2e22cd58cf593f136bd19b0ded0cc8f49e3b3b1a8234e2928e3",
+      "bytes": 1120
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/record477.py",
+      "sha256": "9a9515f5c63f4816c7d9567653c0d1282e86a7a5613a8aab9706d650d4b70594",
+      "bytes": 10590
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/run477.py",
+      "sha256": "244d7ab6ff9cb582458f97e34cde4e0e7ad5d5c0ecb68dcd32c886f496d2c0c7",
+      "bytes": 4366
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-gates-477-20261106/prepare477.py",
+      "sha256": "9310c8cbce1bad86eee0e63ca704f2f6ff811a9bbb3b43917d1079ebfa4d6907",
+      "bytes": 1473
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/child.log",
+      "sha256": "6cdfcb18c5fb8c1cf49b18bb357a03d3f079054215eb37cddd87be09bd51b9d5",
+      "bytes": 839
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/host-load.jsonl",
+      "sha256": "597397007c531efe6439f2ced84a1bc5c59c2964ec32b71abb153218198a308e",
+      "bytes": 59429
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/power-assertions-before.txt",
+      "sha256": "f7c4997861f695becdc4507516f9ad99c6a59bfc2a58d98ed4f953243ee057e0",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/power-log-after.meta.json",
+      "sha256": "fea826ebe2d29714fab5daf4c55079c9ad6fab383dc317bf8749bde2459002ce",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/power-log-after.txt",
+      "sha256": "fd112de5e0c932f22c3906359a3882209b62066803bd0c73ddf2e0a7ee099930",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/power-log-before.meta.json",
+      "sha256": "a724d7b7b734260c0600ccfd9c30fc483509022a5a899978056aa9db0b6aa105",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r1-fairness/run.json",
+      "sha256": "63419413640e61ac485cf35c5208549dee5fa6baecaeca35bd69be9fdc4116c6",
+      "bytes": 1957
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/child.log",
+      "sha256": "52662418276a4b0f2d79105ee1348ce0e666b2817f1c517c61834ab49171fd78",
+      "bytes": 839
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/host-load.jsonl",
+      "sha256": "1fc8725c1eeb5486e488ce94e1ca77ec931132738cac0921b8a7b452e697e11b",
+      "bytes": 56559
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/power-assertions-before.txt",
+      "sha256": "44e141e30c9906bb2475cf139c76684e2e14a0811219ace668857c43676c6c2b",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/power-log-after.meta.json",
+      "sha256": "4d647e2e096f042e746c6ec66aae7ed5a810f2f0b74a1c99621e793df1cb581b",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/power-log-after.txt",
+      "sha256": "92f298a7f4baed28fd11ce9cffbf70459f86a6d4088048ed7db629bf2f27f051",
+      "bytes": 1883
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/power-log-before.meta.json",
+      "sha256": "0505c2329b0505a281fa1b812f95cfc560a4770bd9766b5d3f9a5a5debb2c6fd",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r2-fairness/run.json",
+      "sha256": "fa44de8c855a401f4398286bc2691baa3f2372fe34486cc440a7fef8d16b58dd",
+      "bytes": 1955
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/child.log",
+      "sha256": "ed454d179a2017985c592b659f1df32219c56b9cc63f0a4a81e23c1261846ba5",
+      "bytes": 839
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/host-load.jsonl",
+      "sha256": "a4e16c14b40023d980ee8e8623b419787b6220f56680f409ba19443c1db70116",
+      "bytes": 59655
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/power-assertions-before.txt",
+      "sha256": "8154dba56effb5e58df84a25736037c8705edb8bffcb5af02812278ba9738e71",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/power-log-after.meta.json",
+      "sha256": "6bca63b7cf0bf4618f38f6d0f6922ad24e7c80c6540d5dc6302ccbe0655609e3",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/power-log-after.txt",
+      "sha256": "c66c228f9a860d8924924a42e346c33a334720304047fc079cf2f915420390cc",
+      "bytes": 655
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/power-log-before.meta.json",
+      "sha256": "556791e5d43c93d4b5bfa1f798dc88d27802e47f10b477d62b47781cee632ae5",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/477-r3-fairness/run.json",
+      "sha256": "6567efd46274b8e4852f728de2d332e50bc308a0bf0b02e2f31f8f1b017653c2",
+      "bytes": 1956
+    }
+  ],
+  "summary": {
+    "phase": 477,
+    "rows": [
+      {
+        "name": "r1-fairness",
+        "key": "477-r1-fairness",
+        "replicate": 1,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 37,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12900.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12900.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 94.99296283721924
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 94.99296283721924
+            },
+            {
+              "pid": 86387,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 86457,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 86274,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 15.000497102737427
+            },
+            {
+              "pid": 86307,
+              "process": "Google Chrome",
+              "seconds": 79.99813199043274
+            },
+            {
+              "pid": 22285,
+              "process": "ctkd",
+              "seconds": 5.005230665206909
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "gates": {
+          "all120KeysAtOriginalDeadline": true,
+          "localTypingP95": true,
+          "peerP95": true,
+          "allBackgroundReplay600s": true,
+          "dataGuards": true
+        },
+        "inputP95Ms": 7.60009765625,
+        "peerP95Ms": 841.39990234375,
+        "peerKeys": 120,
+        "guards": {
+          "offlineWriterColdProfile": true,
+          "all120Keys": true,
+          "pendingMarkerDurable": true,
+          "automaticPendingWholeExportConvergence": true,
+          "reverseWriting": true,
+          "undoRedo": true,
+          "offlinePeerColdProfile": true,
+          "noCrossAccountMarkers": true
+        },
+        "membership409s": 0,
+        "grant403s": 0,
+        "quiet429s": 0,
+        "backgroundReplayMs": [
+          122655,
+          120133,
+          121408,
+          122025,
+          122151,
+          7449
+        ],
+        "realHttpEvents": 2363,
+        "cold": [
+          {
+            "label": "fairness-writer-profile",
+            "ms": 2674,
+            "exact": true
+          },
+          {
+            "label": "fairness-peer-profile",
+            "ms": 2359,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "httpRequestDigestsComplete": 2363,
+        "httpCompletedEvents": 2363,
+        "coldExact": true,
+        "failedPredicates": [],
+        "postLoadOriginalRecoveryMs": 598,
+        "postColdPendingConvergenceMs": 837
+      },
+      {
+        "name": "r2-fairness",
+        "key": "477-r2-fairness",
+        "replicate": 2,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 35,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12900.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12900.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 59.9951868057251
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 87868,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 87905,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 87935,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 86274,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 19.998281002044678
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 59.9951868057251
+            },
+            {
+              "pid": 87732,
+              "process": "Google Chrome",
+              "seconds": 39.9968638420105
+            },
+            {
+              "pid": 22285,
+              "process": "ctkd",
+              "seconds": 0
+            },
+            {
+              "pid": 87787,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "gates": {
+          "all120KeysAtOriginalDeadline": true,
+          "localTypingP95": true,
+          "peerP95": true,
+          "allBackgroundReplay600s": true,
+          "dataGuards": true
+        },
+        "inputP95Ms": 6.89990234375,
+        "peerP95Ms": 799.7001953125,
+        "peerKeys": 120,
+        "guards": {
+          "offlineWriterColdProfile": true,
+          "all120Keys": true,
+          "pendingMarkerDurable": true,
+          "automaticPendingWholeExportConvergence": true,
+          "reverseWriting": true,
+          "undoRedo": true,
+          "offlinePeerColdProfile": true,
+          "noCrossAccountMarkers": true
+        },
+        "membership409s": 0,
+        "grant403s": 0,
+        "quiet429s": 0,
+        "backgroundReplayMs": [
+          115930,
+          112909,
+          115931,
+          115426,
+          115928,
+          7993
+        ],
+        "realHttpEvents": 2314,
+        "cold": [
+          {
+            "label": "fairness-writer-profile",
+            "ms": 2679,
+            "exact": true
+          },
+          {
+            "label": "fairness-peer-profile",
+            "ms": 2379,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "httpRequestDigestsComplete": 2314,
+        "httpCompletedEvents": 2314,
+        "coldExact": true,
+        "failedPredicates": [],
+        "postLoadOriginalRecoveryMs": 669,
+        "postColdPendingConvergenceMs": 828
+      },
+      {
+        "name": "r3-fairness",
+        "key": "477-r3-fairness",
+        "replicate": 3,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 37,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12900.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12900.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 94.99458312988281
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 94.99458312988281
+            },
+            {
+              "pid": 89034,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 86274,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 9.999346017837524
+            },
+            {
+              "pid": 88888,
+              "process": "Google Chrome",
+              "seconds": 54.99588108062744
+            },
+            {
+              "pid": 22285,
+              "process": "ctkd",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "gates": {
+          "all120KeysAtOriginalDeadline": true,
+          "localTypingP95": true,
+          "peerP95": true,
+          "allBackgroundReplay600s": true,
+          "dataGuards": true
+        },
+        "inputP95Ms": 8.5,
+        "peerP95Ms": 892.099853515625,
+        "peerKeys": 120,
+        "guards": {
+          "offlineWriterColdProfile": true,
+          "all120Keys": true,
+          "pendingMarkerDurable": true,
+          "automaticPendingWholeExportConvergence": true,
+          "reverseWriting": true,
+          "undoRedo": true,
+          "offlinePeerColdProfile": true,
+          "noCrossAccountMarkers": true
+        },
+        "membership409s": 0,
+        "grant403s": 0,
+        "quiet429s": 0,
+        "backgroundReplayMs": [
+          126052,
+          123583,
+          123585,
+          125043,
+          125093,
+          7467
+        ],
+        "realHttpEvents": 2381,
+        "cold": [
+          {
+            "label": "fairness-writer-profile",
+            "ms": 2664,
+            "exact": true
+          },
+          {
+            "label": "fairness-peer-profile",
+            "ms": 2368,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "httpRequestDigestsComplete": 2381,
+        "httpCompletedEvents": 2381,
+        "coldExact": true,
+        "failedPredicates": [],
+        "postLoadOriginalRecoveryMs": 536,
+        "postColdPendingConvergenceMs": 844
+      }
+    ],
+    "allAccepted": true,
+    "cellAccepted": true,
+    "attempts": 3,
+    "validDeclaredReplicates": 3,
+    "noiseRetries": 0,
+    "functionalFailures": 0,
+    "failedPredicates": 0,
+    "previousSourceMatchedPassedJourneys": 27,
+    "sourceMatchedPassingJourneys": 30,
+    "sourceMatchedDeclaredJourneysCompleted": 30,
+    "remainingBlockingJourneys": 6,
+    "reportOnlyStarted": 0,
+    "qualification": "Original uncorrected host/renderer fairness latency formulas; clock brackets retained. HTTP boundary diagnostics are real completed responses, not service-internal lab events. No assumption that unfinished SSE is a completed response."
+  },
+  "timedMatrixJourneysStarted": 3,
+  "caseAndAnalyzerUnchanged": true,
+  "ordinaryAssetsExact": 125,
+  "workingSourceBindingsVerified": 7,
+  "frozenObserverFilesVerified": 44,
+  "hostHandshake": "operator Ready; keep the host quiet for fairness",
+  "guardWaitDeadlineGateChanges": false,
+  "profiler": false,
+  "appSourceOrShippingChanges": false,
+  "committed": false,
+  "pushed": false,
+  "next": "Separate Goals quiet-host handshake before six original paragraph/lifecycle cells; all report-only journeys and Stage6 remain"
+}

@@ -24,3 +24,29 @@ export function eraseUnretained(previous: unknown, retained?: unknown): void {
     new Uint8Array(bytes.buffer).fill(0);
   });
 }
+
+/** Count retained buffer capacity, including subview backing storage, once per owned graph.
+ * Object/string overhead and process RAM are outside this byte-budget observation. */
+export function ownedByteCapacity(value: unknown): number {
+  const objects = new Set<object>(),
+    buffers = new Set<ArrayBufferLike>();
+  const charge = (buffer: ArrayBufferLike) => {
+    if (buffers.has(buffer)) return 0;
+    buffers.add(buffer);
+    return buffer.byteLength;
+  };
+  const visit = (v: unknown): number => {
+    if (!v || typeof v !== 'object' || objects.has(v)) return 0;
+    objects.add(v);
+    if (ArrayBuffer.isView(v)) return charge(v.buffer);
+    if (
+      v instanceof ArrayBuffer ||
+      (typeof SharedArrayBuffer !== 'undefined' && v instanceof SharedArrayBuffer)
+    )
+      return charge(v);
+    if (v instanceof Map) return [...v].reduce((n, [key, item]) => n + visit(key) + visit(item), 0);
+    if (v instanceof Set) return [...v].reduce((n, item) => n + visit(item), 0);
+    return Object.values(v).reduce<number>((n, item) => n + visit(item), 0);
+  };
+  return visit(value);
+}

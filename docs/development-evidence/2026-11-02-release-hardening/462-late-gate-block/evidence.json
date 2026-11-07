@@ -1,0 +1,736 @@
+{
+  "phase": 462,
+  "date": "2026-11-06",
+  "scope": "three normal and three withheld-hint original late-writing gate journeys",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-case.py.gz",
+      "sha256": "f7c0a36a2b3f57cbe91132b7c2bfc79908ec8a5098b5cbb096cf9a5c102b549f",
+      "bytes": 2021
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase318/apparatus/harness/test/account-continuation-lab/r-late.spec.ts.gz",
+      "sha256": "8240b070cf058cf90160b2f9deb773372da2e14109eeb91cc344da4b855209c3",
+      "bytes": 3855
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-late-462-20261106/462-private-files.json",
+      "sha256": "322204d314c41334a586a248bdc84156d2cbc1f641239f1d4a3c50e5bf405432",
+      "bytes": 1200764
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-gates-461-20261106/461-private-files.json",
+      "sha256": "aaada69f5648d2cc91f097d056217b53b1b457599dcb0add7769bb9c6260b51b",
+      "bytes": 1500852
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-late-462-20261106/462-summary.json",
+      "sha256": "9c47164329b1a040c685721f8372d5f9387fd5e5c5d44022e594230fe9ebd489",
+      "bytes": 7138
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-late-462-20261106/462-declaration.json",
+      "sha256": "a047ae0d40513eb8f5506be3d8dc24c643bd0e580175e9bc96f4ca00088a7a88",
+      "bytes": 2931
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-late-462-20261106/462-roles.json",
+      "sha256": "a9da941737e1fc189e85d56410c220db1d155d9fd04b11ff480179c4de464aa5",
+      "bytes": 373
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-late-462-20261106/462-sidecar-correction.json",
+      "sha256": "33a5e8a29ce3344c253e55da5a85fb9efba751601406f8a8fbb1c43bd732d862",
+      "bytes": 376
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-late-462-20261106/record462.py",
+      "sha256": "aab373037247fc780946b047bfb667603e18e5537e5d68d143279ae2660aa274",
+      "bytes": 10854
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/child.log",
+      "sha256": "fdb479c6d8f17eb94b51d7dcf2aa25e2aa36bc725a95af96068092146b7507aa",
+      "bytes": 378
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/host-load.jsonl",
+      "sha256": "2b8ce1f96d1d178589056de4d82cafd671d05569b8c08ae0510d41ff641242c6",
+      "bytes": 27121
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/power-assertions-before.txt",
+      "sha256": "af9489f4e155035b5ed78e96132ae960d3d14c1563f880da85346efd47a51a74",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/power-log-after.meta.json",
+      "sha256": "31e73819f1e49057bb159b70585e95d9154511c08635895185bec6d05bb404be",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/power-log-after.txt",
+      "sha256": "a8b3b7dfcc9872baf874b1e5948e722dc52057ef1df30c0ea555956c149539ef",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/power-log-before.meta.json",
+      "sha256": "d726888407d47417e84169d15100f305a14c1aca1faa47d0afab310632b988df",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-normal/run.json",
+      "sha256": "dbef2f85e708bd227ee6eed6bfb48f8ba7de07b66c948f7be6ce664babd9531b",
+      "bytes": 1899
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/child.log",
+      "sha256": "6a977130679a27f5dbd86308dbe54c685116a454e2b1f726784e5f6f2d053ebb",
+      "bytes": 378
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/host-load.jsonl",
+      "sha256": "a6f773ed9cae6a389638d14b0973e4c0cfe4dcbe57bf7d9eacf2c425d740d1b0",
+      "bytes": 27020
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/power-assertions-before.txt",
+      "sha256": "2dee278a9b0d297d616e9fdacb096495ca77902a55ba14ada944653b8d07340c",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/power-log-after.meta.json",
+      "sha256": "c2097e80cdef990bcd190669f2e3573ae015f681689439e7d27f4e566c5de709",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/power-log-after.txt",
+      "sha256": "ce49ad69b6ba993b59b4c8f43f49d7e497e65a5e415948e89e517a7c4a06df60",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/power-log-before.meta.json",
+      "sha256": "93ebcb04a482459743ab61c8a5173900a9a62935d8f9d91d56e468a01bbc4fed",
+      "bytes": 477
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r1-late-withheld/run.json",
+      "sha256": "f8b5d17f3071120bb1f5f5f82222f7c5b04981ec11d69dd1f2caf33f1eac81ab",
+      "bytes": 1899
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/child.log",
+      "sha256": "1412f8b74253053aa9aad7fda80a1c7a5131b7b68dbcc68800db6b25963f0a10",
+      "bytes": 378
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/host-load.jsonl",
+      "sha256": "bd5d5f88689be6c7ca78d2bf38ac46943b7e23555e5bb680dace2f02ac2c9672",
+      "bytes": 27027
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/power-assertions-before.txt",
+      "sha256": "60be1eb08a671e4d7dea5f81eb4530fcbffffa30bba054579af6b09723cbf14c",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/power-log-after.meta.json",
+      "sha256": "c139f71054e49b113c9313466b609c88b226a6df360449040ab76dde271506a4",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/power-log-after.txt",
+      "sha256": "35e6b1f6b06c484e40e7d2905927f7f9595b9c402d40e4e3ee7019aab738fd69",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/power-log-before.meta.json",
+      "sha256": "3f8e42dfc5bde667aebddce1ebc340f7d0e34c990f6ab35619a526d45d0a827f",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-normal/run.json",
+      "sha256": "fd581b8fe9e32ea721cba044c01225b2f125f13773b094ae75462321b75f1f2d",
+      "bytes": 1897
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/child.log",
+      "sha256": "9be1c5786bcd9cd5ce2b24cbea89ae2927ac4d95d8dda79c32151514fa2b76a8",
+      "bytes": 378
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/host-load.jsonl",
+      "sha256": "ca32ee6fd3d7a5360228a9dbad913643b7072f820bcef3c721b6a3a5acd49e52",
+      "bytes": 26939
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/power-assertions-before.txt",
+      "sha256": "1da7365514c01a3be21b1297c5e3ad706d787551148a7c19a74574703866e504",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/power-log-after.meta.json",
+      "sha256": "c068818727e199f49db2441935f9720f2d97f85cf4e962d6206745acc350d64b",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/power-log-after.txt",
+      "sha256": "e38a6074e4d55b43fac8d8d1f93401e75358cea031e9a97d2df0f5cd1f941104",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/power-log-before.meta.json",
+      "sha256": "ce13032c53004549242673ce398634404ee53863f918cb703a24e7db87867a53",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r2-late-withheld/run.json",
+      "sha256": "2405826101fe21d78fffe4a264f12322b4f3198fab4d1256bd13c17f0133ec38",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/child.log",
+      "sha256": "5506d25a8eab26d9dc453ca53a3f1e82c21a1acec70b461c31132c4ef7346a79",
+      "bytes": 378
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/host-load.jsonl",
+      "sha256": "eb0d95a4a212b0aba5821fd4780e96432a876593066f43b15cb589a0a2633d2b",
+      "bytes": 27081
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/power-assertions-before.txt",
+      "sha256": "c44aca13577170eae9b0111c44afd2f358d89e77408c0e0e8518792fbc60b878",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/power-log-after.meta.json",
+      "sha256": "c5fa62023d958882612ba03cc66143e6880207f06563da4dc61156abc5fcada0",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/power-log-after.txt",
+      "sha256": "56a6c88d53779d3ca2f7b91fbf9dee236635b0582dde237ea1513d0d4cee1479",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/power-log-before.meta.json",
+      "sha256": "4670cc46ff655856fe2b07c01c6d97b4e6310dc61720184eb8804c5b02c93f60",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-normal/run.json",
+      "sha256": "81589142836d4519f4efb347e40302ed94fd216de05b71e434a25d7005bed8b0",
+      "bytes": 1898
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/child.log",
+      "sha256": "f7e0c70511359b7880ec79ee4630981f8c70428ab0273c2c39b5cd0346236ea5",
+      "bytes": 378
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/host-load.jsonl",
+      "sha256": "ed4e58565ca2f2d908bea47702be95363b6f7d29d50d8c7270ceb9ef81b1d112",
+      "bytes": 26981
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/power-assertions-before.txt",
+      "sha256": "d6bff6bdb768a3f3417f5c081685fb03d4175a4400dec0cfa065d513de34172d",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/power-log-after.meta.json",
+      "sha256": "0d0f92a8c39c288615e7cc9d491f06c4ee467ab2ea4bbde246f1cff5e6ac75bc",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/power-log-after.txt",
+      "sha256": "30cba5e02368db87e7c2a87f4848918de2c54d45ba69505b9e1111d265488c6a",
+      "bytes": 537
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/power-log-before.meta.json",
+      "sha256": "113aec68eb78544970e61560574a86f8f6e4c73299177f3e083b6081321b1b39",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/462-r3-late-withheld/run.json",
+      "sha256": "ec89627b892db8266191078aac157116e69a61ea38945e934ade3519a6a5f416",
+      "bytes": 1902
+    }
+  ],
+  "summary": {
+    "rows": [
+      {
+        "name": "r1-late-normal",
+        "cell": "late-normal",
+        "replicate": 1,
+        "inputP95ms": 3.21240234375,
+        "peerP95ms": 951.816162109375,
+        "markerMs": [
+          693.55615234375,
+          822.330810546875,
+          959.66162109375
+        ],
+        "backlogMs": 53129.47265625,
+        "keysAfterReaderDrain": 40,
+        "keysAfterBothDrains": 23,
+        "bothColdExact": true,
+        "postTypingThroughWrapperFinishMs": 10249.346435546875,
+        "withheldFacts": null,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "postReaderDrainPeerMs": {
+          "n": 40,
+          "p95": 816.54052734375,
+          "max": 823.65234375
+        },
+        "postBothDrainsPeerMs": {
+          "n": 23,
+          "p95": 764.582763671875,
+          "max": 776.844970703125
+        }
+      },
+      {
+        "name": "r1-late-withheld",
+        "cell": "late-withheld",
+        "replicate": 1,
+        "inputP95ms": 3.269775390625,
+        "peerP95ms": 1839.681396484375,
+        "markerMs": [
+          1174.8076171875,
+          936.619873046875,
+          934.70751953125
+        ],
+        "backlogMs": 49081.767333984375,
+        "keysAfterReaderDrain": 62,
+        "keysAfterBothDrains": 31,
+        "bothColdExact": true,
+        "postTypingThroughWrapperFinishMs": 11122.09521484375,
+        "withheldFacts": {
+          "ready": 1,
+          "hint": 0,
+          "content": 119,
+          "heartbeat": 6,
+          "withheld": 119
+        },
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "postReaderDrainPeerMs": {
+          "n": 62,
+          "p95": 1900.212890625,
+          "max": 1996.516357421875
+        },
+        "postBothDrainsPeerMs": {
+          "n": 31,
+          "p95": 1937.01318359375,
+          "max": 1996.516357421875
+        }
+      },
+      {
+        "name": "r2-late-normal",
+        "cell": "late-normal",
+        "replicate": 2,
+        "inputP95ms": 3.62353515625,
+        "peerP95ms": 989.127685546875,
+        "markerMs": [
+          743.207763671875,
+          853.906494140625,
+          1111.0029296875
+        ],
+        "backlogMs": 53666.764892578125,
+        "keysAfterReaderDrain": 38,
+        "keysAfterBothDrains": 22,
+        "bothColdExact": true,
+        "postTypingThroughWrapperFinishMs": 10235.933349609375,
+        "withheldFacts": null,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "postReaderDrainPeerMs": {
+          "n": 38,
+          "p95": 802.362548828125,
+          "max": 841.919189453125
+        },
+        "postBothDrainsPeerMs": {
+          "n": 22,
+          "p95": 751.23779296875,
+          "max": 798.170166015625
+        }
+      },
+      {
+        "name": "r2-late-withheld",
+        "cell": "late-withheld",
+        "replicate": 2,
+        "inputP95ms": 3.5771484375,
+        "peerP95ms": 1801.650634765625,
+        "markerMs": [
+          1028.786376953125,
+          656.367919921875,
+          1267.965576171875
+        ],
+        "backlogMs": 49153.426025390625,
+        "keysAfterReaderDrain": 62,
+        "keysAfterBothDrains": 31,
+        "bothColdExact": true,
+        "postTypingThroughWrapperFinishMs": 10331.445068359375,
+        "withheldFacts": {
+          "ready": 1,
+          "hint": 0,
+          "content": 118,
+          "heartbeat": 6,
+          "withheld": 118
+        },
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "postReaderDrainPeerMs": {
+          "n": 62,
+          "p95": 1904.00927734375,
+          "max": 2039.32080078125
+        },
+        "postBothDrainsPeerMs": {
+          "n": 31,
+          "p95": 1904.00927734375,
+          "max": 2008.461181640625
+        }
+      },
+      {
+        "name": "r3-late-normal",
+        "cell": "late-normal",
+        "replicate": 3,
+        "inputP95ms": 3.560791015625,
+        "peerP95ms": 983.123291015625,
+        "markerMs": [
+          613.280029296875,
+          784.4345703125,
+          939.50439453125
+        ],
+        "backlogMs": 54674.7177734375,
+        "keysAfterReaderDrain": 41,
+        "keysAfterBothDrains": 20,
+        "bothColdExact": true,
+        "postTypingThroughWrapperFinishMs": 10250.904541015625,
+        "withheldFacts": null,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "postReaderDrainPeerMs": {
+          "n": 41,
+          "p95": 920.421142578125,
+          "max": 967.21630859375
+        },
+        "postBothDrainsPeerMs": {
+          "n": 20,
+          "p95": 789.943115234375,
+          "max": 874.65576171875
+        }
+      },
+      {
+        "name": "r3-late-withheld",
+        "cell": "late-withheld",
+        "replicate": 3,
+        "inputP95ms": 3.359619140625,
+        "peerP95ms": 1876.719970703125,
+        "markerMs": [
+          1308.341064453125,
+          812.599609375,
+          1074.52099609375
+        ],
+        "backlogMs": 48589.943115234375,
+        "keysAfterReaderDrain": 62,
+        "keysAfterBothDrains": 32,
+        "bothColdExact": true,
+        "postTypingThroughWrapperFinishMs": 10220.158935546875,
+        "withheldFacts": {
+          "ready": 1,
+          "hint": 0,
+          "content": 118,
+          "heartbeat": 6,
+          "withheld": 118
+        },
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "postReaderDrainPeerMs": {
+          "n": 62,
+          "p95": 1914.017822265625,
+          "max": 2126.808837890625
+        },
+        "postBothDrainsPeerMs": {
+          "n": 32,
+          "p95": 1891.6455078125,
+          "max": 1914.017822265625
+        }
+      }
+    ],
+    "appJourneysPassed": 6,
+    "cellsPassed": 2,
+    "stage5BlockingCompleted": 15,
+    "remainingBlocking": 21,
+    "reportOnlyStarted": 0,
+    "noiseReruns": 0,
+    "coldTimingQualification": "Each original late cold stage starts after typing ends and finishes before wrapper exit. Entire post-typing remainder, including delivery/captures/exports/both cold stages/API cleanup, is10.220\u201311.122s (+2ms rounding allowance); therefore each cold stage is bounded below15s without changing or inserting a wait/assertion. No individual cold duration is claimed."
+  },
+  "declaration": {
+    "phase": 462,
+    "declaredAt": 1793958854.792288,
+    "scope": "next six original blocking Stage5 late cells; no new experiment",
+    "plan": [
+      {
+        "name": "r1-late-normal",
+        "replicate": 1,
+        "cell": "late-normal",
+        "withhold": false,
+        "variant": "hardened",
+        "mode": "late",
+        "testMs": 900000,
+        "wrapperSeconds": 960,
+        "retries": 0
+      },
+      {
+        "name": "r1-late-withheld",
+        "replicate": 1,
+        "cell": "late-withheld",
+        "withhold": true,
+        "variant": "hardened",
+        "mode": "late",
+        "testMs": 900000,
+        "wrapperSeconds": 960,
+        "retries": 0
+      },
+      {
+        "name": "r2-late-normal",
+        "replicate": 2,
+        "cell": "late-normal",
+        "withhold": false,
+        "variant": "hardened",
+        "mode": "late",
+        "testMs": 900000,
+        "wrapperSeconds": 960,
+        "retries": 0
+      },
+      {
+        "name": "r2-late-withheld",
+        "replicate": 2,
+        "cell": "late-withheld",
+        "withhold": true,
+        "variant": "hardened",
+        "mode": "late",
+        "testMs": 900000,
+        "wrapperSeconds": 960,
+        "retries": 0
+      },
+      {
+        "name": "r3-late-normal",
+        "replicate": 3,
+        "cell": "late-normal",
+        "withhold": false,
+        "variant": "hardened",
+        "mode": "late",
+        "testMs": 900000,
+        "wrapperSeconds": 960,
+        "retries": 0
+      },
+      {
+        "name": "r3-late-withheld",
+        "replicate": 3,
+        "cell": "late-withheld",
+        "withhold": true,
+        "variant": "hardened",
+        "mode": "late",
+        "testMs": 900000,
+        "wrapperSeconds": 960,
+        "retries": 0
+      }
+    ],
+    "fixture": {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/private-fixture/fixture.json",
+      "sha256": "e30f624252f84354905d52f88bb10e30bdd7e556c485f9194cf24db25e36680d"
+    },
+    "served": "/private/tmp/done-stage5-gates-461-20261106/served",
+    "ordinaryShippingProof": "/private/tmp/done-stage5-gates-461-20261106/461-served-assets.json",
+    "specSha256": "691af28c44021d607fed0b846e90bc817a5a0868db16e78a63727955620eab83",
+    "configSha256": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+    "originalMetricAnalyzer": {
+      "source": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-case.py.gz",
+      "rawSha256": "3686b66f22b86cff4ff97ac720160cfdc5c8a8225984c06544d53e5764f590db"
+    },
+    "gates": "original analyze-case late branch unchanged:120keys,16ms local,2.5s peer/every marker,600s backlog,30s final delivery, archive/cold/fault guards; original15s openSaved deadline stays",
+    "labCounters": "unavailable and never substituted; not part of original late gate analyzer",
+    "hostHandshake": {
+      "operator": "Ready; keep the host quiet for the block",
+      "recordedAt": 1793958972.2105339
+    },
+    "noiseRule": "failed replicate: same non-testPID>100%for>10s or swap growth =>one rerun; keep both",
+    "appRunsStarted": 0
+  },
+  "originalLateAnalyzerByteExact": true,
+  "guardWaitAndDeadlineASTsExact": "phase461 static proof; only setup/module/observation bindings differ",
+  "clockMethod": "original conservative clock-bracket upper latencies, nearest-rank p95 per journey; no pooling keys as independent replicates",
+  "withholding": "actual isolated API boundary;118/119content notifications withheld; ready/heartbeat still pass",
+  "postDrainExposure": "20\u201332 keys after both drains in every run; report-only post-drain p95 remains below2.5s",
+  "appSourceOrShippingChanges": false,
+  "labCounters": "absent; no substituted values or acceptance credit",
+  "previousFrozenPrivateFilesStillExact": 5656,
+  "noiseReruns": 0,
+  "noiseRule": "all six complete runs pass, so no failed latency replicate requires the predefined noise rerun",
+  "privateManifestFiles": 4230,
+  "timedMatrixJourneysStarted": 6,
+  "stage5BlockingCompleted": 15,
+  "stage5BlockingRemaining": 21,
+  "reportOnlyStarted": 0,
+  "patchSidecarCorrection": "phase461 canonical repo evidence already says9completed; private generic serializer hardcoded0. Correct sidecar/registry to9, keep old sidecar, leave frozen patch and tree byte-identical; future serializer reads the phase evidence instead.",
+  "committed": false,
+  "pushed": false
+}

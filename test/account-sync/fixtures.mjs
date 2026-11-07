@@ -1,10 +1,18 @@
 import { build } from 'vite';
 import { baselineReadProbe } from '../local-baseline/read-probe.mjs';
+import { historicalBundle } from '../../scripts/lib/historical-bundle.mjs';
 import { resolve } from 'node:path';
-import { execFileSync } from 'node:child_process';
 import { native as base, args, waitPredicate } from '../account-receive-driver/fixtures.mjs';
 export * from '../account-receive-driver/fixtures.mjs';
 export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE) {
+  if (control === 'r01-old-writer')
+    return historicalBundle(
+      '4bb09042f37f68ec31f0d82587af608f599eb096',
+      `
+export { openAccountCaptureSession, openOwnedCapturedAccountWorkspace } from './src/crdt/accountCapture';
+export { openOwnedAccountSpoolWorkspace, openOwnedAccountDeliveryWorkspace } from './src/crdt/accountSpool';
+`,
+    );
   let hits = 0;
   const targets = {
     'retention-owner': [
@@ -35,8 +43,8 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
     ],
     'verification-order': [
       '/src/crdt/accountReceive.ts',
-      'async validate(task, records, route, counter, view, baseline) {',
-      `async validate(task, records, route, counter, view, baseline) {
+      'async validate(task, records, route, counter, view, baseline, localRetentionRevision) {',
+      `async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
         await globalThis.verificationOrderProbe?.();`,
     ],
     classification: [
@@ -139,28 +147,6 @@ export async function syncBundle(control, mode = process.env.ACCOUNT_LEDGER_MODE
             name: 'sync-control',
             enforce: 'pre',
             transform(code, id) {
-              if (
-                control === 'r01-old-writer' &&
-                [
-                  'account-protocol/envelope.ts',
-                  'src/crdt/accountEnvelopePreparation.ts',
-                  'src/crdt/accountDelivery.ts',
-                ].some((p) => id.endsWith('/' + p))
-              ) {
-                hits++;
-                if (id.endsWith('/account-protocol/envelope.ts')) {
-                  const anchor = 'plaintext = admittedBody(h, body);';
-                  if (code.split(anchor).length !== 2)
-                    throw Error('Missing historical sealer anchor');
-                  return code.replace(anchor, 'plaintext = encodeEnvelopeBody(body);');
-                }
-                const path = id.slice(resolve('.').length + 1);
-                return execFileSync(
-                  'git',
-                  ['show', '4bb09042f37f68ec31f0d82587af608f599eb096:' + path],
-                  { encoding: 'utf8', timeout: 5000, maxBuffer: 2 * 1024 * 1024 },
-                );
-              }
               if (
                 control === 'r01-no-preflight' &&
                 id.endsWith('/src/crdt/accountEnvelopePreparation.ts')

@@ -1,0 +1,19 @@
+{
+  "replay": "/private/tmp/done-matched323-replay-qracc1a6",
+  "mismatches": [
+    {
+      "name": "docs/performance-experiments/2026-10-29-worker-catchup/phase323/README.md",
+      "workBytes": 19481,
+      "repoBytes": 19482,
+      "workSha": "f0155b8fcf2911ea5975a042f1dc9981e45ab29382dd025204fd324a397eb358",
+      "repoSha": "e4fcaea26ecb059b0c37c8e77f39df59d53c7c2908eb311915177560650cf416",
+      "repoCRLF": 0,
+      "workCRLF": 0
+    }
+  ],
+  "unregisteredPatch": "/private/tmp/done-idle-read-ahead-lab-20261101/unregistered-freeze-attempt1.patch",
+  "patchSha256": "a7f64ef382dccfd597e444390f0fc3ba7246309eb763de68bb0a316037d7fc07",
+  "registryAdvanced": false,
+  "cause": "Global Git apply whitespace handling removes one new blank line at README EOF",
+  "allOtherCumulativeFilesMatched": true
+}

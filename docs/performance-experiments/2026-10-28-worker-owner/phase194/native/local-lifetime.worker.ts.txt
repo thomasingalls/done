@@ -1,0 +1,12 @@
+import {openLocalWorkerLifetime} from './src/crdt/localWorkerLifetime.ts';
+let root;const held=new Map();const fences=new Map();let sequence=0;
+self.onmessage=async e=>{const {id,method,value}=e.data;try{let result;
+ if(method==='open'){root=await openLocalWorkerLifetime(value);result=true}
+ if(method==='phase'){result=await root.request(value,{mode:'shared'},lock=>({name:lock.name,mode:lock.mode}));}
+ if(method==='hold'){const n=++sequence;let release;const wait=new Promise(r=>release=r);const started=Promise.withResolvers();const work=root.request(value,{mode:'shared'},async lock=>{started.resolve({name:lock.name,mode:lock.mode});await wait});held.set(n,{work,release});root.beforeRelease(async()=>{release();await work});result={id:n,lock:await started.promise}}
+ if(method==='fenceStart'){const n=++sequence;let release;const wait=new Promise(r=>release=r),entered=Promise.withResolvers();const work=root.withSoleWriterFence(async()=>{entered.resolve();await wait;return true});void work.catch(()=>{});fences.set(n,{release,work});await Promise.race([entered.promise,work]);result=n}
+ if(method==='fenceFinish'){const f=fences.get(value);f.release();result=await f.work;fences.delete(value)}
+ if(method==='failCleanup'){root.beforeRelease(async()=>{throw Error('deliberate cleanup failure')});result=true}
+ if(method==='close'){await root.close();result=true}
+ self.postMessage({id,ok:true,result});
+ }catch(error){self.postMessage({id,ok:false,error:String(error)})}};

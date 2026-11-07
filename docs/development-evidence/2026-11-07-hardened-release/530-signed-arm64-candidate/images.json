@@ -1,0 +1,39 @@
+{
+  "platform": "linux/arm64",
+  "images": [
+    {
+      "writer": "0",
+      "localTag": "done-reader-rollback:759890ca",
+      "indexDigest": "sha256:b81f99c14455ef689464f7ce57f27703e5230f2e7ebfd12a7953a79aa05f6dc4",
+      "runtimeManifestDigest": "sha256:e663e10ad7ceb6fb7289e5cb8bcbb5c2cfc24e183957776c868fbd8c1a9272d5",
+      "runtimeConfigDigest": "sha256:4dafc2a321c24d210f90cb8fbd0cdb35d5fc4caeb848f57bca613fe4d3444659",
+      "runtimeLayersVerified": 32,
+      "archive": "/private/tmp/done-release-20261107/530-writer-0-image.tar",
+      "archiveBytes": 85625856,
+      "archiveSha256": "44857ae7e9fa5630d01e62129582d9a63aaeedb745ea508aa04497f64e906f7e",
+      "source": "759890ca09da0aba9d822a848caa5b26e77d125d",
+      "contextDigest": "d7e471c2ea5e2993c0ff8c3a753d9067f452c67e3633d3f7d4d4981987b1bd6c",
+      "frontendFiles": 125,
+      "packagedServerSources": 123,
+      "publicationTag": "ghcr.io/thomasingalls/done:759890ca-reader",
+      "published": false
+    },
+    {
+      "writer": "1",
+      "localTag": "done-public:759890ca",
+      "indexDigest": "sha256:3914281adde5d49ab9d709c7ce22e4cb4ccb78f4418159b535ba25dc637f2c8b",
+      "runtimeManifestDigest": "sha256:581f9d68ec086585c80c90ad0de3ae3c303a3e6d2e9b72d3e6b4db0c7158ec10",
+      "runtimeConfigDigest": "sha256:30b4285f688bd6e17d7c5c06a078c9a2d07c93799a0194959a288c789e5c5445",
+      "runtimeLayersVerified": 32,
+      "archive": "/private/tmp/done-release-20261107/530-writer-1-image.tar",
+      "archiveBytes": 85625856,
+      "archiveSha256": "920c8570b4eeec4f08f513654baeb652e0e3a8c8dddf2478ffa1bbdb0a00ce18",
+      "source": "759890ca09da0aba9d822a848caa5b26e77d125d",
+      "contextDigest": "d7e471c2ea5e2993c0ff8c3a753d9067f452c67e3633d3f7d4d4981987b1bd6c",
+      "frontendFiles": 125,
+      "packagedServerSources": 123,
+      "publicationTag": "ghcr.io/thomasingalls/done:759890ca",
+      "published": false
+    }
+  ]
+}

@@ -1,0 +1,917 @@
+{
+  "phase": 474,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "sha256": "8df457606b6b980c68e75c8836522e46831c92dff7dfeca5e64855ebfe817289",
+      "bytes": 28474
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/storage-conformance/observe.mjs",
+      "sha256": "4e8ea5450223e203c77fe5b1a77c94797b34505f7dda6fec87a82dfcbdba7457",
+      "bytes": 1457
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/474-private-files.json",
+      "sha256": "d1b5fff8af76d089e8278ddb4a212ea090b058b3986599bf4370450236631233",
+      "bytes": 825902
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/474-summary.json",
+      "sha256": "0f48fa699b23f798f413216a096ab448f8909ca56890059771cf5674f4b619ab",
+      "bytes": 9041
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/474-declaration.json",
+      "sha256": "9e8ebf347f8c1436503c5bce8818c779a0da330ac1521b90f37b38be8d42abf3",
+      "bytes": 3589
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/474-progress.json",
+      "sha256": "03773ce18144930699dd24043ecc0d0b0c2a042fe7d1f35505e5104d0cc8ef4c",
+      "bytes": 6152
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/474-preparation.json",
+      "sha256": "4317162ff00d2fd1b4fce3d30aa1a766abc69c5ddd705191e7c34424caee615b",
+      "bytes": 3238
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/run474.py",
+      "sha256": "f4f88c34b86f675311ba2f4c8b1fde5ea0128264b87487b29028678c7342e9c7",
+      "bytes": 3380
+    },
+    {
+      "localPath": "/private/tmp/done-native-gates-474-20261106/record474.py",
+      "sha256": "eef236a3dfe0dfec2611dc37b0d7685609a65d16396703c136305f6d495569e7",
+      "bytes": 9807
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/child.log",
+      "sha256": "708ca3f9699a4036e61fa57e864571ecc39c48cc0cc0cc9fa6bdbfa09b54e8c2",
+      "bytes": 408
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/host-load.jsonl",
+      "sha256": "8033dff0c58c06363a4c7217414b3e69e88a0ddf2cbc345c9e5bba1a73c65a4c",
+      "bytes": 12337
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/power-assertions-before.txt",
+      "sha256": "6ca438e1539e18a271d84815a959756b34be967c9ccd45cdfc0079be6d00b7d0",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/power-log-after.meta.json",
+      "sha256": "4b089aeb66a1ae54f8c639c78f0759d4fb88899d6c536b2539c2aa5ca3d4200e",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/power-log-after.txt",
+      "sha256": "4e8c4b949841f05754ef367ea33919777651cf27d5a3a8150112af441060c0b2",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/power-log-before.meta.json",
+      "sha256": "9dd9e9a75b81c26f5aeecb82f13c93cd8c38b5298cf74cfde17ee853bbd3e5c3",
+      "bytes": 478
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-context/run.json",
+      "sha256": "d7fa5b60792ead93920f62fbda3653ac80508268b2d0097faa6b30f612df9b80",
+      "bytes": 2128
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/child.log",
+      "sha256": "310dead166155f1718aec5d560ef982b8ce8dbb64a3bde466ea61b0d9c0ca62c",
+      "bytes": 418
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/host-load.jsonl",
+      "sha256": "761e799ae26969186b2324051770a2a4b484c4be736636ecd1bc46911bc5e892",
+      "bytes": 13734
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/power-assertions-before.txt",
+      "sha256": "a1804d510030adba1699675d520885aa0625653142dd8ad32efebf87a46d6e3a",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/power-log-after.meta.json",
+      "sha256": "320fa7065825cc8ab45c920e88aa3d4ead23916da1177559f47494442e5bafdc",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/power-log-after.txt",
+      "sha256": "14f55c6e178c5880eb76b87cbdd54e8acef69d614ae44cf572d0ac5d75ad8bae",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/power-log-before.meta.json",
+      "sha256": "0cf8956883aad3846d3b6f62fb42271c22425303f5daf51c80d0d9ad7c525893",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-resumable/run.json",
+      "sha256": "9c2f2a5950d7718441725ebb98bbbdf885baa81499c3b2fb2dedf60c8d1c7881",
+      "bytes": 2150
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/child.log",
+      "sha256": "e14440858c10de06fe5393fe72b9c65ac7c3ed6d5ebaab1fe83362fa3a10f682",
+      "bytes": 395
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/host-load.jsonl",
+      "sha256": "7725b55ee983e82af5d023141b96150f6f230d7d9f206f06c3bb67e1de6a1472",
+      "bytes": 12426
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/power-assertions-before.txt",
+      "sha256": "f15cfe61938b9ca56472238bc46e327a0352aa48df142c04b059809bfc2ee678",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/power-log-after.meta.json",
+      "sha256": "39fd2422ac5f1f5a2c467d6d7458cae1aff7d5349648999079ec46e52e898f2e",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/power-log-after.txt",
+      "sha256": "e7ba3976bce7acc89b1aaa3e9a535a439294251fac1bf7eb3a9c88d7a2470828",
+      "bytes": 737
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/power-log-before.meta.json",
+      "sha256": "291def89c1a39e0d1b689708adea1bba65441549d656dc8d92774f4151c6688b",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r1-native-deep/run.json",
+      "sha256": "675a30f005e72ebab04388961cb5e8060bbf392c3e2018595cd4fcb446f44279",
+      "bytes": 2095
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/child.log",
+      "sha256": "9b7bb3a8f398ecc9dabc21b5b8ee283d9f706ecdb9d694f646c5ca07d44c279a",
+      "bytes": 408
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/host-load.jsonl",
+      "sha256": "ffd5bdeb08dec396cbc801022fafa147f3d526bdc8de83626682923b1dda3197",
+      "bytes": 10782
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/power-assertions-before.txt",
+      "sha256": "459908a97a9cda58566325215810d764df93f63a45cf2980b426dd0e9e72064f",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/power-log-after.meta.json",
+      "sha256": "8017e09e4840a1887762af0d833b3b0e0547d135f7f9977a8caad8408a336d5d",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/power-log-after.txt",
+      "sha256": "2d58b85acceb8829d659cebde048293a4c943bf2ad913825ea2608c7a23818a3",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/power-log-before.meta.json",
+      "sha256": "f68cbab6dccca4aa683a1ea47b021c766a2572a888bc98d2a0d9fb46d5de551a",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-context/run.json",
+      "sha256": "c97d82a9a46218520fb561579596f43d1a4870fa50dce1d5578dc6d6b930656c",
+      "bytes": 2127
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/child.log",
+      "sha256": "806cc6535a8a50398397f439312890e2f5c2574999476c286a30730514355e44",
+      "bytes": 418
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/host-load.jsonl",
+      "sha256": "5e034002c20e8fbbb416f330ee8cbbc04dafe67965e9c82b89d5d8aec35fbaac",
+      "bytes": 13916
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/power-assertions-before.txt",
+      "sha256": "5b618b796d324a8f44a5c011576abd0dcdc4c00e677fcb1cdf425ce8c68ce004",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/power-log-after.meta.json",
+      "sha256": "e824ca20d2599b65dbd0af7f31431e6b4fb2a78dacf4b878415fe926c40d0c31",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/power-log-after.txt",
+      "sha256": "a1588733d6fbafca9adad4bd7eb055cc4d02007830e5999e172bef05510bd5e1",
+      "bytes": 1961
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/power-log-before.meta.json",
+      "sha256": "43b205255dadf144e3f892e8b5aec554a0363c75d4065af5a953ce0cd6ee5dd1",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-resumable/run.json",
+      "sha256": "25e72d98abf17632924d4fe7fe4036ede83a1bc71cdde0e9eb03f1f1a96d80e4",
+      "bytes": 2151
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/child.log",
+      "sha256": "d0c6c88ac19fead04bd0f15f1c14a345e89f43452da5eb09f030bb2d82f92159",
+      "bytes": 395
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/host-load.jsonl",
+      "sha256": "eaa5ac401610cdfa013e0b92074c7557fd633ba5a812de6d98991ee0f6893c11",
+      "bytes": 10841
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/power-assertions-before.txt",
+      "sha256": "b60a6cf7ff7cfa56a4644ec2e0df1ce09bc16233f2fbe4bf9a649ecaa82e2236",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/power-log-after.meta.json",
+      "sha256": "7334bffe3fb85b4b246c88c6a6d1a69f5b5b673956b5b2385742a66abd472651",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/power-log-after.txt",
+      "sha256": "e6fa10ae2fa32bae3d9477969b6b488efa78b91bf4840bf96a62f48de5336e1d",
+      "bytes": 459
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/power-log-before.meta.json",
+      "sha256": "088c2c931db917fe478dc740aa90a6326933bb984cdda78fa5d6179ced046073",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r2-native-deep/run.json",
+      "sha256": "8472e5d77c003c4416e092e50ad02b27dd2257884bb2b8113116f63e6f7202b6",
+      "bytes": 2095
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/child.log",
+      "sha256": "04442a9ecd5c9ed5c24be2ed58dcc18e8755c84b436089d62440333703e51182",
+      "bytes": 408
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/host-load.jsonl",
+      "sha256": "252b32f1d2927139f89bbd0e54b3186ab4fa4e95477797ec78367e0364ea210c",
+      "bytes": 10805
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/power-assertions-before.txt",
+      "sha256": "81bd2f1fde88b23d433450365b6357cbbe2ce33c953c42e035ba875bcbecbaa6",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/power-log-after.meta.json",
+      "sha256": "9d4ed40c894f70298435398383ecac61a28462faf83fca81417ed1caa925f969",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/power-log-after.txt",
+      "sha256": "15a8f097defe4d1d8676ad1dc3cd263e938b7e4b69d70d366b81ee2708fa3402",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/power-log-before.meta.json",
+      "sha256": "a827a2222ed04b694aed210e635304800ce47136d122fe79c1ffe53d78d806ea",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-context/run.json",
+      "sha256": "2f2f5baa6830d3121a404baaedfb3b16fefaeadad2186459cd56ad9e0a6a2fda",
+      "bytes": 2129
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/child.log",
+      "sha256": "4307de6df9bca9cf98fa8883f47a709c29dc525b47e65daa59d89646416fe8bd",
+      "bytes": 418
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/host-load.jsonl",
+      "sha256": "badc73e6d6937e6e72a3ee268cee17d80e9a04d05be2572b7f0a39b0c70155bf",
+      "bytes": 13935
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/power-assertions-before.txt",
+      "sha256": "b02b86ea435f0ca49f6e40ea7e409dbaabbb9220207fae92035730721f5cae57",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/power-log-after.meta.json",
+      "sha256": "925e1bbb4087b3e0334adf65285e02832e25f4b3761aa86a35f01fe4a72ad87a",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/power-log-after.txt",
+      "sha256": "50695285155dbfe8c3abe73ccbf0f8ea0adb8fb33147f7075260f5fa0b914ed4",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/power-log-before.meta.json",
+      "sha256": "c559bf750d7d0f4fbf548c32314b058c4f8aa97ec1717a52137c456bbf99161b",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-resumable/run.json",
+      "sha256": "c64105fde175e73992fcf8e7f238afcf4811593d5f728c157315932879d4fbf4",
+      "bytes": 2150
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/child.log",
+      "sha256": "4959f5fdf808a3915b16506ce7e534eec5af4ff115137e002140960774735e36",
+      "bytes": 395
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/host-load.jsonl",
+      "sha256": "62c8d1ac9a2c4379dc85fc33342ab8c4f3c3b55bf7d6f7fab91be83e58763a94",
+      "bytes": 12436
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/power-assertions-before.txt",
+      "sha256": "280e257830b77c7d1a35969121a74a060a6a60dc011547122ff34ca1afa1c164",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/power-log-after.meta.json",
+      "sha256": "5d458ff6df9e74f313bfd128f093189cd09f0a2ca405c09592d5e8e86e2fbe37",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/power-log-after.txt",
+      "sha256": "47b3fee40248f1aab93a3a324ae4e437f8db975d2646afe061e54716ea234ecb",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/power-log-before.meta.json",
+      "sha256": "cca5a23563178cab5eed642de53819e39a0b4cd9662d8bf5385df6c9e9d47456",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/474-r3-native-deep/run.json",
+      "sha256": "8489cd047cca60d54cec403d219b36f8ff08ee8ac94131e9823533e5ca834d1d",
+      "bytes": 2096
+    }
+  ],
+  "summary": {
+    "phase": 474,
+    "cells": {
+      "native-context": {
+        "replicates": 3,
+        "accepted": true
+      },
+      "native-resumable": {
+        "replicates": 3,
+        "accepted": true
+      },
+      "native-deep": {
+        "replicates": 3,
+        "accepted": true
+      }
+    },
+    "rows": [
+      {
+        "name": "474-r1-native-context",
+        "replicate": 1,
+        "cell": "native-context",
+        "wrapperExit": 0,
+        "directory": "composed-context",
+        "outcome": "passed",
+        "guards": {
+          "actualNativeEraAndWindowRebindReadable": true,
+          "unchangedShippingReaderExact": true
+        },
+        "catchupWaitMs": null,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "public-shipping",
+            "ms": 9764,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r1-native-resumable",
+        "replicate": 1,
+        "cell": "native-resumable",
+        "wrapperExit": 0,
+        "directory": "worker-resumable-history",
+        "outcome": "passed",
+        "guards": {
+          "networkSchedulingParkedForLocalOnlyWork": true,
+          "savedSliceColdReopened": true,
+          "realHistoryRemoved": true,
+          "originalInputAndUndoAfterReduction": true,
+          "unchangedShippingReaderExact": true
+        },
+        "catchupWaitMs": null,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "saved-slice-reopen",
+            "ms": 8052,
+            "exact": true
+          },
+          {
+            "label": "public-shipping",
+            "ms": 2358,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r1-native-deep",
+        "replicate": 1,
+        "cell": "native-deep",
+        "wrapperExit": 0,
+        "directory": "composed-receive-1",
+        "outcome": "passed",
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "catchupWaitMs": 21851.720947265625,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1898,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r2-native-context",
+        "replicate": 2,
+        "cell": "native-context",
+        "wrapperExit": 0,
+        "directory": "composed-context",
+        "outcome": "passed",
+        "guards": {
+          "actualNativeEraAndWindowRebindReadable": true,
+          "unchangedShippingReaderExact": true
+        },
+        "catchupWaitMs": null,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "public-shipping",
+            "ms": 9619,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r2-native-resumable",
+        "replicate": 2,
+        "cell": "native-resumable",
+        "wrapperExit": 0,
+        "directory": "worker-resumable-history",
+        "outcome": "passed",
+        "guards": {
+          "networkSchedulingParkedForLocalOnlyWork": true,
+          "savedSliceColdReopened": true,
+          "realHistoryRemoved": true,
+          "originalInputAndUndoAfterReduction": true,
+          "unchangedShippingReaderExact": true
+        },
+        "catchupWaitMs": null,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "saved-slice-reopen",
+            "ms": 7600,
+            "exact": true
+          },
+          {
+            "label": "public-shipping",
+            "ms": 2588,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r2-native-deep",
+        "replicate": 2,
+        "cell": "native-deep",
+        "wrapperExit": 0,
+        "directory": "composed-receive-1",
+        "outcome": "passed",
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "catchupWaitMs": 19528.53955078125,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1856,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r3-native-context",
+        "replicate": 3,
+        "cell": "native-context",
+        "wrapperExit": 0,
+        "directory": "composed-context",
+        "outcome": "passed",
+        "guards": {
+          "actualNativeEraAndWindowRebindReadable": true,
+          "unchangedShippingReaderExact": true
+        },
+        "catchupWaitMs": null,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "public-shipping",
+            "ms": 9651,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r3-native-resumable",
+        "replicate": 3,
+        "cell": "native-resumable",
+        "wrapperExit": 0,
+        "directory": "worker-resumable-history",
+        "outcome": "passed",
+        "guards": {
+          "networkSchedulingParkedForLocalOnlyWork": true,
+          "savedSliceColdReopened": true,
+          "realHistoryRemoved": true,
+          "originalInputAndUndoAfterReduction": true,
+          "unchangedShippingReaderExact": true
+        },
+        "catchupWaitMs": null,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "saved-slice-reopen",
+            "ms": 7693,
+            "exact": true
+          },
+          {
+            "label": "public-shipping",
+            "ms": 2584,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      },
+      {
+        "name": "474-r3-native-deep",
+        "replicate": 3,
+        "cell": "native-deep",
+        "wrapperExit": 0,
+        "directory": "composed-receive-1",
+        "outcome": "passed",
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "catchupWaitMs": 21659.15478515625,
+        "coldFailure": false,
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1992,
+            "exact": true
+          }
+        ],
+        "failedPredicates": []
+      }
+    ],
+    "allAccepted": true,
+    "deepIntervalsMs": [
+      21851.720947265625,
+      19528.53955078125,
+      21659.15478515625
+    ],
+    "coldStages": 12,
+    "coldMaximumMs": 9764,
+    "appFailures": 0,
+    "latencyFailures": 0,
+    "noiseRetries": 0,
+    "host": [
+      {
+        "run": "474-r1-native-context",
+        "samples": 8,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r1-native-resumable",
+        "samples": 9,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r1-native-deep",
+        "samples": 8,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r2-native-context",
+        "samples": 7,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r2-native-resumable",
+        "samples": 9,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r2-native-deep",
+        "samples": 7,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r3-native-context",
+        "samples": 7,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r3-native-resumable",
+        "samples": 9,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      },
+      {
+        "run": "474-r3-native-deep",
+        "samples": 8,
+        "displayStates": [
+          "on"
+        ],
+        "swapMiB": {
+          "first": 12924.44,
+          "last": 12924.44,
+          "min": 12924.44,
+          "max": 12924.44
+        }
+      }
+    ],
+    "currentRepairedCandidateBlockingJourneysPassed": 21,
+    "remainingBlockingJourneys": 15,
+    "sameSourceAs470": true,
+    "separateToolEntryOnly": true,
+    "noRuntimeOrCaseChange": true
+  },
+  "nativeDelegatePrivateFilesVerified": 2362,
+  "timedMatrixJourneysStarted": 9,
+  "caseAndAllGuardsDeadlinesUnchanged": true,
+  "hostHandshake": "operator Ready; keep the host quiet for these blocks",
+  "noNewBuildOrSourceChange": true,
+  "noProfiler": true,
+  "committed": false,
+  "pushed": false,
+  "next": "Six late normal/withheld journeys on unchanged ordinary phase470 assets under the confirmed host window; then fairness/Goals/report-only work and Stage6"
+}

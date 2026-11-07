@@ -1,0 +1,51 @@
+[
+  {
+    "label": "default",
+    "visible": "visible",
+    "focus": true,
+    "beats": 0,
+    "events": []
+  },
+  {
+    "label": "focus-emulation-disabled",
+    "visible": "visible",
+    "focus": true,
+    "beats": 1,
+    "events": []
+  },
+  {
+    "label": "background-tab",
+    "visible": "visible",
+    "focus": false,
+    "beats": 13,
+    "events": []
+  },
+  {
+    "label": "foreground-tab",
+    "visible": "visible",
+    "focus": true,
+    "beats": 15,
+    "events": []
+  },
+  {
+    "label": "minimized",
+    "visible": "visible",
+    "focus": false,
+    "beats": 23,
+    "events": []
+  },
+  {
+    "label": "thawed",
+    "visible": "visible",
+    "focus": false,
+    "beats": 55,
+    "events": []
+  },
+  {
+    "label": "restored",
+    "visible": "visible",
+    "focus": true,
+    "beats": 61,
+    "events": []
+  }
+]

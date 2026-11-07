@@ -1,0 +1,11 @@
+# Index clone ownership — phase 402
+
+This closes phase401's explicit clone-mode qualification before enabling binary indexes. Shared mode adopts the union graph after exact comparison. Non-owning mode structured-clones the view and then independently slice-copies each record; its budget now includes both, plus the separately owned proof memo. The existing ownership flag expression has one home and controls both cache installation and all three budget observations. No default flag or cache constructor changes.
+
+Seven new controls exercise aliases, separate copies, subview backing versus visible record-copy lengths, exact32MiB eligibility, invalid modes/accessors, common logical ceiling and the actual unchanged cache constructors in both modes. A prototype slice observer counts the real live retained record allocation; a read-only private-view projection supplies the other graph. Both installed shapes match the prospective calculation. A real legacy index with exactly32MiB in shared mode refuses the clone-only excess; ordinary bounded clone indexing still works.
+
+The initial observer counted an unrelated fixture key copy; moved only fixture context construction outside observation, retaining both attempts. Corrected before: six fail, one passes. All seven pass after. Initial AST review selected an unrelated shadowed variable; the repaired finder requires the unique cache constructor and all guards compare exactly. These harness mistakes are retained, not app failures. No old test edits.
+
+Final89 focused controls,4 unchanged generation/index cases and full312files/3103cases/one existing skip pass113.93s (command114.622s), at120s;240s unused. Types, quality,17 registry checks, inventory and10 controls pass. Two source identities and nine matching line moves are independently checked; no construction/obligation changes. [Attempts, source pins and scope](./evidence.json).
+
+Binary reference fallback remains until the next slice. Per-load syntax ownership, mixed-reader permanent faults, dual audit accounting, native writer/G8/B, compatibility/actual cold/rollback and final gates remain. This is buffer accounting, excluding object/string/transient memory, not a RAM claim. No lab, trust/format/wire/default/limit/deadline change, performance/acceptance claim, commit, publication or deployment.

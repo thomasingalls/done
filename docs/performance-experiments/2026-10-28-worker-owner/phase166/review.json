@@ -1,0 +1,23 @@
+{
+  "nativeAccountCases": 8,
+  "nativeCohortCasesFrom165": 20,
+  "newMirrorUnitCases": 17,
+  "focusedCases": 45,
+  "fullUnitPassed": 2256,
+  "existingSkip": 1,
+  "metadataCases": 98,
+  "diagnosticWireCases": 6,
+  "corruptedEvidenceControlsDetected": [
+    "no-journal",
+    "rpc-dependent-admission",
+    "altered-recovery",
+    "false-erasure-credit"
+  ],
+  "workerTransformedFiles": 5,
+  "builtRepositorySources": 200,
+  "oldSourceChanges": "erased type-only admission carrier",
+  "newTestRowsRequiredUncredited": 2,
+  "obligations": 940,
+  "unresolved": 394,
+  "status": "Internal mirror and isolated actual-worker composition; no default UI activation or performance acceptance."
+}

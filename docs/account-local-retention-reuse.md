@@ -107,3 +107,19 @@ separate explicit immutable-authority opt-in for original/joined startup recover
 fresh sealed rows/chunks and authenticates current metadata/authority, then reuses only an exactly
 equal completed logical proof within that owner. Distinct reconstructed capabilities fall back.
 The live warm/audit policy above is unchanged. No startup proof is transferred into the live owner.
+
+## Follow-up 2026-10-30 — exact unreduced reads within one carrier
+
+[Phase 274](performance-experiments/2026-10-29-worker-catchup/phase274/README.md) records that the
+v5-only gate above was deliberate. Phase 275 extends the existing exact-evidence path to unreduced
+v3/v4 in opted-in one-shot recovery and the exclusive live Account carrier. The first read still
+performs the complete physical-history/reference comparison. A later read can retain that completed
+proof only after freshly reading every physical row and baseline chunk, authenticating the complete
+counter/pointer/era/witness, comparing all sealed bytes, and checking the same verifier-owned
+capabilities and still-live view before and after. v3 can retain completed verification without
+inventing a journal-era logical projection. The validator still runs and caller data stays detached.
+
+Changed evidence or authority, failed reads, explicit invalidation and reference/transition/retention
+operations require full verification. Each new carrier starts independently; no proof, cached task
+or trusted prefix is handed between owners or persisted. Reduced warm/incremental continuation and
+its rolling audit/reference policy remain unchanged. Unreduced rows never enter that continuation.

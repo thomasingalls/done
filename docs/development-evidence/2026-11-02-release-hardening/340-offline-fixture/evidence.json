@@ -1,0 +1,432 @@
+{
+  "phase": 340,
+  "base": "89b11fe2ae1eb621ecb884dabf247a9b11fe4496",
+  "comparison": "Every failed browser case reproduces on the unmodified signed base; no Stage1-only regression established. Counter native module also fails its moved reserve anchor before any browser case starts.",
+  "baseUnitWrapperDeadline": {
+    "seconds": 120,
+    "childExit": 143,
+    "timedOut": true,
+    "notAnAssertionResult": true
+  },
+  "offline": {
+    "before": "no service worker or cache; Local owner Worker script fails offline, error is handled, 5000 ms cleanup expires, UI reports unavailable",
+    "after": "unchanged original startup.spec case passes under the original assertion deadline using only dev-fixture HTTP cache headers",
+    "sourceChanged": false,
+    "expectedTextChanged": false,
+    "deadlinesChanged": false
+  },
+  "inventory": {
+    "countsAndDispositionsUnchanged": true,
+    "controlsPassed": 10
+  },
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/comparison.json",
+      "artifact": "objects/b29749a2bf95426735a98de904d521fba09bc63b33ed664b6cfc524ac9fcbbfa.gz",
+      "sha256": "b29749a2bf95426735a98de904d521fba09bc63b33ed664b6cfc524ac9fcbbfa",
+      "bytes": 8834
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/app-upgrades/child.log",
+      "artifact": "objects/f68f235c6eb1805282d04738d652096646c22baeab083e266edc7895d94ff118.gz",
+      "sha256": "f68f235c6eb1805282d04738d652096646c22baeab083e266edc7895d94ff118",
+      "bytes": 22283
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/app-upgrades/host-load.jsonl",
+      "artifact": "objects/50ec1f47c76ce673a215ce7bf21932bfd205798ff757a6da1b8054afa925f48c.gz",
+      "sha256": "50ec1f47c76ce673a215ce7bf21932bfd205798ff757a6da1b8054afa925f48c",
+      "bytes": 6022
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/transport-control/child.log",
+      "artifact": "objects/ceb76157311336bb098b5b7a649ceffb7bf5adada32f291e17618abcb517e0df.gz",
+      "sha256": "ceb76157311336bb098b5b7a649ceffb7bf5adada32f291e17618abcb517e0df",
+      "bytes": 1332
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/transport-control/host-load.jsonl",
+      "artifact": "objects/e6fa5077bd50e772aff4930dabbece05351c50dfad26425422ed8cdf8834ba1a.gz",
+      "sha256": "e6fa5077bd50e772aff4930dabbece05351c50dfad26425422ed8cdf8834ba1a",
+      "bytes": 738
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/counter-native/repeat-child.log",
+      "artifact": "objects/dcd507b7dad3ebfa0aa2e0e2100c243d167221ee6b417dcfd992d55e52e39fae.gz",
+      "sha256": "dcd507b7dad3ebfa0aa2e0e2100c243d167221ee6b417dcfd992d55e52e39fae",
+      "bytes": 2756
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/counter-native/comparison.json",
+      "artifact": "objects/d68a85a8fd15f13dd8d3daf48a897a09daa5604597b4e622da7a202620c3be3b.gz",
+      "sha256": "d68a85a8fd15f13dd8d3daf48a897a09daa5604597b4e622da7a202620c3be3b",
+      "bytes": 908
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/receive-transport-generated/generated.json",
+      "artifact": "objects/7a16b9c03a45b964173cbd5abd110bd6faf4723948626d542cbdb090c53e9431.gz",
+      "sha256": "7a16b9c03a45b964173cbd5abd110bd6faf4723948626d542cbdb090c53e9431",
+      "bytes": 24845
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/receive-transport-generated/child.log",
+      "artifact": "objects/0d803b1f5132a8447333bd9322278d8073093bcf6583ebb32830901bf96937c5.gz",
+      "sha256": "0d803b1f5132a8447333bd9322278d8073093bcf6583ebb32830901bf96937c5",
+      "bytes": 2567
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/receive-transport-generated/host-load.jsonl",
+      "artifact": "objects/a26ad7627a603f0b3630a356703a2ce1884181b40d25242fcf48e8eadbb76fdb.gz",
+      "sha256": "a26ad7627a603f0b3630a356703a2ce1884181b40d25242fcf48e8eadbb76fdb",
+      "bytes": 730
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/startup-five/child.log",
+      "artifact": "objects/6227254e589b07666094f8d71ce6cdbf968dab855f060a8ceffb5c8e8226c081.gz",
+      "sha256": "6227254e589b07666094f8d71ce6cdbf968dab855f060a8ceffb5c8e8226c081",
+      "bytes": 8666
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/startup-five/native.json",
+      "artifact": "objects/c4e0dc52e3f7c49d01084570af27d752826d5806a017797dc279133d2afea37a.gz",
+      "sha256": "c4e0dc52e3f7c49d01084570af27d752826d5806a017797dc279133d2afea37a",
+      "bytes": 29684
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/startup-five/host-load.jsonl",
+      "artifact": "objects/4a4e9b7f844acda6301b61d223454f6f1a8268a41ae85ee824ff7c7c0f35a430.gz",
+      "sha256": "4a4e9b7f844acda6301b61d223454f6f1a8268a41ae85ee824ff7c7c0f35a430",
+      "bytes": 5196
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/sync-three/child.log",
+      "artifact": "objects/63adef0e919bcbd6e656fff7039bb1d56455bfa1476c1c5eb24c52aa65fe7b97.gz",
+      "sha256": "63adef0e919bcbd6e656fff7039bb1d56455bfa1476c1c5eb24c52aa65fe7b97",
+      "bytes": 14979
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/sync-three/host-load.jsonl",
+      "artifact": "objects/3895f61f48e3a3c7e108481b063513cd3f1be66b8436d955347185752feb8511.gz",
+      "sha256": "3895f61f48e3a3c7e108481b063513cd3f1be66b8436d955347185752feb8511",
+      "bytes": 2267
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/receive-driver-controls/child.log",
+      "artifact": "objects/32d17d11c2f760e0160b8991514d64471c7d5d843b78282c4122f28189e69fbb.gz",
+      "sha256": "32d17d11c2f760e0160b8991514d64471c7d5d843b78282c4122f28189e69fbb",
+      "bytes": 7318
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/receive-driver-controls/host-load.jsonl",
+      "artifact": "objects/79b82aecda4ef6bc1472c6877cb731d29b1b20430108224a6a5f837c7c9a47eb.gz",
+      "sha256": "79b82aecda4ef6bc1472c6877cb731d29b1b20430108224a6a5f837c7c9a47eb",
+      "bytes": 745
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-relabel.json",
+      "artifact": "objects/bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833.gz",
+      "sha256": "bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833",
+      "bytes": 177
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/generated.json",
+      "artifact": "objects/8a93f6c90bbce1a9424abac70da912021d8f631d16ee5558fc0c51cd84c1fa78.gz",
+      "sha256": "8a93f6c90bbce1a9424abac70da912021d8f631d16ee5558fc0c51cd84c1fa78",
+      "bytes": 247197
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/unit-histories.json",
+      "artifact": "objects/2efededefb8faa32b169378cdbd8747c2ade20340a82a37472432c6d76ece5fa.gz",
+      "sha256": "2efededefb8faa32b169378cdbd8747c2ade20340a82a37472432c6d76ece5fa",
+      "bytes": 631
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/coverage-histories.json",
+      "artifact": "objects/39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f.gz",
+      "sha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "bytes": 10834
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/child.log",
+      "artifact": "objects/57d8811b5d781d88920cfef6013ac2f71978948c0488ac55b498ac2d9f6f77c2.gz",
+      "sha256": "57d8811b5d781d88920cfef6013ac2f71978948c0488ac55b498ac2d9f6f77c2",
+      "bytes": 82
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-pending.json",
+      "artifact": "objects/a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517.gz",
+      "sha256": "a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517",
+      "bytes": 72
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-page-signature.json",
+      "artifact": "objects/d76f75177a3a35d8d83e49cebe3fdbb386aff5110e203dc108c85433bcf0818d.gz",
+      "sha256": "d76f75177a3a35d8d83e49cebe3fdbb386aff5110e203dc108c85433bcf0818d",
+      "bytes": 5318
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-request-binding.json",
+      "artifact": "objects/e2170da970a84be0022a337de2c6ca807c19b1f3d73ac3c6119801a6fc89b076.gz",
+      "sha256": "e2170da970a84be0022a337de2c6ca807c19b1f3d73ac3c6119801a6fc89b076",
+      "bytes": 5377
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-actor.json",
+      "artifact": "objects/c69f8f586c38defdff4406fa4a03554c9205549e2295e2c22698aa133c0020bd.gz",
+      "sha256": "c69f8f586c38defdff4406fa4a03554c9205549e2295e2c22698aa133c0020bd",
+      "bytes": 5296
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/independent-bytes.json",
+      "artifact": "objects/738dfcd8fd0298396d814746d565b7c7b84c654de2238864e88f9446294e0ed5.gz",
+      "sha256": "738dfcd8fd0298396d814746d565b7c7b84c654de2238864e88f9446294e0ed5",
+      "bytes": 23766
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/unit-ledger-histories.json",
+      "artifact": "objects/fa39c7e04f3fe9ac6e75b5508246d25d60c4646010cbf90d869faedc4d8c8e4a.gz",
+      "sha256": "fa39c7e04f3fe9ac6e75b5508246d25d60c4646010cbf90d869faedc4d8c8e4a",
+      "bytes": 74096
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-deletion-coverage.json",
+      "artifact": "objects/b54be0583015b44340b7408a605a66f4f2de38a09ae6d27fd1e81a6607a7d995.gz",
+      "sha256": "b54be0583015b44340b7408a605a66f4f2de38a09ae6d27fd1e81a6607a7d995",
+      "bytes": 105
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/wire-corruptions.json",
+      "artifact": "objects/edafd6d0913ee490f991b960fa779c6be1715373ed892247edbdca23cd9c8e01.gz",
+      "sha256": "edafd6d0913ee490f991b960fa779c6be1715373ed892247edbdca23cd9c8e01",
+      "bytes": 84156
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-early-promotion.json",
+      "artifact": "objects/e995f041e2caa0d7c27747fa52e78f101d58b6632bf7077f514ecd572938eef2.gz",
+      "sha256": "e995f041e2caa0d7c27747fa52e78f101d58b6632bf7077f514ecd572938eef2",
+      "bytes": 89
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-global-cursor.json",
+      "artifact": "objects/30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5.gz",
+      "sha256": "30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5",
+      "bytes": 64
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/fixtures.json",
+      "artifact": "objects/11588cb35877196269f564ae5f57789b3c9308531daea5299fdcb36b834190b8.gz",
+      "sha256": "11588cb35877196269f564ae5f57789b3c9308531daea5299fdcb36b834190b8",
+      "bytes": 26058
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-baseline.json",
+      "artifact": "objects/36d2598d44afe3739aaccca8ef55e99e30945b8f28c1f72f8502e64f1980780f.gz",
+      "sha256": "36d2598d44afe3739aaccca8ef55e99e30945b8f28c1f72f8502e64f1980780f",
+      "bytes": 168
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-record-binding.json",
+      "artifact": "objects/8667fe797e555ce65a8204debc5207073f3f2acc84a11193101d6461a779e347.gz",
+      "sha256": "8667fe797e555ce65a8204debc5207073f3f2acc84a11193101d6461a779e347",
+      "bytes": 5205
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-prefix-proof.json",
+      "artifact": "objects/873cd8d6ca0522b412d111311f5e058ca7a5301a8b76a63a6efe96783293d902.gz",
+      "sha256": "873cd8d6ca0522b412d111311f5e058ca7a5301a8b76a63a6efe96783293d902",
+      "bytes": 5379
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-batch-count.json",
+      "artifact": "objects/211d978cd332d985afc87592d1aa562a254148fc2fdd2e642c696a403b4a9280.gz",
+      "sha256": "211d978cd332d985afc87592d1aa562a254148fc2fdd2e642c696a403b4a9280",
+      "bytes": 11389
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-buffer-copy.json",
+      "artifact": "objects/a122306339d02837376b4247e16fe9fe5c109c2c571e7e65c9d94752427eb01c.gz",
+      "sha256": "a122306339d02837376b4247e16fe9fe5c109c2c571e7e65c9d94752427eb01c",
+      "bytes": 9333
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/witness-control.json",
+      "artifact": "objects/1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e.gz",
+      "sha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "bytes": 234
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/host-load.jsonl",
+      "artifact": "objects/9e40c5359bb61e58cda0e824d36ac906899b24bdd6b6f820893424a1b823bccc.gz",
+      "sha256": "9e40c5359bb61e58cda0e824d36ac906899b24bdd6b6f820893424a1b823bccc",
+      "bytes": 15264
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-late-close.json",
+      "artifact": "objects/f6c03cfb61bde5c5b32402229da22a50df988fa93badc2a14dd39c25d2c48d3a.gz",
+      "sha256": "f6c03cfb61bde5c5b32402229da22a50df988fa93badc2a14dd39c25d2c48d3a",
+      "bytes": 5027
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/base-units-at-existing-wrapper-deadline/control-split.json",
+      "artifact": "objects/2bb542e39d26cf5b66e9dd736300bab749d75383aee19fc43b2196531751b164.gz",
+      "sha256": "2bb542e39d26cf5b66e9dd736300bab749d75383aee19fc43b2196531751b164",
+      "bytes": 105
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/construction-format/child.log",
+      "artifact": "objects/d45e690cc6a2b3c1bf944325841c8f50ac3ab76a7ccab75b0da3c93a4b0c7e00.gz",
+      "sha256": "d45e690cc6a2b3c1bf944325841c8f50ac3ab76a7ccab75b0da3c93a4b0c7e00",
+      "bytes": 184
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/construction-format/host-load.jsonl",
+      "artifact": "objects/e1790d0017b228fc61a9f4df4c9a5d21024a1b55b9d4c65d217d6e098e44df56.gz",
+      "sha256": "e1790d0017b228fc61a9f4df4c9a5d21024a1b55b9d4c65d217d6e098e44df56",
+      "bytes": 750
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/service-inbound-control/child.log",
+      "artifact": "objects/9384ba41f6c38f5e0817f5f26782f279ef7891dd5173bdc5918673684291c2ce.gz",
+      "sha256": "9384ba41f6c38f5e0817f5f26782f279ef7891dd5173bdc5918673684291c2ce",
+      "bytes": 1687
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/service-inbound-control/host-load.jsonl",
+      "artifact": "objects/23d68ff434a2771ebb049992762e3209156bfdf2e97a50adfaa76713d2efa389.gz",
+      "sha256": "23d68ff434a2771ebb049992762e3209156bfdf2e97a50adfaa76713d2efa389",
+      "bytes": 730
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/geometry-cut-four/child.log",
+      "artifact": "objects/c638fc30f1f78868b0c47f2680561a4fbb625e6bfa3992ac33c69db578d73621.gz",
+      "sha256": "c638fc30f1f78868b0c47f2680561a4fbb625e6bfa3992ac33c69db578d73621",
+      "bytes": 9428
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-base-comparison/geometry-cut-four/host-load.jsonl",
+      "artifact": "objects/1a7f8804a48e040e4e708dff25a3cbd80486f89860bc741257adbec72d944106.gz",
+      "sha256": "1a7f8804a48e040e4e708dff25a3cbd80486f89860bc741257adbec72d944106",
+      "bytes": 2303
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic/attempt1-script.mjs",
+      "artifact": "objects/a24a090cc071a71ededfa0bbf0089f7ac4e18dcb06562baaf2d160b236f7c680.gz",
+      "sha256": "a24a090cc071a71ededfa0bbf0089f7ac4e18dcb06562baaf2d160b236f7c680",
+      "bytes": 6184
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic/child.log",
+      "artifact": "objects/96be58336b99cb5effded0d0b1c77e1983d3babc01387e29e7bde7a23a9c929d.gz",
+      "sha256": "96be58336b99cb5effded0d0b1c77e1983d3babc01387e29e7bde7a23a9c929d",
+      "bytes": 1177
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic/run.json",
+      "artifact": "objects/ad0467599207e38a992a7f05d422997d2375d2951f4a2e045ccb13ef38c88f51.gz",
+      "sha256": "ad0467599207e38a992a7f05d422997d2375d2951f4a2e045ccb13ef38c88f51",
+      "bytes": 536
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic/host-load.jsonl",
+      "artifact": "objects/65a8ebf532782044fa09b2b03fde9473755cd3d19a2830d84799044838cb6364.gz",
+      "sha256": "65a8ebf532782044fa09b2b03fde9473755cd3d19a2830d84799044838cb6364",
+      "bytes": 742
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic-attempt2/child.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic-attempt2/dev-offline-trace.json",
+      "artifact": "objects/6e256f620eb5df3fe947645c7a7c6e1fde56b95d6af14dd7e73dc763172666a1.gz",
+      "sha256": "6e256f620eb5df3fe947645c7a7c6e1fde56b95d6af14dd7e73dc763172666a1",
+      "bytes": 7536
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic-attempt2/run.json",
+      "artifact": "objects/7420cf5be94a3463e4f94d063c04c281eb2a5b82e535d3efa190df59802858b5.gz",
+      "sha256": "7420cf5be94a3463e4f94d063c04c281eb2a5b82e535d3efa190df59802858b5",
+      "bytes": 543
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-offline-diagnostic-attempt2/host-load.jsonl",
+      "artifact": "objects/7e3514faf55cdc9ae6b0079d1ad3942d4d3671f35cd86a581cf915f50c5d6261.gz",
+      "sha256": "7e3514faf55cdc9ae6b0079d1ad3942d4d3671f35cd86a581cf915f50c5d6261",
+      "bytes": 2241
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-dev-offline-after/child.log",
+      "artifact": "objects/035c72a5e556d97eb9dc6c0337c0aaa11991cb95ba8b93d6d5f2e0354fa81b98.gz",
+      "sha256": "035c72a5e556d97eb9dc6c0337c0aaa11991cb95ba8b93d6d5f2e0354fa81b98",
+      "bytes": 533
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-dev-offline-after/native.json",
+      "artifact": "objects/664897a9d451ff56fee79a909ec56e34a03cf41077a662f781f77cd7d298c6f9.gz",
+      "sha256": "664897a9d451ff56fee79a909ec56e34a03cf41077a662f781f77cd7d298c6f9",
+      "bytes": 3534
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-dev-offline-after/run.json",
+      "artifact": "objects/4157e1fbe03459586474c99abb730ae1575604a993bbc61c5155a9d24cf48729.gz",
+      "sha256": "4157e1fbe03459586474c99abb730ae1575604a993bbc61c5155a9d24cf48729",
+      "bytes": 467
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-dev-offline-after/host-load.jsonl",
+      "artifact": "objects/a31d87efa8ec3314b65083c16b466af8972355c2229c76fd2e15f33a2e4bf3da.gz",
+      "sha256": "a31d87efa8ec3314b65083c16b466af8972355c2229c76fd2e15f33a2e4bf3da",
+      "bytes": 1480
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/resume339-base-comparison.py",
+      "artifact": "objects/b96fd5197b42756ebdd485bc9d2d7a01ed8b91703b0cb4356db22940c107788e.gz",
+      "sha256": "b96fd5197b42756ebdd485bc9d2d7a01ed8b91703b0cb4356db22940c107788e",
+      "bytes": 6221
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/dev-offline-trace339.mjs",
+      "artifact": "objects/250e3db0aa0ed7bf78965db4c2187a7c4d9fbc3da5452ed36ac73551da22dfa6.gz",
+      "sha256": "250e3db0aa0ed7bf78965db4c2187a7c4d9fbc3da5452ed36ac73551da22dfa6",
+      "bytes": 6092
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/base-comparison-inputs.json",
+      "artifact": "objects/5c7a0ee6cdd07a1d6727c6a6f02629492c85aae40df6c9bb68c1b333193a84f9.gz",
+      "sha256": "5c7a0ee6cdd07a1d6727c6a6f02629492c85aae40df6c9bb68c1b333193a84f9",
+      "bytes": 1442
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-inventory-record.log",
+      "artifact": "objects/5ac5e377f196f9965c27d50347a145b87c50df784df7feeba22ec6f3ceb70db7.gz",
+      "sha256": "5ac5e377f196f9965c27d50347a145b87c50df784df7feeba22ec6f3ceb70db7",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/340-inventory-controls.log",
+      "artifact": "objects/6539bb905f751e84d8c703b7a610c355137b69fd38bac90034da73dae24c9b07.gz",
+      "sha256": "6539bb905f751e84d8c703b7a610c355137b69fd38bac90034da73dae24c9b07",
+      "bytes": 1091
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/signed-base-89b11fe2/test-results/geometry/report.json",
+      "artifact": "objects/477c82605c1b5e6d6d19552f7824cf8ec3700e416be50bcac6930a6e2c709cd7.gz",
+      "sha256": "477c82605c1b5e6d6d19552f7824cf8ec3700e416be50bcac6930a6e2c709cd7",
+      "bytes": 23256
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/signed-base-89b11fe2/test-results/app-upgrades/2026-11-02T12-42-32.329Z/native.json",
+      "artifact": "objects/41801bfff20cc71c56195144bcc59077b2040d4bbf9b67a71c9ca9283ee9fc0d.gz",
+      "sha256": "41801bfff20cc71c56195144bcc59077b2040d4bbf9b67a71c9ca9283ee9fc0d",
+      "bytes": 16087
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/signed-base-89b11fe2/test-results/app-upgrades/2026-11-02T12-42-32.329Z/scope.json",
+      "artifact": "objects/71ef7f1f7b17ca60435ec4fd417d7d955999a81e3c260251748f164e51cb5b4a.gz",
+      "sha256": "71ef7f1f7b17ca60435ec4fd417d7d955999a81e3c260251748f164e51cb5b4a",
+      "bytes": 157
+    }
+  ]
+}

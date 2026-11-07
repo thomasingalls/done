@@ -1,0 +1,20 @@
+{
+  "priorRecordPrefixesUnchanged": {
+    "docs/completed.md": true,
+    "docs/decisions.md": true,
+    "docs/product-backlog.md": true
+  },
+  "canonicalInputsUnchanged": 1552,
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "diffCheckExit": 0,
+  "oldLabFrozenChecks": {
+    "sources": true,
+    "assets": true,
+    "apparatus": true
+  },
+  "runtimeStoppedAtColdFailure": true,
+  "no75OrOptimizationRun": true,
+  "labOnly": true,
+  "acceptanceCredit": false
+}

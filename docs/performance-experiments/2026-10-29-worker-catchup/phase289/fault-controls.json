@@ -1,0 +1,14 @@
+[
+  {
+    "fault": "ignore-turn-budget",
+    "exactNamedCaseFails": true
+  },
+  {
+    "fault": "restart-original-prefix",
+    "exactNamedCaseFails": true
+  },
+  {
+    "fault": "reject-fitting-prefix",
+    "exactNamedCaseFails": true
+  }
+]

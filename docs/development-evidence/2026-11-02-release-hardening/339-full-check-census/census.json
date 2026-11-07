@@ -1,0 +1,265 @@
+{
+  "phase": 339,
+  "scope": "Stage 1 remaining full-check command census; no new lab phase or acceptance credit",
+  "baseCommit": "89b11fe2ae1eb621ecb884dabf247a9b11fe4496",
+  "commands": 43,
+  "passed": 24,
+  "failed": 19,
+  "laterNestedStages": "Some campaigns stop at their first failed prerequisite; later nested stages are unrun, not passed.",
+  "amends338": "Both editor status strings remain current and mean different things. Window-only IDB injection has not demonstrated a Worker storage refusal. Expected text is unchanged.",
+  "next": "Compare every failed browser case with the signed base, then diagnose dev offline assets and Worker fault delivery. No app change without full-list report.",
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/stage1-remaining43-attempt1.json",
+      "artifact": "objects/aa0b36215f90cc7122821ba36182ae43849602008b355080775e94aa441b18e5.gz",
+      "sha256": "aa0b36215f90cc7122821ba36182ae43849602008b355080775e94aa441b18e5",
+      "bytes": 10625
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/stage1-remaining43-attempt1.log",
+      "artifact": "objects/04330118800f1a109b6ad534a09348589abc35db6ba38c4c1befa322091582b9.gz",
+      "sha256": "04330118800f1a109b6ad534a09348589abc35db6ba38c4c1befa322091582b9",
+      "bytes": 2431479
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/operator-resume339.json",
+      "artifact": "objects/5057accc2a1d1e6771af30dec50d7accacf0f48cf80223a050c68eb76d8f3ec9.gz",
+      "sha256": "5057accc2a1d1e6771af30dec50d7accacf0f48cf80223a050c68eb76d8f3ec9",
+      "bytes": 834
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/339-full-failure-index.json",
+      "artifact": "objects/aea85c7a75d5164eb76096624b2d621a203c597502c04a0be56f9cfb9158bace.gz",
+      "sha256": "aea85c7a75d5164eb76096624b2d621a203c597502c04a0be56f9cfb9158bace",
+      "bytes": 4540
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/base-comparison-inputs.json",
+      "artifact": "objects/5c7a0ee6cdd07a1d6727c6a6f02629492c85aae40df6c9bb68c1b333193a84f9.gz",
+      "sha256": "5c7a0ee6cdd07a1d6727c6a6f02629492c85aae40df6c9bb68c1b333193a84f9",
+      "bytes": 1442
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/remaining43-browser-reports/geometry-attempt1.json",
+      "artifact": "objects/89ea18e916ea6c78651b5ea4e14c65bc00d2c60533213f1f4b26be9dd64c791f.gz",
+      "sha256": "89ea18e916ea6c78651b5ea4e14c65bc00d2c60533213f1f4b26be9dd64c791f",
+      "bytes": 346198
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/remaining43-browser-reports/geometry-failures.json",
+      "artifact": "objects/6fc9ba3f1a7f63d580347eb01fd81cae30a6971855d95900ff08104fddd6fc38.gz",
+      "sha256": "6fc9ba3f1a7f63d580347eb01fd81cae30a6971855d95900ff08104fddd6fc38",
+      "bytes": 5365
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/remaining43-browser-reports/app-upgrades-native.json",
+      "artifact": "objects/9b20914d8c6a893567262126861b9073ef7331e965a1ffa049b04aaab286008d.gz",
+      "sha256": "9b20914d8c6a893567262126861b9073ef7331e965a1ffa049b04aaab286008d",
+      "bytes": 15835
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/remaining43-browser-reports/app-upgrades-scope.json",
+      "artifact": "objects/71ef7f1f7b17ca60435ec4fd417d7d955999a81e3c260251748f164e51cb5b4a.gz",
+      "sha256": "71ef7f1f7b17ca60435ec4fd417d7d955999a81e3c260251748f164e51cb5b4a",
+      "bytes": 157
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/remaining43-browser-reports/local-packaged-attempt1.json",
+      "artifact": "objects/3dafc313ea2e14655a343874d4be23bf0ead5957a4fba9adcd8fc15940f2c33b.gz",
+      "sha256": "3dafc313ea2e14655a343874d4be23bf0ead5957a4fba9adcd8fc15940f2c33b",
+      "bytes": 5479
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-recovery-contract/2026-11-02T11-51-29.723Z/summary.json",
+      "artifact": "objects/041a16e3ccedeb0f4834261b03d10bfdd47baca7525153343195859faef76863.gz",
+      "sha256": "041a16e3ccedeb0f4834261b03d10bfdd47baca7525153343195859faef76863",
+      "bytes": 5251
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-recovery-contract/2026-11-02T11-51-29.723Z/unit.log",
+      "artifact": "objects/71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48.gz",
+      "sha256": "71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48",
+      "bytes": 64
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-promotion-contract/2026-11-02T11-58-24.086Z/summary.json",
+      "artifact": "objects/d3933ef9c1aaddedefb4a035959245b05efe5eac71ee55f1a2954f14804021d5.gz",
+      "sha256": "d3933ef9c1aaddedefb4a035959245b05efe5eac71ee55f1a2954f14804021d5",
+      "bytes": 17620
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-promotion-contract/2026-11-02T11-58-24.086Z/format.log",
+      "artifact": "objects/6e4412bbe49ceaf95fff4c5ef1134832f7863c7e5d689067cc92ca0208889aa6.gz",
+      "sha256": "6e4412bbe49ceaf95fff4c5ef1134832f7863c7e5d689067cc92ca0208889aa6",
+      "bytes": 185
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-ledger-contract/2026-11-02T12-05-00.220Z/summary.json",
+      "artifact": "objects/e7915f1727842acb8b7e3ccbb2ebf39a979cb27a849cea4dc338d30f8366a7f9.gz",
+      "sha256": "e7915f1727842acb8b7e3ccbb2ebf39a979cb27a849cea4dc338d30f8366a7f9",
+      "bytes": 8235
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-ledger-contract/2026-11-02T12-05-00.220Z/unit.log",
+      "artifact": "objects/71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48.gz",
+      "sha256": "71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48",
+      "bytes": 64
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-counter-contract/2026-11-02T12-17-37.887Z/summary.json",
+      "artifact": "objects/e5ed2624c229193d3cd0e58d8e205b2a5926a966fd3149d0392f7b318dda2e6c.gz",
+      "sha256": "e5ed2624c229193d3cd0e58d8e205b2a5926a966fd3149d0392f7b318dda2e6c",
+      "bytes": 6503
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-counter-contract/2026-11-02T12-17-37.887Z/counter-native.log",
+      "artifact": "objects/26a5e667c16f1a908d02e17ec684193f70dbaf8eca783bc9723ab83b623db98e.gz",
+      "sha256": "26a5e667c16f1a908d02e17ec684193f70dbaf8eca783bc9723ab83b623db98e",
+      "bytes": 2539
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-counter-contract/2026-11-02T12-17-37.887Z/counter-native.xml",
+      "artifact": "objects/57c5c5a8fd828f10dc67c8893718bf30f61787b2319f270a1666918093da7582.gz",
+      "sha256": "57c5c5a8fd828f10dc67c8893718bf30f61787b2319f270a1666918093da7582",
+      "bytes": 663
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-store-contract/2026-11-02T12-17-58.647Z/summary.json",
+      "artifact": "objects/1db8a5d0de773c7fabd2e593e6cfa21bd06d4465cd4391a23f5aea39d7554597.gz",
+      "sha256": "1db8a5d0de773c7fabd2e593e6cfa21bd06d4465cd4391a23f5aea39d7554597",
+      "bytes": 8786
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-store-contract/2026-11-02T12-17-58.647Z/unit.log",
+      "artifact": "objects/71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48.gz",
+      "sha256": "71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48",
+      "bytes": 64
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-local-custody/2026-11-02T12-24-26.686Z/summary.json",
+      "artifact": "objects/17e8421c9ddf736659acf641751208975c71d338e94bc4d45dd27cff4069e95e.gz",
+      "sha256": "17e8421c9ddf736659acf641751208975c71d338e94bc4d45dd27cff4069e95e",
+      "bytes": 8577
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-local-custody/2026-11-02T12-24-26.686Z/unit.log",
+      "artifact": "objects/71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48.gz",
+      "sha256": "71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48",
+      "bytes": 64
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-checkpoint-contract/2026-11-02T12-29-24.491Z/summary.json",
+      "artifact": "objects/769b4f3719232a26755fc85428b976d85389c4042ff050887e777cfce13ed6ad.gz",
+      "sha256": "769b4f3719232a26755fc85428b976d85389c4042ff050887e777cfce13ed6ad",
+      "bytes": 10039
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-checkpoint-contract/2026-11-02T12-29-24.491Z/unit.log",
+      "artifact": "objects/71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48.gz",
+      "sha256": "71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48",
+      "bytes": 64
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-local-provenance/2026-11-02T12-35-43.308Z/summary.json",
+      "artifact": "objects/07c60cc5dc30c5be17e7f965710ce48ec524de7af13ecfd65234d0f4faf6d635.gz",
+      "sha256": "07c60cc5dc30c5be17e7f965710ce48ec524de7af13ecfd65234d0f4faf6d635",
+      "bytes": 9966
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-local-provenance/2026-11-02T12-35-43.308Z/unit.log",
+      "artifact": "objects/71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48.gz",
+      "sha256": "71461fb4af0ca480ff383b2a3bd29c49daf7e67454a11c923259e2d8597b5f48",
+      "bytes": 64
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-first-authority/2026-11-02T11-51-09.529Z/summary.json",
+      "artifact": "objects/405143904463a7867eed264ee3b6cda3eae16a45fe6ecd7eef4403b478a953ea.gz",
+      "sha256": "405143904463a7867eed264ee3b6cda3eae16a45fe6ecd7eef4403b478a953ea",
+      "bytes": 11227
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-first-authority/2026-11-02T11-51-09.529Z/format.log",
+      "artifact": "objects/e42ce5ffd70a502dc785bb0cdfbe58b2da835454646f67678a4ede91c89841ad.gz",
+      "sha256": "e42ce5ffd70a502dc785bb0cdfbe58b2da835454646f67678a4ede91c89841ad",
+      "bytes": 185
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T11-36-07.992Z/summary.json",
+      "artifact": "objects/df80d708299b28d2bb6a14b728d8563dac776a4a841d5cec201191113a7800cd.gz",
+      "sha256": "df80d708299b28d2bb6a14b728d8563dac776a4a841d5cec201191113a7800cd",
+      "bytes": 485
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-transport/2026-11-02T11-36-07.992Z/service.log",
+      "artifact": "objects/1e2813e116360032db1d31a4295bfbf5be4e922c2dd0cb7b35f923cdd6fee4b9.gz",
+      "sha256": "1e2813e116360032db1d31a4295bfbf5be4e922c2dd0cb7b35f923cdd6fee4b9",
+      "bytes": 3251
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T11-45-04.167Z/summary.json",
+      "artifact": "objects/e9ff80aa39ed9ab3239efc3129ee5f61f9f57a3c916ff996f02d6e642517a90a.gz",
+      "sha256": "e9ff80aa39ed9ab3239efc3129ee5f61f9f57a3c916ff996f02d6e642517a90a",
+      "bytes": 629
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-service-inbound/2026-11-02T11-45-04.167Z/service.log",
+      "artifact": "objects/e71b8df8574c93b78b56fc18b4e9cafd9900cb793bc01cee27d598601ee0aa33.gz",
+      "sha256": "e71b8df8574c93b78b56fc18b4e9cafd9900cb793bc01cee27d598601ee0aa33",
+      "bytes": 8520
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-transport/2026-11-02T11-45-23.234Z/summary.json",
+      "artifact": "objects/7782eea47d470c85c5328d91cbd0ff8ed4abc27d937beedb3e4488be188c0976.gz",
+      "sha256": "7782eea47d470c85c5328d91cbd0ff8ed4abc27d937beedb3e4488be188c0976",
+      "bytes": 879
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-transport/2026-11-02T11-45-23.234Z/generated.log",
+      "artifact": "objects/163e71c3c121f6674e07a4aa8ebf12a807dbfdfa36a0a3f956912c1adc14d438.gz",
+      "sha256": "163e71c3c121f6674e07a4aa8ebf12a807dbfdfa36a0a3f956912c1adc14d438",
+      "bytes": 2454
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-transport/2026-11-02T11-45-23.234Z/generated.xml",
+      "artifact": "objects/09afb07187bd9a0b27306be6836aa5aef091f3e0c7eae2fbb739272393303c6f.gz",
+      "sha256": "09afb07187bd9a0b27306be6836aa5aef091f3e0c7eae2fbb739272393303c6f",
+      "bytes": 3291
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T11-46-28.080Z/summary.json",
+      "artifact": "objects/9ba550b791d7d7ca57e1f92007670079e3f83e0287382000d656354ad8a75293.gz",
+      "sha256": "9ba550b791d7d7ca57e1f92007670079e3f83e0287382000d656354ad8a75293",
+      "bytes": 759
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T11-46-28.080Z/controls.log",
+      "artifact": "objects/0f73c514ddaa6910989f3ef54f5229a800200292e93f4a12855ed43b5ec7968e.gz",
+      "sha256": "0f73c514ddaa6910989f3ef54f5229a800200292e93f4a12855ed43b5ec7968e",
+      "bytes": 7044
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-receive-driver/2026-11-02T11-46-28.080Z/controls.xml",
+      "artifact": "objects/4bd4f4da1cf8defe8373bf8915f5132e5e48e27c6bdde795fee89fce75cd7460.gz",
+      "sha256": "4bd4f4da1cf8defe8373bf8915f5132e5e48e27c6bdde795fee89fce75cd7460",
+      "bytes": 11921
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T11-47-34.815Z/summary.json",
+      "artifact": "objects/3a1ebef894c575c9bd2003f9f168899b5ad781c9e02ed2838d191ff34825c74f.gz",
+      "sha256": "3a1ebef894c575c9bd2003f9f168899b5ad781c9e02ed2838d191ff34825c74f",
+      "bytes": 707
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T11-47-34.815Z/native.log",
+      "artifact": "objects/e61a557ec18a2461bfdf94e9b91b52a0be6834807863607b325ea47a59d9cdc6.gz",
+      "sha256": "e61a557ec18a2461bfdf94e9b91b52a0be6834807863607b325ea47a59d9cdc6",
+      "bytes": 18039
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/account-sync/2026-11-02T11-47-34.815Z/native.xml",
+      "artifact": "objects/f42c9cf5fbb734f0f3062e0e843662dc62e5885643397154aa1ff3eb6da94c8e.gz",
+      "sha256": "f42c9cf5fbb734f0f3062e0e843662dc62e5885643397154aa1ff3eb6da94c8e",
+      "bytes": 35445
+    }
+  ]
+}

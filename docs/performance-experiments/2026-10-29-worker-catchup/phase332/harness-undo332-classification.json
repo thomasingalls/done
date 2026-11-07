@@ -1,0 +1,17 @@
+{
+  "failedCase": "loaded332-r1-d0",
+  "classification": "harness precondition, not product Undo failure",
+  "offeredInsertCommands": 54,
+  "oldUndoLimit": 8,
+  "correctRemainingKeys": 45,
+  "offlineCopiedProfileMatchesExactly": true,
+  "diagnosticCase": "inspect332-failed-undo-profile",
+  "sourceContract": [
+    "src/crdt/admittedWorkspace.ts:686 increments group per submit",
+    "src/crdt/admittedWorkspace.ts:365 stops capture between distinct groups"
+  ],
+  "correction": "New spec permits keys+1 Undo commands and checks each full archive against exact remaining suffix, with30s convergence checks. No app source or old assertion removed.",
+  "rawFailurePreserved": true,
+  "retryName": "loaded332-r1-d0-attempt2",
+  "failedShellPreparation": "An inline else1 SyntaxError prevented all preparation writes; the premature runner only hit missing plan, before Docker or any cell. Both tool output and initial driver log retained."
+}

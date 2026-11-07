@@ -36,6 +36,11 @@ export interface ContentCompactionReceipt {
   readonly stateSequence: number | null;
   readonly removed: readonly number[];
 }
+/** Same-realm native Worker continuation; task/verification authority never crosses the port. */
+export interface WorkerCompactionCommit {
+  checkJournal(): Promise<void>;
+  removeCovered(audited: DiskState, covered: StoredRecord[]): Promise<boolean>;
+}
 interface Owner {
   scope: ContentIdentity;
   generation: number;
@@ -45,6 +50,7 @@ interface Owner {
   authenticate(snapshot: DiskState): Promise<OpenedRecord[]>;
   publish(bytes: Bytes): Promise<StoredRecord>;
   checkJournal(): void;
+  workerCommit?: WorkerCompactionCommit;
 }
 export const equalStoredRecord = (a: StoredRecord, b: StoredRecord): boolean =>
   a.v === b.v &&
@@ -166,7 +172,8 @@ export const compactContent = async (
       stateSequence,
       removed: Object.freeze(removed),
     });
-  task.step(owner.checkJournal);
+  if (owner.workerCommit) await task.wait(() => owner.workerCommit!.checkJournal());
+  else task.step(owner.checkJournal);
   const initial = await owner.read(),
     opened = await owner.authenticate(initial);
   let merged: Bytes | undefined;
@@ -189,7 +196,8 @@ export const compactContent = async (
         'batch-too-large',
         'Compacted state exceeds the bounded record limit.',
       );
-    task.step(owner.checkJournal);
+    if (owner.workerCommit) await task.wait(() => owner.workerCommit!.checkJournal());
+    else task.step(owner.checkJournal);
     replacement = await owner.publish(merged);
   } finally {
     merged?.fill(0);
@@ -197,7 +205,8 @@ export const compactContent = async (
   }
   // Bounded contention leaves safe duplication. Retrying starts from a fresh census, never a saved watermark.
   for (let attempt = 0; attempt < 8; attempt++) {
-    task.step(owner.checkJournal);
+    if (owner.workerCommit) await task.wait(() => owner.workerCommit!.checkJournal());
+    else task.step(owner.checkJournal);
     const audited = await owner.read(),
       verified = await owner.authenticate(audited);
     try {
@@ -220,7 +229,11 @@ export const compactContent = async (
     }
     // Another compactor may have removed these immutable records with its own replacement.
     if (missing) return receipt('retained', replacement.seq);
-    if (await removeCovered(task, owner, audited, covered))
+    if (
+      await (owner.workerCommit
+        ? task.wait(() => owner.workerCommit!.removeCovered(audited, covered))
+        : removeCovered(task, owner, audited, covered))
+    )
       return receipt(
         'compacted',
         replacement.seq,

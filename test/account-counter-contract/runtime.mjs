@@ -5,7 +5,7 @@ export const controls = {
   witnessState: ['contentRecord.ts', 'w.v, w.state, w.intent', 'w.v, w.intent'],
   counterSpool: ['contentRecord.ts', '...(c.v === 2 ? [[c.spool.events, c.spool.hash]] : []),', ''],
   equalMac: ['contentRecord.ts', ' && hex(a.mac) === hex(b.mac)', ''],
-  reserve: ['contentStore.ts', 'if (await compareAndWrite(task, before, next)) break;', 'break;'],
+  reserve: ['contentStore.ts', 'if (await compareAndWrite(task, before, next)) {', 'if (true) {'],
   sum: ['contentRecord.ts', 'total !== next_seq - 1', 'false'],
   ceiling: [
     'contentRecord.ts',

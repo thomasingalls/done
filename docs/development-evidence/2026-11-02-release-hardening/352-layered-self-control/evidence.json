@@ -1,0 +1,245 @@
+{
+  "phase": 352,
+  "status": "operator stop: double omission does not advance to1",
+  "operatorApproval": "Keep baseline; self omission must remain refused and differ as both-lane conflict; self+recordResponse omission must advance or stop/report next layer; retain original single omission on live paths lacking delivery decision; then classification.",
+  "singleOmissionAssertionsPassed": true,
+  "doubleOmissionExpected": 1,
+  "doubleOmissionObserved": 0,
+  "uniqueOmissions": {
+    "selfEnvelope": 1,
+    "selfDecisionStep": 1
+  },
+  "fakeAcknowledgmentOrProgress": false,
+  "applicationChanges": false,
+  "classification": "unrun after stop",
+  "workerSingleControl": "live source path identified; control pending after stop",
+  "independentProof": {
+    "rows": [
+      {
+        "mode": "baseline",
+        "receive": {
+          "phase": "blocked",
+          "failures": 0,
+          "nextAttemptAt": null,
+          "issueSince": 1793635215837,
+          "lastSuccessAt": null,
+          "reason": "integrity",
+          "receivedThrough": 0
+        },
+        "send": {
+          "phase": "retrying",
+          "failures": 1,
+          "nextAttemptAt": 1793635216781,
+          "issueSince": 1793635215781,
+          "lastSuccessAt": null,
+          "reason": "network-unavailable",
+          "acceptedThrough": 0
+        },
+        "editorState": "active",
+        "reads": 1,
+        "writingUnchanged": true,
+        "incomingStorageUnchanged": true,
+        "newDeliveryDecisions": 0,
+        "addedRecordTags": [
+          "done/account-spool/v1",
+          "done/account-spool/v1",
+          "outbound",
+          "outbound"
+        ]
+      },
+      {
+        "mode": "self",
+        "receive": {
+          "phase": "blocked",
+          "failures": 1,
+          "nextAttemptAt": null,
+          "issueSince": 1793635220964,
+          "lastSuccessAt": null,
+          "reason": "conflict",
+          "receivedThrough": 0
+        },
+        "send": {
+          "phase": "blocked",
+          "failures": 1,
+          "nextAttemptAt": null,
+          "issueSince": 1793635220909,
+          "lastSuccessAt": null,
+          "reason": "conflict",
+          "acceptedThrough": 0
+        },
+        "editorState": "active",
+        "reads": 1,
+        "writingUnchanged": true,
+        "incomingStorageUnchanged": true,
+        "newDeliveryDecisions": 1,
+        "addedRecordTags": [
+          "done/account-spool/v1",
+          "done/account-spool/v1",
+          "outbound",
+          "outbound",
+          "done/account-delivery/v1"
+        ]
+      },
+      {
+        "mode": "self-and-decision",
+        "receive": {
+          "phase": "retrying",
+          "failures": 1,
+          "nextAttemptAt": 1793635227847,
+          "issueSince": 1793635226847,
+          "lastSuccessAt": null,
+          "reason": "network-unavailable",
+          "receivedThrough": 0
+        },
+        "send": {
+          "phase": "retrying",
+          "failures": 1,
+          "nextAttemptAt": 1793635227797,
+          "issueSince": 1793635226797,
+          "lastSuccessAt": null,
+          "reason": "network-unavailable",
+          "acceptedThrough": 0
+        },
+        "editorState": "active",
+        "reads": 1,
+        "writingUnchanged": true,
+        "incomingStorageUnchanged": true,
+        "newDeliveryDecisions": 0,
+        "addedRecordTags": [
+          "done/account-spool/v1",
+          "done/account-spool/v1",
+          "outbound",
+          "outbound"
+        ]
+      }
+    ],
+    "historical": {
+      "revision": "46388e4febe96ac0fbdffcd3fc9f704a75a39df0",
+      "priorSelfRecordResponse": true,
+      "subsequentSelfRecordResponse": true,
+      "qualification": "The parent already calls recordResponse in the self-only branch; 46388e4f adds explicit handling of a declined decision result. Exact earlier introduction not established here."
+    },
+    "pathMap": [
+      {
+        "file": "src/crdt/accountReceive.ts",
+        "role": "Self-only branch passes selfOnly=true; returns before inbound append; decision path calls outbound.recordResponse; both omitted in combined control.",
+        "sha256": "c3a484d6e7493bc98505ea7eebfef78d649f837a741b5677c6ea637087691af1"
+      },
+      {
+        "file": "src/crdt/accountReceiveDriver.ts",
+        "role": "driveReceiveStep rereads receiveStatus after I/O; derives progress only from durable state.",
+        "sha256": "122943e31783821655bfaf99008d22a94f26304e55381cace85871a309198efd"
+      },
+      {
+        "file": "src/crdt/accountWorkerReceive.ts",
+        "role": "verify calls owner.api.receivePage(page, stage, request) with default selfOnly=false; this handoff has no recordResponse step.",
+        "sha256": "5e9756906e5efd218b4ca089f9d4334645e3a5bd1e12b58335b714fab012af29"
+      },
+      {
+        "file": "src/crdt/accountWorkerOwner.ts",
+        "role": "Retains openAccountWorkerStore branch and receive* methods used by the authenticated Worker bridge.",
+        "sha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44"
+      },
+      {
+        "file": "src/crdt/accountWorkerClient.ts",
+        "role": "receiveNext/receivePage send authenticated owner requests through receiveFetch and receiveVerify.",
+        "sha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3"
+      }
+    ],
+    "applicationUnchanged": true,
+    "stop": "Double omission did not advance; no classification or live Worker control run after this point.",
+    "persistenceQualification": "No forked writing or inbound receipt was stored. The single omission did persist one authenticated conflict-decision row, as reported separately."
+  },
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-independent-checks.json",
+      "artifact": "objects/7c2b389fa5d246dd4c1011d8a9f0043a6a0a69a09b345419c2a980dd81c2e3ac.gz",
+      "sha256": "7c2b389fa5d246dd4c1011d8a9f0043a6a0a69a09b345419c2a980dd81c2e3ac",
+      "bytes": 4609
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-control/child.log",
+      "artifact": "objects/458e257e5e430c7eef77553996dc64e123e74a3a38e9291f4035bacbc3e60c92.gz",
+      "sha256": "458e257e5e430c7eef77553996dc64e123e74a3a38e9291f4035bacbc3e60c92",
+      "bytes": 1326
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-control/control-self-layered.json",
+      "artifact": "objects/ea3680add470a0764c190438fb674a4be86a86639e27f9212f0ab7a5665bc5e7.gz",
+      "sha256": "ea3680add470a0764c190438fb674a4be86a86639e27f9212f0ab7a5665bc5e7",
+      "bytes": 270922
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-control/run.json",
+      "artifact": "objects/b8dc287479524fbbb185bd3409017302ab5866a009cd0070eff227f5da0e9f43.gz",
+      "sha256": "b8dc287479524fbbb185bd3409017302ab5866a009cd0070eff227f5da0e9f43",
+      "bytes": 507
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-control/host-load.jsonl",
+      "artifact": "objects/82a1c8a21c70b34bdba35bb66fa026cef101b430b8cb90870a570b83ecec65cc.gz",
+      "sha256": "82a1c8a21c70b34bdba35bb66fa026cef101b430b8cb90870a570b83ecec65cc",
+      "bytes": 2282
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-format.log",
+      "artifact": "objects/227a16ef5acdf350057dedc2a0f13e00acd217b568a253acd676ae7532615fd4.gz",
+      "sha256": "227a16ef5acdf350057dedc2a0f13e00acd217b568a253acd676ae7532615fd4",
+      "bytes": 112
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-terminal/child.log",
+      "artifact": "objects/0e085fc875de8543871d2eb4ada9dadcb3e2045b6ca61a6b723e7504b3605d91.gz",
+      "sha256": "0e085fc875de8543871d2eb4ada9dadcb3e2045b6ca61a6b723e7504b3605d91",
+      "bytes": 1278
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-terminal/control-self-layered.json",
+      "artifact": "objects/694cfc044f515bd6dd14c2b82fc4c3a6c4189316f2529dc0efba97188dbe1017.gz",
+      "sha256": "694cfc044f515bd6dd14c2b82fc4c3a6c4189316f2529dc0efba97188dbe1017",
+      "bytes": 396392
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-terminal/run.json",
+      "artifact": "objects/7281baffa2d5988307c9d062dc187e1b3af30a4415573c011cbf958615af92ce.gz",
+      "sha256": "7281baffa2d5988307c9d062dc187e1b3af30a4415573c011cbf958615af92ce",
+      "bytes": 507
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-layered-self-terminal/host-load.jsonl",
+      "artifact": "objects/d48f45cf1741ae26b70084bce277b630df4671789f150bdc46188c619fa34a0c.gz",
+      "sha256": "d48f45cf1741ae26b70084bce277b630df4671789f150bdc46188c619fa34a0c",
+      "bytes": 3012
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-static-checks.json",
+      "artifact": "objects/5536a3421bcb51bc01796e18a07af81bc54a5bd2173f46d1e2da1ea45733499f.gz",
+      "sha256": "5536a3421bcb51bc01796e18a07af81bc54a5bd2173f46d1e2da1ea45733499f",
+      "bytes": 822
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-native-controls-attempt1.mjs",
+      "artifact": "objects/a3927ea962ad77e2fc7f880bda792c160de57d3b4e017621dc932f3bc4f3777c.gz",
+      "sha256": "a3927ea962ad77e2fc7f880bda792c160de57d3b4e017621dc932f3bc4f3777c",
+      "bytes": 8952
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-lint.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/352-inventory-record.log",
+      "artifact": "objects/82637d377c384115f4f20828bbbe5a5b7c764689b8c15423b6cb6a97ef31d75e.gz",
+      "sha256": "82637d377c384115f4f20828bbbe5a5b7c764689b8c15423b6cb6a97ef31d75e",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/check352.mjs",
+      "artifact": "objects/f9e1baeaa5eb843f5642b7672a504999e0dc24ed48e0dc232911f3e9aa6db814.gz",
+      "sha256": "f9e1baeaa5eb843f5642b7672a504999e0dc24ed48e0dc232911f3e9aa6db814",
+      "bytes": 3728
+    }
+  ]
+}

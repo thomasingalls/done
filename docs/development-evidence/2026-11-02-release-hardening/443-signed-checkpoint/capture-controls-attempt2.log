@@ -1,0 +1,9 @@
+test_exact_commit_reference_and_dirty_untracked_outside_refusals (__main__.StorageControls.test_exact_commit_reference_and_dirty_untracked_outside_refusals) ... ok
+test_offsets_fractional_boundaries_empty_and_invalid (__main__.StorageControls.test_offsets_fractional_boundaries_empty_and_invalid) ... ok
+test_window_bounds_continuations_and_full_identity (__main__.StorageControls.test_window_bounds_continuations_and_full_identity) ... ok
+test_write_never_stores_full_log (__main__.StorageControls.test_write_never_stores_full_log) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.155s
+
+OK

@@ -1,0 +1,14 @@
+import{createWorkerChannel}from'./src/crdt/workerChannel.ts';
+import{installLocalWorkerRuntime}from'./src/crdt/accountWorkerRuntime.ts';
+import{openLocalWorkerStore}from'./src/crdt/localGenesis.ts';
+import{validateContentUpdates}from'./src/crdt/contentCompaction.ts';
+let owner,native,channel,previous=[];
+self.onmessage=async e=>{const m=e.data;if(m?.kind!=='observationBootstrap')return;
+const close=async()=>{native?.runtime.close();await owner?.journal.close();await native?.root.close()};
+channel=createWorkerChannel(m.port,m.ticket.incarnation,{
+ async open(spec){const result=await openLocalWorkerStore(spec.slotId,spec.code,{identity:spec.identity,signal:native.runtime.signal,validateReceive:()=>{throw Error('No network')}});if(result.kind!=='ready')throw Error(result.reason);owner=result;native.runtime.finishOpening();return true},
+ async observe(){let result;result=await owner.withJournalObservation(async(id,entries,task)=>{previous=entries;task.step(()=>validateContentUpdates(entries.map(v=>v.bytes)));await task.wait(()=>channel.request('observationReady',{id,entries:entries.length}));const equal=await task.wait(()=>channel.request('journalObservationMatches',{id}));return{id,equal,entries:entries.length}});return{...result,erased:previous.every(v=>v.bytes.every(n=>n===0))}},
+ close,
+},()=>{void close().then(()=>self.postMessage({kind:'observationClosed',ok:true}),()=>self.postMessage({kind:'observationClosed',ok:false}))});
+try{native=await installLocalWorkerRuntime(m.ticket,channel,{online:true,visibility:'visible'});native.root.beforeRelease(async()=>{await owner?.journal.close()});await channel.request('localBind');self.postMessage({kind:'observationBooted'})}catch{channel.close()}
+};

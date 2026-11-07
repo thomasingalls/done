@@ -1,0 +1,108 @@
+{
+  "source": "/private/tmp/done-page-reuse-repair-lab-20261101/sender326c-analysis.json",
+  "sourceSha256": "dd617d5349a0cc713ddcf35ec2453d8eca84ff6f4915b0b9211053c6c7be2c57",
+  "rows": [
+    {
+      "name": "sender326c-r1-paired150-d50-coordinated-2000",
+      "rtt": 50,
+      "everyMarker2500ms": false,
+      "markersByWriter": [
+        [
+          3062.7822265625,
+          1053.516845703125,
+          1140.30810546875
+        ],
+        [
+          3074.484375,
+          1083.412109375,
+          1664.244140625
+        ]
+      ]
+    },
+    {
+      "name": "sender326c-r1-paired150-d0-coordinated-2000",
+      "rtt": 0,
+      "everyMarker2500ms": false,
+      "markersByWriter": [
+        [
+          2773.15966796875,
+          1097.683349609375,
+          904.21142578125
+        ],
+        [
+          2802.353759765625,
+          931.280517578125,
+          989.173583984375
+        ]
+      ]
+    },
+    {
+      "name": "sender326c-r2-paired150-d50-coordinated-2000",
+      "rtt": 50,
+      "everyMarker2500ms": false,
+      "markersByWriter": [
+        [
+          3055.1328125,
+          1005.2958984375,
+          1215.6630859375
+        ],
+        [
+          3125.43212890625,
+          1013.917236328125,
+          1551.49072265625
+        ]
+      ]
+    },
+    {
+      "name": "sender326c-r2-paired150-d0-coordinated-2000",
+      "rtt": 0,
+      "everyMarker2500ms": false,
+      "markersByWriter": [
+        [
+          2728.167724609375,
+          917.980712890625,
+          758.836181640625
+        ],
+        [
+          2768.992919921875,
+          930.772216796875,
+          980.12158203125
+        ]
+      ]
+    },
+    {
+      "name": "sender326c-r3-paired150-d0-coordinated-2000",
+      "rtt": 0,
+      "everyMarker2500ms": false,
+      "markersByWriter": [
+        [
+          2732.70751953125,
+          888.62890625,
+          752.597900390625
+        ],
+        [
+          2764.429931640625,
+          912.790771484375,
+          1164.6611328125
+        ]
+      ]
+    },
+    {
+      "name": "sender326c-r3-paired150-d50-coordinated-2000",
+      "rtt": 50,
+      "everyMarker2500ms": false,
+      "markersByWriter": [
+        [
+          3037.568115234375,
+          1200.724609375,
+          1461.006103515625
+        ],
+        [
+          3071.606201171875,
+          1065.552734375,
+          1069.0947265625
+        ]
+      ]
+    }
+  ]
+}

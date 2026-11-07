@@ -105,7 +105,12 @@ export async function restoreAuthenticator(
     });
   return auth;
 }
-export async function openSaved(page: Page, code: string, joining = false) {
+export async function openSaved(
+  page: Page,
+  code: string,
+  joining = false,
+  expected: 'editing' | 'removed' = 'editing',
+) {
   const codeEntry = page.getByLabel('Unlock code', { exact: true });
   const saved = page.getByRole('button', {
     name: joining ? /Resume device connection/ : /^Unlock Device owner/,
@@ -119,7 +124,13 @@ export async function openSaved(page: Page, code: string, joining = false) {
     await page.getByLabel('Unlock code', { exact: true }).fill(code);
     await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
   }
-  await expect(page.locator('.shell')).toBeVisible({ timeout: 15000 });
+  // Native withdrawal can finish before the first Window editor is published. An expected
+  // removal must wait for that refusal, rather than requiring a transient active editor.
+  if (expected === 'removed')
+    await expect(
+      page.getByText('This device was removed from the account.', { exact: false }),
+    ).toBeVisible({ timeout: 15000 });
+  else await expect(page.locator('.shell')).toBeVisible({ timeout: 15000 });
 }
 export async function add(page: Page, text: string) {
   const compose = page.locator(

@@ -1,0 +1,54 @@
+import {getAccountTransitionNotice,rememberAccountTransition} from './src/account/accountTransitionNotice.ts';
+import {eraseCapsule} from './src/crdt/sourceCapture.ts';
+import {NetworkLogin} from './src/account/networkLogin.ts';
+import {legacyAccess} from './src/account/bootstrapHttp.ts';
+import {privateDeliveryPost} from './src/account/privateDeliveryHttp.ts';
+import {openOwnedSyncingAccountWorkspace} from './src/crdt/accountReceive.ts';
+import{openOwnedReceivingAccountWorkspace}from'./src/crdt/accountReceive.ts';
+import{openAccountWorkerSession}from'./src/crdt/accountWorkerClient.ts';import{createWindowAccountMirrorController}from'./src/crdt/windowAccountMirror.ts';
+let messages=0;const send=MessagePort.prototype.postMessage;MessagePort.prototype.postMessage=function(...args){messages++;return send.apply(this,args)};
+const all=[];async function metadata(){const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('done.slots');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)});try{const slots=await new Promise(resolve=>{const r=db.transaction('slots').objectStore('slots').getAll();r.onsuccess=()=>resolve(r.result)});const slot=slots.find(v=>v.status==='active'&&v.account);return{slotId:slot.id,membershipContinuation:true,pin:JSON.parse(localStorage.getItem('done.account-service.pin.v1')),identity:{id:slot.unlockBinding.binding.principalId,actor:{kind:'human',name:'You',color:'#e0662f'},device:{id:'native-worker',name:'Worker'}}};}finally{db.close()}}
+function create(spec,fault='none'){
+ let session,workspace,controller,free,openingOptions;const mirrorIdentity=structuredClone(spec.identity);const held=fault==='hold-passkey'?new Promise(r=>free=r):Promise.resolve();const trace={incomingKeyZero:false,passkeyStarted:false,passkeyCalls:0,busy:false,committed:false,closed:false};
+ const opening=(async()=>{
+  openingOptions={...spec,assertPasskey:async request=>{
+   trace.passkeyStarted=true;trace.passkeyCalls++;await held;request.signal.throwIfAborted();const id=Uint8Array.from(atob(request.credentialId.replaceAll('-','+').replaceAll('_','/')),v=>v.charCodeAt(0));const c=await navigator.credentials.get({publicKey:{rpId:request.rpId,challenge:request.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id}]},signal:request.signal});const r=c.response,signature=new Uint8Array(r.signature);if(fault==='bad-passkey'||fault==='composed-bad-passkey')signature[0]^=1;return{credentialId:c.id,authenticatorData:new Uint8Array(r.authenticatorData),clientDataJSON:new Uint8Array(r.clientDataJSON),signature,userHandle:r.userHandle?new Uint8Array(r.userHandle):null};
+  },signal:window.__testStop.signal};session=await openAccountWorkerSession(openingOptions,spec.slotId.startsWith('enrollment-'),{networkSessions:fault==='network'||fault.startsWith('composed'),composed:fault.startsWith('composed')});
+  const keys=[session.opening.key,...session.opening.previous.map(p=>p[1])];if(fault.startsWith('composed')){workspace=session.composedWorkspace;}else{controller=await createWindowAccountMirrorController(session.cohort,session.opening,session.worker,{identity:mirrorIdentity});workspace=controller.workspace;}trace.incomingKeyZero=keys.every(k=>k.every(v=>v===0));await Promise.all([session.ready(),session.ready()]);return{master:workspace.text({kind:'master'}).read().text,entries:workspace.exportEntries(),isolation:crossOriginIsolated,sharedMemory:typeof SharedArrayBuffer};
+ })();
+ const entry={opening,trace,compositionStatus:()=>session.compositionStatus(),compositionRoster:()=>session.compositionRoster(),compositionRemoveLocalHistory:revision=>session.compositionRemoveLocalHistory(revision),compositionLocalHistory:command=>session.compositionLocalHistory(command),mutateOpening(){openingOptions.code='incorrect-disposable-code';openingOptions.pin.origin='http://invalid.test';openingOptions.identity.id='ff'.repeat(16);openingOptions.assertPasskey=async()=>{throw Error('Replaced endpoint must not be used')};},receive:()=>session.receiveNext(controller),refresh:()=>session.refreshAuthority(controller),identityScope:()=>({physicalPrincipal:session.opening.scope.principalId,physicalWorkspace:session.opening.scope.workspaceId,logicalPrincipal:session.opening.route.principal,logicalWorkspace:session.opening.route.workspace,slot:session.opening.scope.slotId}),get session(){return session},get workspace(){return workspace},get controller(){return controller},maintain:command=>session.maintainLocalHistory(controller,command),historyStatus:()=>session.localHistoryStatus(),release:()=>free?.(),read:()=>workspace.text({kind:'master'}).read().text,flush:()=>workspace.whenDurable(),input(text){const n=workspace.text({kind:'master'}),before=n.read().text,requests=messages,ticket=n.input({name:'insert',text},{ranges:[{anchor:before.length,head:before.length}],main:0});return{before,after:n.read().text,requestsDuringHandler:messages-requests,ticket}},async close(){await workspace.close();trace.closed=true;},status:()=>session.status()};all.push(entry);return entry;
+}
+window.__testStop=new AbortController();window.__mirrorLab={metadata,create,all,transitionNotice:getAccountTransitionNotice,rememberTransition:rememberAccountTransition};
+
+function createPage(spec,fault='none'){
+ let workspace;const trace={pageFactory:true,passkeyStarted:false};
+ const opening=(async()=>{
+ const account=await openOwnedReceivingAccountWorkspace({...spec,signal:window.__testStop.signal,assertPasskey:async request=>{
+ trace.passkeyStarted=true;const id=Uint8Array.from(atob(request.credentialId.replaceAll('-','+').replaceAll('_','/')),v=>v.charCodeAt(0));const c=await navigator.credentials.get({publicKey:{rpId:request.rpId,challenge:request.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id}]},signal:request.signal});const q=c.response,signature=new Uint8Array(q.signature);if(fault==='bad-passkey'||fault==='composed-bad-passkey')signature[0]^=1;return{credentialId:c.id,authenticatorData:new Uint8Array(q.authenticatorData),clientDataJSON:new Uint8Array(q.clientDataJSON),signature,userHandle:q.userHandle?new Uint8Array(q.userHandle):null};
+ }});workspace=account.workspace;return{master:workspace.text({kind:'master'}).read().text,entries:workspace.exportEntries()};})();
+ return {opening,trace,get workspace(){return workspace},read:()=>workspace.text({kind:'master'}).read().text,flush:()=>workspace.whenDurable(),close:()=>workspace.close(),input(text){const field=workspace.text({kind:'master'}),before=field.read().text,ticket=field.input({name:'insert',text},{ranges:[{anchor:before.length,head:before.length}],main:0});return{before,after:field.read().text,ticket}}};
+}
+window.__mirrorLab.createPage=createPage;
+
+function createPublisher(spec,fault='none'){
+ let workspace,owner;const trace={pageFactory:true,passkeyStarted:false};
+ const opening=(async()=>{
+ const account=await openOwnedSyncingAccountWorkspace({...spec,networkLogin:new NetworkLogin(spec.pin,spec.slotId),signal:window.__testStop.signal,assertPasskey:async request=>{
+ trace.passkeyStarted=true;const id=Uint8Array.from(atob(request.credentialId.replaceAll('-','+').replaceAll('_','/')),v=>v.charCodeAt(0));const c=await navigator.credentials.get({publicKey:{rpId:request.rpId,challenge:request.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id}]},signal:request.signal});const q=c.response,signature=new Uint8Array(q.signature);if(fault==='bad-passkey'||fault==='composed-bad-passkey')signature[0]^=1;return{credentialId:c.id,authenticatorData:new Uint8Array(q.authenticatorData),clientDataJSON:new Uint8Array(q.clientDataJSON),signature,userHandle:q.userHandle?new Uint8Array(q.userHandle):null};
+ }},legacyAccess({pin:spec.pin,networkSessions:true}),spec.slotId.startsWith('enrollment-'));owner=account;workspace=account.workspace;return{master:workspace.text({kind:'master'}).read().text,entries:workspace.exportEntries()};})();
+ return {opening,trace,sendStatus:()=>owner.sync.status.send,delivery:()=>owner.deliveryStatus(),spool:()=>owner.spoolStatus(),captureIds:async()=>{const list=await owner.listCaptures();try{return list.map(c=>({id:c.id,count:c.sources.length}));}finally{for(const c of list)eraseCapsule(c);}},get workspace(){return workspace},read:()=>workspace.text({kind:'master'}).read().text,flush:()=>workspace.whenDurable(),close:()=>workspace.close(),input(text){const field=workspace.text({kind:'master'}),before=field.read().text,ticket=field.input({name:'insert',text},{ranges:[{anchor:before.length,head:before.length}],main:0});return{before,after:field.read().text,ticket}}};
+}
+
+window.__mirrorLab.createPublisher=createPublisher;
+
+function createJoinedReference(spec,fault='none'){
+ let workspace,owner;const trace={pageFactory:true,passkeyStarted:false};
+ const opening=(async()=>{
+ const account=await openOwnedSyncingAccountWorkspace({...spec,signal:window.__testStop.signal,assertPasskey:async request=>{
+ trace.passkeyStarted=true;const id=Uint8Array.from(atob(request.credentialId.replaceAll('-','+').replaceAll('_','/')),v=>v.charCodeAt(0));const c=await navigator.credentials.get({publicKey:{rpId:request.rpId,challenge:request.challenge,userVerification:'required',allowCredentials:[{type:'public-key',id}]},signal:request.signal});const q=c.response,signature=new Uint8Array(q.signature);if(fault==='bad-passkey'||fault==='composed-bad-passkey')signature[0]^=1;return{credentialId:c.id,authenticatorData:new Uint8Array(q.authenticatorData),clientDataJSON:new Uint8Array(q.clientDataJSON),signature,userHandle:q.userHandle?new Uint8Array(q.userHandle):null};
+ }},legacyAccess({pin:spec.pin,networkSessions:true}),spec.slotId.startsWith('enrollment-'));owner=account;workspace=account.workspace;return{master:workspace.text({kind:'master'}).read().text,entries:workspace.exportEntries()};})();
+ return {opening,trace,sendStatus:()=>owner.sync.status.send,delivery:()=>owner.deliveryStatus(),spool:()=>owner.spoolStatus(),captureIds:async()=>{const list=await owner.listCaptures();try{return list.map(c=>({id:c.id,count:c.sources.length}));}finally{for(const c of list)eraseCapsule(c);}},get workspace(){return workspace},read:()=>workspace.text({kind:'master'}).read().text,flush:()=>workspace.whenDurable(),close:()=>workspace.close(),input(text){const field=workspace.text({kind:'master'}),before=field.read().text,ticket=field.input({name:'insert',text},{ranges:[{anchor:before.length,head:before.length}],main:0});return{before,after:field.read().text,ticket}}};
+}
+
+
+window.__mirrorLab.createJoinedReference=createJoinedReference;

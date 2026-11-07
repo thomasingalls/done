@@ -1,0 +1,21 @@
+from pathlib import Path
+import shutil
+old=Path('/private/tmp/done-worker-conversion-20261028/native177');r=old.with_name('native178');r.mkdir();(r/'lab').mkdir()
+for f in(old/'lab').iterdir():
+ if f.is_symlink():(r/'lab'/f.name).symlink_to(f.resolve(),target_is_directory=f.is_dir())
+ elif f.is_file():shutil.copy2(f,r/'lab'/f.name)
+shutil.copytree(old/'harness',r/'harness',ignore=shutil.ignore_patterns('node_modules','test-results'));(r/'harness/node_modules').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules'),target_is_directory=True)
+for name in['run.py','build.mjs','container-image.json','container-service.mjs','observer.mjs']:shutil.copy2(old/name,r/name)
+for f in[r/'build.mjs',r/'container-service.mjs',*list((r/'harness').rglob('*.mjs')),*list((r/'harness').rglob('*.ts'))]:f.write_text(f.read_text().replace(str(old),str(r)))
+p=r/'lab/main.mjs';s=p.read_text().replace('openAccountWorkerSession(openingOptions,false,','openAccountWorkerSession(openingOptions,spec.slotId.startsWith(\'enrollment-\'),');p.write_text(s)
+p=r/'harness/test/account-continuation-lab/worker-owner.spec.ts';s=p.read_text();s+='''
+test('actual joined worker keeps physical custody distinct through sealed input Undo era replacement and joined Page cold reopen',async()=>laboratory('worker-joined-scope',async(p,r)=>{
+ const joined=account.actors[1];await p.context().clearCookies();await p.evaluate(async()=>{for(const d of await indexedDB.databases()){await new Promise<void>((resolve,reject)=>{const q=indexedDB.deleteDatabase(d.name!);q.onsuccess=()=>resolve();q.onerror=()=>reject(q.error);q.onblocked=()=>reject(Error('Disposable seeded profile is still open'));});}localStorage.clear();});await seedProfile(p.context(),joined.storage);await restoreAuthenticator(p,joined.credentials);await p.goto('/worker-app/index.html');await p.waitForFunction(()=>(window as any).__mirrorLab);await p.evaluate(async code=>{(window as any).spec={...await(window as any).__mirrorLab.metadata(),code}},joined.code);
+ const ready=await opening(p,'network');expect(Object.fromEntries(ready.entries.map((v:any)=>[v.path,v.content]))).toEqual(account.archive);expect(await p.evaluate(()=>(window as any).b.trace.passkeyCalls)).toBe(1);r.guards.realJoinedAuthenticationAndExactRecovery=true;
+ const marker='\\nA real joined worker source.';r.input=await input(p,marker);expect(r.input.requestsDuringHandler).toBe(0);expect(r.input.journals).toBeGreaterThan(0);await p.evaluate(()=>(window as any).input.ticket.accepted);await p.evaluate(()=>(window as any).b.flush());r.guards.physicalJournalNativeLogicalSourceReadback=true;
+ await p.evaluate(()=>(window as any).b.workspace.command({kind:'undo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master);await p.evaluate(()=>(window as any).b.workspace.command({kind:'redo'}).accepted);expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master+marker);r.guards.originalJoinedUndoRedo=true;
+ r.era=await p.evaluate(()=>(window as any).b.maintain({kind:'advance'}));expect(['installed','replaced']).toContain(r.era.kind);expect(r.era.journalEraRevision).toBeGreaterThan(0);r.guards.originalJoinedNativeEraAndWindowRebind=true;
+ const extra='\\nAfter the joined era.';await input(p,extra);await p.evaluate(()=>(window as any).input.ticket.accepted);await p.evaluate(()=>(window as any).b.flush());await p.evaluate(()=>(window as any).b.close());await empty(p);
+ await p.evaluate(async()=>{(window as any).b=(window as any).__mirrorLab.createPublisher((window as any).spec);await(window as any).b.opening;});expect(await p.evaluate(()=>(window as any).b.read())).toBe(ready.master+marker+extra);r.guards.originalJoinedPageColdReopenExact=true;await p.evaluate(()=>(window as any).b.close());
+}));
+''';p.write_text(s)

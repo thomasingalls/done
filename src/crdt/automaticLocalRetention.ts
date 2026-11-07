@@ -3,7 +3,11 @@ import {
   copyRetentionProgress,
   type RetentionProgress,
   type RetentionProgressSink,
+  type MaintenanceInterrupted,
+  isPriorityOnlyMaintenanceInterruption,
 } from './contentMaintenance';
+import { PreparationCapacity } from './preparationCapacity';
+import { LocalBaselineError } from './localBaselineError';
 export interface LocalRetentionHint {
   readonly revision: number;
   readonly records: number;
@@ -18,18 +22,38 @@ export interface LocalRetentionStatus {
   readonly progress?: RetentionProgress & { readonly attempt: number; readonly elapsedMs: number };
 }
 /** Presentation/retry port: never exposes evidence, counters or a mutation capability. */
-export interface LocalRetentionRuntime {
+export interface LocalRetentionView {
   readonly status: LocalRetentionStatus;
   onStatus(listener: () => void): () => void;
-  retry(): boolean;
+  retry(): void;
   readonly diagnostics?: {
     readonly attempts: number;
     readonly interruptions: number;
     readonly completions: number;
     readonly events: readonly LocalRetentionStatus['progress'][];
+    readonly ownerError?: string;
   };
 }
+export interface LocalRetentionRuntime extends LocalRetentionView {
+  retry(): boolean;
+}
 type Outcome = { kind: string; reason?: string };
+const interruptedOutcomes = new WeakMap<Outcome, MaintenanceInterrupted>();
+/** Native scheduling metadata only. Serialization loses it and conservatively keeps 60 seconds. */
+export function localRetentionInterrupted(cause: MaintenanceInterrupted) {
+  const outcome = Object.freeze({ kind: 'skipped' as const, reason: 'activity-or-journal' });
+  interruptedOutcomes.set(outcome, cause);
+  return outcome;
+}
+const ownerErrorCode = (cause: unknown): string => {
+  if (cause instanceof LocalBaselineError) {
+    const code: unknown = Object.getOwnPropertyDescriptor(cause, 'reason')?.value;
+    return ['scope', 'integrity', 'ineligible', 'history-required'].includes(code as string)
+      ? `LocalBaselineError:${code as string}`
+      : 'LocalBaselineError';
+  }
+  return cause instanceof Error ? 'Error' : 'non-error';
+};
 export function createAutomaticLocalRetention(options: {
   signal: AbortSignal;
   observe(): { ready: boolean; hint: LocalRetentionHint | undefined };
@@ -49,6 +73,7 @@ export function createAutomaticLocalRetention(options: {
   let progress: LocalRetentionStatus['progress'];
   let attemptEvents: LocalRetentionStatus['progress'][] = [];
   let currentAttempt: object | undefined;
+  let ownerError: string | undefined;
   const listeners = new Set<() => void>();
   let status: LocalRetentionStatus = Object.freeze({ phase: 'idle', reason: undefined });
   const publish = () => {
@@ -146,7 +171,15 @@ export function createAutomaticLocalRetention(options: {
     const started = wakes;
     let again = false;
     try {
-      const result = await options.remove(hint.revision, report);
+      let result: Outcome;
+      try {
+        result = await options.remove(hint.revision, report);
+      } catch (cause) {
+        // All preparation ceilings share this closed class. Saved receipts remain intact;
+        // the existing skipped path parks this exact hint behind the retry clock.
+        if (!(cause instanceof PreparationCapacity)) throw cause;
+        result = { kind: 'skipped', reason: 'capacity' };
+      }
       if (closed) return;
       if (result.kind === 'removed' || result.kind === 'already-removed') {
         completions++;
@@ -163,7 +196,11 @@ export function createAutomaticLocalRetention(options: {
       } else if (result.kind === 'skipped') {
         if (result.reason === 'activity-or-journal') interruptions++;
         reason = result.reason;
-        notBefore = Date.now() + LOCAL_RETENTION_RETRY_MS;
+        const priorityOnly =
+          result.reason === 'activity-or-journal' &&
+          isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result));
+        notBefore =
+          Date.now() + (priorityOnly ? LOCAL_RETENTION_QUIET_MS : LOCAL_RETENTION_RETRY_MS);
         // Retrying an unchanged capacity/history refusal cannot help. A different authenticated
         // ledger hint permits another attempt, still behind the retry clock.
         if (['capacity', 'history-required', 'ineligible'].includes(result.reason ?? ''))
@@ -174,12 +211,15 @@ export function createAutomaticLocalRetention(options: {
         halted = true;
         reason = 'unexpected-result';
       }
-    } catch {
+    } catch (cause) {
       // The removal owner already closes on uncertain mutation. Never turn integrity/storage
       // failure into an automatic retry or reinterpret it as permission to remove anything.
       if (!closed) {
         halted = true;
         reason = 'owner-error';
+        // Do not read arbitrary error names, messages, causes, stacks or getters.
+        // This closed application class has data-free codes; all other failures stay generic.
+        ownerError = ownerErrorCode(cause);
       }
     } finally {
       if (currentAttempt === stamp) currentAttempt = undefined;
@@ -221,6 +261,7 @@ export function createAutomaticLocalRetention(options: {
         interruptions,
         completions,
         events: Object.freeze(attemptEvents.map((e) => e)),
+        ...(ownerError ? { ownerError } : {}),
       });
     },
     onStatus(listener: () => void) {

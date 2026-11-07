@@ -1,0 +1,259 @@
+{
+  "items": [
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/report334.py",
+      "copy": "evidence/report334.py.gz",
+      "bytes": 16468,
+      "rawSha256": "429410a8e79e615a9b3729b8af6b528920ff591a5ad3718c61632539ceebcc27",
+      "gzipSha256": "d7d8ef3938570f8ba1c7107cdd37121dcac160ce0f63165e4eec92d5010db0c5"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/check334-attempt1.log",
+      "copy": "evidence/check334-attempt1.log.gz",
+      "bytes": 313,
+      "rawSha256": "2a62641f3c05d33a23df448a25d2da9af27c31f896eaa259c2aeedde68818e3f",
+      "gzipSha256": "354d1aaca0b2f81e2c6eae065ea14be3892d2e6ed621d2e121a989713d2a8a1d"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/analysis-schema334-correction.json",
+      "copy": "evidence/analysis-schema334-correction.json.gz",
+      "bytes": 315,
+      "rawSha256": "d12ab06ae1d4281484def4cdbfbb9626841cb459522c673f047dc19455540ee0",
+      "gzipSha256": "cac4100616ed939f047247acc3e2df54c56af7dcfc95ce8bd1024cabf284b8c7"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/submit-maps334.json.attempt1",
+      "copy": "evidence/submit-maps334.json.attempt1.gz",
+      "bytes": 135327,
+      "rawSha256": "4ce2b827a40fdb6f675888f40eba6909f5c9df05bb0db96e1524ee91c9a4632e",
+      "gzipSha256": "e052729e3ae68d9fdbd51f8363ee9d3a4c421aad56bc5e2f45bd12558a26ad02"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/prefix334.json.attempt1",
+      "copy": "evidence/prefix334.json.attempt1.gz",
+      "bytes": 85679,
+      "rawSha256": "cb8c95a313b6b1eaedb0eec6b3e1293b49db03991d3e1749c7d478658cc7c83a",
+      "gzipSha256": "ba2cdab7df6b416e5f7f9ef02dc9fa5700268f3e7346e86cf3e7bcf17aec7628"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/native334.json.attempt1",
+      "copy": "evidence/native334.json.attempt1.gz",
+      "bytes": 182620,
+      "rawSha256": "b9cdcacf72d5e47c9fd83f9005a18295eee6d6b25c827da5a208b03112ac4c5b",
+      "gzipSha256": "410f50d8ea94cb7caa8c2817b62bac47715d664295b4944d1d8d86f5a72d2ae3"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/summary334.json.attempt1",
+      "copy": "evidence/summary334.json.attempt1.gz",
+      "bytes": 28826,
+      "rawSha256": "e6dc364ca4b61e4ce4793379661bb4e6b9ec52777ee844d85c61d111c844f973",
+      "gzipSha256": "edea6d1c68822fd57ef25902fca9f7732252a87174af85637db5bbaf1c575129"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/README334.md",
+      "copy": "evidence/README334.md.gz",
+      "bytes": 15642,
+      "rawSha256": "f38f87165a25cfa90c44b88829a2fde61f732bfd4d6fc87723d736d15353a348",
+      "gzipSha256": "92b98ba77c6dc1850aa2994ce1997c50a204e5afe7db0b1f8e57eca50f7f7e1e"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/driver-turns334.csv.attempt1",
+      "copy": "evidence/driver-turns334.csv.attempt1.gz",
+      "bytes": 396622,
+      "rawSha256": "350d58cedb94753e05b746ffa50d23ecb47cfdb8b556c96290ed16dfa46ae539",
+      "gzipSha256": "27c49366551aa78c9156a3cd1d4fe2c7588086f4e8876c8084fd18006724c2e8"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/freeze334.py",
+      "copy": "evidence/freeze334.py.gz",
+      "bytes": 3558,
+      "rawSha256": "532eb9e55f6413cbc60602c521fb8b67addd1803bbd1d4f9fbb12179e2d69f05",
+      "gzipSha256": "0290e335bfc5dff06b7c7d29b9e79966cbf785871f48e155049171a3c9f8feab"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/inputs334.json",
+      "copy": "evidence/inputs334.json.gz",
+      "bytes": 14520,
+      "rawSha256": "1174cfb6f18d1478722bfb0fd72c3b69d8025861cd908ab157d57d215c3515bf",
+      "gzipSha256": "cc65509cc997eccb8e245d0bf484a856bc985e82e69aea4a68ce5309b1b2a89f"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/inputs334.initial.json",
+      "copy": "evidence/inputs334.initial.json.gz",
+      "bytes": 14226,
+      "rawSha256": "90fc13f77370a1b048df003976d746cc2b21965e0397c399cb7e0fcf8f6cebb7",
+      "gzipSha256": "0978489a195ab6d914bef6451e04aba024c0b8f0a4b7c499083ab6e170897969"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/finish334.py",
+      "copy": "evidence/finish334.py.gz",
+      "bytes": 5457,
+      "rawSha256": "04e015bccc1e0f000b13dee1dcee08917823272d66167146c6b36c06e674ba23",
+      "gzipSha256": "a1f39d1891df9358705df8308d2ac8dc27d26508aaef4a65ad08d95d6ac2d105"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/signed-241-333.json",
+      "copy": "evidence/signed-241-333.json.gz",
+      "bytes": 42897,
+      "rawSha256": "f35ec62754a4800fad2b4235851c5fb187a10c3dc049cc426d4c62bfe761f3ea",
+      "gzipSha256": "eee5f7b50bab95e60e28e9ea0275eb1d900c70e3ead2c0fd85a82e087491c52a"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/driver-turns334.csv",
+      "copy": "evidence/driver-turns334.csv.gz",
+      "bytes": 499587,
+      "rawSha256": "f68d105ca5e9be5d4c45fcfc80b394df36bab32d6ff1f519e52bd9ae8d9a595e",
+      "gzipSha256": "c2ea7dfe56b23e992fa748fd9af1dd2d3a20f477801cfebc99ad6c88a7f1af4e"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/summary334.json",
+      "copy": "evidence/summary334.json.gz",
+      "bytes": 28826,
+      "rawSha256": "e6dc364ca4b61e4ce4793379661bb4e6b9ec52777ee844d85c61d111c844f973",
+      "gzipSha256": "edea6d1c68822fd57ef25902fca9f7732252a87174af85637db5bbaf1c575129"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/storage-jobs334.csv",
+      "copy": "evidence/storage-jobs334.csv.gz",
+      "bytes": 5706008,
+      "rawSha256": "d2ca88830d9fcca53e038bd72073d5bd7f90eed7fe0d8476f0e5b072c4203e91",
+      "gzipSha256": "69108db9d09858d91fbcc6cd3c2640029bbf2a1ff6cdf74b013f3827f28e4e4e"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/prefix334.json",
+      "copy": "evidence/prefix334.json.gz",
+      "bytes": 88751,
+      "rawSha256": "5d24ab760ad160f6413ffe43a886052b44678307f9fa2d392c327ee47209f851",
+      "gzipSha256": "51f8d08a371d9da27b99f9949ffafb1aca2d297bedbab61571dd81cc974a609a"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/peer-revisit-gaps334.csv.attempt1",
+      "copy": "evidence/peer-revisit-gaps334.csv.attempt1.gz",
+      "bytes": 157835,
+      "rawSha256": "db0a1106bc7d8fdb70393d752e0a442297f61e6d49e529311d7cb8957996383e",
+      "gzipSha256": "04ba4df38b7d1c5120b51bc156b63710be16ef5471a7d68188be05b24e363786"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/check334.py",
+      "copy": "evidence/check334.py.gz",
+      "bytes": 4983,
+      "rawSha256": "903a5923f49daf72a5c2c1b1e9bdd62fa931a320af7f46345ee7f57457090418",
+      "gzipSha256": "0fd10735ec9253d5e8943859b1ff1604f2aba51295f0eae2a9f9a0ee6d453e37"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/analyze334-attempt1.py",
+      "copy": "evidence/analyze334-attempt1.py.gz",
+      "bytes": 13172,
+      "rawSha256": "bd24d7e976255939274e64f41992729934a66994aca5736b78fc22be672b9563",
+      "gzipSha256": "ce103d57fd4d409a07b80af7ee97c31efb81c2a26189845c782e46d1d60d055f"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/independent334.json",
+      "copy": "evidence/independent334.json.gz",
+      "bytes": 35887,
+      "rawSha256": "ec11417c3416d33281f1f849d3133271a6e210a2e4803793e975520c16dfaca2",
+      "gzipSha256": "7768cc70e2bcee8c8534c50f33322d49cfcad15d0301c869cb87c659713b740d"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/analysis334-attempt2.log",
+      "copy": "evidence/analysis334-attempt2.log.gz",
+      "bytes": 640,
+      "rawSha256": "e2b3ac9c09651a5c068bef982efc26710cf2aaf4413380ab0a7772e24db2bfc2",
+      "gzipSha256": "596ab536a94eb1feb63e0dd591ebf979a1d2b389c2e671c6c2c45c040e91bf83"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/prefix334.csv.attempt1",
+      "copy": "evidence/prefix334.csv.attempt1.gz",
+      "bytes": 28846,
+      "rawSha256": "b843359a1160e79474e2dd48b99171d71962f13306a9e545cca517dfa14ec2bd",
+      "gzipSha256": "e74f51ec910b29ce4962bf3bdf5dd67d17ce9f56c64e60412583849272bf5d32"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/native334.json",
+      "copy": "evidence/native334.json.gz",
+      "bytes": 185176,
+      "rawSha256": "706dc9134a1576d6d9dc52fa6c77c55b3e6dc70c6b74b6731d89fb8a1835e359",
+      "gzipSha256": "5bc34b4b59506aa3de333e6c2bf8fe43926d2f04cc7cb9a2645509c07c04f460"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/prefix334.csv",
+      "copy": "evidence/prefix334.csv.gz",
+      "bytes": 30846,
+      "rawSha256": "a7ac58b7e36460fbd3cda283deb6e09339e809873996d31c469b160e818f2923",
+      "gzipSha256": "327efd0faa0f84027bda17c63d30c6422d9d27c14392d4f40b79bce7e1be8076"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/PROTOCOL334.md",
+      "copy": "evidence/PROTOCOL334.md.gz",
+      "bytes": 3013,
+      "rawSha256": "c1481a0cbc95aa9bad4a2977f793b812dc72b3a7ddde7b9aae8eff33a23235d5",
+      "gzipSha256": "2f406c127056e85f65d882439f9378b8a4061c51bd1cca4c50a20eab7c577e2d"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/analysis334-attempt1.log",
+      "copy": "evidence/analysis334-attempt1.log.gz",
+      "bytes": 640,
+      "rawSha256": "e2b3ac9c09651a5c068bef982efc26710cf2aaf4413380ab0a7772e24db2bfc2",
+      "gzipSha256": "596ab536a94eb1feb63e0dd591ebf979a1d2b389c2e671c6c2c45c040e91bf83"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/verify-signatures334.log",
+      "copy": "evidence/verify-signatures334.log.gz",
+      "bytes": 10695,
+      "rawSha256": "a5ad115f1245530cb24649b62e55aaf931eb0f202bad5d668c88b26a22fa2522",
+      "gzipSha256": "636602473019242c505c930ea30a80022b8a4a6f3f07ebeff9f876021b1c00bd"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/submit-maps334.json",
+      "copy": "evidence/submit-maps334.json.gz",
+      "bytes": 136605,
+      "rawSha256": "0601ec43578086dec9326d088cd316be756fa444035d98fdb0f2bd52d1107269",
+      "gzipSha256": "4222354b96dc5911e41566013f0d58c2b32c0840b6aea27671cdd6c180220878"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/analyze334.py",
+      "copy": "evidence/analyze334.py.gz",
+      "bytes": 13197,
+      "rawSha256": "7261d2f4ac10272efea6aba9878fdb4a70c4d068b3cedfbfd15fe10971c9a840",
+      "gzipSha256": "1397c49a3cb4db3f97dccc989d2c9a1764fc0c76ec35954a6c623df001723e97"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/read-turns334.csv",
+      "copy": "evidence/read-turns334.csv.gz",
+      "bytes": 1756254,
+      "rawSha256": "d5e0b89f750e631f149edb62cdd365fdce346a227e16160c6017b4eab19f51d2",
+      "gzipSha256": "af6da14ab788cad8e8ea1ace6320a0d90c45a7b551c318e8d7b95d000566a9e6"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/read-turns334.csv.attempt1",
+      "copy": "evidence/read-turns334.csv.attempt1.gz",
+      "bytes": 1618114,
+      "rawSha256": "5ff4fd08fd837fa991e8653b35055c6493da23e75d2865e2745ac29dd64790fa",
+      "gzipSha256": "e165edf6381213af0c04cd5d709e95c24e158a37bc2ba4f9efc8e8ec547c50e3"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/storage-jobs334.csv.attempt1",
+      "copy": "evidence/storage-jobs334.csv.attempt1.gz",
+      "bytes": 4667089,
+      "rawSha256": "c5a224432af4ee573e3d13e06040165d07871c9200bc479244a8efb2dcd21225",
+      "gzipSha256": "a0cbda343d670af21dc8c1ad2b05dfe7ae457c3d930995f1cdb2d30ab0a6a9db"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/peer-revisit-gaps334.csv",
+      "copy": "evidence/peer-revisit-gaps334.csv.gz",
+      "bytes": 190117,
+      "rawSha256": "0152543f33baa1e2c7815793ffefc1f1035ebcf94ba001d31739adc0b1eb59df",
+      "gzipSha256": "b6a1035eb8539c34c70a2b8bc70f1f88e8248fff3a7c13ef8d6572182aba187d"
+    },
+    {
+      "source": "/private/tmp/done-slow-direction-trace-lab-20261102/closure334.json",
+      "copy": "evidence/closure334.json.gz",
+      "bytes": 435,
+      "rawSha256": "d9eb36427c4efa2d4f7c55cf2fcefb15a7147090a7cee5b969e7e67fb160937f",
+      "gzipSha256": "8ffc69db42fe95de4577b38e1822522c20ff468547d5c473c1c211293d025645"
+    }
+  ],
+  "originalTracesConsumedFromTheirExistingIndexedHomes": true,
+  "labOnly": true,
+  "noRuntimeApplicationPatch": true
+}

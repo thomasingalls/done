@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { buildInventory, assertSnapshot } from './inventory.mjs';
+import { inventorySnapshot } from './inventory-snapshot.mjs';
 const root = fileURLToPath(new URL('../..', import.meta.url));
 const args = process.argv.slice(2);
 assert(
@@ -11,14 +12,7 @@ assert(
 );
 const policy = JSON.parse(readFileSync(new URL('./policy.json', import.meta.url)));
 const inventory = buildInventory(root, policy);
-let bytes = JSON.stringify(inventory, null, 2) + '\n';
-if (args[0] === '--record') {
-  const { format } = await import('oxfmt');
-  const { printWidth } = JSON.parse(readFileSync(new URL('../../.oxfmtrc.json', import.meta.url)));
-  const result = await format('docs/release-validation-graph.json', bytes, { printWidth });
-  assert.equal(result.errors.length, 0, 'Cannot format planning inventory');
-  bytes = result.code;
-}
+let bytes = inventorySnapshot(inventory);
 const path = new URL('../../docs/release-validation-graph.json', import.meta.url);
 // Both modes bound the actual canonical snapshot, not a discarded raw representation.
 if (args[0] !== '--record') bytes = readFileSync(path, 'utf8');

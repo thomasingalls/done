@@ -1,0 +1,42 @@
+{
+  "rawObservations": {
+    "01-desktop": {
+      "keys": 779,
+      "paragraphLongTasks": 0,
+      "outcome": "completed-diagnostic"
+    },
+    "02-desktop-profile": {
+      "keys": 779,
+      "paragraphLongTasks": 1,
+      "outcome": "completed-diagnostic"
+    },
+    "03-mobile4x": {
+      "keys": 779,
+      "paragraphLongTasks": 120,
+      "outcome": "failed"
+    },
+    "04-mobile4x-offline-control": {
+      "keys": 779,
+      "paragraphLongTasks": 0,
+      "outcome": "failed"
+    }
+  },
+  "negativeControls": [
+    {
+      "fault": "drop-input",
+      "rejected": true
+    },
+    {
+      "fault": "unfocused",
+      "rejected": true
+    },
+    {
+      "fault": "inconsistent-clock",
+      "rejected": true
+    }
+  ],
+  "sourceFilesUnchanged": 440,
+  "sampledOwnerMapSourcesVerified": 6,
+  "oldTestsAndRuntimeUnchanged": true,
+  "qualification": "Diagnostic only; both measured mobile failures retained; no16ms/2.5s acceptance credit."
+}

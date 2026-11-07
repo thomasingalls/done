@@ -1,0 +1,1023 @@
+{
+  "phase": 449,
+  "date": "2026-11-05",
+  "sourceRevision": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+  "scope": "private reporting-overhead control and omitted-suffix scheduling diagnosis; no production change or acceptance credit",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/fixtures.ts",
+      "sha256": "5760fc000f8ebba39b5b370832b38b14eb03182ea65620b5c065620cee97efeb",
+      "bytes": 4971
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/server.mjs",
+      "sha256": "22930b1e10b0866e2f96ab4ec8ad8d4e5dbf649d48c0eb33acd35b64747d6dd2",
+      "bytes": 5479
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-continuation.config.ts",
+      "sha256": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "bytes": 446
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f",
+      "bytes": 11736
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveQuietPages.ts",
+      "sha256": "4a42098e79fe9aa4bff7df6e20a1ac62789d196233a929427fe7177211d5848b",
+      "bytes": 7756
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receivePageTransport.ts",
+      "sha256": "381659b70f376d44fba18da534236ae07119263100cb637b544512ed89225c58",
+      "bytes": 6489
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveOriginalsBudget.ts",
+      "sha256": "2a7ef173108ffd65f00cf1b86862a8127de3fcab4a87c57ae87c81a0ea9d0690",
+      "bytes": 1061
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveLimits.ts",
+      "sha256": "6b64232220f8b984199e7562f70a00c3da3587532a17754b3dd91060783ce61d",
+      "bytes": 250
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/receiveQuietTransport.test.ts",
+      "sha256": "d8f49c31f4c725c0e0ad10913edda8bfc8725bdc09a152f6ebc2b9c1fafae4eb",
+      "bytes": 6602
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/receiveQuietPages.test.ts",
+      "sha256": "84423463857545e98a0d473ff5b21d831c00c8220ba08c04f595a9e25f40c864",
+      "bytes": 10818
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/receiveSelection.test.ts",
+      "sha256": "655c3a27e4da93f7f8cc5c30529ced468b2a3d63f0d8683ccf10133dd69039bf",
+      "bytes": 23650
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23",
+      "bytes": 1852
+    }
+  ],
+  "declaration": {
+    "phase": 449,
+    "declaredEpoch": 1793888702.556231,
+    "question": "Remove only accepted-row reporting overhead in a private causal control; examine sparse suffix scheduling",
+    "scope": "two guard/scheduling controls before one unchanged app case; no acceptance credit",
+    "sourceRevision": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "sourcePins": {
+      "test/inbound-continuation/fairness.spec.ts": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "test/inbound-index/past-index.spec.ts": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "playwright.inbound-continuation.config.ts": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "playwright.inbound-index.config.ts": "9f7ae060eff3538ef31af56b2d20fb5d27d7f0bebc2218b50cc884fec028b2ee"
+    },
+    "observationPins": {
+      "02-fair449.spec.ts": "55756e9140ca3d05bdb5bf0c7924e8f55258f4e5ca12dacbbacfd44cec07f6a5",
+      "observe449.ts": "217a3c7ded81fee6ea2d95137afb1149a97f1e640947e828248d2493b9079b58",
+      "playwright449.config.ts": "7380043d4a31694229ef72f4b2788b5fb65a68fbb4ddec89d34e26a1c1d62bcd",
+      "plain-census449.ts": "31edb1b6f206fbface754bf1504c8960a43e168e6e7738feb8e12e3229209a98",
+      "00-guards449.spec.ts": "86c50bd528e5a6927c3a972cd76c05076713ad1ef6ec20c2d8844fb06eb1bcbf",
+      "01-schedule449.spec.ts": "f66d9def5f7b4315454f44b37c7016041f74e657c16d60d75da71399153ff521"
+    },
+    "inverseByteProof": {
+      "originalSpecSha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "privateSpecSha256": "55756e9140ca3d05bdb5bf0c7924e8f55258f4e5ca12dacbbacfd44cec07f6a5",
+      "inverseEditsRestoreOriginalSpecBytes": true,
+      "originalCensusSha256": "6ea7275ae9c9a22dc3a68c90165ed32276ce1fc9b2fb9ed04c7b70d071f0cc30",
+      "privateCensusBodySha256": "caec7780e83bfd6b84e4aefcda9b699b6dbbcdb4a543e185140f7c22af75505f",
+      "inverseFourMatcherReplacementsRestoreOriginalCensusBytes": true,
+      "tuplePredicatesRetained": 4,
+      "strictEquality": "Object.is semantics for schema-validated primitive kind/credential/position/digest; no decoder, SQL, return, throw, count or loop change",
+      "originalCaseAssertionsWaitsDeadlinesOfferedEditsRetained": true,
+      "canonicalChanges": false
+    },
+    "frozenBuild": "/private/tmp/done-stage5-hardening-20261105/build-r2",
+    "sameClosedSeed": "/private/tmp/done-stage5-hardening-20261105/preflight-fairness/seed",
+    "maximumAppRuns": 1,
+    "preAppControls": [
+      "old versus plain census acceptance on valid, wrong kind/credential/position/digest and malformed frames; both SQL branches",
+      "all six publisher orders, fast/slow turns, original partial transport/cache/selector, false-empty-credit sensitivity and750ms expiry"
+    ],
+    "tupleChecks": "all four predicates and all decoders/SQL/loop/returns remain; schema-valid primitive equality changes only assertion reporting, not acceptance",
+    "instrumentation": "synchronous census counters and existing read-batch request/response metadata; no profile, message interception or extra RPC",
+    "browser": "same installed Playwright151 as445-448",
+    "originalBodyAssertionsWaitsDeadlinesAndWorkloadUnchanged": true,
+    "canonicalAppAndTestsUnchanged": true,
+    "hostLogSeconds": 5,
+    "powerLogs": "window only plus complete raw SHA256/size",
+    "stop": "guard-control mismatch/unexpected negative pass or new app refusal/closure/loss/archive/cold failure stops; original liveness failure remains diagnostic",
+    "argv": [
+      "env",
+      "INBOUND_CONTINUATION_ROOT=/private/tmp/done-sparse-scheduling-449-20261105/fixture",
+      "INBOUND_CONTINUATION_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-positive",
+      "INBOUND_CONTINUATION_NEGATIVE_BUILD=/private/tmp/done-stage5-hardening-20261105/build-r2/served-fair-negative",
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-sparse-scheduling-449-20261105/playwright449.config.ts",
+      "--grep",
+      "tuple guard controls 449|omitted sparse scheduling controls 449|continuous native fairness known-backlog normal$",
+      "--max-failures",
+      "1"
+    ]
+  },
+  "guardRetryDeclaration": {
+    "phase": 449,
+    "declaredEpoch": 1793889013.859704,
+    "scope": "harness-only guard retry after read-only SQLite sidecar creation; no app journey",
+    "tests": 1,
+    "appRuns": 0,
+    "change": "copy closed source database to private unit-control root before read-only query",
+    "allPredicatesAnd120sDeadlineUnchanged": true,
+    "originalExecutedSourceRetained": true,
+    "sourceSeedExactBeforeRetry": true
+  },
+  "sourceEquivalence": {
+    "originalSpecSha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+    "privateSpecSha256": "55756e9140ca3d05bdb5bf0c7924e8f55258f4e5ca12dacbbacfd44cec07f6a5",
+    "inverseEditsRestoreOriginalSpecBytes": true,
+    "originalCensusSha256": "6ea7275ae9c9a22dc3a68c90165ed32276ce1fc9b2fb9ed04c7b70d071f0cc30",
+    "privateCensusBodySha256": "caec7780e83bfd6b84e4aefcda9b699b6dbbcdb4a543e185140f7c22af75505f",
+    "inverseFourMatcherReplacementsRestoreOriginalCensusBytes": true,
+    "tuplePredicatesRetained": 4,
+    "strictEquality": "Object.is semantics for schema-validated primitive kind/credential/position/digest; no decoder, SQL, return, throw, count or loop change",
+    "originalCaseAssertionsWaitsDeadlinesOfferedEditsRetained": true,
+    "canonicalChanges": false
+  },
+  "review": {
+    "phase": 449,
+    "actualAppRuns": 1,
+    "initialControlAndAppCases": [
+      {
+        "title": "tuple guard controls 449",
+        "status": "passed",
+        "durationMs": 39
+      },
+      {
+        "title": "omitted sparse scheduling controls 449",
+        "status": "passed",
+        "durationMs": 4
+      },
+      {
+        "title": "continuous native fairness known-backlog normal",
+        "status": "passed",
+        "durationMs": 59550
+      }
+    ],
+    "guardOnlyRetry": [
+      {
+        "title": "tuple guard controls 449",
+        "status": "passed",
+        "durationMs": 42
+      }
+    ],
+    "appChildExit": 0,
+    "initialControllerExit": 1,
+    "initialControllerFailure": "post-run exact original seed inventory assertion: read-only guard query created two new SQLite sidecars; pre-existing bytes and journey seed unchanged",
+    "harnessRepair": "sidecars preserved byte-for-byte outside frozen seed; restored exact seed; guard-only retry queries private copied DB",
+    "allFourTuplePredicatesAndDecodersRetained": true,
+    "guardControls": {
+      "results": [
+        {
+          "name": "valid",
+          "original": true,
+          "plain": true
+        },
+        {
+          "name": "wrong-kind",
+          "original": false,
+          "plain": false
+        },
+        {
+          "name": "wrong-credential",
+          "original": false,
+          "plain": false
+        },
+        {
+          "name": "wrong-position",
+          "original": false,
+          "plain": false
+        },
+        {
+          "name": "wrong-digest",
+          "original": false,
+          "plain": false
+        },
+        {
+          "name": "malformed-submission",
+          "original": false,
+          "plain": false
+        },
+        {
+          "name": "malformed-response",
+          "original": false,
+          "plain": false
+        }
+      ],
+      "bothTablesExact": true,
+      "sourceDatabaseReadOnlyUnchanged": true,
+      "scope": "Synthetic guard-unit stores only; never opened by the app or used as a journey fixture"
+    },
+    "schedulingControls": {
+      "rows": [
+        {
+          "order": [
+            "11111111111111111111111111111111",
+            "22222222222222222222222222222222",
+            "33333333333333333333333333333333"
+          ],
+          "stepMs": 40,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 320
+        },
+        {
+          "order": [
+            "11111111111111111111111111111111",
+            "22222222222222222222222222222222",
+            "33333333333333333333333333333333"
+          ],
+          "stepMs": 2000,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 16000
+        },
+        {
+          "order": [
+            "11111111111111111111111111111111",
+            "33333333333333333333333333333333",
+            "22222222222222222222222222222222"
+          ],
+          "stepMs": 40,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 320
+        },
+        {
+          "order": [
+            "11111111111111111111111111111111",
+            "33333333333333333333333333333333",
+            "22222222222222222222222222222222"
+          ],
+          "stepMs": 2000,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 1,
+          "sparseSelected": true,
+          "elapsedMs": 16000
+        },
+        {
+          "order": [
+            "22222222222222222222222222222222",
+            "11111111111111111111111111111111",
+            "33333333333333333333333333333333"
+          ],
+          "stepMs": 40,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 320
+        },
+        {
+          "order": [
+            "22222222222222222222222222222222",
+            "11111111111111111111111111111111",
+            "33333333333333333333333333333333"
+          ],
+          "stepMs": 2000,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 1,
+          "sparseSelected": true,
+          "elapsedMs": 16000
+        },
+        {
+          "order": [
+            "22222222222222222222222222222222",
+            "33333333333333333333333333333333",
+            "11111111111111111111111111111111"
+          ],
+          "stepMs": 40,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 320
+        },
+        {
+          "order": [
+            "22222222222222222222222222222222",
+            "33333333333333333333333333333333",
+            "11111111111111111111111111111111"
+          ],
+          "stepMs": 2000,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 16000
+        },
+        {
+          "order": [
+            "33333333333333333333333333333333",
+            "11111111111111111111111111111111",
+            "22222222222222222222222222222222"
+          ],
+          "stepMs": 40,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 320
+        },
+        {
+          "order": [
+            "33333333333333333333333333333333",
+            "11111111111111111111111111111111",
+            "22222222222222222222222222222222"
+          ],
+          "stepMs": 2000,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 16000
+        },
+        {
+          "order": [
+            "33333333333333333333333333333333",
+            "22222222222222222222222222222222",
+            "11111111111111111111111111111111"
+          ],
+          "stepMs": 40,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 0,
+          "sparseSelected": true,
+          "elapsedMs": 320
+        },
+        {
+          "order": [
+            "33333333333333333333333333333333",
+            "22222222222222222222222222222222",
+            "11111111111111111111111111111111"
+          ],
+          "stepMs": 2000,
+          "hotPositions": 8,
+          "omitted": 7,
+          "ownTurns": 1,
+          "sparseSelected": true,
+          "elapsedMs": 16000
+        }
+      ],
+      "falseEmptyCreditDetected": true,
+      "requestStart750MsExpiryRetained": true,
+      "scope": "Exact production scheduling/cache/transport helpers; symbolic transport only, no signatures verified or entries admitted",
+      "finding": "Omission grants no quiet evidence and does not prevent a native sparse turn after eight hot positions; slow positions stretch wall time, with at most one intervening own check in this three-device model"
+    },
+    "hotWallMs": 45001.281494140625,
+    "hotAcceptedRowsCalls": 93,
+    "hotAcceptedRowsSynchronousWallMs": 667.8345790000003,
+    "hotProcessCpuMs": 9042.199,
+    "eventLoopUtilization": {
+      "idle": 36181.241395,
+      "active": 8820.097229954226,
+      "utilization": 0.1959963303194561
+    },
+    "markerObservations": [
+      {
+        "marker": 20,
+        "offerAtMs": 10001.824951171875,
+        "observedVisibleAtMs": 11005.748779296875,
+        "offerToOriginalPollingObservationMs": 1003.923828125
+      },
+      {
+        "marker": 40,
+        "offerAtMs": 20002.7578125,
+        "observedVisibleAtMs": 21005.6044921875,
+        "offerToOriginalPollingObservationMs": 1002.8466796875
+      },
+      {
+        "marker": 60,
+        "offerAtMs": 30004.8291015625,
+        "observedVisibleAtMs": 31008.0302734375,
+        "offerToOriginalPollingObservationMs": 1003.201171875
+      }
+    ],
+    "nativeReceipts": 104,
+    "preparedNativeTurns": [
+      {
+        "publisher": "f1dd3876b87dc3463c7263ad37a7e6c1",
+        "positions": 8
+      },
+      {
+        "publisher": "f6faf957edbc37b59ae91518e3d36b30",
+        "positions": 8
+      },
+      {
+        "publisher": "f1dd3876b87dc3463c7263ad37a7e6c1",
+        "positions": 8
+      },
+      {
+        "publisher": "f6faf957edbc37b59ae91518e3d36b30",
+        "positions": 8
+      }
+    ],
+    "nativeFairnessArchiveUndoCold": "all original assertions passed",
+    "network": {
+      "requests": 231,
+      "decodedBodies": 218,
+      "unknownBodies": 13,
+      "partialDecodedReplies": [],
+      "receiverHotRequests": 97,
+      "receiverHotDecodedBodies": 88,
+      "receiverHotUnknownBodies": 9,
+      "allObservedResponseStatuses200": true
+    },
+    "sourceAssetsAndJourneySeedUnchanged": true,
+    "originalSeedRestoredExactlyAndGuardRetryLeavesItExact": true,
+    "host": {
+      "samples": 13,
+      "swapFirstMiB": 15792.31,
+      "swapLastMiB": 15792.31,
+      "swapIncreases": [],
+      "nonTestAbove100Spans": [],
+      "automaticNoiseRetryTriggered": false
+    },
+    "credit": "private diagnostic only; no Stage5 timing acceptance or regrading earlier failures",
+    "findings": [
+      "Profiling plus private strict-assert control attributes dominant shared-loop blocking to test reporting",
+      "An omitted quiet suffix neither earns evidence nor loses a native turn in the tested production-helper models",
+      "Bound is logical positions, not a wall-time guarantee; real slow service can still lengthen it",
+      "No independent missing-writing or native logical-fairness defect demonstrated in this case"
+    ],
+    "nextBoundedRepair": "Canonical test-only reporting repair with permanent guard controls, then unchanged fairness/past-index preflight; no app/server/limit change needed for this finding"
+  },
+  "sidecarPreservation": {
+    "failure": "controller post-run exact seed inventory assertion; app child passed all3tests",
+    "lsof": "no open handles; exit1 and empty output before move",
+    "preExistingSourceFilesAllUnchanged": true,
+    "journeySeedCloneAllUnchanged": true,
+    "diagnosticCreatedSidecars": [
+      {
+        "oldPath": "/private/tmp/done-stage5-hardening-20261105/preflight-fairness/seed/service/account.sqlite-shm",
+        "preservedPath": "/private/tmp/done-sparse-scheduling-449-20261105/original-seed-readonly-sidecars/account.sqlite-shm",
+        "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+        "bytes": 32768
+      },
+      {
+        "oldPath": "/private/tmp/done-stage5-hardening-20261105/preflight-fairness/seed/service/account.sqlite-wal",
+        "preservedPath": "/private/tmp/done-sparse-scheduling-449-20261105/original-seed-readonly-sidecars/account.sqlite-wal",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      }
+    ],
+    "frozenSourceSeedRestoredExactly": true,
+    "deletedFiles": false,
+    "appRerun": false
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/child.log",
+      "sha256": "3a3795040fe874d35b0b11de723c0657d7d08d417a842676bd5a4bc0e1ebc76e",
+      "bytes": 356,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/host-load.jsonl",
+      "sha256": "649a138ad87a32d27135bf8e8ef23f51a79570c9b1f58e9d1b7d85a842d84e4e",
+      "bytes": 1483,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/power-assertions-before.txt",
+      "sha256": "6183908a25c2b863af43001c0119d8f20cbeb0a44a83117201f8dab3fe954071",
+      "bytes": 1899,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/power-log-after.meta.json",
+      "sha256": "8424698c556c03020c480538966e908e4b07ca80f4cd922aa6a942df399151df",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/power-log-after.txt",
+      "sha256": "e620fe8d84ff4a08c0eb68abf03c277a5f54b180cb788c8d33ebd6cf237d63d0",
+      "bytes": 231,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/power-log-before.meta.json",
+      "sha256": "90ff073fde41e3a73e85b4e60d0d9144af662671583ebbb412841e51711701d8",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-guard-copy-retry/run.json",
+      "sha256": "877e65d2d1c2d8730a10b7708b2bf1c969aec453c4988e9b271c0da0e5f56abf",
+      "bytes": 1195,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/child.log",
+      "sha256": "ef6740f243dd4661a9dc2b89f699b6c4c4456bd250a088cd85ce76eddc0fb9fc",
+      "bytes": 1244,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/host-load.jsonl",
+      "sha256": "81fc807412607e4692ca9f876a668407e3a8601b74f4ed12ccd751aa2fe6c17e",
+      "bytes": 20289,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/power-assertions-before.txt",
+      "sha256": "83f78bb53ce3793247ebe6ccb8af2e6b2e5b5e02205c480939df169ae4c26279",
+      "bytes": 1491,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/power-log-after.meta.json",
+      "sha256": "fd0f0898b9863849b41fd91e33aeae8fc02191983d97be3cc53d276d4eb4a536",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/power-log-after.txt",
+      "sha256": "23f4f81d82b23b762952c0929d5dd3d2547344bf4ab34f8dff758cae0f0f6fa0",
+      "bytes": 450,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/power-log-before.meta.json",
+      "sha256": "97f56443bd4e95abd4ae425c324dac7198f1c534713dcfc8f9251d8210416e05",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/449-sparse-scheduling-control/run.json",
+      "sha256": "8620e89a90377ec49b60849205d571092710027e335cbdc868237922302e5c8c",
+      "bytes": 2100,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/00-guards449-r2.spec.ts",
+      "sha256": "04740c8d792707b73432e3ecbcee9b32e4a2a38c7803a96bd9c6ff7aba3febe2",
+      "bytes": 4656,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/00-guards449.spec.ts",
+      "sha256": "86c50bd528e5a6927c3a972cd76c05076713ad1ef6ec20c2d8844fb06eb1bcbf",
+      "bytes": 4508,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/01-schedule449.spec.ts",
+      "sha256": "f66d9def5f7b4315454f44b37c7016041f74e657c16d60d75da71399153ff521",
+      "bytes": 5143,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/02-fair449.spec.ts",
+      "sha256": "55756e9140ca3d05bdb5bf0c7924e8f55258f4e5ca12dacbbacfd44cec07f6a5",
+      "bytes": 18867,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-declaration.json",
+      "sha256": "761c6542d8545dd906b22a55a2fc71398674f47d270a821c0cceef76bd8632de",
+      "bytes": 4235,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-guard-controls.json",
+      "sha256": "6eb768dfff1aa5a31c5eb88659c5fa36cdaf724657cc7ef86a7ead13cda1e132",
+      "bytes": 825,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-guard-retry-declaration.json",
+      "sha256": "cd488b2915b5cf8e5b8dd6bee6c6d1c72dce815f352c5ab4fac35f51292393ca",
+      "bytes": 406,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-list.log",
+      "sha256": "5d36a7e53876a6fcb7c76ba44df60f480837898af2cf73c5303d7848cf36fab3",
+      "bytes": 575,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-review-console.log",
+      "sha256": "7130de33a11700305f816b6c1708e830a6feb999e82ff8182153a9abd427e233",
+      "bytes": 1335,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-review-initial-host-labels.json",
+      "sha256": "ca3687b709afd00cd7081bbd4b142df73012fcb8a4c47a34b7e79daf1f3b2978",
+      "bytes": 9451,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-review.json",
+      "sha256": "176ae56aa86d9caac38f5a7a8d6489eabaea54d60d8cf99f98a83a17d21cd7b7",
+      "bytes": 9093,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-scheduling-controls.json",
+      "sha256": "69444231e330577ae8a30e7ef0203766f15caf3b0a2d3bcd6b27fd653f610141",
+      "bytes": 4184,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-seed-clone-after.json",
+      "sha256": "e8e2fab4dc42893864ffe5d1a7ea46466b5e980afcffbc3b9f16f2e319ab04c5",
+      "bytes": 105583,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-seed-inventory.json",
+      "sha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+      "bytes": 105480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-seed-original-after.json",
+      "sha256": "c726feec752bc07307bd379273beafc539675b1b2b788136c7bb8584ced8e9b3",
+      "bytes": 105895,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-sidecar-preservation.json",
+      "sha256": "a44e5c7d957054f7c7d0b91228b92111dd2f824ddac9fca928a5236427b5d8f6",
+      "bytes": 1089,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-source-equivalence.json",
+      "sha256": "c026ccba4aa82548d3e3ba71da87c9de44fbfc347d43b23bec4c0c0bf85412e3",
+      "bytes": 782,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/fixture/continuous-native-fairness-known-backlog-normal/evidence.json",
+      "sha256": "edd8fe50cb18d425ac1acae7eabf02902f1eb8fdc71f80f7472a06d72a41250e",
+      "bytes": 126800,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-results449-r2.json",
+      "sha256": "7bae85f707c2de6d55244dc5a6a2198640675cb85e4f79c2471b2ecd6751cb5e",
+      "bytes": 3221,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/449-guard-controls.json",
+      "sha256": "6eb768dfff1aa5a31c5eb88659c5fa36cdaf724657cc7ef86a7ead13cda1e132",
+      "bytes": 825,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/source-account.sqlite",
+      "sha256": "5be05738191eee43b9d77f8e2a37ecd0cf9bc02b67511a7c9791c30c49681452",
+      "bytes": 512000,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/source-account.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/source-account.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/both-tables/account.sqlite",
+      "sha256": "e0fe77cd1aa7c41139dcac6984d72ce5333d7822e6ece61565b835f515eca164",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/malformed-response/account.sqlite",
+      "sha256": "29cf6d16d874a0bdce7b501b15639cb281f6ad32107a1537c2aa6508b73f3d7a",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/malformed-submission/account.sqlite",
+      "sha256": "6d119c4579aaa84da5b59457a806336b87f14f60f1efdd9d31b21af349bcc506",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/valid/account.sqlite",
+      "sha256": "afcce877563188521f9676a270ae6f0242971a89ddf225d791173a52a25b611d",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/wrong-credential/account.sqlite",
+      "sha256": "f44a2c0d6ee158e6b144aa5fd70f887a3de37297c8749fe48b0cd46a4b9e0654",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/wrong-digest/account.sqlite",
+      "sha256": "98f0253a480c52ca66f1ee77d594455a24e4817bca1687bedc579043ed5e7223",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/wrong-kind/account.sqlite",
+      "sha256": "2992c3c0ca57d4dd3a721f867ba27b1e6d7d78238eab5d9583dbb3536d8d4d95",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/guard-retry/tuple-controls/wrong-position/account.sqlite",
+      "sha256": "4925d0dc2723fa5540484cdd1341c66109d8a0f000057a2b6e01239cc8f32a8d",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/observation449.json",
+      "sha256": "9836700ad2f1cbbc45c7f5c01f0d877fb04800b6c39017f1e0b260d966e48e99",
+      "bytes": 499897,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/observe449.ts",
+      "sha256": "217a3c7ded81fee6ea2d95137afb1149a97f1e640947e828248d2493b9079b58",
+      "bytes": 2879,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/original-seed-readonly-sidecars/account.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/original-seed-readonly-sidecars/account.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/package.json",
+      "sha256": "a90fc33418afa2b9cbf4768524b021135b965ecdf993457505bfae3ac44a8428",
+      "bytes": 33,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/plain-census449.ts",
+      "sha256": "31edb1b6f206fbface754bf1504c8960a43e168e6e7738feb8e12e3229209a98",
+      "bytes": 1698,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/playwright449-guard-r2.config.ts",
+      "sha256": "39f8a45da7bbd61ead6ac27bdaf9e6324386c8bcaceedafe710b6fd562334694",
+      "bytes": 530,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/playwright449.config.ts",
+      "sha256": "7380043d4a31694229ef72f4b2788b5fb65a68fbb4ddec89d34e26a1c1d62bcd",
+      "bytes": 498,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/prepare449.py",
+      "sha256": "68cba07674d39bac31f98a1bbd6c9a63e40f8ffa24bb2516793c503b6fc57535",
+      "bytes": 4860,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/record449.py",
+      "sha256": "35819fc3a023ff75420724fc7a326bd0402f072955da1f61d00c017dd287bc95",
+      "bytes": 14715,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/repair-sidecars449.py",
+      "sha256": "7b195b5d6b93d1d18deb5d164855336adee05d81c38c8b24c016a68dd233b567",
+      "bytes": 3232,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/results449.json",
+      "sha256": "4be258d60bea4013149993b550047c649e95e7fb0e907aac9f40a0f260453cb2",
+      "bytes": 174889,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/review449.py",
+      "sha256": "f8ab01cb25969ca5503545d050f7205faeb05513e5121693744b095b693ca365",
+      "bytes": 7716,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/run449.py",
+      "sha256": "ef337b5f7e0778ee2d8cd62559cedc95a469f27a032e66199faca08ad8221cad",
+      "bytes": 6344,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/both-tables/account.sqlite",
+      "sha256": "e0fe77cd1aa7c41139dcac6984d72ce5333d7822e6ece61565b835f515eca164",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/malformed-response/account.sqlite",
+      "sha256": "29cf6d16d874a0bdce7b501b15639cb281f6ad32107a1537c2aa6508b73f3d7a",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/malformed-submission/account.sqlite",
+      "sha256": "6d119c4579aaa84da5b59457a806336b87f14f60f1efdd9d31b21af349bcc506",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/valid/account.sqlite",
+      "sha256": "afcce877563188521f9676a270ae6f0242971a89ddf225d791173a52a25b611d",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/wrong-credential/account.sqlite",
+      "sha256": "f44a2c0d6ee158e6b144aa5fd70f887a3de37297c8749fe48b0cd46a4b9e0654",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/wrong-digest/account.sqlite",
+      "sha256": "98f0253a480c52ca66f1ee77d594455a24e4817bca1687bedc579043ed5e7223",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/wrong-kind/account.sqlite",
+      "sha256": "2992c3c0ca57d4dd3a721f867ba27b1e6d7d78238eab5d9583dbb3536d8d4d95",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/tuple-controls/wrong-position/account.sqlite",
+      "sha256": "4925d0dc2723fa5540484cdd1341c66109d8a0f000057a2b6e01239cc8f32a8d",
+      "bytes": 12288,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-inventory-policy.log",
+      "sha256": "b6b99e07fe818b26113e5d7b180fc8cbc576f542231d9b9fd4ac9cbe1742e0c7",
+      "bytes": 323,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-debts.log",
+      "sha256": "2b3efda64e4d16264b5d487dac55740d775c1918ea5b9b46e07f9456ca247817",
+      "bytes": 313,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-harness-repair-proof.json",
+      "sha256": "0b77f1d2ffed48387e26a86fee46b10a302d6702e90a133f2deab2877401aff0",
+      "bytes": 538,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-sparse-scheduling-449-20261105/449-check-results.json",
+      "sha256": "8e5fcfa4fcb7c78f881c7c95fb610980c24d68e0b6318c4b08448c5c0326a6ba",
+      "bytes": 529,
+      "stored": "original local artifact only"
+    }
+  ],
+  "canonicalAppAndTestsUnchanged": true,
+  "allGuardsLimitsBudgetsDeadlinesUnchanged": true,
+  "original445To448FailuresRetained": true,
+  "noUnfairAppSensitivityRunClaimed": true,
+  "timedMatrixJourneys": 0,
+  "committed": false,
+  "pushed": false,
+  "bookkeepingChecks": [
+    {
+      "name": "release-validation inventory/policy",
+      "exit": 0
+    },
+    {
+      "name": "debt bookkeeping",
+      "exit": 0
+    },
+    {
+      "name": "git diff --check",
+      "exit": 0
+    },
+    {
+      "name": "independent source/assets/seed/guard retry inverse proofs",
+      "exit": 0
+    }
+  ],
+  "guardRetryInverseProof": {
+    "phase": 449,
+    "oldGuardSha256": "86c50bd528e5a6927c3a972cd76c05076713ad1ef6ec20c2d8844fb06eb1bcbf",
+    "retryGuardSha256": "04740c8d792707b73432e3ecbcee9b32e4a2a38c7803a96bd9c6ff7aba3febe2",
+    "inverseOnlyCopyAndArtifactPathEditsRestoreExecutedGuardBytes": true,
+    "retryConfigOnlySelectsSameGuardAndNewOutputs": true,
+    "guardSourceGeneratedBeforeRetryDeclaration": true,
+    "privateSourceCopyEqualsOriginalDbBytes": true,
+    "sourceDbSha256": "5be05738191eee43b9d77f8e2a37ecd0cf9bc02b67511a7c9791c30c49681452",
+    "extraAppRuns": 0
+  }
+}

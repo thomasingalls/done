@@ -1,0 +1,8 @@
+{
+  "onlyRuntimeSourceChange": "src/crdt/accountReceive.ts",
+  "sourceSnapshot": "/private/tmp/done-phase183-replay-nlebl681",
+  "accountReceiveSha256": "57b321daa1d25beb641b2179fee0f41d043d5caa98d69686c3708a52bfc3ca3b",
+  "comparison": "current runtime including read-only roster RPC vs full frozen183 AccountReceive without context queue; not a full prior-release comparison",
+  "deadlineChanged": false,
+  "transforms": []
+}

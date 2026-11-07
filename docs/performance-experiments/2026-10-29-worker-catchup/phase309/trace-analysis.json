@@ -1,0 +1,596 @@
+{
+  "cases": [
+    {
+      "case": "trace-grown-normal",
+      "childExitCode": 1,
+      "outcome": "failed",
+      "maintenanceComplete": false,
+      "owners": [
+        {
+          "ownerIndex": 0,
+          "attempts": 6,
+          "completions": 0,
+          "savedDeltas": 4,
+          "interruptions": 2,
+          "finalStage": "opening",
+          "outcomeCounts": {
+            "preparation-saved": 4,
+            "skipped": 2
+          },
+          "guardCounts": {
+            "queuePriority": 2
+          },
+          "lateCompletedMisses": [
+            0,
+            1350,
+            808,
+            1,
+            0
+          ],
+          "lateFirstMissMs": [
+            null,
+            1809.1999988555908,
+            1841,
+            2378.199998855591,
+            null
+          ],
+          "lateReplayMs": [
+            655,
+            1648,
+            2097.699951171875,
+            2023.699951171875
+          ],
+          "maxDurableDeltas": 4,
+          "maxDurableBytes": 29076974,
+          "maxDurableChunks": 113,
+          "firstAttemptAt": 1793444307546.3,
+          "completionAt": null,
+          "fromFirstAttemptToCompletionMs": null
+        },
+        {
+          "ownerIndex": 1,
+          "attempts": 12,
+          "completions": 0,
+          "savedDeltas": 8,
+          "interruptions": 4,
+          "finalStage": "verifying",
+          "outcomeCounts": {
+            "preparation-saved": 8,
+            "skipped": 4
+          },
+          "guardCounts": {
+            "queuePriority": 4
+          },
+          "lateCompletedMisses": [
+            265,
+            331,
+            346,
+            267,
+            0
+          ],
+          "lateFirstMissMs": [
+            1694.2999992370605,
+            1708.3999996185303,
+            1709,
+            1787.3999996185303,
+            null
+          ],
+          "lateReplayMs": [
+            1681.400146484375,
+            1730.5,
+            1743.599853515625,
+            1726.5,
+            1103.699951171875
+          ],
+          "maxDurableDeltas": 8,
+          "maxDurableBytes": 18531549,
+          "maxDurableChunks": 75,
+          "firstAttemptAt": 1793444166432.3,
+          "completionAt": null,
+          "fromFirstAttemptToCompletionMs": null
+        }
+      ],
+      "originalOverlapKeys": 120,
+      "overlapPredicateRetained": true,
+      "cold": "not reached",
+      "guards": {
+        "actualPreparationAndBacklogAtTypingStart": true,
+        "fullOriginalArchivePlusOnlyOfferedAppend": true,
+        "undoAndPeerConvergence": true
+      },
+      "hostLoad": {
+        "samples": 55,
+        "hostBusyMedianPercent": 35.20621637776449,
+        "hostBusyMaxPercent": 79.52646239554318,
+        "maxSampleIntervalSeconds": 5.094986834,
+        "topProcessSeenCpuMedian": [
+          {
+            "name": "Google Chrome Helper (Renderer)",
+            "medianWhenInTopPercent": 66.07191099563215,
+            "appearances": 94
+          },
+          {
+            "name": "WindowServer",
+            "medianWhenInTopPercent": 52.6947284876154,
+            "appearances": 55
+          },
+          {
+            "name": "duetexpertd",
+            "medianWhenInTopPercent": 38.17173130631453,
+            "appearances": 3
+          },
+          {
+            "name": "Google Chrome",
+            "medianWhenInTopPercent": 25.346650515263452,
+            "appearances": 77
+          },
+          {
+            "name": "ghostty",
+            "medianWhenInTopPercent": 21.721849543939243,
+            "appearances": 55
+          },
+          {
+            "name": "WeatherWidget",
+            "medianWhenInTopPercent": 19.36672648960679,
+            "appearances": 1
+          },
+          {
+            "name": "Firefox Developer Edition GPU Helper",
+            "medianWhenInTopPercent": 16.801183613707675,
+            "appearances": 55
+          },
+          {
+            "name": "runningboardd",
+            "medianWhenInTopPercent": 16.144135705311093,
+            "appearances": 14
+          },
+          {
+            "name": "ctkd",
+            "medianWhenInTopPercent": 15.554120209880045,
+            "appearances": 6
+          },
+          {
+            "name": "plugin-container",
+            "medianWhenInTopPercent": 14.059470207685077,
+            "appearances": 5
+          },
+          {
+            "name": "firefox",
+            "medianWhenInTopPercent": 11.684379558881155,
+            "appearances": 55
+          },
+          {
+            "name": "syspolicyd",
+            "medianWhenInTopPercent": 11.208666108013816,
+            "appearances": 1
+          }
+        ],
+        "samplerCpuMsMedian": 4.978,
+        "psChildCpuMsMedian": 42.12199999999999
+      }
+    },
+    {
+      "case": "trace-grown-withheld",
+      "childExitCode": 1,
+      "outcome": "failed",
+      "maintenanceComplete": false,
+      "owners": [
+        {
+          "ownerIndex": 0,
+          "attempts": 7,
+          "completions": 0,
+          "savedDeltas": 5,
+          "interruptions": 2,
+          "finalStage": "verifying",
+          "outcomeCounts": {
+            "preparation-saved": 5,
+            "skipped": 2
+          },
+          "guardCounts": {
+            "queuePriority": 2
+          },
+          "lateCompletedMisses": [
+            0,
+            977,
+            1189,
+            1,
+            0
+          ],
+          "lateFirstMissMs": [
+            null,
+            104.39999961853027,
+            1811.400001525879,
+            2340.2000007629395,
+            null
+          ],
+          "lateReplayMs": [
+            760,
+            1624.7001953125,
+            2089.300048828125,
+            1993,
+            847.5
+          ],
+          "maxDurableDeltas": 5,
+          "maxDurableBytes": 29097189,
+          "maxDurableChunks": 113,
+          "firstAttemptAt": 1793444566290.5,
+          "completionAt": null,
+          "fromFirstAttemptToCompletionMs": null
+        },
+        {
+          "ownerIndex": 1,
+          "attempts": 21,
+          "completions": 0,
+          "savedDeltas": 17,
+          "interruptions": 4,
+          "finalStage": "verifying",
+          "outcomeCounts": {
+            "preparation-saved": 17,
+            "skipped": 4
+          },
+          "guardCounts": {
+            "queuePriority": 4
+          },
+          "lateCompletedMisses": [
+            0,
+            28,
+            122,
+            126,
+            0
+          ],
+          "lateFirstMissMs": [
+            null,
+            1980.7999992370605,
+            1891.1000003814697,
+            1903.6000003814697,
+            null
+          ],
+          "lateReplayMs": [
+            118.89990234375,
+            1692.2001953125,
+            1728.099853515625,
+            1733.800048828125,
+            287.199951171875
+          ],
+          "maxDurableDeltas": 17,
+          "maxDurableBytes": 21131050,
+          "maxDurableChunks": 90,
+          "firstAttemptAt": 1793444444924.9,
+          "completionAt": null,
+          "fromFirstAttemptToCompletionMs": null
+        }
+      ],
+      "originalOverlapKeys": 120,
+      "overlapPredicateRetained": true,
+      "cold": "not reached",
+      "guards": {
+        "actualPreparationAndBacklogAtTypingStart": true,
+        "fullOriginalArchivePlusOnlyOfferedAppend": true,
+        "undoAndPeerConvergence": true
+      },
+      "hostLoad": {
+        "samples": 55,
+        "hostBusyMedianPercent": 39.037007560684444,
+        "hostBusyMaxPercent": 58.85499207606973,
+        "maxSampleIntervalSeconds": 5.143074625,
+        "topProcessSeenCpuMedian": [
+          {
+            "name": "Google Chrome Helper (Renderer)",
+            "medianWhenInTopPercent": 69.80976777043128,
+            "appearances": 96
+          },
+          {
+            "name": "WindowServer",
+            "medianWhenInTopPercent": 47.11186766623085,
+            "appearances": 55
+          },
+          {
+            "name": "ctkd",
+            "medianWhenInTopPercent": 25.733007820681937,
+            "appearances": 5
+          },
+          {
+            "name": "spotlightknowledged.updater",
+            "medianWhenInTopPercent": 20.18377291999789,
+            "appearances": 3
+          },
+          {
+            "name": "secd",
+            "medianWhenInTopPercent": 19.302261694611303,
+            "appearances": 4
+          },
+          {
+            "name": "WeatherWidget",
+            "medianWhenInTopPercent": 18.58130797626493,
+            "appearances": 2
+          },
+          {
+            "name": "deleted",
+            "medianWhenInTopPercent": 18.416032884892882,
+            "appearances": 2
+          },
+          {
+            "name": "Firefox Developer Edition GPU Helper",
+            "medianWhenInTopPercent": 16.64911819885446,
+            "appearances": 55
+          },
+          {
+            "name": "ghostty",
+            "medianWhenInTopPercent": 15.976073495843002,
+            "appearances": 55
+          },
+          {
+            "name": "corespotlightd",
+            "medianWhenInTopPercent": 15.592457896630567,
+            "appearances": 2
+          },
+          {
+            "name": "Google Chrome",
+            "medianWhenInTopPercent": 14.358347940466476,
+            "appearances": 84
+          },
+          {
+            "name": "firefox",
+            "medianWhenInTopPercent": 11.85670910216255,
+            "appearances": 55
+          }
+        ],
+        "samplerCpuMsMedian": 4.929,
+        "psChildCpuMsMedian": 41.506000000000014
+      }
+    },
+    {
+      "case": "trace-idle-polls",
+      "childExitCode": 0,
+      "outcome": "maintenance-timeout",
+      "maintenanceComplete": false,
+      "owners": [
+        {
+          "ownerIndex": 0,
+          "attempts": 9,
+          "completions": 0,
+          "savedDeltas": 7,
+          "interruptions": 2,
+          "finalStage": "durability",
+          "outcomeCounts": {
+            "preparation-saved": 7,
+            "skipped": 2
+          },
+          "guardCounts": {
+            "queuePriority": 2
+          },
+          "lateCompletedMisses": [
+            640,
+            470,
+            464,
+            398
+          ],
+          "lateFirstMissMs": [
+            1493.6000003814697,
+            1626.3000011444092,
+            1626.6000003814697,
+            1695
+          ],
+          "lateReplayMs": [
+            1728.800048828125,
+            1734,
+            1761.2001953125,
+            1762.39990234375
+          ],
+          "maxDurableDeltas": 7,
+          "maxDurableBytes": 20019375,
+          "maxDurableChunks": 80,
+          "firstAttemptAt": 1793444723281,
+          "completionAt": null,
+          "fromFirstAttemptToCompletionMs": null
+        }
+      ],
+      "originalOverlapKeys": null,
+      "overlapPredicateRetained": "not a typing case",
+      "cold": "not reached",
+      "guards": {
+        "fullOriginalArchive": true
+      },
+      "hostLoad": {
+        "samples": 28,
+        "hostBusyMedianPercent": 27.1415050436445,
+        "hostBusyMaxPercent": 48.31505483549352,
+        "maxSampleIntervalSeconds": 5.090629291,
+        "topProcessSeenCpuMedian": [
+          {
+            "name": "WindowServer",
+            "medianWhenInTopPercent": 51.781382052417,
+            "appearances": 28
+          },
+          {
+            "name": "ghostty",
+            "medianWhenInTopPercent": 23.004343847020017,
+            "appearances": 28
+          },
+          {
+            "name": "ctkd",
+            "medianWhenInTopPercent": 19.991939056191175,
+            "appearances": 3
+          },
+          {
+            "name": "WeatherWidget",
+            "medianWhenInTopPercent": 18.550881144653598,
+            "appearances": 1
+          },
+          {
+            "name": "Firefox Developer Edition GPU Helper",
+            "medianWhenInTopPercent": 17.681683012316903,
+            "appearances": 28
+          },
+          {
+            "name": "Google Chrome Helper (Renderer)",
+            "medianWhenInTopPercent": 14.096819099478719,
+            "appearances": 28
+          },
+          {
+            "name": "secd",
+            "medianWhenInTopPercent": 13.657859355229917,
+            "appearances": 3
+          },
+          {
+            "name": "networkserviceproxy",
+            "medianWhenInTopPercent": 13.066382797732158,
+            "appearances": 2
+          },
+          {
+            "name": "firefox",
+            "medianWhenInTopPercent": 12.13288278295996,
+            "appearances": 28
+          },
+          {
+            "name": "Codex (Service)",
+            "medianWhenInTopPercent": 10.9492550803699,
+            "appearances": 28
+          },
+          {
+            "name": "Codex (Renderer)",
+            "medianWhenInTopPercent": 10.082133641096346,
+            "appearances": 27
+          },
+          {
+            "name": "node",
+            "medianWhenInTopPercent": 8.884344711094066,
+            "appearances": 3
+          }
+        ],
+        "samplerCpuMsMedian": 5.954000000000001,
+        "psChildCpuMsMedian": 48.63200000000002
+      }
+    },
+    {
+      "case": "trace-idle-paused",
+      "childExitCode": 0,
+      "outcome": "passed",
+      "maintenanceComplete": true,
+      "owners": [
+        {
+          "ownerIndex": 0,
+          "attempts": 11,
+          "completions": 1,
+          "savedDeltas": 10,
+          "interruptions": 0,
+          "finalStage": "complete",
+          "outcomeCounts": {
+            "preparation-saved": 10,
+            "removed": 1
+          },
+          "guardCounts": {},
+          "lateCompletedMisses": [
+            171,
+            298,
+            247,
+            200,
+            78
+          ],
+          "lateFirstMissMs": [
+            1836.6999988555908,
+            1757.6000003814697,
+            1796.5,
+            1836.8999996185303,
+            1856.8000011444092
+          ],
+          "lateReplayMs": [
+            1720.599853515625,
+            1757.5,
+            1760.199951171875,
+            1767.699951171875,
+            1707.5
+          ],
+          "maxDurableDeltas": 10,
+          "maxDurableBytes": 21618154,
+          "maxDurableChunks": 88,
+          "firstAttemptAt": 1793444868760.4,
+          "completionAt": 1793444904772.3,
+          "fromFirstAttemptToCompletionMs": 36011.900146484375
+        }
+      ],
+      "originalOverlapKeys": null,
+      "overlapPredicateRetained": "not a typing case",
+      "cold": "pass",
+      "guards": {
+        "fullOriginalArchive": true,
+        "offlineColdProfileExact": true
+      },
+      "hostLoad": {
+        "samples": 12,
+        "hostBusyMedianPercent": 35.21541091499094,
+        "hostBusyMaxPercent": 46.42643838343619,
+        "maxSampleIntervalSeconds": 5.070165083,
+        "topProcessSeenCpuMedian": [
+          {
+            "name": "Google Chrome Helper (Renderer)",
+            "medianWhenInTopPercent": 120.25528236760235,
+            "appearances": 11
+          },
+          {
+            "name": "WindowServer",
+            "medianWhenInTopPercent": 49.743448506684175,
+            "appearances": 12
+          },
+          {
+            "name": "node",
+            "medianWhenInTopPercent": 31.985508849120354,
+            "appearances": 3
+          },
+          {
+            "name": "ghostty",
+            "medianWhenInTopPercent": 28.140052713054033,
+            "appearances": 12
+          },
+          {
+            "name": "ctkd",
+            "medianWhenInTopPercent": 21.39139419551048,
+            "appearances": 2
+          },
+          {
+            "name": "Firefox Developer Edition GPU Helper",
+            "medianWhenInTopPercent": 17.879776278090393,
+            "appearances": 12
+          },
+          {
+            "name": "secd",
+            "medianWhenInTopPercent": 15.942822575322744,
+            "appearances": 2
+          },
+          {
+            "name": "com.docker.backend",
+            "medianWhenInTopPercent": 13.228574647477139,
+            "appearances": 1
+          },
+          {
+            "name": "firefox",
+            "medianWhenInTopPercent": 12.556536180382421,
+            "appearances": 12
+          },
+          {
+            "name": "Google Chrome",
+            "medianWhenInTopPercent": 8.086521706654246,
+            "appearances": 11
+          },
+          {
+            "name": "com.apple.Virtualization.VirtualMachine",
+            "medianWhenInTopPercent": 7.625951049079582,
+            "appearances": 24
+          },
+          {
+            "name": "Codex (Renderer)",
+            "medianWhenInTopPercent": 6.825125391399575,
+            "appearances": 12
+          }
+        ],
+        "samplerCpuMsMedian": 4.762499999999999,
+        "psChildCpuMsMedian": 40.521
+      }
+    }
+  ],
+  "allAttempts": 66,
+  "allInterruptions": 14,
+  "noAcceptanceCredit": true,
+  "stopBeforeSY": true,
+  "reason": "Idle polling paused completed in under120s and passed actual offline cold, contradicting the predicted continued verification stall; many late attempts complete hundreds of misses, not one."
+}

@@ -1,0 +1,880 @@
+{
+  "phase": 471,
+  "date": "2026-11-06",
+  "scope": "remaining five old-maintenance runs on phase469 repair; combine first phase470 normal for3/3 each",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditScheduler.ts",
+      "sha256": "00f32596e332c09d74003f4965c0102339b174198994758e19c46793cdde8867",
+      "bytes": 3123
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditStart.ts",
+      "sha256": "7386b29fcabf5d6f7d869838d9d8e3c8294b731597874a25fb7e080a64875795",
+      "bytes": 2258
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/contentMaintenance.ts",
+      "sha256": "133c4dee725c8b43083d235eecbe5212f17f9081e6ff3e680a338e4d97035b1a",
+      "bytes": 5220
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/471-private-files.json",
+      "sha256": "df542e9f899d6cec461991557283adfcee49cfdd9d55dc74121d9abc525c05eb",
+      "bytes": 1063429
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/471-summary.json",
+      "sha256": "ad9eef93f862febd8b9645f4a40edcd42566a47d0cbbf16fc23b9da164ab27fc",
+      "bytes": 15952
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/471-declaration.json",
+      "sha256": "c45141fed54e14e1c6139d73c46ce7bca28701909ad53b01d411a39c5907c24e",
+      "bytes": 2323
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/471-progress.json",
+      "sha256": "65f5ba0c09f0bc13662dafe9946b9bbe15e8f31455bafc108f2fa38a3692776c",
+      "bytes": 12756
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/471-final-binding-proof.json",
+      "sha256": "1ff6cde5bb8d6d943485fa109a4d6934f4768f7478760e3b53a69579f706c4fa",
+      "bytes": 218
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/prepare471.py",
+      "sha256": "5b9ee4a988f9c9dff9b45cab2f2e3b15f27b45bd6ff452fc92f1348125338dfd",
+      "bytes": 2161
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/run471.py",
+      "sha256": "2527c9b93febf8a032ab073c63a510e2951e3f08957a246f4cb371f991f652a7",
+      "bytes": 5994
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/summarize471.py",
+      "sha256": "b632e940005124fc6f8015b410bf9ab58d1c0238b8d6b3e0ea0da089ce213d04",
+      "bytes": 3897
+    },
+    {
+      "localPath": "/private/tmp/done-maintenance-block-471-20261106/record471.py",
+      "sha256": "44d2dd19cdf461b66ea97dcaebd78187ba40e706028d763e7838250889125770",
+      "bytes": 13630
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/child.log",
+      "sha256": "16a964bb08b4bba7a43098c90e0ca6dc7cf26f58068844ff1bd7966f3fb8127d",
+      "bytes": 409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/host-load.jsonl",
+      "sha256": "cfde8b37c0f18aec2b24c60864f2aaff5d3a3430042081f32c15d6d9c2070ca5",
+      "bytes": 38028
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/power-assertions-before.txt",
+      "sha256": "b81a562b6a00c5ac801ef0e2bbc54e71d54ef885644976878dd622aeacee2c24",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/power-log-after.meta.json",
+      "sha256": "c5dcedcf8a7b20688868c95e46448315f91abb16c71c1d244696cb2b41af88c9",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/power-log-after.txt",
+      "sha256": "34e28a81b0e982a605e3665d4c0f0d1acb3706127f080962f443232a0fe7dfa7",
+      "bytes": 868
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/power-log-before.meta.json",
+      "sha256": "9ff6eafccf837c6f424fc73d17bc46d42e91bee55060c2826997c431eaf3e98a",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r1-old-maintenance-withheld/run.json",
+      "sha256": "33c411df4ea004be0eff44f362e127d0a4d833ea07ce28637034a4c5538b3e3d",
+      "bytes": 2078
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/child.log",
+      "sha256": "283fba4ac2fb5bcccca098914eacbd1d82c65477a35a24063f8e1b90b92849ba",
+      "bytes": 409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/host-load.jsonl",
+      "sha256": "0b87c316ca51d60f65c5d94086dd2faaf095e8741844462e68c287a083017ffb",
+      "bytes": 38041
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/power-assertions-before.txt",
+      "sha256": "d9cf236ee43ec3ed40d2a9c52da5dae4c92e14db54e74d14997b53ce7805dd85",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/power-log-after.meta.json",
+      "sha256": "83c041e075c0d6dbf4b48769c5f4168d3696406324ff09eb48425cd5057a8980",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/power-log-after.txt",
+      "sha256": "c9a2d588e88b927f0d0c56d5ef088ac7020acb806497aa3d17602bf69c6e3085",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/power-log-before.meta.json",
+      "sha256": "dc659db6fc4522931a939984804c64b3b24fa5a2361f1f139f10879bd324fff8",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-normal/run.json",
+      "sha256": "b678dea1f0d0b78b8e87f5acb35409f40ede0c2dfbe769b037d195892b50ba76",
+      "bytes": 2074
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/child.log",
+      "sha256": "b13a0b5f610f33d4fc93644a0baceb68f8d3e02619eb1d617abae7925e69ba95",
+      "bytes": 409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/host-load.jsonl",
+      "sha256": "4d75211eb10366867a15021ddc8bb269446324b9a4d3959a76dc1efd80990c9d",
+      "bytes": 38036
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/power-assertions-before.txt",
+      "sha256": "f8d426ade03718c93ae498e616efa28113c1e9302a5324890d3510a5ef4890d8",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/power-log-after.meta.json",
+      "sha256": "93aa83eca2a9cf8892324fbe0714eecf54f94545fc5ef85aecb6866f316967a6",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/power-log-after.txt",
+      "sha256": "dce45f9616bc17ff67e6f6d54e0c76023471a3bf5710f1e716557280e69b1ef3",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/power-log-before.meta.json",
+      "sha256": "ad2f8f15595bb46cd4e0e4dc3ea462f431081a793c9237f5db5f7ad742085b9d",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r2-old-maintenance-withheld/run.json",
+      "sha256": "e832f0884359be7aa676788f230e2974b9e789b38fe152766299a553f4fca005",
+      "bytes": 2076
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/child.log",
+      "sha256": "5c016f23d5bdabe53686065e7c1d62c4c393d96cd4843150d2ee7acc736970ff",
+      "bytes": 409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/host-load.jsonl",
+      "sha256": "9eb6184380aacd747f4e1a6cf1074243c79c89f5dba7b5eb9d7805663a83c523",
+      "bytes": 36414
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/power-assertions-before.txt",
+      "sha256": "9b03e1d880400a727ce6214fb42084bdb711d30f91eb5462db75c66a5f7e85c3",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/power-log-after.meta.json",
+      "sha256": "af324ccd43f7d2ea405ac184ae7c3e61404bfebabb82db1d6920a8f8fdfb6d90",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/power-log-after.txt",
+      "sha256": "a67575c2f90faddbd3528cc6f957ffe8cd65145bf0a82cbd55bf46f66a36121f",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/power-log-before.meta.json",
+      "sha256": "9a12f03a06bac18c9f0ee10891d43aeb18fabc6cde5df382b5bf9a57fc20bdca",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-normal/run.json",
+      "sha256": "bc84b073a2183efd5a938d5c31aa8a6c84f8e784cadb15e122599b49a611ef8f",
+      "bytes": 2074
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/child.log",
+      "sha256": "89b4b06472fc68ff2defa656a546128e4ddfe7599f7e7103d50c3b7348ad4647",
+      "bytes": 409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/host-load.jsonl",
+      "sha256": "4e4dc6593821785ebddbe2c30850020f24f00c030ba6bcc585ea6c8c9893d780",
+      "bytes": 37923
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/power-assertions-before.txt",
+      "sha256": "62821e597de2af3c25e289bf1fb4f52377adc14e79b8ba99bf1c1efd72d6c01e",
+      "bytes": 1899
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/power-log-after.meta.json",
+      "sha256": "85132609c958e81fcd70c9568a0b3c635ac6597242ce1f777951f8b5a462e201",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/power-log-after.txt",
+      "sha256": "8790f85ebfdf369548e732a41c6d49243de8e719f3d27394b352e54ef77b92ea",
+      "bytes": 553
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/power-log-before.meta.json",
+      "sha256": "83304b618c6b3067875ceeaa967855803e89368f6050fa8f3e6334871eb732b8",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/471-r3-old-maintenance-withheld/run.json",
+      "sha256": "2ef8e2faf8eae0b79e04b4d136855656a61a38217dbb4c08247533c0f6fe202a",
+      "bytes": 2078
+    }
+  ],
+  "summary": {
+    "phase": 471,
+    "scope": "remaining five original old-maintenance runs; combine with first phase470 normal",
+    "candidate": "phase469 maintenance arbitration, unchanged ordinary phase470 assets",
+    "rows": [
+      {
+        "name": "r1-old-maintenance-normal",
+        "key": "470-r1-old-maintenance-normal",
+        "cell": "old-maintenance-normal",
+        "replicate": 1,
+        "withhold": false,
+        "noiseRetry": false,
+        "appOutcome": "passed",
+        "accepted": true,
+        "inputP95Ms": 3.38427734375,
+        "peerP95Ms": 796.318359375,
+        "markersMs": [
+          784.746826171875,
+          620.388427734375,
+          737.5546875
+        ],
+        "backlogMs": 32484.552490234375,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true,
+          "actualPreparation": true,
+          "maintenanceCompletes": true
+        },
+        "oldOverlap": {
+          "keys": 45,
+          "wouldMeet60": false,
+          "blocking": false,
+          "authority": "operator321amendment and Stage5note: grown fixtures only"
+        },
+        "publicAttempts": 2,
+        "publicCompletions": 1,
+        "completionAfterLastKeyMs": 26211.646240234375,
+        "completionStageElapsedMs": 3509,
+        "archiveAndColdExact": true,
+        "bothColdAndRemainingWorkUpperMs": 5053.346923828125,
+        "host": {
+          "samples": 23,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12932.44,
+            "last": 12932.44,
+            "min": 12932.44,
+            "max": 12932.44
+          },
+          "noiseRule": "Passing replicate; no failed-replicate noise rerun needed",
+          "power": "windowed samples only; full log identity kept by runner"
+        }
+      },
+      {
+        "name": "r1-old-maintenance-withheld",
+        "key": "471-r1-old-maintenance-withheld",
+        "cell": "old-maintenance-withheld",
+        "replicate": 1,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 24,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12932.44,
+            "last": 12932.44,
+            "min": 12932.44,
+            "max": 12932.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 59518,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 59447,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 59484,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 9.997460842132568
+            },
+            {
+              "pid": 59724,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.18017578125,
+        "peerP95Ms": 1829.595947265625,
+        "markersMs": [
+          1286.172607421875,
+          860.58056640625,
+          1263.12890625
+        ],
+        "backlogMs": 26961.886474609375,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true,
+          "actualPreparation": true,
+          "maintenanceCompletes": true,
+          "pairedBacklogNonregression10percent": true
+        },
+        "oldOverlap": {
+          "keys": 34,
+          "wouldMeet60": false,
+          "blocking": false,
+          "authority": "operator321amendment and Stage5note: grown fixtures only"
+        },
+        "publicAttempts": 2,
+        "publicCompletions": 1,
+        "pairedBacklogRatio": 0.29414228945121906,
+        "completionAfterLastKeyMs": 29990.712890625,
+        "completionStageElapsedMs": 3535,
+        "archiveAndColdExact": true,
+        "bothColdAndRemainingWorkUpperMs": 7189.32958984375,
+        "coldBoundQualification": "Joint conservative upper bound after observed maintenance completion through wrapper end, including both sequential cold runs and all remaining work; not separate cold timings."
+      },
+      {
+        "name": "r2-old-maintenance-normal",
+        "key": "471-r2-old-maintenance-normal",
+        "cell": "old-maintenance-normal",
+        "replicate": 2,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 24,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12932.44,
+            "last": 12932.44,
+            "min": 12932.44,
+            "max": 12932.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 59447,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 44079,
+              "process": "secd",
+              "seconds": 0
+            },
+            {
+              "pid": 59794,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 20.004008054733276
+            },
+            {
+              "pid": 59824,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.529541015625,
+        "peerP95Ms": 796.352783203125,
+        "markersMs": [
+          791.66748046875,
+          631.984130859375,
+          803.621826171875
+        ],
+        "backlogMs": 32990.279052734375,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true,
+          "actualPreparation": true,
+          "maintenanceCompletes": true
+        },
+        "oldOverlap": {
+          "keys": 46,
+          "wouldMeet60": false,
+          "blocking": false,
+          "authority": "operator321amendment and Stage5note: grown fixtures only"
+        },
+        "publicAttempts": 3,
+        "publicCompletions": 1,
+        "completionAfterLastKeyMs": 34718.617919921875,
+        "completionStageElapsedMs": 2745,
+        "archiveAndColdExact": true,
+        "bothColdAndRemainingWorkUpperMs": 5000.95556640625,
+        "coldBoundQualification": "Joint conservative upper bound after observed maintenance completion through wrapper end, including both sequential cold runs and all remaining work; not separate cold timings."
+      },
+      {
+        "name": "r2-old-maintenance-withheld",
+        "key": "471-r2-old-maintenance-withheld",
+        "cell": "old-maintenance-withheld",
+        "replicate": 2,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 24,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12932.44,
+            "last": 12932.44,
+            "min": 12932.44,
+            "max": 12932.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 44079,
+              "process": "secd",
+              "seconds": 0
+            },
+            {
+              "pid": 59447,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 60128,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 14.99908185005188
+            },
+            {
+              "pid": 60158,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 60364,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.483642578125,
+        "peerP95Ms": 1847.54443359375,
+        "markersMs": [
+          1075.558349609375,
+          870.4775390625,
+          1776.69384765625
+        ],
+        "backlogMs": 26990.42333984375,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true,
+          "actualPreparation": true,
+          "maintenanceCompletes": true,
+          "pairedBacklogNonregression10percent": true
+        },
+        "oldOverlap": {
+          "keys": 34,
+          "wouldMeet60": false,
+          "blocking": false,
+          "authority": "operator321amendment and Stage5note: grown fixtures only"
+        },
+        "publicAttempts": 3,
+        "publicCompletions": 1,
+        "pairedBacklogRatio": 0.29445361406426884,
+        "completionAfterLastKeyMs": 33260.7021484375,
+        "completionStageElapsedMs": 2667,
+        "archiveAndColdExact": true,
+        "bothColdAndRemainingWorkUpperMs": 7048.789306640625,
+        "coldBoundQualification": "Joint conservative upper bound after observed maintenance completion through wrapper end, including both sequential cold runs and all remaining work; not separate cold timings."
+      },
+      {
+        "name": "r3-old-maintenance-normal",
+        "key": "471-r3-old-maintenance-normal",
+        "cell": "old-maintenance-normal",
+        "replicate": 3,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 23,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12932.44,
+            "last": 12932.44,
+            "min": 12932.44,
+            "max": 12932.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 59447,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 60434,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 25.002732038497925
+            },
+            {
+              "pid": 60464,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.6962890625,
+        "peerP95Ms": 816.707275390625,
+        "markersMs": [
+          808.51806640625,
+          628.24609375,
+          725.3662109375
+        ],
+        "backlogMs": 33560.754150390625,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true,
+          "actualPreparation": true,
+          "maintenanceCompletes": true
+        },
+        "oldOverlap": {
+          "keys": 47,
+          "wouldMeet60": false,
+          "blocking": false,
+          "authority": "operator321amendment and Stage5note: grown fixtures only"
+        },
+        "publicAttempts": 3,
+        "publicCompletions": 1,
+        "completionAfterLastKeyMs": 25691.7236328125,
+        "completionStageElapsedMs": 2736,
+        "archiveAndColdExact": true,
+        "bothColdAndRemainingWorkUpperMs": 5611.032470703125,
+        "coldBoundQualification": "Joint conservative upper bound after observed maintenance completion through wrapper end, including both sequential cold runs and all remaining work; not separate cold timings."
+      },
+      {
+        "name": "r3-old-maintenance-withheld",
+        "key": "471-r3-old-maintenance-withheld",
+        "cell": "old-maintenance-withheld",
+        "replicate": 3,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 24,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12932.44,
+            "last": 12932.44,
+            "min": 12932.44,
+            "max": 12932.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 59447,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 60742,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 14.998040199279785
+            },
+            {
+              "pid": 60774,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 61002,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.530029296875,
+        "peerP95Ms": 1830.456787109375,
+        "markersMs": [
+          920.05078125,
+          1567.664794921875,
+          839.346923828125
+        ],
+        "backlogMs": 27487.76611328125,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true,
+          "actualPreparation": true,
+          "maintenanceCompletes": true,
+          "pairedBacklogNonregression10percent": true
+        },
+        "oldOverlap": {
+          "keys": 35,
+          "wouldMeet60": false,
+          "blocking": false,
+          "authority": "operator321amendment and Stage5note: grown fixtures only"
+        },
+        "publicAttempts": 3,
+        "publicCompletions": 1,
+        "pairedBacklogRatio": 0.29987940436120114,
+        "completionAfterLastKeyMs": 29093.10986328125,
+        "completionStageElapsedMs": 2810,
+        "archiveAndColdExact": true,
+        "bothColdAndRemainingWorkUpperMs": 7198.11767578125,
+        "coldBoundQualification": "Joint conservative upper bound after observed maintenance completion through wrapper end, including both sequential cold runs and all remaining work; not separate cold timings."
+      }
+    ],
+    "cells": {
+      "old-maintenance-normal": {
+        "originalReplicates": 3,
+        "allRecordedAttempts": 3,
+        "accepted": true,
+        "failedPredicates": []
+      },
+      "old-maintenance-withheld": {
+        "originalReplicates": 3,
+        "allRecordedAttempts": 3,
+        "accepted": true,
+        "failedPredicates": []
+      }
+    },
+    "allCellsAccepted": true,
+    "newAppJourneys": 5,
+    "blockingJourneysOnRepairedCandidate": 6,
+    "originalsPassedOnRepairedCandidate": 6,
+    "remainingBlockingJourneys": 30,
+    "earlierSourceResultsRetainedNotTransferred": true,
+    "oldOverlapInformational": true,
+    "grownOverlapPredicateUnchanged": true,
+    "guardsAndDeadlinesUnchanged": true,
+    "separateColdTimesRecorded": false,
+    "coldTimeQualification": "Conservative joint upper bound from observed maintenance completion through wrapper end, including both sequential cold reopens, exports and cleanup. Renderer/host clock bound is from the original run; +2 ms rounding allowance. This is not an individual cold-duration measurement.",
+    "allJointColdBoundsBelow15s": true,
+    "peakInputP95Ms": 3.6962890625,
+    "peakPeerP95Ms": 1847.54443359375,
+    "peakMarkerMs": 1776.69384765625,
+    "maintenanceCompletionRangeMs": [
+      25691.7236328125,
+      34718.617919921875
+    ],
+    "jointColdMaxUpperMs": 7198.11767578125,
+    "noProfilerOrNewBuild": true,
+    "committed": false,
+    "pushed": false
+  },
+  "bindingProof": {
+    "phase470PrivateFilesStillExact": 2891,
+    "phase470ShippingFilesStillExact": 125,
+    "allTenPrivateCaseAndAnalyzerBindingsExact": true,
+    "phase469CanonicalWorkingPathsExact": 7,
+    "noSourceOrAppTestChange": true
+  },
+  "timedMatrixJourneysStarted": 5,
+  "newRuntimeOrTestChanges": false,
+  "allExistingGuardsAndDeadlinesUnchanged": true,
+  "noiseRetries": 0,
+  "hostPolicy": "Explicit operator quiet-host handshake;5s external logs/display; no competing build/test. All five pass; no failed-replicate noise retry required. Swap constant and display on.",
+  "rawProfilesRemainLocal": true,
+  "originalAssertionsAndAnalyzersUnchanged": true,
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "next": "The repaired-source candidate has6/36 blocking journeys complete. Grown maintenance still needs three normal/three withheld observing both owners with>=60 overlap. Other remaining cells/report-only work and Stage6 remain; do not transfer earlier-source passes."
+}

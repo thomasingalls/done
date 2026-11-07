@@ -1,3 +1,8 @@
+import { protectionEnvironment } from './protectionEnvironment';
+import { assertCoveredLocalJournal } from './coveredLocalJournal';
+import { retirePageLocalJournal } from './windowJournalMutation';
+import { JournalError } from './journalCodec';
+import { RAW_JOURNAL_REMOVE_ITEMS } from './workerJournalProtocol';
 /** Resumable Local protection: exact Yjs copy into fresh custody/content, then retire automatic opening. */
 import { Y, hasPendingUpdates } from './yjs';
 import { automaticCode, automaticOpeningKey } from './automaticOpening';
@@ -6,6 +11,7 @@ import {
   checkContentUnderPermit,
   withPreactiveContentUnderPermit,
   withRecoveryUnderPermit,
+  withLocalJournalUnderPermit,
 } from './custody';
 import { CUSTODY_DB, CUSTODY_STORE, recordKey, parseRecord } from './custodyRecord';
 import {
@@ -19,8 +25,13 @@ import {
   type Bytes,
 } from './custodyCrypto';
 import { contentCensus } from './startupClassification';
-import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS, type ContentInput } from './contentRecord';
-import { journalCount } from './startupStorage';
+import {
+  MAX_BATCH_BYTES,
+  MAX_BATCH_RECORDS,
+  type ContentInput,
+  type OpenedRecord,
+} from './contentRecord';
+import { readJournalCount } from './startupStorage';
 import {
   claimScope,
   localClaimKey,
@@ -153,13 +164,47 @@ function encodeCopy(rows: readonly { kind: string; bytes: Bytes }[]): Bytes {
     doc.destroy();
   }
 }
-function removeJournal(task: SessionTask, name: string) {
-  task.step(() => {
-    const prefix = journalPrefix(name);
-    for (const key of Object.keys(localStorage))
-      if (key.startsWith(prefix)) localStorage.removeItem(key);
+async function removeJournal(
+  task: SessionTask,
+  p: Protection,
+  name: string,
+  verifiedTarget: readonly OpenedRecord[],
+) {
+  // The caller's cold target snapshot was just authenticated under THIS actual exclusive task.
+  // Exact immutable updates already represented there remain safe to retire after a lost reply/death.
+  const code = await automaticCode(task, p.source);
+  if (!code) throw Error('Automatic source opener is missing');
+  await verifyLocalClaim(task, p.source, code);
+  await withLocalJournalUnderPermit(task, authority(p.source), code, async (entries) => {
+    await assertCoveredLocalJournal(task, p.slotId, entries, verifiedTarget);
+    const prefix = journalPrefix(name),
+      pairs = entries.map((e) => [e.key, e.value] as const),
+      worker = protectionEnvironment();
+    if (worker) {
+      const result = await worker.retireProtectedJournal(task, prefix, pairs);
+      if (result.changed)
+        throw new JournalError('repair-required', 'A covered source journal entry changed.');
+      if (result.retained)
+        throw new JournalError('unavailable', 'Covered source journal cleanup could not finish.');
+    } else {
+      for (let i = 0; i < pairs.length; i += RAW_JOURNAL_REMOVE_ITEMS) {
+        const result = retirePageLocalJournal(
+          task,
+          p.slotId,
+          prefix,
+          pairs.slice(i, i + RAW_JOURNAL_REMOVE_ITEMS),
+        );
+        if (result.changed)
+          throw new JournalError('repair-required', 'A covered source journal entry changed.');
+        if (result.retained)
+          throw new JournalError('unavailable', 'Covered source journal cleanup could not finish.');
+      }
+    }
+    if (await readJournalCount(task, prefix))
+      throw new JournalError('repair-required', 'Source journal still retains writing.');
   });
 }
+
 async function finish(
   task: SessionTask,
   p: Protection,
@@ -253,31 +298,33 @@ async function finish(
         p.snapshotDigest
       )
         throw Error('Protected copy is missing or changed');
+      snapshot.fill(0);
+      snapshot = undefined;
+      const sourceName = await task.wait(() =>
+        deriveStoreName(p.source.initial.principal_id, p.source.initial.workspace_id),
+      );
+      if (p.phase === 'verified') {
+        await task.wait(
+          () =>
+            new Promise<void>((resolve, reject) => {
+              const r = indexedDB.deleteDatabase(sourceName);
+              r.onsuccess = () => resolve();
+              r.onerror = () => reject(r.error ?? Error('Source deletion failed'));
+            }),
+        );
+        p = await write(task, { ...p, phase: 'content-removed' }, code, p);
+        observe?.(p.phase);
+      }
+      if (p.phase === 'content-removed') {
+        await removeJournal(task, p, sourceName, rows);
+        p = await write(task, { ...p, phase: 'journal-removed' }, code, p);
+        observe?.(p.phase);
+      }
     } finally {
       rows.forEach((row) => row.bytes.fill(0));
       snapshot?.fill(0);
     }
   });
-  const sourceName = await task.wait(() =>
-    deriveStoreName(p.source.initial.principal_id, p.source.initial.workspace_id),
-  );
-  if (p.phase === 'verified') {
-    await task.wait(
-      () =>
-        new Promise<void>((resolve, reject) => {
-          const r = indexedDB.deleteDatabase(sourceName);
-          r.onsuccess = () => resolve();
-          r.onerror = () => reject(r.error ?? Error('Source deletion failed'));
-        }),
-    );
-    p = await write(task, { ...p, phase: 'content-removed' }, code, p);
-    observe?.(p.phase);
-  }
-  if (p.phase === 'content-removed') {
-    removeJournal(task, sourceName);
-    p = await write(task, { ...p, phase: 'journal-removed' }, code, p);
-    observe?.(p.phase);
-  }
   if (p.phase === 'journal-removed') {
     const next = await localRoute(task, p.target),
       old = await localRoute(task, p.source);
@@ -396,7 +443,10 @@ export async function protectLocalWorkspace(
             const name = await task.wait(() =>
               deriveStoreName(scope.principalId, scope.workspaceId),
             );
-            if ((await contentCensus(task, name)) || journalCount(task, journalPrefix(name)))
+            if (
+              (await contentCensus(task, name)) ||
+              (await readJournalCount(task, journalPrefix(name)))
+            )
               throw Error('Protection destination already contains data');
           },
         },

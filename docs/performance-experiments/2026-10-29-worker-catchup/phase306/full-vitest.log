@@ -1,0 +1,51 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/.codex/worktrees/7fda/done
+
+ ❯ test/storageCompatibility.test.ts (7 tests | 2 failed) 5130ms
+     × preserves storage through 160 generated marker/reacquisition histories 5057ms
+     × detects the get-instead-of-count fault for an undefined retained value 20ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/storageCompatibility.test.ts > storage compatibility interlock > preserves storage through 160 generated marker/reacquisition histories
+Error: Test timed out in 5000ms.
+If this is a long-running test, pass a timeout value as the last argument or configure it globally with "testTimeout".
+ ❯ test/storageCompatibility.test.ts:108:3
+    106|     expect(await inspectLocalStartup('local')).toMatchObject({ kind: '…
+    107|   });
+    108|   it('preserves storage through 160 generated marker/reacquisition his…
+       |   ^
+    109|     await fc.assert(
+    110|       fc.asyncProperty(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  test/storageCompatibility.test.ts > storage compatibility interlock > detects the get-instead-of-count fault for an undefined retained value
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+undefined
+
+ ❯ test/storageCompatibility.test.ts:132:35
+    130|             const result = acquire(slot, step.exclusive, init);
+    131|             if (step.present) {
+    132|               await expect(result).rejects.toHaveProperty('code', 'app…
+       |                                   ^
+    133|               expect(init).not.toHaveBeenCalled();
+    134|             } else {
+ ❯ AsyncProperty.run ../../c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:1217:19
+ ❯ asyncRunIt ../../c030/done/node_modules/.pnpm/fast-check@4.9.0/node_modules/fast-check/lib/fast-check.js:2516:15
+ ❯ test/storageCompatibility.test.ts:109:5
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed | 282 passed (283)
+      Tests  2 failed | 2853 passed | 1 skipped (2856)
+   Start at  19:49:43
+   Duration  297.50s (transform 26.19s, setup 10.25s, import 95.73s, tests 394.58s, environment 46.67s)

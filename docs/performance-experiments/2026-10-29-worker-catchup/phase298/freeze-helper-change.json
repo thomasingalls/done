@@ -1,0 +1,6 @@
+{
+  "beforeSha256": "2f271030f50f84d4c9bff25f49e42d24c4803a04547436e588945e81c835582a",
+  "afterSha256": "3e7d18eead125b905a37b6a0d4c5c1b0f43840c6ccaf15707630515b21780f3c",
+  "purpose": "represent explicit deletion of cumulative untracked generated cache; immutable prior patch hashes unchanged",
+  "deleted": "phase296/__pycache__/verify_fixture.cpython-315.pyc"
+}

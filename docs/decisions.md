@@ -5922,3 +5922,2550 @@ ARM64 image rather than rebuilding after documentation. Reuse source-identical u
 runs as such; run exact-artifact functional/upgrade/rollback and fresh bounded native/contract checks.
 Phone testing remains deferred and general qualification paused. Both operator merge buttons and
 exact private-registry image approval remain separate later publication boundaries.
+
+
+## 2026-10-28 — Extract fixed page environment endpoints before selecting worker execution
+
+Phase163 proves a native owner can execute in a worker, but its experimental shared-memory and
+cohort adaptations are not a production journal/admission integration. Extract activity, actual
+native lifetime/retirement and fresh journal storage/events into typed ports backed by a frozen
+internal page adapter. Leave execution, Account/joined exclusive modes, compatibility, SessionTask
+guards/drain and synchronous sealed local acknowledgment unchanged. Do not add an input option or
+global setter through which callers can replace coordination/storage authority.
+
+Accept one explicit cleanup improvement: activity unsubscribe closes over the original registration
+target. Do not capture journal contents/storage availability or cache lock authority. Require exact
+remaining owner bodies, original native mutation controls, authority/cache resume checks and ordinary
+bookkeeping. Future worker integration must implement the mixed-owner cohort/refusal and admitted
+Window mirror contract separately; this refactor alone earns no latency or qualification credit.
+
+
+## 2026-10-28 — Prove worker release through a native barrier, not its message
+
+The mixed-owner cohort needs distinct supervisor, incarnation and single-member leases while
+retaining the existing slot lock domain. A completed worker message is not a native release proof:
+the initial Chromium control catches separate-channel ordering. After withdrawing new joins and
+draining, cross the actual member-release barrier before releasing the Window endpoint. A5s refusal
+deadline keeps the slot fence held on failure. Preserve the ordinary exclusive Account factories;
+the coordination primitive alone grants no decryption/admission authority or activation permission.
+
+
+## 2026-10-28 — Keep synchronous admission in the Window when native I/O moves to a worker
+
+For phase166, retain the existing admitted workspace/command/Undo pipeline and real journal codec in
+the Window. Accept locally only after its synchronous sealed append; a worker acknowledgment cannot
+replace it. Retain the original ordered commit-first fallback when the journal refuses. Share only
+necessary domain-separated journal subkeys, never root/content-generation/signing keys. Bind their
+trusted handoff to the actual live cohort and account scope, register cleanup before awaiting and
+erase incoming copies. Coordination tickets carry no cryptographic verification authority.
+
+Authenticate the entire native recovery in the worker before projecting original admission content;
+private ledger/outbound records remain there. Check full/projected replay including unresolved Yjs
+state. Use the original shipping reader as the recovery oracle across lost contexts/replies. The
+successful isolated proof does not select shared memory, require isolation headers or activate the
+product. Production-compatible storage messaging, large-message strategy and actual Goals/peer gates
+must precede activation. Keep all existing guards and16ms/2.5s/30s gates. No service automation.
+
+
+## 2026-10-29 — Complete the worker conversion before measuring acceptance
+
+The operator authorizes continuing bounded phases/sequential patches through the actual conversion,
+then measuring the unchanged performance targets. Replace the experimental shared-memory storage
+mailbox with bounded asynchronous ciphertext paging and exact cleanup. Keep sealed local acceptance
+and command/Undo ownership in Window; keep account authority, native history/verification, scheduler
+and maintenance together in the worker. A raw capture or message identifier grants no proof authority.
+Final native changes must retain the actual Window admission fence where synchronous journal/route
+checks require it; cached storage or serialized verification success cannot replace that fence.
+Preserve page-bound passkey/lifecycle endpoints, compatibility, cancellation and uncertain recovery.
+Service automation remains off, general qualification paused, no release or publication authorized.
+
+
+## 2026-10-29 — Observe native state independently of rendering and await actual predicates
+
+Native coordination/storage campaigns use a bounded host-side evaluation loop, preserving their
+existing observation deadlines. The installed waitForFunction implementation accepts a truthy Promise
+before a false async predicate settles; state observation must not credit that as successful native
+evidence. Rendering frames are also unrelated to lease/storage truth. Preserve original assertions,
+schedules, faults and source identities, including the executed observer helper. The separate frozen
+probe did not reproduce absent RAF; do not promote that hypothesis into a proved historical cause.
+Complete original admission/journal/lifetime campaigns pass after this change. [Phase173](performance-experiments/2026-10-28-worker-owner/phase173/README.md).
+
+
+## 2026-10-29 — Rebind Window journal context under its actual final admission head
+
+Worker ownership must not leave Window source-capture epoch or journal era fixed at opening. A genuine
+carrier-bound journal-flushed fence holds input through replacement; existing canonical/Undo stays
+owned by the original admission queue. Captured Worker material still requires native authentication
+and fresh authority checks; the fence and private32-byte subkey equality fingerprint do not replace
+those proofs or authorize new account scope. Hashing only the journal subkey avoids retaining a raw
+JS key copy after WASM import; the hash stays private and is erased on close. Authorized mismatch
+aborts the root, with drain outside its own callback. [Phase174](performance-experiments/2026-10-28-worker-owner/phase174/README.md).
+
+## 2026-10-29 — keep Worker history mutation reserved through Window acknowledgment
+
+For the internal Worker owner, retain its actual final reservation until the same branded Window
+controller consumes and installs the freshly authenticated journal context. A monotone data message
+identifies a handoff but grants no native authority. An uncertain reply closes/drains the root, since
+resuming with the previous sealing context would be unsound. Explicit manual first conversion may
+occupy this fence; automatic preparation must retain its existing input-priority/resumable design.
+See [phase175](performance-experiments/2026-10-28-worker-owner/phase175/README.md).
+
+## 2026-10-29 — keep Worker receive data separate from native authority
+
+The native owner retains actual prepared-promotion capability and its fresh checking task through
+Window apply acknowledgment; only bounded original update bytes and lifecycle identifiers cross the
+port. Construct original NetworkLogin inside the Worker, fulfilling its signed passkey challenge on
+the Window without exporting its session/grant state. Reuse the existing actual context fence/rebind
+protocol for manual authority refresh and baseline conversion. This is an internal functional bridge;
+it does not activate a new scheduler or claim input latency. The sender-closed regression must prove
+acceptance of every source in the specific new edit: idle can also mean publication batching.
+[Evidence and limitations](performance-experiments/2026-10-28-worker-owner/phase177/README.md).
+
+## 2026-10-29 — joined coordination preserves both physical and logical namespaces
+
+A joined device's physical Local custody identity differs from its logical Account capture identity.
+Retain original native verification, physical journal keys/database/era bindings and logical certified
+source route; the Window mirror must validate both and bind UI identity to the logical actor. Because
+physical equality no longer implicitly fixes logical route fields, rebind explicitly fixes workspace
+and principal. A targeted missing-guard control and actual joined native/cold-reader checks establish
+that boundary. [Phase178](performance-experiments/2026-10-28-worker-owner/phase178/README.md).
+
+
+## 2026-10-29 — follow native retirement independently of Window hints
+
+An active Worker mirror must withdraw input when its actual native owner withdraws, even if the
+Window never receives a retirement hint. Stop the channel synchronously, but drain and prove native
+release before releasing the Window fence. Establish the memoized close promise before abort dispatch
+can reenter it. Native permit and data/authority rules are unchanged. [Phase183](performance-experiments/2026-10-28-worker-owner/phase183/README.md).
+
+
+## 2026-10-29 — Worker preparation observations cannot become mutation permission (phase187)
+
+Allow explicitly scoped asynchronous read-only journal observations only for isolated preparation.
+Do not broaden runtime.pinned outside opening/final head. Retained preparation data must pass fresh
+original checks at the real Window head for progress save/removal; an old observation callback expires.
+Heavy preparation stays outside input FIFO. A scheduling revision remains advisory: native validation
+correctly refused the stale0 hint after actual predecessor advanced to1; repair that hint separately.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase187/README.md).
+
+
+## 2026-10-29 — public capability changes are observations, not authority or retry commands
+
+Forward matching-pin config changes without waiting for optional persistence, polling or changing
+retry clocks. Original signed history/authority still decides work. Own every incoming raw opening
+key buffer before awaiting a second advisory acknowledgment, so late refusal remains inside the
+existing Root erasure boundary. Native draft-control failure/current pass retained.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase190/README.md).
+
+
+## 2026-10-29 — preserve SC-03 shared Local writers across worker conversion
+
+Local Worker and Window retain actual shared slot fences; Account retains original exclusion. Pin the
+actual native Worker client before key-owning phases, use real phase locks with nonqueueing refusal,
+and close both realms before exclusive transitions. No format or concurrent-writer product-policy change.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase191/README.md).
+
+
+## 2026-10-29 — Local Worker reuses native custody with a separate raw-update UI boundary
+
+Keep original Local discovery/final factor/census and Page path; a fixed Worker owner loads native
+carriers without a second application doc. Only journal subkeys cross to Window. Reserve asynchronous
+recovery ownership before awaiting native reads, retain until explicit finish, and erase late results.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase192/README.md).
+
+
+## 2026-10-29 — keep Local raw admission/Undo in the original Window owner
+
+Native Worker owns custody/content; Window owns only journal subkeys, original synchronous admission
+and human Undo. Local/Account mirror factories require distinct genuine owner kinds; the encrypted
+read/compare-remove bridge alone is shared. Preserve original Page shared-writer CRDT union.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase193/README.md).
+
+
+## 2026-10-29 — reject the Local pending-lock maintenance barrier
+
+Controlled tests passed, actual Chrome left a later shared writer queued after cancellation; effect-free
+request/release wakes failed, while Firefox resumed the same direct probe. Preserve failed controls and
+restore193 source/tests/metadata exactly. Keep heavy validation/preparation Worker-owned; investigate a
+small Window final commit that preserves the synchronous fresh journal check. No security gate relaxed.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase194/README.md).
+
+
+## 2026-10-29 — observation IDs refer to ciphertext, never verified authority
+
+Retain scoped Window ciphertext long enough for actual native Worker authentication and a final
+Window exact comparison, then expire it. Unrelated account writes do not invalidate that scope.
+Observation reads do not install pinned permission; ordinary pin/finish ordering stays exact.
+Avoid starting with CPU-heavy cross-turn IDB keepalive; stage encrypted data before the final commit.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase195/README.md).
+
+
+## 2026-10-29 — maintenance final effects require the actual admission head
+
+Mint a carrier-bound live fence only inside original discretionary maintenance; preserve native task
+settlement and interruption. Borrowed ciphertext views are unverified data and never deletion authority.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase196/README.md).
+
+
+## 2026-10-29 — Local worker coverage finishes under the real Window maintenance head
+
+Keep crypto/CRDT/coverage/replacement in its original native Worker owner. Transfer ciphertext only
+for a final exact all-store Window census and synchronous scoped journal comparisons, aborting the
+transaction on change/interruption. No cross-turn keepalive/pending old-slot exclusive barrier.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase197/README.md).
+
+
+## 2026-10-29 — observe native Worker member release rather than wait for port death
+
+One queued exclusive member request follows actual dedicated-worker lifetime, without old-slot reader
+group intent or polling. Actual grant withdraws Window admission and returns before independent Root
+drain/member barrier. A failed request never claims physical release.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase198/README.md).
+
+
+## 2026-10-29 — startup supervision does not imply an old-slot fence
+
+Short-lived native startup commands retain original shared/exclusive slot operations. Their supervisor
+only owns anchor/member lifetime; original storage guards explicitly reject it. Share read-only key
+census/legacy grammar from one home, never synthesize Storage or send native authority over a port.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase199/README.md).
+
+
+## 2026-10-29 — preserve native Local enrollment and resumption across the worker port
+
+Keep original one-shot enrollment in Worker, return only display code/result data, retain same wrong-
+confirmation state and scope cancellation by monotone identity. A receipt never replaces fresh native
+claim/factor/census checks on open. Native commands retain original exclusive ownership and cleanup.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase200/README.md).
+
+
+## 2026-10-29 — share read-only journal observation without sharing mutation authority
+
+One scoped bounded data reader serves fixed-index slot owners and pre-index ceremony supervision.
+Original mutation factory still requires its actual old-slot guard. Ceremony reads authenticate in
+Worker, never install pinned permission and cannot remove. Data/observation IDs are not native permits.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase201/README.md).
+
+
+## 2026-10-29 — native scope identity and exact already-represented journal data
+
+Attest only original task/slot/mode/lifetime in a private WeakMap, not a serialized native permit.
+Retired-source journal read still authenticates custody/AEAD; data coverage still requires independently
+verified target and full byte equality after candidate filtering. No mutation authority is returned.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase202/README.md).
+
+
+## 2026-10-29 — Local protection retires only authenticated represented ciphertext
+
+Keep the fresh cold protected-copy rows alive through original source AEAD and exact byte coverage.
+A private fixed-flight Window effect removes only matching key/value pairs; safety after lost replies
+or Worker death relies on durable represented writing, not a serialized native lease. Original task,
+zero census and retirement order remain. [Evidence](performance-experiments/2026-10-28-worker-owner/phase203/README.md).
+
+
+## 2026-10-29 — fixed Local Worker UI runtime port
+
+Keep UI observations and commands independent of storage execution. Drain the actual ceremony owner
+before opening native Local editing; preserve fresh factor/route verification and synchronous Window
+journal admission. Memoized close joins late startup acquisition. Page stays default until activation.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase204/README.md).
+
+
+## 2026-10-29 — reusable Account owner and low-level protection boundary
+
+Extract the original native Account body without changing checks, to allow future same-realm handoff.
+Move protection effects above runtimePorts after the unchanged DAG guard found the203 cycle. Preserve
+the unexplained candidate old cold-reader timeout and its passing predecessor; do not infer acceptance
+from source equality. [Evidence](performance-experiments/2026-10-28-worker-owner/phase205/README.md).
+
+
+## 2026-10-29 — preserve Worker realm after complete ceremony retirement
+
+A private completed-native-root fact and original independent Window member barrier precede one-shot
+transport to a fresh Account lifetime. Keep bounded expiry through actual bootstrap and fresh native
+authentication; transport is not an opening capability. Native approvals stay in their original realm.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase207/README.md).
+
+
+## 2026-10-29 — transfer original native approvals by reference only
+
+Keep genuine promotion/recovery approvals and NetworkLogin in the same Worker realm across complete
+ceremony retirement. A routing adapter adds scope/lifetime checks but original private WeakMaps and
+native verification still authorize access. Clone control must fail; original approval cleanup follows
+the new role. [Evidence](performance-experiments/2026-10-28-worker-owner/phase208/README.md).
+
+
+## 2026-10-29 — keep initial generation activation in the final Account owner
+
+Trace the actual consumer before adding a ceremony observation path. The existing final joined Account
+initialize callback already supplies the required checks; retain that boundary and require the future
+native wizard to hand off before opening. Exploratory fallback rejected without runtime adoption.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase209/README.md).
+
+
+## 2026-10-29 — setup gets an explicit minimal workspace port
+
+Keep the real canonical editor in its existing owner. Setup needs lifecycle/status plus display-name
+read/rename, with fresh guards after asynchronous UI data. Cosmetic close labels use a synchronous hint
+so locking never waits for a remote UI read; authority remains entirely in original native owners.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase210/README.md).
+
+
+## 2026-10-29 — share provider lifetime across fixed credential kinds
+
+Use one monotone provider/cancel/late-erasure mechanism for slot assertions and setup JSON calls.
+Keep original signed-byte verification and codecs; scope real browser effects to origin/RP and preserve
+service user handles. Inactive calls remain asynchronous rejections.
+[Evidence](performance-experiments/2026-10-28-worker-owner/phase211/README.md).
+
+
+## 2026-10-29 — idle ceremony supervision has a separate reservation
+
+Readonly setup roots hold no editing old-slot lease and use their own shared reservation. Account/Local native joins retain their original global reservations and actual task fencing. A real two-Window counterexample justifies this separation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase212/README.md).
+
+
+## 2026-10-29 — setup browser effects and compact planning values
+
+Keep original Page credential statements behind an explicit factory for native setup ownership. Preserve service user handles and original verifiers. Preserve the700k planning limit using lossless per-entry JSON, with independent digest/drift checks. [Evidence](performance-experiments/2026-10-28-worker-owner/phase213/README.md).
+
+
+## 2026-10-29 — native setup callback context is separate from approval authority
+
+Keep genuine approvals in original WeakMaps. Bind same-realm callback/login routing to exact opening input and User lifetime; publish genuine composition locally after verification. Name changes use actual Window canonical admitted commands. Avoid shutdown awaiting its own coordinator. [Evidence](performance-experiments/2026-10-28-worker-owner/phase214/README.md).
+
+
+## 2026-10-29 — preparation yield is an internal final-opening boundary
+
+Track original setup commands in genuine Root.run, including asynchronous Start. Yield only at the trusted final opening hook and wait real root-job release. Ordinary results retain Root final-live refusal. UI receives explicit presentation data, never native references. [Evidence](performance-experiments/2026-10-28-worker-owner/phase215/README.md).
+
+
+## 2026-10-29 — original setup coordinator owns native work across role handoff
+
+Use genuine tracked preparation plus same-realm fresh Account join and a separate User presentation/provider channel. Keep exact original native verification and actual Window canonical admission. Preserve the independent Window slot-index journal binding; zero Window database opens is not a security contract or performance gate. [Evidence](performance-experiments/2026-10-28-worker-owner/phase216/README.md).
+
+
+## 2026-10-29 — retain the original fresh setup initialization
+
+Actual native fresh creation and complete registration/recovery/approval/edit/cold flow pass unchanged. Do not introduce a parallel initializer on an unconfirmed hypothesis. Account entry is one-shot, so cancellation retry uses a fresh native owner after actual cleanup. [Evidence](performance-experiments/2026-10-28-worker-owner/phase217/README.md).
+
+
+## 2026-10-29 — acknowledge bounded UI presentation independently of native authority
+
+Coalesce display frames with one in flight, latest replacement and eight waiters. Abort refuses both queued sends and future flushes. Reuse this transport lifetime across native UI hosts while keeping original crypto/native authority owners separate. [Evidence](performance-experiments/2026-10-28-worker-owner/phase218/README.md).
+
+
+## 2026-10-29 — enrollment execution ports preserve both authority routes
+
+Parameterize legacy and membership coordinators together, keeping the signed selector unchanged. Native UI receives minimal real workspace lifecycle and original provider effects; Page signatures remain. Keep challenge expiry before proof/sign/storage even when public response encoding crosses the browser port. [Evidence](performance-experiments/2026-10-28-worker-owner/phase219/README.md).
+
+
+## 2026-10-29 — share native UI lifetime without sharing authority policy
+
+Trusted fixed controller factories supply only display/command adapters to the same real native root/handoff assembly. Original coordinators own authority and select joined/promoted verification under fresh actual holds. Keep async initialization tracked as a command, not an unowned constructor. [Evidence](performance-experiments/2026-10-28-worker-owner/phase220/README.md).
+
+
+## 2026-10-29 — share Window supervision with fixed screen data adapters
+
+Retain actual member barriers/provider cancellation/journal/mirror adoption once; screens supply only fixed validated commands and presentation. Bound/capture untrusted bootstrap data before resources. Require the exact screen joined role while native verifiers remain authoritative. [Evidence](performance-experiments/2026-10-28-worker-owner/phase221/README.md).
+
+
+## 2026-10-29 — phase222: native device-connection controller
+
+Run the original enrollment selector and both protocols through fixed native commands. Initialize only inside the actual tracked phase; export display identities, never native workspace/login objects. Close joins active commands and retires late acquisitions. Notification and default activation follow separately. [Evidence](performance-experiments/2026-10-28-worker-owner/phase222/README.md).
+
+
+## 2026-10-29 — phase223: native enrollment notification ownership
+
+Retain the original notification parser, retries and resume behavior in the native owner. Track authorization/header I/O in the actual Root; cancel and join the original stream before trusted final Account opening. Send only bounded monotone advisory wake and health observations to Window. [Evidence](performance-experiments/2026-10-28-worker-owner/phase223/README.md).
+
+
+## 2026-10-29 — phase224: recovery browser/workspace/routing effect boundaries
+
+Keep original recovery crypto, private one-use approval and commit/installation bodies. Extract only execution and browser effects; await the fixed Window route-hint callback before the original confirmation and check cancellation again afterward. [Evidence](performance-experiments/2026-10-28-worker-owner/phase224/README.md).
+
+
+## 2026-10-29 — phase225: same-realm native lost-device recovery controller
+
+Keep genuine fresh recovery approval and retained confirmed factor only in native realm. Fixed commands retain explicit disconnect review and original begin/prepare/confirm/finish/open semantics. Window receives bounded display plus genuine canonical ports, with code re-entry after failed one-shot opening. [Evidence](performance-experiments/2026-10-28-worker-owner/phase225/README.md).
+
+
+## 2026-10-29 — phase226: default Local and public setup worker activation
+
+Select genuine worker runtime at actual Local screen and worker coordinator at public Setup screen. Keep Page only for explicit networkSessions=false compatibility, never as a Worker failure fallback. Pending-device preparation retains original refusal copy and native endpoints; screen integration follows. [Evidence](performance-experiments/2026-10-28-worker-owner/phase226/README.md).
+
+
+## 2026-10-29 — phase227: default enrollment screens on native owners
+
+Select Worker for public enrollment, dynamically load Page only for explicit old service compatibility, and never fall back on native failure. Drain protected pending preparation before enrollment owner. Keep existing screen/queue/poll behavior; native authorization/parser run behind closed advisory observations. Preserve original errors through bounded acknowledged presentation. [Evidence](performance-experiments/2026-10-28-worker-owner/phase227/README.md).
+
+
+## 2026-10-29 — phase228: default recovery screen on same-realm native owner
+
+Keep original recovery UI copy and explicit disconnect review, execute crypto/retained factors/one-use approval only natively. Inspect-only fresh Worker reboot on a new unlock command retains no factor/approval. Read failure can offer authenticated unlock, never assume empty data. Confirm complete sender upload before recovery comparisons. [Evidence](performance-experiments/2026-10-28-worker-owner/phase228/README.md).
+
+
+## 2026-10-29 — phase229: synchronous recovery display navigation
+
+Keep save/confirm navigation in the Window while native confirmation/commit remain authoritative. Disable Saved until preceding preparation reply completes. No cached factor or native authority is introduced. [Evidence](performance-experiments/2026-10-28-worker-owner/phase229/README.md).
+
+
+## 2026-10-29 — phase230: replace a retired Worker only on explicit input
+
+Keep each supervisor incarnation one-shot. Successful existing drain can expose a new unlock screen, but only a new command starts an inspect-only fresh Worker. Initial handoff getter is consumed once; failed cleanup cannot reopen. [Evidence](performance-experiments/2026-10-28-worker-owner/phase230/README.md).
+
+
+## 2026-10-29 — phase231: separate recovery shutdown from unlock
+
+The outgoing screen must not accept a factor while its owner closes. Add a Window-only closing marker, refused by the native projection decoder, and retain the existing close status. [Evidence](performance-experiments/2026-10-28-worker-owner/phase231/README.md).
+
+
+## 2026-10-29 — phase232: constructor intro is not completed inspection
+
+Withhold the name form until original native inspection/idle complete. Keep genuine in-flight passkey approval available. This repairs lost form input without changing metadata or crypto algorithms. [Evidence](performance-experiments/2026-10-28-worker-owner/phase232/README.md).
+
+
+## 2026-10-29 — phase233: verified transition is display context only
+
+Use same-ticket native Account notice to preserve passkey-action wording, reset it on replacement and never infer an opening or authenticated workspace. Cleanup refusal remains blocked. [Evidence](performance-experiments/2026-10-28-worker-owner/phase233/README.md).
+
+
+## 2026-10-29 — phase234: expected removal need not expose an editor
+
+Keep default saved-editor entry strict. Only the call immediately asserting native removal waits for that refusal; preserve every subsequent security/data assertion and deadline. [Evidence](performance-experiments/2026-10-28-worker-owner/phase234/README.md).
+
+
+## 2026-10-29 — phase235: live credential cancellation
+
+Use a fixed cancellation code only for a live browser prompt; native lifetime withdrawal wins over late provider replies. Original credential verification and generic channel unchanged. [Evidence](performance-experiments/2026-10-28-worker-owner/phase235/README.md).
+
+
+## 2026-10-29 — phase236: packaged offline Worker assets
+
+Exempt only two exact hashed public JavaScript filename families from the old private-tooling substring check; keep pages/maps and unrelated private modules excluded. [Evidence](performance-experiments/2026-10-28-worker-owner/phase236/README.md).
+
+
+## 2026-10-29 — phase237: Worker boundary and inconvenient results
+
+Keep intentional Window canonical UI/journal/provider and explicit legacy compatibility boundaries visible; distinguish completed placement from failed latency/cold-entry outcomes. [Evidence](performance-experiments/2026-10-28-worker-owner/phase237/README.md).
+
+
+## 2026-10-29 — phase238: exact configuration fixture
+
+Keep exact returned-config shape assertions, adding the public subscription function rather than weakening them to partial matching. [Evidence](performance-experiments/2026-10-28-worker-owner/phase238/README.md).
+
+
+## 2026-10-29 — phase239: Worker placement complete, measure next
+
+Conversion completion means normal public heavy owners are in actual Workers, with intentional Window and explicit legacy boundaries documented; it does not imply latency acceptance. Main-only CDP throttling must not be reported as mobile hardware equivalence. [Evidence](performance-experiments/2026-10-28-worker-owner/phase239/README.md).
+
+
+## 2026-10-29 — phase240: Worker measurements retain the acceptance block
+
+Keep the original2.5s every-marker gate after Worker conversion: normal final marker2835.760ms fails despite passing peer/localp95. Treat slower full catch-up as an observation requiring matched attribution. Label actual-realm CPU, cadence and lifecycle limits; never award phone or strict-cadence acceptance from the diagnostic. [Evidence](performance-experiments/2026-10-28-worker-owner/phase240/README.md).
+
+
+## 2026-10-29 — phase241: signed Worker checkpoint and matched protocol
+
+Compare rebuilt Page8d6d42c1 and signed Worker0ab9cbc8 in fixed normal-hint ABBA journeys with one server/fixture/browser/flag set. Whole-journey replication, not key pseudoreplication; keep every absolute gate and security check. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase241/protocol.md).
+
+
+## 2026-10-29 — phase242: matched catch-up comparison
+
+Treat dated100s and200s trajectories as unmatched. Under fixed current conditions Page226–230s versus Worker233–240s gives opposite-order ratios1.0403/1.0307; no substantial doubling reproduced. Retain the modest overhead and all absolute marker misses; do not infer equivalence or one-function causality. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase242/README.md).
+
+
+## 2026-10-29 — phase243: late-marker attribution protocol
+
+Separate latency attribution from matched performance: timestamp-only diagnostic copy, no behavior/check/deadline change and no acceptance credit. One fresh two-receiver journey, retain all original misses and diagnostic overhead limitations. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase243/README.md).
+
+
+## 2026-10-30 — phase244: invalid midnight diagnostic retained
+
+Classify midnight diagnostic invalid: actual three-day freeze crossed during run, frozen DOM observed, late attempt never submitted. Preserve original30s failure and lost post-assertion trace; no security bypass or performance credit. Correct civil-calendar apparatus and failure-safe capture separately. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase244/README.md).
+
+
+## 2026-10-30 — phase245: corrected diagnostic apparatus
+
+Correct only diagnostic civil timezone toUTCdate29, keeping real protocol clocks and same effective fixture age as valid matched cases. Add explicit editable guards, finally-safe capture and actual Worker clock brackets; keep every old assertion/deadline and failed midnight trajectory. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase245/README.md).
+
+
+## 2026-10-30 — phase246: late-marker attribution closed
+
+Choose cooperative yield at verified publisher boundaries as next bounded repair, preserving receive continuation/fairness and due-publication/backoff/local-flush policies. Trace also exposes repeated receiveStatus/native validation for later owner-bound proof reuse. Keep unmodified2.5s misses authoritative; diagnostic2070ms receives no promotion credit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase246/README.md).
+
+
+## 2026-10-30 — phase247: due-send yield contract
+
+Use pass-scoped due-send predicate and explicit yielded receive result after full verified checks. Preserve remaining sweep budget scoped to authority/count; no progress lie, proof reuse, backoff change or partial commit. Freeze four before/after normal/withheld journeys, original gates and independent civil-date guards. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase247/README.md).
+
+
+## 2026-10-30 — phase248: due-send publisher-check yield
+
+Yield only between complete verified empty publisher checks; hold native-context/count-scoped remaining sweep, use exact active-turn send eligibility and retain dirty/expedite hints across pause. Explicit yielded outcome claims no progress and preserves failure evidence. Keep batching/local flush/backoff and all authority/fence/commit checks. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase248/README.md).
+
+
+## 2026-10-30 — phase249: matched due-send comparison apparatus
+
+Freeze before/after normal and after/before withheld native Worker journeys, both builds exact and one fixed signed server. Preserve all absolute gates and native ownership/security, real epoch clocks and guarded civil fixture validity. One pair per mode is descriptive; no favorable reruns or stage instrumentation. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase249/README.md).
+
+
+## 2026-10-30 — phase250: due-send comparison outcomes
+
+Retain yield latency/throughput tradeoff: peerp95 better in both modes, uploads~60% more, backlog+15.0%/+8.2%, withheld late2526.722ms still fails2.5s. Do not waive near-miss or hide raw input tails. Compare pre-existing verified selection path before designing another reuse mechanism; completed0 references remain authoritative. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase250/README.md).
+
+
+## 2026-10-30 — phase251: existing verified-selection control
+
+Control same248source with existing WARM_LOADS0vs1 path, preserve all checks/defaults and old0failures. Reuse completed250disabled references, then fixed enabled normal/withheld and disabled normal drift control. Native warm/resume/audit/authority refusal cohort must pass before timing. >=20% against both normal references plus withheld is engineering signal only. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase251/README.md).
+
+
+## 2026-10-30 — phase252: verified-selection control outcomes
+
+Existing guarded selection materially reduces catch-up on same248source, but retain19.1% disabled drift, failed15s cold control and enabled-withheld38.222ms input failure. No profile-switch gate waiver/default edit. Raw delay precedes beforeinput; distinguish renderer queueing from driver/CDP delay before a repair. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase252/README.md).
+
+
+## 2026-10-30 — phase253: input-delay attribution protocol
+
+Distinguish renderer queueing from driver/CDP delay using actual browser event creation/processing, Long Tasks/frame gaps and driver heartbeat; do not replace failed16ms gate with fast beforeinput handler time. One metadata-only isolated withheld diagnostic, actual source/assets unchanged, no acceptance credit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase253/README.md).
+
+
+## 2026-10-30 — phase254: pre-event input-delay attribution
+
+Do not alter application CPU yielding or coordination for observed pre-event input tails. Actual browser creation→handler0.6ms/EventTiming queue0.6ms and zero longtasks narrow this diagnostic to precreation delivery/host work; test delivery APIs within one balanced journey, keep original Node-offer→DOM16ms gate. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase254/README.md).
+
+
+## 2026-10-30 — phase255: native delivery crossover protocol
+
+Use balanced native delivery crossover within one identical loaded journey,60Playwright/60CDP actualtrustedkeys, to isolate pre-event test delivery. Keep every original gate over all120keys and no diagnostic adoption credit; no product edit based on a fast handler alone. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase255/README.md).
+
+
+## 2026-10-30 — phase256: keyboard crossover result
+
+Do not adopt CDP delivery as a latency fix: balanced crossover fails16ms and CDPprecreationp95 is2.41xPlaywright, not>=50%faster. Keep backend-subset timing diagnostic only; reorient to verified production flags/quiet-host baseline from supplied brief. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase256/README.md).
+
+
+## 2026-10-30 — phase257: baseline scope correction
+
+Correct baseline scope: released b6 warm loads are default-on,241/native237explicit0. Rebuild signed Page/Worker with exact release flags before new mechanisms; retain prior failures as conditional lab evidence. Outside work reported for25201/02and25304 is contamination, not measured causal attribution. Quiet host now coordinated. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase257/README.md).
+
+
+## 2026-10-30 — phase258: production baseline apparatus
+
+Freeze corrected production-flag normal ABBA: signed Page8d/Worker0ab, fixed0abserver, no248yield, warmunset. Independent emitted-flag equality guards release parity. Same original workload/security/archive/cold/gates; paired>1.10investigation signal, no favorable reruns. [Protocol](performance-experiments/2026-10-29-worker-catchup/phase258/protocol.md.gz).
+
+
+## 2026-10-30 — phase259: production baseline outcomes
+
+Production-flag ABBA all original gates pass, but pairratios1.105044/1.010544 are inconclusive under predeclared rule. Do not average away order/variance or infer absence of physical stalls. Read updated brief; measure proposed empty-Window/publication work before mechanism. Original publiccold/deepjoined still need sameflag reruns. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase259/README.md).
+
+
+## 2026-10-30 — phase260: production cold compatibility apparatus
+
+Re-run original237senderclosed/deepjoined/publiccold cases with exact signed0ab shippingproduction frontend and native closure; only roots/warmoverride differ. Keep lab identity exception explicit and all original15s/30s deadlines/assertions; no diagnostic extension earns pass. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase260/README.md).
+
+
+## 2026-10-30 — phase261: production cold compatibility outcomes
+
+Retain corrected productionflag failures: original deepjoined30s (progress447/receivefailures0), publiccold15s after journal rebind, publiccold15s after completed resumable maintenance. Do not promote intermediate successes or259different offlinecold guards to full closure; cause still needs attribution. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase261/README.md).
+
+
+## 2026-10-30 — phase262: quiet-host input protocol
+
+Finish clean withheld inputcontrol with frozen3journeys: original warmdefault, then warm0/default bounded metadata diagnostics. All same248source/fixed0abserver; named flag exception explicit and independently checked. Use end-to-end input gate, retain missing/censored timing, no diagnostic acceptance or causal population claim. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase262/README.md).
+
+
+## 2026-10-30 — phase263: quiet-host input outcomes
+
+Quiet withheld original248warmdefault passes all gates10.906ms inputp95; diagnosticdefault17.034msmiss remains. Delay largely beforecreation, callbacks alone insufficient: ordinarydefault highest rate14.418/s passes. No causal observer/Worker/Main claim from3ordered dependent journeys; count/profile real native work before mechanism. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase263/README.md).
+
+
+## 2026-10-30 — phase264: disposable request-budget protocol
+
+Test sessionbudget with one original deepjoined30scase, disposable complete0abserver changing only16→64/session. Keepprocess64andallotherlimits/securitychecks; startup numeric receipt verifies effective policy. No productrate change, no acceptance substitution; budgettable remains inferred. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase264/README.md).
+
+
+## 2026-10-30 — phase265: disposable request-budget outcome
+
+Lab64/session increases original30sdeep progress447→703(+57.3%)but stillfails; no recorded receivefailure. Supports contribution, rejects budget-only closure. Keepprocess64/fairness restrictions; last200all200notwhole429proof.259payloadwallgaps19.3–25.8requestedunits/s are rough comparison, notCPU/debitcount. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase265/README.md).
+
+
+## 2026-10-30 — phase266: public cold-open attribution protocol
+
+Trace both original baselinepubliccold cases with exact0abdefaultpolicy and namedLEDGER_PROFILE1; bounded numeric all-live-realm metrics and actualWorkerCPU, no fakeauthclock/check/cachechanges. Keep15sfailure/180scase evenif.shelllater; gate-wrapperfaulttestdetectsswallowedfailure. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase266/README.md).
+
+
+## 2026-10-30 — phase267: partial public cold-open attribution
+
+Retain partialcoldtrace: numericfirstDeviceOwner metrics show5fullbaselinereplaysbeforeeditor14.68s; no CPUcoverage because wrongfilename selected. Maintenancecold endsfixedpasskeyfallback/noWorker, not provenpurelatency. Correct sampler/error trace before repair; original261failures remain, diagnosticpass earnsnoacceptance. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase267/README.md).
+
+
+## 2026-10-30 — phase268: actual cold owner/error protocol
+
+Correct physicalfirstDeviceOwner profile and isolate publicmaintenance opening failure with bounded enum/location-onlycatchobservers. Same originalcasebodies/nativechecks; log-onlyisolatedsourcevariantidentified, originalthrowobjects/failuregatespreserved. No nativeerror masking or productrepair before cause. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase268/README.md).
+
+
+## 2026-10-30 — phase269: cold CPU and recovery compatibility target
+
+ActualfirstDeviceOwnerCPU now captured10622samples; nested verifier/recorddecode costs support repeatedwork but no trust-window change. Maintenanceopening fails at Workerrecoveryheaderguard; native baseline emitsleadingstate seq0 whereas readerdemandspositive. Demonstrate/fixthatnarrowcompatibilitybeforemoreperf; keepallnative/disk/securitychecks. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase269/README.md).
+
+
+## 2026-10-30 — phase270: baseline recovery red contract
+
+Bound recoverycompatibilityrepair to leadinglogicalstate seq0 from authenticatedbaseline. Red9casecounterexample:2validsnapshotfail/7negativeanddiskpass at sameguard. Do notrenumberrecords or relaxnative/disk/shape/order/size/lifetime/zeroization; originalactualmaintenancecold required afterfix. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase270/README.md).
+
+
+## 2026-10-30 — phase271: baseline recovery compatibility repair
+
+Acceptonlyfirstlogicalstate seq0after nativeauthenticatedbaseline; diskpositive rule and allfragment/shape/lifetime/freshcrypto/journal/fencing remain. No recordrenumber/store/wirewriterchange. Add9regressions/twofaultcontrols; actualnativecold aftertestrequired before workflowclosure. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase271/README.md).
+
+
+## 2026-10-30 — phase272: repaired native walkthrough protocol
+
+Run originalfournative cases on exact cumulative271candidate, no diagnosticflags/hooks and unchangedproduction16/session64/process. Fullmaintenancecold exactarchive mustpassbefore repairclosure. Retain anydeep30s/rebind15smiss; originalbody/assertions/deadlinesunchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase272/README.md).
+
+
+## 2026-10-30 — phase273: repaired native walkthrough outcome
+
+Close onlynarrowbaselineprojectioncompatibility: actualfullresumablemaintenance/removal7275/revision2/inputUndo/publiccold15s/exactarchive passes on realcandidate/defaultflags. Keepdeep30s459progress and unreducedcontextcold15sfailures; no fullperformance/throughput/phone acceptance. Allsecurity/disk/freshness/journal/fencing preserved. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase273/README.md).
+
+
+## 2026-10-30 — phase274: unreduced baseline exact-evidence contract
+
+The unreduced gate was deliberate conservative scope in 354c9c59 and phase 122, not an accidental omission. Extend only same-carrier exact-evidence reuse after the first full physical/reference comparison. Keep reduced rolling continuation, new-carrier full replay, fresh authentication, complete byte census, late lifetime guards and all security/gates unchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase274/README.md).
+
+
+## 2026-10-30 — phase275: unreduced same-carrier exact reuse
+
+Extend only the existing private exact-proof path to opted-in one-shot and exclusive live unreduced carriers. Preserve first full physical/reference comparison, fresh complete authenticated evidence and final authority/lifetime checks; v3 proof may have no logical projection. Reduced rolling policy, new-owner full verification and all security/gates remain unchanged. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase275/README.md).
+
+
+## 2026-10-30 — phase276: unreduced cold after-check protocol
+
+Run original two cold cases once on exact cumulative275 source, released flags and default production limits. Keep 15s public cold gate, 180s case, full authentication, Undo, native journal/readback, archive equality and resumable removal assertions; no diagnostics or favorable retries. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase276/README.md).
+
+
+## 2026-10-30 — phase277: native cold after-check outcome
+
+Close the same-carrier unreduced cold repair against original real native cases: both original15s public-cold gates and native journal/rebind/Undo/archive/resumable reduction checks pass. Do not infer exact cold latency or native replay count from whole-case duration; retain before failure and new-carrier independence. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase277/README.md).
+
+
+## 2026-10-30 — phase278: deep traffic attribution protocol
+
+Attribute deep request cadence/extent with bounded Node-side timestamps and original signed request metadata only, no response/writing capture. Preserve exact phase275 client artifacts, original30s/default limits and all functional guards. Multi-entry needs verifier/durable replay support, not a request-limit-only edit. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase278/README.md).
+
+
+## 2026-10-30 — phase279: deep request trace outcome
+
+Use the complete bounded deep trace as the before observation: all589signed reads are limit1; batching does not remove per-entry request work. Keep default budgets, original30s and all guarantees. Multi-entry requires explicit durable replay support, unchanged aggregate byte/record bounds and position-weighted fairness. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase279/README.md).
+
+
+## 2026-10-30 — phase280: multi-entry reader contract
+
+Use reader-first indexed v2 receipts preserving original signed request/page and independently replayed per-position cuts, rather than an aggregate event crossing a cut. Keep byte-exact v1/API, all security and limits. Width2 later bounds evidence duplication; no live range writes before reader/regression/bookkeeping checks. Register new label as open, retaining all prior contracts. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase280/README.md).
+
+
+## 2026-10-30 — phase281: diagnostic work-count protocol
+
+Run one exact275 diagnostic build with only numeric profiling enabled, no acceptance credit. Report frozen editor counts against2full/3exact hypothesis, then measure one actual unreduced post-commit publish at the original30s deadline with source acceptance and counter-version checks. Record polling overhead. V2 development-only; add all tag readers, range4/8 and stale-tab/rollback requirements before release work. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase281/README.md).
+
+
+## 2026-10-30 — phase282: diagnostic work-count outcome
+
+Treat cold work-count gain and unreduced mutation cost separately. Real frozen editor reports2full/3exact as hypothesized; no acceptance credit from diagnostic build. One unreduced publish takes22.378s with10full/17exact additional loads including3status polls. Retain that limitation; no proof reuse for changed evidence/commits without a separate bounded contract. V2 stays development-only. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase282/README.md).
+
+
+## 2026-10-30 — phase283: range and reader coverage contract
+
+Use one receipt-tag home across every literal/indirect reader, including membership/successor boundaries, full and incremental census, selected entry, retention and handoff. Add real range4/8 and consumer regressions before enabling v2 writes. Development-only approval does not establish stale-tab/rollback behavior; record/test those before release work. All limits/gates/security retained. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase283/README.md).
+
+
+## 2026-10-30 — phase284: development range reader
+
+Implement only the development reader before range writer activation. Share tag recognition and per-entry verification, retain exact signed originals, independent selected-position replay and all old v1 semantics. Keep new v2 construction open and all78specified contracts. Wider-range duplication/fairness and native stale-tab/rollback remain adoption obligations; no persisted/cross-owner trust. [Evidence](performance-experiments/2026-10-29-worker-catchup/phase284/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase285
+
+Use the existing atomic receive owner for development peer ranges; count verified positions within four, and treat per-publisher size narrowing as scheduling only. Network8 requires separate bounded continuation; v2 remains development-only. See [phase285](./performance-experiments/2026-10-29-worker-catchup/phase285/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase286
+
+Measure the development four-position writer with both client roles rebuilt at default production flags and limits, using original deep actor1 and30s gate plus Node traffic clocks/final native health. No profiler or favorable rerun. See [phase286](./performance-experiments/2026-10-29-worker-catchup/phase286/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase287
+
+Retain the failed deep4 cell. Eight-entry download must preserve four-position native turns and carry only unverified bounded originals across turns; fresh native verification remains mandatory. Test clean size narrowing before extending the planner. See [phase287](./performance-experiments/2026-10-29-worker-catchup/phase287/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase288
+
+Separate bounded range preparation from the strict full-range verifier. Original signed bytes may be downloaded once, but every consumed prefix is checked anew against the current native context; unused tail grants no trust. See [phase288](./performance-experiments/2026-10-29-worker-catchup/phase288/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase289
+
+Bounded preparation verifies at most the remaining four positions using a fresh native prefix on every call; strict full-range verification remains all-or-nothing. Keep the shared position limit in a pure module to avoid pulling admission ownership into crypto bundles. See [phase289](./performance-experiments/2026-10-29-worker-catchup/phase289/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase290
+
+Download width8 is independent of native position allowance4. Carry only one bounded raw-original tail across turns; reauthenticate each consumed prefix and evict before legacy full reservations. Settle size scheduling refusal cleanly before a publisher-specific narrower retry. See [phase290](./performance-experiments/2026-10-29-worker-catchup/phase290/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase291
+
+Finish the initial partial publisher turn before downloading8, so a full page is consumed in two4position turns rather than3+4+1. This is a scheduling change only; native allowance, fresh verification and all gates remain. See [phase291](./performance-experiments/2026-10-29-worker-catchup/phase291/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase292
+
+Freeze both291client roles at production flags/default budgets for one original deep8cell, retaining30s/native assertions and at/headersAt observer. Do not rerun a failed cell into a favorable result or claim normal acceptance. See [phase292](./performance-experiments/2026-10-29-worker-catchup/phase292/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase293
+
+Do not adopt8on traffic reduction: deep8also fails30s. Follow the requested Page64diagnostic before attributing residual work to native verification, storage or Window coordination; all production limits and gates remain. See [phase293](./performance-experiments/2026-10-29-worker-catchup/phase293/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase294
+
+Use the lab genuine Page syncing factory for joined deep at explicitly permitted lab64/session64/process, with one-line isolated policy diff and actual startup verification. Retain all30s/native guards; normal comparison/default acceptance remain held. See [phase294](./performance-experiments/2026-10-29-worker-catchup/phase294/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase295
+
+Retain failed real Page64deep. It weakens a Worker-only or session-budget-only explanation without causal attribution. The civil-date recipe must create editable cards before backlog generation, preserving editing-versus-catch-up rather than appending late cards after the backlog. See [phase295](./performance-experiments/2026-10-29-worker-catchup/phase295/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase296
+
+Regenerate the dated workload from signed0ab through actual app setup/early editable cards, then original unequal backlogs. UTC controls calendar interpretation only; epoch/auth clocks remain real. Seed-only discretionary reduction stays off, with no measurement credit and exact production service budgets. See [phase296](./performance-experiments/2026-10-29-worker-catchup/phase296/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase297
+
+Repair the fixture postcheck only: canonical empty files are valid exact hash evidence. Independently verify the successful real-app output in both directions rather than regenerate or edit data; retain the failed outer attempt and original passing seeding run. See [phase297](./performance-experiments/2026-10-29-worker-catchup/phase297/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase298
+
+Refresh observer target by semantic live-writer role from public admission metadata, proving old constant==old actor2. Retain exact cursor1stream assertion. Remove only generated Python bytecode via explicit next patch; prior immutable artifacts remain. See [phase298](./performance-experiments/2026-10-29-worker-catchup/phase298/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase299
+
+Freeze signed0abwithheld, exact248-onlywithheld, current291normal and original multi-account fairness at production flags/default limits with the fresh verified fixture. Preserve all gates; classify functional failures before proceeding and do not claim normal Page/Worker comparison. See [phase299](./performance-experiments/2026-10-29-worker-catchup/phase299/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase300
+
+Retain individual tails while recording the passing missing signed0abwithheld baseline. Do not infer yield necessity or credit291from one older-source pass; run the fixed matched248-onlycell next. See [phase300](./performance-experiments/2026-10-29-worker-catchup/phase300/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase301
+
+Preserve the original passing baseline across browser identity change; start a separately frozen matched cohort with an isolated pinned app bundle. Retain original fairness per-case analysis and explicit single-case coverage, never an empty aggregate. See [phase301](./performance-experiments/2026-10-29-worker-catchup/phase301/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase302
+
+Retain the pinned-browser S0input miss and old-browser pass separately; proceed only to the fixed matched yield cell. No causal attribution or favorable rerun. See [phase302](./performance-experiments/2026-10-29-worker-catchup/phase302/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase303
+
+The single exact matched yield pair supports248with its tails and original old-browser pass retained. Do not generalize its effect size or credit291range changes from this pair. See [phase303](./performance-experiments/2026-10-29-worker-catchup/phase303/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase304
+
+Retain the current marker failure despite good p95. Finish frozen fairness before the approved isolated lab screen; do not infer a range-only effect across differing hint conditions. See [phase304](./performance-experiments/2026-10-29-worker-catchup/phase304/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase305
+
+Keep every frozen result; durable pending writing is distinct from performance acceptance. Begin the explicitly approved uncredited fictional-only lab lane after the four cells, with default-off range writer and realv5publication check. See [phase305](./performance-experiments/2026-10-29-worker-catchup/phase305/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase306
+
+New range writer requires exact explicit build opt-in, default off, with native admission refusal and retained v2readers. Correct v3publication interpretation to lab state absent a shipped caller; measure actual v5next. Separate approved exploratory lab builds never land. See [phase306](./performance-experiments/2026-10-29-worker-catchup/phase306/README.md).
+
+
+### 2026-10-30 — Worker catch-up phase307
+
+Keep the operator-approved fast lab exploration separate from landing hardening. Retain all
+10screen rows,3ablations, profiling and invalid apparatus cells; no aliased causal effects or
+acceptance credit. Unsafe page-once references fail cold by design and never land. The no-F
+stack clears one deep30scell; first isolate missing-hint scheduling/2.5smisses before proposing
+adoption. Realv5publication, not explicitv3installation, is the relevant publish observation.
+Default-off writer, security boundaries, all gates and stale-tab/rollback holds stay. See
+[phase307](./performance-experiments/2026-10-29-worker-catchup/phase307/README.md).
+
+### 2026-10-31 — Worker catch-up phase308
+
+Keep every lab result, including the host-contended screen, wrapper failure, old overlap
+failures, six maintenance completion failures and six unexposed named-hint runs. The corrected
+named comparison repairs only private gateway wiring and uses the same client build. It does
+not erase the invalid attempt. A failed replicate still fails its cell.
+
+Keep the 750 ms quiet budget, 16/s session and 64/s process limits, all original gates, the
+default-off range writer and disabled service automation. A/B/C/E/F stay out. G remains a
+candidate. V needs an enforceable immutable-prefix contract and independent faults before
+landing. R does not establish a 2.5-second post-drain bound despite passing whole-run cases.
+Investigate the larger maintenance fixture's guard and retry sequence next, preserving authority
+and activity/journal checks and the deadline. The raw complete-page receipt remains a design
+note; logical/physical units, every reader, cuts and old-tab/rollback behavior need separate
+hardening. This evidence authorizes no release work or runtime adoption. See [phase308](./performance-experiments/2026-10-29-worker-catchup/phase308/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase309
+
+Honor the operator's prediction gate: idle polls paused removes observed interruptions **and**
+lets unchanged verification/removal finish, so stop after the four unfixed trace cases before
+building S/Y/P. Do not turn the lab-only24hour idle timer into a product repair or remove the
+preparation guard. The60sretry amplifies poll arrival contention, but replay is not inevitably
+stuck at one new entry per slice on this fixture/host.
+
+Preserve the separate typing origin: a typing-driven flush also has queue-priority-only flags.
+Y cannot classify that boolean alone as a background-read interruption while promising typing
+keeps60s. S remains a possible fresh-work accounting optimization; its necessity/sufficiency is
+not established by this trace. V is comparison-only; P remains an approved isolated lab proposal,
+not a selected format. G/R/D and all later screens remain unclosed. Range writer defaultoff,
+750msquiet budget, all gates/deadlines and disabled service automation stay unchanged. No
+hardening begins without the operator's decision. See
+[phase309](./performance-experiments/2026-10-29-worker-catchup/phase309/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase310
+
+The reader cliff supports S; its capacity refusal is a finding, not a stop. Continue the declared
+SxYscreen and Pexploration. Apply the operator-approved Ypolicy to pure queue-priority conditions
+without a typing classifier: retain max(quietUntil,notBefore),60sfor all other interruptions,
+and demonstrate zero new starts during typing/drain. This supersedes309's classifier proposal.
+No format/limit/guard relaxation or hardening; every original deadline remains. See
+[phase310](./performance-experiments/2026-10-29-worker-catchup/phase310/README.md).
+
+
+### 2026-10-31 — Worker catch-up phase311
+
+Choose S1Y1exploratorily under the predeclared rule: only arm with normal+withheldwriter/cold
+passes. Keep every failure, originalwriter-only120sgate, readerdiagnostics, zero-startquiet
+checks and capacity cap. Continue Pwithout weakeningchecks; capacitydoesnotstop, actualnoFcold
+failuredoes. The unused native labbundle retains308source links; retargetin a NEWProot before
+native/Ptests, never claim exposure from unused assets. No hardening or release authorization.
+See [phase311](./performance-experiments/2026-10-29-worker-catchup/phase311/README.md).
+
+### 2026-10-31 — Phase312: keep P representation and cold evidence scoped
+
+P remains an isolated lab prototype with exact original wires and explicit admitted extent; no alias/registry or verification shortcut. Charge expanded logical work at quotas/audit/index bounds and keep physical witness units separate. The live partial-cut probe refetched after a safe tail invalidation; preserve that finding rather than count it as a same-page cut. A separate genuine checkpoint cut/native-v5 cold probe covers the admitted suffix using the test IndexedDB implementation. Neither establishes compatibility or production readiness. No hardening starts; proceed to P-grown fixtures and the declared screens, with the no-F cold stop intact.
+
+### 2026-10-31 — Phase313: carry P with full comparison to the grown screen
+
+The declared P1V0arm passes all three deep30sruns and fresh-owner cold checks; P0V0misses one. Continue G/R/S1Y1/P with V/Doff into the declared grown screen. This selection is lab-only, with host variability and all failed runs retained. Vdoes not become a landing prerequisite. Paired grown fixtures are actually rebuilt via their selected writer, not relabeled ciphertext; report them separately from the old single-entry writer fixture. All limits,120smaintenance,>=60overlap and no-Fcoldstop remain. No hardening is authorized.
+
+### 2026-10-31 — Phase314: keep reader censoring and capacity separate from writer success
+
+Carry G/R1500/S1Y1/P1,V/Doff to the declared pacing screen: all four exploratory Ponwriter journeys pass measured predicates/cold, versus four Poffcapacity failures. The unchanged test observes writer completion only; one Ponreader completion is demonstrated, other reader windows are censored. Do not infer universal reader fit or waive3,072diagnostics. Family accounting supports representation-driven pressure in opened rows while per-entry verification memo remains material. No cap,120sdeadline,60-keypredicate or security check changes. No hardening starts; compatibility/format remains an operator call.
+
+### 2026-10-31 — Phase315: choose1s for further lab work without hiding normal repair
+
+Keep the2.5spost-drain target: one1500replicate misses, both1000withheld and normal measured metric/cold replicates pass. Continue G8/R1000/S1Y1/P1,V/Doff into the declared3,072/D/gate work. This is conditional and unqualified: normal repair is armed across much of typing despite few rearm events; actual incremental traffic is not isolated. Maintenance completion remains unexposed in the late case, and its wait/cold precondition is unchanged. Do not harden or revise the approved Rpredicate now; its normal-traffic behavior needs evidence/operator decision before landing. Preserve every failure and the no-Fcold stop.
+
+### 2026-10-31 — Phase316: preserve the failed generation, resume real state, use the measured writer
+
+Do not extend the30minute fixture deadline or manufacture rows: retain its failure, clone its closed fictional profile/server state, verify confirmed writing offline, settle the pending input normally, then finish the remaining real edits. The independent archive/accepted-position checks prevent duplication or unrelated changes. For3,072reader-only diagnostics, one common history and freshH1suffice because the measured receiver itself writes the chosen receipt format. Omit unused actor2intakes rather than label its old profile as P-grown; retain the draft/addendum and all four measured cells. No gate, crypto, index, trace or rate bound changes; no hardening or credit.
+
+### 2026-10-31 — Phase317: Retain 3,072 failures and explicit capacity semantics
+
+All four predeclared real3,072 reader diagnostics retained. Full per-run index fallback, map-family/durable bytes, timing curve, interruptions and cold exposure recorded; capacity throws remain owner-error/halted, not parked. Reopen behavior traced without building a fix. S landing explicitly requires specific skipped/capacity mapping and reopened-journal coverage. Two Roff normal controls declared before D pairs. Evidence/docs only, no credit or hardening. See[phase317](./performance-experiments/2026-10-29-worker-catchup/phase317/README.md).
+
+Phase317 measurement limitation: all four detailed event buffers filled before the boundary, so exact first fallback positions and late native per100costs are unmeasured. Retained uncapped scalars/network show77versus1full ledger checks and a P0cursor bend at2,400–2,600; those do not replace the missing event. Dense-on27.887MBfits, but one of two reader maintenance windows times out; no qualification claim.
+
+### 2026-10-31 — Phase318: normal cost controls and separate D benefit
+
+All eight predeclared normal runs pass functional,16cold and measured predicates. Roff2controls versus R1000/Doff3arms show no added token/quiet-read cost in these windows, with0Ractivations in all3R1000/Doffarms; prior315normal episodes remain. Dspeeds H1in all3pairs(~7.5sin the two less-contended pairs), removing/defering unrelated quiet-peer probes; H2mostlyunchanged. Source/build/gates unchanged. Continue smallest selected Doffstack to3rep original/grown challenge; no hardening or credit. See[phase318](./performance-experiments/2026-10-29-worker-catchup/phase318/README.md).
+
+### 2026-10-31 — Phase319: retain original preconditions and immediate cold-stop visibility
+
+Recreated genuine current-civil original1024single-entry caught-up H2profile through real sync, whole archive exact/counterv2/onlyH2changed; retained distinct grown2048and native/Goals prepared-v5preconditions. Added observation-only cold-stop markers and explicit old-fixture selector; independent ASTchecks preserve all old expectation/test/wait nodes and existing config hashes. Declared30original+6separate grown runs before start, unchanged gates/deadlines,3percell/onefailfailscell; per-owner interruption/retry reporting. Evidence/docs only, no hardening or credit. See[phase319](./performance-experiments/2026-10-29-worker-catchup/phase319/README.md).
+
+### 2026-10-31 — Phase320: retain exposure failures; no hardening without operator decision
+
+All36declared journeys retained, functional/cold guards pass, no no-Fcold failure. Eight of ten original cells meet all predicates; both old1024maintenance cells fail unchanged>=60overlap in all3runs(19–31keys), all other predicates pass. Both separate grown cells pass3/3including85–120overlap,120swriter completion,16msinput/2.5speer/markers/cold. Late withheld post-drainp95=1.832/1.710/1.824s. Grown writers finish40.8–76.7safterlastkey;32priority interruptions/retry clocks recorded, no startsduringtyping/drain, readercompletion1/6otherscensored. Capacity mapping/reopen and separate landing contracts documented; exact3072index fallback remains unmeasured due event overflow. No hardening, credit or release work. See[phase320](./performance-experiments/2026-10-29-worker-catchup/phase320/README.md).
+
+### 2026-10-31 — Phase321: scope the overlap predicate to grown fixtures
+
+Operator amendment effective from321: >=60typing/catch-up overlap applies only to grown fixtures. Future1,024-position old-maintenance cells report overlap as information; every other predicate stays required. The assumption that the old backlog lasts for60keys has expired. Phase320recorded failures/verdicts are preserved byte-for-byte and not regraded. This321diagnostic is not a gate and grants no acceptance credit.
+
+Six predeclared grown diagnostics on unchanged313assets/stack retain the original writer wait, then observe both owners to completion/halt/absolute120safterlastkey before original cold. All6readers(43.982–90.905s)and6writers(53.123–79.245s)complete inside120s; zero capacity/halts,12coldchecks exact. Five readers finish4.263–22.817safter writers. Perowner attempts/jobs/retry clocks/journal peaks retained;38priority10sclocks, no new startsduringtyping/drain. Application source/build unchanged, only observation spec copy; no gate credit/hardening. See[phase321](./performance-experiments/2026-10-29-worker-catchup/phase321/README.md).
+
+### 2026-11-01 — Phase322: preserve profiled cold failure; no candidate promotion
+
+The new lab lane stops at its first profiled cold opening's WebAuthn NotAllowedError, rather than excluding a provider/harness failure or rerunning to green. Six prior unprofiled cold successes remain distinct. Root cause (including a possible DevTools-session interaction) is unproven; no persisted-data mismatch has been observed. Source/build changes remain private observations only. Operator's75msaddendum and reuse of460fefd8prefetch are recorded for resumption; no fresh fetch-ahead or timing ablation was built. All gates/deadlines/security checks remain. See[phase322](./performance-experiments/2026-10-29-worker-catchup/phase322/README.md).
+
+### 2026-11-01 — Phase 323: retain latency tradeoffs and timing-withdrawal evidence
+
+Operator’s 323 direction supersedes the 75 ms/direct-handoff queue: both are dropped. E denotes idle-check coalescing; B uses the existing 4×8 wire option and keeps nativeG8chain-order commit plus the original individual-prefetch fallback. V0/full-prefix/security checks remain.50 ms results are diagnostic, never 30 s gate credit. The 0 ms slowdown and logical-index amplification remain visible. Before timing removals, correct the unexecutedYoff 60 s rollback draft to a separate default-off SY1N zero-extra-priority-wait lab mode, retaining inputquiet/new-event/readiness and all other 60 s fences. No production or format decision follows. All trial/predicate failures remain, and no hardening starts. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase323/README.md).
+
+### 2026-11-01 — Phase 324: obey cold stop before further page-reuse screening
+
+New P denotes owned parsed-page sharing, distinct from old dense-receipt P. Keep canonical-byte and per-entry crypto/chain/expiry/authority/witness/commit checks, exact old batch charge, V0 and all gates/defaults. A real unprofiled no-F cold failure rejects the prototype and stops the 27-run plan after its first journey. Passing drain or immediate-cut cold cannot substitute for historical replay. Preserve the complete failed result and private inert recipe; do not fix expiry handling, resume experiments, harden or release in this phase. Next work requires explicit stored-mode equivalence and expired-history-versus-expired-live controls. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase324/README.md).
+
+### 2026-11-01 — Phase 325: expand sender study without waiving the cold stop
+
+Phase 324 is already frozen, so the sender addendum is phase 325. Add an immediate-eligibility sender with no artificial quiet wait; edits held behind the active send leave in the next bounded envelope. Preserve durable commit, synchronous journal admission, immutable retries, backoff, bounds and security checks. Compare all three policies in paired 150 ms and single 500 ms workloads, three journeys per cell, per-direction outcomes and positions/100 keys. No default selection; report-only lab work. This declaration neither repairs the stored-replay regression nor permits further measurements before the no-F cold blocker is resolved under separate direction. [Protocol](./performance-experiments/2026-10-29-worker-catchup/phase325/README.md).
+
+### 2026-11-01 — Phase 326: historical mode repair, amended lab selection, preserve failures
+
+Explicit historical mode derives only from saved-byte arguments, never network input, and is not trust. Preserve live expiry and all signature/chain/authority/witness/commit checks; stored empty/duplicate results refuse. Before the27-run screen, select among E1/3cold/pass0ms by lowest50ms median, within5% lower index;50ms remains report-only. E1B1P1 selects subsequent stages, not landing. P cold failures stop P only; none occurs in the repeated screen. Retain3 grown owner-errors and all sender failures. A filename precondition and Markdown visual observer are corrected only as declared apparatus amendments; the new two-short-card C grid is separate from old long-card failures, not a regrade. Workspace shutdown is not dismissed as latency or used to infer data loss. All defaults/gates unchanged, no hardening authorized. [Evidence and separate landing requirements](./performance-experiments/2026-10-29-worker-catchup/phase326/README.md).
+
+### 2026-11-01 — Phase327: use initiating native error, not pending-call timing
+
+Drop the flush timing clue and simple send-count/network-limit explanations as directed. Distinguish suppressed Window cleanup fail callbacks from the earlier native-owner close. Preserve the existing repair-required terminal behavior: this lab reproduction catches disagreement between full and incremental semantic ledgers. Separate immutable source variants allow one additional pre-close code/job observation without changing the branch. Stream via bounded observation messages outside RPC slots, keep a tail and critical records, and expose all loss/overhead; no performance credit follows. Counter peaks and quota codes stay native. No security guard is weakened and no hardening starts. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase327/README.md).
+
+### 2026-11-01 — Phase 328: preserve immutable patch and correct evidence metadata in sequence
+
+A verification failure found two phase327 log entries sharing a destination after the writer completed. Preserve frozen327 and add a sequential correction, with the empty snapshot explicitly reconstructed and independently hash checked rather than silently editing a registered patch. All run conclusions stay unchanged. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase328/README.md).
+
+### 2026-11-01 — Phase329: distinguish functional repair from failed latency cells
+
+Apply the operator's clarification literally: latency misses keep predicates/cells failed and do not stop; functional failure in any arm, including the unrepaired control, stops. Preserve all old guards; scope the private parsed-page turn to its creating physical record and use each legacy record's own bytes. The stale retained state is generated by lab-only code; the unchanged shared publisher/seq integrity guard detects it. Use one public-typed maintenance-eligible paired fixture for all policies, exposing both owners without lowering the1024record threshold. Its timings are not a matched old-small-fixture before/after. Negative-control failure leaves later controls unrun; no default/hardening/landing decision is inferred from18functional successes or3grown measured passes. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase329/README.md).
+
+### 2026-11-01 — Phase330: retain the bad precondition and obey the archive stop
+
+The new checkpoint lab incorrectly requires C's original frozen profile to be current while offline, although it was deliberately saved before A's backlog. Preserve the failed comparison and stop; do not call it an installation failure, erase the attempt, edit the fixture into agreement or silently rerun. The intended comparison keeps the original1024corpus and actual signed catalog checks; loaded producer/admitter input is separate to avoid changing B's compared history. A corrected preparation must let C catch up through real sync and verify its full archive before admission. No source verification/format/default/hardening change is authorized or made. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase330/README.md).
+
+### 2026-11-01 — Phase331: apply amended stop classification
+
+Preserve329/330asrecorded. New declared negative controls are expected to fail; unexpected pass stops. Harness preconditions may be repaired/rerun with all attempts retained. Functional app failure still stops; latency misses never stop. Resume only the fourdeclared329controls before the matched checkpoint retry; all pass functionally. No policy/default selected. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase331/README.md).
+
+### 2026-11-01 — Phase332: matched service state and explicit observation boundaries
+
+Control and checkpoint preparations have identical A/Cnormal-sync steps, onlyCreate/Verifyadded; Busespreparedcontrolstate. Full accepted-row families independently checked, not onlypublisherrows. Keep harness8Undoerror (proved by offline45key remainder), download timeout and metadata-parser corrections. ObserveactualnativeZIPforper-keyarchivecheckswithoutchanging app URL/click/revoke, retainnaturaldownloadseparately and noqualificationclaim. Install n0/1notpassedinputgate. All crypto/authority/commit guards/defaults unchanged; no hardening/landing. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase332/README.md).
+
+### 2026-11-01 — Phase333: observe idle scheduling without weakening audit
+
+Private lab choice:1000ms input quiet plus no pending foreground jobs,1024new physical rows forces an attempt; existing full comparison/audit/interruption guards stay. No trust/format/default change, no landing. Functional failures stop, latency failures keep cell failed and continue; a pre-app harness list failure was retained/repaired. The original reference1.422s miss was not directly retested. Operator decides any hardening next. [Evidence](./performance-experiments/2026-10-29-worker-catchup/phase333/README.md).
+
+### 2026-11-02 — Phase334: keep prefix cost separate from receive-service imbalance
+
+Do not treat millions of one-record async comparison calls as full-ledgerreplays or instrumented elapsed spans as CPU. Preserve exactprefix/byte/header/taskchecks and allfreshauthority/witness/commitchecks. Complete333native logs show already-publishedwriting waiting through alternating sends/emptypublisherchecks; optimizingDevice2alonecannotestablish a peer-latencygain. No V/F, limit/defaultselection, build or hardening. Any next diagnostic must separate observation overhead, exactcomparison machinery and receiver scheduling with originalfairness/gates. [Trace](./performance-experiments/2026-10-29-worker-catchup/phase334/README.md).
+
+## 2026-11-02 — Hardening 335: preserve capacity as a refusal, not permission
+
+Catch only PreparationCapacity at the automatic removal boundary and reuse the existing skipped/capacity policy. Keep journals, caps, retry clock and integrity/storage halts. Share the error class through a small canonical module with compatibility re-exports; record only a closed owner-error code. Follow the operator’s November 2 stage order, no new lab work or format approval inferred.
+
+## 2026-11-02 — Hardening 336: preserve the existing slice guard with a fresh start
+
+Exclude saved-prefix replay before the first miss; start the existing wall-clock slice there. Keep pauses before fresh verification, all freshness/digest/erasure checks and the one-indivisible-call boundary. This is the approved S behavior, not a new latency/throughput claim or a changed budget.
+
+## 2026-11-02 — Hardening 337: honor the functional stop before repairing Y
+
+The unfinished retry classification produces an unexpected maintenance owner-error in positive unit controls. Preserve the failing draft and logs and stop; do not label the implementation defect as a harness failure or proceed to later stages. The known mechanical repair is not performed without the operator resuming after this report. Existing guards remain and no trust/format/gate decision is changed.
+
+## 2026-11-02 — Hardening resume: scope functional stops to hardened-app evidence
+
+The operator authorizes ordinary red-unit repair while writing code, retaining logs. Hardened app/journey/cold failures and unexpectedly accepted negative controls still stop; an existing test may not be made green by weakening a guard. Both specified existing controls pass unchanged after the new metadata-map rename. Y keeps private typed interruption metadata local, with ten seconds only for entirely queue-priority conditions, sixty seconds otherwise. No zero-delay policy or trust/limit change.
+
+## 2026-11-02 — Hardening 338: preserve the browser opening failure separately from fixture drift
+
+The two specified controls pass unchanged and full units are green; this is not the earlier broad red-unit stop. Keep the existing app-startup failure and5s assertion, with no readiness-budget increase. Stale UI text explains three blocked assertions but does not explain or dismiss the separate offline-opening result. Hold further hardening under the app/cold-opening rule until its fixture prerequisites versus application behavior are distinguished. No archive loss, root cause, accepted negative control or15sStage5cold result is inferred. Keep every old test/assertion and all failed attempts. Census and planning refresh preserve all classifications, required files, open obligations and aggregate blocks.
+
+
+### Preserve the existing documentation procedure and distinguish fault delivery from status semantics
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 339
+
+**Orientation.** PRD v9 and TRD v8, with their existing storage/onboarding amendments, and the operator's November 2 hardening/resume instructions govern. Phase 338 called three current editor messages stale; the operator identified Window-only fault injection after storage moved into Workers. The separate hardening tracker also held active state outside the documented progress.md home.
+
+**Decision.** Preserve all old assertions and expected text, compare failures on signed base 89b11fe2, and establish actual Worker fault delivery before fixture repair. Check the dev offline asset setup first because packaged.spec already passes offline unlock. Keep the complete red census and unchanged deadlines. Restore our own active section to progress.md without editing the other seat, retain the hardening document as scope/plan, and retain append-only outcomes and reasoning. No documentation requirement, checker or approval rule changes. Whole-tree receipts invalidated by later documentation edits must be refreshed in the correct order.
+
+
+### Repair offline prerequisites in the development fixture
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 340
+
+**Orientation.** PRD v9/TRD v8 and the existing storage amendment require offline use; packaged.spec already passes it in the built preview. The older direct-component dev fixture has no service worker and Vite no-cache assets, while Local startup now hands off to a fresh Worker.
+
+**Decision.** Give only that frozen dev test server cacheable asset headers. Preserve the real modules, storage, error handling, lifecycle cleanup and unchanged offline identity assertions. The measured failure is asset delivery in the fixture, not a new production unlock change. Keep matched-base failures and the existing unit-wrapper timeout open; no guard or deadline relaxation.
+
+
+### Keep browser fault controls at the real storage owner
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 341
+
+**Orientation.** PRD v9/TRD v8 and the operator's resume-338 instructions preserve all admission, durability and original test assertions. Window-only IndexedDB monkeypatches no longer reach storage after the Worker conversion.
+
+**Decision.** Inject the existing transaction refusal inside the actual Local owner/startup Worker and require observation of the abort. Retain the Window journal refusal and every old expect expression/deadline. Keep the helper outside src and product entries. Put the dev fixture config in the existing tooling TypeScript project rather than expanding the app project's file list. Use the repository's configured lint mode; an extra stricter invocation creates no new requirement.
+
+
+### Restore fixture sensitivity without changing the protected checks
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 342
+
+**Orientation.** PRD v9/TRD v8 and the operator's resume require real fault delivery and all security checks. Signed-base controls failed before executing their intended faults because source anchors and a copied scheduler's imports had drifted.
+
+**Decision.** Rebind each omission to its corresponding current guard and retain the original ordinary-refusal/mutant-disclosure and counter/queue assertions. Bundle the actual mutated scheduler graph, checking one entry and complete output. Do not alter app/service checks to accommodate a fixture. Preserve exact patch export checks and the red full-check census.
+
+
+### Apply only the operator-approved public-runtime asset exceptions
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 343
+
+**Orientation.** PRD v9/TRD v8 and the existing phase236 packaged policy distinguish public compiled runtime JavaScript from private tooling pages. The older upgrade assertion still rejected the two runtime filenames. Automatic review rejected relaxing it without explicit approval.
+
+**Decision.** Restore the original assertion while seeking a concrete decision. The operator approved the exact patch and required phase236's rejected examples to remain rejected. Check all eight against the actual compound predicate, then run the upgrade suite; all pass. Format only the crypto registry that failed its existing formatter, independently prove full JSON equality, and preserve every qualification obligation. No documentation policy or runtime guard changes.
+
+
+### Produce historical data with the actual historical owners
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 344
+
+**Orientation.** PRD v9/TRD v8 and the operator's resume require authentic failure boundaries and retained evidence. The old R-01 fixture mixed current modules with three old substitutions and failed on a missing new export before reaching its cases.
+
+**Decision.** Use the existing bounded complete-source historical builder at the original revision, with genuine capture/spool/delivery owner exports. Independently check every archived file against fresh Git bytes; retain dependency equality, module escape, case assertions, deadlines and aggregate blocks. Do not add a compatibility stub or change application code to make an old fixture compile.
+
+
+### Preserve the real-report refusal after repairing the grouped HTTP fixture
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 345
+
+**Orientation.** The hardening procedure requires independent evidence consumers, preserves inconvenient results and stops on an existing check that needs a guard change. Native campaign success and synthetic adapter success are distinct from reconciling the actual native reports.
+
+**Decision.** Retain the original seeded population and all exact writing/source/prefix/cold checks while serving the actual batched HTTP route and modeling its pages. Run the whole campaign and all wrapper controls. Preserve the resulting real-report source-kind refusal, whose guard is unchanged from signed base; do not silently admit system sources. Return that narrowly identified boundary to the operator before continuing. No documentation policy, runtime trust, format, budget or deadline changes.
+
+
+### Authorize only the already-present system initializer in report consumers
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 347
+
+**Orientation.** The operator approved only system sources already in the pre-action capture set, with actor `system` and exact continuity; every source added during a history must remain human. Driver/editor may share this exception only after actual reports establish the same initializer.
+
+**Decision.** Pass each report's explicit initial capture list into the existing validator, comparing the entire containing capture against that initial value for every system source. Keep all existing known-source preservation and final-state checks. Confirm all three real report populations and add direct refusal controls whose later copies agree, so mere disagreement is not the discriminator. Preserve the old real-report refusal in phases345–346; do not rewrite it. No trust, format, runtime or documentation requirement changes.
+
+
+### Keep dispatch fault delivery adjacent to its actual guard
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 348
+
+**Orientation.** The operator requires faults to reach the current owner without changing assertions or app guards. A later driver control became reachable only after its earlier scheduler fixture was repaired.
+
+**Decision.** Use the unique current individual-read callback as the injection point, retaining the original baseline/mutant distinction and every native assertion/deadline. Do not instrument or relax the production path, and do not interpret a missing mutation anchor as application evidence. Reproduce on signed base and run the entire repaired campaign before advancing.
+
+
+### Preserve the replica task boundary without imposing a per-operation timer wait
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 349
+
+**Orientation.** The existing full-unit wrapper deadline is 120 seconds and remains binding. Its corrected-environment failure reproduces on signed base. A thread-pool proposal lacks sufficient headroom and is reverted, rather than treating one diagnostic pass as a cleared gate.
+
+**Decision.** Keep the default isolated fork configuration and all original test bodies, seeds and population sizes. In the Node replica fixture only, yield via `setImmediate` so recursively queued membership repair microtasks drain before the next operation without waiting on a timer threshold. Prove the cascade boundary and sensitivity to replacing it with a single microtask, run every affected property/regression case, then run the entire original command under its original deadline. New test admission remains a separate aggregate obligation. No runtime, trust or product-format change.
+
+
+### Do not defeat the current delivery defense to revive an old omission discriminator
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 351
+
+**Orientation.** The hardening rule distinguishes ordinary development/harness failures from an existing test requiring guard weakening. The copied scheduler and missing legacy fixture event are repairable preconditions; an old expected mutant advance blocked by a current independent decision check is a coverage boundary.
+
+**Decision.** Preserve all old assertions and deadlines while repairing the source closure, actual witness setup and precise baseline refusal wait. Once the self mutant remains blocked for conflict, stop and report instead of widening its accepted outcomes or removing another guard. The operator chooses how to re-scope the omission obligation; the shipping delivery-decision check stays. No app, trust, format, budget, deadline or documentation-policy changes.
+
+
+### Omitting a decision step must not manufacture durable progress
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 352
+
+**Orientation.** The operator approves a layered self-envelope/decision control, explicitly requiring a stop if both omissions do not advance to1. The baseline remains and the single omission must differ as a both-lane conflict with writing refused.
+
+**Decision.** Remove only the uniquely matched decision step, leaving proof erasure and the durable-status reader intact; never substitute an accepted result or setter. Capture exact persisted content/inbound rows and conflict records separately. Once the double arm still has no durable decision or receive advance, preserve the failure and stop. Static Worker-path reachability and pending classification/control obligations remain explicit. No guard, deadline, budget, source format or production behavior change.
+
+
+### Self-envelope sensitivity belongs on a path with a real receive write
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch353
+
+**Orientation.** The operator corrects the double-arm design: without the sole delivery decision write, genuine and forked self pages both stay at0. Drop that arm, keep its evidence and the normal baseline/single outcomes, and restore the original single-omission expectation on the identified Worker path.
+
+**Decision.** Use the real authenticated compatibility Worker handoff with native storage and a branded mirror. Mutate only its self-envelope condition and require durable receive1; baseline must refuse with exact native storage unchanged. Retain the normal composed path's conflict-layer and classification checks separately. Do not claim the normal UI uses the compatibility handoff. Keep report kind acceptance unchanged until the operator decides the explicit sync proposal under the hardening stop rule; independent review passes do not grant canonical credit.
+
+
+### Sync report source exception follows the approved initial-only boundary
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch354
+
+**Orientation.** The operator explicitly approves353-sync-report-review.patch as written and instructs continuation.
+
+**Decision.** Apply those exact bytes. System kind is admitted only for an initial capture with actor system and unchanged complete capture bytes through all observations/final. Keep newly allocated sources human. Constrain network-unavailable to the observed lost-reply action's affected retrying lane with positive failures; do not expand arbitrary status vocabulary. Preserve all controls, source pins and deadlines. Re-evaluate the retained native report against its historical pins; distinguish that from a new runtime execution.
+
+
+### Recovery formatting approval is restricted to one declaration
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch356
+
+**Decision.** The operator approves355-recovery-entry-format-review.patch and explicitly keeps the broader formatting work deferred. Apply exactly those bytes, verify the reviewed AST identity and existing formatter stage, and keep unrelated custody diagnostics in their next patch. A passing repaired format stage is not a new whole-command exit. No assertion or gate changes.
+
+
+### Native fixture progress is observed through awaited state, not paint
+
+**Date:**2026-11-02 · **Commit:**pending sequential patch357
+
+**Decision.** Repair the base-reproduced custody test observer under its original8s limit. Await asynchronous predicate values and use timer polling for crypto/state/native-lock conditions; do not weaken an app guard or count generic mutation timeouts as detection. Add real-crypto regressions for withheld frame callbacks and a predicate that first returns false. Require exact named regression failures when old policies are restored. Keep all old assertions, mutants, cases and broader deferred formatting. Preserve source-equivalent prior passes and later errors; observer robustness does not prove every historical failure had one cause.
+
+
+### Missed-hint repair requires verified per-publisher read history
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 359
+
+**Decision.** Use a per-owner bounded history and opaque hint generations rather than a process-global or persisted counter. Date each read's hint generation at preparation; a hint during I/O must prevent activation. Record hot reads but arm only on quiet discovery, and conservatively require a prior verified read of the same peer. Keep the first-missed-hint limitation explicit. Apply R only through the existing successful-idle scheduling port; never change failure backoff, maintenance readiness, authority or commit.
+
+
+### Cached quiet originals share the existing response budget and expire from request start
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 360
+
+**Decision.** Retain only exact original bytes under a generation-fenced capture, never a reusable verification result. Count their request/page bytes against the next fetch reservation. Keep speculative quiet replies separate from the primary prefix, and drop speculative requests on legacy fallback. Use the shared exact cursor-basis comparison for selection and cache ownership. Apply the operator-required request-start age even when verification completes later; update the one old completion-clock expectation to the stronger boundary without changing the 750 ms limit.
+
+
+### Speculation changes transport collection, never native publisher ownership
+
+**Date:** 2026-11-02 · **Commit:** pending sequential patch 361
+
+**Decision.** Use the freshly authenticated projection for both selection and quiet-request preparation. Keep the selector as the only source of the current publisher turn; cache hits replace only that selected request with its exact original. Sign extra one-position peer requests only in spare existing wire slots, with no own-publisher probe or new work lane. Charge retained originals, tail and fresh response before I/O, and invalidate raw caches on hints/lifetime changes. Keep all entry verification, chain-order commit and local admission unchanged.
+
+
+### Proposed page-receipt contract requires an operator format decision
+
+**Date:** 2026-11-03 · **Status:** proposed only; not approved or implemented · **Scope:** hardening Stage 3.1
+
+**Proposal.** A bounded self-contained binary extent stores each original signed page once per committed extent, with raw original bytes and explicit entry bounds. A MAC-bound monotonic local compatibility floor and versioned retained readings fence old closed parsers. Readers remain independent of the writer flag; a tested reader-only rollback artifact is required before any writer is eligible. No persistent page registry, suffix-only verification, server/wire change or cross-owner trust. [Contract and tradeoffs](account-inbound-page-receipts.md); [review](development-evidence/2026-11-02-release-hardening/367-format-contract/README.md).
+
+**Accounting choice proposed for approval.** Keep both the pre-existing logical 1,024-position audit ceiling and the operator's physical 1,024-row cap. Either forces an attempt without waiving interruptions; dense encoding cannot dilute verification frequency. Retain ordinary due rules and all original gates/limits.
+
+**What is given up.** Self-contained cuts can duplicate a signed page; that cost must be counted. Once marked, storage requires the compatible reader even with the writer disabled. Reader-first release delays the G8/B/dense gains and adds a release operation. Actual old-tab UX and rollback binaries remain tests to perform in Stage 3.2. The operator may approve, choose reader-first activation or defer the format. No selection or permission is inferred from this entry.
+
+
+### Count unconsumed physical audit pressure without a replay
+
+**Date:**2026-11-03 · **Scope:**Stage4 scheduling implementation, not a product/format decision
+
+The phase372 counterexample shows that max(rolling pressure, consumed semantic pressure) can omit a disjoint committed tail. Track physical row count at the existing successful continuation and add the current tail difference for scheduling only. This gives a constant-time count without another scan/replay, persisted trust or any verification shortcut. Phase373 retains every old comparison and guard; the1,024-row forcing ceiling is unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/373-exact-audit-pressure/README.md).
+
+
+### Operator approves dense receipts and writing in the next release
+
+**Date:** 2026-11-03 · **Authority:** explicit operator Stage3.1 decision in this conversation
+
+The operator approved [the version1 receipt contract](account-inbound-page-receipts.md) and all of Stage3.2, with writing on in this release. Build a writer-off image from the same hardened tree as the rollback target, and prove it opens dense-row profiles including from a stale tab. Stage6 must state plainly: **rolling back to any build before this release locks out devices that wrote dense rows.** Preserve all native fences, exact writing and Undo. No gate, budget, limit, deadline, trust or server/wire change was approved; ordinary builds stay writer-off. This selects the release profile, not publication/deployment. No format implementation or artifact verification is claimed by this decision.
+
+
+### Separate binary syntax from verified receipt authority
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 implementation under the approved format
+
+Keep the new codec unwired until the authenticated floor and all readers are hardened. Reuse the old selected-entry structural checks without synthesizing v2 records, then optimize owned page parsing in its own bounded slice. The central classifier rejects unknown inbound versions rather than handing them to delivery inspection. No decoding result supplies signature, chain or native authority. Phase375 independently retains exact legacy bytes and all old codec ASTs. [Evidence](development-evidence/2026-11-02-release-hardening/375-binary-receipt-codec/README.md).
+
+
+### Authenticate and preserve an optional floor before enabling effects
+
+**Date:**2026-11-03 · **Scope:**approved Stage3.2 implementation
+
+Use a single closed optional encoding-floor helper and enforce monotonic preservation at the existing native promotion writer. Legacy absence emits no MAC extension and retains exact original bytes. A marked payload appends only the operator-approved tagged tuple. This isolated slice does not install the floor or authorize binary writing; actual native exclusion and rollback evidence remain obligations. A pre-existing test-only source omission anchor now targets the same route guard's current historical variable, with all cases and assertions unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/376-promotion-receipt-floor/README.md).
+
+
+### Preserve floor scopes and distinguish setup time from the repository stage
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 metadata and checkpoint observation
+
+Joined writes retain both the marker floor and any retained-reading floor. Each scope remains authenticated by the existing joined payload; absent legacy fields keep their exact bytes. The private test seam exports actual parsers only inside a disposable Node bundle and is absent from app entry points. Phase377 also removes no repository deadline: the original full editor command passes with its unchanged120s stage, after an extra external wrapper had truncated it during setup. Preserve both results and the earlier frame failures rather than attributing them to Mac sleep. [Evidence](development-evidence/2026-11-02-release-hardening/377-joined-receipt-floor/README.md).
+
+
+### Use original task provenance for the approved Worker format transition
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 implementation, no trust-model change
+
+Retain the exact join object only on tasks actually created by the existing native acquisition callback. A new format guard accepts the original exclusive task or that exact Account Worker join/lifetime, never an arbitrary shared task, Local join, structurally similar object or ticket. This preserves the approved real-cohort exclusion path without changing its locks or treating coordination as authenticated custody. Phase378 is unwired and carries model tests only; native and ordinary factor/authority proof still precede installation. [Evidence](development-evidence/2026-11-02-release-hardening/378-format-task-provenance/README.md).
+
+
+### Separate native coordination evidence from authenticated installation
+
+**Date:**2026-11-03 · **Scope:**Stage3.2 permanent controls
+
+Use actual browser Page/Worker Web Locks for the original-task boundary, with a held older shared lease and a discriminating startup-barrier omission. Keep that claim narrow: the test-only compatibility/authentication seam cannot authorize a floor or writing and is absent from app builds. Actual ordinary-factor/authority installation, old-data/stale-tab and rollback proof remain separate obligations. [Evidence](development-evidence/2026-11-02-release-hardening/379-native-format-coordination/README.md).
+
+
+### Operator chooses display-controlled native execution, preserving every bound
+
+**Date:**2026-11-03 · **Authority:**operator power-log review and explicit direction
+
+After the matched full editor run passes with the display on, use caffeinate -d for macOS native campaigns and record actual display power state in every5s host sample. Preserve the exact original2,400s editor outer,120s stage and all waits/assertions; full units keep120s outer. Keep earlier display-off failures without claiming causal proof or successful negative-control detection. This implements the operator's host-condition decision rather than changing product, security, qualification or documentation policy through a tool. [Evidence](development-evidence/2026-11-02-release-hardening/380-display-on-editor/README.md).
+
+
+### Preserve the display-controlled geometry failure; keep fixture timing changes separate
+
+**Date:**2026-11-03 · **Authority:**operator's unchanged-wait/deadline/assertion direction and hardening failure rules
+
+Stop the sequential checkpoint on geometry's nonzero exit after40successful commands. Keep the exact-base refusal mismatch, later matched-fixture base pass and six passing traced repeats beside the original failure, without claiming repair or green acceptance. Do not remove the native fault: journal admission refusal has a native fallback. The seed-flush source remains an inference. A two-file fixture proposal is reviewable but unapplied pending the operator's decision about the added precondition and changed observation point. No app/trust/format/limit/gate change. [Evidence381](development-evidence/2026-11-02-release-hardening/381-display-controlled-checkpoint/README.md).
+
+
+### Operator conditionally approves the381 geometry fixture repair
+
+**Date:**2026-11-03 · **Authority:**operator
+
+Validate the proposed touchend observation against the actual regression—Goals focus immediately on opening without the220ms timer. An unexpected control pass requires the approved data-goals-open observation instead. Record seed-drain duration for every base/hardened run; both journal/native faults and actual Worker-abort checks remain. Preserve every deadline and original failure, then retry full geometry and remaining42commands. No app change or new performance phase is authorized by this test repair.
+
+
+### Retain native-touchend observation after the actual immediate-focus control discriminates
+
+**Date:**2026-11-03 · **Authority:**operator's conditional381fixture approval, validated in382
+
+The actual app timer omission is detected in both projects, so retain touchend rather than the conditional data-goals-open alternative. Keep seed-drain time and pending counts visible in every base/hardened cut run, with both refusal paths and the existing actual Worker-abort assertion. All other tests/guards/deadlines stay. Planning refresh changes input pins only; archived lint-error sources remain immutable. [Evidence382](development-evidence/2026-11-02-release-hardening/382-geometry-fixture-repair/README.md).
+
+
+### Keep the full-unit deadline and incomplete command results visible
+
+**Date:** 2026-11-03 · **Commit:** pending patch383 · **Orientation:** approved geometry repair is proven; nine remaining wrappers reach their original120s full-unit limit. PRD/TRD remain unchanged from signed89b11fe2; the operator's hardening note governs this diagnostic.
+
+**Decision.** Preserve every failure and the unrun downstream stages. A focused codec pass or231-file partial unit diagnostic cannot close a298-file suite or any failed wrapper. Keep all case populations, assertions, deadlines and guards; do not advance format integration on partial credit. Actual producer executions, rather than edited receipts, repair freshness; `.receipts` is the live machine home. Record the collector-only schema error separately from app results. Host activity is context, not a proven explanation. [Evidence383](development-evidence/2026-11-02-release-hardening/383-remaining-functional-checkpoint/README.md).
+
+
+### Exhaust the finite codec domain and retain full-unit elapsed time
+
+**Date:** 2026-11-03 · **Commit:** pending patch384 · **Orientation:** operator's383unit-stop review; PRD/TRD unchanged from89b11fe2. The hardening-note amendment records the latest authority.
+
+**Decision.** Replace160seeded draws by all72distinct logical extents, preserving the byte assertions and every other test. Keep run summaries exact and write monotonic unit durations to sidecars. Attempt the nine original commands at120s on the cleaned host;240s is approved only after a cleaned-host full-unit overrun. No other bounds or checks change. Dedicated CPU/RSS/swap observations reveal the original daemon still active, so hold the cleaned-host retries rather than infer that the reported restart succeeded. [Evidence384](development-evidence/2026-11-02-release-hardening/384-exhaustive-codec-and-unit-observation/README.md).
+
+
+### Retain120s because the cleaned-host reruns pass without the fallback
+
+**Date:** 2026-11-03 · **Commit:** pending patch385 · **Orientation:** verified second daemon restart and operator-approved exhaustive codec driver; PRD/TRD unchanged from89b11fe2.
+
+**Decision.** Keep the original120s full-unit guard: all nine complete commands pass with actual unit times104.723–110.332s. No240s fallback is triggered. Retain unit sidecars and independent Vitest durations on every run so future growth stays visible. Preserve383and384evidence; host recovery plus test-driver change do not isolate causal attribution. Clear this segmented checkpoint and return to approved Stage3.2, retaining all further gates and rollout boundaries. [Evidence385](development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md).
+
+
+### Acknowledge the receipt floor at existing authenticated native activation
+
+**Date:**2026-11-03 · **Commit:**pending patch386 · **Scope:**approved Stage3.2, PRD/TRD unchanged
+
+Use the existing hook after ordinary Account startup and carrier initialization; no new passkey prompt or serialized permission. Fresh saved-custody MAC authentication and exact expected state precede floor signing; actual native ownership is required again inside CAS. Update private authority expectations only after the native commit, and never strip the floor on writer disable. Keep ordinary RANGE_RECEIVE off and label Page proof separately from genuine Worker/Joined proof and rollback-image evidence. The AST/negative-control/full-unit and bookkeeping results in [386](development-evidence/2026-11-02-release-hardening/386-authenticated-floor-activation/README.md) do not close remaining format or performance obligations.
+
+
+### Keep native owner evidence distinct from unauthenticated storage observations
+
+**Date:**2026-11-03 · **Commit:**pending patch387 · **Scope:**Stage3.2 native test evidence; PRD/TRD unchanged
+
+Use actual packaged UI, private service and virtual authenticators to supplement the private coordination model. Read metadata/locks without treating those observations as trust: ordinary successful cold opening still authenticates custody, binding, authority and passkey. Query exact slot permits rather than the supervisor/member namespace prefix. Preserve the first failed harness assumption and new-family inventory refusal. Register the new test as required, with no old exclusions or deadlines changed. [Evidence387](development-evidence/2026-11-02-release-hardening/387-genuine-worker-floor/README.md) remains narrower than first-write/frozen-old-reader and final dense rollback evidence.
+
+
+### Keep saved-request lifetime distinct from optional legacy-byte equality
+
+**Date:**2026-11-03 · **Commit:**pending patch388 · **Scope:**approved Stage3.2; PRD/TRD unchanged
+
+Use a private discriminated mode constructed only by the saved-byte wrapper. A future self-contained page receipt must not need synthetic legacy per-position bytes merely to select historical request semantics. Keep exact legacy equality independently, and keep stored empty/duplicate refusals explicit. Nothing learned from network input selects saved mode or grants verification trust. [388controls](development-evidence/2026-11-02-release-hardening/388-explicit-stored-mode/README.md) prepare the boundary without claiming binary/four-reader/aged-cold integration complete.
+
+
+### Keep physical receipt ownership separate from admitted logical entries
+
+**Date:**2026-11-03 · **Commit:**pending patch389 · **Scope:**approved Stage3.2; PRD/TRD unchanged
+
+Expose a count before lazy logical expansion and key private memo slots by actual physical sequence plus original selected page index. Preserve exact original bytes per physical extent instead of encoding one synthetic legacy row per view. A shared syntax projection does not authenticate a floor or replace per-entry crypto/authority/commit checks. Keep first selected predecessor independent of unadmitted entries. Unknown future versions use the existing update-required refusal at the tag home; every caller must still be moved there. [389evidence](development-evidence/2026-11-02-release-hardening/389-shared-receipt-views/README.md) leaves parsed-page reuse, reader integration and all final gates outstanding.
+
+
+### Share captured syntax without exporting verification trust
+
+**Date:**2026-11-03 · **Commit:**pending patch390 · **Scope:**approved owned-page hardening; contracts unchanged
+
+Keep the original request/page and their parsed syntax together inside one copied physical receipt. Reuse parsing across admitted entries, preserving every per-entry structural validation. Only private codec paths accept already captured syntax, with exact raw-object matching; public decoders return ordinary data. Signature, prefix, current authority, witness and commit checks remain the verifier/owner's responsibility. [Phase390](development-evidence/2026-11-02-release-hardening/390-owned-receipt-syntax/README.md) does not complete their integration.
+
+
+### An encoding floor belongs to the authenticated object that contains the rows
+
+**Date:**2026-11-03 · **Commit:**pending patch391 · **Scope:**approved receipt contract, no product/trust change
+
+Carry the native marker's floor into the native verifier context, updating only after committed acknowledgement. Rebuild a retained-reading context with that reading's own floor; explicitly remove an inherited parent floor. Unknown versions refuse even if the selected row is legacy. The scoped syntax home permits only the encoding; ordinary signature, authority, chain, witness and commit verification remain mandatory. [391evidence](development-evidence/2026-11-02-release-hardening/391-authenticated-receipt-scopes/README.md) leaves the semantic callers and memo scopes open.
+
+
+### Keep a saved receipt's physical ownership distinct from its verified logical entries
+
+**Date:**2026-11-03 · **Commit:**pending patch392 · **Scope:**approved format and owned-page hardening
+
+Use a separate bulk saved-receipt API so the old single-result API cannot silently discard dense entries. Construct saved mode and original syntax only inside the saved-byte boundary. Binary entries share one exact owned raw extent while every entry still verifies crypto, authorization context, prefix and current lifetime; full returned metadata is checked against the canonical logical view. Native witnesses, coverage, actual index/memo accounting and commit authority remain outside this detached evidence. [392evidence](development-evidence/2026-11-02-release-hardening/392-binary-stored-receipt-core/README.md) closes only the unwired core.
+
+
+### Bind receipt cache reuse to every entry while owning its bytes once
+
+**Date:**2026-11-04 · **Commit:**pending patch393 · **Scope:**approved owned-page and memo hardening
+
+Use one private cache entry whose canonical address includes every ordered actual entry slot, never the first slot alone. Preserve the same exact bytes/context and current/revision checks through one common implementation. Drop the whole proof when any entry address is removed, and keep clone projections independent. Expose actual retained buffer capacity only for forthcoming budget accounting; do not call it RAM savings. Keep the existing journal's portable clear/retain/check type truthful and its validators intact until the separate receipt adapter is implemented. [393evidence](development-evidence/2026-11-02-release-hardening/393-receipt-memo-ownership/README.md) includes the type and sparse-address development failures.
+
+
+### Keep durable preparation evidence compact without bypassing its grammar
+
+**Date:**2026-11-04 · **Commit:**pending patch394 · **Scope:**approved indirect receipt reader/journal hardening
+
+Extend the journal's closed local roles with exact physical sequence/first original index/count, not an arbitrary blob or page reference. Store one exact approved receipt and closed per-entry received results/originals; verify raw-input equality and every original index/position/link. Keep the existing binary value grammar, MAC domain/context, import capability, slice and limits. The adapter is implemented independently and now truthfully supports the receipt port. Its future consumer must enforce its authenticated floor before reuse. [394evidence](development-evidence/2026-11-02-release-hardening/394-preparation-receipt-adapter/README.md) preserves all development failures and the sole old-helper anchor repair.
+
+
+### Bind optional stored-receipt reuse before projecting independently owned results
+
+**Date:** 2026-11-04 · **Commit:** pending patch 395 · **Scope:** approved exact-evidence/owned-page hardening
+
+Keep stored mode private to captured saved bytes. Check the authenticated encoding floor and current owner before selecting proof; bind complete physical bytes, actual generation-key evidence, retained originals and every actual entry address. Reuse only the existing verified crypto evidence, never authority/coverage/commit permission. A memo may erase its callback result: rebind returned binary views into the exact independent clone, and explicitly keep the selected legacy original on a cache hit. Older portable adapters without the optional extension continue full verification. [395 evidence](development-evidence/2026-11-02-release-hardening/395-stored-receipt-proof-reuse/README.md) preserves the legacy erasure regression and repair.
+
+
+### Keep physical witnesses separate from logical replay and defer unsafe index eligibility
+
+**Date:** 2026-11-04 · **Commit:** pending patch 396 · **Scope:** approved receipt-reader hardening
+
+One receipt row is one completeness event, even when it proves eight admitted positions. Verify, cover and retain every actual entry independently through the saved-byte boundary; never carry a previous record's parsed page into a later legacy event. Resolve epoch/disposition through the tag home, preserving unrelated legacy tag parsing and strict future-version refusal. Keep binary views on the full reference until logical-work/owned-byte bounds are hardened rather than treating fewer physical rows as eligibility. [396 evidence](development-evidence/2026-11-02-release-hardening/396-page-ledger-readers/README.md) retains every development failure and intermediate checkpoint.
+
+
+### Keep a cut inside a page without rewriting its signed originals
+
+**Date:** 2026-11-04 · **Commit:** pending patch 397 · **Scope:** approved interior-cut hardening
+
+Verify every admitted entry first. At every covered position preserve the full snapshot comparison and observed accepted-cut link. Retain only the suffix as one self-contained extent, changing its unsigned range header with actual verified indices/predecessor/end while keeping complete original signed frames. Preserve legacy bytes, one gap only across the authenticated cut, final closure and failure erasure. [397 evidence](development-evidence/2026-11-02-release-hardening/397-handoff-page-cuts/README.md) distinguishes low-level precondition/aged semantics from still-required native admission and31s cold evidence.
+
+
+### Count retained work without granting trust to its header
+
+**Date:** 2026-11-04 · **Commit:** pending patch398
+
+Before expanding a retained binary receipt, require its own encoding floor and closed fixed header, then count its bounded admitted extent against the existing logical ceiling. This is only a work bound: full syntax, signatures, authorization and chain checks still determine admissibility. Preserve physical bounds and legacy capture behavior. [398 evidence](development-evidence/2026-11-02-release-hardening/398-retained-logical-work/README.md).
+
+
+### Keep later reading authority outside the saved-page turn
+
+**Date:** 2026-11-04 · **Commit:** pending patch399
+
+The existing full certification, checkpoint and publisher-set validation still precedes saved replay. Only captured saved bytes select stored semantics; every selected entry opens and advances the local prefix, and the final prefix still has to match the retained stream. One physical record retains its selected plaintext updates; failure and temporary-original cleanup remain explicit. [399 evidence](development-evidence/2026-11-02-release-hardening/399-membership-page-replay/README.md).
+
+
+### Share accepted-cut checks while bounding saved logical work
+
+**Date:** 2026-11-04 · **Commit:** pending patch400
+
+Replacement live and stored replay use the same unchanged accepted-result guard. Count a saved receipt's closed admitted extent before opening its entries; it does not gain4096 times its page width. Keep its original signed request/page and exact self-contained extent for resumption. An isolated omission proves the boundary check detects over-limit work. No caller parser, network flag or header grants trust. [400 evidence](development-evidence/2026-11-02-release-hardening/400-replacement-page-replay/README.md).
+
+
+### Give retained buffer accounting one home and keep fallback conservative
+
+**Date:** 2026-11-04 · **Commit:** pending patch401
+
+The existing393 backing-buffer accountant belongs in verificationOwnership and is shared unchanged by proof memo and index usage. Preserve old physical/visible ceilings, add logical and actual-owned bounds, and recheck the final replay graph with the real memo charge. Overflow removes only semantic indexes; exact full-reference validation remains. Aliases are not independent allocations, and byte-identical copies are. This measures buffers, not object/string overhead or RAM. [401 evidence](development-evidence/2026-11-02-release-hardening/401-index-owned-bounds/README.md).
+
+
+**Phase401 accounting follow-up, 2026-11-04.** Keep binary fallback while accounting for the existing clone mode's separate retained-record copy. Treat the ownership mode as an explicit budget input and prove both installed graph shapes; a union of candidate buffers cannot stand in for two later allocations. This is a remaining hardening obligation, not a change to limits or trust.
+
+
+### Make the existing cache ownership mode an explicit byte-budget input
+
+**Date:** 2026-11-04 · **Commit:** pending patch402
+
+The same existing flag expression controls cache installation and prospective accounting. Shared mode counts the union; clone mode counts the cloned view plus each independent visible record copy. Keep the real memo charge, old ceilings and full-reference fallback. Actual constructor observations prove both graph shapes. This closes401's qualification without changing trust, flags or constructors. [402 evidence](development-evidence/2026-11-02-release-hardening/402-index-clone-ownership/README.md).
+
+
+### Require an owned-proof observation before binary indexing
+
+**Date:** 2026-11-04 · **Commit:** pending patch403
+
+Smaller physical rows do not establish full ownership charge. Verified callers supply their real separately retained proof bytes; ports without that observation retain full reference fallback. This grants no trust or permission to omit full verification/floor checks. Binary epoch uses the original raw request via the common classifier; append reuse stays separate. [403 evidence](development-evidence/2026-11-02-release-hardening/403-cold-page-index/README.md).
+
+
+### Erase only buffers no longer owned by a reader
+
+**Date:** 2026-11-04 · **Commit:** pending patch404
+
+Binary request/page frames are subviews of one owned backing, so retaining either keeps that allocation. Preserve it without adding copies; erase decoded entries, unused legacy raw copies and all refused captures. Shared private projection keeps the old census error boundary while the raw helper captures its own bytes/floor. Header work bounds expansion only and grants no syntax/authority trust. [404 evidence](development-evidence/2026-11-02-release-hardening/404-closed-ledger-capture/README.md).
+
+
+### Keep the old canonical boundary while indexing binary appends
+
+**Date:** 2026-11-04 · **Commit:** pending patch405
+
+Do not replace the old unconditional scoped capture with a weaker tag-only pass for unrelated rows. Reuse the same raw capture, preserve own-publisher/history fallback, and count the fixed-header extent before expansion. The final verified state and real memo charge still govern retained eligibility. Transfer only new metadata on success; erase its buffers on refusal without touching caller or predecessor. [405 evidence](development-evidence/2026-11-02-release-hardening/405-page-append-index/README.md).
+
+
+### Observe the real display; keep timeout and sampling evidence explicit
+
+**Date:** 2026-11-04 · **Commit:** pending patch406
+
+An empty sandbox CoreGraphics display list means unknown, not off. Use the unchanged observer/harness outside sandbox, preserving the operator's display requirement and real power assertions. Apply the already approved240s hang guard only after the full-unit120s timeout, and retain actual126.44s suite time; other deadlines/gates remain. Explicit examples count toward fast-check numRuns, so record six random and six example histories rather than claiming twelve random histories or exhaustive coverage. [406 evidence](development-evidence/2026-11-02-release-hardening/406-mixed-replay-control/README.md).
+
+
+### Share the test page partitioner while preserving each reader's real preconditions
+
+**Date:** 2026-11-04 · **Commit:** pending patch407
+
+Reuse independent signed originals to vary physical receipt layout in every saved semantic caller; do not borrow authority or checkpoint admission from a parser projection. Membership/replacement use genuine certified fixtures. The handoff property uses no checkpoint and separate publishers/Yjs identities, while existing real admitted-cut controls remain. No production optimization or trust change follows from this test-only consolidation. [407 evidence](development-evidence/2026-11-02-release-hardening/407-mixed-saved-readers/README.md).
+
+
+### Continue Stage3.2 automatically under the operator's narrowed stop boundary
+
+**Date:**2026-11-04 · **Commit:**pending patch408
+
+The operator directs continuation through every remaining Stage3.2 item, freezing/reporting each phase without waiting. Stop for a format/trust/limit/deadline decision or a failure unfixable within current guards. Earlier stop/failure records remain historical evidence. Do not relax monotonic received-through checks to accommodate a stale fixture: re-sign the independent response at a consistent service tip. Pure baseline payload tags and physical counterv5 are separate formats. [408 evidence](development-evidence/2026-11-02-release-hardening/408-indirect-readers/README.md).
+
+
+### Keep parsed syntax ownership separate from verification-result memo ownership
+
+**Date:**2026-11-04 · **Commit:**pending patch409
+
+A per-load parser scope grants no verified prefix, authority or commit permission. It stays inside one carrier and compares exact current physical input; all old per-entry verification remains. The existing memo erases callback values after cloning, so only the new scope detaches the compact record/original bytes it gives to that memo. Track outputs until explicit non-parser transfer, otherwise erase them. Do not substitute a persisted alias, lease, counter or later audit for exact retained-row checks. [409 evidence](development-evidence/2026-11-02-release-hardening/409-owned-syntax-lifetime/README.md).
+
+
+### Brand-check syntax ports independently of verification
+
+**Date:**2026-11-04 · **Commit:**pending patch410
+
+Census, epoch and ledger consumers may share private exact-byte syntax within one load, but only through a genuine local scope. Scalar projection does not select stored mode or grant verification authority. Continuations capture only new physical rows; old prefix comparison remains independent. [410 evidence](development-evidence/2026-11-02-release-hardening/410-reader-syntax-ports/README.md).
+
+
+### Keep independent load and audit syntax lifetimes
+
+**Date:**2026-11-04 · **Commit:**pending patch411
+
+Create and dispose syntax inside each verified load callback, complete only the final plain verified result, and keep audits/reference loads independent. Epoch scalar reuse and cold indexing preserve exact-byte/floor checks and actual proof-byte bounds. [Evidence](development-evidence/2026-11-02-release-hardening/411-owned-full-loads/README.md).
+
+
+### Scope continuation syntax after exact retained-prefix comparison
+
+**Date:**2026-11-04 · **Commit:**pending patch412
+
+A continuation captures only its new physical rows, never its retained predecessor. A failed bound, witness, coverage or lifecycle check abandons the whole scope and existing fallback remains. Actual proof-byte observation is required to index a reduced binary suffix. [Evidence](development-evidence/2026-11-02-release-hardening/412-owned-continuations/README.md).
+
+
+### Bind live encoders to their own canonical originals
+
+**Date:**2026-11-04 · **Commit:**pending patch413
+
+Do not accept externally supplied parsed objects at an encoder or live verification boundary. A call-local lifetime owns syntax and bound encoders, retains exact current raw/frame checks and erasure, and shares no authority or permission across an owner or Worker. Existing per-entry crypto and canonical structural checks remain. [Evidence](development-evidence/2026-11-02-release-hardening/413-owned-live-originals/README.md).
+
+
+### Separate dense prefix preparation from native physical admission
+
+**Date:**2026-11-04 · **Commit:**pending patch414
+
+Prepare exact binary extents without granting native progress. Count the one receipt physically, every received position logically, and retain all cryptographic and lifetime guards. Only size scheduling may return an already verified prefix; cryptographic refusal returns none. The native owner must atomically commit all covered updates with exactly one receipt under its existing fresh floor/witness/authority fences. [Evidence](development-evidence/2026-11-02-release-hardening/414-dense-prefix-preparation/README.md).
+
+
+### Keep physical page framing separate from logical receive credit
+
+**Date:**2026-11-04 · **Commit:**pending patch415
+
+The native group writes one receipt and all covered updates in the same existing atomic append, with its witness counting those actual heads writes. Per-position credit remains logical. Keep the own-stream conformance guard; obtain actual dense native proof through the composed peer/Worker path, never by weakening that guard. A local import alias keeps existing fault controls byte-exact. [Evidence](development-evidence/2026-11-02-release-hardening/415-dense-native-framing/README.md).
+
+
+### Keep physical storage pressure and logical audit pressure independent
+
+**Date:**2026-11-04 · **Commit:**pending patch416
+
+A compact page counts once physically and once per admitted received position logically. Observe logical work only from a verified census after candidate acceptance, excluding its cold seed. Force only an attempt at either approved ceiling; retain all comparison/interruption/native guards and the existing work lane. Continue unreduced-oracle integration separately. [Evidence](development-evidence/2026-11-02-release-hardening/416-logical-audit-pressure/README.md).
+
+
+### Keep unreduced full-oracle work in the existing warm-audit lane
+
+**Date:**2026-11-04 · **Commit:**pending patch417
+
+Use one private scheduler port and the real maintenance-task brand, observing the existing foreground token set. Keep independent full comparison, all guards and a fallback for owners without this scheduler. A hard cap forces an attempt only; interruption still wins. Reduced and unreduced oracle lifetimes remain separate. [Evidence](development-evidence/2026-11-02-release-hardening/417-unreduced-idle-oracle/README.md).
+
+
+### Keep native G8 independent from the production four-position request width
+
+**Date:**2026-11-04 · **Commit:**pending patch418
+
+Use the approved eight-position selector/native allowance and split writer-on requests at4. Preserve all native byte/record and protocol/rate/queue limits. Update exact four-position boundary fixtures without removing cases, assertions, seeds or deadlines; preserve every red attempt. Harden combined transport/cache/tail reservations separately before activation. [Evidence](development-evidence/2026-11-02-release-hardening/418-eight-position-turns/README.md).
+
+
+### Account for still-owned originals before speculative copies
+
+**Date:**2026-11-04 · **Commit:**pending patch419
+
+Use one content-free budget predicate and evict optional quiet originals for the complete cache/tail/wire reservation. Include wire originals and a proposed independent cache/tail copy simultaneously. Inability to retain speculative work cannot undo acknowledged writing. Keep every native verifier, authority and lifecycle fence, and harden real format activation/cold/rollback separately. [Evidence](development-evidence/2026-11-02-release-hardening/419-combined-originals-reservations/README.md).
+
+
+### Make dense writer activation explicit in both build entry paths
+
+**Date:**2026-11-04 · **Commit:**pending patch420
+
+Use a strict captured build selector with ordinary default0 and Docker forwarding, preserving reader compatibility independently. Local Vite raw environment exposure was already possible; distinguish that observation from the previously absent Docker path. Keep actual writer-on/off image and lifecycle evidence separate from configuration-unit proof. [Evidence](development-evidence/2026-11-02-release-hardening/420-explicit-range-build-flag/README.md).
+
+
+### Prove native dense lifecycle with read-only observations and durable journal recovery
+
+**Date:**2026-11-04 · **Commit:**pending patch421
+
+Force the approved interior cut by lowering only a test Worker live allowance, leaving every guard intact. Prove real Account ownership with known owner bootstraps plus native shared leases/exclusive supervisor. Bind uploads independently from committed service rows, observe native receipt syntax only after locking under the correct existing authenticated permit, and require saved rows unchanged. Do not require a durable journal to be empty: retain it and prove exact offline cold recovery. Keep actual old-artifact/rollback images and performance gates separate. [Evidence](development-evidence/2026-11-02-release-hardening/421-native-interior-expiry-cold/README.md).
+
+
+### Leave an uncommitted page suffix for a fresh receive turn
+
+**Date:**2026-11-04 · **Commit:**pending patch422
+
+A verified partial page authorizes only its contiguous prefix. Stop the current multi-request turn at that boundary rather than weakening the next request’s prefix guard. Keep all verification and native commit checks byte-identical, and prove continuation and exact cold writing on actual Workers. Share existing regression helpers while retaining their ASTs and prior case bodies. [Evidence](development-evidence/2026-11-02-release-hardening/422-native-multi-request-cut/README.md).
+
+
+### Keep retained-reading format authority separate from native installation authority
+
+**Date:**2026-11-04 · **Commit:**pending patch423
+
+A valid retained reading’s floor never substitutes for a native marker acknowledgment. Authenticate the complete existing opening first, then perform the same fresh MAC-bound native floor CAS under the actual owner before the first installation effect, even in reader-only mode. Keep the public active-only entry unchanged in scope and the installing entry private with literal call sites. Use a test-only valid-format constructor instead of modifying saved data or weakening live/stored verification. [Evidence](development-evidence/2026-11-02-release-hardening/423-retained-installation-floor/README.md).
+
+
+### Require a native saved floor rather than trusting an acknowledgment return value
+
+**Date:**2026-11-04 · **Commit:**pending patch424
+
+Prove reply-loss durability under the same native authentication path that a reopened device uses. Inspect only authenticated metadata and readonly encrypted row counts; let app admission, Undo and cold opening establish semantics. Keep a permanent omission build and all the positive assertions, so skipping the floor’s actual native write is distinguishable from a successful acknowledgment. Keep injected faults confined to test Worker builds. [Evidence](development-evidence/2026-11-02-release-hardening/424-native-floor-reply-loss/README.md).
+
+
+### Test the real mixed-page audit fault without weakening its oracle or changing clocks
+
+**Date:**2026-11-04 · **Commit:**pending patch425
+
+Keep the idle-start audit and every original verification guard. Age its private clock only, feed the real input-quiet scheduler, and reintroduce only the known retained-original metadata fault after a correct startup. Stream content-free mismatch/closure events before Worker termination and require exact unarmed cold writing. Test observations remain in isolated fixture builds; ordinary source and all prior tests are unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/425-genuine-stale-turn-idle-audit/README.md).
+
+
+### Use unchanged old Git trees and identical locked dependencies for compatibility tests
+
+**Date:**2026-11-04 · **Commit:**pending patch426
+
+Do not splice old readers into current modules. Verify and compile complete pinned old source trees with the identical dependency lock, retain exact emitted assets and their source identities, and test them against current profiles separately. Avoid pnpm’s automatic reinstall in exported trees by invoking its already installed pinned Vite dependency directly; never approve purging the shared modules link. Treat successful compilation as provenance only, with no reader/rollback or timing credit. [Evidence](development-evidence/2026-11-02-release-hardening/426-frozen-compatibility-artifacts/README.md).
+
+
+### Keep old-owner lifecycle controls discriminating against actual native and format guards
+
+**Date:**2026-11-04 · **Commit:**pending patch427
+
+Do not mistake pending cleanup locks for an opening or the setup-busy screen for a marked-store refusal. Assert the existing active-owner exclusion first. Queue the frozen native reader behind the real current owner, then close all current app tabs for the complete old artifact’s marked-store unlock. Keep an inert observer and byte-identical protected-data digest, an independently authenticated marker/parser control, and exact current cold writing. Test-only asset controls retain the packaged MIME/CSP boundary and never touch APIs. [Evidence](development-evidence/2026-11-02-release-hardening/427-frozen-old-owner-lifecycles/README.md).
+
+
+### Test the independent reading floor rather than infer it from native marker activation
+
+**Date:**2026-11-04 · **Commit:**pending patch428
+
+Keep separate ordinary and marked-retained-reading observations. The latter must use a valid authenticated sealed reading and every old verification guard. The joined rotation reader’s missing context floor is repaired by copying the already authenticated marker selection, never by granting floor1 to arbitrary receipts or catching its refusal. Preserve the failing native attempt before implementing the separate repair. The latest operator instruction permits continuation for a failure fixable within existing guards. [Evidence](development-evidence/2026-11-02-release-hardening/428-authenticated-floor-rewrite-counterexample/README.md).
+
+
+### Copy an existing authenticated encoding selection rather than relax rotation replay
+
+**Date:**2026-11-04 · **Commit:**pending patch429
+
+Rotation is another native stored-row reader and must receive the independently authenticated optional marker floor just like the ordinary baseline readers. Use the existing closed projector inside the already authenticated exclusive owner; preserve absence for legacy data and refusal for unsupported versions. Keep full per-entry verification and native commit guards unchanged. The before native failure, exact two-line inverse proof, rebuilt positive controls and full-unit result jointly establish this bounded correction. [Evidence](development-evidence/2026-11-02-release-hardening/429-rotation-authenticated-receipt-floor/README.md).
+
+
+### Keep the compatible writer-off artifact as the format rollback boundary
+
+**Date:**2026-11-04 · **Commit:**pending patch430
+
+RANGE_RECEIVE selects framing of newly fetched live pages. The compatible reader keeps the binary reader and authenticated monotonic floor. Prove actual stale-tab/mixed-row/cold behavior and minimal container runtime separately, bind them to exact source/image bytes and retain local archives. Flag rollback/history reduction does not remove the floor or make pre-release clients compatible. Once the floor commits, rollback requires this compatible reader; pre-release builds lock out dense-writing devices. These are hardening artifacts only. [Evidence](development-evidence/2026-11-02-release-hardening/430-same-tree-arm64-reader-rollback/README.md).
+
+
+### Exercise the existing conditional full-unit timeout approval and retain actual suite times
+
+**Date:**2026-11-04 · **Commit:**pending patch431
+
+Use the measured cleaned-host full-suite duration and identical two-worker command to invoke the operator’s existing240s hang-guard approval. Limit the change to the full-suite unit branch, preserve every other source byte, and keep unit-timing.json reporting elapsed/deadline/code/timeout on each campaign. Do not change any individual test or frozen16ms/2.5s/30s/600s/15s/120s predicate. [Evidence](development-evidence/2026-11-02-release-hardening/431-approved-full-unit-stage-guard/README.md).
+
+
+### Preserve the stopped checkpoint and refresh only the executed coverage anchor
+
+**Date:**2026-11-04 · **Commit:**pending patch432
+
+Treat this as a harness build precondition, not evidence that missing content was accepted. The actual coverage guard AST is identical to the signed base; the async owner branch also predates hardening. Refresh only the changed indentation first, preserving every old omission, assertion and deadline. Never erase the failed432run or label the19unattempted commands as passing. Close the operator-identified B functional evidence gap before Stage5 and pause for commits. [Evidence](development-evidence/2026-11-02-release-hardening/432-checkpoint-receive-anchor-hold/README.md).
+
+
+### Preserve the receive mutation scope while refreshing its indentation
+
+**Date:**2026-11-04 · **Commit:**pending patch433
+
+Do not expand the joint omission to the pre-existing async branch. The two-space anchor refresh restores the signed-base operation and every existing assertion. Keep432as a failed attempt, and complete the checkpoint before the remaining B functional proofs. [Evidence](development-evidence/2026-11-02-release-hardening/433-receive-joint-control-anchor/README.md).
+
+
+### Separate construction registry layout from its unchanged security values
+
+**Date:**2026-11-04 · **Commit:**pending patch434
+
+Keep the failed formatting attempt. Normalize the mutable construction registry layout in a separate patch with independent parsed-value and complete-token identity checks, preserving every contract and source address. The earlier deferred test/harness formatting patch stays untouched. A separate source review must account for the remaining recovery full-unit invocation under the operator’s already approved240s full-unit hang guard; its focused recovery deadline must stay120s. [Evidence](development-evidence/2026-11-02-release-hardening/434-checkpoint-construction-layout-hold/README.md).
+
+
+### Keep construction registry values exact while satisfying its existing format check
+
+**Date:**2026-11-04 · **Commit:**pending patch435
+
+Normalize this mutable registry’s layout rather than remove or relax the formatter. Verify both its entire token sequence and parsed values independently, then update only its inventory source hash. This does not authorize or apply the earlier deferred test/harness formatting patch. [Evidence](development-evidence/2026-11-02-release-hardening/435-construction-registry-layout/README.md).
+
+
+### Close the segmented checkpoint without hiding harness repairs or unit growth
+
+**Date:**2026-11-05 · **Commit:**pending patch436
+
+Keep passing source-pinned segments and every earlier failed attempt. Do not rerun unchanged long commands merely to obscure their history, and do not call the segmented checkpoint a single byte-identical83-command run. The approved240s hang guard applies to the complete recovery unit suite too; focused recovery stays120s. Record actual times for all ten full suites. B continuous-native and actual index fallback proofs still precedeStage5and the commit pause. [Evidence](development-evidence/2026-11-02-release-hardening/436-coherent-functional-checkpoint/README.md).
+
+
+### Close the B fairness gap with native evidence, not future Stage5 credit
+
+**Date:**2026-11-05 · **Commit:**pending patch437
+
+The contract requires real continuous multi-publisher evidence beyond418/419component controls and421/422native cuts. Use genuine native profiles, an independent accepted frontier, server-side hint fault exposure, actual productive signed batches and the same durable turn assertion in the negative. Keep correct self-read suppression and Joined baseline semantics in the initial precondition. A negative liveness failure is expected, not a production failure; keep it and finish the declared durable-bound/Undo/cold control. Actual past-index fallback still precedesStage5and the commit pause. [Evidence](development-evidence/2026-11-02-release-hardening/437-continuous-native-b-fairness/README.md).
+
+
+### Keep failed preparation separate from actual index-fallback evidence
+
+**Date:**2026-11-05 · **Commit:**pending patch438
+
+A ready-made fixture or usage estimate cannot close the contract. Retain both900s failures and every prior development attempt; native A was never run. Correct test semantics by awaiting complete sliced admission tickets without changing the planner or journal bounds. Preserve the conservative verifier identity change from the new Vite test config; the prior-byte reconstruction explains it without weakening reuse guards. Next address setup scheduling through cached Window ports and real automatic producer maintenance/quiet, not a raised cap or deadline. Any actual app refusal/owner closure/missing writing/cold failure keeps the operator stop rules. [Evidence](development-evidence/2026-11-02-release-hardening/438-native-index-fixture-hold/README.md).
+
+
+### Keep fairness coverage separate from an unexposed past-index assertion
+
+**Date:**2026-11-05 · **Commit:**pending patch439
+
+Map continuous native fairness with/without backlog and withheld hints to437;418/419component controls and422cuts supply different evidence. Cached status and ordinary offline preparation can remove a diagnostic-induced obstacle without changing app scheduling or trust. Keep the existing safe capacity park as a valid preparation outcome. The final900s failure still prevents native exposure, so no cap or cold claim follows. Do not substitute arithmetic, a usage-only model, prior lab results or a later report-only Stage5cell for the missing actual native proof. Record the unresolved setup cost and pause for commits under the operator instruction, with Stage5explicitly blocked. Do not broaden the repair into excluded performance work or raise limits/deadlines to obtain credit. [Evidence](development-evidence/2026-11-02-release-hardening/439-native-index-preparation-blocker/README.md).
+
+
+### Exercise cache fallback at a test ceiling while binding production separately
+
+**Date:**2026-11-05 · **Commit:**pending patch440
+
+The operator clarifies that the contract requires the real eligibility/fallback control flow, not hours of production-scale UI growth. Use a distinct test-only Worker build, inverse-byte proof and independent compiled/runtime asset comparison to retain the production32MiBbinding. Keep all native continuation/positions/Undo/cold assertions. Do not silently rewrite their two hardcoded thresholds after the literal keep-body-unchanged instruction; request the narrow clarification and perform independent build/preparation work meanwhile. Record the original failed setup numbers and real-scale time/RAM as debt, with no diagnosis or acceptance substitution. Keep native display-on enforcement unchanged. A separate exact-whitelisted runner may perform pure lint/type/inventory/bookkeeping checks while recording actual display-off; it cannot execute a browser/native command. [Evidence](development-evidence/2026-11-02-release-hardening/440-index-ceiling-binding/README.md).
+
+
+### Bind test expectations to actual served assets and retain the original native case
+
+**Date:**2026-11-05 · **Commit:**pending patch441
+
+Follow the operator's exact approval: replace only the two refusal thresholds inside the case and prove the inverse recovers every remaining byte. Add directory-and-full-asset binding outside the case rather than accepting an arbitrary old build record. Require wrong-directory, stale-byte and extra-file controls. Reuse the closed genuine440cohort without editing its stored data, and revalidate all source/build identities. Count the actual lower-ceiling cap crossing and later dense/native semantic checks as functional evidence only. Do not treat successful scaled testing as production32MiBtime/RAM evidence or Stage5credit. Freeze this bounded result, then observe the original producer capacity guard/size and one post-park publication under unchanged limits. [Evidence](development-evidence/2026-11-02-release-hardening/441-native-index-fallback/README.md).
+
+
+### Attribute the capacity park to the observed baseline guard without fixing it
+
+**Date:**2026-11-05 · **Commit:**pending patch442
+
+Follow the operator's debt-only request. Instrument original guard branches rather than infer the ceiling from generic capacity status. When the five PreparationCapacity events do not appear, preserve that failed observation precondition and include the existing baseline capacity branches mapped to the same status. The loaded-source marker and exact event identify the4MiBencoded-baseline guard. Do not reinterpret it as a journal32MiB/entry refusal, raise a limit, truncate writing or change the baseline format. Preserve the existing parked state/journal and verify a small complete post-park admission, durable acceptance and exact receiving. Carry the actual size and continuing growth into Stage6, with real-scale index time/RAM still unmeasured. Stop after this requested bounded work; defer commits and do not start Stage5. [Evidence](development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
+
+
+### Keep bulk hardening evidence local while preserving signed phase boundaries
+
+**Date:** 2026-11-05 · **Phase:** revised 443.
+
+The operator requires removal of the hardening objects directories from each
+rebuilt phase tree, while retaining exact local bytes and the original history on
+a local backup branch that must never be pushed. Keep manifests and their hashes,
+re-sign unchanged messages/author dates in order, and refresh the checkpoint's
+source identity for the changed tracked closure. Future capture stores only the
+command-window power events plus full-log hash/size, and references exact committed
+sources instead of gzipped copies. Display and acceptance checks do not change.
+[Record](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/REBUILD.md).
+
+
+### Keep the effective baseline ceiling and retry cost as operator debts
+
+**Date:**2026-11-05 · **Commit:**pending patch444
+
+Record the two operator additions without treating them as measured performance or changing a guard. The encoded record determines usable capacity; any binary representation or altered ceiling needs a separate operator decision. Capacity is keyed to the current authenticated hint, so later writing can permit another costly refusal after the retry and quiet clocks; leave that cost unmeasured. Use the existing Stage6debt home rather than adding a competing active-state document. [Evidence](development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
+
+
+### Resume the frozen hardened Stage 5 matrix
+
+**Date:** 2026-11-05 · **Phase:** 445 preparation.
+
+The operator resumes Stage 5 after the signed335–443rebuild and documentation-only444debt additions. First require the full83-command functional checkpoint on the current hardened bytes. Predeclare36blocking journeys (three per original/grown cell) and10report-only journeys; preserve every gate, deadline, stop and failure. Use fresh civil-date fixtures, pinned Chrome, shipping assets without lab/observation modules, the existing native test-only composition entry where required, and the slimmer evidence capture policy. No new speed experiment, publication or deployment. Stage6will report the retained outcomes and debts, then stop.
+
+
+### Narrow the resumed Stage 5 preflight and fix the host-noise rule
+
+**Date:** 2026-11-05 · **Phase:** 445 operator amendment before timed results.
+
+Accept the 432–436 application checkpoint and the 437/441 spec evidence. Run only
+the operator's narrowed checks before the frozen Stage 5 matrix; count the
+already completed typecheck and 137.46-second unit pass. The broader launcher was
+paused at the active command and then interrupted after it finished, preserving
+all outputs; that interruption is operator-directed, not an app failure. The
+operator works lightly between blocks. Ask for a clear machine before tight
+cells, and apply exactly one retained rerun when a failed replicate meets the
+predeclared CPU/swap noise rule. Existing gates and functional stops remain.
+
+
+### Preserve the failed fairness precondition without a noise rerun
+
+**Date:** 2026-11-05 · **Phase:** 445.
+
+Apply only the operator-approved three lint exclusions; retain the original lint
+result and passing proposal/default retry. Treat the pnpm context auto-install
+prompt as a build-harness precondition and retain it before executing the exact
+package build script against existing pinned dependencies. Do not reclassify the
+positive fairness sparse-marker failure as a pass or invoke the noise exception:
+its host log has neither sustained non-test CPU above one core nor swap growth.
+Stop before the timing matrix and past-index preflight. No functional assertion,
+wait, limit, trust or runtime code changes. A next bounded diagnosis must resolve
+why marker60was not visible while hot writing continued; later archive/cold
+results are still unobserved, not successes or inferred data loss.
+
+
+### Distinguish an explicit repeat from the automatic noise exception
+
+**Date:** 2026-11-05 · **Phase:** 446.
+
+The operator explicitly asks for one retry before tracing; this authorizes the
+repeat despite445's false noise predicate, without regrading the earlier result.
+Use exactly the same selected case and frozen inputs on a fresh seed clone.
+Collection/controller failures before execution are harness attempts, not app
+retries; preserve and fix them before the one actual attempt. The same assertion
+fails again. Keep the functional stop, both results and the existing noise rule;
+do not start tracing or additional app runs in this phase.
+
+
+### Separate sparse publication, truncated receive work and Window application
+
+**Date:** 2026-11-05 · **Phase:** 447.
+
+The operator authorizes the bounded third-sparse-write trace after two unchanged
+failures. Use one observation-only spec copy and exact frozen inputs; inverse
+edits restore the original body, assertions, waits and deadline. Preserve failures
+and grant no acceptance credit to instrumented timing. Observe cached Window state
+and existing transport only, without extra RPC, retry, flush or new proof reuse.
+
+Do not infer a 20-second idle-poll gap from completed response bodies alone: the
+full request trace shows repeated sparse suffix requests, some absent from partial
+hot-first replies. Likewise, do not blame the Window mirror when its final apply
+exchange takes 3.4 ms. Distinguish source-bound commit ordering from a timestamped
+commit and the busy shared test/service process from measured CPU attribution.
+Keep the work cap and native logical allowance unchanged. Freeze this evidence
+before deciding the next bounded repair or resuming Stage 5.
+
+
+### Attribute the shared event-loop stall before changing receiving
+
+**Date:** 2026-11-05 · **Phase:** 448.
+
+The operator requests service/test attribution first, then omitted sparse
+scheduling. Profile one unchanged diagnostic without the earlier browser
+observers. Keep all tuple assertions and measure their synchronous wall time.
+Classify service and fixture ancestry separately, retaining VM/native/unattributed
+samples rather than assigning them to the server. The 41.134 s census/reporting
+cost supports a private reporting-overhead control before any runtime repair.
+Retain every tuple predicate and prove malformed cases remain refused. No service
+cap, gate, deadline, trust or format change is authorized by this diagnosis.
+
+
+### Keep tuple predicates while removing test-reporting contention
+
+**Date:** 2026-11-05 · **Phase:** 449.
+
+Use a private causal control before repairing the canonical fixture: change only
+four per-row Playwright matchers to strict assertions over the same schema-checked
+primitives, preserving all decoders, SQL and loops. Prove old/new refusal behavior
+before the one app run. Keep the app's original assertions and deadlines. Its
+passing full case and unchanged production-helper omission controls support a
+harness repair, not a new runtime optimization or wider liveness guarantee.
+
+A read-only SQLite connection may create WAL/SHM sidecars, so main-file equality
+is insufficient for an immutable fixture. Preserve the newly created sidecars,
+restore the exact frozen source inventory without rewriting prior files, and
+query only a private copied database in guard units. Retain the failed controller
+and do not rerun the app merely to repair that harness check. No guard, budget,
+limit, format, service or wire decision changes.
+
+
+### Stop the approved fixture repair at an unreconciled population assertion
+
+**Date:** 2026-11-05 · **Phase:** 450.
+
+The operator accepts448/449 and approves exactly four strict matcher replacements,
+a permanent original/strict copied-database unit control, all acceptedRows importer
+reruns, a pre-timing assertion-loop audit and the existing cap observation. Retain
+all decoder/SQL/return behavior and every gate. The new guard test is registered
+in the repo's reviewed inventory rather than claiming credit from a green run.
+
+Typecheck, lint and the eight guards pass. The population assertion then observes
+2,573 cases rather than the proposed2,570. The operator explicitly says to stop
+and report if anything fails, so do not repair or rerun the count, begin browser
+reruns or ask for a quiet-host timing window. Preserve this non-green checkpoint
+and require provenance for the three-case difference before any next edit.
+
+
+### Update a stale denominator only after naming every additional registration
+
+**Date:** 2026-11-05 · **Phase:** 451.
+
+The operator resumes to account for450'sgap. Read the signed source/history and
+reconcile unique case IDs for all279existing reviewed stages against the last
+counter update. Identify the phase353self-boundary case and phase371'stwo idle
+audit cases; retain every old case and the separate8new guard cases. The verified
+equation is2,562+3+8=2,573. Only then update the expectation and title and rerun
+the exact failed command. Keep all failed artifacts. A passing census is not a
+runtime pass for those native cases and grants no Stage5 timing credit.
+
+
+### Rebuild the existing controls against unchanged runtime before timing
+
+**Date:** 2026-11-05 · **Phase:** 452.
+
+The older functional control bundles predate later runtime repairs. Rebuild their
+existing canonical configs from the exact current isolated source, bind the
+ordinary32MiBasset separately from the existing1MiBindex fixture, and retain
+genuine old Page/Worker artifacts. Override only output paths and absolute test
+roots; inherit the original browser, waits, deadlines and assertions. Passing
+these15cases closes the operator's importer checklist; it does not grant timed
+performance credit or waive the measured-path assertion audit and host handshake.
+
+
+### Keep reporting outside every request-handling process
+
+**Date:** 2026-11-05 · **Phase:** 453.
+
+The operator requires the timed service worker to contain no per-row Playwright
+reporting. Do not satisfy that by relabeling the API while leaving its gateway in
+the test worker. Preserve all archive assertions and wrap the unchanged gateway
+in a distinct Node process; keep the API's original resource bounds. A transport
+smoke establishes wrapper behavior, not final timed composition. Require exact
+source/process binding again when that composition exists. Do not remove checks,
+alter service behavior or start timings merely because acceptedRows is absent.
+
+
+### Recreate missing private fixtures and preserve the frozen frontend
+
+**Date:** 2026-11-05 · **Phase:** 454.
+
+The operator resumes the rest of Stage5. Prior private lab roots are absent, so
+use the retained re-runnable setup recipe and actual current UI/signed writes;
+do not reconstruct old lab rows or edit dates/storage. Reuse only the exact
+retained APIimage after matching its122source files. An extra test-entry build
+may change emitted app HTML through bundling; serve the frozen ordinary frontend
+and overlay only new test chunks/document, with equality checks for every
+shipping file. Keep the failed pre-service overlay and corrected smoke. No
+performance inference or acceptance credit from apparatus preparation.
+
+
+### Do not classify an expiry message as a harmless fixture race
+
+**Date:** 2026-11-05 · **Phase:** 455.
+
+A tooling-document navigation under the ordinary SW is a harness precondition;
+preserve it and repair only routing, without changing the app shell or offline
+cold semantics. The subsequent explicit enrollment refusal is different: stop
+as required before another app/timed journey. Keep the existing helper assertion
+and its15sdeadline. The shared expiry error covers both past expiry and excess
+future lifetime, so use copied historical timestamps to qualify the clock
+hypothesis without declaring its cause proven or changing the security window.
+No automatic retry, clock patch or guard weakening is authorized by this record.
+
+
+### Approve bounded future clock tolerance without expiry grace
+
+**Date:** 2026-11-06 · **Phase:** 456 · **Operator decision.**
+
+The operator authorizes one shared120000msclock-skew allowance at enrollment,
+history exchange, membership locator/checkpoint, successor discovery and removal
+discovery excessive-future checks only. Every expired-at-now test, lifetime
+constant, signature and remaining authority predicate stays unchanged. Add valid
+one-second-lead, beyond-skew and expired controls for each. This explicit product
+decision supersedes the earlier no-guard-change hold only within that scope.
+
+Current fresh-container time is6–8msbehind the host, so do not claim it proves
+yesterday'slead. Keep every observation. Standing permission allows apparatus/
+wrapper repairs with failed attempts preserved, while actual app failures,
+unapproved guard/limit/assertion/gate changes and the tight-cell host handshake
+still require a stop. No deployment or commit permission is added.
+
+
+### Share future tolerance without extending signed deadlines
+
+**Date:** 2026-11-06 · **Phase:** 457.
+
+Apply the explicit operator allowance at the six named comparisons only. Keep a
+single constant and independent literal boundary controls; do not reset deadlines,
+change sender lifetimes or skip signature/authority work. Existing future-bound
+fixtures must now exceed lifetime+120000, preserving their original refusal
+purpose and all other negative checks. Reconcile both exact census totals from
+the30new IDs; use the established reviewed Node formats.test.mjsname instead of
+widening the policy regex. Preserve the failed first census and test fixture
+framing attempts. This is source verification, not Stage5performance acceptance.
+
+
+### Bind effective source instead of claiming an old image contains a new fix
+
+**Date:** 2026-11-06 · **Phase:** 458.
+
+After457the old APIimage cannot be called current. For this unchanged local test
+composition, keep its immutable foundation and resource bounds, overlay only the
+exact current account-protocol directory read-only before startup, and hash the
+full123fileeffective APIclosure. Rebuild the client from the same current tree.
+Keep the test entry separate and ordinary frontend bytes exact. A missing local
+config dependency link is apparatus failure: preserve it, fix the link without
+changing source/flags/deadlines, and continue under standing permission. No
+publication or performance credit follows from this binding check.
+
+
+### Audit actual fixture text before claiming the intended workload
+
+**Date:** 2026-11-06 · **Phase:** 459 · **Pending operator decision.**
+
+A passing peer equality check establishes agreement on sampled writing, not
+completion of the intended large paste. Keep the successful seed and all prior
+failures, record actual current/historical Goals sizes, and withhold Stage5
+timings on the undersized H cohort. The chunked-input recipe race is a qualified
+hypothesis, not a finding that accepted writing was lost. Propose exact editor
+completion and exported-text assertions within the old setup bounds. Because
+the operator explicitly reserves assertion changes, leave the proposal unapplied
+and request approval. No app fix, gate change or timing credit follows here.
+
+
+### Approve full intended Goals text and retain the workload difference
+
+**Date:** 2026-11-06 · **Phase:** 460 · **Operator decision.**
+
+The operator approves phase459's completion assertions and full intended workload.
+Remove no old check or setup deadline. Preserve prior roots by writing the new
+private fixture under its new output directory. Actual H becomes 13,407 bytes;
+comparisons with historical 5,000-byte H are not matched document-size evidence.
+The passing recipe does not establish whether old unadmitted input was cancelled
+or lost. All Stage5 gates, functional stops and host requirements stay unchanged.
+
+
+### Repair apparatus lifecycle without relaxing completed-case checks
+
+**Date:** 2026-11-06 · **Phase:** 461 · **Standing operator permission applied.**
+
+Keep initial fixture import alive through transaction completion using current
+pinned Playwright serialization and the original exact-storage assertion. A
+post-cold adapter method mismatch is corrected to the existing workspace close
+port; no application or shipping bytes change. Retain both failed attempts and
+fresh successful retries. A reporting exception after a passed case is fixed
+without rerunning that case. Static UI wrappers use the same deterministic
+import path for fairness contexts before opening the app, preserving all case
+assertions/deadlines. Absent lab diagnostics stay explicitly unavailable.
+
+These are apparatus repairs, not relaxed guards or new trust. Nine successful
+native journeys count only for their declared cells; live input/peer predicates
+remain unmeasured. Obtain the required host handshake before those tight cells.
+
+
+### Preserve original late predicates and distinguish observed from absent data
+
+**Date:** 2026-11-06 · **Phase:** 462.
+
+Run the declared normal/withheld block only after the operator's host handshake.
+Reuse the original analyzer byte-for-byte and per-journey clock bounds; do not
+replace missing lab counters with simulated values. Public traffic/notification
+fault evidence and Window observations establish the existing late predicates.
+Use the post-typing-to-wrapper interval only as an upper bound on cold stages,
+not individual cold timing. Keep each run rather than pooling120keys as runs.
+All six pass, so the fixed failed-replicate noise rule requests no extra run.
+
+Canonical461evidence already records9journeys; repair its private sidecar counter
+without changing the frozen patch/tree or historical repo bytes. This corrects
+serialization bookkeeping and changes no documentation requirement or gate.
+
+
+### Refresh maintenance fixture roles without fabricating retained history
+
+**Date:** 2026-11-06 · **Phase:** 463.
+
+Use the original1,024recipe and its unchanged counter/archive checks against the
+current app. Refresh only H2by real sync; retain H1behind and keep all other actor
+snapshots. SQL observations open private copies only. Remove inert lab metadata,
+retain current local automation and the approved writer-on build. Setup has no
+performance credit; grow the larger workload through actual accepted edits.
+
+
+### Grow through admissions and preserve the existing expected boundary
+
+**Date:** 2026-11-06 · **Phase:** 464.
+
+Reuse real admission/durability/send/exact-prefix checks on a fresh clone. Preserve
+readers; derive expected/archive/backlog metadata only after checking real writing
+and public export. Fixture construction may retry the real send lane, as in460;
+it does not change sender defaults or qualify timing. Keep the slow setup without
+starting the deferred prep-cost diagnosis. A bookkeeping check must include the
+existing seed boundary, not mistake expected text for digits alone; keep its failed
+attempt and correct only that new record check.
+
+
+### Preserve original grown fixture checks and writer/reader roles
+
+**Date:** 2026-11-06 · **Phase:** 465.
+
+Use the existing2,048recipe with current module/root bindings and all original
+checks. Refresh H2through real sync, keeping H1behind and every other snapshot
+unchanged. Verify service-row counts only on private copies. Separate fixture
+preparation from timed credit. Proceed to the separately declared old-maintenance
+block only under the renewed host handshake; grown overlap60stays blocking.
+
+
+### Approve old-fixture saved-slice information without weakening grown coverage
+
+**Date:** 2026-11-06 · **Phase:** 466 · **Operator decision.**
+
+After reviewing the failed old prerequisite and narrow proposal, the operator
+says “i approve changing the fixture.” Apply the two-file old1,024amendment:
+require active verification and unfinished backlog at typing start, but record
+saved-slice presence instead of requiring it. Keep90s and all other predicates,
+including original completion, latency, Undo, archive/cold and10percent comparison.
+This is additional to the prior old-overlap amendment. Preserve the failed run;
+restart the cell in a fresh root. Grown saved-slice and native resumability checks
+are unchanged. No application, trust, format, limit or deadline change follows.
+
+
+### Keep the completion failure distinct from the repaired fixture and partial latency
+
+**Date:** 2026-11-06 · **Phase:** 467.
+
+The approved old-only prerequisite amendment does not relax completion. Apply it
+exactly, preserve466and stop when the actual120s wait fails. Favorable partial
+input/peer/Undo/archive results cannot pass the cell or substitute for cold.
+Do not label observed16sretry gaps as configured10s/60s timers; the public trace
+lacks exact guard/job data. Diagnose durability/preparation-entry rejection before
+repairing, preserving every interruption/authority/journal/commit guard. No noisy
+rerun is triggered by the recorded unrelated-process/swap evidence.
+
+
+### Distinguish successful durability from later preparation interruption
+
+**Date:** 2026-11-06 · **Phase:** 468 · **Operator-authorized diagnosis.**
+
+Trace each boundary and native error identity in a fresh fictional profile,
+without changing results, guards or deadlines. A public last stage of durability
+is not proof that its barrier failed: the private run passes both waits, then
+six warm-audit arrivals interrupt asynchronous preparation entry before its next
+progress report. Preserve that failed run and leave the original Stage 5 cell
+failed. Do not assign performance credit to an instrumented build.
+
+The next repair should arbitrate existing maintenance jobs while preserving
+foreground/input interruption, forced audit pressure, every verification and
+mutation fence, and the 120-second completion gate. The trace authorizes no
+new trust, format, budget, retry or deadline. Existing individual-policy unit
+success is not a substitute for the missing queue-interleaving regression.
+
+
+### Arbitrate maintenance arrival instead of relaxing priority interruption
+
+**Date:** 2026-11-06 · **Phase:** 469 · **Operator-authorized repair.**
+
+Use a per-owner FIFO only for warm audit and read-only preparation entry to the
+existing storage queue. Keep ordinary foreground jobs outside it. Preserve the
+original priority-token mutation and refusing guard, every audit due/forced rule,
+all native verification/final mutation checks and existing retry/deadline policy.
+A queued audit precedes later preparation slices; neither maintenance job can
+repeatedly preempt the other's entry. Scheduling carries no verification trust.
+
+Prove the collision with a private no-serialization fault control and keep its
+expected failure. Preserve every old behavioral test; add eight explicit cases
+and exact census accounting. Build and test the app next; a unit pass does not
+close the existing 120-second completion failure or award Stage 5 credit.
+
+
+### Keep repaired-candidate acceptance bound to its rebuilt assets
+
+**Date:** 2026-11-06 · **Phase:** 470.**
+
+Repeat the approved original app case on ordinary, uninstrumented output after
+the full unit checkpoint. Do not turn the private phase 468 diagnostic build
+into performance evidence. The repaired first old-normal run passes, including
+120-second completion and cold/archive/Undo checks. Keep the earlier failed
+runs and qualify earlier-source passes instead of treating them as tests of the
+new candidate. Finish the declared replicate cells on these same assets; no
+gate, limit, deadline, trust or format changes.
+
+
+### Complete maintenance replicates without changing gates or discarding runs
+
+**Date:** 2026-11-06 · **Phase:** 471 · **Operator quiet-host readiness received.**
+
+Run the remaining two normal and three withheld journeys sequentially on the
+exact phase470built assets. Retain each result; all five pass, so no noise retry
+is needed. Combine with the first normal only to close these two three-replicate
+cells. Preserve old overlap/saved-slice amendments without extending them to the
+grown fixtures. Preserve earlier failures and source-bound results; do not turn
+15 earlier-source passes into acceptance for the changed scheduling code.
+
+Use the original writer/host clock bounds and the after-maintenance-to-wrapper
+segment only as a conservative joint upper bound for cold work, not individual
+cold timings. No test assertion changes. FullStage5andStage6remain incomplete;
+no release or publication action follows from this bounded block.
+
+
+### Preserve grown predicates and distinguish optional observer cleanup
+
+**Date:** 2026-11-06 · **Phase:** 472 · **Standing apparatus-repair permission.**
+
+Keep >=60 overlap and saved preparation required on the grown fixture. Preserve
+the original writer wait and both-owner observation through the absolute
+120-second post-key cutoff. Use the frozen metric formulas unchanged; represent
+unavailable shipping-native journal/job fields as unavailable rather than zero.
+
+An optional final observer of intentionally closed pages may return explicit
+unavailability. Mandatory live assertions and live errors remain unchanged.
+Retain the ungraded failed attempt and four repair controls, then rerun in a
+fresh root. All six valid journeys pass. This grants only their source-bound
+cell evidence, not generalized qualification or permission to release.
+
+
+### Keep native tooling separate from source-bound ordinary assets
+
+**Date:** 2026-11-06 · **Phase:** 473.**
+
+Rebuild the existing native delegate against the repaired application without
+replacing any ordinary shipping file. Retain byte-identical native assertions,
+config and seed ownership, with separate tool assets and fresh future output
+roots. Collection/build success provides no journey credit. Await the explicit
+next-block host readiness before timed work; elapsed time is not a reply.
+
+
+### Count native execution only on the source-matched delegate
+
+**Date:** 2026-11-06 · **Phase:** 474 · **Operator host window confirmed.**
+
+Run all nine native journeys on the phase 473 delegate with unchanged ordinary
+assets and current complete fixture. Keep every measured interval and cold
+stage; all pass. Do not treat earlier-source native passes or the delegate build
+as execution credit, and do not label deep catch-up as unlock time or attribute
+live input/peer metrics to semantic native cells. Continue the next bounded
+catch-up block under the same explicit host readiness and unchanged gates.
+
+
+### Preserve late-gate denominators and state post-drain exposure separately
+
+**Date:** 2026-11-06 · **Phase:** 475.
+
+Run the declared six source-matched late journeys without changing the original
+analyzer or predicates. Record zero post-both-drain keys as unexposed rather
+than a liveness pass, and three as a small diagnostic sample. Keep every run;
+do not rerun a passing journey to improve exposure or apply the noise rule to
+passing results. Native lab observations remain unavailable; acceptance uses the
+original Window/archive/traffic evidence. No gate or claim expansion.
+
+
+### Observe actual HTTP results without restoring internal lab hooks
+
+**Date:** 2026-11-06 · **Phase:** 476 · **Standing apparatus repair permission.**
+
+Preserve the byte-identical fairness analyzer and its trace-tag assertion by
+supplying real HTTP boundary events, with explicit non-internal provenance.
+Use no fabricated events or native budget counters. Observer failure stays a
+trace error, not a zero. Retain its failed preflight and fix only observation
+ordering. No source/format/trust/guard/gate/limit/deadline changes or acceptance
+credit. Obtain the next host handshake before timing fairness; Goals separately.
+
+
+### Preserve original fairness timing and explicit HTTP provenance
+
+**Date:** 2026-11-06 · **Phase:** 477 · **Operator quiet-host answer confirmed.**
+
+Run three declared replicates on exact shipping bytes. Retain the original raw
+host/renderer metric and all its clock brackets rather than making a new clock
+correction. HTTP diagnostic counts are actual completed responses from the
+phase476boundary; they grant no trust and do not represent internal lab events.
+Keep each run and the fixed failed-replicate noise rule. A passing cold/archive
+is not an input or peer latency substitute. Obtain a separate host handshake
+before Goals; no assertion, budget, limit or gate change.
+
+
+### Keep Goals timing definitions and measured document size explicit
+
+**Date:** 2026-11-06 · **Phase:** 478 · **Separate quiet-host answer confirmed.**
+
+Run the original desktop/mobile4xparagraph/lifecycle cells without a new timing
+threshold or a profiler. Preserve the original analyzer and all denominators,
+long-task tails and source identities. Key-to-rAF cannot stand in for the16ms
+mutation gate; lock/reload online cannot stand in for offline profile reopen.
+Report actual13,407-byte HGoals and avoid matched-size or physical-phone claims.
+Continue only the operator's named report-only work, then Stage6and stop.
+
+
+### Do not fabricate old lab readiness or unpublished audit observations
+
+**Date:** 2026-11-06 · **Phase:** 479 · **Proposal remains unapplied.**
+
+The report-only sender's internal idle hook is absent from ordinary release
+assets. Treat replacement with public packaged-owner send state as a visible
+readiness evidence-source decision; preserve all other bytes/guards and six
+isolated controls. Do not silently turn missing hooks into idle. Likewise,
+LEDGER_PROFILE=0publishes no audit start/end; retention completion cannot stand
+in for full-audit overlap. Ask the operator to choose unavailable report debt or
+a separate observed test build. No production diagnostic hook is added.
+
+
+### Approve passive audit observation separately from release evidence
+
+**Date:** 2026-11-06 · **Phase:** 480 · **Operator approved both479choices.**
+
+Apply the narrow published-send-state readiness replacement and prepare a private
+observed artifact for the required audit-overlap field. Keep its scalar markers
+out of canonical source and shipping assets; capture both full-audit homes,
+recompute the private verifier identity, retain inverse source/ordinary binary
+proofs and grant no new gate credit. No profile flag or security check changes.
+
+Bind readiness to measured packaged owner provenance. The earlier recovery and
+general-account guesses are not evidence; the actual joined fixture runs the
+enrollment owner. Retain both failed preflights and the successful exact-archive/
+collector/idle callbacks. Do not broaden the Worker list or infer audit absence
+from no exposure. Prepare fresh legal-format fixtures through actual app sync
+and input; ask the next quiet-host handshake before tight report-only timings.
+
+
+### Recreate report-only exposure through legal current-format app actions
+
+**Date:** 2026-11-06 · **Phase:** 481.
+
+Use actual current-date sync, Scheduled quick entry and the original329public-
+typing growth recipe. Preserve all old writing, threshold and setup-deadline
+checks; do not convert unreleased lab rows or rewrite fixture storage. Keep the
+actual larger Goals/history context visible when comparing reports. Harmless
+native pointer activity is setup-only, as in the original329protocol; its failed
+selector is apparatus evidence, not a product refusal or a timing result.
+
+
+### Preserve report-only misses and distinguish audit attempts from completions
+
+**Date:** 2026-11-06 · **Phase:** 482 · **Operator authorizes quiet host for all remainder.**
+
+Run all six predeclared sender cases; latency misses fail their report cell and
+never become blocking-matrix credit. Retain all paired2.5smisses without changing
+the coordinated policy. Report after-typing interrupted/censored audit attempts
+as such, not completed oracle costs or zero cost. Keep original metric formulas
+and replace only unavailable lab diagnostic values with explicit null. No repeat
+host approval is required while the operator's remaining-work readiness holds.
+
+
+### Keep the50msreport window distinct from the0msblocking gate
+
+**Date:** 2026-11-06 · **Phase:** 483.
+
+Use actual native offline/online lifecycle readiness in place of unshipped lab
+hold/go. Retain the original report30ssample and120stotal observation plus native
+case/cold bounds. Preserve all original integrity/Undo/cold checks; at50msthe
+30smiss remains report-only. Do not call its different kickoff a matched effect
+against the earlier0msnative timing or alter the original blocking case.
+
+
+### Observe exact index events without a bounded counter
+
+**Date:** 2026-11-06 · **Phase:** 484.
+
+Keep the production ceiling and all checks exact. Bind the first fallback to uncapped native ordinals and append-only parent capture; a gap or final-count mismatch invalidates the report. Do not infer a fallback from arithmetic.
+
+
+### Keep a failed native fixture request distinct from apparatus and data loss
+
+**Date:** 2026-11-06 · **Phase:** 485.
+
+A fixture-purpose label does not make an app Worker request error a harness failure. Keep this functional stop until the responsible code/guard is identified. Do not retry automatically under the noise rule, which concerns failed latency replicates, or infer data loss from an unsuccessful status poll. Existing logs are insufficient to distinguish a nonterminal refused RPC from owner closure.
+
+
+### Trace the refused message before classifying owner failure
+
+**Date:** 2026-11-06 · **Phase:** 486.
+
+Treat a negative message-bound reply separately from owner closure. The full status graph grows, but do not claim a byte or node ceiling, or blame reply serialization, until its throw site is observed. Continue only the authorized narrow diagnosis; no product repair or gate retry.
+
+
+### Keep the Worker message guard and narrow the diagnostic consumer
+
+**Date:** 2026-11-06 · **Phase:** 487.
+
+Keep the Worker message guard. The fixture requests an entire growing status graph to read one scalar; the next repair belongs in that diagnostic consumer, using existing bounded published status with the same exact acceptance checks. Do not raise transport limits or infer a writing/authority failure from a reply serialization refusal. Record validator counts as running accounted size, not wire size or RAM.
+
+
+### Read published accepted progress without expanding history
+
+**Date:** 2026-11-06 · **Phase:** 488.
+
+Use the already-published bounded sync status for fixture acceptance polling; do not request a history-sized graph or raise a transport limit. Preserve the exact prefix+1 checks and all deadlines. Treat a source-binding failure separately from console propagation: the successful487bguard observation is raw evidence.
+
+
+### Keep the original fixture ceiling and report exact exposure
+
+**Date:** 2026-11-06 · **Phase:** 489.
+
+Retain both the exact per-position acceptance checks and setup ceiling. Partial fixture growth cannot establish3,072index/cold/Undo behavior. Report-only unavailability is a debt, not a failed result converted to a pass or a basis for silently extending a deadline.
+
+
+### Keep unexposed index evidence distinct from passing fallback checks
+
+**Date:** 2026-11-06 · **Phase:** 490.
+
+Do not infer a cap crossing, exact archive, successful cold reopen or3,072catch-up performance from an unrun reader. Keep real-scale index time/RAM and this missing report explicit. Earlier low-ceiling functional evidence and final blocking acceptance retain their separate scope.
+
+
+### Separate blocking acceptance, report-only misses and unavailable evidence
+
+**Date:** 2026-11-06 · **Phase:** 491.
+
+Keep report-only unavailability open: it is not a pass, gate waiver or evidence of archive/cold correctness. The 36 blocking journeys remain valid on their frozen source. Preserve the capacity and real-scale cost debts, the shipped full-status producer/load/decode debts and the independent 55-handler reply census. Document valid rollback flag combinations; AUTO=0 with RESUME=1 and default writers is rejected by current policy. Do not start new experiments or publication.
+
+
+### Distinguish a threshold crossing from network waiting
+
+**Date:** 2026-11-06 · **Phase:** 492.
+
+Use component times and actual index-refusal evidence before attributing growth cost. If genuine producer maintenance can remove redundant retained work, it must run through existing APIs and preserve server positions, writing and old readers; do not replace validation or fabricate fixture rows.
+
+
+### Reduce settled producer history through existing checks
+
+**Date:** 2026-11-06 · **Phase:** 493.
+
+Keep the proposal byte guard and full fallback. For the fixture, use genuine existing local maintenance to remove settled producer rows while leaving server envelopes and old readers intact. Verify unchanged data/positions and reduced-owner reopen before any new writing. Count this preparation inside the30-minute setup ceiling; do not hide it in a separate reset clock.
+
+
+### Count producer maintenance inside the original growth budget
+
+**Date:** 2026-11-06 · **Phase:** 494.
+
+Use existing producer automatic local maintenance as a fixture precondition, while preserving every server position the returning reader must fetch. Count preparation inside the existing setup deadline. Never resume failed growth, prune service history, alter old readers or bypass a capacity refusal.
+
+
+### Stop on the new growth failure without relaxing the poll
+
+**Date:** 2026-11-06 · **Phase:** 495.
+
+Keep the failed maintained-fixture attempt, exact service evidence and all original checks. The source-byte cliff is traced, but this new unexplained publication failure prevents declaring the proposed setup safe. Do not raise the per-position timeout, rerun for a favorable result, relax expectations or manufacture the fixture. Stop before further app runs.
+
+
+### Retain the 3072 evidence gap and new publication blocker
+
+**Date:** 2026-11-06 · **Phase:** 496.
+
+Do not treat earlier 36 passing journeys as permission to ignore the new unexplained app acknowledgment failure. Keep the original evidence gap and all prior debts, stop further app runs, and require a bounded trace of publication after automatic local reduction before attempting growth again.
+
+
+### Keep the unreproduced stall and bound fixture growth in sessions
+
+**Date:** 2026-11-06 · **Phase:** 497.
+
+Do not relabel the unreproduced 495 failure as fixed. Keep all original per-edit and final assertions. For apparatus preparation, use ordinary native lifetimes and actual automatic local reduction between fixed sessions; preserve all accepted server tuples and old reader profiles. Count every maintenance/reopen inside one original setup clock, with no guard or cooldown constant change.
+
+
+### Preserve service workload while reducing producer setup cost
+
+**Date:** 2026-11-06 · **Phase:** 498.
+
+Keep production policy unchanged. Use normal reopened producer sessions solely to prepare the requested real service workload within its fixed deadline, and prove server tuples and old readers are preserved. Report this setup variation and do not infer uninterrupted-session performance or resolution of the old stall.
+
+
+### Repair apparatus contention through a normal offline interval
+
+**Date:** 2026-11-06 · **Phase:** 499.
+
+Use the existing offline-capable canonical local reducer for fixture preparation, with real browser offline/online transitions and explicit sync status checks. No scheduler/lifecycle guard is bypassed. Preserve the120s precondition and whole1800s setup ceiling, reconnect before writing, and leave every original online gate unchanged. The known publication stall is not resolved by this classification.
+
+
+### Keep fixture deadlines and online gate conditions unchanged
+
+**Date:** 2026-11-06 · **Phase:** 500.
+
+Repair the healthy fixture-precondition contention through a supported ordinary network state under standing apparatus permission. Do not change the120s bound or substitute offline preparation for an online maintenance gate. Preserve server tuples, old readers, original1024edit checks and one1800ssetup clock.
+
+
+### Distinguish uncovered writing from position coalescing
+
+**Date:** 2026-11-06 · **Phase:** 501.
+
+Use exact archive and committed receive evidence to test whether one-input/one-position is a valid fixture assumption. Keep the original failed assertion and all deadlines. No canonical fix or waiver is justified until coverage is distinguished; a fresh reader diagnostic cannot clear the failed setup by itself.
+
+
+### Reject the coalescing explanation without weakening the fixture
+
+**Date:** 2026-11-06 · **Phase:** 502.
+
+Keep the original fixture assertion: the lastedit is actually unpublished, so changing expectedpositions would hide the symptom. Source-specific verified native storage and exact archive candidates decide coverage; cross-device aggregates alone do not. Stop under the functional-failure rule before furtherappwork.
+
+
+### Stop rather than weaken the per-position check
+
+**Date:** 2026-11-06 · **Phase:** 503.
+
+Keep the original per-position regression check because source-complete witness evidence confirms a real pending edit, not coalescing. Stop at the functional failure and preserve the saved sender state for a bounded capture/selection/notification repair. Do not claim cold durability, resolution, complete3072evidence or release readiness.
+
+
+### Trace live liveness after proving saved-state recovery
+
+**Date:** 2026-11-06 · **Phase:** 504.
+
+Treat saved-state recovery as evidence against loss of this captured edit, while retaining the live publication failure. Do not assume a lost wake without observing source selection and scheduling. Private observations must leave canonical app sources, all verification checks and ordinary assets unchanged.
+
+
+### Observe the live stall without changing authority or scheduling
+
+**Date:** 2026-11-06 · **Phase:** 505.
+
+Observe only the real canonical pipeline and keep everyauthority,crypto,commit,erasure,limit and scheduling operation byte-identical after removing the log calls. Trace IDs/counts can explain the failure but cannot authorize anything or earn performance credit.
+
+
+### Test the baseline-view publication boundary before fixing
+
+**Date:** 2026-11-06 · **Phase:** 506.
+
+Keep exact-evidence validation and allfresh authority checks. Testwhether baselinecontinuation publication can get ahead of carrierlogicalpublication on interruption; prefer conservativecacheinvalidation to publishing any view beforefresh checks ifthatcounterexample confirms. Nofix ismadeinthis phase.
+
+
+### Authenticate again after a half-installed continuation
+
+**Date:** 2026-11-07 · **Phase:** 507.
+
+A private continuation that advanced without installation cannot be retained across interruption. Invalidate that carrier cache on this boundary and authenticate again, rather than publish before fresh checks or retain only a transient full-read flag. Preserve the unchanged-identity warm path.
+
+
+### Invalidate both private views after interrupted installation
+
+**Date:** 2026-11-07 · **Phase:** 508.
+
+Discard both private views at the failed installation boundary; a later interruption must not restore the stale projection. Retain the unchanged-identity warm path. No trust, format, limit or scheduling change is needed.
+
+
+### Retain immutable reproductions and exact expanded test census
+
+**Date:** 2026-11-07 · **Phase:** 509.
+
+Keep frozen reproduction bytes intact and exclude only the four specifically approved archive paths from active lint. Register every new regression and update exact census values. Record the new source identity after the approved edits rather than comparing it with the old one.
+
+
+### Bind browser confirmation to repaired canonical bytes
+
+**Date:** 2026-11-07 · **Phase:** 510.
+
+Use the unobserved repaired Worker for functional confirmation. The saved November 6 profile diagnosis may use the existing explicit test-date port, but must not be represented as a current-date or ordinary offline cold gate.
+
+
+### Use ordinary app cold for the returning-reader report
+
+**Date:** 2026-11-07 · **Phase:** 511.
+
+Keep the existing service-worker routing and lifecycle unchanged. The added native-tool cold apparatus cannot establish offline app behavior; retain its failed attempts and use the already required ordinary same-profile offline cold in the returning-reader report. Continue fixture preparation; no release clearance is claimed.
+
+
+### Keep the setup ceiling and reduce cached-status sampling delay
+
+**Date:** 2026-11-07 · **Phase:** 512.
+
+Do not extend setup, per-position or preparation deadlines. Adjust only the new fixture cached-status sampling cadence, retaining every acceptance predicate and production setting. Save exact initial/last counters in the rerun. This is an apparatus repair under the standing permission, not a gate/default/trust change.
+
+
+### Sample cached preparation progress without changing the acceptance bound
+
+**Date:** 2026-11-07 · **Phase:** 513.
+
+Use the standing apparatus-repair permission for cached scalar sampling cadence; this changes no acceptance predicate, deadline or production behavior. Preserve the setup failures and start a fresh account. Do not reuse incomplete source/profile state or claim report exposure.
+
+
+### Use the completed genuine current-date fixture for the missing report
+
+**Date:** 2026-11-07 · **Phase:** 514.
+
+Use this complete genuine fixture rather than an incomplete failed state. The polling adjustment changes preparation observation only; no causal production performance claim follows. Rebase the approved observer and keep the original reader-report predicates and deadlines.
+
+
+### Keep the production ceiling and original reader-report checks
+
+**Date:** 2026-11-07 · **Phase:** 515.
+
+Measure the actual production index bound on the completed genuine fixture. Reuse the reviewed observer and unchanged report body; do not lower the bound, inject trust or use the native-tool offline bootstrap as an app cold substitute.
+
+
+### Record no production index fallback through this 3072-position workload
+
+**Date:** 2026-11-07 · **Phase:** 516.
+
+Report the observed bound honestly: no fallback through this workload, not an invented extrapolated crossing. The ordinary same-profile offline cold resolves the missing cold evidence for this report; earlier native-tool failures remain apparatus evidence. Preserve old timed-matrix bindings and make no release-clearance inference.
+
+
+### Close the missing report without transferring old timed-matrix credit
+
+**Date:** 2026-11-07 · **Phase:** 517.
+
+Stop at the source-qualified handoff. The missing report is complete; the full frozen blocking matrix still predates508 and must run on repaired final source before release clearance. Keep that prerequisite, all debts and compatible reader-on/writer-off rollback requirements explicit. No format, trust, limit, deadline or default change is made.
+
+
+### Replace blanket repaired-source matrix rerun with operator-reviewed reachability evidence
+
+**Date:** 2026-11-07 · **Phase:** 518.
+
+Operator directed a read-only audit, then a stop, before deciding whether old36passes carry to510. No blanket rerun remains scheduled. Preserve all old records, gates and failures; normalize only exact generated bundle names/date/verifier values, separately verify derivatives, inspect saved metadata on copies, and qualify missing ephemeral ends rather than assume them. Nine positive reduced-path candidates plus three native-deep coverage gaps remain for operator disposition. Complete-history native-context baselines are not reduced despite nonzero revision. Maintenance installation stages occur after measured input/peer markers, with old-reader later completion unobserved. No acceptance carryover is granted by this audit; post-reduction typing cost remains unmeasured.
+
+
+### Operator carryover of21runs and scoped source510 rerun of15
+
+**Date:** 2026-11-07 · **Phase:** 519.
+
+Operator accepted518 and carried old-maintenance-normal/withheld, grown-normal/withheld, native-context, late-normal/withheld (21runs). Rerun only native-resumable, native-deep, fairness and bothGoals cells, three replicates each on plain510, frozen conditions unchanged. Inspect saved end profile copies after each run; add no timed observers. Preserve the noise rule and freshGoals handshake. Write Stage6amendment with21carried/15rerun and the unmeasured post-reduction typing debt, then stop. No app/gate/limit/format change.
+
+
+### Preserve frozen native conditions and post-run endpoint evidence
+
+**Date:** 2026-11-07 · **Phase:** 520.
+
+Apply the519operator decision without changing app, gates, limits or format. 6 declared native journeys complete. 6/6 attempts pass; every failed predicate and noise attempt, if any, remains visible. Post-run readonly endpoint metadata is a separate observation on copies, never a timed-run observer or proof of interruption frequency. Continue only the declared sequence, then stop afterStage6amendment.
+
+
+### Preserve frozen fairness conditions and post-run endpoint evidence
+
+**Date:** 2026-11-07 · **Phase:** 521.
+
+Apply the519operator decision without changing app, gates, limits or format. 3 declared fairness journeys complete. 3/3 attempts pass; every failed predicate and noise attempt, if any, remains visible. Post-run readonly endpoint metadata is a separate observation on copies, never a timed-run observer or proof of interruption frequency. Continue only the declared sequence, then stop afterStage6amendment.
+
+
+### Honor functional-failure stop without changing the frozen Undo assertion
+
+**Date:** 2026-11-07 · **Phase:** 522.
+
+Goalsdesktopreplicate2 fails originalUndo text-change guard, so its cell fails and laterGoalsjourneys stop. The fixedhostnoisecriterion isnotmet; no repeat isstarted. Preservealllogs/profiles/observations. Endmetadata isrevision0complete, so the508statement isunreachable inthatworkspace; this doesnot establishharness orapp rootcause. Do not adjustthe assertion, waitforcompletion, addobservers orpatchappunderthisauthorization. Stage6muststate21carried,12attemptedof15(11pass1fail),3unrun—not falselyclaim15complete.
+
+
+### Keep source510matrix incomplete andstop after the frozen Undo guard fails
+
+**Date:** 2026-11-07 · **Phase:** 523.
+
+Theoperatorcarryoverof21stands, buttheplanned15reruns areincomplete:12attempted,11pass,1functionalguardfailure,3unrun. OnefailedreplicatefailstheGoalsdesktopcell. Noisecriteriondoesnotpermitretry. Do notpresumepermanentUndofailure, harmlessharnessrace or508causation; theonlyprovedfailureisoriginalimmediatepost-CmdZtextunchanged, onanunreducedprofile. Preservealllogs/profiles/specs. Stage6amendmentmustreportthisactualoutcome, retainpost-reductiontypingcostdebt andstopforoperatorbeforeanyfurtherapp/testchangeorjourney.
+
+
+### Do not replace unavailable Windowmaintenance trigger without operatorclarification
+
+**Date:** 2026-11-07 · **Phase:** 524.
+
+LiteralCaseA isunavailable onplain510AccountWindow:carrierhasno compactContent,all1772observations maintenanceabsent. Positivependingisobserved andwasmentionedintheopeningquestion, buttheoperator namedmaintenance-running forA. Preservepreconditionfailure andaskwhichtrigger, ratherthansilentlysubstituteworkerhistoryprogress,forcequeueorclaimanUndofailure. NoModZwaspressed,soABCremainsunanswered. Saved-onlynetworktracecannotrecoverexactabortcause; qualifyhealthyidleclock interpretation andaggregateacceptancecounts. Holdfurtherdiagnosticruns foroperatorchoice.
+
+
+### Use approved positive-pending trigger; do not mistake an immediate text read for Undo completion
+
+**Date:** 2026-11-07 · **Phase:** 525.
+
+Operator approvedpendingItems>0forAafterpost-resumesynctraffic, preservingthe524unavailable-maintenanceprecondition. Sixstandaloneobservations support(a): allUndoapplyandRedoexactlyrestorewithdepth781; allbusy immediate readsandoneidle readwereunchangedbeforelaterapplication. PreserveB3:pending0atkeydoesnotguaranteeimmediatecompletion(durablechangedfalsebeforekey). Treattimingas10mspoll bounds, notexactcommitinstantsorA/Bspeedestimates; noapp/specfix oracceptancecarryoverauthorized. ERR_ABORTEDexactcauseunsaved; qualify15–20sidlecadenceinterpretation. Finishboundedreportandstop.
+
+
+### Explicit2500msUndo/Redo pollguard approval and stricter-r1carryover
+
+**Date:** 2026-11-07 · **Phase:** 526.
+
+Operatoraccepts525(a)andexplicitlychangesonlyGoalsUndo/Redo completionguards to bounded2500mspolls; exacttextdiffer/restore predicates retained, timingdiagnostics havenothreshold. Bindnewfrozenversionbyhash, cite522r2/525, preserveoldspec/failure. Carry522r1desktop/mobile4x stricterpasses, executeonlyremainingfourreplicatesonplain510underfreshquiet-hostconfirmation, usualstop/noiserules andreadonlysavedprofileinspection. AddERR_ABORTEDunknown-cancellation/serviceacceptedledger andunmeasuredUndoCPUcost debts inStage6, thenstop. Noappchange orothergate/deadlinelimit change.
+
+
+### Preserve the old failure and complete only the four approved Goals reruns
+
+**Date:** 2026-11-07 · **Phase:** 527.
+
+Use the operator-approved 2,500 ms completion polls, retaining exact Undo-differs and Redo-restores predicates. Keep elapsed diagnostics threshold-free and all other frozen bytes exact. The four fresh passes supplement, rather than erase, the old failed immediate-read attempt. No further journeys or app changes are needed for this scoped amendment.
+
+
+### Complete the amended Goals cells without erasing the stricter old failure
+
+**Date:** 2026-11-07 · **Phase:** 528.
+
+Apply only the explicit operator carryover and guard approvals. Record three supported passing replicates for each of the 12 cells, with source/spec identity and disposition per row. Preserve the old immediate-read failure outside the amended matrix and the six no-credit diagnostic tries. Unknown cancellation cause and Undo CPU cost remain debts. Stop after this Stage 6 amendment; no app, limit, format, other gate or deadline change and no release action.
+
+
+### Retain main’s Node CA distrust update and independently reconcile release bookkeeping
+
+**Date:** 2026-11-07 · **Phase:** 529.
+
+Release preparation must preserve the main security runtime update rather than rebuilding the older Node base. Use a signed merge, retain all hardening signatures and exact app bytes, regenerate metadata without aggregate credit, and apply only the operator-approved three old-test values. Source-site line fixes require identical source-line and non-line-field proofs. Old receipt failures remain evidence; only fresh same-tree executions may clear traceability.
+
+
+### Bind the exact tested writer and compatible reader to one signed source and keep publication separate
+
+**Date:** 2026-11-08 · **Phase:** 530.
+
+Only RANGE_RECEIVE differs between the selected candidate and compatible reader; service-history automation remains off. Preserve both exact archives and later retain/pull-verify the compatible reader remotely before writer rollout. Preserve Stage 5 source/spec qualifications and failed apparatus/receipt attempts; do not borrow receipts across trees. Pre-release images are incompatible after the new client format floor. The operator keeps both merge buttons; exact registry publication is a separate handoff after the application merge.

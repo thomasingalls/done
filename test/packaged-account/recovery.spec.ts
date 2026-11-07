@@ -125,7 +125,7 @@ test('packaged recovery resumes, detaches old devices and supports enrollment, r
       [pair.second, pair.next.code, true],
     ] as const) {
       await old.goto('/');
-      await openSaved(old, oldCode, joined);
+      await openSaved(old, oldCode, joined, 'removed');
       await expect(old.locator('.shell')).toHaveCount(0, { timeout: 25000 });
       await expect(
         old.getByText('This device was removed from the account.', { exact: false }),

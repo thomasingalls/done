@@ -12,11 +12,9 @@ export interface DeviceRoster {
   readonly automaticHistory?:
     | import('./automaticHistoryMaintenance').AutomaticHistoryRuntime
     | undefined;
-  readonly localHistory?:
-    | import('../crdt/automaticLocalRetention').LocalRetentionRuntime
-    | undefined;
+  readonly localHistory?: import('../crdt/automaticLocalRetention').LocalRetentionView | undefined;
   readonly detached?: boolean;
-  readonly transition?: string;
+  readonly transition?: string | undefined;
   history?(
     command: import('./historyMaintenance').HistoryMaintenanceCommand,
   ): Promise<import('./historyMaintenance').HistoryMaintenanceStatus>;

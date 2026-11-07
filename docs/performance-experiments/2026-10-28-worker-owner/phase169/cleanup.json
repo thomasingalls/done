@@ -1,0 +1,42 @@
+[
+  {
+    "case": "worker-quota",
+    "container": "71f4d494e6ae701e39e05367717aadfbef3d1d365f60e86c41d168d7064d7acf",
+    "absent": true
+  },
+  {
+    "case": "worker-bad-passkey",
+    "container": "fdc9de0f4494c161a731cc295fca2b3ba2a8da865271d02dd1e293d04921f905",
+    "absent": true
+  },
+  {
+    "case": "worker-wrong-code",
+    "container": "ab4aa2fb731097e37cf54c7aad1d829b24cac30a19db9d25bdd3ee75eeeb78e5",
+    "absent": true
+  },
+  {
+    "case": "worker-lost-reply",
+    "container": "6e24efc369bf5551a1a13c34a32f6f5057063675ffb021e91bfa8a5042144440",
+    "absent": true
+  },
+  {
+    "case": "worker-success",
+    "container": "8c87a582d2ff6c9e3ffc081530a996e6942f27b432434200faa6102af6e6a37f",
+    "absent": true
+  },
+  {
+    "case": "worker-loss-worker",
+    "container": "a04d0e4d495b6cd196ea41d8bc3d1b5ba593c8015283d99ff37777f4e3daf8b5",
+    "absent": true
+  },
+  {
+    "case": "worker-loss-window",
+    "container": "d887a29c6d81f6bfe71b635af7cbf520d1fa90004d6d077a38b5b534807205fd",
+    "absent": true
+  },
+  {
+    "case": "worker-cancel",
+    "container": "97c5a1100f2445eae005cba75cb86f11814c16347cd722593ee21613e6c552b3",
+    "absent": true
+  }
+]

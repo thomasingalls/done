@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {publisherForJoinedActor,publisherHashForJoinedActor} from './fixture-roles.mjs';
+const actor=values=>({storage:{origins:[{indexedDB:[{name:'done.custody',stores:[{records:values.map(candidate=>({value:{reading:{admission:{candidate}}}}))}]}]}]}});
+const a='11'.repeat(16),b='22'.repeat(16);
+assert.equal(publisherForJoinedActor(actor([a])),a);
+assert.equal(publisherHashForJoinedActor(actor([a])),createHash('sha256').update(a).digest('hex'));
+assert.throws(()=>publisherForJoinedActor(actor([])),/one identifiable/);
+assert.throws(()=>publisherForJoinedActor(actor([a,b])),/one identifiable/);
+assert.throws(()=>publisherForJoinedActor(actor(['invalid'])),/Malformed/);
+assert.equal(publisherForJoinedActor(actor([a,a])),a);
+console.log('Six fixture role checks pass; target metadata grants no authority');

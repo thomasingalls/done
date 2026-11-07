@@ -1,0 +1,17 @@
+{
+  "case": {
+    "name": "02-desktop-profile",
+    "mobile": false,
+    "profile": true
+  },
+  "startedAt": 1793211831268,
+  "command": [
+    "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "test/account-continuation-lab/stall.config.ts"
+  ],
+  "exit": 0,
+  "finishedAt": 1793212029739
+}

@@ -1,0 +1,299 @@
+{
+  "outcome": "completed-diagnostic",
+  "error": null,
+  "mobile4x": false,
+  "profiledAttributionOnly": false,
+  "inputDenominator": {
+    "offered": 779,
+    "observed": 779,
+    "matched": true,
+    "allTrustedFocusedVisible": true
+  },
+  "clockOffsetBoundsMs": [
+    -1.111328125,
+    1.587646484375
+  ],
+  "driverLatenessMs": {
+    "n": 779,
+    "p50": 0.466064453125,
+    "p95": 1.610595703125,
+    "p99": 3.28271484375,
+    "max": 4.8330078125,
+    "over100ms": 0
+  },
+  "offerToBeforeinputUpperMs": {
+    "n": 779,
+    "p50": 4.275390625,
+    "p95": 10.35302734375,
+    "p99": 20.732421875,
+    "max": 62.2060546875,
+    "over100ms": 0
+  },
+  "offerToRafUpperMs": {
+    "n": 779,
+    "p50": 9.233642578125,
+    "p95": 16.221435546875,
+    "p99": 27.519775390625,
+    "max": 66.7060546875,
+    "over100ms": 0
+  },
+  "phases": {
+    "paragraph": {
+      "start": 1793211615604.7,
+      "end": 1793211732317.2,
+      "longTasks": {
+        "n": 0
+      },
+      "worstTasks": [],
+      "heartbeatGapMs": {
+        "n": 7229,
+        "p50": 16.099853515625,
+        "p95": 19.199951171875,
+        "p99": 30,
+        "max": 47.599853515625,
+        "over100ms": 0
+      }
+    },
+    "idle": {
+      "start": 1793211732447.3,
+      "end": 1793211752455.3,
+      "longTasks": {
+        "n": 14,
+        "p50": 72,
+        "p95": 195,
+        "p99": 195,
+        "max": 195,
+        "over100ms": 3
+      },
+      "worstTasks": [
+        {
+          "at": 1793211745926.7,
+          "ms": 195
+        },
+        {
+          "at": 1793211735185.6,
+          "ms": 136
+        },
+        {
+          "at": 1793211743714.8,
+          "ms": 125
+        },
+        {
+          "at": 1793211744724.8,
+          "ms": 77
+        },
+        {
+          "at": 1793211742396.1,
+          "ms": 75
+        },
+        {
+          "at": 1793211745018.5,
+          "ms": 74
+        },
+        {
+          "at": 1793211745297.8,
+          "ms": 74
+        },
+        {
+          "at": 1793211747896.4,
+          "ms": 72
+        }
+      ],
+      "heartbeatGapMs": {
+        "n": 1164,
+        "p50": 16,
+        "p95": 22.89990234375,
+        "p99": 75.699951171875,
+        "max": 208.400146484375,
+        "over100ms": 4
+      }
+    },
+    "return": {
+      "start": 1793211772469.923,
+      "end": 1793211792788.4,
+      "longTasks": {
+        "n": 8,
+        "p50": 98,
+        "p95": 922,
+        "p99": 922,
+        "max": 922,
+        "over100ms": 4
+      },
+      "worstTasks": [
+        {
+          "at": 1793211787644.7,
+          "ms": 922
+        },
+        {
+          "at": 1793211786638.1,
+          "ms": 681
+        },
+        {
+          "at": 1793211786037.8,
+          "ms": 600
+        },
+        {
+          "at": 1793211788589.6,
+          "ms": 271
+        },
+        {
+          "at": 1793211788932,
+          "ms": 98
+        },
+        {
+          "at": 1793211789529.8,
+          "ms": 91
+        },
+        {
+          "at": 1793211788866.1,
+          "ms": 65
+        },
+        {
+          "at": 1793211772588.8,
+          "ms": 61
+        }
+      ],
+      "heartbeatGapMs": {
+        "n": 1013,
+        "p50": 16.199951171875,
+        "p95": 29.2998046875,
+        "p99": 71,
+        "max": 964.199951171875,
+        "over100ms": 7
+      }
+    }
+  },
+  "lifecycle": [
+    {
+      "kind": "pageshow",
+      "at": 1793211608428,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793211608433.6,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793211608501.1,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793211608501.1,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793211608547.6,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793211608862.6,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793211608957.1,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793211608957.1,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "blur",
+      "at": 1793211608968.6,
+      "visible": "visible",
+      "focused": true,
+      "shell": false
+    },
+    {
+      "kind": "focus",
+      "at": 1793211613007.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793211613059.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793211613059.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793211613157.1,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793211613157.3,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "blur",
+      "at": 1793211615519.2,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    },
+    {
+      "kind": "focus",
+      "at": 1793211615557.1,
+      "visible": "visible",
+      "focused": true,
+      "shell": true
+    }
+  ],
+  "control": {
+    "events": 16,
+    "maxLongTaskMs": 120,
+    "detected120msFault": true
+  },
+  "guards": {
+    "exactParagraph": true,
+    "returnInputPreserved": true,
+    "undoRedo": true,
+    "lockReopenExact": true
+  },
+  "pageErrors": [],
+  "network": {
+    "requests": 156,
+    "statuses": {
+      "200": 151
+    }
+  },
+  "qualification": "Diagnostic only: key-to-rAF is not the existing mutation-observer local16ms measurement; no peer case here. Existing16ms/2.5s gates unchanged, no new acceptance credit."
+}

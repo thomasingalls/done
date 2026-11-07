@@ -1,0 +1,13 @@
+{
+  "chosenSY": "11",
+  "rule": "Only arm with writer functional completion and both cold guards in normal ANDwithheld",
+  "allArmsReported": true,
+  "qualification": "Exploratory choice, no acceptance credit",
+  "writerCompletions": {
+    "00": 0,
+    "01": 0,
+    "10": 1,
+    "11": 2
+  },
+  "noNewStartsDuringTypingOrReaderDrain": true
+}

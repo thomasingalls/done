@@ -1,0 +1,372 @@
+[
+  {
+    "run": 1,
+    "bits": "0000000",
+    "repeat": "plain-before",
+    "directory": "screen-01-0000000",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 716,
+      "tokenUnits": 340,
+      "nativeCommits": 180,
+      "windowMessages": 7318,
+      "windowCalls": 3659,
+      "ledgerPlaintextBytes": 9668351,
+      "ledgerCipherBytes": 9708447,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.4748603351955307,
+        "nativeCommits": 0.25139664804469275,
+        "windowMessages": 10.220670391061452,
+        "windowCalls": 5.110335195530726,
+        "ledgerPlaintextBytes": 13503.283519553073,
+        "ledgerCipherBytes": 13559.283519553073,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 0,
+      "externalPages": 0
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 2,
+    "bits": "0101011",
+    "designRow": 2,
+    "directory": "screen-02-0101011",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 384,
+      "nativeCommits": 130,
+      "windowMessages": 6350,
+      "windowCalls": 3175,
+      "ledgerPlaintextBytes": 1627534,
+      "ledgerCipherBytes": 1684934,
+      "externalPageBytes": 1529791,
+      "perPosition": {
+        "tokenUnits": 0.3746341463414634,
+        "nativeCommits": 0.12682926829268293,
+        "windowMessages": 6.195121951219512,
+        "windowCalls": 3.097560975609756,
+        "ledgerPlaintextBytes": 1587.8380487804877,
+        "ledgerCipherBytes": 1643.8380487804877,
+        "externalPageBytes": 1492.479024390244
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 69,
+      "quietCacheHits": 100,
+      "namedHints": 0,
+      "keyImportHits": 0,
+      "externalPages": 256
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 3,
+    "bits": "0000000",
+    "designRow": 0,
+    "directory": "screen-03-0000000",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 724,
+      "tokenUnits": 340,
+      "nativeCommits": 182,
+      "windowMessages": 7306,
+      "windowCalls": 3653,
+      "ledgerPlaintextBytes": 9776647,
+      "ledgerCipherBytes": 9817191,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.4696132596685083,
+        "nativeCommits": 0.2513812154696133,
+        "windowMessages": 10.091160220994475,
+        "windowCalls": 5.045580110497237,
+        "ledgerPlaintextBytes": 13503.656077348067,
+        "ledgerCipherBytes": 13559.656077348067,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 0,
+      "externalPages": 0
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 4,
+    "bits": "1011010",
+    "designRow": 5,
+    "directory": "screen-04-1011010",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 323,
+      "nativeCommits": 258,
+      "windowMessages": 7254,
+      "windowCalls": 3627,
+      "ledgerPlaintextBytes": 1627528,
+      "ledgerCipherBytes": 1684928,
+      "externalPageBytes": 1529790,
+      "perPosition": {
+        "tokenUnits": 0.3151219512195122,
+        "nativeCommits": 0.25170731707317073,
+        "windowMessages": 7.077073170731707,
+        "windowCalls": 3.5385365853658537,
+        "ledgerPlaintextBytes": 1587.8321951219511,
+        "ledgerCipherBytes": 1643.8321951219511,
+        "externalPageBytes": 1492.4780487804878
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 44,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 0,
+      "externalPages": 256
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 5,
+    "bits": "1100110",
+    "designRow": 6,
+    "directory": "screen-05-1100110",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 912,
+      "tokenUnits": 398,
+      "nativeCommits": 229,
+      "windowMessages": 6422,
+      "windowCalls": 3211,
+      "ledgerPlaintextBytes": 1445156,
+      "ledgerCipherBytes": 1496228,
+      "externalPageBytes": 1362110,
+      "perPosition": {
+        "tokenUnits": 0.43640350877192985,
+        "nativeCommits": 0.25109649122807015,
+        "windowMessages": 7.041666666666667,
+        "windowCalls": 3.5208333333333335,
+        "ledgerPlaintextBytes": 1584.6008771929824,
+        "ledgerCipherBytes": 1640.6008771929824,
+        "externalPageBytes": 1493.5416666666667
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 144,
+      "quietBatches": 96,
+      "quietCacheHits": 143,
+      "namedHints": 0,
+      "keyImportHits": 6232,
+      "externalPages": 228
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 6,
+    "bits": "1001101",
+    "designRow": 4,
+    "directory": "screen-06-1001101",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 960,
+      "tokenUnits": 399,
+      "nativeCommits": 121,
+      "windowMessages": 4414,
+      "windowCalls": 2207,
+      "ledgerPlaintextBytes": 12971367,
+      "ledgerCipherBytes": 13025127,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.415625,
+        "nativeCommits": 0.12604166666666666,
+        "windowMessages": 4.597916666666666,
+        "windowCalls": 2.298958333333333,
+        "ledgerPlaintextBytes": 13511.840625,
+        "ledgerCipherBytes": 13567.840625,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 135,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 6546,
+      "externalPages": 0
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 7,
+    "bits": "1110001",
+    "designRow": 7,
+    "directory": "screen-07-1110001",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 323,
+      "nativeCommits": 130,
+      "windowMessages": 4718,
+      "windowCalls": 2359,
+      "ledgerPlaintextBytes": 13843947,
+      "ledgerCipherBytes": 13901347,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.3151219512195122,
+        "nativeCommits": 0.12682926829268293,
+        "windowMessages": 4.602926829268292,
+        "windowCalls": 2.301463414634146,
+        "ledgerPlaintextBytes": 13506.289756097562,
+        "ledgerCipherBytes": 13562.289756097562,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 41,
+      "quietBatches": 27,
+      "quietCacheHits": 39,
+      "namedHints": 0,
+      "keyImportHits": 0,
+      "externalPages": 0
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 8,
+    "bits": "0111100",
+    "designRow": 3,
+    "directory": "screen-08-0111100",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 868,
+      "tokenUnits": 284,
+      "nativeCommits": 218,
+      "windowMessages": 6778,
+      "windowCalls": 3389,
+      "ledgerPlaintextBytes": 11725975,
+      "ledgerCipherBytes": 11774583,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.3271889400921659,
+        "nativeCommits": 0.2511520737327189,
+        "windowMessages": 7.808755760368664,
+        "windowCalls": 3.904377880184332,
+        "ledgerPlaintextBytes": 13509.187788018433,
+        "ledgerCipherBytes": 13565.187788018433,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 21,
+      "quietCacheHits": 39,
+      "namedHints": 0,
+      "keyImportHits": 5738,
+      "externalPages": 0
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 9,
+    "bits": "0010111",
+    "designRow": 1,
+    "directory": "screen-09-0010111",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 1025,
+      "tokenUnits": 302,
+      "nativeCommits": 130,
+      "windowMessages": 5212,
+      "windowCalls": 2606,
+      "ledgerPlaintextBytes": 1627534,
+      "ledgerCipherBytes": 1684934,
+      "externalPageBytes": 1529791,
+      "perPosition": {
+        "tokenUnits": 0.2946341463414634,
+        "nativeCommits": 0.12682926829268293,
+        "windowMessages": 5.084878048780488,
+        "windowCalls": 2.542439024390244,
+        "ledgerPlaintextBytes": 1587.8380487804877,
+        "ledgerCipherBytes": 1643.8380487804877,
+        "externalPageBytes": 1492.479024390244
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 6736,
+      "externalPages": 256
+    },
+    "receiveFailures": 0
+  },
+  {
+    "run": 10,
+    "bits": "0000000",
+    "repeat": "plain-after",
+    "directory": "screen-10-0000000",
+    "exit": 0,
+    "outcome": "passed",
+    "error": null,
+    "screen": {
+      "positionsAt30s": 704,
+      "tokenUnits": 336,
+      "nativeCommits": 177,
+      "windowMessages": 7206,
+      "windowCalls": 3603,
+      "ledgerPlaintextBytes": 9505907,
+      "ledgerCipherBytes": 9545331,
+      "externalPageBytes": 0,
+      "perPosition": {
+        "tokenUnits": 0.4772727272727273,
+        "nativeCommits": 0.25142045454545453,
+        "windowMessages": 10.235795454545455,
+        "windowCalls": 5.1178977272727275,
+        "ledgerPlaintextBytes": 13502.708806818182,
+        "ledgerCipherBytes": 13558.708806818182,
+        "externalPageBytes": 0
+      }
+    },
+    "exposure": {
+      "emptyAvoided": 0,
+      "quietBatches": 0,
+      "quietCacheHits": 0,
+      "namedHints": 0,
+      "keyImportHits": 0,
+      "externalPages": 0
+    },
+    "receiveFailures": 0
+  }
+]

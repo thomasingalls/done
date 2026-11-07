@@ -1,0 +1,46 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountReceive.ts');s=p.read_text();s="import { pageRuntimePorts } from './runtimePorts';\n"+s
+s=s.replace("globalThis.navigator?.onLine === false", "!pageRuntimePorts.activity.online()").replace("globalThis.document?.visibilityState !== 'hidden'", "pageRuntimePorts.activity.visibilityState() !== 'hidden'").replace("globalThis.document?.visibilityState === 'hidden'", "pageRuntimePorts.activity.visibilityState() === 'hidden'")
+adds="""      globalThis.document?.addEventListener('keydown', activity, true);
+      globalThis.document?.addEventListener('beforeinput', activity, true);
+      globalThis.document?.addEventListener('pointerdown', activity, true);
+      globalThis.document?.addEventListener('visibilitychange', activity);"""
+remove="""        globalThis.document?.removeEventListener('keydown', activity, true);
+        globalThis.document?.removeEventListener('beforeinput', activity, true);
+        globalThis.document?.removeEventListener('pointerdown', activity, true);
+        globalThis.document?.removeEventListener('visibilitychange', activity);"""
+assert s.count(adds)==2and s.count(remove)==2
+s=s.replace(adds,"""      const stopActivity = [
+        pageRuntimePorts.activity.onDocument('keydown', activity, true),
+        pageRuntimePorts.activity.onDocument('beforeinput', activity, true),
+        pageRuntimePorts.activity.onDocument('pointerdown', activity, true),
+        pageRuntimePorts.activity.onDocument('visibilitychange', activity),
+      ];""").replace(remove,'        for (const stop of stopActivity) stop();')
+s=s.replace("      let unsubscribeLogin: (() => void) | undefined;", "      let unsubscribeLogin: (() => void) | undefined;\n      const stopActivity: (() => void)[] = [];")
+a="""          globalThis.document?.removeEventListener('visibilitychange', visibility);
+          globalThis.removeEventListener?.('pagehide', flushOnHide, true);
+          globalThis.removeEventListener?.('online', online);
+          globalThis.removeEventListener?.('offline', offline);""";assert a in s;s=s.replace(a,'          for (const stop of stopActivity.splice(0)) stop();')
+a="""          globalThis.document?.addEventListener('visibilitychange', visibility);
+          globalThis.addEventListener?.('pagehide', flushOnHide, true);""";assert a in s;s=s.replace(a,"""          stopActivity.push(
+            pageRuntimePorts.activity.onDocument('visibilitychange', visibility),
+            pageRuntimePorts.activity.onGlobal('pagehide', flushOnHide, true),
+          );""")
+a="""        globalThis.addEventListener?.('online', online);
+        globalThis.addEventListener?.('offline', offline);""";assert a in s;s=s.replace(a,"""        stopActivity.push(
+          pageRuntimePorts.activity.onGlobal('online', online),
+          pageRuntimePorts.activity.onGlobal('offline', offline),
+        );""")
+s=s.replace("    let unsubscribe: (() => void) | undefined;\n    const online", "    let unsubscribe: (() => void) | undefined;\n    const stopActivity: (() => void)[] = [];\n    const online")
+a="""        globalThis.removeEventListener?.('online', online);
+        globalThis.removeEventListener?.('offline', offline);""";assert a in s;s=s.replace(a,'        for (const stop of stopActivity.splice(0)) stop();')
+a="""      globalThis.addEventListener?.('online', online);
+      globalThis.addEventListener?.('offline', offline);""";assert a in s;s=s.replace(a,"""      stopActivity.push(
+        pageRuntimePorts.activity.onGlobal('online', online),
+        pageRuntimePorts.activity.onGlobal('offline', offline),
+      );""")
+assert 'globalThis.document'not in s and 'globalThis.addEventListener'not in s and 'globalThis.removeEventListener'not in s;p.write_text(s)
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/account/notifications.ts');s="import { pageRuntimePorts } from '../crdt/runtimePorts';\n"+p.read_text();s=s.replace("  let expedited = false;", "  let expedited = false;\n  const stopActivity: (() => void)[] = [];").replace("(typeof document !== 'undefined' && document.visibilityState === 'hidden')", "pageRuntimePorts.activity.visibilityState() === 'hidden'")
+s=s.replace("    globalThis.removeEventListener?.('online', resume);\n    globalThis.document?.removeEventListener('visibilitychange', resume);", "    for (const stop of stopActivity.splice(0)) stop();")
+s=s.replace("    globalThis.addEventListener?.('online', resume);\n    globalThis.document?.addEventListener('visibilitychange', resume);", "    stopActivity.push(\n      pageRuntimePorts.activity.onGlobal('online', resume),\n      pageRuntimePorts.activity.onDocument('visibilitychange', resume),\n    );")
+p.write_text(s)

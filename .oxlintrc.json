@@ -17,6 +17,13 @@
     // Immutable source snapshots and deliberately faulty counterexamples are evidence, not active code.
     "docs/account-conformance-runs/**",
     "docs/performance-experiments/**",
+    "docs/development-evidence/2026-10-23-sidebar-overflow/reproduction/playwright.firefox.config.ts",
+    "docs/development-evidence/2026-10-23-sidebar-cut-background/reproduction/playwright.sidebar-firefox.config.ts",
+    "docs/product-design/2026-10-23-goals-context/editor-assets/editor-study.js",
+    "docs/development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/regression-controls.mjs",
+    "docs/development-evidence/2026-11-02-release-hardening/494-maintained-producer-fixture/grow.spec.ts",
+    "docs/development-evidence/2026-11-02-release-hardening/498-session-fixture/grow.spec.ts",
+    "docs/development-evidence/2026-11-02-release-hardening/500-offline-fixture/grow.spec.ts",
     "dist/**",
     "playwright-report/**",
     "test-results/**",

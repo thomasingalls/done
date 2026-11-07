@@ -1,0 +1,116 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/windowAccountMirror.ts');old=p.read_text();carrier=old[old.index('    const task: SessionTask'):old.index('    const batch = accountBatchPolicy')]
+# The exact guarded carrier bodies stay unchanged. Route is now the current verified context.
+factory=old[old.index('    const batch = accountBatchPolicy'):old.index('  } catch (cause) {\n    if (owned)',old.index('    const batch = accountBatchPolicy'))]
+factory=factory.replace('    return await createAdmittedWorkspace(', '    let enqueue!: OwnedReceiveQueue, prepare!: OwnedPreparedReceiveQueue, journalFence!: OwnedJournalFenceQueue;\n    const workspace = await createAdmittedWorkspace(',1).replace('        createAdmissionOwner(carrier, {','        createAdmissionOwner(carrier, {',1)
+needle="""            : {}),
+        }),
+      {
+        identity,"""
+assert needle in factory
+factory=factory.replace(needle,"""            : {}),
+          ...(batch.publication ? { publishReceivePage: true } : {}),
+        }, (receive, prepared, fenced) => { enqueue = receive; prepare = prepared; journalFence = fenced; }),
+      {
+        identity,""",1)
+p.write_text('''/** Window UI/admission mirror of an authenticated dedicated-worker owner. */
+import { createAdmittedWorkspace, type WorkspaceOptions } from './admittedWorkspace';
+import { createAdmissionOwner, requireAdmissionFence, type AdmissionFence, type AdmissionCarrier, type OwnedReceiveQueue, type OwnedPreparedReceiveQueue, type OwnedJournalFenceQueue } from './admissionQueue';
+import { copyBatch, type ContentInput } from './contentRecord';
+import type { ContentReceipt } from './contentStore';
+import type { JournalRecovery } from './custody';
+import { createJournalOwner, eraseJournalSnapshot, type JournalFlushReceipt } from './journalStore';
+import { deriveStoreName } from './storeName';
+import { makeSourceCapsule, decodeSourceCapsule, eraseCapsule } from './sourceCapture';
+import { accountBatchPolicy } from './accountBatchPolicy';
+import { accountTextMode } from './accountTextMode';
+import { accountLedgerMode } from './accountLedgerMode';
+import { requireWindowAccountCohort, type WindowAccountCohort } from './accountWorkerCohort';
+import type { SessionTask } from './writeSession';
+import type { Bytes } from './custodyCrypto';
+import { sameBytes } from './verifiedRecords';
+import { takeAccountMirrorOpening, eraseIncomingOpening, eraseMirrorMaterial, mirrorOpeningError as fail, type AccountMirrorOpening, type AccountMirrorMaterial } from './accountMirrorMaterial';
+export type { AccountMirrorOpening } from './accountMirrorMaterial';
+
+export interface AccountMirrorWorker {
+  loadRecovery(): Promise<JournalRecovery>;
+  appendBatch(input: readonly ContentInput[]): Promise<ContentReceipt>;
+  flushJournal(): Promise<JournalFlushReceipt>;
+}
+type MirrorOptions = Pick<WorkspaceOptions, 'identity' | 'today' | 'deviceLabelId'>;
+
+/** Preserve the application surface: no receive, fence or rebinding capability escapes on it. */
+export async function createWindowAccountMirror(cohort: WindowAccountCohort, input: AccountMirrorOpening, worker: AccountMirrorWorker, options: MirrorOptions) {
+  return (await createWindowAccountMirrorController(cohort, input, worker, options)).workspace;
+}
+
+/** Trusted composition only. The original Window canonical/admission/Undo owner survives rebinding. */
+export async function createWindowAccountMirrorController(cohort: WindowAccountCohort, input: AccountMirrorOpening, worker: AccountMirrorWorker, options: MirrorOptions) {
+  let owned = false, journal: ReturnType<typeof createJournalOwner> | undefined, fingerprint: Bytes | undefined;
+  const temporary = new Set<AccountMirrorMaterial>();
+  const erase = (material: AccountMirrorMaterial) => { eraseMirrorMaterial(material); temporary.delete(material); };
+  const keyFingerprint = async (material: AccountMirrorMaterial) => new Uint8Array(await crypto.subtle.digest('SHA-256', material.key));
+  try {
+    requireWindowAccountCohort(cohort); owned = true;
+    const identity = structuredClone(options.identity), today = options.today, deviceLabelId = options.deviceLabelId;
+    cohort.disposeWith(() => {
+      try { journal?.dispose(); } finally { fingerprint?.fill(0); for (const material of temporary) eraseMirrorMaterial(material); temporary.clear(); }
+    });
+    const io = { loadRecovery: worker.loadRecovery.bind(worker), appendBatch: worker.appendBatch.bind(worker), flushJournal: worker.flushJournal.bind(worker) };
+    const first = takeAccountMirrorOpening(cohort, input, identity.id); temporary.add(first);
+    const scope = first.scope, dbName = first.dbName;
+    let route = first.route, generation = first.generation, binding = first.binding;
+    if (dbName !== await deriveStoreName(scope.principalId, scope.workspaceId)) throw fail();
+    fingerprint = await keyFingerprint(first);
+    journal = cohort.write(() => createJournalOwner(scope, dbName, generation, first.key, first.previous, () => first.binding));
+    erase(first);
+'''+carrier+factory+'''
+    const rebind = async (fence: AdmissionFence, incoming: AccountMirrorOpening) => {
+      let authorized = false, material: AccountMirrorMaterial | undefined, nextFingerprint: Bytes | undefined;
+      let candidate: ReturnType<typeof createJournalOwner> | undefined;
+      const check = () => { requireWindowAccountCohort(cohort); requireAdmissionFence(fence, carrier); };
+      try {
+        check(); authorized = true;
+        material = takeAccountMirrorOpening(cohort, incoming, identity.id); temporary.add(material);
+        if (material.dbName !== dbName || Object.keys(scope).some(k => scope[k as keyof typeof scope] !== material!.scope[k as keyof typeof scope]) ||
+            material.route.credential !== route.credential || material.generation < generation || material.route.epoch < route.epoch ||
+            binding && (!material.binding || material.binding.intent !== binding.intent || material.binding.era.revision < binding.era.revision ||
+              material.binding.era.revision === binding.era.revision && (material.binding.era.current !== binding.era.current || material.binding.era.previous !== binding.era.previous))) throw fail();
+        nextFingerprint = await keyFingerprint(material); check();
+        // An internal equality guard, never authentication or exported approval. Keep no raw JS key
+        // after codec import, and refuse an unexpected same-generation key change before sealing.
+        if (material.generation === generation && !sameBytes(fingerprint!, nextFingerprint)) throw fail();
+        const pending = cohort.write(() => journal!.snapshot());
+        try { if (pending.length) throw fail(); } finally { eraseJournalSnapshot(pending); }
+        check();
+        const nextBinding = material.binding;
+        candidate = cohort.write(() => createJournalOwner(scope, dbName, material!.generation, material!.key, material!.previous, () => nextBinding));
+        // Refresh its actual Window storage budget while the same FIFO reservation excludes input.
+        eraseJournalSnapshot(await candidate.readSnapshot(task)); check();
+        const previousJournal = journal;
+        journal = candidate; candidate = undefined;
+        route = material.route; generation = material.generation; binding = material.binding;
+        fingerprint!.fill(0); fingerprint = nextFingerprint; nextFingerprint = undefined;
+        previousJournal!.dispose();
+      } catch (cause) {
+        // Awaiting close from inside its own queue head would deadlock drain. Abort is immediate;
+        // the owning composition observes the rejection while normal root cleanup drains this job.
+        if (authorized) void cohort.close().catch(() => {});
+        throw cause;
+      } finally {
+        candidate?.dispose(); nextFingerprint?.fill(0);
+        if (material) erase(material); eraseIncomingOpening(incoming);
+      }
+    };
+    return Object.freeze({workspace, enqueue, prepare, journalFence, rebind});
+  } catch (cause) {
+    if (owned) {
+      try { await cohort.close(); } catch (cleanup) { throw new AggregateError([cause, cleanup], 'Worker mirror opening and cleanup failed.'); }
+    }
+    throw cause;
+  } finally {
+    eraseIncomingOpening(input);
+    for (const material of temporary) eraseMirrorMaterial(material); temporary.clear();
+  }
+}
+''')

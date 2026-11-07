@@ -1,0 +1,26 @@
+# Worker reply size census
+
+Parsed 356 TypeScript source files. Ten channel endpoints: five Worker endpoints, five Window endpoints. All 55 explicit Worker reply handlers are classified; six dedicated Worker constructors and 29 direct postMessage calls are inventoried. A separate text search and AST call census agree in both directions. This is static evidence, not a new benchmark or proof that every bounded input yields a small reply.
+
+| Growth class | Worker methods | Meaning / limits |
+|---|---|---|
+| constant | activity, automatic, baselineFinish, baselineStatus, beginGenesis, beginRecovery, cancelCompact, cancelGenesis, close, compositionLocalHistory, compositionRemoveLocalHistory, configuration, confirmGenesis, finishRecovery, inspect, prepareHandoff, protect, ready, receiveBegin, receiveFinish, receiveInput, resumeGenesis, setupClose, setupCommand, status, workspaceCommit, workspaceFinish, workspaceHint | acknowledgment, scalar status, fixed summary or ordered token; no list of lifetime positions. computation can still load/verify history; this is a reply-shape classification, not a speed or safety claim |
+| full-history-aggregate | compactContent, compositionStatus | unpaginated graph grows with retained history; global message guard eventually refuses. compositionStatus demonstrated in487b; Local compactContent risk is static only |
+| bounded-stream | receiveOutput, recoveryPage, workspaceFrames | total messages grow, each recovery page or byte part is bounded. recovery128KiB pages/128parts, frame64KiBparts; existing overall/entry limits and checks remain |
+| bounded-protocol-read | receiveFetch, receiveRequest, receiveVerify | request/page is bounded by wire/read protocol, not lifetime history. receiveFetch/Verify include constant inbound summary plus scalar frame counts; payload output is separate stream |
+| operation-sized | appendBatch, flushJournal | array depends on current append/flush work, not every lifetime position. append returns sequences; flush returns contentReceipts across all pending batches. Existing input/admission/transport guards do not independently prove every aggregate reply fits |
+| membership-sized | compositionRoster, sessionCommand | devices array depends on roster cardinality. compositionRoster and sessionCommand(roster); no pagination in this reply; only existing global transport cap |
+| opening-context | authorityStart, baselineStart, open | narrow opening material includes previous-generation key pairs. receiver accepts at most128previous pairs; no writing or full recovery records in this result |
+| route-one | list | authenticated Local stores list. matchLocalRoute requires exactly one store; not lifetime-writing growth |
+
+The JSON contains every handler source path/line/hash and the opposite-direction endpoints. Main findings:
+
+- `compositionStatus` is exported in the shipped facade. Its producer collects the full delivery/spool/capture graph. The transport guard remains intact and refuses an oversized aggregate. The phase487b failure is a demonstrated byte refusal. There is no ordinary UI literal call site in the source census; that is not proof against computed or external callers.
+- `compositionStatus` calls `composition.listCaptures()`. `accountCapture.ts` calls `carrier.load(task)`, builds the source catalog, decodes journal sources, then decodes every catalog capsule for the result, later erased by the caller. Carrier proof reuse may still apply: do not call this fresh full cryptographic validation on every call. Delivery/spool status separately enter native capture tasks; their selected paths may reuse indexes. Per-call cost remains unmeasured.
+- Local `compactContent` forwards `ContentCompactionReceipt.removed`, an unpaginated sequence list sized by removed history. It can be constructed after successful compaction. A large-reply refusal is a static risk, not a demonstrated app fault in this phase. No stress probe or repair was run.
+- `flushJournal` returns all pending content receipts; append replies return current-batch sequence lists. Those grow with pending work rather than lifetime history. Existing input/admission limits remain; no independent proof that all aggregate reply shapes fit is claimed.
+- Roster replies grow with device count. Opening/rebinding context has an explicit128previous-generation-pair receiver bound. Local route listing is verified to exactly one store.
+- Recovery is already paged at128KiB/128parts; workspace/read output uses64KiBframes and existing total bounds. Inbound status and baseline hints have fixed scalar shapes even though obtaining them can perform history work.
+- Worker-originated sessionStatus/setupState/workspace-context messages are requests in the opposite direction; they were not miscounted as Worker replies. Session sync status is a fixed validated presentation snapshot, which the repaired fixture reads locally. Window journal snapshot replies use32KiBcharacter pages and16item removals. Raw boot/close markers are scalar; BroadcastChannel text/workspace/runtime and service-worker update/cache traffic are distinct protocols.
+
+No source, guard, limit, format or deadline changes. Aggregate pagination, bounded summaries and cost repairs are future work, not new work in this release.

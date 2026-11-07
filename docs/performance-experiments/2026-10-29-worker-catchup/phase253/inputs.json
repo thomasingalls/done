@@ -1,0 +1,10 @@
+{
+  "input-diagnostic-protocol.md": "ddcab6b5ffa6aa25e0dc6d0241d8b6a432d2e367d82eb61be57f6fa96fe29010",
+  "run-input-diagnostic.py": "ec8a45f60c220773c9eb940d4a1df1af4c2ae1b39b169f5ed82475c335c61885",
+  "input-diagnostic-identities.json": "3bd78e4167cbdf54a05dd9053f8814578c740c77563ceb7e28b2a16d83c559fb",
+  "input-diagnostic-discovery.log": "65fd359ab82bf7ce2420912db96397f6daadf54ad7d93e9dad5bf25e39988ec8",
+  "harness/test/account-continuation-lab/input-diagnostic.spec.ts": "d41a4e5480a29438422060c197665654ac3089245d91508ed48d422413f64be5",
+  "harness/test/account-continuation-lab/input-diagnostic.config.ts": "b33998b1fef15b4197b8ad7da773ccce035beec714426534df0718a2401798a6",
+  "prepare-input-diagnostic.py": "b9ca7e30b81cd02bf5a829c9e5f57b78778aac04fb4d5833ece61871fa2c2e67",
+  "packet253.py": "1f28615b77c575ac39f4be737d1813b9f138c4279e374bb2e096d493fbe20205"
+}

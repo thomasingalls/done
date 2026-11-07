@@ -1,0 +1,12 @@
+[
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/fresh-slice-first.log",
+    "copy": "fresh-slice-first.log.gz",
+    "sha256": "4917361d8113185e317592828182d0915121ae2a4f69b0cb1a91b7182379336c"
+  },
+  {
+    "source": "/private/tmp/done-release-hardening-20261102/fresh-slice-format.log",
+    "copy": "fresh-slice-format.log.gz",
+    "sha256": "57178be860abd784d778984f81521c622f9684e4a7e4cdc7c26e597381311d10"
+  }
+]

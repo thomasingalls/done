@@ -1,0 +1,43 @@
+{
+  "eb": "11",
+  "pp": true,
+  "median50Ms": 20773.099853515625,
+  "median0Ms": 14126.2001953125,
+  "index50Bytes": 4096292,
+  "fallback323": false,
+  "dist": "/private/tmp/done-page-reuse-repair-lab-20261101/combined-dist",
+  "source": "/private/tmp/done-page-reuse-repair-lab-20261101/source",
+  "eligible": [
+    {
+      "eb": "10",
+      "pp": false,
+      "median50Ms": 33802.89990234375,
+      "median0Ms": 18476.2998046875,
+      "index50Bytes": 8571434
+    },
+    {
+      "eb": "10",
+      "pp": true,
+      "median50Ms": 28876,
+      "median0Ms": 17414.7998046875,
+      "index50Bytes": 4332766
+    },
+    {
+      "eb": "11",
+      "pp": false,
+      "median50Ms": 24521.900146484375,
+      "median0Ms": 18764.699951171875,
+      "index50Bytes": 14281430
+    },
+    {
+      "eb": "11",
+      "pp": true,
+      "median50Ms": 20773.099853515625,
+      "median0Ms": 14126.2001953125,
+      "index50Bytes": 4096292
+    }
+  ],
+  "rule": "E1:3/3functional/cold at both delays, all0ms30s; lowest50msmedian, within5%lowerindexcharge; noP1qualifies=>323E+B fallback",
+  "labOnly": true,
+  "acceptanceCredit": false
+}

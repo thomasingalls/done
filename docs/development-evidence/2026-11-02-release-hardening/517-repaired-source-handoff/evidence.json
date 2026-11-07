@@ -1,0 +1,58 @@
+{
+  "phase": 517,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/contentMaintenance.ts",
+      "sha256": "133c4dee725c8b43083d235eecbe5212f17f9081e6ff3e680a338e4d97035b1a",
+      "bytes": 5220
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86",
+      "bytes": 22390
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-hardening-handoff-517-20261107/517-private-files.json",
+      "sha256": "460753dbc400353fddaa4685cd93972811078d0da1994c605bd3eff529d61b4d",
+      "bytes": 1285
+    }
+  ],
+  "summary": {
+    "phase": 517,
+    "boundedRepairAndMissingReport": "complete",
+    "releaseClearance": false,
+    "fullUnit": {
+      "files": 333,
+      "passed": 3231,
+      "existingSkipped": 1,
+      "seconds": 128.18
+    },
+    "focusedPassed": 149,
+    "newRegressions": 5,
+    "sourceChange": "contentStore clears a returned but uninstalled private baseline continuation on fresh-check failure",
+    "appSourceChangesSince508": 0,
+    "fixture3072SetupSeconds": 1628.033,
+    "reader3072VisibleMs": 54735,
+    "reader3072CatchupAfterOpenMs": 54216,
+    "ordinaryOfflineColdMs": 5958,
+    "peakChargedIndexBytes": 25969753,
+    "capacityFallbackObserved": false,
+    "indexCeilingBytes": 33554432,
+    "encodedSourceReceiptBytes": 5185602,
+    "encodedSourceReceiptRows": 769,
+    "blockingTimedMatrixSource": "469/470, pre508 repair; rerun/rebind required before release clearance",
+    "physicalPhoneOrRealAccount": false,
+    "RAMClaim": false,
+    "preparedNewPatches": "507-517, unsigned, unstaged",
+    "pushDeployPublish": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

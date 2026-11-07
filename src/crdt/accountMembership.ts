@@ -1,3 +1,4 @@
+import { ownedInboundReceiptEpoch, type InboundReceiptTurn } from './accountInbound';
 import { requireFullSpool } from './retainedHistory';
 /** Current membership is separate from the immutable installation/key/checkpoint binding. */
 import { closed } from '../../account-protocol/preparation';
@@ -14,10 +15,9 @@ import {
   type AdmissionHistory,
 } from '../../account-protocol/admissionHistory';
 import type { SuccessorBase } from '../../account-protocol/successor';
-import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './contentRecord';
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
-import { decodeInboundRecord } from './inboundRecord';
+import { inspectInboundReceipt, isInboundReceiptNamespace } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
 import type { Bytes } from './custodyCrypto';
 
@@ -75,12 +75,22 @@ export async function installedMembershipHistory(
     historyAuthority(history, { ...history.current, tip: cut.epoch, head: cut.head });
   return history;
 }
-export const membershipEventEpoch = (bytes: Bytes): number => {
-  const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
-  return v[0] === 'done/account-inbound/v1'
-    ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
-    : v[5];
+/** Syntax only. The native/retained reader establishes its own authenticated floor before use. */
+export const membershipEventEpoch = (bytes: Bytes, syntaxTurn?: InboundReceiptTurn): number => {
+  const captured = syntaxTurn ? ownedInboundReceiptEpoch(syntaxTurn, bytes) : undefined;
+  if (captured !== undefined) return captured;
+  const v =
+    bytes[0] === 91
+      ? JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes))
+      : undefined;
+  if (bytes[0] !== 91 || isInboundReceiptNamespace(v[0])) {
+    const inbound = inspectInboundReceipt(bytes);
+    if (!inbound) throw Error('Invalid inbound ledger event');
+    return inbound.epoch;
+  }
+  return v[5];
 };
+
 /** Prove local issuance boundaries and every service-accepted prefix from retained ciphertext. */
 export async function verifyInstalledMembership(
   spool: SpoolState,
@@ -89,6 +99,7 @@ export async function verifyInstalledMembership(
   initialEpoch: number | { epoch: number; cuts: InstalledMembership['cuts'] },
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
+  syntaxTurn?: InboundReceiptTurn,
 ) {
   requireFullSpool(spool);
   const cuts = [...(typeof initialEpoch === 'number' ? [] : initialEpoch.cuts), ...installed.cuts];
@@ -117,7 +128,8 @@ export async function verifyInstalledMembership(
     }
     if (i === spool.events.length) break;
     const bytes = spool.events[i]!;
-    if (membershipEventEpoch(bytes) !== epoch) throw Error('Ledger crosses membership adoption');
+    if (membershipEventEpoch(bytes, syntaxTurn) !== epoch)
+      throw Error('Ledger crosses membership adoption');
     if (i >= cuts.at(-1)!.before.events) continue;
     const before = witness,
       check = () => extendSpoolWitness(before, bytes, subtle);

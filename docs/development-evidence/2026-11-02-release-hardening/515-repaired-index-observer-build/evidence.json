@@ -1,0 +1,76 @@
+{
+  "phase": 515,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86",
+      "bytes": 22390
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite/inboundIndexFixture.config.ts",
+      "sha256": "b3a61cb644a794fb949bbabc72bc47875f67f91c584f6f10b7fbea08e9ef43ef",
+      "bytes": 7990
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-current-index-build-515-20261107/515-private-files.json",
+      "sha256": "daff9a306fc341e1cae73428e5834bb01820d721b0ef385ee70795b6d40f5025",
+      "bytes": 511682
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/515-index-production-ceiling-build/run.json",
+      "sha256": "6ec8a7005dbfc0b2aeab752d85401b48eba0bc61d2510dd67a89eb35c0ddb63b",
+      "bytes": 1267
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/515-index-production-ceiling-build/child.log",
+      "sha256": "1af034a1f3879af48c8450e7a2308a98a1d0a09dab3b31d93520c09dedf1460a",
+      "bytes": 8975
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/515-readonly-native-observer-build/run.json",
+      "sha256": "9f684515cf09921ca45d18b7a199fa2ef74fda4ba30c6bb0fe4c8ad08051bbf4",
+      "bytes": 1289
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/515-readonly-native-observer-build/child.log",
+      "sha256": "c21c4c22254cdea16cd70c179c5415af25964dce65d6b82b7c6bfa3eaaddc1cd",
+      "bytes": 407
+    },
+    {
+      "localPath": "/private/tmp/done-current-index-report-516-20261107/counter-controls.log",
+      "sha256": "663b72b0a8a577f31c5694bfc17bcf3fa03e11268c7f3a2f8e9c9535205e1251",
+      "bytes": 429
+    },
+    {
+      "localPath": "/private/tmp/done-current-index-report-516-20261107/516-case-inverse.json",
+      "sha256": "09d8f509bcb0b177a1f3c6f54edbf499182859d328e8c8e92b1f47cea242efdc",
+      "bytes": 216
+    }
+  ],
+  "summary": {
+    "buildPassed": true,
+    "canonicalInputs": 2047,
+    "observedSourceFiles": 2,
+    "hooks": 6,
+    "indexBytes": 33554432,
+    "indexLimitChanged": false,
+    "files": 135,
+    "counterControlsPassed": 6,
+    "normalGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

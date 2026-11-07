@@ -1,0 +1,179 @@
+{
+  "timedJourneysThisPhase": 0,
+  "canonicalAppChanged": false,
+  "operatorStop": true,
+  "phase": 528,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/windowAccountMirror.ts",
+      "sha256": "5e69c0b136bf8c47bc043af4ef1cd8054369a7f3535de45e9fb7b2feabad76f8",
+      "bytes": 12104
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source510-stage6-528-20261107/528-private-files.json",
+      "sha256": "9cc1beee653c3d0b8e58c7c47e0970419e2e709c9b3361a250ee9db2e5129be6",
+      "bytes": 868
+    },
+    {
+      "localPath": "/private/tmp/done-source510-stage6-528-20261107/528-summary.json",
+      "sha256": "6ed012c874c83b3f756982a460a8d3599cdad711164f644436a0d33832862eff",
+      "bytes": 1860
+    },
+    {
+      "localPath": "/private/tmp/done-source510-stage6-528-20261107/528-journeys.json",
+      "sha256": "94d24bf2ae99e69612de3aed1747eb6f014968d4e106b0c5318a466c28ef4d6d",
+      "bytes": 76237
+    },
+    {
+      "localPath": "/private/tmp/done-source510-stage6-528-20261107/528-undo-gap-summary.json",
+      "sha256": "7a5ca0e4db34d9375fe77093ae50d910ed1a8abb7c580c8e38aaebc0bfa7c37b",
+      "bytes": 585
+    },
+    {
+      "localPath": "/private/tmp/done-source510-stage6-523-20261107/523-journeys.json",
+      "sha256": "dcec63571147c487965d178802fd511480ffd476e8ab664c05e76c6f70b987c3",
+      "bytes": 57818
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-527-record-20261107/527-summary.json",
+      "sha256": "78950775c7434341b31c051231b148157c7dba5bccb8bac932be30fe3f691d47",
+      "bytes": 18387
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-20261107/stall.spec.ts",
+      "sha256": "f57e393f748093d2f4fe45de2dce849038adbaa2872c0b17376b50fed13b35ff",
+      "bytes": 10527
+    },
+    {
+      "localPath": "/private/tmp/done-goals-guard-526-20261107/526-spec-proof.json",
+      "sha256": "c9f90e5128778b784c7a0a562bfcd2a0ec340b677db54bcbb0164ede0ee0581d",
+      "bytes": 3296
+    },
+    {
+      "localPath": "/private/tmp/done-undo-pending-diagnostic-525-20261107/525-analysis.json",
+      "sha256": "42925949ec87c1a80bf3bf9a957b1c8e16f5825770de19232ddb556b5c3d50ac",
+      "bytes": 18727
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-traffic-analysis.json",
+      "sha256": "b182c4241e6fac286d11039e0cd4b705f6404a0446f2f469a4ceffcc13b17064",
+      "bytes": 6695
+    },
+    {
+      "localPath": "/private/tmp/done-undo-admission-diagnostic-524-20261107/saved-publisher-positions.json",
+      "sha256": "384e694a7384c77255cbe4953c637f5955eb1cb82267d27147b57835c009e3e0",
+      "bytes": 27965
+    },
+    {
+      "localPath": "/private/tmp/done-goals-remaining-control-20261107/record-results.py",
+      "sha256": "cea2caa6752aacbd51b378e8a779e716493966190b37aacc5848ba441992897b",
+      "bytes": 24573
+    }
+  ],
+  "summary": {
+    "phase": 528,
+    "source": "plain510",
+    "scopedMatrixAccepted": true,
+    "matrixRows": 36,
+    "cells": {
+      "fairness": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "goals-desktop": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "goals-mobile4x": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "grown-normal": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "grown-withheld": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "late-normal": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "late-withheld": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "native-context": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "native-deep": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "native-resumable": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "old-maintenance-normal": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      },
+      "old-maintenance-withheld": {
+        "pass": 3,
+        "fail": 0,
+        "notRun": 0
+      }
+    },
+    "operatorSourceCarryoverRuns": 21,
+    "plain510NativeFairnessPasses": 9,
+    "operatorStricterGoalsGuardCarryoverRuns": 2,
+    "newAmendedGoalsPasses": 4,
+    "uniquePassingPlain510Stage5Executions": 15,
+    "rawPlain510Stage5Attempts": 16,
+    "retainedOldImmediateReadFailures": 1,
+    "noiseRetries": 0,
+    "remainingReruns": 0,
+    "postReductionTypingCostUnmeasured": true,
+    "newDebts": [
+      "ERR_ABORTED exact cancellation cause unknown; service shows no lost or refused positions",
+      "Undo main-thread cost unmeasured;525 polling gaps of about23\u2013241ms do not attribute CPU"
+    ],
+    "appChanged": false,
+    "onlyApprovedGuardChange": "526 Goals Undo/Redo polls and elapsed diagnostics",
+    "operatorStop": true,
+    "releasePreparationStarted": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

@@ -1,0 +1,34 @@
+export function installStallProbe() {
+  const now = () => performance.timeOrigin + performance.now();
+  const rows: any[] = [], beats: any[] = [], tasks: any[] = [], timing: any[] = [], lifecycle: any[] = [], marks: any[] = [];
+  let index = 0, previous = now(), overflow = 0;
+  const push = (array: any[], row: any) => { if (array.length < 100000) array.push(row); else overflow++; };
+  const target = (t: EventTarget | null) => t instanceof Element ? t.id === 'stall-control' ? 'control' : t.closest('.goals') ? 'goals' : 'other' : 'other';
+  const beat = setInterval(() => { const at = now(); push(beats, { at, previous, gap: at - previous }); previous = at; }, 16);
+  for (const kind of ['keydown', 'beforeinput', 'input', 'keyup']) addEventListener(kind, (e: Event) => {
+    const where = target(e.target); if (where === 'other') return;
+    if (kind === 'beforeinput') index++;
+    const row: any = { kind, target: where, index, at: now(), stamp: performance.timeOrigin + e.timeStamp, trusted: e.isTrusted, visible: document.visibilityState, focused: document.hasFocus(), handlerEnd: 0, rafAt: 0 };
+    push(rows, row);
+    queueMicrotask(() => { row.handlerEnd = now(); });
+    if (kind === 'beforeinput') requestAnimationFrame(() => { row.rafAt = now(); });
+    if (kind === 'beforeinput' && where === 'control' && index === 8) { const start = now(); while (now() - start < 120) {} }
+  }, true);
+  for (const kind of ['focus','blur','pageshow','pagehide','freeze','resume','visibilitychange']) {
+    const scope = ['freeze','resume','visibilitychange'].includes(kind) ? document : window;
+    scope.addEventListener(kind, () => push(lifecycle, {kind, at: now(), visible: document.visibilityState, focused: document.hasFocus(), shell: !!document.querySelector('.shell')}), true);
+  }
+  if (PerformanceObserver.supportedEntryTypes.includes('longtask')) new PerformanceObserver(list => {
+    for (const e of list.getEntries()) push(tasks, { at: performance.timeOrigin + e.startTime, ms: e.duration });
+  }).observe({type:'longtask'});
+  if (PerformanceObserver.supportedEntryTypes.includes('event')) new PerformanceObserver(list => {
+    for (const e of list.getEntries() as PerformanceEventTiming[]) push(timing, { name:e.name, at:performance.timeOrigin + e.startTime, start:performance.timeOrigin+e.processingStart, end:performance.timeOrigin+e.processingEnd, duration:e.duration, interactionId:e.interactionId });
+  }).observe({type:'event', durationThreshold:16} as any);
+  Object.defineProperty(window, '__stall', { value: {
+    mark: (phase: string) => { const row={phase,at:now()}; marks.push(row); return row; },
+    control: () => { const e=document.createElement('textarea'); e.id='stall-control';e.style.cssText='position:fixed;left:10px;top:10px;width:300px;height:80px;z-index:2147483647';document.body.append(e);e.focus(); },
+    removeControl: () => document.getElementById('stall-control')?.remove(),
+    read: () => ({ rows, beats, tasks, timing, lifecycle, marks, overflow }),
+    stop: () => clearInterval(beat),
+  }});
+}

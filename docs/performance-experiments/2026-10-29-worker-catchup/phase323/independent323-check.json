@@ -1,0 +1,317 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "canonical": {
+    "sourceInputsUnchanged": 1552,
+    "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+    "realIndexEmpty": true
+  },
+  "stages": [
+    {
+      "key": "attach323",
+      "sourceFilesChecked": 443,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": false,
+      "fixtureHashesChecked": 0,
+      "runsReached": 1,
+      "runsDeclared": 1,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "cut323",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 1,
+      "runsDeclared": 1,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "eb50",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 12,
+      "runsDeclared": 12,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "eb0",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 6,
+      "runsDeclared": 6,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "worker323",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 1,
+      "runsDeclared": 1,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "live323",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 6,
+      "runsDeclared": 6,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "parity323",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 1,
+      "runsDeclared": 1,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "intake323",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 1,
+      "runsDeclared": 1,
+      "everyRunHasExternalLoadLog": true
+    },
+    {
+      "key": "removals323",
+      "sourceFilesChecked": 444,
+      "assetFilesChecked": 606,
+      "currentApparatusMatchesRecordedMap": true,
+      "fixtureHashesChecked": 1,
+      "runsReached": 12,
+      "runsDeclared": 12,
+      "everyRunHasExternalLoadLog": true
+    }
+  ],
+  "deepIndependentRecomputations": [
+    {
+      "run": "profile-attach-control-01",
+      "recomputedDrainMs": 16868.60009765625,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r1-E0B0",
+      "recomputedDrainMs": 44778.699951171875,
+      "recomputedPositions30": 728,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r1-E1B1",
+      "recomputedDrainMs": 24798.89990234375,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r1-E1B0",
+      "recomputedDrainMs": 33387.89990234375,
+      "recomputedPositions30": 1008,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r1-E0B1",
+      "recomputedDrainMs": 28947.300048828125,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r2-E0B1",
+      "recomputedDrainMs": 28979.0,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r2-E1B0",
+      "recomputedDrainMs": 33755.800048828125,
+      "recomputedPositions30": 992,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r2-E1B1",
+      "recomputedDrainMs": 25252.5,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r2-E0B0",
+      "recomputedDrainMs": 45684.699951171875,
+      "recomputedPositions30": 704,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r3-E1B0",
+      "recomputedDrainMs": 33389.39990234375,
+      "recomputedPositions30": 1000,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r3-E0B0",
+      "recomputedDrainMs": 45606.900146484375,
+      "recomputedPositions30": 704,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r3-E0B1",
+      "recomputedDrainMs": 29903.2001953125,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb50-r3-E1B1",
+      "recomputedDrainMs": 25824.89990234375,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "eb0-r1-E0B0",
+      "recomputedDrainMs": 18682.400146484375,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": true
+    },
+    {
+      "run": "eb0-r1-E1B1",
+      "recomputedDrainMs": 20183.699951171875,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": true
+    },
+    {
+      "run": "eb0-r2-E1B1",
+      "recomputedDrainMs": 19921.199951171875,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": true
+    },
+    {
+      "run": "eb0-r2-E0B0",
+      "recomputedDrainMs": 18578.199951171875,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": true
+    },
+    {
+      "run": "eb0-r3-E0B0",
+      "recomputedDrainMs": 18663.5,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": true
+    },
+    {
+      "run": "eb0-r3-E1B1",
+      "recomputedDrainMs": 20473.300048828125,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": true
+    },
+    {
+      "run": "worker-profile-eb11-01",
+      "recomputedDrainMs": 20023.199951171875,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    },
+    {
+      "run": "build3-default-parity-01",
+      "recomputedDrainMs": 20551.5,
+      "recomputedPositions30": 1025,
+      "coldExact": true,
+      "gate30Applied": false
+    }
+  ],
+  "attachedProfilersColdExact": true,
+  "fixtureChecks": {
+    "baseFixtureSha256": "d10347e30137dcd4b37154be0c86e6cd6d945a1b88ef73ba5d5b489d7740c4be",
+    "grownFixtureSha256": "bfdf84845055582b7e5789eb8a64c0e081bfcf3836078e163cbd2961d2782828",
+    "winningFixtureSha256": "b66437d9e7fdcafc07be06c3a0ca303333744490a6dc9e0c42ab95936d2d3b29",
+    "addedAcceptedPositions": 1024,
+    "onlyTargetArchiveChanged": true,
+    "otherAccountsAndUnaffectedActorsUnchanged": true,
+    "winningArchiveExact": true,
+    "dates": [
+      "2026-11-01",
+      "2026-11-01",
+      "2026-11-01"
+    ],
+    "actualArchives": [
+      {
+        "label": "H",
+        "requestedGoals": 13000,
+        "files": [
+          {
+            "name": "master.md",
+            "characters": 5000,
+            "bytes": 5000
+          },
+          {
+            "name": "days/2026-11-01.md",
+            "characters": 2465,
+            "bytes": 2465
+          }
+        ]
+      },
+      {
+        "label": "M",
+        "requestedGoals": 4000,
+        "files": [
+          {
+            "name": "master.md",
+            "characters": 4157,
+            "bytes": 4157
+          },
+          {
+            "name": "days/2026-11-01.md",
+            "characters": 1037,
+            "bytes": 1037
+          }
+        ]
+      },
+      {
+        "label": "Q",
+        "requestedGoals": 1000,
+        "files": [
+          {
+            "name": "master.md",
+            "characters": 1049,
+            "bytes": 1049
+          },
+          {
+            "name": "days/2026-11-01.md",
+            "characters": 487,
+            "bytes": 487
+          }
+        ]
+      }
+    ],
+    "credentialsProfilesDatabasesNotEmitted": true
+  },
+  "scopeNote": "Earlier apparatus revisions are recorded by preflight frozen hash maps; current-map equality is only claimed where checked. All source and asset identities are independently checked against retained bytes. No timing or release credit."
+}

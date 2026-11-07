@@ -27,29 +27,35 @@ import { openContentCheckpoint } from './contentCheckpoint';
 import { createReplacementCheckpoint, openReplacementCheckpoint } from './replacementCheckpoint';
 import {
   verifyInboundPage,
-  verifyStoredInbound,
+  verifyStoredInboundReceipt,
   type InboundContext,
   type InboundLifetime,
   type InboundResult,
 } from './accountInbound';
 import { Y, hasPendingUpdates, type YDoc } from './yjs';
 import type { Bytes } from './custodyCrypto';
+import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
+import { captureScopedInboundReceiptSyntax } from './inboundRecord';
+import { eraseVerified } from './verifiedRecords';
 
 export const REPLACEMENT_SOURCE_EVENTS = 4096;
 /** Existing survivors start at the original baseline; replacements start at their own admitted
  * replacement baseline and its authenticated cuts. Neither transport hints nor caller prefix fields
  * can skip writing. The native owner supplies captured journal-inclusive local originals at finish. */
-export async function openReplacementSource(input: {
-  authority: HistoryCheckpointAuthority;
-  checkpoint: ContentCheckpoint | ReplacementCheckpoint | RecoveryReading;
-  installed?: { parent: VerifiedMembership; admission: ReplacementCheckpointAdmission };
-  history: AdmissionHistory;
-  producer: string;
-  candidate: string;
-  keys: ReadonlyMap<number, Bytes>;
-  lifetime: InboundLifetime;
-}) {
+export async function openReplacementSource(
+  input: InboundReceiptVersion & {
+    authority: HistoryCheckpointAuthority;
+    checkpoint: ContentCheckpoint | ReplacementCheckpoint | RecoveryReading;
+    installed?: { parent: VerifiedMembership; admission: ReplacementCheckpointAdmission };
+    history: AdmissionHistory;
+    producer: string;
+    candidate: string;
+    keys: ReadonlyMap<number, Bytes>;
+    lifetime: InboundLifetime;
+  },
+) {
   const a = structuredClone(input.authority),
+    floor = captureInboundReceiptVersion(input),
     checkpoint = structuredClone(input.checkpoint),
     installed = input.installed
       ? { parent: input.installed.parent, admission: structuredClone(input.installed.admission) }
@@ -172,6 +178,7 @@ export async function openReplacementSource(input: {
       }
       const publisher = historyPublisher(history, cut.credentialId);
       contexts.set(cut.credentialId, {
+        ...floor,
         baseline,
         service: { id: p.pin.serviceId, origin: p.pin.origin },
         authority: publisher.current,
@@ -221,39 +228,79 @@ export async function openReplacementSource(input: {
         busy = false;
       }
     };
+    const sourceScope = (publisher: string) => {
+      const cut = cuts.find((c) => c.credentialId === publisher),
+        context = contexts.get(publisher);
+      if (
+        !cut ||
+        !context ||
+        context.prefix.position >= cut.position ||
+        events >= REPLACEMENT_SOURCE_EVENTS
+      )
+        throw Error('Replacement replay is outside its accepted cut');
+      return { cut, context };
+    };
+    const applyAccepted = (
+      context: InboundContext,
+      cut: (typeof cuts)[number],
+      result: InboundResult,
+    ) => {
+      current();
+      if (
+        result.kind !== 'received' ||
+        result.position !== context.prefix.position + 1 ||
+        result.position > cut.position ||
+        (result.position === cut.position && result.link !== cut.link)
+      )
+        throw Error('Replacement replay does not reach the authenticated cut');
+      for (const update of result.updates) Y.applyUpdate(doc!, update);
+      context.prefix = {
+        position: result.position,
+        link: result.link,
+        observedThrough: result.through,
+      };
+      events++;
+      return result;
+    };
     const append = (publisher: string, read: (context: InboundContext) => Promise<InboundResult>) =>
       run(async () => {
-        const cut = cuts.find((c) => c.credentialId === publisher),
-          context = contexts.get(publisher);
-        if (
-          !cut ||
-          !context ||
-          context.prefix.position >= cut.position ||
-          events >= REPLACEMENT_SOURCE_EVENTS
-        )
-          throw Error('Replacement replay is outside its accepted cut');
+        const { cut, context } = sourceScope(publisher);
         const result = await read(context);
         try {
-          current();
-          if (
-            result.kind !== 'received' ||
-            result.position !== context.prefix.position + 1 ||
-            result.position > cut.position ||
-            (result.position === cut.position && result.link !== cut.link)
-          )
-            throw Error('Replacement replay does not reach the authenticated cut');
-          for (const update of result.updates) Y.applyUpdate(doc!, update);
-          context.prefix = {
-            position: result.position,
-            link: result.link,
-            observedThrough: result.through,
-          };
-          events++;
+          const accepted = applyAccepted(context, cut, result);
           // Caller may retain this exact verified record to resume after interruption.
-          return result.record.slice();
+          return accepted.record.slice();
         } finally {
           if (result.kind === 'received' || result.kind === 'conflict') result.record.fill(0);
           if (result.kind === 'received') for (const update of result.updates) update.fill(0);
+        }
+      });
+    const appendStored = (publisher: string, record: Bytes) =>
+      run(async () => {
+        const { cut, context } = sourceScope(publisher);
+        const captured = captureScopedInboundReceiptSyntax(record, floor);
+        if (!captured) throw Error('Invalid retained replacement event');
+        try {
+          const work = captured.receipt.kind === 'page' ? captured.receipt.record.entryCount : 1;
+          // Bound logical work before opening any entry, not only the physical receipt count.
+          if (events + work > REPLACEMENT_SOURCE_EVENTS)
+            throw Error('Replacement replay is outside its accepted cut');
+          const receipt = await verifyStoredInboundReceipt(context, captured.bytes, lifetime);
+          try {
+            if (receipt.entries.length !== work) throw Error('Invalid retained replacement extent');
+            for (const selected of receipt.entries) applyAccepted(context, cut, selected.result);
+            return receipt.record.slice();
+          } finally {
+            receipt.record.fill(0);
+            for (const selected of receipt.entries) {
+              if ('record' in selected.result) selected.result.record.fill(0);
+              if (selected.result.kind === 'received')
+                for (const update of selected.result.updates) update.fill(0);
+              eraseVerified(selected.original);
+            }
+          }
+        } finally {
+          eraseVerified(captured);
         }
       });
     return {
@@ -267,9 +314,7 @@ export async function openReplacementSource(input: {
       appendPage(publisher: string, request: Bytes, page: Bytes) {
         return append(publisher, (context) => verifyInboundPage(context, request, page, lifetime));
       },
-      appendStored(publisher: string, record: Bytes) {
-        return append(publisher, (context) => verifyStoredInbound(context, record, lifetime));
-      },
+      appendStored,
       checkpoint(local: YDoc, sign: (bytes: Bytes) => Promise<string>) {
         return run(async () => {
           for (const cut of cuts) {

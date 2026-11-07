@@ -1,0 +1,55 @@
+{
+  "phase": 443,
+  "date": "2026-11-05",
+  "scope": "Operator-authorized signed history rebuild and smaller future evidence storage",
+  "baseCommit": "89b11fe2ae1eb621ecb884dabf247a9b11fe4496",
+  "signedHead": "b32b65ecb4725d74ebe7d05867223991bd2e9908",
+  "finalTree": "850b754baf62a7f7d141502a24cb8a361226def8",
+  "patchCount": 108,
+  "changedPaths": 554,
+  "registrySha256": "94074bf7a69711f33cde6c6a867fb2be14016ffbd6d0671f2214f79106c6c2f4",
+  "originalHead": "7baeb08605b6844475c05edd3e630e72145f99d2",
+  "localOnlyBackupRef": "refs/heads/backup/hardening-335-443-with-objects",
+  "removedPattern": "docs/development-evidence/2026-11-02-release-hardening/*/objects/",
+  "removedLocalObjects": {
+    "files": 16209,
+    "bytes": 677905859,
+    "changed": [],
+    "originalInventorySha256": "efdb9ba95f4cce7b8ecec558b46fe93eea93cdc9fcbc0ddcf40c7912199cc13f"
+  },
+  "sharedExclude": "/Users/thomasingalls/Code/done/.git/info/exclude",
+  "sourceIdentity": {
+    "schema": 1,
+    "revision": "b32b65ecb4725d74ebe7d05867223991bd2e9908",
+    "sourceDigest": "789370488d8486e50efdbb625347f6b6d9ba4a5837c14289088640e894dab8cd",
+    "sourceCount": 45563,
+    "algorithm": {
+      "commit": "b32b65ecb4725d74ebe7d05867223991bd2e9908",
+      "path": "scripts/release-validation/identity.mjs",
+      "exports": [
+        "sourcePaths",
+        "filePins",
+        "digest"
+      ],
+      "sha256": "7c6c8f878f76f801a5983dd856485d87c96128ecbad8ec98c4771cb5cdb3470e"
+    },
+    "scope": "Clean committed rebuilt phase 442, before checkpoint 443; fresh source closure, not compared with the former identity",
+    "stage5Credit": false
+  },
+  "finalCheckpointIdentityRecord": "/private/tmp/done-hardening-rebuild-20261105/final-source-identity.json",
+  "sourceIdentityRule": "Capture fresh identities. Never compare this changed source closure with the former object-bearing closure. The embedded identity names committed rebuilt phase442; the final checkpoint identity is external to avoid a self-referential digest.",
+  "checks": [
+    "108 phase commits in original order, independently signed and verified",
+    "Every rebuilt phase tree equals its original tree minus objects paths, with no other differences",
+    "Every original phase commit message and author header, including author date, preserved byte-for-byte",
+    "All phase README and evidence.json bytes preserved; original checkpoint README also preserved",
+    "16209 local evidence objects retained with identical SHA-256 and byte size",
+    "Shared local exclude prevents evidence objects being re-added",
+    "Fresh release-validation source digest captured from clean rebuilt phase442",
+    "Future storage controls pass; all display/host functions, assertions, raises and control conditions remain identical"
+  ],
+  "stage5Started": false,
+  "pushed": false,
+  "published": false,
+  "deployed": false
+}

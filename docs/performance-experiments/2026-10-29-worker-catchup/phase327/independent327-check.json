@@ -1,0 +1,26 @@
+{
+  "canonicalFilesUnchanged": 1552,
+  "head": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "frozenStagesVerified": 3,
+  "bothSourceVariantsServerAssetsHarnessAndFixtureHashesMatch": true,
+  "cases": [
+    {
+      "name": "trace327-ready-paired150-d0-reference",
+      "childExit": 1,
+      "coldFailure": false
+    },
+    {
+      "name": "trace327-ready-paired150-d0-coordinated-2000",
+      "childExit": 0,
+      "coldFailure": false
+    },
+    {
+      "name": "trace327-tagged-paired150-d0-reference",
+      "childExit": 1,
+      "coldFailure": false
+    }
+  ],
+  "observationOnly": true,
+  "noLandingOrCredit": true
+}

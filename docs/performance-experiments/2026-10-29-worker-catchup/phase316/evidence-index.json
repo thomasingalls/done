@@ -1,0 +1,286 @@
+{
+  "labRoot": "/private/tmp/done-dense-page-screen-lab-20261031",
+  "items": [
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/PROTOCOL-DRAFT.md",
+      "copy": "evidence/diagnostic3072/PROTOCOL-DRAFT.md.gz",
+      "rawSha256": "2aa68989f49af798ec7ac54ff90df8bb69b577516e7d2c4c4aa2a2421f3c7a71",
+      "bytes": 1609,
+      "gzipSha256": "176b898ea9286ec51b11933867407650abdc5952ad759448a0d5609775cd97cc"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/PROTOCOL.md",
+      "copy": "evidence/diagnostic3072/PROTOCOL.md.gz",
+      "rawSha256": "247b8c210592eb6f82569def20491192eee47caa4ed307cfdf0c31f10342fa16",
+      "bytes": 2202,
+      "gzipSha256": "001da4a39cbec97895574a05fca119441a354be3009827f251dc412130c880db"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/DIAGNOSTIC-PROTOCOL-ADDENDUM.md",
+      "copy": "evidence/diagnostic3072/DIAGNOSTIC-PROTOCOL-ADDENDUM.md.gz",
+      "rawSha256": "cab12778bebad7f00a2f32d74a7dd2b2de1457f68edafc7d7f3e3d0cf33e253e",
+      "bytes": 1766,
+      "gzipSha256": "5d128362648f559b613f980bfed910f8a2e0a095a33ac64d3377fa43aa7cb739"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/OBSERVER-NOTE.md",
+      "copy": "evidence/diagnostic3072/OBSERVER-NOTE.md.gz",
+      "rawSha256": "88a5762c6d07f3a3fbb16224d71ff5c915665fc07679978654583bc1badf35b1",
+      "bytes": 549,
+      "gzipSha256": "e8400a7882ee16de836062af4cfbbc2021fd1010279693c9bae47ff7a5d072e9"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/diagnostic-plan-draft.json",
+      "copy": "evidence/diagnostic3072/diagnostic-plan-draft.json.gz",
+      "rawSha256": "b6cd87764795e3f7a54841a28c5507869c08b053b683ab4673bfafafde406111",
+      "bytes": 1491,
+      "gzipSha256": "e9be95d694be32eaf863062147009f1b9037b637502f6ead3e1c26bbcc45a902"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/index-plan-before-reader-fixture-clarification.json",
+      "copy": "evidence/diagnostic3072/index-plan-before-reader-fixture-clarification.json.gz",
+      "rawSha256": "905aaad0f3d09f0fa27f71ff6c16951f0594f81780faa08ee7f2eb11941b8e4d",
+      "bytes": 1415,
+      "gzipSha256": "24749b374b377b102f2b58c8c18edc4b27fe95be3b32052cc31d3576b002c159"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/fixture-verification.json",
+      "copy": "evidence/diagnostic3072/fixture-verification.json.gz",
+      "rawSha256": "a630d208e28ce7fefabd81b4969aef31044f2223a8643254fa4f375184da000d",
+      "bytes": 1029,
+      "gzipSha256": "6188338abc40ba5306f81d11f4392530c5a32890fe3589951a1af8cd2409ba84"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/index3072-plan.json",
+      "copy": "evidence/index3072-plan.json.gz",
+      "rawSha256": "610ea0396fec1da41dcfaeab5f83d6989a2972f18ddd3e8e7d9fa7da1488d364",
+      "bytes": 2031,
+      "gzipSha256": "227c70743a9d929ac0895482cfe08254e196e3e1450130b68e9c345fa2d9f537"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/run01/console.log",
+      "copy": "evidence/diagnostic3072/grow/run01/console.log.gz",
+      "rawSha256": "a81b7e628529589a2e928f7bbcbc46335ed04c1a7972bcc95d9acc5c525c721a",
+      "bytes": 3441,
+      "gzipSha256": "67e95cdff8688de1f74282538871439b6430b9b3880b8580150b13583c32b630"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/run01/receipt.json",
+      "copy": "evidence/diagnostic3072/grow/run01/receipt.json.gz",
+      "rawSha256": "936de3218c43b38c740b6f01bf8ccd7ac849d01c4ad31230606e6fea49e6f7bf",
+      "bytes": 382,
+      "gzipSha256": "db8527f4dc6549badf9f2fce2a33ebe41e254f5000b6877eda99b4973b94c037"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/run01/inputs.json",
+      "copy": "evidence/diagnostic3072/grow/run01/inputs.json.gz",
+      "rawSha256": "324e94193f2f4cf3e9dc1226551ef1b871eb36d454cd47e019533835973c06f3",
+      "bytes": 15588,
+      "gzipSha256": "eb377679a0af80ae57ceeef6cf3d4e03239dbca8af8e1f5f5faea4472ae6743f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/run01/result.json",
+      "copy": "evidence/diagnostic3072/grow/run01/result.json.gz",
+      "rawSha256": "1084ccd8901a7a8b54b9636e35f34e3d7cceeb2e29eb7e6743de70abd4d9e3c6",
+      "bytes": 793,
+      "gzipSha256": "ed719b7e24d5a01275a59e0893bd7f68129cc98c05c33aef3cd2bb94d70c31f3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/run01/host-load.jsonl",
+      "copy": "evidence/diagnostic3072/grow/run01/host-load.jsonl.gz",
+      "rawSha256": "2b2454fa1f8bbc8d83442b6ee7122183188b7ba662e2bd68d5c4d76e65710a4b",
+      "bytes": 582753,
+      "gzipSha256": "06e94b4d99ab666ec001c248ce54508571ce501ff718a1e895ed09bfbd843f60"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/run01/container-identity.json",
+      "copy": "evidence/diagnostic3072/grow/run01/container-identity.json.gz",
+      "rawSha256": "7380ba145241e16d1e2508910dbcae556740202d94b07b6f38b8544251fe12f9",
+      "bytes": 2709,
+      "gzipSha256": "a7d2811753a6a76664bbce2dd5e2db3399690b7fd2588f90704b9df3481f4721"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/console.log",
+      "copy": "evidence/diagnostic3072/grow/resume01/console.log.gz",
+      "rawSha256": "2cece7814275d3fa2904caa29e57e9b5567253d0b3ab2e4ad1c3231f45d44e74",
+      "bytes": 2762,
+      "gzipSha256": "7fa695b6bd439fb8d0075109a5213634b83da796c373b81cb3a66008ea6fde96"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/receipt.json",
+      "copy": "evidence/diagnostic3072/grow/resume01/receipt.json.gz",
+      "rawSha256": "d28d68ce22cd1420f660b560019ac673a39969225ac600ff235dafbf6be2ab75",
+      "bytes": 388,
+      "gzipSha256": "6cda202630fadfb062798679082fcf6b4cc9f3ee334dfb21948b4a14c2fc7650"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/inputs.json",
+      "copy": "evidence/diagnostic3072/grow/resume01/inputs.json.gz",
+      "rawSha256": "f8b6a32109bca2bf450aba175eaaf7ff33bed12227cbffb371bf5eee9662db04",
+      "bytes": 62405,
+      "gzipSha256": "8aed3fe1b5d7757c8d9f3d74d2132e14751fc444c914bdeccef6e5e1f952180c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/result.json",
+      "copy": "evidence/diagnostic3072/grow/resume01/result.json.gz",
+      "rawSha256": "7bea92889cad799f89364c39add4fe6988450fe54b431ad3f3fd834afa0108f6",
+      "bytes": 768,
+      "gzipSha256": "ad9479e010a349f83bc856519069241521e887089df35eb6a20cabb1560c6f55"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/origin.json",
+      "copy": "evidence/diagnostic3072/grow/resume01/origin.json.gz",
+      "rawSha256": "6f942e272d01e70f6dfce1b8f15777aa3b271d8e19836f877dbb396e6c8b8ceb",
+      "bytes": 325,
+      "gzipSha256": "9d1680e49cf0e2cfc4ccda06a7e6a06735ed2dbe117443eede9a98913882734c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/host-load.jsonl",
+      "copy": "evidence/diagnostic3072/grow/resume01/host-load.jsonl.gz",
+      "rawSha256": "6f513cbea15dc2a728d7d1ec98fd106d004ce29b6aad43f2051cbee3e487e028",
+      "bytes": 17063,
+      "gzipSha256": "63cb4bf0fbdce299e476b45f4e75d16cbce3a7f849b8f0ddb3ee2d2d5caeeb44"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/container-identity.json",
+      "copy": "evidence/diagnostic3072/grow/resume01/container-identity.json.gz",
+      "rawSha256": "98f5f55dc9e493a0c3ef0f73e9c5aa1cbd0ebb4d06d7443332048afdd58d1b07",
+      "bytes": 2710,
+      "gzipSha256": "b84f0ecfb0c39a0221186d986f9650bf38bd530f1303dde57226665a6b0b8532"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/resume.spec.ts",
+      "copy": "evidence/diagnostic3072/grow/resume01/resume.spec.ts.gz",
+      "rawSha256": "d5a73fe30272b655a47292b7e1fa5458cdbab1d504a017490deb5ffca81544c1",
+      "bytes": 4633,
+      "gzipSha256": "449828b971715d4eaa3e10e2cc05fcef7c3ccbc7e5c51812b3656dc3b29a6221"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume01/run-resume3072.py",
+      "copy": "evidence/diagnostic3072/grow/resume01/run-resume3072.py.gz",
+      "rawSha256": "f9958de2bd580410a9fc8be68037a718c6f930da9615b82128da219d6349bd7c",
+      "bytes": 3358,
+      "gzipSha256": "af0b14848e7a317bcd37cd8a15be3e95318d31092f3bf6d858bf9c6e7f098a4d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/console.log",
+      "copy": "evidence/diagnostic3072/grow/resume02/console.log.gz",
+      "rawSha256": "8d92be4c04d19a22d4c6c4a91519b020ed3b807b21795b87ebaa863ffb5b677e",
+      "bytes": 432,
+      "gzipSha256": "d4d4434c1c09e4b0054d81bb3145a973560be65da62cecd2bd2cae82dabf21e0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/receipt.json",
+      "copy": "evidence/diagnostic3072/grow/resume02/receipt.json.gz",
+      "rawSha256": "32d326e5e9be13e18ff83d2bc423a858946e0801d010d442de512b0478bbab30",
+      "bytes": 388,
+      "gzipSha256": "4a558fd1e068c7f545ffa40dad63083edf6e39c1d4adc990720faa84a37b68a8"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/inputs.json",
+      "copy": "evidence/diagnostic3072/grow/resume02/inputs.json.gz",
+      "rawSha256": "81674afe9b5d05a19c65be5d46190e5764f925572046df511bb8b67dd514749f",
+      "bytes": 62405,
+      "gzipSha256": "d7b098b32610c2650b4916baa520e5142b1ce066deeddbf88421036a90151f90"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/result.json",
+      "copy": "evidence/diagnostic3072/grow/resume02/result.json.gz",
+      "rawSha256": "b6318983715643f2589ec1b6847a6ede349a25a7e71c91732085c618ff780e6e",
+      "bytes": 1024,
+      "gzipSha256": "798a2961ba36582cd1928467374b1a2aa6a994db27bf43b462cd3ca88d12fe6c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/origin.json",
+      "copy": "evidence/diagnostic3072/grow/resume02/origin.json.gz",
+      "rawSha256": "6f942e272d01e70f6dfce1b8f15777aa3b271d8e19836f877dbb396e6c8b8ceb",
+      "bytes": 325,
+      "gzipSha256": "9d1680e49cf0e2cfc4ccda06a7e6a06735ed2dbe117443eede9a98913882734c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/host-load.jsonl",
+      "copy": "evidence/diagnostic3072/grow/resume02/host-load.jsonl.gz",
+      "rawSha256": "8061e4f4f0784633a1c273e77b71c49627b876c647031d2231a34ef7adfd6573",
+      "bytes": 25219,
+      "gzipSha256": "617d52fdac472abd4c40b72cdeb1c03966fdf0319f39af16ef2465cb626830a0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/resume02/container-identity.json",
+      "copy": "evidence/diagnostic3072/grow/resume02/container-identity.json.gz",
+      "rawSha256": "914e80a9780ce2a45ffa612afd29015b293446b1052e62030baa6d497781647e",
+      "bytes": 2709,
+      "gzipSha256": "cc6b8cae2ab574a00bac17317cae716990a7b18c5a063ba82e29972b4af7196d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-grow3072.py",
+      "copy": "apparatus/run-grow3072.py.gz",
+      "rawSha256": "038ae9b46319c1d3780d847d820b085cbece3234e468007aca4ad3e28c1b3945",
+      "bytes": 2764,
+      "gzipSha256": "30b6ecb8b192ce755e3e15652496b2cfec42c3a1f4461e3199da794e686ce333"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-resume3072.py",
+      "copy": "apparatus/run-resume3072.py.gz",
+      "rawSha256": "25bcc6928566c0329678a702f6852be6aa672ca56a1dcd0bb1e35a3fe1886e91",
+      "bytes": 3358,
+      "gzipSha256": "1af3c0f4a6bf08a55089690c4ce2b76bac0bd6e9c1d471a48d52e52349ed4bfc"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/test/resume.spec.ts",
+      "copy": "apparatus/diagnostic3072/grow/test/resume.spec.ts.gz",
+      "rawSha256": "c5b3577c3bcb62baee7f83bb9a3aed8c9b20565f39efef1fe18ec02ad751676e",
+      "bytes": 4769,
+      "gzipSha256": "a948cf17ab6fe290911a2aed30454be524a942091d854bdc9af6e75ce91a401e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/test/resume.config.ts",
+      "copy": "apparatus/diagnostic3072/grow/test/resume.config.ts.gz",
+      "rawSha256": "d4d310fee0e052ce02523bf8c0846b69c098d36f72103c68cc1ea8e632764869",
+      "bytes": 284,
+      "gzipSha256": "9a26be5f9fab037d71caf2a1dc52562f6a2fdafea093e014f34a221b83caaf64"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/test/extend.spec.ts",
+      "copy": "apparatus/diagnostic3072/grow/test/extend.spec.ts.gz",
+      "rawSha256": "d5dbb91bc0a35d43d1e8cd5d12c63ec496d3a9c261a38e39add838e934d8c34c",
+      "bytes": 3883,
+      "gzipSha256": "aeb6f07c62a6d9565467728af1e8b43aa3aa3ba1c7973aa5fa1d0136ae7562c0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/grow/test/config.ts",
+      "copy": "apparatus/diagnostic3072/grow/test/config.ts.gz",
+      "rawSha256": "b5d175d408b4301b6019818d1e80d4f091bd46438d2cf143e1443ea9094c690c",
+      "bytes": 284,
+      "gzipSha256": "29f17667aaf4ed62a5af8f662401a1cda0b9d08d4437df512c424bd1a03cc63a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/diagnostic3072/reader-idle-before-final-lab-observation.spec.ts",
+      "copy": "apparatus/diagnostic3072/reader-idle-before-final-lab-observation.spec.ts.gz",
+      "rawSha256": "df1bf705a58f907247fac756d2b8085d79a140ea5e069019007fbd50554396a6",
+      "bytes": 5549,
+      "gzipSha256": "6ed375a8cef43e9bd670402b5ebf496285c28320dd47c1af5093c3587879ce8a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/reader-idle.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.spec.ts.gz",
+      "rawSha256": "52a98127646d48363fe64520ca44f18e0b1a810248a2e8901f8ed971c6e3e76f",
+      "bytes": 5601,
+      "gzipSha256": "ccfdb89ffc1bdceffa9eab2a799ec141826da179a5c9ecb4cab73d29938171cf"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/reader-idle.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/reader-idle.config.ts.gz",
+      "rawSha256": "ba5fbc31a1b1662266db1c9f915db2f1f526c26d5885a924d75d9c4a29b46b81",
+      "bytes": 285,
+      "gzipSha256": "3051ab43e5fab97a8a0372b6738e2476afe3a1743436edd1689449af14696170"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    }
+  ],
+  "profilesCredentialsDatabasesBuildsNotCopied": true
+}

@@ -1,0 +1,13 @@
+{
+  "unitCases": 2289,
+  "existingSkips": 1,
+  "nativeRuntimeCases": 26,
+  "nativeFenceMutantsDetected": 2,
+  "actualAccountCases": 8,
+  "sourceBodiesMatched": 206,
+  "fullLifetimeCampaign": "passed",
+  "fullCombinedJournalCampaign": "failed observer waits; all17 cases and6 mutants observed across retained scoped runs",
+  "obligations": 945,
+  "unresolved": 399,
+  "claim": "Internal actual worker only; no application activation or performance acceptance"
+}

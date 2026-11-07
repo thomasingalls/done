@@ -1,0 +1,49 @@
+{
+  "rule": "Any no-F cold failure stops immediately",
+  "case": {
+    "name": "screen324-r1-d0-E1B0P1",
+    "replicate": 1,
+    "rtt": 0,
+    "eb": "10",
+    "pp": true,
+    "bits": "10101",
+    "SY": "1N",
+    "repairMs": 1000,
+    "labOnly": true,
+    "acceptanceCredit": false,
+    "config": "worker-owner.config.ts",
+    "fileFilter": "worker-owner.spec.ts",
+    "grep": "lab G V deep joined with cold reopen$",
+    "result": "deep-gv/result.json",
+    "command": [
+      "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+      "node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "test/account-continuation-lab/worker-owner.config.ts",
+      "worker-owner.spec.ts",
+      "--grep",
+      "lab G V deep joined with cold reopen$"
+    ],
+    "childExit": 1,
+    "startedAt": 1793531537.9488692,
+    "finishedAt": 1793531586.6917381,
+    "outcome": "failed",
+    "error": "Error: page.evaluate: el: Inbound verification refused: expired\n    at q (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:99855)\n    at d (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:104726)\n    at cl (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:104744)\n    at fl (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:108026)\n    at g (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:213260)\n    at kS (http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:213499)\n    at async validate (http://localhost:53781/worker-app/assets/joinedAccount-DkTZMBXJ.js:2:60730)\n    at async http://localhost:53781/worker-app/assets/custody-2t0-GYjY.js:2:32392",
+    "coldFailure": true,
+    "guards": {
+      "actualSourceAcceptedBeforeSenderClosed": true,
+      "noNativeReceiveFailure": true,
+      "treatmentExposed": true,
+      "peerExcludedFromUndo": true,
+      "originalOwnerClosed": true
+    },
+    "ownerObservation": null,
+    "ownerCold": null,
+    "positionsAt30": 1025,
+    "timeTo700Ms": 10984.199951171875,
+    "timeTo1025Ms": 17422.5,
+    "deep30Pass": true,
+    "externalLoadLog": "host-load.jsonl"
+  }
+}

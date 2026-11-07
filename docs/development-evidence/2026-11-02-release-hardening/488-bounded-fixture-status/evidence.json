@@ -1,0 +1,63 @@
+{
+  "noCanonicalAppOrOldTestChanges": true,
+  "newPermanentReproductionControls": 2,
+  "aggregateTestCredit": false,
+  "operatorApproval": "only3072grow per-key poll; fresh2048fixture; exact checks/deadlines unchanged",
+  "phase": 488,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-bounded-status-fixture-488-20261106/488-private-files.json",
+      "sha256": "98e815c070b8142c13b572dcba599c7e63e7e0d541aacf278896c55825be28a5",
+      "bytes": 1511
+    },
+    {
+      "localPath": "/private/tmp/done-bounded-status-fixture-488-20261106/488-repair-proof.json",
+      "sha256": "2d068e5d815de3b32c6f594129a525d78c020bd042f11d03174d096a7dfb60fb",
+      "bytes": 1057
+    },
+    {
+      "localPath": "/private/tmp/done-bounded-status-fixture-488-20261106/488-regressions.log",
+      "sha256": "4aa7816d5871992127e25dbd0d366ab05448c8030d1fcab5a98bbd56a2a21b9c",
+      "bytes": 835
+    }
+  ],
+  "summary": {
+    "phase": 488,
+    "originalSource": {
+      "localPath": "/private/tmp/done-index-cohort-485-20261106/grow.spec.ts",
+      "sha256": "01cd88818811dd063c3aece992b8b85c3805cda7eed1fe5da7122f20f63bdf35",
+      "bytes": 5348
+    },
+    "newSource": {
+      "path": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs/development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/grow.spec.ts",
+      "sha256": "5fb386a5e1118fa55fde737df8f937d0338b8446ad4739e6d8f2748450b3000f",
+      "bytes": 5344
+    },
+    "oneExactReplacement": {
+      "old": "(await(globalThis as any).b.compositionStatus()).sync.send.acceptedThrough",
+      "new": "(globalThis as any).b.session.session.sync.status.send.acceptedThrough"
+    },
+    "inverseByteExact": true,
+    "allOtherChecksAndDeadlinesByteExact": true,
+    "initialBeforeCompositionStatusCallUnchanged": true,
+    "noAppSourceOrOldTestChange": true,
+    "regressions": "permanent explicit Node controls; no aggregate credit claimed",
+    "sourceOfApproval": "operator approved only per-key published Window sync acceptedThrough poll",
+    "regressionControlsPassed": 6,
+    "initialFullStatusCallUnchanged": true,
+    "counterEvidenceCorrection": "487b in-Worker guard output is present in message-bound-guard.jsonl and frozen evidence; it did reach page.on(console). First487attempt was unexposed due to source binding, not demonstrated console loss."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

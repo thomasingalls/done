@@ -1,0 +1,11 @@
+# Stage1 full-command checkpoint closes — phase358
+
+The final three complete contract commands pass: recovery, checkpoint and local provenance. Their675,1,942and1,947source pins (4,564total) independently match the current files. All child stages exit0without a deadline extension. [Every attempt, source identity and command result](./evidence.json).
+
+Recovery's first rerun failed because its full-unit child reached the unchanged120s deadline. No failing assertion was reported. An unchanged retry passed in109.41s; checkpoint units passed109.00s and provenance104.84s, each288files/2,882passed/one existing skip. Retain the timeout. External5s logs show host activity, but do not establish its cause, nor do passing reruns prove reliable margin below120s. No pool,worker-count,population,assertion or deadline change.
+
+The full root check contains83commands (counted from package.json, correcting the prior informal82). Its execution evidence is segmented:14passing prefix commands in the original attempt,26suffix commands through the startup failure,then43remaining commands in339. Records340–358 retain each failure,base comparison,approved policy decision,fixture repair and eventual passing complete command. This is a completed segmented checkpoint,not a claim of one final monolithic pnpm check exit. Stage1application sources still match337exactly; subsequent repairs were test machinery and bookkeeping.
+
+The six receipt producers and traceability were refreshed. The first trace check refused the older origin-isolation receipt; the unchanged built-asset check then passed and traceability passed:101claims,28/28current defects,9registered debts,matrix current. No regeneration or policy relaxation was needed. Receipts bind the working tree,so after recording/freeze they are refreshed again; execution facts live in their local receipts and retained observer outputs,not inferred from command reachability.
+
+Stage1's capacity mapping,S and typed10s priority-only Y are complete with the recorded regression and full-command evidence. Stage2may begin with R1000then E. No new rows,format approval,Stage5performance credit,publication or deployment. The broader formatting patch remains deferred; optional global lint's old immutable-evidence failures remain separate. Append this outcome before advancing the active slice.

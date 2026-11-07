@@ -1,0 +1,86 @@
+{
+  "phase": 516,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86",
+      "bytes": 22390
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-current-index-report-516-20261107/516-private-files.json",
+      "sha256": "80cdf0562d6e4e2931d1f869d2c9c534c0a93bfbe0ce65e49ea432573142c101",
+      "bytes": 104429
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/516-current3072-reader/run.json",
+      "sha256": "f7f673363ec3ff818f834ab0d07b5efd35bed27ef1fb1b55f90e5c92caf58b0e",
+      "bytes": 1860
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/516-current3072-reader/child.log",
+      "sha256": "69205e4dfd0862e45d11d842d1fc46a86eb81a27ddc968c8f53540a7ce9801fa",
+      "bytes": 331
+    }
+  ],
+  "summary": {
+    "phase": 516,
+    "outcome": "passed",
+    "sourcePositions": 3072,
+    "sourceRange": [
+      7,
+      3078
+    ],
+    "nativeOpenMs": 519,
+    "catchupAfterOpenMs": 54216,
+    "openThroughVisibleMs": 54735,
+    "ordinaryOfflineColdMs": 5958,
+    "allGuards": {
+      "independentAccepted3072": true,
+      "allNativeLogicalPositionsExact": true,
+      "fullArchiveExact": true,
+      "UndoExcludesRemote": true,
+      "ordinaryOfflineSameProfileColdExact": true,
+      "readOnlyInspectorUnchanged": true,
+      "uncappedCounterExact": true,
+      "production32MiB": true
+    },
+    "indexCeilingBytes": 33554432,
+    "peakChargedBytesDuringDrain": 25969753,
+    "chargedHeadroomBytes": 7584679,
+    "firstIndexFallback": null,
+    "indexRemainsPresentAfterInitialConstruction": true,
+    "ownedByteChargeIsNotRAM": true,
+    "sourceReceiptRows": 769,
+    "sourceReceiptBytes": 5185602,
+    "sourceEncodedBytesPerPosition": 1688.021484375,
+    "sourceKinds": {
+      "legacy": 1,
+      "page": 768
+    },
+    "allReceiptRows": 776,
+    "allReceiptBytes": 5319857,
+    "sourceCounter": {
+      "ordinal": "772",
+      "failures": 0,
+      "origin": 1794015430597.7,
+      "parentOrdinal": "772",
+      "complete": true
+    },
+    "rawNativeFloor": 1,
+    "normalGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 1,
+  "committed": false,
+  "pushed": false
+}

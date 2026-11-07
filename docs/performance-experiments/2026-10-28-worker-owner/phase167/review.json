@@ -1,0 +1,9 @@
+{
+  "oldRuntimeUnchanged": 420,
+  "newCases": 23,
+  "focusedCases": 51,
+  "metadataCases": 98,
+  "obligations": 942,
+  "unresolved": 396,
+  "status": "Internal bounded data bridge only; no app activation/performance credit."
+}

@@ -1,9 +1,9 @@
 import { useSyncExternalStore } from 'react';
-import type { LocalRetentionRuntime, LocalRetentionStatus } from '../crdt/automaticLocalRetention';
+import type { LocalRetentionView, LocalRetentionStatus } from '../crdt/automaticLocalRetention';
 
 const absent = () => null;
 const noSubscription = () => () => {};
-export function useLocalHistoryStatus(runtime: LocalRetentionRuntime | undefined) {
+export function useLocalHistoryStatus(runtime: LocalRetentionView | undefined) {
   return useSyncExternalStore(
     runtime?.onStatus ?? noSubscription,
     runtime ? () => runtime.status : absent,
@@ -22,7 +22,7 @@ export function LocalHistoryMaintenance({
   runtime,
   status,
 }: {
-  runtime: LocalRetentionRuntime;
+  runtime: LocalRetentionView;
   status: LocalRetentionStatus;
 }) {
   if (status.phase === 'closed') return null;
@@ -54,7 +54,7 @@ export function LocalHistoryMaintenance({
           : status.reason === 'activity-or-journal'
             ? 'Maintenance paused to let editing or sync finish. It will retry when this device is quiet.'
             : status.reason === 'capacity'
-              ? 'History could not be reduced because its replacement snapshot is too large. Your existing history is still in place.'
+              ? 'History maintenance reached a preparation or snapshot size limit. Your existing history is still in place. It will check again after new writing or sync changes this device’s history.'
               : status.reason === 'history-required'
                 ? 'Some history needed for a safe reduction is unavailable. Your existing history is kept. Let sync finish before checking again.'
                 : status.reason === 'ineligible'

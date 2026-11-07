@@ -1,0 +1,795 @@
+{
+  "phase": 387,
+  "runtimeChanges": false,
+  "genuineNativeCases": 1,
+  "result": "Normal packaged UI/private service/virtual WebAuthn original and Joined Account owners preserve authenticated marked storage through invitation, two-way writing, lock/navigation/cold opening.",
+  "observed": {
+    "original": {
+      "markers": [
+        {
+          "kind": "local-promotion",
+          "slotId": "account-f694b869fdb6fc9d0959df1b3c920f54",
+          "version": 9,
+          "phase": "account-receiving",
+          "inboundReceiptVersion": 1
+        }
+      ],
+      "ownership": {
+        "workers": [
+          "/assets/firstDeviceOwner.worker-BBNOFUc1.js"
+        ],
+        "slotLockModes": [
+          "shared",
+          "shared"
+        ]
+      }
+    },
+    "joined": {
+      "markers": [
+        {
+          "kind": "certified-account-device",
+          "slotId": "enrollment-cd34d8ab6cd4a2026319e81588341644",
+          "version": 1,
+          "phase": "active",
+          "inboundReceiptVersion": 1
+        }
+      ],
+      "ownership": {
+        "workers": [
+          "/assets/enrollmentOwner.worker-BZnjzLKw.js"
+        ],
+        "slotLockModes": [
+          "shared",
+          "shared"
+        ]
+      }
+    },
+    "coldBoth": "exact expected writing and authenticated floor"
+  },
+  "checks": [
+    "typecheck-exact-lock",
+    "floor-source-build",
+    "worker-native-exact-lock",
+    "quality",
+    "format",
+    "inventory",
+    "inventory-controls"
+  ],
+  "sourceBuildIdentity": {
+    "scope": "development source build for genuine floor activation, not a release image or final format target",
+    "files": {
+      "local.html": "a59be5ed194e2790af9c2eea1c3131c2ab9dc4f683e819a6a9d820514c6cffbd",
+      "index.html": "5af3974c0ca3db012d6618df286dee7070c2f832f7849770e76cdd9d4a5bda36",
+      "icon-192.png": "b0d45be1abae192ee96e5111a8cdba8afa65133e14184ceb212549ad18c12e32",
+      "manifest.webmanifest": "9ea7097e9c1bb7c2b0deed6a577169ef129ca02bfdc8541b79a9e86dd66ec2b3",
+      "icon-maskable-512.png": "979af4369034a3b3b2cf800274e0c5b59c938c84f89de24cdc102e59d776b3da",
+      "favicon.svg": "67d4937de53e8a580d037e21237b15bcba9e2c528097926bdd9f5c19f66d211f",
+      "sw.js": "58b37e557c485bbb0964f1d698683b4fe70994a439b7e98bba42041cfa65b4da",
+      "icon-512.png": "62c82ff07f8a419efe757dbe09b59aefd7b89c4592fc8597b06a94e730a30cec",
+      "assets/writeSession-PGyWU4cb.js": "276b836d1b8f4162fecfc17c30b8164de2c34f6a27f20cdba9ed7e9a272db994",
+      "assets/main-COUZuUYG.js": "a209d8852ed763be4db96d8031cc6e291f32a70e72254c2856f8ef00edb84e36",
+      "assets/localGenesis-3HL54ODy.js": "8602f9efcc4763e5357282e1c9e8dac1829a6bf4020a5e2e2d153e58632a138b",
+      "assets/accountRotation-CDZa2R-T.js.map": "d0080d0891479c1e7a507578b01b8f53e9a2db18ff021b43798609d7afcea1ef",
+      "assets/accountSyncState-BH2jVsWy.js.map": "ae076858d70d296c36e47263503ccd443c165133808db0d9dfdd8f18c019e997",
+      "assets/lostRecoveryRoutes-lyU_Sx99.js": "b2017113cb8f58c5a2fbdd630099b1f424c2e8588ff30bc76bfe5c81b3dda8f3",
+      "assets/retentionCheckpoint-Dg2FNiFX.js.map": "6b0d94b28e955774544c6ff806f9c85da70ce789146848e2c737a100c05d5c93",
+      "assets/connectionNavigation-BIU-WAb5.js": "eb7fafdfe202a71b367efc08a4757101fdd5ab02a31c048bcb879d536d2eb676",
+      "assets/browser-D4klCAbd.js": "85482004ab3e8a4bb09fad6fe15efbda07df71f326e3e8d11c051220b3287059",
+      "assets/deviceEnrollment-ZpFvi_nU.js": "ca5731a191163cf4ae5d7df17a1289d0e87e831ecb0377753827fc9efd19e35b",
+      "assets/localBaselineRecord-gfTH2tI9.js": "dde3709404f304cf68ff6414a2bb07b8f9eded7155e8267c5743bea5007fc893",
+      "assets/networkLogin-DjBrqh3w.js": "e5ea19186b89acd613fe5ff3d9f2217f2a2ebbf799f89a5e0df0e5c50577fa7f",
+      "assets/localOwner.worker-D_S4UcXH.js.map": "f51bfa281b0a988661be8caf0b853471c1f7a20d1a8e20510daa3675132a19b0",
+      "assets/LocalEntry-cvLzot5f.js.map": "665007f2afc851b88ab4f555ad25c9151edddcf7735c1d48f71fc998b1af75af",
+      "assets/main-COUZuUYG.js.map": "a37f81cff3e7cf5d16b9e0e31e1d66d9aa646654bb2801b59c4eb8c9ee950760",
+      "assets/AccountDevices-zFomc0na.js.map": "4ed8152fd55a744d684cadfe082c8e38fbdf3db75ea126e1d49466d0b8f6abdd",
+      "assets/accountProgressCustody-D3q4cVZD.js.map": "4540348b7419b6879a68422528b02ab03b941fe5868d6e0d79529261e0b5a952",
+      "assets/verifiedRecords-CF-sqyaV.js": "5c26cd898f76dd3423d100a8d9c0150d77d3ce40f8f0b1d665b2047a494f1fc2",
+      "assets/DeviceDataRemoval-jxFs9fhC.js": "2c56d55c35ad42cd299df492f8f7b8bf1492ff3b795a81b46c8c4184ad51445d",
+      "assets/enrollmentOwner.worker-BZnjzLKw.js": "85e1c7b86c63d5f5f916ca2cbd0369c9f275a453c755b57627fea41b751a5864",
+      "assets/lostRecoveryRoutes-lyU_Sx99.js.map": "8aa27138a60eda59aac3cf80a77891aa3b2f12e7e14bccbbeffa966d7f2a852b",
+      "assets/localRetentionStorage-DdzG94rS.js": "4b2caf5aad8a1e7fdb16bacd37c025a3e34b0ead6a6fa4ed43a4568a3f8f196f",
+      "assets/deviceRemovalVault-DHAR6SPw.js.map": "85bdc200da89e5c9900bcbc821b5de48cfb7ce4a12c025f5203b214d6c336b4e",
+      "assets/AccountSetupApp-BxvAhfkw.js": "9b35b681c789b17cad6df7771b2de9ef274867d8127a1c226c56d042036d5fe5",
+      "assets/contentCompaction-D5Bgz1a-.js": "b0de8cab5830f23b0f120e28e6cc078e9aa92d74d593c6309753e19ba495907f",
+      "assets/verificationMemo-CVFY85yi.js": "7973a09fde2505dc0fb030ab95072afcf48a7d65915786d2d73670e6d983b5fd",
+      "assets/deviceDataRemoval-CDAe-xg8.js": "fc9dd4438f022bc5ae57896e95c824ddda2fc128dd6d53b14427751f38c5a49e",
+      "assets/storageCompatibility-Ixv843Jw.js": "6b29d99d4e67585fc583d3dcbff67c339ff76eb671db8acd87cff12550b4953d",
+      "assets/assertSlotPasskey-D7amAqe6.js.map": "038e00cbd49b7476a39fc12a37b98143daeb5ced2f97964f01bceae590d30117",
+      "assets/recoveryOwner.worker-Fq58jAi7.js": "3a1bda109173088974e56c60a94c558646c4e1a5a0489cd0e974d2ba43f9f890",
+      "assets/AccountDevices-zFomc0na.js": "69e146eeb45730cbcf524ccc4601852e9798910f390f2cb8f2932f483a85639a",
+      "assets/localStartupClient-Xym_fcxQ.js": "322a195efa8ea09c214a01fb1f0093b86e32b9fe87a31496c2950d252f89303d",
+      "assets/retentionAttempts-q4m7YtRc.js.map": "0a40b97a081400bb070f11a51ebbb3e70ba0aa1fe890536e1e777ad733a580da",
+      "assets/connectionNavigation-BIU-WAb5.js.map": "9b4618dfe07b955b61f77106d9536d2c0a5183a615d96ce5ca41da4979aa101f",
+      "assets/bootstrapHttp-eFu7HX3S.js": "8c1bb95bcf0a48d61834ca3984747354af8fc205654cdb54d123713d422c0643",
+      "assets/browser-D4klCAbd.js.map": "97094e92fdd28c7090c3e5085920e15be83eaa2ed41b5db36a0e5853053d2b4d",
+      "assets/localStartupClient-Xym_fcxQ.js.map": "eeae6d51c9dd0377a39e99e7cdffc592f1cd693c5630b16568bd074d7c6171c3",
+      "assets/AccountRecoveryApp-zn7MKX1w.js.map": "c0d76086e296a75851a3235c0b1cbe1b9cdea0532a65a834185cb330cd5bac3d",
+      "assets/storageCompatibility-Ixv843Jw.js.map": "cb245b12b818b3070989aeac2a848e04527fac90c1b38728224772ec6b6c2881",
+      "assets/AccountSetupApp-BxvAhfkw.js.map": "01e5c7c4937e66e90b389b3cbacf692ca19aca16967ad1799cd1b6a30b76c99b",
+      "assets/enrollmentLogin-hjJro-z6.js": "ecf7c272a840822539830be9675495e5c44a9c44addf22aa693e398f978c7395",
+      "assets/accountTransitionNotice-BYKD2duX.js": "4e34c71dc740092a2b41bbda47da1cd069e2117094dcfc8523aeb3a03b90ef28",
+      "assets/membershipSource-CdEH2rIP.js.map": "3b883a7a4e027c2222d18377af992effb5f28d71a87cacae991d0c35cbbe1418",
+      "assets/admittedWorkspace-C2QdpMYT.js": "36e285b2ce4427585ba4d3a4523e50ce16fa9b37dd5a20e2b1c5b45c38b3c59b",
+      "assets/retentionAttempts-q4m7YtRc.js": "5650377f63f58c16c9dbcbc012c6b0c6edffa424b049f754d4a3b1037c3042db",
+      "assets/joinedAccount-BcOr6v34.js.map": "6714f2fee2d2979b76e30e9cdc771dbc3e9e0fb56fbf5bd71d8a60d2fd050d59",
+      "assets/localBaselineReuse-CDdj_llb.js": "444e7a46024c52f19b268e42a7bfe6b058715a0866454d0ff04f982fa155fa2f",
+      "assets/enrollmentProgress-am8Gvs1p.js": "859635ef0ccf78ffb6c6791439e7508b3faf657d2454d2a3d35893442fce2315",
+      "assets/retentionCheckpoint-Dg2FNiFX.js": "2ffb5e26efd6cbc11641ffe7ba22d599614364b83fb2326a8d251ed9b9726c6e",
+      "assets/accountOwner.worker-BtsNjMsD.js.map": "d6a32d9595df5515ebe9ad74e3b432b02248b18b37ed87ec491845a2b82250eb",
+      "assets/historyCheckpoint-BsZjPYH4.js": "cd5d0e6a2dd0d82d75494897de5198e7067503a18416d294588721c8dfbf3b14",
+      "assets/historyOwner-DmjUj-Iv.js": "7bdccf832e844b213f8736bb090fc236f56267c740553e0a54cb321f6f7b3db7",
+      "assets/custodyCrypto-C44ppXTm.js.map": "8306373c8d4734d880130fbfb16c4aebbb9f6b892ad2438d7daa7437fa6e771d",
+      "assets/localBaselineRecord-gfTH2tI9.js.map": "e7312fcd4d5954d0db0884fcaf7eb5a32a0626d938eb829a68b774f52951e045",
+      "assets/firstDeviceOwner.worker-BBNOFUc1.js.map": "8d0205465391115c68d44fd7b888f64f1546ef7d5b62e6a1742aca04c2451197",
+      "assets/joinedAccount-BcOr6v34.js": "d712ca4230155007637062d46ab346b8838abda8f84c1d004a77562035a3c68c",
+      "assets/privateDeliveryHttp-C2Cxshzx.js": "31955c7de9b0a41bd31a93bc0e11053702ccec19a13735a9f8b101505bf205c1",
+      "assets/custodyCrypto-C44ppXTm.js": "06c03e084a5222d1677dc6030c072846241d15573e540c8461e6c9892703d280",
+      "assets/verifiedRecords-CF-sqyaV.js.map": "58db7d43e5bf773485fd033c568429ab299228742f71718234d05ed13a36e66d",
+      "assets/localOwner.worker-D_S4UcXH.js": "1b2d86437afbdd48656c3ae03c8dba32abf4bbf548b7af08c4cb45b8bb73c9a0",
+      "assets/historyOwner-DmjUj-Iv.js.map": "f0b24aec74b4e375aa58462dfe946b68ad7a7599d4be677ce9cec5022fd13175",
+      "assets/export-cUNnBB9D.js.map": "d18cf71990b055e407e572f919eb7013b62b6f1152c2c2a55fe8fcc8df360442",
+      "assets/privateDeliveryHttp-C2Cxshzx.js.map": "19b933a9b10d6ca671ca52b50fa7efc7afd35d2938ef772448465548247120af",
+      "assets/DeviceDataRemoval-jxFs9fhC.js.map": "9f259aceca1688d7edbb76d0ee291acccd5a0a8385604327d817323d79753db9",
+      "assets/admittedWorkspace-C2QdpMYT.js.map": "9b72d69c57e114f809f45d07c72e8b0d1eaa3349092f8ea10616231fb43aed03",
+      "assets/AccountEnrollmentApp-CpsNm6kl.js.map": "62b7928072c15521b261afa7eb009e5d22b7b76e2497b51d153c526fbb6bfaa0",
+      "assets/localBaselineReuse-CDdj_llb.js.map": "8836ecaf5d0b246cc79f1e7fa7614dbdb5d7c309081e711f41ff6fb0dd3e7249",
+      "assets/AccountEnrollmentApp-CpsNm6kl.js": "e9a8d44b4673e5c27b42e6affe35108fc85268069928d56c872d492e7a6403f3",
+      "assets/localStartup.worker-DE7S9zZj.js": "bd98584c602b432c6def5ef32236407e3ff2f8c0d288cea24b43d2723270c480",
+      "assets/enrollmentLogin-hjJro-z6.js.map": "92e1cd7f0a442c2a5663bf8cb4842f4baa20605c1cd435d9554e61609c5f559c",
+      "assets/deviceConnectionRoutes-CafcmomP.js.map": "54dc5914191479873721a56d025a02261ab959b96bef85306ec1fa1b71b3b118",
+      "assets/verificationMemo-CVFY85yi.js.map": "1fff6f04dd93141d2282293b31144138dd9f4722c20a88a35995d255b3b07791",
+      "assets/AppUpdateNotice-BWKvt6lC.js.map": "dca9d0c62140e03b96b60949fef9adc217c9183786507943357288b46ef9253f",
+      "assets/firstDeviceOwner.worker-BBNOFUc1.js": "fbb1e1bdb0bc6a31e1281bc10bb89c4cb8c9d6159ed866b30a4fc111a2a275c5",
+      "assets/historyMaintenance-DMnHUGlq.js": "1d718f9e47185596856a3280a05a6959c5509d8ae986d39bdd982acba1e98ce3",
+      "assets/membershipConnection-Bt_blvZZ.js.map": "d1aa9d30f1ecff3b65ef2cdeb7920b4190c182354f1831dae9b9a44cd1117484",
+      "assets/deviceConnectionRoutes-CafcmomP.js": "38948c47e60bc39de97c5f97db6eede2b2c7b95613e97660161f4c42b83c8096",
+      "assets/accountTransitionNotice-BYKD2duX.js.map": "637a883f90a5eb67bafe68ef3df9d5a2af37b93161c4cb6d0350aaac5bc8ea51",
+      "assets/admissionHistory-DJq9F97K.js": "95fb49e4a068412eea0ba4221fc8d150bb3fa2a9d6ad8cd36e510210de153b4d",
+      "assets/contentCompaction-D5Bgz1a-.js.map": "60a31397e9c2674e6b17f069fc76b61b3a12f2fade96afe99c34f4dc727a20b3",
+      "assets/admissionHistory-DJq9F97K.js.map": "e4f2f8b6044ba693469079e944b11e343968374d168594639e10e515888aeab8",
+      "assets/localRetentionStorage-DdzG94rS.js.map": "e69218399f2024c7754d1b5ff38399dd58d63303c5e74b6aab6c81274d145c17",
+      "assets/main-C3frCInL.css": "abc38e6cf71a4c8176a6ac29a185849759b851d35199a0d7429dda775ffb153a",
+      "assets/enrollmentOwner.worker-BZnjzLKw.js.map": "56790f1167b68daafc561fc105d6341dd84d683bc3c3345b28a502fc52c723fb",
+      "assets/rotationObservation-ClLqlpXI.js": "da3e7ca7ea63ea247de04e581f73a5a849be3678db3f406a44b3f60eb2c8fa5e",
+      "assets/localBaselineStorage-CsLegbuc.js": "39ffeedb593fbfe5953fae290f0029b2679fd95dd2ba931953444a02d1f5f739",
+      "assets/accountOwner.worker-BtsNjMsD.js": "daab86a0fb0196ab714a95cff99686fb512a7134d2960a971034773ab92b3e4a",
+      "assets/assertSlotPasskey-D7amAqe6.js": "fcaab41327f42e9e1493df0281ec52aef233326cc320ca90c2c1d638ce93e4c7",
+      "assets/AccountRecoveryApp-zn7MKX1w.js": "bba819fad49419ee21afca2be699675ec9486aa79a60ad1d31638d542640ef55",
+      "assets/localGenesis-3HL54ODy.js.map": "cc4ffb6d695698f63c90b9bb1063fcd3321294d370709ac0e1e03053570d92d0",
+      "assets/accountSyncState-BH2jVsWy.js": "a7567b07afa45377c39374abcf63c9c078b225fcf22ce77997c6b1ca0b2d0990",
+      "assets/recoveryOwner.worker-Fq58jAi7.js.map": "47992e906a3750ae067c2dfae1d42f84d9f7456c237578996934383158db475e",
+      "assets/accountEnrollmentPage-I3EJTCuR.js.map": "5b356e2656499f3c37874c24fc8723ae5f74573bb7a949470ca1f3708e6caded",
+      "assets/export-cUNnBB9D.js": "7fed046ae51747637302b13b4e7508ec60a7e732bba1fdaa5fdc7b56e4facb3f",
+      "assets/deviceEnrollment-ZpFvi_nU.js.map": "3288b3bac799a0da271377cd5d1734b6a612fa0c0c5516f635020ddeb310158b",
+      "assets/membershipConnection-Bt_blvZZ.js": "a4ce936c23ce5ef44b50c6fa04b5bc245f6a2c26b31c71a9372f0a97437f8074",
+      "assets/AppUpdateNotice-BWKvt6lC.js": "c87f672cf6d22acec6ecc3ab5ac45ab7b9096f14d94e2d6013d5ed7e09c304ae",
+      "assets/LocalApp-CBWyQz6a.js.map": "3a9cb7cd0da79cedf12135a7a83435dba2fab1b098fe52914723c30db08b674e",
+      "assets/bootstrapHttp-eFu7HX3S.js.map": "7ce9cae422616501891e448bba1a2a7c783636d35c058713a18502d0be0891cc",
+      "assets/accountRotation-CDZa2R-T.js": "1d4c6367f216b7bb06c67c3a6c0137a0ebe03562ee0622cd69e96c8400b6b16a",
+      "assets/accountWorkerRecoveryStream-DuNLRsWR.js": "6b0aaf310458d376354db413f165807f8c76261078187fdd2c4e6b0599f1d90d",
+      "assets/rotationObservation-ClLqlpXI.js.map": "21b064b766e6d4962a82405f5a43757160bc548030cd42d4769bf9ef229a8357",
+      "assets/accountProgressCustody-D3q4cVZD.js": "6289810a4f8c510a84736ce1c14256803cbc71ad22ab0a9a4ba80d1f8c5bb7a8",
+      "assets/accountEnrollmentPage-I3EJTCuR.js": "28b8c4c98a7da8553480ab8bf09a64e6f6d38dce4355d439009f462880e0237a",
+      "assets/accountWorkerRecoveryStream-DuNLRsWR.js.map": "933a6a0189bbf29bf84173b3ebd7595fae76d023a54c62da6ea889b3300022df",
+      "assets/LocalApp-CBWyQz6a.js": "b9f20af7d2ae824751d247706bd99ddd52bc2282559971d51fbfc83d5d697931",
+      "assets/localStartup.worker-DE7S9zZj.js.map": "256e209297265c2a30384bcab43a8f7a5df2e40c9fd0db4df64eb6acf9761d89",
+      "assets/enrollmentProgress-am8Gvs1p.js.map": "686901272d40da95273467357e0ba649e89bba6b3f74a0f58f93ab092793f78d",
+      "assets/deviceDataRemoval-CDAe-xg8.js.map": "42f9372ca451d421beb639db26ebd9109dd6ed2758c6936cf6a1de8875e34e80",
+      "assets/localBaselineStorage-CsLegbuc.js.map": "8eab75454623f142ab2be36fedd6b10784d5a1e368ccfb094ddee8c97d659a58",
+      "assets/writeSession-PGyWU4cb.js.map": "48b03b06856430eb490ed0ddfcd8e26b417c109ae4c678f8e4629028e6cf7cee",
+      "assets/networkLogin-DjBrqh3w.js.map": "a90cb69251bb263f8092e0c2dfae2d29bf7ad80098bc077c632fb7d9762c0d3a",
+      "assets/historyCheckpoint-BsZjPYH4.js.map": "ce23f84248c12d4c986234cc181045d3561625d7ea1aa88377b71213e9602d41",
+      "assets/historyMaintenance-DMnHUGlq.js.map": "985442ce7c3c050d52afd2f1032136ed3008719907a053f680928f3a93bf6bfa",
+      "assets/deviceRemovalVault-DHAR6SPw.js": "0f3232de6fb31dd36cdeae4609e5596cdf6e7112f4add69bd376594a48f8ab1e",
+      "assets/membershipSource-CdEH2rIP.js": "3f1cc9e2aaa3ed9c043d9e6e091323ed338541d613b7da81312437296936db28",
+      "assets/LocalEntry-cvLzot5f.js": "4dffb329cb4bab27dc73bf95b4d3285897416afde033ab73c007f0bf8afa93e6"
+    },
+    "workers": [
+      "assets/enrollmentOwner.worker-BZnjzLKw.js",
+      "assets/recoveryOwner.worker-Fq58jAi7.js",
+      "assets/localOwner.worker-D_S4UcXH.js",
+      "assets/localStartup.worker-DE7S9zZj.js",
+      "assets/firstDeviceOwner.worker-BBNOFUc1.js",
+      "assets/accountOwner.worker-BtsNjMsD.js"
+    ],
+    "runtimeSourcePins": {
+      "src/crdt/accountReceive.ts": "ef733ad02a03254f7cb9eb487a16f47848867a3e42d26c29ae64d43f4d29ca2e",
+      "src/crdt/promotionRecord.ts": "e59916ffe474494d9948a6e32e2c8875afd82d3fb2d8cefba26ed93f22fed4d8",
+      "src/crdt/joinedAccount.ts": "2d1fcb1cc6d528a68693f7aa0d8aa8099d6c669735f0c03787d23ab2554030fe",
+      "src/crdt/writeSession.ts": "191f1e0f4a3a003817af01dfdc6634b4f6bad6cc6e715fab1c5bb6b3e38e0354",
+      "src/crdt/accountWorkerCohort.ts": "4bb474c5973188095ed2c18970a04f80f3d18026e360d41dc2d59fe6a5d0ef00",
+      "src/crdt/accountWorkerRuntime.ts": "823a18ef20fbb34118e030177a4a892beac12477abf6f9cb143182231a2890f0"
+    },
+    "profile": {
+      "BASELINE_READ": 1,
+      "BASELINE_INSTALL": 1,
+      "RETENTION": 1,
+      "RETENTION_AUTO": 1,
+      "RETENTION_RESUME": 1,
+      "RANGE_RECEIVE": 1,
+      "HISTORY_AUTO": 0,
+      "BATCH": "coordinated-2000"
+    }
+  },
+  "firstAttempt": "Harness lock prefix included exclusive supervisor/anchor/member leases; saved, narrowed to exact slot permit and separately asserts exclusive supervisor. No app/deadline change.",
+  "inventory": "New required standalone Playwright family registered; all old tests, dispositions, exclusions and obligations exact. Unmapped-family refusal retained.",
+  "limits": [
+    "No authentication/native acquire/runtime installer seam is replaced.",
+    "Storage/lock observations do not authenticate a marker; successful ordinary cold app opening supplies authentication evidence.",
+    "This test does not isolate the first floor write task mode; old-owner exclusion/commit-boundary controls still apply.",
+    "No binary receipt or final writer-off rollback image, archive export, real user/physical phone, Stage5, RAM or performance acceptance evidence.",
+    "No additional full-unit rerun: runtime and Vitest population exact to phase386 full298/2985/one skip pass105.42s."
+  ],
+  "evidence": [
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/docs/release-validation-graph.json",
+      "artifact": "objects/439cd20fc6ef42c6c32156b8815d02f2d798d18d35be9c39fe405fa3da813e75.gz",
+      "sha256": "439cd20fc6ef42c6c32156b8815d02f2d798d18d35be9c39fe405fa3da813e75",
+      "bytes": 558969
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/playwright.inbound-floor.config.ts",
+      "artifact": "objects/63c2793afbda1c60575dbd38bf0739099ec8d081402586d63d8598f387ddd24f.gz",
+      "sha256": "63c2793afbda1c60575dbd38bf0739099ec8d081402586d63d8598f387ddd24f",
+      "bytes": 683
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/scripts/release-validation/policy.json",
+      "artifact": "objects/dc008b0fb8000bc4f51e0832d26756d8d85e8ee1eb9db6adcb6b26515d40b5f2.gz",
+      "sha256": "dc008b0fb8000bc4f51e0832d26756d8d85e8ee1eb9db6adcb6b26515d40b5f2",
+      "bytes": 11721
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test/inbound-receipt-floor/worker.spec.ts",
+      "artifact": "objects/1c93aaca71ea616a76cd9e9173118499b89410a4dad29e29fb512bd0266eb121.gz",
+      "sha256": "1c93aaca71ea616a76cd9e9173118499b89410a4dad29e29fb512bd0266eb121",
+      "bytes": 5145
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/inbound-receipt-floor/artifacts/.last-run.json",
+      "artifact": "objects/91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903.gz",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/inbound-receipt-floor/artifacts/worker-genuine-Worker-orig-b78b6-ip-writing-and-cold-opening/service/pin.json",
+      "artifact": "objects/a5f7f8e537db214e545667de4055e3d1c1db03368a0999d798dc99195cf5e058.gz",
+      "sha256": "a5f7f8e537db214e545667de4055e3d1c1db03368a0999d798dc99195cf5e058",
+      "bytes": 185
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/inbound-receipt-floor/results.json",
+      "artifact": "objects/71cb74eed0b6da3560babf206eec4e21bb48d4bdca68ce44b5289ecf122451df.gz",
+      "sha256": "71cb74eed0b6da3560babf206eec4e21bb48d4bdca68ce44b5289ecf122451df",
+      "bytes": 4290
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-checks.json",
+      "artifact": "objects/70915cee430986e53ef8783e59e43f538e4a1decc45fc0c12de300856a7a46df.gz",
+      "sha256": "70915cee430986e53ef8783e59e43f538e4a1decc45fc0c12de300856a7a46df",
+      "bytes": 153
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-declaration.json",
+      "artifact": "objects/965a388379c4e99a64be228116493f73e90e5fdf388a805bdd777f7c9c1febcb.gz",
+      "sha256": "965a388379c4e99a64be228116493f73e90e5fdf388a805bdd777f7c9c1febcb",
+      "bytes": 1346
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-first-native-artifacts/artifacts/.last-run.json",
+      "artifact": "objects/0e2a4977111767edb0e24d1f6e05412f327740e90f32dfc5133038f7aaba3081.gz",
+      "sha256": "0e2a4977111767edb0e24d1f6e05412f327740e90f32dfc5133038f7aaba3081",
+      "bytes": 96
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-first-native-artifacts/artifacts/worker-genuine-Worker-orig-b78b6-ip-writing-and-cold-opening/error-context.md",
+      "artifact": "objects/7eab375ca55cc0e646f3edbbd30e0ddb718bc66f1e1736358267b37df16d295d.gz",
+      "sha256": "7eab375ca55cc0e646f3edbbd30e0ddb718bc66f1e1736358267b37df16d295d",
+      "bytes": 12275
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-first-native-artifacts/artifacts/worker-genuine-Worker-orig-b78b6-ip-writing-and-cold-opening/service/pin.json",
+      "artifact": "objects/7b2d76aaa0eadd1f8d5fe00f05f2ad00fe40eaa6801c7d2c1c5373ddcfdbd366.gz",
+      "sha256": "7b2d76aaa0eadd1f8d5fe00f05f2ad00fe40eaa6801c7d2c1c5373ddcfdbd366",
+      "bytes": 185
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-first-native-artifacts/results.json",
+      "artifact": "objects/a617505754133ebb38190544f66cd0c698e8da0ca252b385831fec03b47a0309.gz",
+      "sha256": "a617505754133ebb38190544f66cd0c698e8da0ca252b385831fec03b47a0309",
+      "bytes": 7101
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/child.log",
+      "artifact": "objects/487fabbe241407832aabf6a4102eff8ba07dee8a400ecfe82952bc24361e3fb1.gz",
+      "sha256": "487fabbe241407832aabf6a4102eff8ba07dee8a400ecfe82952bc24361e3fb1",
+      "bytes": 13221
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/host-load.jsonl",
+      "artifact": "objects/d41ac9be5f64dc105d6dd54d7f2a4d32925ba409f40c40948858cbaa72cc435a.gz",
+      "sha256": "d41ac9be5f64dc105d6dd54d7f2a4d32925ba409f40c40948858cbaa72cc435a",
+      "bytes": 1508
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/power-assertions-before.txt",
+      "artifact": "objects/2381dd828710a3a74ea0cb6a110fa938e5127b6ede3c9e6d3e09f670f709c9fb.gz",
+      "sha256": "2381dd828710a3a74ea0cb6a110fa938e5127b6ede3c9e6d3e09f670f709c9fb",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/power-log-after.txt",
+      "artifact": "objects/e5bdbb30080bedd597cc629f0e92ddd363bad91dbb2e7ab7a5206367dfe8ef84.gz",
+      "sha256": "e5bdbb30080bedd597cc629f0e92ddd363bad91dbb2e7ab7a5206367dfe8ef84",
+      "bytes": 3249841
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/power-log-before.txt",
+      "artifact": "objects/66255f0ba164cdd38c30576e5eadfa38dd3c2297f1ca80e2ab4d6e83a0d892e9.gz",
+      "sha256": "66255f0ba164cdd38c30576e5eadfa38dd3c2297f1ca80e2ab4d6e83a0d892e9",
+      "bytes": 3249400
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-floor-source-build/run.json",
+      "artifact": "objects/ae40809e0df9ab1d629ecaf9d3689d67bb6a35e335c1fd81741565727fdfb2ea.gz",
+      "sha256": "ae40809e0df9ab1d629ecaf9d3689d67bb6a35e335c1fd81741565727fdfb2ea",
+      "bytes": 1472
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/child.log",
+      "artifact": "objects/7e1cb1262ee0d9328896810cf6754df96d6108e11a561d72becff571fce6e417.gz",
+      "sha256": "7e1cb1262ee0d9328896810cf6754df96d6108e11a561d72becff571fce6e417",
+      "bytes": 112
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/host-load.jsonl",
+      "artifact": "objects/a5eb35fb95b32e39cd95e957cd9219aac20b9c297bd11fba31c8f7db9f53bc6a.gz",
+      "sha256": "a5eb35fb95b32e39cd95e957cd9219aac20b9c297bd11fba31c8f7db9f53bc6a",
+      "bytes": 1506
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/power-assertions-before.txt",
+      "artifact": "objects/dfdb436bae946a6092b131a528f8edacc64470dea213c98c88e31d6587329546.gz",
+      "sha256": "dfdb436bae946a6092b131a528f8edacc64470dea213c98c88e31d6587329546",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/power-log-after.txt",
+      "artifact": "objects/1fa3527079e49d35054eaf5336dfc9c63786fc2ec3d77577e9af66faebd70b3f.gz",
+      "sha256": "1fa3527079e49d35054eaf5336dfc9c63786fc2ec3d77577e9af66faebd70b3f",
+      "bytes": 3251576
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/power-log-before.txt",
+      "artifact": "objects/97a0ee7af7e60575746b0a04a52fbe96e20fd009de18fc70fa00b3111eb19f40.gz",
+      "sha256": "97a0ee7af7e60575746b0a04a52fbe96e20fd009de18fc70fa00b3111eb19f40",
+      "bytes": 3251135
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-format/run.json",
+      "artifact": "objects/40cc61ec367314ce393b67cf2b7c92810c37dce0ea1525aceb301861e2dcaa07.gz",
+      "sha256": "40cc61ec367314ce393b67cf2b7c92810c37dce0ea1525aceb301861e2dcaa07",
+      "bytes": 943
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-harness-correction.json",
+      "artifact": "objects/e80da08d06c77c3ae7f9884aae723e2e76d1afee862ea8017423f429ba2574cb.gz",
+      "sha256": "e80da08d06c77c3ae7f9884aae723e2e76d1afee862ea8017423f429ba2574cb",
+      "bytes": 461
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/child.log",
+      "artifact": "objects/cd4e7f0b8b2d76cb3f711b914f0284949d822194be56b065fc0cb315f0ca3d40.gz",
+      "sha256": "cd4e7f0b8b2d76cb3f711b914f0284949d822194be56b065fc0cb315f0ca3d40",
+      "bytes": 323
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/host-load.jsonl",
+      "artifact": "objects/5e05bb9c5555371a072ce0de33a6af54aede1aa73c31201894d37b2c8cb61758.gz",
+      "sha256": "5e05bb9c5555371a072ce0de33a6af54aede1aa73c31201894d37b2c8cb61758",
+      "bytes": 1508
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/power-assertions-before.txt",
+      "artifact": "objects/e69962eac55c56d885c793808a3bfc91f8c65431a3a20d88c41a0243907a64e4.gz",
+      "sha256": "e69962eac55c56d885c793808a3bfc91f8c65431a3a20d88c41a0243907a64e4",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/power-log-after.txt",
+      "artifact": "objects/60b051e20eba9c2e530eb10e42dd7c14bcf67b2a3176a44249eeb705b0e69abc.gz",
+      "sha256": "60b051e20eba9c2e530eb10e42dd7c14bcf67b2a3176a44249eeb705b0e69abc",
+      "bytes": 3252017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/power-log-before.txt",
+      "artifact": "objects/70f4e8788370cbe6e3f91f0f8308e0bc7a314128e7fcf7d4bc130efee7e888e1.gz",
+      "sha256": "70f4e8788370cbe6e3f91f0f8308e0bc7a314128e7fcf7d4bc130efee7e888e1",
+      "bytes": 3251576
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory/run.json",
+      "artifact": "objects/413e021561e499564abe55b1fb9cd04f56f49082b469250f9f7ea9d3ec859b00.gz",
+      "sha256": "413e021561e499564abe55b1fb9cd04f56f49082b469250f9f7ea9d3ec859b00",
+      "bytes": 678
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/child.log",
+      "artifact": "objects/5890616b095f78fa94c2680937ec614677c87871bba23bbcd8e2782154a67883.gz",
+      "sha256": "5890616b095f78fa94c2680937ec614677c87871bba23bbcd8e2782154a67883",
+      "bytes": 1081
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/host-load.jsonl",
+      "artifact": "objects/54124b5d05a4344d59fa7f6c6ebb2930e301d13bde9cebd9a14e7b62a9d69891.gz",
+      "sha256": "54124b5d05a4344d59fa7f6c6ebb2930e301d13bde9cebd9a14e7b62a9d69891",
+      "bytes": 1510
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/power-assertions-before.txt",
+      "artifact": "objects/238e92113bb4e02adf3fcf5ef45f5d21725ffdb6b1c78e3ce881e8c82f464df6.gz",
+      "sha256": "238e92113bb4e02adf3fcf5ef45f5d21725ffdb6b1c78e3ce881e8c82f464df6",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/power-log-after.txt",
+      "artifact": "objects/a3b99624afaba2d8f5f9524db451ffebf0611cdd457f0bffcea3be3504c0e3b5.gz",
+      "sha256": "a3b99624afaba2d8f5f9524db451ffebf0611cdd457f0bffcea3be3504c0e3b5",
+      "bytes": 3252458
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/power-log-before.txt",
+      "artifact": "objects/8cee58da50abbb4bd6c3f2bf7ab70bcd61909ad7ae562fdb65c16f81699cd585.gz",
+      "sha256": "8cee58da50abbb4bd6c3f2bf7ab70bcd61909ad7ae562fdb65c16f81699cd585",
+      "bytes": 3252017
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-controls/run.json",
+      "artifact": "objects/ae8be1fb1cd1272288a5038c3e2b5fe9cabf41eb7a7169dee6ee06065e29131f.gz",
+      "sha256": "ae8be1fb1cd1272288a5038c3e2b5fe9cabf41eb7a7169dee6ee06065e29131f",
+      "bytes": 716
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-precondition.json",
+      "artifact": "objects/7c1ce799a6bbbb5684b54851a4890e63537a01b3552161f0b591fb8a6805131e.gz",
+      "sha256": "7c1ce799a6bbbb5684b54851a4890e63537a01b3552161f0b591fb8a6805131e",
+      "bytes": 282
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-proposed.json",
+      "artifact": "objects/439cd20fc6ef42c6c32156b8815d02f2d798d18d35be9c39fe405fa3da813e75.gz",
+      "sha256": "439cd20fc6ef42c6c32156b8815d02f2d798d18d35be9c39fe405fa3da813e75",
+      "bytes": 558969
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-inventory-review.json",
+      "artifact": "objects/1f9578a0affbfb9927e76e84a07866f03451b89ad801738183e1b084fad6cfec.gz",
+      "sha256": "1f9578a0affbfb9927e76e84a07866f03451b89ad801738183e1b084fad6cfec",
+      "bytes": 850
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-policy-before.json",
+      "artifact": "objects/b7322c4d1858871b6bb828bcfa6c26dc915fe65df428940952f54e0dfd765369.gz",
+      "sha256": "b7322c4d1858871b6bb828bcfa6c26dc915fe65df428940952f54e0dfd765369",
+      "bytes": 11647
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/child.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/host-load.jsonl",
+      "artifact": "objects/2708f6861940b0f2ea1e5ac8e734fb111272f855ff1baf7ffc76c49a444744b9.gz",
+      "sha256": "2708f6861940b0f2ea1e5ac8e734fb111272f855ff1baf7ffc76c49a444744b9",
+      "bytes": 1509
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/power-assertions-before.txt",
+      "artifact": "objects/cf22201542393db950949feaf644f7a518b22c4e199bd1ac6866bb0078c04db1.gz",
+      "sha256": "cf22201542393db950949feaf644f7a518b22c4e199bd1ac6866bb0078c04db1",
+      "bytes": 1730
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/power-log-after.txt",
+      "artifact": "objects/4fb89802ee9fb4ed60687dd4bd4f5fedefbf58944bad905f50dc1ae5a5e72f2c.gz",
+      "sha256": "4fb89802ee9fb4ed60687dd4bd4f5fedefbf58944bad905f50dc1ae5a5e72f2c",
+      "bytes": 3251135
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/power-log-before.txt",
+      "artifact": "objects/4b665e23a6135ed364fd2ff65cecd9dd909d43c9a0baa9de292b6adae8305bcb.gz",
+      "sha256": "4b665e23a6135ed364fd2ff65cecd9dd909d43c9a0baa9de292b6adae8305bcb",
+      "bytes": 3250693
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-quality/run.json",
+      "artifact": "objects/0cf74c4938709f96d7f5bb1091d0a349f6f91f157c449e51be18cf360dc21a13.gz",
+      "sha256": "0cf74c4938709f96d7f5bb1091d0a349f6f91f157c449e51be18cf360dc21a13",
+      "bytes": 823
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-source-build-identity.json",
+      "artifact": "objects/964b1c209ab5def5f55d8db1eeb7e8041aff9c02a48dade7c389940e18c855eb.gz",
+      "sha256": "964b1c209ab5def5f55d8db1eeb7e8041aff9c02a48dade7c389940e18c855eb",
+      "bytes": 15302
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/child.log",
+      "artifact": "objects/98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535.gz",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/host-load.jsonl",
+      "artifact": "objects/6c9ab83e8d5b26d90aa35eb0adf9da72028b038bb9dae14b82121d399148068b.gz",
+      "sha256": "6c9ab83e8d5b26d90aa35eb0adf9da72028b038bb9dae14b82121d399148068b",
+      "bytes": 1509
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/power-assertions-before.txt",
+      "artifact": "objects/5bda9cc56c11bbec23680cf129d6056428edaf8c51ad143cf0e32d95c7d743ae.gz",
+      "sha256": "5bda9cc56c11bbec23680cf129d6056428edaf8c51ad143cf0e32d95c7d743ae",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/power-log-after.txt",
+      "artifact": "objects/99e90092d901a5e76b12fb94adcaf77f2705ef34d5ffcb2014b765202a3ecb63.gz",
+      "sha256": "99e90092d901a5e76b12fb94adcaf77f2705ef34d5ffcb2014b765202a3ecb63",
+      "bytes": 3249400
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/power-log-before.txt",
+      "artifact": "objects/a320c66089fb5c2f4d3776896eaf1759e181aa0a8e4d1934b044c2bc35d975e4.gz",
+      "sha256": "a320c66089fb5c2f4d3776896eaf1759e181aa0a8e4d1934b044c2bc35d975e4",
+      "bytes": 3248959
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck/run.json",
+      "artifact": "objects/32071fe3c99b56c4b05857850100da0d1dd662686e17c094be3e511b75ff5563.gz",
+      "sha256": "32071fe3c99b56c4b05857850100da0d1dd662686e17c094be3e511b75ff5563",
+      "bytes": 623
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/child.log",
+      "artifact": "objects/98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535.gz",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/host-load.jsonl",
+      "artifact": "objects/8b917fc5cffae0f272da1d6ca63c2297d88845e571ee8bd55677bde6bd66532f.gz",
+      "sha256": "8b917fc5cffae0f272da1d6ca63c2297d88845e571ee8bd55677bde6bd66532f",
+      "bytes": 1505
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/power-assertions-before.txt",
+      "artifact": "objects/7698d7a70fe87d30543af82f9eb6c68ad5419ab05b5ffc3fdb7048350f675ec6.gz",
+      "sha256": "7698d7a70fe87d30543af82f9eb6c68ad5419ab05b5ffc3fdb7048350f675ec6",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/power-log-after.txt",
+      "artifact": "objects/1e83c18547767c0173817476d70f4c95b6b06b5c26d20031ad3f38a3f4cad577.gz",
+      "sha256": "1e83c18547767c0173817476d70f4c95b6b06b5c26d20031ad3f38a3f4cad577",
+      "bytes": 3251129
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/power-log-before.txt",
+      "artifact": "objects/852ad1c7cdb590aec026efb681ff59b6ef7ec2be5a73755e5cac982888c98670.gz",
+      "sha256": "852ad1c7cdb590aec026efb681ff59b6ef7ec2be5a73755e5cac982888c98670",
+      "bytes": 3250688
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-typecheck-exact-lock/run.json",
+      "artifact": "objects/317ac4ece0b5b444a0722c4d650c911d2bebe3a3487b4e61a8a2a15e7fc89272.gz",
+      "sha256": "317ac4ece0b5b444a0722c4d650c911d2bebe3a3487b4e61a8a2a15e7fc89272",
+      "bytes": 621
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/child.log",
+      "artifact": "objects/ca60247d8f364b88e6f400fadb9f0d80916b04e7a31ae0444112ed8b425ec762.gz",
+      "sha256": "ca60247d8f364b88e6f400fadb9f0d80916b04e7a31ae0444112ed8b425ec762",
+      "bytes": 1795
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/host-load.jsonl",
+      "artifact": "objects/97b473312e767e440402332fca6cf101f00eaef56cb4ec60d1cafcc147d29c91.gz",
+      "sha256": "97b473312e767e440402332fca6cf101f00eaef56cb4ec60d1cafcc147d29c91",
+      "bytes": 6109
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/power-assertions-before.txt",
+      "artifact": "objects/7e5973ff5c43a31db80e7b485d6bcce823bedcf8aed260c0614636775573ebd8.gz",
+      "sha256": "7e5973ff5c43a31db80e7b485d6bcce823bedcf8aed260c0614636775573ebd8",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/power-log-after.txt",
+      "artifact": "objects/cc6084e936d689a3898d15b34ac79c69abf0f047d1c2b949043dece385eed985.gz",
+      "sha256": "cc6084e936d689a3898d15b34ac79c69abf0f047d1c2b949043dece385eed985",
+      "bytes": 3250282
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/power-log-before.txt",
+      "artifact": "objects/d82253e808f873500f8133eeed29e4eac627d754f682c5ee04d7cf150388bf60.gz",
+      "sha256": "d82253e808f873500f8133eeed29e4eac627d754f682c5ee04d7cf150388bf60",
+      "bytes": 3249841
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native/run.json",
+      "artifact": "objects/c92970c0e29e531c8fa82e39a65772fba91258c513942d89de7d8726bbf894e2.gz",
+      "sha256": "c92970c0e29e531c8fa82e39a65772fba91258c513942d89de7d8726bbf894e2",
+      "bytes": 1013
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/child.log",
+      "artifact": "objects/dbfcf0a036068102faffbb8a8268992aaa7a7031ea6d0786b48af3a892bf8938.gz",
+      "sha256": "dbfcf0a036068102faffbb8a8268992aaa7a7031ea6d0786b48af3a892bf8938",
+      "bytes": 405
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/display-after.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/display-before.json",
+      "artifact": "objects/5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb.gz",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/host-load.jsonl",
+      "artifact": "objects/d9ee4bdeb65ff7dab0af27fbc04803a1534d81870e39e6c28dc23da4880f8945.gz",
+      "sha256": "d9ee4bdeb65ff7dab0af27fbc04803a1534d81870e39e6c28dc23da4880f8945",
+      "bytes": 7640
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/power-assertions-before.txt",
+      "artifact": "objects/845de8a1cfb127b166ab77b9ea069f49b446ad1a37def83db0bfa47161828bd2.gz",
+      "sha256": "845de8a1cfb127b166ab77b9ea069f49b446ad1a37def83db0bfa47161828bd2",
+      "bytes": 1731
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/power-log-after.txt",
+      "artifact": "objects/15055bc76c3ed7723ed599e71373c1c59a15f8b84217726c1afd3798afccdff2.gz",
+      "sha256": "15055bc76c3ed7723ed599e71373c1c59a15f8b84217726c1afd3798afccdff2",
+      "bytes": 3251570
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/power-log-before.txt",
+      "artifact": "objects/cce94cf156795618066988544bc0b761705f7bde8f814de060a1383dd2194447.gz",
+      "sha256": "cce94cf156795618066988544bc0b761705f7bde8f814de060a1383dd2194447",
+      "bytes": 3251129
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-native-exact-lock/run.json",
+      "artifact": "objects/ee7c0d37880c04357cb0e53e1672f2d5857406996876c2fcb9092305fd91ed2e.gz",
+      "sha256": "ee7c0d37880c04357cb0e53e1672f2d5857406996876c2fcb9092305fd91ed2e",
+      "bytes": 1013
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/387-worker-observations.json",
+      "artifact": "objects/f2a9e762ce8295888bbf9179331853d4cb61d0f9546f036d011aa2e550c97232.gz",
+      "sha256": "f2a9e762ce8295888bbf9179331853d4cb61d0f9546f036d011aa2e550c97232",
+      "bytes": 921
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/checks387.py",
+      "artifact": "objects/05444536ac369c381876561091f8881cfa4af9d36fd402fa1ed5615a56682df0.gz",
+      "sha256": "05444536ac369c381876561091f8881cfa4af9d36fd402fa1ed5615a56682df0",
+      "bytes": 722
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/record387.py",
+      "artifact": "objects/eed5bf37498e08015590d05d6a07a8e8fc0a0b99594689927e6aab9dc61a6b1f.gz",
+      "sha256": "eed5bf37498e08015590d05d6a07a8e8fc0a0b99594689927e6aab9dc61a6b1f",
+      "bytes": 11307
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/run-check-display384.py",
+      "artifact": "objects/724ebe7a9d930ac6bdc975ade8d55e93796d0c4ffc9c33c812984dcadfeea2ee.gz",
+      "sha256": "724ebe7a9d930ac6bdc975ade8d55e93796d0c4ffc9c33c812984dcadfeea2ee",
+      "bytes": 5839
+    }
+  ]
+}

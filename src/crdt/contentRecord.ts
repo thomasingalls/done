@@ -99,21 +99,36 @@ const id = (v: unknown): string => {
   if (typeof v !== 'string' || !/^[0-9a-f]{32}$/.test(v)) return corrupt();
   return v;
 };
-export const parseStoredRecord = (input: unknown): StoredRecord => {
+/** Read-only unverified ciphertext view for a native transaction; never an authenticated receipt.
+ * Stored IndexedDB/transport bytes have ordinary backing buffers. Owning parsers still copy. */
+const recordByteView = (value: unknown, size?: number): Bytes => {
+  if (
+    !(value instanceof Uint8Array) ||
+    !(value.buffer instanceof ArrayBuffer) ||
+    (size !== undefined && value.length !== size)
+  )
+    return corrupt();
+  return value as Bytes;
+};
+const storedRecordData = (input: unknown, copy: boolean): StoredRecord => {
   const v = object(input, ['v', 'gen', 'seq', 'kind', 'nonce', 'ct']);
   if (v['v'] !== 1 || !['update', 'state', 'heads', 'outbound'].includes(v['kind'] as string))
     return corrupt();
-  const ct = bytes(v['ct']);
+  const ct = copy ? bytes(v['ct']) : recordByteView(v['ct']);
   if (ct.length < 16) return corrupt();
   return {
     v: 1,
     gen: positive(v['gen']),
     seq: positive(v['seq']),
     kind: v['kind'] as RecordKind,
-    nonce: bytes(v['nonce'], 12),
+    nonce: copy ? bytes(v['nonce'], 12) : recordByteView(v['nonce'], 12),
     ct,
   };
 };
+export const parseStoredRecord = (input: unknown): StoredRecord => storedRecordData(input, true);
+/** Borrow only during the owning cursor/commit scope. This does not verify AEAD or authorize deletion. */
+export const viewStoredRecord = (input: unknown): Readonly<StoredRecord> =>
+  storedRecordData(input, false);
 export const recordAAD = (
   scope: Pick<ContentIdentity, 'principalId' | 'workspaceId' | 'storeId'>,
   r: Pick<StoredRecord, 'v' | 'gen' | 'seq' | 'kind'>,

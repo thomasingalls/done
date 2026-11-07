@@ -1,0 +1,60 @@
+{
+  "stage6Amendment": true,
+  "noFurtherAppRuns": true,
+  "candidateClearedForLanding": false,
+  "phase": 503,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-publication-stop-503-20261107/503-private-files.json",
+      "sha256": "271fdd00bf2d2a948d1158036d99996a1305e51a1d6f2f071b5c1b25e58b63b5",
+      "bytes": 1064
+    },
+    {
+      "localPath": "/private/tmp/done-publication-stop-503-20261107/503-source-proof.json",
+      "sha256": "1bfbef7a845aa045d30a6893fad9e24739719a6bc03a36010aaf11232ec1b595",
+      "bytes": 188
+    },
+    {
+      "localPath": "/private/tmp/done-publication-stop-503-20261107/503-summary.json",
+      "sha256": "a1ad5dc5da8b612f21a11088e6a7cf95f9cf17ccf97f6190253962b060312748",
+      "bytes": 847
+    }
+  ],
+  "summary": {
+    "phase": 503,
+    "scope": "Stage6 amendment after497\u2013502",
+    "previousOriginalBlockingJourneysPassed": 36,
+    "previousValidReportJourneys": 9,
+    "previousReportLatencyMissesRetained": 6,
+    "new3072ReportAvailable": false,
+    "confirmedFixturePublicationFailure": true,
+    "senderNewCharacters": 583,
+    "serviceNewPositions": 582,
+    "canonicalWitnessNewCharacters": 582,
+    "witnessSourcePositions": [
+      7,
+      2636
+    ],
+    "witnessLogicalSourcePositions": 2630,
+    "readOnlyNativeCensusUnchanged": true,
+    "canonicalSourceInputsStillExact470": 2046,
+    "appChangesInThisContinuation": false,
+    "guardLimitDeadlineChanges": false,
+    "lastSenderEditColdDurabilityVerified": false,
+    "candidateClearedForLanding": false,
+    "stop": "confirmed apppublication failure; bounded sourcecapture/selection/notification repair needs operatorresumption"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

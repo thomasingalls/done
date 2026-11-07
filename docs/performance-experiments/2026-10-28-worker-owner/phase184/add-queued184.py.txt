@@ -1,0 +1,21 @@
+from pathlib import Path
+import shutil
+r=Path('/private/tmp/done-worker-conversion-20261028/native184');p=r/'prior-inputs';p.mkdir()
+for name in['build-identity.json','lab/main.mjs','harness/test/account-continuation-lab/worker-owner.spec.ts']:
+ to=p/name;to.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(r/name,to)
+f=r/'harness/test/account-continuation-lab/worker-owner.spec.ts';s=f.read_text();s=s.replace("test('certified new membership rebinds the live Worker mirror before its next source',async()=>laboratory('certified-context-change',", "for(const activity of['quiet','typing'])test('certified new membership rebinds the live Worker mirror before its next source '+activity,async()=>laboratory('certified-context-change-'+activity,")
+needle="r.oldEpoch=before.epoch;\n";assert needle in s;s=s.replace(needle,needle+""" let contextWorker:any;
+ if(activity==='typing'){
+  contextWorker=second.workers()[0];
+  await contextWorker.evaluate(()=>{const post=MessagePort.prototype.postMessage;let held=false;MessagePort.prototype.postMessage=function(...args:Parameters<MessagePort['postMessage']>){const m=args[0];if(!held&&m?.kind==='call'&&m.method==='workspaceFence'){held=true;(self as any).__contextFenceHeld=true;const target=this;(self as any).__releaseContextFence=()=>post.apply(target,args);return;}return post.apply(this,args);};});
+ }
+""",1)
+needle="r.guards.thirdDeviceCertifiedByOriginalFlow=true;\n";assert needle in s;s=s.replace(needle,needle+""" if(activity==='typing'){
+  await waitForState(contextWorker,()=>(self as any).__contextFenceHeld,undefined,5000);
+  const queued=await input(second,'\\nAdmitted before the membership head.');expect(queued.after).toBe(queued.before+'\\nAdmitted before the membership head.');expect(queued.requestsDuringHandler).toBe(0);expect(queued.journals).toBeGreaterThan(0);
+  await second.evaluate(()=>(window as any).input.ticket.accepted);await second.evaluate(()=>(window as any).b.flush());
+  await contextWorker.evaluate(()=>(self as any).__releaseContextFence());r.guards.originalInputAndDurabilityBeforeContextHead=true;
+ }
+""",1)
+f.write_text(s)
+(r/'lab/src').unlink();(r/'lab/src').symlink_to(Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src'),target_is_directory=True)

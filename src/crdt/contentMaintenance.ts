@@ -56,12 +56,60 @@ export function reportRetentionProgress(
   }
 }
 
-/** Discretionary maintenance yielded to queued input; never a storage/integrity refusal. */
+export interface MaintenanceInterruptionConditions {
+  readonly queuePriority?: boolean;
+  readonly suspended?: boolean;
+  readonly shadowActivity?: boolean;
+  readonly journal?: boolean;
+  readonly handoff?: boolean;
+  readonly authorityStamp?: boolean;
+  readonly other?: boolean;
+}
+const interruptionFields = [
+  'queuePriority',
+  'suspended',
+  'shadowActivity',
+  'journal',
+  'handoff',
+  'authorityStamp',
+  'other',
+] as const;
+const interruptionConditions = new WeakMap<MaintenanceInterrupted, readonly number[]>();
+const conditionMask = (input: MaintenanceInterruptionConditions): number => {
+  const fields = Object.getOwnPropertyDescriptors(input);
+  let mask = 0;
+  for (const key of Reflect.ownKeys(input)) {
+    const field = typeof key === 'string' ? fields[key] : undefined;
+    const index = interruptionFields.indexOf(key as (typeof interruptionFields)[number]);
+    if (!field || !('value' in field) || typeof field.value !== 'boolean' || index < 0)
+      return 1 << interruptionFields.length;
+    if (field.value) mask |= 1 << index;
+  }
+  return mask;
+};
+/** Discretionary maintenance yielded; never a storage/integrity refusal or mutation permission. */
 export class MaintenanceInterrupted extends Error {
   override readonly name = 'MaintenanceInterrupted';
-  constructor() {
+  constructor(conditions: readonly MaintenanceInterruptionConditions[] = []) {
     super('Content maintenance yielded to foreground work.');
+    interruptionConditions.set(this, conditions.length ? conditions.map(conditionMask) : [0]);
   }
+}
+/** Add observed conditions when another guarded boundary is already unwinding. */
+export function addMaintenanceInterruptionConditions(
+  cause: MaintenanceInterrupted,
+  conditions: MaintenanceInterruptionConditions,
+) {
+  const mask = conditionMask(conditions);
+  if (mask)
+    interruptionConditions.set(cause, [...(interruptionConditions.get(cause) ?? [0]), mask]);
+  return cause;
+}
+/** Only locally constructed, entirely priority-only observations shorten a retry clock. */
+export function isPriorityOnlyMaintenanceInterruption(cause: unknown): boolean {
+  const observed =
+    cause instanceof MaintenanceInterrupted ? interruptionConditions.get(cause) : undefined;
+  return !!observed?.length && observed.every((mask) => mask === 1);
 }
 
 const maintenanceTasks = new WeakSet<SessionTask>();

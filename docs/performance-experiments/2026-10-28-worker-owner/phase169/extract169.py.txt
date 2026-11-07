@@ -1,0 +1,30 @@
+from pathlib import Path
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt')
+w=(r/'writeSession.ts').read_text();c=(r/'accountWorkerCohort.ts').read_text();p=(r/'runtimePorts.ts').read_text();j=(r/'windowJournalBridge.ts').read_text()
+errors=w[w.index('export type WriteSessionRefusal'):w.index('type Synchronous')]
+ticket=c[c.index('export interface AccountWorkerTicket'):c.index('type Sync')]
+names=c[c.index('const names ='):c.index('async function hold')].replace('const names =','export const cohortNames =').replace('const inactive =','export const inactive =').replace('const cancelled =','export const cancelled =')
+capture=c[c.index('function captureTicket'):c.index('/** Internal dedicated-worker join')].replace('function captureTicket','export function captureTicket')
+helper="""export function requireNativeLocks(): LockManager {
+  if (globalThis.isSecureContext !== true || !globalThis.navigator?.locks)
+    throw new Error('Web Locks requires a supported secure context.');
+  return globalThis.navigator.locks;
+}
+"""
+(r/'nativeCoordination.ts').write_text('/** Native coordination primitives only: no runtime installer, storage, keys or owner imports. */\n'+errors+ticket+names+capture+helper)
+join=c[c.index('/** Internal dedicated-worker join'):].replace('names(ticket.slotId','cohortNames(ticket.slotId').replace('pageRuntimePorts.lifetime.requireLocks()','requireNativeLocks()')
+(r/'accountWorkerJoin.ts').write_text("import { cohortNames, captureTicket, inactive, cancelled, requireNativeLocks, type AccountWorkerTicket } from './nativeCoordination';\n\n"+join)
+c=c[:c.index('function captureTicket')];c=c.replace("import { slotPermitName } from './writeSession';", "import { cohortNames, inactive, cancelled, type AccountWorkerTicket } from './nativeCoordination';\nexport type { AccountWorkerTicket } from './nativeCoordination';\nexport { createAccountWorkerJoin } from './accountWorkerJoin';")
+c=c.replace(ticket,'').replace(c[c.index('const names ='):c.index('async function hold')],'').replace('n = names(slotId','n = cohortNames(slotId')
+(r/'accountWorkerCohort.ts').write_text(c)
+w=w.replace(errors,"export { WriteSessionError, slotPermitName, type WriteSessionRefusal } from './nativeCoordination';\nimport { WriteSessionError, slotPermitName } from './nativeCoordination';\n\n");(r/'writeSession.ts').write_text(w)
+p=p.replace("import { accountWorkerRuntime }", "import { requireNativeLocks } from './nativeCoordination';\nimport { accountWorkerRuntime }")
+start=p.index('    requireLocks() {');end=p.index('    onPageHide',start)
+p=p[:start]+"    requireLocks: requireNativeLocks,\n"+p[end:];(r/'runtimePorts.ts').write_text(p)
+constants=j[j.index('export const RAW_JOURNAL_PAGE_CHARACTERS'):j.index('// Recovery bound')]
+types=j[j.index('export interface RawJournalSnapshot'):j.index('const refuse =')]
+(r/'workerJournalProtocol.ts').write_text('/** Data-only Window/worker journal protocol; snapshots confer no verification authority. */\n'+constants+types)
+j=j.replace(constants,"import { RAW_JOURNAL_PAGE_CHARACTERS, RAW_JOURNAL_REMOVE_ITEMS, type RawJournalPage, type RawJournalRemoval } from './workerJournalProtocol';\nexport { RAW_JOURNAL_PAGE_CHARACTERS, RAW_JOURNAL_REMOVE_ITEMS, type RawJournalSnapshot, type RawJournalPage, type RawJournalRemoval } from './workerJournalProtocol';\n").replace(types,'');(r/'windowJournalBridge.ts').write_text(j)
+p=(r/'accountWorkerRuntime.ts').read_text().replace("import { createAccountWorkerJoin, type AccountWorkerTicket } from './accountWorkerCohort';", "import { createAccountWorkerJoin } from './accountWorkerJoin';\nimport type { AccountWorkerTicket } from './nativeCoordination';").replace("from './windowJournalBridge'", "from './workerJournalProtocol'");(r/'accountWorkerRuntime.ts').write_text(p)
+# Original mutation follows its actual code home; no assertion or mutation string changes.
+t=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/test/account-worker-cohort/cohort.spec.ts');t.write_text(t.read_text().replace("id.endsWith('/src/crdt/accountWorkerCohort.ts')", "id.endsWith('/src/crdt/accountWorkerJoin.ts')"))

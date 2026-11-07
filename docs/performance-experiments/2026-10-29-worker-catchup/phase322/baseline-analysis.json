@@ -1,0 +1,303 @@
+[
+  {
+    "run": "baseline-retry-01-rtt0",
+    "rtt": 0,
+    "profiled": false,
+    "drainMs": 23098.300048828125,
+    "time700Ms": 15336.39990234375,
+    "positions30": 1025,
+    "deep30Pass": true,
+    "childExit": 0,
+    "cold": true,
+    "coldFailure": false,
+    "error": null,
+    "oldRemainderMs": 13040.38720703125,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 3981.10498046875,
+      "clientValidation": 2593.3828125,
+      "prefixComparison": 1060.046875,
+      "previousRemainder:prepareGroup": 2233.892822265625,
+      "previousRemainder:networkCollect": 6042.29150390625,
+      "emptyOther": 1202.39794921875,
+      "singlePageOther": 56.099609375,
+      "nativeReceiveOther": 5145.985595703125,
+      "previousRemainder:pageHandoff": 783.097900390625
+    },
+    "channelAtObservedDrain": {
+      "count": 6360,
+      "chargedBytes": 1591129
+    },
+    "pageMessagesPerPosition": 6.204878048780488,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 379,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 60.01991180311349,
+    "hostBusyMax": 75.2395853706239,
+    "eventOverflow": 0
+  },
+  {
+    "run": "baseline-retry-02-rtt50",
+    "rtt": 50,
+    "profiled": false,
+    "drainMs": 49441.099853515625,
+    "time700Ms": 34448,
+    "positions30": 640,
+    "deep30Pass": false,
+    "childExit": 0,
+    "cold": true,
+    "coldFailure": false,
+    "error": null,
+    "oldRemainderMs": 37657.48291015625,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 6882.808837890625,
+      "clientValidation": 2605.482421875,
+      "prefixComparison": 1402.752197265625,
+      "previousRemainder:prepareGroup": 3196.789794921875,
+      "previousRemainder:networkCollect": 26748.48876953125,
+      "emptyOther": 2404.794921875,
+      "singlePageOther": 58.49951171875,
+      "nativeReceiveOther": 5312.087890625,
+      "previousRemainder:pageHandoff": 829.3955078125
+    },
+    "channelAtObservedDrain": {
+      "count": 7824,
+      "chargedBytes": 1934457
+    },
+    "pageMessagesPerPosition": 7.633170731707317,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 484,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 52.290458091618326,
+    "hostBusyMax": 74.78606965174129,
+    "eventOverflow": 0
+  },
+  {
+    "run": "baseline-retry-03-rtt50",
+    "rtt": 50,
+    "profiled": false,
+    "drainMs": 52993.39990234375,
+    "time700Ms": 35938.5,
+    "positions30": 608,
+    "deep30Pass": false,
+    "childExit": 0,
+    "cold": true,
+    "coldFailure": false,
+    "error": null,
+    "oldRemainderMs": 40071.07470703125,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 7837.7001953125,
+      "prefixComparison": 1484.557861328125,
+      "clientValidation": 2677.890625,
+      "previousRemainder:prepareGroup": 3649.98876953125,
+      "previousRemainder:networkCollect": 27741.589111328125,
+      "emptyOther": 2642.09423828125,
+      "singlePageOther": 56.19970703125,
+      "nativeReceiveOther": 6061.582763671875,
+      "previousRemainder:pageHandoff": 841.796630859375
+    },
+    "channelAtObservedDrain": {
+      "count": 7982,
+      "chargedBytes": 1972346
+    },
+    "pageMessagesPerPosition": 7.7873170731707315,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 496,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 56.335786751541676,
+    "hostBusyMax": 70.84414288565156,
+    "eventOverflow": 0
+  },
+  {
+    "run": "baseline-retry-04-rtt0",
+    "rtt": 0,
+    "profiled": false,
+    "drainMs": 24369,
+    "time700Ms": 16477.800048828125,
+    "positions30": 1025,
+    "deep30Pass": true,
+    "childExit": 0,
+    "cold": true,
+    "coldFailure": false,
+    "error": null,
+    "oldRemainderMs": 13882.079833984375,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 4203.601318359375,
+      "clientValidation": 2644.080322265625,
+      "prefixComparison": 1078.653564453125,
+      "previousRemainder:prepareGroup": 2472.691162109375,
+      "previousRemainder:networkCollect": 6393.589599609375,
+      "emptyOther": 1355.9970703125,
+      "singlePageOther": 65.2998046875,
+      "nativeReceiveOther": 5342.889404296875,
+      "previousRemainder:pageHandoff": 812.19775390625
+    },
+    "channelAtObservedDrain": {
+      "count": 6482,
+      "chargedBytes": 1618998
+    },
+    "pageMessagesPerPosition": 6.3239024390243905,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 387,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 57.198367981348355,
+    "hostBusyMax": 79.5499800876145,
+    "eventOverflow": 0
+  },
+  {
+    "run": "baseline-retry-05-rtt0",
+    "rtt": 0,
+    "profiled": false,
+    "drainMs": 25300.099853515625,
+    "time700Ms": 17244.199951171875,
+    "positions30": 1025,
+    "deep30Pass": true,
+    "childExit": 0,
+    "cold": true,
+    "coldFailure": false,
+    "error": null,
+    "oldRemainderMs": 14611.8896484375,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 4394.711669921875,
+      "prefixComparison": 1114.5537109375,
+      "clientValidation": 2649.177001953125,
+      "previousRemainder:prepareGroup": 2577.791748046875,
+      "previousRemainder:networkCollect": 6733.189208984375,
+      "emptyOther": 1447.1962890625,
+      "singlePageOther": 59.799072265625,
+      "nativeReceiveOther": 5417.484130859375,
+      "previousRemainder:pageHandoff": 906.197021484375
+    },
+    "channelAtObservedDrain": {
+      "count": 6560,
+      "chargedBytes": 1639674
+    },
+    "pageMessagesPerPosition": 6.4,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 391,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 61.825809029165,
+    "hostBusyMax": 71.54213036565977,
+    "eventOverflow": 0
+  },
+  {
+    "run": "baseline-retry-06-rtt50",
+    "rtt": 50,
+    "profiled": false,
+    "drainMs": 49957.10009765625,
+    "time700Ms": 34968.7001953125,
+    "positions30": 632,
+    "deep30Pass": false,
+    "childExit": 0,
+    "cold": true,
+    "coldFailure": false,
+    "error": null,
+    "oldRemainderMs": 38050.074951171875,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 7424.80126953125,
+      "prefixComparison": 1372.256591796875,
+      "clientValidation": 2622.183837890625,
+      "previousRemainder:prepareGroup": 3255.489990234375,
+      "previousRemainder:networkCollect": 26573.587158203125,
+      "emptyOther": 2275.697509765625,
+      "singlePageOther": 57.49951171875,
+      "nativeReceiveOther": 5579.3876953125,
+      "previousRemainder:pageHandoff": 796.196533203125
+    },
+    "channelAtObservedDrain": {
+      "count": 7726,
+      "chargedBytes": 1911646
+    },
+    "pageMessagesPerPosition": 7.537560975609756,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 481,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 52.3961661341853,
+    "hostBusyMax": 67.46459206064233,
+    "eventOverflow": 0
+  },
+  {
+    "run": "baseline-retry-07-rtt0-profile",
+    "rtt": 0,
+    "profiled": true,
+    "drainMs": 23336,
+    "time700Ms": 15090.900146484375,
+    "positions30": 1025,
+    "deep30Pass": true,
+    "childExit": 1,
+    "cold": false,
+    "coldFailure": true,
+    "error": "Error: page.evaluate: NotAllowedError: The operation either timed out or was not allowed. See: https://www.w3.org/TR/webauthn-2/#sctn-privacy-considerations-client.",
+    "oldRemainderMs": 13247.685302734375,
+    "exclusivePartitionMs": {
+      "previousRemainder:stillUnattributed": 3914.9111328125,
+      "prefixComparison": 1079.056884765625,
+      "clientValidation": 2567.77490234375,
+      "previousRemainder:prepareGroup": 2348.7900390625,
+      "previousRemainder:networkCollect": 6144.1904296875,
+      "emptyOther": 1263.49658203125,
+      "singlePageOther": 57.29931640625,
+      "nativeReceiveOther": 5120.68701171875,
+      "previousRemainder:pageHandoff": 839.793701171875
+    },
+    "channelAtObservedDrain": {
+      "count": 6422,
+      "chargedBytes": 1605238
+    },
+    "pageMessagesPerPosition": 6.265365853658537,
+    "inputP95Ms": null,
+    "peerP95Ms": null,
+    "typingNotExposed": true,
+    "tokensThroughDrain": 383,
+    "budgetEventKeys": [
+      "at",
+      "units",
+      "kind"
+    ],
+    "budgetRefusals": [],
+    "hostBusyMedian": 55.400557991231565,
+    "hostBusyMax": 69.56927093044938,
+    "eventOverflow": 0
+  }
+]

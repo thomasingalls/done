@@ -1,0 +1,13 @@
+{
+  "oldRecordPrefixesByteExact": true,
+  "phase320FilesUnchanged": 359,
+  "phase320FailuresAndVerdictsNotRegraded": true,
+  "canonicalSourceInputsUnchanged": 1552,
+  "headUnchanged": "0ab9cbc8937e32c6542aaeeca697c87ba116c3be",
+  "realIndexEmpty": true,
+  "gitDiffCheckExit": 0,
+  "prospectiveOverlapAmendmentRecorded": true,
+  "hardeningStarted": false,
+  "diagnosticOnly": true,
+  "acceptanceCredit": false
+}

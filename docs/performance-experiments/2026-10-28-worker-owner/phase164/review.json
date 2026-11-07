@@ -1,0 +1,29 @@
+{
+  "ownerBodiesAndPublicAPIsRestoredExactlyExceptDeclaredEndpoints": [
+    "accountCapture.ts",
+    "writeSession.ts",
+    "journalStore.ts"
+  ],
+  "otherPriorInputsUnchanged": 437,
+  "pageExecutionAndSynchronousJournalRetained": true,
+  "nativeCases": 35,
+  "nativeMutationControlsDetected": 11,
+  "unitPassed": 2225,
+  "existingUnitSkip": 1,
+  "metadataCases": 111,
+  "negativeControls": [
+    {
+      "fault": "changed-owner-guard",
+      "rejected": true
+    },
+    {
+      "fault": "false-native-assertion",
+      "rejected": true
+    },
+    {
+      "fault": "undetected-mutant",
+      "rejected": true
+    }
+  ],
+  "qualification": "New test remains blocked;936 obligations/390 unresolved. No worker, cohort activation, performance acceptance or release claim."
+}

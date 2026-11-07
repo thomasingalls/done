@@ -1,0 +1,362 @@
+{
+  "phase": 473,
+  "date": "2026-11-06",
+  "scope": "Rebuild standalone native test delegate against phase469 repair while preserving ordinary phase470 assets",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "sha256": "8df457606b6b980c68e75c8836522e46831c92dff7dfeca5e64855ebfe817289",
+      "bytes": 28474
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/storage-conformance/observe.mjs",
+      "sha256": "4e8ea5450223e203c77fe5b1a77c94797b34505f7dda6fec87a82dfcbdba7457",
+      "bytes": 1457
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/473-private-files.json",
+      "sha256": "dc955c0842fbde17ff438cc8394b437f8a9f9817981dcb2a204dc344af4e38c6",
+      "bytes": 542134
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/473-build-proof.json",
+      "sha256": "ea0d9efe966d0780583a01472a9473de88e2b4bc059093c471555d36856d638f",
+      "bytes": 7859
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/473-native-plan.json",
+      "sha256": "8d37d1a58353d734f64508ce4fe1c7b9a5b75d7e4c6d3072ff2aff73305900d5",
+      "bytes": 3931
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/build473.py",
+      "sha256": "be18adc6a24928554518a96b79ff7b74f09ba17040c657921e35f80d5f719373",
+      "bytes": 4118
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/record473.py",
+      "sha256": "191824570da865487a6320f4d6310512bb9ea5830d6c57ea97d01c9c72119244",
+      "bytes": 7779
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+      "sha256": "66e231bb103939a0428cb7620c17ba5bb27110516ddfa1976d13e2105504b6d8",
+      "bytes": 13081
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+      "sha256": "cc96a43f32a0c7a5b58d6efe491a2575bf9db5b53eb08e273b746b26c90d4fa7",
+      "bytes": 342
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/seed-profile.ts",
+      "sha256": "e10fced3d7796f26c84c07f891bdf25ca85f527b72ca00fc43d91a9fd5d00fb4",
+      "bytes": 1539
+    },
+    {
+      "localPath": "/private/tmp/done-native-repaired-473-20261106/adapter.config.ts",
+      "sha256": "bf95596d3dc22d7bd9a009fa6031aa296241f65f4e35ed5aec86bfc344430432",
+      "bytes": 236
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/child.log",
+      "sha256": "43b261e3d86193ff44da244ccfd34476bd1246875758ed0ce694e3629e1220b9",
+      "bytes": 9565
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/host-load.jsonl",
+      "sha256": "7793271dd75af80088475e929d6df41c30faa461616d1ef47efaaac7ea81d603",
+      "bytes": 1512
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/power-assertions-before.txt",
+      "sha256": "bcc39445a5aca7d722ca646d68e4824a1f499e7a9e7a8f77251a8facb412ed35",
+      "bytes": 1613
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/power-log-after.meta.json",
+      "sha256": "93393615e2ce4814af1989ce8a10ae7ab2851943c08e9b66a705e8b5c4c9a8c3",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/power-log-after.txt",
+      "sha256": "7cf11c474034fb447ad95b514c77c3c4d5dbfb56119e410a997b1668f2995e07",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/power-log-before.meta.json",
+      "sha256": "aea950ed8306edbdd4170a551d485f0aaa2467d2ae1733ddac13fb4ae3814fa7",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/473-native-delegate-build/run.json",
+      "sha256": "6d8445d221d20ea7a933656419dede661a04e4d8a82208fb765b79b6b4fccaf2",
+      "bytes": 1262
+    }
+  ],
+  "proof": {
+    "shippingFilesExact": 125,
+    "additionalSeparateToolAssets": [
+      {
+        "path": "assets/AccountDevices-XtIWNTIP.js",
+        "sha256": "8a035fbc14fed03eae752e24c542cfc2fce9e0ef4a5e85bb23c0e7a395f7e9e2",
+        "bytes": 13029
+      },
+      {
+        "path": "assets/AccountEnrollmentApp-WypUaRov.js",
+        "sha256": "8e852ad296ac69ebd55691482065067ab26f870c57a35e15dd15a7330760a78b",
+        "bytes": 23930
+      },
+      {
+        "path": "assets/AccountRecoveryApp-CwbrbMf5.js",
+        "sha256": "b32fb1d1d0a9699f561f3fb4c0350eede3e959663106ba8c4948ad54ab0993ea",
+        "bytes": 10782
+      },
+      {
+        "path": "assets/AccountSetupApp-DkIiYyY6.js",
+        "sha256": "9273316569315559ba772aaf6766f646486628ff00de00c9b218d04f6a05c1ea",
+        "bytes": 53553
+      },
+      {
+        "path": "assets/AppUpdateNotice-D-weNoIr.js",
+        "sha256": "17a70e5b4d3a27f128ceb552f14c2bc671f99c5df256bd2d9274f5574b88f9d1",
+        "bytes": 11556
+      },
+      {
+        "path": "assets/DeviceDataRemoval-CPw1CtIr.js",
+        "sha256": "20f8ba9b5fa01bdb68a9f6f91bec553580600fa137512b53eca49f46216d591f",
+        "bytes": 15236
+      },
+      {
+        "path": "assets/LocalApp-YYrAZNJe.js",
+        "sha256": "37dcee7bdc967233430f8d92d415a1b1a3eeec4d43a4c882ad1a97599c8c61ab",
+        "bytes": 36492
+      },
+      {
+        "path": "assets/LocalEntry-DBNx9-Yb.js",
+        "sha256": "4a25988ca495649fe736a6d08dc4a1e0f02ddadcdc8307053666eb7bece1dbfc",
+        "bytes": 718
+      },
+      {
+        "path": "assets/accountEnrollmentPage-CtO69xaR.js",
+        "sha256": "8186de349977fdcb739e6484ad5561d6db169042d52e81dd40d9e846c0285250",
+        "bytes": 14441
+      },
+      {
+        "path": "assets/accountLedgerMode-Cq6Ee6IQ.js",
+        "sha256": "314d297624ffdce3df31d921afff376d0ec7ea46c3c7faa58d8f34af0caec03e",
+        "bytes": 751
+      },
+      {
+        "path": "assets/accountProgressCustody-Dvn4QPKP.js",
+        "sha256": "3228135a9b5e38ca1351bc2851cd08376eb6a4b802a8df804b79e38fcec9e6ec",
+        "bytes": 1670
+      },
+      {
+        "path": "assets/accountRotation-DwTok0a5.js",
+        "sha256": "6874de70237ea035835060fc1d4b5d6a9d6b97d0dede25821317a63ff1d551fa",
+        "bytes": 8760
+      },
+      {
+        "path": "assets/accountWorkerClient-B0a4575G.js",
+        "sha256": "ad0cfa060a91f04e37516bbfbd894accfa016037bbc06f65da479fdcfa49fcca",
+        "bytes": 33202
+      },
+      {
+        "path": "assets/accountWorkerRecoveryStream-lq6wgGv5.js",
+        "sha256": "2a7c65fa135fb80ef842d6fc3c9345f0d3685b8501e7e204fce4a6e1b7579e16",
+        "bytes": 6672
+      },
+      {
+        "path": "assets/admittedWorkspace-CY_C-k9n.js",
+        "sha256": "5cec17f1301b314d6a1b36c8f4937451638d4ff9e9903ea472690011a8fe69c9",
+        "bytes": 542277
+      },
+      {
+        "path": "assets/assertSlotPasskey-DHt_2SEh.js",
+        "sha256": "fcb2a6874f726327acb39bce27a1bc9eaeffbf88c7b7f8d8b28df7ad9e5894b1",
+        "bytes": 717
+      },
+      {
+        "path": "assets/bootstrapHttp-B9a_PL2X.js",
+        "sha256": "4d39ccc275f48af6879ec80f82108ff8612d8b8d7b2d4492641a52eacaf7c871",
+        "bytes": 137995
+      },
+      {
+        "path": "assets/browser-uzSg-vC2.js",
+        "sha256": "eff212c7653a3b8dcab2687642e835eb452bbdd14677c992b360f86438d76808",
+        "bytes": 1049
+      },
+      {
+        "path": "assets/deviceDataRemoval-CNnsXSdi.js",
+        "sha256": "82f9bf91c18ab0af17ad3396c993a56deacfcfbad9c45d0f618c3588a1c74f31",
+        "bytes": 300651
+      },
+      {
+        "path": "assets/deviceEnrollment-CQdddLg7.js",
+        "sha256": "5e3f5fb35a005bc0d30a5f61b0ec65fcbfa881df7f0b949b5c3d1edc042a430e",
+        "bytes": 33462
+      },
+      {
+        "path": "assets/export-DpgLI8V6.js",
+        "sha256": "2dc0ebe6d7d0fcb292d220ee4ae9fa14c77afc4a5dcc17777b64e4cfc25b9b95",
+        "bytes": 3632
+      },
+      {
+        "path": "assets/historyHttp-DH8ddo9g.js",
+        "sha256": "e35d48ac70b6d8e8d5d4fcdc372ca8cf7648b9299247e3887c79409e01c2ea11",
+        "bytes": 7454
+      },
+      {
+        "path": "assets/historyOwner-gOYZqDb0.js",
+        "sha256": "5e9e5155975d5bcb02f95d7ee830af355aeb8b8abd9ad409e3d9dacb52daba9c",
+        "bytes": 4008
+      },
+      {
+        "path": "assets/incrementalAccountLedger-C44vCzjb.js",
+        "sha256": "64dee8e3cd8dbf44e4009d09afdb49ccb0815217a1b49d2c817ea9a0fa32c048",
+        "bytes": 11054
+      },
+      {
+        "path": "assets/joinedAccount-Cppj9xPe.js",
+        "sha256": "fe470da8552e4e79dfa839410debefd7f65e822b422bf4ae4e4fb51ab62a57fe",
+        "bytes": 42085
+      },
+      {
+        "path": "assets/localBaselineReuse-BC5Hgcb_.js",
+        "sha256": "ff6ad50109c88e5b96fa40fd3e64bfa50b12d745ba2647ce39a09fadd50a5486",
+        "bytes": 3666
+      },
+      {
+        "path": "assets/localGenesis-AiwwVqXb.js",
+        "sha256": "645af72c1ddf77d1fdd77e89dd2b4266ae48aa17e4af7bd32af92e5cdc517e63",
+        "bytes": 5559
+      },
+      {
+        "path": "assets/localRetentionStorage-DGlTEaow.js",
+        "sha256": "75fa3a939a335c593ca2d1e393267a5d147b1500cd16e6bebdaf9908290ee4b2",
+        "bytes": 4587
+      },
+      {
+        "path": "assets/localStartupClient-GSljiY3k.js",
+        "sha256": "b4227981bd3904b66f6bd5c88d14d4f62529f558ec06276df0cf51a8788f051a",
+        "bytes": 3605
+      },
+      {
+        "path": "assets/main-Kqm2F64Y.js",
+        "sha256": "a12b508adeae0bd657654e3d7c3262abfc1a66464f1825061ec27a480a7bb02b",
+        "bytes": 283158
+      },
+      {
+        "path": "assets/marks-C3GqL34q.js",
+        "sha256": "5d365907c063e3625afdababa5e04bcd602c1f35fdd36c8c54af05d92c0b2b7e",
+        "bytes": 196
+      },
+      {
+        "path": "assets/membershipConnection-DwxfFYT_.js",
+        "sha256": "db885604063224fc686a459622be09525b90f53d91e161e28f0754b53d836c7a",
+        "bytes": 31122
+      },
+      {
+        "path": "assets/membershipSource-CaR7vE6q.js",
+        "sha256": "efb6cd2c14897e2411d1e4c1e14767ad09a220e2df8afc50c8145adfe8868917",
+        "bytes": 15872
+      },
+      {
+        "path": "assets/modulepreload-polyfill-Dezn_h7o.js",
+        "sha256": "785597bca2e7dd97a652a20a197c077079e635a5663433448e0e1d9fd8c98a64",
+        "bytes": 698
+      },
+      {
+        "path": "assets/native-B5tfseCn.js",
+        "sha256": "304560dfcd7be8f78a45b7ae6ecb265237ba5b88299bd507c463fe92104869ac",
+        "bytes": 3468
+      },
+      {
+        "path": "assets/networkLogin-D9ZZQI3Z.js",
+        "sha256": "a910c976bd7a5f0049bc8f4bf8208ff5e2a3a826071b8460fc3a0ec18ac02b87",
+        "bytes": 23839
+      },
+      {
+        "path": "assets/retentionAttempts-lRHUIbaL.js",
+        "sha256": "52abe857740742496ee611fb10ae37ca33f6cb0be031cd623139bd2ed275df4a",
+        "bytes": 1124
+      },
+      {
+        "path": "assets/retentionCheckpoint-Ix9Mfq9B.js",
+        "sha256": "95018be323ae6af2edbe79f691afe730376a80f7891b1b97489cdc2de2d4ae15",
+        "bytes": 779
+      },
+      {
+        "path": "assets/rotationObservation-Bhv0tDmI.js",
+        "sha256": "4635bc9099febb5e3fc8f73aac60cd14bf0d6628b14f7215e8452da2caf30fb7",
+        "bytes": 7482
+      },
+      {
+        "path": "assets/windowCeremonyJournal-BO1KGgXE.js",
+        "sha256": "7b00a011a56b68c706002ebc974e54c97a80176a945dd1735989555491492d82",
+        "bytes": 103166
+      },
+      {
+        "path": "assets/writeSession-qesLzgfg.js",
+        "sha256": "f01ec7709404faa0dfc8b3884ddc27a52875618f1880d54e52e4cfdd57662f27",
+        "bytes": 13732
+      },
+      {
+        "path": "test/hardening-stage5/index.html",
+        "sha256": "462a337125caec993a65736f44013d1e622538a781592c0544fd33c1b18df069",
+        "bytes": 2290
+      }
+    ],
+    "sourceInputs": "/private/tmp/done-maintenance-rerun-470-20261106/470-source-inputs.json",
+    "appSourceUnchanged": true,
+    "nativeCaseByteExact": true,
+    "testEntryRootBindingsOnly": true,
+    "noShippingObservationCodeAdded": true,
+    "flags": {
+      "VITE_ACCOUNT_BASELINE_READ": "1",
+      "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+      "VITE_ACCOUNT_RETENTION": "1",
+      "VITE_ACCOUNT_RETENTION_AUTO": "1",
+      "VITE_ACCOUNT_RETENTION_RESUME": "1",
+      "VITE_ACCOUNT_RANGE_RECEIVE": "1",
+      "VITE_ACCOUNT_HISTORY_AUTO": "0",
+      "VITE_ACCOUNT_BATCH": "coordinated-2000",
+      "VITE_ACCOUNT_LEDGER": "incremental",
+      "VITE_ACCOUNT_LEDGER_PROFILE": "0"
+    }
+  },
+  "appRuntimeOrCaseChanges": false,
+  "nativeCasesCollected": 3,
+  "timedMatrixJourneysStarted": 0,
+  "timingAcceptanceCredit": false,
+  "hostHandshake": "Requested for native/live-catchup block; unanswered at checkpoint. No timed journeys started.",
+  "committed": false,
+  "pushed": false,
+  "next": "Run9declared native journeys in fresh output roots using these exact case/entry/served assets after host readiness, then remaining frozen cells"
+}

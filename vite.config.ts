@@ -10,7 +10,11 @@ import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import babel from '@rolldown/plugin-babel';
 import { precacheServiceWorker } from './vite/precacheServiceWorker.ts';
 import { retentionPreparationIdentity } from './vite/retentionPreparationIdentity.ts';
-import { accountRetentionFlags, accountPreparationFlags } from './vite/accountRetentionFlags.ts';
+import {
+  accountRetentionFlags,
+  accountPreparationFlags,
+  accountRangeFlags,
+} from './vite/accountRetentionFlags.ts';
 
 const applicationSourcePath = fileURLToPath(new URL('./src/', import.meta.url))
   .split(/[/\\]/)
@@ -110,6 +114,7 @@ export default defineConfig(({ mode }) => ({
     // Compatible readers remain the default; one release build opt-in enables coherent writers.
     ...accountRetentionFlags(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_')),
     ...accountPreparationFlags(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_')),
+    ...accountRangeFlags(loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_')),
     'import.meta.env.VITE_ACCOUNT_TEXT_ADMISSION': JSON.stringify(
       (() => {
         const value = loadEnv(mode, process.cwd(), 'VITE_ACCOUNT_TEXT_ADMISSION')[

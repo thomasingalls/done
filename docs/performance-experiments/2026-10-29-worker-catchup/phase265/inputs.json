@@ -1,0 +1,10 @@
+{
+  "summary.json": "e12f181b090e4d7dbc649adc767695c8836b11916c9dcb9cf06a0a1bfb561b9d",
+  "run.log": "920b44e89e944691f04b7ba0bc94ad2d5c434e84e31c4b9714f408fae15be79a",
+  "deepjoined-high-budget-01/receipt.json": "03cca741c51aa476076c3f11cc80a4cd13f76e92df99fef777adca9d415afcb5",
+  "deepjoined-high-budget-01/console.log": "0b8605bc45bbac1d35bce2671d20dd7b1b8088557ef2c88b4a1a1de1cfc91031",
+  "deepjoined-high-budget-01/composed-receive-1/result.json": "9d3a953af932d3cfb73461f86f28df7c8c003240130f66411e983fbc3d3ac0e9",
+  "deepjoined-high-budget-01/composed-receive-1/container-identity.json": "23e4f9fa71bc0a408666248a740c4d1bd26bdc593051749bf47461e6dec7ec96",
+  "deepjoined-high-budget-01/composed-receive-1/docker-command.json": "e8ca588b83ebf8eb5c114f949ebe089276fe7cf15743fc289b0eb3bc78503ba7",
+  "deepjoined-high-budget-01/composed-receive-1/services.log": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b"
+}

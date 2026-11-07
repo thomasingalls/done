@@ -15,10 +15,11 @@ import {
   SetupRetired,
 } from './setupMetadata';
 export { SETUP_DB } from './setupMetadata';
-export type SetupConfig = { pin: AuthorityPin; readonly membershipContinuation?: boolean } & (
-  | { networkSessions: true; token?: never }
-  | { networkSessions?: false; token: PrivateAccess }
-);
+export type SetupConfig = {
+  pin: AuthorityPin;
+  readonly membershipContinuation?: boolean;
+  readonly onMembershipContinuationChange?: (listener: () => void) => () => void;
+} & ({ networkSessions: true; token?: never } | { networkSessions?: false; token: PrivateAccess });
 export const isSetupSlot = (value: unknown): value is string =>
   value === 'local' || (typeof value === 'string' && /^account-[a-f0-9]{32}$/.test(value));
 export const progressKey = (slotId: string) => {
@@ -56,7 +57,7 @@ export interface Retained {
   /** New empty workspace, created through the factor-confirmed Local genesis owner. */
   fresh?: true;
 }
-export type SetupState = (
+export type SetupState<W = AdmittedWorkspace> = (
   | {
       kind:
         | 'intro'
@@ -75,7 +76,7 @@ export type SetupState = (
   | { kind: 'storage-blocked'; disposition?: StartupDisposition; error?: string }
   | {
       kind: 'ready';
-      workspace: AdmittedWorkspace;
+      workspace: W;
       sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
       actorId: string;
       devices: import('./deviceRoster').DeviceRoster;

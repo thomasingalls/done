@@ -1,0 +1,47 @@
+{
+  "phase": 338,
+  "stage": "Stage 1 checkpoint",
+  "YFinished": true,
+  "twoProtectedControlsPassUnchanged": true,
+  "fullUnits": {
+    "filesPassed": 287,
+    "casesPassed": 2880,
+    "skippedExisting": 1,
+    "total": 2881,
+    "selfContainedLockedDependencies": true
+  },
+  "focusedCases": 53,
+  "strictTypes": "passed",
+  "broaderCheck": {
+    "suffixCommandsPassed": 25,
+    "failedCommand": "pnpm storage:app-startup",
+    "browserPassed": 10,
+    "browserFailed": 5,
+    "remainingCommandsUnrun": 43
+  },
+  "coldOpeningObservation": {
+    "test": "test/local-app/startup.spec.ts:40",
+    "failingLine": 70,
+    "step": "correct-code unlock after setting the development fixture offline",
+    "assertionTimeoutMs": 5000,
+    "observed": "Opening your workspace / Checking encrypted storage",
+    "cause": "unresolved: harness prerequisite, slow transition or app failure not distinguished",
+    "notStage5": true,
+    "archiveComparisonCompleted": false,
+    "dataLossEstablished": false,
+    "regressionAttributionEstablished": false
+  },
+  "otherFailures": [
+    "Three editor cases expect Input is waiting for storage.; actual observed Input is waiting to be saved.; later fault/durability assertions not reached.",
+    "Interrupted creation expected unavailable; observed working and later no startup gate. Its abort-receipt assertion was not reached; fault delivery is unconfirmed."
+  ],
+  "decision": "Hold further hardening under the hardened-app cold-opening stop rule; no startup/editor tests or guards changed, no extra app runs.",
+  "releaseInventory": {
+    "newRequiredFiles": 4,
+    "oldTestsReclassified": 0,
+    "newRowsRemainBlocked": true,
+    "inventoryAnd10ControlsPass": true
+  },
+  "noStage2OrStage5": true,
+  "noCommitPushMergeDeploy": true
+}

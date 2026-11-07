@@ -1,6 +1,64 @@
 import { publicationState, type DeliveryState } from './deliveryRecord';
 import { RECEIVE_POLL_MS } from './accountReceiveDriver';
 import type { InboundReadCursor } from './inboundLedger';
+import { RECEIVE_GROUP_LIMIT, RECEIVE_READ_WIDTH } from './receiveLimits';
+import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+import { INBOUND_BATCH_COUNT } from '../../account-protocol/inboundBatch';
+
+/** New indexed receipts are development-only until explicitly enabled in a build. */
+export const receiveRangeWriterEnabled = (value: unknown): boolean => value === '1';
+
+/** Disabled range writing retains the existing grouped single-entry requests. */
+export function receivePageWidths(
+  rangeWriter: boolean,
+  positions: number,
+  backlog: number,
+): readonly number[] {
+  if (!rangeWriter) return receiveReadWidths(positions, 1);
+  // Validate even a shortened backlog before splitting the existing native allowance.
+  receiveDownloadWidth(positions, backlog);
+  return receiveReadWidths(Math.min(positions, Math.max(1, backlog)), RECEIVE_READ_WIDTH);
+}
+
+/** Align a partial native turn; each production request stays at the selected four-position width. */
+export function receiveDownloadWidth(
+  positions: number,
+  backlog: number,
+  width = RECEIVE_READ_WIDTH,
+): number {
+  if (
+    !Number.isSafeInteger(positions) ||
+    positions < 1 ||
+    positions > RECEIVE_GROUP_LIMIT ||
+    !Number.isSafeInteger(backlog) ||
+    backlog < 0 ||
+    !Number.isSafeInteger(width) ||
+    width < 1 ||
+    width > READ_COUNT_LIMIT
+  )
+    throw Error('Invalid receive download width');
+  return Math.min(positions < RECEIVE_GROUP_LIMIT ? positions : width, width, Math.max(1, backlog));
+}
+
+/** A network width cannot multiply the caller's existing verified-position allowance. */
+export function receiveReadWidths(positions: number, width: number): readonly number[] {
+  if (
+    !Number.isSafeInteger(positions) ||
+    positions < 1 ||
+    positions > RECEIVE_GROUP_LIMIT ||
+    !Number.isSafeInteger(width) ||
+    width < 1 ||
+    width > READ_COUNT_LIMIT
+  )
+    throw Error('Invalid receive range plan');
+  const result: number[] = [];
+  for (let remaining = positions; remaining > 0;) {
+    const count = Math.min(remaining, width);
+    result.push(count);
+    remaining -= count;
+  }
+  return Object.freeze(result);
+}
 
 /** Called only on verified delivery state; allocation alone is not evidence of a sent request. */
 export function unresolvedSelfSubmission(s: Readonly<DeliveryState>): boolean {
@@ -22,8 +80,9 @@ export function hasPeerBacklog(
 }
 
 export const RECEIVE_QUIET_MS = 750;
+const QUIET_PREFETCH_LEAD_MS = 250;
 const MAX_QUIET_PUBLISHERS = 128;
-type QuietBasis = {
+export type QuietReceiveBasis = {
   context: object;
   publisher: string;
   position: number;
@@ -32,24 +91,39 @@ type QuietBasis = {
   startingPosition: number | undefined;
   startingLink: string | undefined;
 };
-const quietCursor = (cursor: InboundReadCursor) =>
+export const isQuietReceiveCursor = (cursor: InboundReadCursor) =>
   !cursor.conflict &&
   Number.isSafeInteger(cursor.prefix.position) &&
   cursor.prefix.position >= 0 &&
   cursor.prefix.observedThrough === cursor.prefix.position;
-const sameQuietCursor = (held: QuietBasis, cursor: InboundReadCursor) =>
-  quietCursor(cursor) &&
+export const sameQuietReceiveCursor = (held: QuietReceiveBasis, cursor: InboundReadCursor) =>
+  isQuietReceiveCursor(cursor) &&
   held.position === cursor.prefix.position &&
   held.link === cursor.prefix.link &&
   held.observedThrough === cursor.prefix.observedThrough &&
   held.startingPosition === cursor.startingPoint?.position &&
   held.startingLink === cursor.startingPoint?.link;
 
+/** Exact scheduling basis from an already authenticated projection; not a verification proof. */
+export function quietReceiveBasis(context: object, publisher: string, cursor: InboundReadCursor) {
+  return isQuietReceiveCursor(cursor)
+    ? {
+        context,
+        publisher,
+        position: cursor.prefix.position,
+        link: cursor.prefix.link,
+        observedThrough: cursor.prefix.observedThrough,
+        startingPosition: cursor.startingPoint?.position,
+        startingLink: cursor.startingPoint?.link,
+      }
+    : undefined;
+}
+
 /** Scheduling only. A selected publisher and every returned page still require fresh authority. */
 export function createReceiveSelection(now: () => number = Date.now, quietBudget = false) {
-  const quiet = new Map<string, QuietBasis & { at: number }>();
+  const quiet = new Map<string, QuietReceiveBasis & { at: number }>();
   // Opaque single-use tokens. Replacing the map fences pre-hint completions without aborting I/O.
-  let attempts = new WeakMap<object, QuietBasis>();
+  let attempts = new WeakMap<object, QuietReceiveBasis & { at: number }>();
   let lastQuietClock: number | undefined;
   const invalidateQuiet = () => {
     quiet.clear();
@@ -65,23 +139,54 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
   let previous: string | undefined;
   let productive = false;
   let checkedOwn: { publisher: string; at: number } | undefined;
+  const prefetchDue = (context: object, publisher: string, cursor: InboundReadCursor) => {
+    if (!quietBudget || !isQuietReceiveCursor(cursor)) return false;
+    const at = now();
+    observeClock(at);
+    if (!Number.isFinite(at)) return false;
+    const held = quiet.get(publisher);
+    return (
+      !held ||
+      held.context !== context ||
+      !sameQuietReceiveCursor(held, cursor) ||
+      at - held.at >= RECEIVE_QUIET_MS - QUIET_PREFETCH_LEAD_MS
+    );
+  };
   return {
     invalidateQuiet,
+    /** Speculation only. Never changes the native selector or grants a quiet proof. */
+    quietCandidates(
+      publishers: readonly string[],
+      own: string,
+      selected: string,
+      slots: number,
+      view: { context: object; cursor(publisher: string): InboundReadCursor },
+      available: (publisher: string, cursor: InboundReadCursor) => boolean,
+    ) {
+      if (!Number.isInteger(slots) || slots < 0 || slots > INBOUND_BATCH_COUNT)
+        throw Error('Invalid quiet receive slots');
+      const result: { publisher: string; cursor: InboundReadCursor }[] = [];
+      if (!quietBudget || slots === 0) return result;
+      const first = publishers.indexOf(selected);
+      if (first < 0) return result;
+      for (let step = 1; step < publishers.length && result.length < slots; step++) {
+        const publisher = publishers[(first + step) % publishers.length]!;
+        if (publisher === own || publisher === selected) continue;
+        const cursor = view.cursor(publisher);
+        if (prefetchDue(view.context, publisher, cursor) && available(publisher, cursor))
+          result.push({ publisher, cursor });
+      }
+      return result;
+    },
     captureQuiet(context: object, publisher: string, cursor: InboundReadCursor) {
-      if (!quietBudget || !quietCursor(cursor)) return undefined;
+      if (!quietBudget) return undefined;
+      const basis = quietReceiveBasis(context, publisher, cursor);
+      if (!basis) return undefined;
       const at = now();
       observeClock(at);
       if (!Number.isFinite(at)) return undefined;
       const token = {};
-      attempts.set(token, {
-        context,
-        publisher,
-        position: cursor.prefix.position,
-        link: cursor.prefix.link,
-        observedThrough: cursor.prefix.observedThrough,
-        startingPosition: cursor.startingPoint?.position,
-        startingLink: cursor.startingPoint?.link,
-      });
+      attempts.set(token, { ...basis, at });
       return token;
     },
     completedQuiet(token: object | undefined, kind: string) {
@@ -92,9 +197,15 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       attempts.delete(token);
       if (!held) return false;
       quiet.delete(held.publisher);
-      if (kind !== 'empty' || !Number.isFinite(at)) return false;
+      if (
+        kind !== 'empty' ||
+        !Number.isFinite(at) ||
+        at < held.at ||
+        at - held.at >= RECEIVE_QUIET_MS
+      )
+        return false;
       if (quiet.size >= MAX_QUIET_PUBLISHERS) quiet.delete(quiet.keys().next().value!);
-      quiet.set(held.publisher, { ...held, at });
+      quiet.set(held.publisher, held);
       return true;
     },
     reset() {
@@ -107,7 +218,7 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       checkedOwn = undefined;
     },
     capacity(publisher: string) {
-      return previous === publisher ? 4 - streak : 4;
+      return previous === publisher ? RECEIVE_GROUP_LIMIT - streak : RECEIVE_GROUP_LIMIT;
     },
     next(
       publishers: readonly string[],
@@ -150,7 +261,7 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
           )
             break;
           const cursor = view.peers?.get(publisher) ?? view.cursor?.(publisher);
-          if (!cursor || !sameQuietCursor(held, cursor)) break;
+          if (!cursor || !sameQuietReceiveCursor(held, cursor)) break;
           publisher = pick();
         }
       }
@@ -161,17 +272,28 @@ export function createReceiveSelection(now: () => number = Date.now, quietBudget
       publisher: string,
       progress: boolean,
       verifiedOwn = false,
+      positions = 1,
     ) {
       const index = publishers.indexOf(publisher);
       if (index < 0) return;
+      if (
+        !Number.isSafeInteger(positions) ||
+        positions < 0 ||
+        positions > RECEIVE_GROUP_LIMIT ||
+        (progress &&
+          (positions < 1 ||
+            positions >
+              (previous === publisher ? RECEIVE_GROUP_LIMIT - streak : RECEIVE_GROUP_LIMIT)))
+      )
+        throw Error('Invalid receive position credit');
       if (quietBudget && progress) quiet.delete(publisher);
       if (verifiedOwn) checkedOwn = { publisher, at: now() };
-      streak = progress ? (previous === publisher ? streak + 1 : 1) : 0;
+      streak = progress ? (previous === publisher ? streak + positions : positions) : 0;
       previous = publisher;
       productive = progress;
-      // Four useful pages, then let other publishers reconcile. Groups consume this
-      // same allowance; the outer scheduler yields to input and due sending between groups.
-      if (progress && streak < 4) next = index;
+      // Eight verified positions, then let other publishers reconcile. Network pages and ranges
+      // consume the same allowance; input and due sending still get their existing group yield.
+      if (progress && streak < RECEIVE_GROUP_LIMIT) next = index;
       else {
         next = index + 1;
         streak = 0;

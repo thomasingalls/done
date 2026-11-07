@@ -1,0 +1,100 @@
+import{test,expect,chromium}from'@playwright/test';import{readFileSync,writeFileSync,mkdirSync,cpSync}from'node:fs';import{join}from'node:path';
+import{start,stop}from'./runtime.mjs';import{seedProfile}from'./seed-profile';import{restoreAuthenticator,openSaved}from'./devices';import{exported,archiveIdentity}from'./common';
+const root='/private/tmp/done-worker-owner-20261028',out=process.env['FAIR_OUT']!,fixture=JSON.parse(readFileSync('/private/tmp/done-envelope-projection-20261028/prepared-fixture/fixture.json','utf8')),account=fixture.accounts.find((v:any)=>v.label==='H'),saved=account.actors[0];
+const marker='\nWorker ownership feasibility sample.';
+test('real worker owns stored account, verified writes, Undo, lifetime and cold reopen',async()=>{
+ mkdirSync(out,{recursive:true,mode:0o700});let ctx:any;const result:any={outcome:'starting',guards:{},scope:'Manual real account owner in worker; no activated UI or network pipeline'};
+ try{
+ cpSync(fixture.state,out+'/state',{recursive:true,errorOnExist:true});await start(out+'/state',root+'/combined-dist');
+ ctx=await chromium.launchPersistentContext(out+'/private-profile',{executablePath:process.env['CHROMIUM_PATH']!,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000},headless:true});await seedProfile(ctx,saved.storage);const p=ctx.pages()[0]??await ctx.newPage();await restoreAuthenticator(p,saved.credentials);const errors:string[]=[];p.on('pageerror',(e:any)=>errors.push(e.message));p.on('console',(m:any)=>{if(m.type()==='error')console.log('LAB console:',m.text())});
+ await p.goto('/worker-lab/index.html');await p.waitForFunction(()=>(window as any).__workerLab?.version===1);expect(await p.evaluate(()=>crossOriginIsolated)).toBe(true);
+ result.open=await p.evaluate(async code=>{const lab=(window as any).__workerLab;const spec=await lab.metadata();(window as any).spec={...spec,code};const b=lab.create();(window as any).b=b;return b.send('open',(window as any).spec)},saved.code);
+ const entries=Object.fromEntries(result.open.entries.map((v:any)=>[v.path,v.content]));expect(entries).toEqual(account.archive);result.guards.exactStoredArchive=true;
+ const before=result.open.master;
+ result.append=await p.evaluate(text=>(window as any).b.send('append',{text}),marker);expect(result.append.master).toBe(before+marker);
+ const trace=await p.evaluate(()=>(window as any).b.trace);const write=trace.storage.filter((v:any)=>v.written).at(-1),reply=trace.replies.filter((v:any)=>v.operation==='append').at(-1);expect(write).toBeTruthy();expect(reply.at).toBeGreaterThanOrEqual(write.end);result.guards.actualWindowJournalBeforeReply=true;
+ result.flushed=await p.evaluate(()=>(window as any).b.send('flush'));expect(result.flushed.master).toBe(before+marker);
+ const undone=await p.evaluate(()=>(window as any).b.send('undo'));expect(undone.master).toBe(before);const redone=await p.evaluate(()=>(window as any).b.send('redo'));expect(redone.master).toBe(before+marker);result.guards.undoRedo=true;
+ const slotId=await p.evaluate(()=>(window as any).spec.slotId);result.permit=await p.evaluate(async slot=>{const name='done/slot-writer/'+JSON.stringify(slot);return(await navigator.locks.query()).held?.filter(v=>v.name===name).length},slotId);expect(result.permit).toBe(2);
+ await p.evaluate(slot=>{(window as any).exclusiveGranted=false;void navigator.locks.request('done/slot-writer/'+JSON.stringify(slot),{mode:'exclusive'},()=>{(window as any).exclusiveGranted=true})},slotId);expect(await p.evaluate(()=>(window as any).exclusiveGranted)).toBe(false);
+ await p.locator('#input').focus();const began=Date.now();const probe=p.evaluate(()=>(window as any).b.send('probe',{count:16}));await p.keyboard.type('The page can keep taking independent native input.',{delay:15});result.probe=await probe;result.input={durationMs:Date.now()-began,value:await p.locator('#input').inputValue()};expect(result.input.value).toBe('The page can keep taking independent native input.');result.guards.independentNativeInput=true;
+ result.closed=await p.evaluate(()=>(window as any).b.close());expect(result.closed.nonzeroAfterCleanup).toBe(0);expect(result.closed.rawKeyBuffers).toBeGreaterThan(0);await expect.poll(()=>p.evaluate(()=>(window as any).exclusiveGranted)).toBe(true);result.guards.keysClearedAndPermitReleased=true;result.trace=await p.evaluate(()=>(window as any).__workerLab.trace());
+ // Same persisted browser profile, actual shipping frontend and fresh passkey opening; no reinjection.
+ await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await openSaved(p,saved.code);const archive=await exported(p);expect(archive).toEqual({...account.archive,'master.md':before+marker});result.archive=archiveIdentity(archive);result.guards.shippingReaderReopenExact=true;
+ expect(errors).toEqual([]);result.outcome='passed';
+ }catch(error){result.outcome='failed';result.error=String(error);throw error;}finally{if(ctx){result.final=await ctx.pages()[0]?.evaluate(()=>(window as any).__workerLab?.trace()).catch(()=>null);await ctx.close().catch(()=>{});}writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');await stop();}
+});
+
+async function laboratory(name:string,work:(p:any,result:any)=>Promise<void>){
+ const d=join(out,name);mkdirSync(d,{recursive:true,mode:0o700});process.env['FAIR_OUT']=d;let ctx:any;const result:any={outcome:'starting',guards:{}};
+ try{cpSync(fixture.state,d+'/state',{recursive:true,errorOnExist:true});await start(d+'/state',root+'/combined-dist');ctx=await chromium.launchPersistentContext(d+'/private-profile',{executablePath:process.env['CHROMIUM_PATH']!,baseURL:'http://localhost:53781',viewport:{width:1440,height:1000},headless:true});await seedProfile(ctx,saved.storage);const p=ctx.pages()[0]??await ctx.newPage();await restoreAuthenticator(p,saved.credentials);await p.goto('/worker-lab/index.html');await p.waitForFunction(()=>(window as any).__workerLab?.version===1);await p.evaluate(async code=>{const l=(window as any).__workerLab;(window as any).spec={...await l.metadata(),code};(window as any).b=l.create()},saved.code);await work(p,result);result.outcome='passed';}
+ catch(error){result.outcome='failed';result.error=String(error);throw error;}
+ finally{if(ctx){result.trace=await ctx.pages()[0]?.evaluate(()=>(window as any).__workerLab?.trace()).catch(()=>null);await ctx.close().catch(()=>{});}writeFileSync(join(d,'result.json'),JSON.stringify(result,null,2)+'\n');await stop();process.env['FAIR_OUT']=out;}
+}
+const openWorker=(p:any)=>p.evaluate(()=>(window as any).b.send('open',(window as any).spec));
+const closeWorker=(p:any)=>p.evaluate(()=>(window as any).b.close());
+const noPermit=async(p:any)=>{await expect.poll(()=>p.evaluate(async()=>{const name='done/slot-writer/'+JSON.stringify((window as any).spec.slotId);return(await navigator.locks.query()).held?.filter(v=>v.name===name).length})).toBe(0)};
+async function reopenWorker(p:any){return p.evaluate(async()=>{const l=(window as any).__workerLab;l.fault('none');(window as any).b=l.create();return(window as any).b.send('open',(window as any).spec)})}
+
+test('worker rejects a genuine passkey assertion whose signature is altered',async()=>laboratory('bad-passkey',async(p,r)=>{
+ await p.evaluate(()=>(window as any).__workerLab.fault('bad-passkey'));await expect(openWorker(p)).rejects.toThrow('worker-operation-refused');r.closed=await closeWorker(p);await noPermit(p);r.guards.refusedAndPermitReleased=true;
+ const reopened=await reopenWorker(p);expect(reopened.master).toBe(account.archive['master.md']);await closeWorker(p);r.guards.freshValidPasskeyReopensExact=true;
+}));
+
+test('worker wrong local factor refuses without opening an account or retaining a permit',async()=>laboratory('wrong-code',async(p,r)=>{
+ await p.evaluate(()=>(window as any).spec.code='wrong-factor-for-disposable-worker-test');await expect(openWorker(p)).rejects.toThrow('worker-operation-refused');await closeWorker(p);await noPermit(p);r.guards.factorRefusedAndPermitReleased=true;
+}));
+
+test('closing during passkey initialization invalidates ready and drains the native permit',async()=>laboratory('initialization-cancel',async(p,r)=>{
+ await p.evaluate(()=>{(window as any).__workerLab.fault('hold-passkey');(window as any).pendingOpen=(window as any).b.send('open',(window as any).spec).then(()=> 'unexpected-ready',()=> 'closed')});await p.waitForFunction(()=>(window as any).b.trace.faults.some((v:any)=>v.kind==='hold-passkey'));
+ r.closed=await closeWorker(p);expect(await p.evaluate(()=>(window as any).pendingOpen)).toBe('closed');await noPermit(p);await expect(p.evaluate(()=>(window as any).b.send('snapshot'))).rejects.toThrow('inactive-channel');r.guards.noLateReadyAndPermitReleased=true;
+}));
+
+for(const mode of ['before-write','after-write','hard-loss']as const)test('journal cancellation boundary '+mode,async()=>laboratory(mode,async(p,r)=>{
+ const before=await openWorker(p);await p.evaluate(fault=>{(window as any).__workerLab.fault(fault);(window as any).pendingAppend=(window as any).b.send('append',{text:'\nUncertain journal acknowledgment.'}).then(()=> 'unexpected-accepted',()=> 'closed-uncertain')},mode==='before-write'?'before-write':'after-write');await p.waitForFunction(()=>(window as any).b.heldStorage);
+ if(mode==='hard-loss'){await p.evaluate(()=>(window as any).b.terminate());r.guards.noGracefulCleanupCredit=true;}
+ else{r.closed=await closeWorker(p);expect(r.closed.nonzeroAfterCleanup).toBe(0);}
+ expect(await p.evaluate(()=>(window as any).pendingAppend)).toBe('closed-uncertain');await noPermit(p);const after=await reopenWorker(p);expect(after.master).toBe(before.master+(mode==='before-write'?'':'\nUncertain journal acknowledgment.'));expect(after.master.split('Uncertain journal acknowledgment.').length-1).toBe(mode==='before-write'?0:1);r.guards.recoveryMatchesActualJournalBoundaryExactlyOnce=true;await closeWorker(p);
+}));
+
+test('native journal quota refusal never creates a successful worker acknowledgment',async()=>laboratory('quota',async(p,r)=>{
+ const before=await openWorker(p);await p.evaluate(()=>{(window as any).__workerLab.fault('quota');(window as any).pendingAppend=(window as any).b.send('append',{text:' Must not be accepted'}).then(()=> 'unexpected-accepted',()=> 'closed-uncertain')});await p.waitForFunction(()=>(window as any).b.trace.storage.some((v:any)=>v.op==='set'&&v.refused));await closeWorker(p);expect(await p.evaluate(()=>(window as any).pendingAppend)).toBe('closed-uncertain');await noPermit(p);const after=await reopenWorker(p);expect(after.master).toBe(before.master);await closeWorker(p);r.guards.quotaPreservesWritingAndNeverAcknowledges=true;
+}));
+
+test('retirement notification invalidates worker owner and releases its actual slot permit',async()=>laboratory('retirement',async(p,r)=>{
+ await openWorker(p);await p.evaluate(()=>{const channel=new BroadcastChannel('done/slot-lifecycle');channel.postMessage({kind:'retire',slotId:(window as any).spec.slotId});channel.close()});await p.waitForFunction(()=>(window as any).b.gate.phase==='closed');await noPermit(p);await expect(p.evaluate(()=>(window as any).b.send('snapshot'))).rejects.toThrow('inactive-channel');r.guards.retirementClosesWithoutNewEffects=true;
+}));
+
+
+test('a duplicate open refuses before acquiring another reservation',async()=>laboratory('duplicate-open',async(p,r)=>{
+ await p.evaluate(()=>{(window as any).__workerLab.fault('hold-passkey');(window as any).firstOpen=(window as any).b.send('open',(window as any).spec).then(()=> 'unexpected-ready',()=> 'closed')});await p.waitForFunction(()=>(window as any).b.trace.faults.some((v:any)=>v.kind==='hold-passkey'));
+ await expect(openWorker(p)).rejects.toThrow('invalid-phase');await closeWorker(p);expect(await p.evaluate(()=>(window as any).firstOpen)).toBe('closed');await noPermit(p);r.guards.duplicateCannotLeakAReservation=true;
+}));
+
+test('a second supervisor waits on the reservation and can cancel without disturbing the owner',async()=>laboratory('reservation-cancel',async(p,r)=>{
+ await openWorker(p);await p.evaluate(()=>{const old=(window as any).b;(window as any).old=old;(window as any).b=(window as any).__workerLab.create();(window as any).nextOpen=(window as any).b.send('open',(window as any).spec).then(()=> 'unexpected-ready',()=> 'closed')});
+ await expect.poll(()=>p.evaluate(async()=>{const name='done/account-worker-reservation/'+JSON.stringify((window as any).spec.slotId);return(await navigator.locks.query()).pending?.filter(v=>v.name===name).length})).toBe(1);
+ await expect.poll(()=>p.evaluate(()=>(window as any).b.trace.mainMessages.length)).toBe(0);await closeWorker(p);expect(await p.evaluate(()=>(window as any).nextOpen)).toBe('closed');
+ expect((await p.evaluate(()=>(window as any).old.send('snapshot'))).master).toBe(account.archive['master.md']);await p.evaluate(()=>(window as any).old.close());await noPermit(p);r.guards.cancelingQueuedSupervisorPreservesCurrentOwner=true;
+}));
+
+test('an orphaned worker blocks the new supervisor at the exclusive old-name barrier',async()=>laboratory('orphan-barrier',async(p,r)=>{
+ await openWorker(p);await p.evaluate(async()=>{(window as any).old=(window as any).b;await(window as any).old.loseSupervisorForTest();(window as any).b=(window as any).__workerLab.create();(window as any).nextOpen=(window as any).b.send('open',(window as any).spec)});
+ await expect.poll(()=>p.evaluate(async()=>{const name='done/slot-writer/'+JSON.stringify((window as any).spec.slotId),q=await navigator.locks.query();return{held:q.held?.filter(v=>v.name===name).map(v=>v.mode),pending:q.pending?.filter(v=>v.name===name).map(v=>v.mode)}})).toEqual({held:['shared'],pending:['exclusive']});
+ expect(await p.evaluate(()=>(window as any).b.trace.mainMessages.length)).toBe(0);await p.evaluate(()=>(window as any).old.terminate());const opened=await p.evaluate(()=>(window as any).nextOpen);expect(opened.master).toBe(account.archive['master.md']);await closeWorker(p);await noPermit(p);r.guards.oldWorkerMustExitBeforeNewInitialization=true;
+}));
+
+test('a real page navigation retires the old incarnation and fresh authentication reopens exactly',async()=>laboratory('page-navigation',async(p,r)=>{
+ const before=await openWorker(p),old=await p.evaluate(()=>(window as any).b.owner);await p.evaluate(()=>(window as any).b.send('append',{text:'\nPage navigation journal boundary.'}));await p.goto('/worker-lab/index.html');await p.waitForFunction(()=>(window as any).__workerLab?.version===1);
+ await p.evaluate(async code=>{const l=(window as any).__workerLab;(window as any).spec={...await l.metadata(),code};(window as any).b=l.create()},saved.code);expect(await p.evaluate(()=>(window as any).b.owner)).not.toBe(old);const after=await openWorker(p);expect(after.master).toBe(before.master+'\nPage navigation journal boundary.');await closeWorker(p);await noPermit(p);r.guards.newIncarnationAfterRealNavigationPreservesJournal=true;
+}));
+
+
+test('old-exclusive interleaving refuses cohort join without queueing or stealing',async()=>laboratory('old-exclusive-interleaving',async(p,r)=>{
+ await p.evaluate(()=>{(window as any).__workerLab.fault('hold-worker-open');(window as any).pendingOpen=(window as any).b.send('open',(window as any).spec).then(()=> 'opened',()=> 'refused')});await p.waitForFunction(()=>(window as any).b.heldOpen);
+ await p.evaluate(()=>{(window as any).oldExclusiveGranted=false;(window as any).oldExclusiveDone=navigator.locks.request('done/slot-writer/'+JSON.stringify((window as any).spec.slotId),{mode:'exclusive'},async()=>{(window as any).oldExclusiveGranted=true;await new Promise(resolve=>(window as any).releaseOld=resolve)});(window as any).b.resumeOpenForTest()});
+ expect(await p.evaluate(()=>(window as any).pendingOpen)).toBe('refused');
+ await expect.poll(()=>p.evaluate(async()=>{const name='done/slot-writer/'+JSON.stringify((window as any).spec.slotId);return(await navigator.locks.query()).pending?.filter(v=>v.name===name).map(v=>v.mode)})).toEqual(['exclusive']);
+ r.nativeInterleaving=await p.evaluate(async()=>navigator.locks.query());r.guards.sharedJoinRefusesRatherThanWaits=true;
+ await closeWorker(p);expect(await p.evaluate(()=>(window as any).pendingOpen)).toBe('refused');await p.waitForFunction(()=>(window as any).oldExclusiveGranted);await p.evaluate(async()=>{(window as any).releaseOld();await(window as any).oldExclusiveDone});await noPermit(p);
+}));

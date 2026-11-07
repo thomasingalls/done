@@ -1,0 +1,85 @@
+{
+  "phase": 344,
+  "casesPassed": 2,
+  "caseDeadlinesMs": [
+    240000,
+    240000
+  ],
+  "caseDurationMs": [
+    91444.688417,
+    104456.691917
+  ],
+  "originalAssertionsAndDeadlinesRetained": true,
+  "historicalRevision": "4bb09042f37f68ec31f0d82587af608f599eb096",
+  "independentCompleteSourceFilesChecked": 168,
+  "applicationSourceChanged": false,
+  "adapterBoundaries": "Existing flat historical pins and aggregate blocks remain; no aggregate qualification credit inferred from native repair.",
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-historical-writer-attempt1/child.log",
+      "artifact": "objects/d8bb39f41d527fade40725c7dff3afad49b55657e120558771ffb0738920aa76.gz",
+      "sha256": "d8bb39f41d527fade40725c7dff3afad49b55657e120558771ffb0738920aa76",
+      "bytes": 1032
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-historical-writer-attempt1/run.json",
+      "artifact": "objects/9e3beb2de84a1f78353b35d54dd0374327a02c1a7d9684e0767cc789e37c9ee5.gz",
+      "sha256": "9e3beb2de84a1f78353b35d54dd0374327a02c1a7d9684e0767cc789e37c9ee5",
+      "bytes": 531
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-historical-writer-attempt1/host-load.jsonl",
+      "artifact": "objects/74561d9e5a5c77e299fa5f357a9b16dded83ce869fe0c3f57f33b2c0d2d45e5b.gz",
+      "sha256": "74561d9e5a5c77e299fa5f357a9b16dded83ce869fe0c3f57f33b2c0d2d45e5b",
+      "bytes": 25574
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-independent-source-proof.json",
+      "artifact": "objects/d14af82259e06ee66d1a4269eb1bd2dacdee200984528a35243d2bc896b853f8.gz",
+      "sha256": "d14af82259e06ee66d1a4269eb1bd2dacdee200984528a35243d2bc896b853f8",
+      "bytes": 599
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-inventory-record.log",
+      "artifact": "objects/fb46f771ec054dc1098ed8947db9b0e28712ef9a5e81457535975d334bfc660e.gz",
+      "sha256": "fb46f771ec054dc1098ed8947db9b0e28712ef9a5e81457535975d334bfc660e",
+      "bytes": 324
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-inventory-controls.log",
+      "artifact": "objects/0a814a58e3f97299f757360359cdd3183a3f9200cc7c4b8313b66195e838344d.gz",
+      "sha256": "0a814a58e3f97299f757360359cdd3183a3f9200cc7c4b8313b66195e838344d",
+      "bytes": 1092
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-adapter-tests.log",
+      "artifact": "objects/5d52362fcec2c5a403e84b205d1669273338af265fa8cb4fc834cae0cd6eb76d.gz",
+      "sha256": "5d52362fcec2c5a403e84b205d1669273338af265fa8cb4fc834cae0cd6eb76d",
+      "bytes": 625
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-format.log",
+      "artifact": "objects/227a16ef5acdf350057dedc2a0f13e00acd217b568a253acd676ae7532615fd4.gz",
+      "sha256": "227a16ef5acdf350057dedc2a0f13e00acd217b568a253acd676ae7532615fd4",
+      "bytes": 112
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-lint.log",
+      "artifact": "objects/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.gz",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/344-checks.json",
+      "artifact": "objects/92a7e0c3e136ea5a0f702c5923a825708d2e92823c0731d052e8fefe6d997afe.gz",
+      "sha256": "92a7e0c3e136ea5a0f702c5923a825708d2e92823c0731d052e8fefe6d997afe",
+      "bytes": 1361
+    },
+    {
+      "original": "/Users/thomasingalls/.codex/worktrees/7fda/done/test-results/historical-bundles/4bb09042-Rfub9S/identity.json",
+      "artifact": "objects/49c85177029744ed4b634274e0eafb90e943b9343dd415eeaa9f7cc99fa2cd7c.gz",
+      "sha256": "49c85177029744ed4b634274e0eafb90e943b9343dd415eeaa9f7cc99fa2cd7c",
+      "bytes": 34656
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "oldConstantExactlyLiveWriterActor2": true,
+  "freshLiveWriterPublisherSha256": "58e75af96d661cc3477bdefaab170995652d998c4780660633960db5b1888246",
+  "oldAssertionCursorRetained": 1,
+  "noAuthorityOrStateMutation": true
+}

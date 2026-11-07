@@ -1,0 +1,3480 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "profileDurationMs": 30668.567,
+  "captureLagAfter30Ms": 565.26953125,
+  "sampledSelf": [
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "(idle)",
+      "selfMs": 18078.612,
+      "percent": 58.949695973273386
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 8,
+      "column": 6,
+      "name": null,
+      "generatedName": "y",
+      "selfMs": 3829.772,
+      "percent": 12.487899792691783
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 104,
+      "column": 10,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1144.289,
+      "percent": 3.7312316153231806
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "(garbage collector)",
+      "selfMs": 550.766,
+      "percent": 1.7959060271007472
+    },
+    {
+      "source": "../../source/account-protocol/recovery.ts",
+      "line": 23,
+      "column": 13,
+      "name": null,
+      "generatedName": "i",
+      "selfMs": 540.318,
+      "percent": 1.761837790914874
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 115,
+      "column": 4,
+      "name": null,
+      "generatedName": "select",
+      "selfMs": 441.368,
+      "percent": 1.4391873343114907
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 38,
+      "column": 13,
+      "name": null,
+      "generatedName": "H",
+      "selfMs": 397.835,
+      "percent": 1.2972374371178064
+    },
+    {
+      "source": "../../source/account-protocol/recovery.ts",
+      "line": 16,
+      "column": 20,
+      "name": null,
+      "generatedName": "r",
+      "selfMs": 310.208,
+      "percent": 1.011508366266016
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "verify",
+      "selfMs": 293.779,
+      "percent": 0.9579376300200637
+    },
+    {
+      "source": "../../source/src/crdt/accountAuthority.ts",
+      "line": 8,
+      "column": 6,
+      "name": null,
+      "generatedName": "Su",
+      "selfMs": 250.66,
+      "percent": 0.8173376801637596
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 7,
+      "column": 2,
+      "name": null,
+      "generatedName": "t",
+      "selfMs": 238.064,
+      "percent": 0.7762653693868399
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "(program)",
+      "selfMs": 224.793,
+      "percent": 0.732992057516365
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "encode",
+      "selfMs": 187.116,
+      "percent": 0.6101370675876568
+    },
+    {
+      "source": "../../source/src/crdt/accountAuthority.ts",
+      "line": 36,
+      "column": 6,
+      "name": null,
+      "generatedName": "Cu",
+      "selfMs": 172.368,
+      "percent": 0.562047639250247
+    },
+    {
+      "source": "../../source/src/crdt/accountWorkerRuntime.ts",
+      "line": 45,
+      "column": 8,
+      "name": null,
+      "generatedName": "f",
+      "selfMs": 153.604,
+      "percent": 0.5008630695917743
+    },
+    {
+      "source": "../../source/src/crdt/verificationOwnership.ts",
+      "line": 2,
+      "column": 9,
+      "name": null,
+      "generatedName": "m",
+      "selfMs": 152.87,
+      "percent": 0.4984696846989306
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "transaction",
+      "selfMs": 126.657,
+      "percent": 0.41299584519469124
+    },
+    {
+      "source": "../../source/src/crdt/accountAuthority.ts",
+      "line": 30,
+      "column": 7,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 108.395,
+      "percent": 0.3534481682013514
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 146,
+      "column": 10,
+      "name": null,
+      "generatedName": "verify",
+      "selfMs": 97.742,
+      "percent": 0.31871147983150966
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "",
+      "selfMs": 95.955,
+      "percent": 0.31288453323271986
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 11,
+      "column": 2,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 95.313,
+      "percent": 0.31079113663707186
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "now",
+      "selfMs": 91.949,
+      "percent": 0.29982199933526504
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "get",
+      "selfMs": 91.387,
+      "percent": 0.2979894621284829
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 144,
+      "column": 16,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 80.717,
+      "percent": 0.2631973411385071
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "open",
+      "selfMs": 77.675,
+      "percent": 0.25327816287688515
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 34,
+      "column": 13,
+      "name": null,
+      "generatedName": "V",
+      "selfMs": 74.345,
+      "percent": 0.24241989081534632
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "fetch",
+      "selfMs": 70.818,
+      "percent": 0.23091925250872553
+    },
+    {
+      "source": "../../source/account-protocol/recovery.ts",
+      "line": 37,
+      "column": 28,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 62.93,
+      "percent": 0.2051985167665579
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 43,
+      "column": 16,
+      "name": null,
+      "generatedName": "U",
+      "selfMs": 61.027,
+      "percent": 0.19899332405391273
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "continue",
+      "selfMs": 60.676,
+      "percent": 0.19784880348526404
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "structuredClone",
+      "selfMs": 52.943,
+      "percent": 0.17263348280902388
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "decode",
+      "selfMs": 52.447,
+      "percent": 0.17101615459805597
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "get result",
+      "selfMs": 49.241,
+      "percent": 0.16056221458925912
+    },
+    {
+      "source": "../../source/src/crdt/workerChannel.ts",
+      "line": 120,
+      "column": 19,
+      "name": null,
+      "generatedName": "g",
+      "selfMs": 44.032,
+      "percent": 0.1435770076317349
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "removeEventListener",
+      "selfMs": 41.154,
+      "percent": 0.13419259111728785
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 89,
+      "column": 6,
+      "name": null,
+      "generatedName": "h",
+      "selfMs": 41.053,
+      "percent": 0.13386325613884476
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 79,
+      "column": 6,
+      "name": null,
+      "generatedName": "m",
+      "selfMs": 40.844,
+      "percent": 0.13318176098543286
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 149,
+      "column": 2,
+      "name": null,
+      "generatedName": "text",
+      "selfMs": 39.836,
+      "percent": 0.1298949326857238
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "digest",
+      "selfMs": 39.723,
+      "percent": 0.12952646879895088
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "postMessage",
+      "selfMs": 39.298,
+      "percent": 0.12814065329560131
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 533,
+      "column": 10,
+      "name": null,
+      "generatedName": "validate",
+      "selfMs": 38.712,
+      "percent": 0.12622985827215938
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "read",
+      "selfMs": 35.659,
+      "percent": 0.11627481184456837
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 140,
+      "column": 17,
+      "name": null,
+      "generatedName": "step",
+      "selfMs": 35.243,
+      "percent": 0.11491834302246622
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "importKey",
+      "selfMs": 34.687,
+      "percent": 0.11310537026984893
+    },
+    {
+      "source": "../../source/src/crdt/rangeLab.ts",
+      "line": 8,
+      "column": 23,
+      "name": null,
+      "generatedName": "o",
+      "selfMs": 34.423,
+      "percent": 0.11224453428659181
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "openCursor",
+      "selfMs": 33.749,
+      "percent": 0.11004679393539746
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "URL",
+      "selfMs": 33.733,
+      "percent": 0.1099946220576243
+    },
+    {
+      "source": "../../source/src/crdt/accountAuthority.ts",
+      "line": 17,
+      "column": 8,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 32.503,
+      "percent": 0.10598390895381266
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 40,
+      "column": 14,
+      "name": null,
+      "generatedName": "o.onsuccess",
+      "selfMs": 31.8,
+      "percent": 0.10369160707415447
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "TextEncoder",
+      "selfMs": 31.216,
+      "percent": 0.10178733353543414
+    },
+    {
+      "source": "../../source/src/account/privateDeliveryHttp.ts",
+      "line": 25,
+      "column": 22,
+      "name": null,
+      "generatedName": "O",
+      "selfMs": 29.617,
+      "percent": 0.09657340650047902
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 49,
+      "column": 6,
+      "name": null,
+      "generatedName": "q",
+      "selfMs": 28.606,
+      "percent": 0.0932767959736875
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 381,
+      "column": 50,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 27.038,
+      "percent": 0.08816395195191788
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 134,
+      "column": 16,
+      "name": null,
+      "generatedName": "It",
+      "selfMs": 26.706,
+      "percent": 0.08708138548812482
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 76,
+      "column": 14,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 26.338,
+      "percent": 0.08588143229934214
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 24,
+      "column": 20,
+      "name": null,
+      "generatedName": "x",
+      "selfMs": 25.565,
+      "percent": 0.08336087845442637
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 52,
+      "column": 22,
+      "name": null,
+      "generatedName": "C",
+      "selfMs": 24.617,
+      "percent": 0.08026969469636669
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 530,
+      "column": 22,
+      "name": null,
+      "generatedName": "Ko",
+      "selfMs": 24.323,
+      "percent": 0.07931103644228488
+    },
+    {
+      "source": "../../source/src/crdt/verificationOwnership.ts",
+      "line": 19,
+      "column": 24,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 24.006,
+      "percent": 0.07827738111390416
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "count",
+      "selfMs": 23.024,
+      "percent": 0.07507533211557649
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 50,
+      "column": 23,
+      "name": null,
+      "generatedName": "kt",
+      "selfMs": 21.627,
+      "percent": 0.0705200750375075
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 175,
+      "column": 13,
+      "name": null,
+      "generatedName": "w",
+      "selfMs": 21.216,
+      "percent": 0.06917990992720946
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "openKeyCursor",
+      "selfMs": 20.867,
+      "percent": 0.06804191084328243
+    },
+    {
+      "source": "../../source/src/crdt/accountWorkerRuntime.ts",
+      "line": 141,
+      "column": 16,
+      "name": null,
+      "generatedName": "C",
+      "selfMs": 20.624,
+      "percent": 0.06724955044960257
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 397,
+      "column": 15,
+      "name": null,
+      "generatedName": "Na",
+      "selfMs": 20.355,
+      "percent": 0.06637241075454132
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 255,
+      "column": 13,
+      "name": null,
+      "generatedName": "D",
+      "selfMs": 20.007,
+      "percent": 0.06523767241297511
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 21,
+      "column": 13,
+      "name": null,
+      "generatedName": "b",
+      "selfMs": 19.934,
+      "percent": 0.06499963822063506
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 59,
+      "column": 13,
+      "name": null,
+      "generatedName": "dr",
+      "selfMs": 19.295,
+      "percent": 0.06291602385206951
+    },
+    {
+      "source": "",
+      "line": 186,
+      "column": 23,
+      "name": "innerSerialize",
+      "selfMs": 18.958,
+      "percent": 0.06181715367647234
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 124,
+      "column": 9,
+      "name": null,
+      "generatedName": "Da",
+      "selfMs": 18.164,
+      "percent": 0.0592281242419793
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "objectStore",
+      "selfMs": 17.678,
+      "percent": 0.05764340345461958
+    },
+    {
+      "source": "../../source/src/crdt/inboundRecord.ts",
+      "line": 107,
+      "column": 16,
+      "name": null,
+      "generatedName": "ca",
+      "selfMs": 17.501,
+      "percent": 0.057066252056754
+    },
+    {
+      "source": "../../source/src/account/scopedTransport.ts",
+      "line": 159,
+      "column": 8,
+      "name": "#post",
+      "generatedName": "#s",
+      "selfMs": 17.416,
+      "percent": 0.056789088956084095
+    },
+    {
+      "source": "../../source/src/crdt/verificationMemo.ts",
+      "line": 20,
+      "column": 10,
+      "name": null,
+      "generatedName": "check",
+      "selfMs": 16.851,
+      "percent": 0.054946769522219406
+    },
+    {
+      "source": "../../source/src/crdt/rangeLab.ts",
+      "line": 3,
+      "column": 22,
+      "name": null,
+      "generatedName": "t",
+      "selfMs": 16.211,
+      "percent": 0.052859894411293025
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "TextDecoder",
+      "selfMs": 16.006,
+      "percent": 0.05219144222732441
+    },
+    {
+      "source": "../../source/src/crdt/verificationOwnership.ts",
+      "line": 21,
+      "column": 24,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 15.917,
+      "percent": 0.05190123615721121
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "addEventListener",
+      "selfMs": 15.792,
+      "percent": 0.051493643362108404
+    },
+    {
+      "source": "../../source/src/crdt/contentDatabase.ts",
+      "line": 88,
+      "column": 6,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 15.77,
+      "percent": 0.051421907030170314
+    },
+    {
+      "source": "../../source/src/crdt/contentDatabase.ts",
+      "line": 108,
+      "column": 7,
+      "name": null,
+      "generatedName": "d.oncomplete",
+      "selfMs": 15.697,
+      "percent": 0.05118387283783027
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "sign",
+      "selfMs": 15.022,
+      "percent": 0.048982871744275104
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 146,
+      "column": 25,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 14.654,
+      "percent": 0.04778291855549244
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 575,
+      "column": 17,
+      "name": null,
+      "generatedName": "k",
+      "selfMs": 14.257,
+      "percent": 0.04648840383824592
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 120,
+      "column": 6,
+      "name": null,
+      "generatedName": "Ea",
+      "selfMs": 14.22,
+      "percent": 0.046367756370895484
+    },
+    {
+      "source": "../../source/src/crdt/workerChannel.ts",
+      "line": 11,
+      "column": 16,
+      "name": null,
+      "generatedName": "t",
+      "selfMs": 13.773,
+      "percent": 0.044910204535607845
+    },
+    {
+      "source": "../../source/src/crdt/rangeLab.ts",
+      "line": 5,
+      "column": 25,
+      "name": null,
+      "generatedName": "r",
+      "selfMs": 13.609,
+      "percent": 0.04437544278843296
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 777,
+      "column": 17,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 13.39,
+      "percent": 0.04366134021141284
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "abort",
+      "selfMs": 13.151,
+      "percent": 0.04288202278717627
+    },
+    {
+      "source": "../../source/account-protocol/recovery.ts",
+      "line": 36,
+      "column": 13,
+      "name": null,
+      "generatedName": "a",
+      "selfMs": 12.785,
+      "percent": 0.04168859108311525
+    },
+    {
+      "source": "../../source/src/crdt/workerChannel.ts",
+      "line": 265,
+      "column": 8,
+      "name": null,
+      "generatedName": "get closed",
+      "selfMs": 12.605,
+      "percent": 0.0411016574581672
+    },
+    {
+      "source": "../../source/src/crdt/incrementalAccountLedger.ts",
+      "line": 229,
+      "column": 22,
+      "name": null,
+      "generatedName": "L",
+      "selfMs": 12.472,
+      "percent": 0.040667978724177815
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 130,
+      "column": 10,
+      "name": null,
+      "generatedName": "a",
+      "selfMs": 12.332,
+      "percent": 0.040211474793662674
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 695,
+      "column": 24,
+      "name": null,
+      "generatedName": "A",
+      "selfMs": 12.329,
+      "percent": 0.040201692566580204
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "encrypt",
+      "selfMs": 11.868,
+      "percent": 0.03869849033824104
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 15,
+      "column": 25,
+      "name": null,
+      "generatedName": "r",
+      "selfMs": 11.672,
+      "percent": 0.03805938483551984
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 30,
+      "column": 18,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 11.379,
+      "percent": 0.03710398732379886
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "deriveKey",
+      "selfMs": 11.328,
+      "percent": 0.03693768946339691
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "getAllKeys",
+      "selfMs": 11.297,
+      "percent": 0.03683660645021142
+    },
+    {
+      "source": "../../source/src/crdt/rangeLab.ts",
+      "line": 7,
+      "column": 13,
+      "name": null,
+      "generatedName": "a",
+      "selfMs": 11.247,
+      "percent": 0.036673569332170294
+    },
+    {
+      "source": "../../source/src/crdt/inboundRecord.ts",
+      "line": 95,
+      "column": 16,
+      "name": null,
+      "generatedName": "sa",
+      "selfMs": 11.025,
+      "percent": 0.0359496845280677
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "setTimeout",
+      "selfMs": 10.42,
+      "percent": 0.03397693539977011
+    },
+    {
+      "source": "../../source/src/crdt/custody.ts",
+      "line": 954,
+      "column": 19,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 10.172,
+      "percent": 0.03316827129428614
+    },
+    {
+      "source": "../../source/src/crdt/contentCompaction.ts",
+      "line": 55,
+      "column": 13,
+      "name": null,
+      "generatedName": "gs",
+      "selfMs": 9.748,
+      "percent": 0.03178571653329741
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 690,
+      "column": 14,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 9.532,
+      "percent": 0.03108139618335976
+    },
+    {
+      "source": "../../source/account-protocol/preparation.ts",
+      "line": 33,
+      "column": 13,
+      "name": null,
+      "generatedName": "g",
+      "selfMs": 9.247,
+      "percent": 0.030152084610525355
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "lowerBound",
+      "selfMs": 9.168,
+      "percent": 0.029894485964020383
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "add",
+      "selfMs": 9.072,
+      "percent": 0.029581454697381427
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 108,
+      "column": 21,
+      "name": null,
+      "generatedName": "b",
+      "selfMs": 9.056,
+      "percent": 0.029529282819608267
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 99,
+      "column": 20,
+      "name": null,
+      "generatedName": "i.onsuccess",
+      "selfMs": 9.047,
+      "percent": 0.029499936138360865
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 115,
+      "column": 20,
+      "name": null,
+      "generatedName": "y",
+      "selfMs": 8.914,
+      "percent": 0.029066257404371475
+    },
+    {
+      "source": "../../source/src/crdt/contentDatabase.ts",
+      "line": 76,
+      "column": 13,
+      "name": null,
+      "generatedName": "i",
+      "selfMs": 8.875,
+      "percent": 0.0289390884522994
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 353,
+      "column": 12,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 8.858,
+      "percent": 0.028883655832165414
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1089,
+      "column": 20,
+      "name": null,
+      "generatedName": "vn",
+      "selfMs": 8.426,
+      "percent": 0.027475015132290115
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 189,
+      "column": 22,
+      "name": null,
+      "generatedName": "w",
+      "selfMs": 8.108,
+      "percent": 0.026438099061548568
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 143,
+      "column": 19,
+      "name": null,
+      "generatedName": "a.onsuccess",
+      "selfMs": 7.92,
+      "percent": 0.02582507949771394
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 22,
+      "column": 21,
+      "name": null,
+      "generatedName": "y",
+      "selfMs": 7.788,
+      "percent": 0.025394661506085377
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 134,
+      "column": 25,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 7.749,
+      "percent": 0.025267492554013303
+    },
+    {
+      "source": "../../source/src/crdt/spoolRecord.ts",
+      "line": 495,
+      "column": 22,
+      "name": null,
+      "generatedName": "J",
+      "selfMs": 7.399,
+      "percent": 0.024126232727725436
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "decrypt",
+      "selfMs": 7.395,
+      "percent": 0.024113189758282146
+    },
+    {
+      "source": "../../source/src/crdt/inboundRecord.ts",
+      "line": 47,
+      "column": 9,
+      "name": null,
+      "generatedName": "oa",
+      "selfMs": 7.381,
+      "percent": 0.024067539365230633
+    },
+    {
+      "source": "../../source/src/crdt/contentSelection.ts",
+      "line": 15,
+      "column": 16,
+      "name": null,
+      "generatedName": "v",
+      "selfMs": 7.379,
+      "percent": 0.024061017880508986
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 161,
+      "column": 16,
+      "name": null,
+      "generatedName": "mi",
+      "selfMs": 7.37,
+      "percent": 0.024031671199261584
+    },
+    {
+      "source": "../../source/src/crdt/finalApplyGate.ts",
+      "line": 28,
+      "column": 20,
+      "name": null,
+      "generatedName": "i",
+      "selfMs": 7.317,
+      "percent": 0.023858851854137993
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 48,
+      "column": 20,
+      "name": null,
+      "generatedName": "Ci",
+      "selfMs": 7.287,
+      "percent": 0.02376102958331332
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 103,
+      "column": 12,
+      "name": null,
+      "generatedName": "o.onsuccess",
+      "selfMs": 7.136,
+      "percent": 0.023268657486829127
+    },
+    {
+      "source": "../../source/src/crdt/workerChannel.ts",
+      "line": 56,
+      "column": 16,
+      "name": null,
+      "generatedName": "n",
+      "selfMs": 7.125,
+      "percent": 0.023232789320860082
+    },
+    {
+      "source": "../../source/account-protocol/recovery.ts",
+      "line": 80,
+      "column": 16,
+      "name": null,
+      "generatedName": "d",
+      "selfMs": 7.029,
+      "percent": 0.022919758054221126
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 307,
+      "column": 15,
+      "name": null,
+      "generatedName": "Ma",
+      "selfMs": 6.997,
+      "percent": 0.022815414298674803
+    },
+    {
+      "source": "../../source/src/crdt/contentDatabase.ts",
+      "line": 90,
+      "column": 20,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 6.891,
+      "percent": 0.022469775608427625
+    },
+    {
+      "source": "",
+      "line": 65,
+      "column": 21,
+      "name": "isTypedArray",
+      "selfMs": 6.311,
+      "percent": 0.020578545039150593
+    },
+    {
+      "source": "../../source/src/crdt/accountSessionBridge.ts",
+      "line": 33,
+      "column": 9,
+      "name": null,
+      "generatedName": "A",
+      "selfMs": 6.115,
+      "percent": 0.019939439536429387
+    },
+    {
+      "source": "../../source/src/crdt/custody.ts",
+      "line": 828,
+      "column": 8,
+      "name": null,
+      "generatedName": "get carrier",
+      "selfMs": 6.095,
+      "percent": 0.01987422468921294
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 146,
+      "column": 2,
+      "name": null,
+      "generatedName": "count",
+      "selfMs": 6.069,
+      "percent": 0.019789445387831554
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 31,
+      "column": 14,
+      "name": null,
+      "generatedName": "Ot",
+      "selfMs": 6.062,
+      "percent": 0.0197666201913058
+    },
+    {
+      "source": "../../source/src/crdt/rangeLab.ts",
+      "line": 30,
+      "column": 16,
+      "name": null,
+      "generatedName": "m",
+      "selfMs": 6.028,
+      "percent": 0.019655754951037833
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "getRandomValues",
+      "selfMs": 6.025,
+      "percent": 0.019645972723955366
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 60,
+      "column": 6,
+      "name": null,
+      "generatedName": "Er",
+      "selfMs": 5.995,
+      "percent": 0.019548150453130693
+    },
+    {
+      "source": "../../source/account-protocol/authority.ts",
+      "line": 16,
+      "column": 16,
+      "name": null,
+      "generatedName": "m",
+      "selfMs": 5.972,
+      "percent": 0.019473153378831775
+    },
+    {
+      "source": "../../source/account-protocol/enrollment.ts",
+      "line": 81,
+      "column": 6,
+      "name": null,
+      "generatedName": "D",
+      "selfMs": 5.899,
+      "percent": 0.019235119186491734
+    },
+    {
+      "source": "../../source/src/crdt/contentDatabase.ts",
+      "line": 98,
+      "column": 19,
+      "name": null,
+      "generatedName": "p",
+      "selfMs": 5.889,
+      "percent": 0.019202511762883512
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 225,
+      "column": 22,
+      "name": null,
+      "generatedName": "_i",
+      "selfMs": 5.846,
+      "percent": 0.019062299841368143
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 556,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 5.785,
+      "percent": 0.018863394557357974
+    },
+    {
+      "source": "../../source/src/crdt/custody.ts",
+      "line": 932,
+      "column": 24,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 5.782,
+      "percent": 0.018853612330275507
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 25,
+      "column": 21,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 5.73,
+      "percent": 0.018684053727512737
+    },
+    {
+      "source": "../../source/src/crdt/incrementalAccountLedger.ts",
+      "line": 79,
+      "column": 16,
+      "name": null,
+      "generatedName": "j",
+      "selfMs": 5.688,
+      "percent": 0.018547102548358195
+    },
+    {
+      "source": "../../source/src/crdt/localGenesisRecord.ts",
+      "line": 121,
+      "column": 34,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 5.663,
+      "percent": 0.018465583989337633
+    },
+    {
+      "source": "../../source/account-protocol/recovery.ts",
+      "line": 51,
+      "column": 22,
+      "name": null,
+      "generatedName": "o",
+      "selfMs": 5.623,
+      "percent": 0.018335154294904735
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "any",
+      "selfMs": 5.611,
+      "percent": 0.018296025386574866
+    },
+    {
+      "source": "../../source/account-protocol/membership.ts",
+      "line": 117,
+      "column": 6,
+      "name": null,
+      "generatedName": "B",
+      "selfMs": 5.592,
+      "percent": 0.01823407128171924
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 463,
+      "column": 16,
+      "name": null,
+      "generatedName": "na",
+      "selfMs": 5.564,
+      "percent": 0.01814277049561621
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1130,
+      "column": 72,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 5.562,
+      "percent": 0.018136249010894563
+    },
+    {
+      "source": "../../source/account-protocol/ceremonyExchange.ts",
+      "line": 69,
+      "column": 6,
+      "name": null,
+      "generatedName": "M",
+      "selfMs": 5.516,
+      "percent": 0.01798625486229673
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 140,
+      "column": 2,
+      "name": null,
+      "generatedName": "take",
+      "selfMs": 5.346,
+      "percent": 0.017431928660956914
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 444,
+      "column": 16,
+      "name": null,
+      "generatedName": "ta",
+      "selfMs": 5.22,
+      "percent": 0.01702107512349328
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 403,
+      "column": 16,
+      "name": null,
+      "generatedName": "$i",
+      "selfMs": 4.727,
+      "percent": 0.015413529139607805
+    },
+    {
+      "source": "../../source/src/crdt/accountSessionBridge.ts",
+      "line": 74,
+      "column": 9,
+      "name": null,
+      "generatedName": "te",
+      "selfMs": 4.645,
+      "percent": 0.015146148266020362
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 108,
+      "column": 16,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 4.596,
+      "percent": 0.014986371890340059
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 378,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 4.585,
+      "percent": 0.014950503724371011
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 673,
+      "column": 16,
+      "name": null,
+      "generatedName": "qo",
+      "selfMs": 4.543,
+      "percent": 0.01481355254521647
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 36,
+      "column": 13,
+      "name": null,
+      "generatedName": "C",
+      "selfMs": 4.542,
+      "percent": 0.014810291802855646
+    },
+    {
+      "source": "../../source/src/crdt/receivePrefetch.ts",
+      "line": 15,
+      "column": 22,
+      "name": null,
+      "generatedName": "Au",
+      "selfMs": 4.479,
+      "percent": 0.014604865034123832
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 137,
+      "column": 16,
+      "name": null,
+      "generatedName": "be",
+      "selfMs": 4.475,
+      "percent": 0.014591822064680541
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 97,
+      "column": 6,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 4.405,
+      "percent": 0.014363570099422967
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 463,
+      "column": 4,
+      "name": null,
+      "generatedName": "i",
+      "selfMs": 4.391,
+      "percent": 0.014317919706371456
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 580,
+      "column": 10,
+      "name": null,
+      "generatedName": "a",
+      "selfMs": 4.323,
+      "percent": 0.014096189225835528
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 21,
+      "column": 30,
+      "name": null,
+      "generatedName": "zr",
+      "selfMs": 4.154,
+      "percent": 0.01354512376685653
+    },
+    {
+      "source": "../../source/account-protocol/genesis.ts",
+      "line": 30,
+      "column": 6,
+      "name": null,
+      "generatedName": "y",
+      "selfMs": 4.136,
+      "percent": 0.013486430404361724
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 152,
+      "column": 20,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 4.134,
+      "percent": 0.013479908919640082
+    },
+    {
+      "source": "../../source/src/crdt/receivePageTransport.ts",
+      "line": 133,
+      "column": 4,
+      "name": null,
+      "generatedName": "entryLimit",
+      "selfMs": 4.119,
+      "percent": 0.013430997784227744
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 81,
+      "column": 16,
+      "name": null,
+      "generatedName": "Mt",
+      "selfMs": 4.062,
+      "percent": 0.013245135469660862
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 247,
+      "column": 15,
+      "name": null,
+      "generatedName": "Aa",
+      "selfMs": 4.053,
+      "percent": 0.01321578878841346
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 144,
+      "column": 17,
+      "name": null,
+      "generatedName": "wait",
+      "selfMs": 4.048,
+      "percent": 0.013199485076609348
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 115,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.931,
+      "percent": 0.012817978220393121
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1239,
+      "column": 18,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.71,
+      "percent": 0.012097354158651355
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 109,
+      "column": 8,
+      "name": null,
+      "generatedName": "v",
+      "selfMs": 3.655,
+      "percent": 0.01191801332880612
+    },
+    {
+      "source": "../../source/src/crdt/rangeLab.ts",
+      "line": 26,
+      "column": 36,
+      "name": null,
+      "generatedName": "MessagePort.postMessage",
+      "selfMs": 3.58,
+      "percent": 0.011673457651744434
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1104,
+      "column": 20,
+      "name": null,
+      "generatedName": "Sn",
+      "selfMs": 3.287,
+      "percent": 0.010718060140023451
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 113,
+      "column": 8,
+      "name": null,
+      "generatedName": "f",
+      "selfMs": 3.267,
+      "percent": 0.010652845292807002
+    },
+    {
+      "source": "../../source/src/crdt/retentionReads.ts",
+      "line": 12,
+      "column": 8,
+      "name": null,
+      "generatedName": "check",
+      "selfMs": 3.16,
+      "percent": 0.010303945860198997
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 113,
+      "column": 6,
+      "name": null,
+      "generatedName": "y",
+      "selfMs": 3.082,
+      "percent": 0.010049607956054845
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 682,
+      "column": 42,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.068,
+      "percent": 0.01000395756300333
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 300,
+      "column": 48,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.066,
+      "percent": 0.009997436078281685
+    },
+    {
+      "source": "../../source/src/account/accountHttp.ts",
+      "line": 13,
+      "column": 16,
+      "name": null,
+      "generatedName": "m",
+      "selfMs": 3.064,
+      "percent": 0.00999091459356004
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 135,
+      "column": 10,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.054,
+      "percent": 0.009958307169951816
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 155,
+      "column": 2,
+      "name": null,
+      "generatedName": "number",
+      "selfMs": 3.053,
+      "percent": 0.009955046427590993
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 128,
+      "column": 34,
+      "name": null,
+      "generatedName": "b",
+      "selfMs": 3.045,
+      "percent": 0.009928960488704413
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 376,
+      "column": 4,
+      "name": null,
+      "generatedName": "get",
+      "selfMs": 3.042,
+      "percent": 0.009919178261621947
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 3822,
+      "column": 11,
+      "name": null,
+      "generatedName": "Vi",
+      "selfMs": 3.041,
+      "percent": 0.009915917519261123
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 94,
+      "column": 16,
+      "name": null,
+      "generatedName": "di",
+      "selfMs": 3.035,
+      "percent": 0.009896353065096189
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 421,
+      "column": 16,
+      "name": null,
+      "generatedName": "ea",
+      "selfMs": 3.034,
+      "percent": 0.009893092322735365
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 45,
+      "column": 20,
+      "name": null,
+      "generatedName": "ri",
+      "selfMs": 3.03,
+      "percent": 0.009880049353292076
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 1732,
+      "column": 10,
+      "name": null,
+      "generatedName": "appendInbound",
+      "selfMs": 3.025,
+      "percent": 0.009863745641487964
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1663,
+      "column": 28,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.022,
+      "percent": 0.009853963414405496
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 499,
+      "column": 22,
+      "name": null,
+      "generatedName": "aa",
+      "selfMs": 3.021,
+      "percent": 0.009850702672044674
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 328,
+      "column": 45,
+      "name": null,
+      "generatedName": "assertCurrent",
+      "selfMs": 3.02,
+      "percent": 0.009847441929683853
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 348,
+      "column": 4,
+      "name": null,
+      "generatedName": "add",
+      "selfMs": 3.018,
+      "percent": 0.009840920444962207
+    },
+    {
+      "source": "../../source/account-protocol/membershipLocator.ts",
+      "line": 84,
+      "column": 22,
+      "name": null,
+      "generatedName": "A",
+      "selfMs": 3.016,
+      "percent": 0.009834398960240562
+    },
+    {
+      "source": "../../source/src/crdt/accountWorkerOwner.ts",
+      "line": 184,
+      "column": 22,
+      "name": null,
+      "generatedName": "workspaceHint",
+      "selfMs": 3.014,
+      "percent": 0.009827877475518916
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 410,
+      "column": 8,
+      "name": null,
+      "generatedName": "d",
+      "selfMs": 3.013,
+      "percent": 0.009824616733158095
+    },
+    {
+      "source": "../../source/src/account/scopedTransport.ts",
+      "line": 275,
+      "column": 8,
+      "name": "#request",
+      "generatedName": "#l",
+      "selfMs": 3.013,
+      "percent": 0.009824616733158095
+    },
+    {
+      "source": "",
+      "line": 175,
+      "column": 18,
+      "name": "serialize",
+      "selfMs": 3.012,
+      "percent": 0.009821355990797271
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "put",
+      "selfMs": 3.011,
+      "percent": 0.00981809524843645
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 142,
+      "column": 23,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 3.008,
+      "percent": 0.009808313021353982
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 119,
+      "column": 10,
+      "name": null,
+      "generatedName": "r",
+      "selfMs": 2.981,
+      "percent": 0.009720272977611777
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 269,
+      "column": 14,
+      "name": null,
+      "generatedName": "d.onsuccess",
+      "selfMs": 2.98,
+      "percent": 0.009717012235250953
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 56,
+      "column": 4,
+      "name": null,
+      "generatedName": "due",
+      "selfMs": 2.961,
+      "percent": 0.009655058130395326
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 269,
+      "column": 13,
+      "name": null,
+      "generatedName": "O",
+      "selfMs": 2.896,
+      "percent": 0.009443109876941866
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 14,
+      "column": 12,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 2.835,
+      "percent": 0.009244204592931696
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 66,
+      "column": 33,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 2.786,
+      "percent": 0.009084428217251394
+    },
+    {
+      "source": "../../source/src/crdt/workspaceBridge.ts",
+      "line": 13,
+      "column": 9,
+      "name": null,
+      "generatedName": "z",
+      "selfMs": 2.783,
+      "percent": 0.009074645990168927
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 118,
+      "column": 10,
+      "name": null,
+      "generatedName": "audit",
+      "selfMs": 2.772,
+      "percent": 0.00903877782419988
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 270,
+      "column": 12,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 2.771,
+      "percent": 0.009035517081839058
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 2503,
+      "column": 32,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 2.72,
+      "percent": 0.008869219221437111
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 438,
+      "column": 10,
+      "name": null,
+      "generatedName": "i",
+      "selfMs": 2.703,
+      "percent": 0.00881378660130313
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1118,
+      "column": 22,
+      "name": null,
+      "generatedName": "Cn",
+      "selfMs": 2.678,
+      "percent": 0.008732268042282568
+    },
+    {
+      "source": "../../source/src/crdt/accountCapture.ts",
+      "line": 322,
+      "column": 8,
+      "name": null,
+      "generatedName": "b",
+      "selfMs": 2.646,
+      "percent": 0.008627924286736248
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 465,
+      "column": 36,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 2.628,
+      "percent": 0.008569230924241444
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 733,
+      "column": 17,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 2.612,
+      "percent": 0.008517059046468285
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "getReader",
+      "selfMs": 2.605,
+      "percent": 0.008494233849942528
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 202,
+      "column": 16,
+      "name": null,
+      "generatedName": "Ri",
+      "selfMs": 2.576,
+      "percent": 0.008399672321478676
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 224,
+      "column": 15,
+      "name": null,
+      "generatedName": "zi",
+      "selfMs": 2.547,
+      "percent": 0.008305110793014825
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 83,
+      "column": 16,
+      "name": null,
+      "generatedName": "w",
+      "selfMs": 2.509,
+      "percent": 0.00818120258330357
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 156,
+      "column": 22,
+      "name": null,
+      "generatedName": "Ji",
+      "selfMs": 2.489,
+      "percent": 0.008115987736087122
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 356,
+      "column": 24,
+      "name": null,
+      "generatedName": "M",
+      "selfMs": 2.254,
+      "percent": 0.007349713281293841
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 1496,
+      "column": 6,
+      "name": null,
+      "generatedName": "Xr",
+      "selfMs": 2.228,
+      "percent": 0.007264933979912458
+    },
+    {
+      "source": "../../source/account-protocol/membership.ts",
+      "line": 101,
+      "column": 19,
+      "name": null,
+      "generatedName": "Wn",
+      "selfMs": 2.221,
+      "percent": 0.0072421087833867
+    },
+    {
+      "source": "../../source/src/crdt/finalApplyGate.ts",
+      "line": 24,
+      "column": 19,
+      "name": null,
+      "generatedName": "step",
+      "selfMs": 2.199,
+      "percent": 0.0071703724514486054
+    },
+    {
+      "source": "../../source/account-protocol/contentDelivery.ts",
+      "line": 83,
+      "column": 6,
+      "name": null,
+      "generatedName": "I",
+      "selfMs": 2.15,
+      "percent": 0.007010596075768306
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 772,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.702,
+      "percent": 0.00554978349811984
+    },
+    {
+      "source": "../../source/account-protocol/ceremony.ts",
+      "line": 111,
+      "column": 22,
+      "name": null,
+      "generatedName": "Bt",
+      "selfMs": 1.627,
+      "percent": 0.005305227821058155
+    },
+    {
+      "source": "wasm://wasm/6c3319e2",
+      "line": 1,
+      "column": 4363,
+      "name": "js-to-wasm::i",
+      "selfMs": 1.624,
+      "percent": 0.005295445593975687
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 64,
+      "column": 16,
+      "name": null,
+      "generatedName": "oi",
+      "selfMs": 1.621,
+      "percent": 0.005285663366893219
+    },
+    {
+      "source": "../../source/src/account/notifications.ts",
+      "line": 31,
+      "column": 22,
+      "name": null,
+      "generatedName": "gd",
+      "selfMs": 1.62,
+      "percent": 0.005282402624532397
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2816,
+      "column": 16,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.6,
+      "percent": 0.0052171877773159485
+    },
+    {
+      "source": "../../source/src/crdt/contentSelection.ts",
+      "line": 8,
+      "column": 16,
+      "name": null,
+      "generatedName": "_",
+      "selfMs": 1.596,
+      "percent": 0.005204144807872658
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 8,
+      "column": 2,
+      "name": null,
+      "generatedName": "n",
+      "selfMs": 1.595,
+      "percent": 0.005200884065511835
+    },
+    {
+      "source": "../../source/src/crdt/workspaceBridge.ts",
+      "line": 73,
+      "column": 9,
+      "name": null,
+      "generatedName": "ue",
+      "selfMs": 1.585,
+      "percent": 0.005168276641903611
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 736,
+      "column": 48,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.57,
+      "percent": 0.005119365506491273
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 6820,
+      "column": 18,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.569,
+      "percent": 0.005116104764130451
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 18,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.568,
+      "percent": 0.005112844021769629
+    },
+    {
+      "source": "../../source/src/crdt/accountSyncDriver.ts",
+      "line": 475,
+      "column": 22,
+      "name": null,
+      "generatedName": "md",
+      "selfMs": 1.564,
+      "percent": 0.00509980105232634
+    },
+    {
+      "source": "../../source/src/crdt/receiveSelection.ts",
+      "line": 168,
+      "column": 4,
+      "name": null,
+      "generatedName": "next",
+      "selfMs": 1.563,
+      "percent": 0.005096540309965517
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 132,
+      "column": 13,
+      "name": null,
+      "generatedName": "x",
+      "selfMs": 1.556,
+      "percent": 0.005073715113439759
+    },
+    {
+      "source": "../../source/account-protocol/enrollment.ts",
+      "line": 255,
+      "column": 16,
+      "name": null,
+      "generatedName": "Ye",
+      "selfMs": 1.555,
+      "percent": 0.005070454371078937
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 107,
+      "column": 13,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.555,
+      "percent": 0.005070454371078937
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1256,
+      "column": 28,
+      "name": null,
+      "generatedName": "wn",
+      "selfMs": 1.555,
+      "percent": 0.005070454371078937
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1463,
+      "column": 22,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.554,
+      "percent": 0.005067193628718114
+    },
+    {
+      "source": "../../source/account-protocol/ceremonyRelay.ts",
+      "line": 18,
+      "column": 6,
+      "name": null,
+      "generatedName": "F",
+      "selfMs": 1.553,
+      "percent": 0.0050639328863572915
+    },
+    {
+      "source": "../../source/src/crdt/workerFrameStream.ts",
+      "line": 21,
+      "column": 9,
+      "name": null,
+      "generatedName": "H",
+      "selfMs": 1.55,
+      "percent": 0.005054150659274825
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1292,
+      "column": 20,
+      "name": null,
+      "generatedName": "Dn",
+      "selfMs": 1.549,
+      "percent": 0.0050508899169140024
+    },
+    {
+      "source": "../../source/src/crdt/contentRecord.ts",
+      "line": 69,
+      "column": 28,
+      "name": null,
+      "generatedName": "u",
+      "selfMs": 1.548,
+      "percent": 0.00504762917455318
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 28,
+      "column": 11,
+      "name": null,
+      "generatedName": "step",
+      "selfMs": 1.547,
+      "percent": 0.005044368432192358
+    },
+    {
+      "source": "../../source/account-protocol/successor.ts",
+      "line": 141,
+      "column": 16,
+      "name": null,
+      "generatedName": "ot",
+      "selfMs": 1.546,
+      "percent": 0.005041107689831535
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 3400,
+      "column": 6,
+      "name": null,
+      "generatedName": "U",
+      "selfMs": 1.539,
+      "percent": 0.005018282493305777
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 569,
+      "column": 16,
+      "name": null,
+      "generatedName": "E",
+      "selfMs": 1.539,
+      "percent": 0.005018282493305777
+    },
+    {
+      "source": "../../source/src/crdt/contentDatabase.ts",
+      "line": 107,
+      "column": 10,
+      "name": null,
+      "generatedName": "m",
+      "selfMs": 1.538,
+      "percent": 0.005015021750944955
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 16,
+      "column": 16,
+      "name": null,
+      "generatedName": "me",
+      "selfMs": 1.537,
+      "percent": 0.0050117610085841325
+    },
+    {
+      "source": "../../source/src/crdt/receivePrefetch.ts",
+      "line": 51,
+      "column": 14,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.536,
+      "percent": 0.00500850026622331
+    },
+    {
+      "source": "../../source/src/crdt/accountCapture.ts",
+      "line": 346,
+      "column": 7,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.535,
+      "percent": 0.005005239523862488
+    },
+    {
+      "source": "../../source/src/crdt/accountSessionBridge.ts",
+      "line": 38,
+      "column": 7,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.534,
+      "percent": 0.005001978781501665
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 213,
+      "column": 8,
+      "name": null,
+      "generatedName": "get state",
+      "selfMs": 1.533,
+      "percent": 0.0049987180391408426
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1646,
+      "column": 4,
+      "name": null,
+      "generatedName": "receivePage",
+      "selfMs": 1.532,
+      "percent": 0.00499545729678002
+    },
+    {
+      "source": "../../source/src/crdt/workspaceBridge.ts",
+      "line": 238,
+      "column": 4,
+      "name": null,
+      "generatedName": "update",
+      "selfMs": 1.531,
+      "percent": 0.004992196554419197
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/observable.js",
+      "line": 80,
+      "column": 2,
+      "name": null,
+      "generatedName": "emit",
+      "selfMs": 1.531,
+      "percent": 0.004992196554419197
+    },
+    {
+      "source": "../../source/src/crdt/localGenesisRecord.ts",
+      "line": 120,
+      "column": 13,
+      "name": null,
+      "generatedName": "pi",
+      "selfMs": 1.531,
+      "percent": 0.004992196554419197
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 3056,
+      "column": 4,
+      "name": null,
+      "generatedName": "localRetentionHint",
+      "selfMs": 1.53,
+      "percent": 0.004988935812058375
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 47,
+      "column": 19,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.53,
+      "percent": 0.004988935812058375
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 76,
+      "column": 16,
+      "name": null,
+      "generatedName": "jt",
+      "selfMs": 1.53,
+      "percent": 0.004988935812058375
+    },
+    {
+      "source": "../../source/src/crdt/accountDelivery.ts",
+      "line": 210,
+      "column": 24,
+      "name": null,
+      "generatedName": "beforeCommit",
+      "selfMs": 1.529,
+      "percent": 0.004985675069697553
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 198,
+      "column": 15,
+      "name": null,
+      "generatedName": "hi",
+      "selfMs": 1.529,
+      "percent": 0.004985675069697553
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 55,
+      "column": 16,
+      "name": null,
+      "generatedName": "J",
+      "selfMs": 1.529,
+      "percent": 0.004985675069697553
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 3567,
+      "column": 8,
+      "name": null,
+      "generatedName": "observe",
+      "selfMs": 1.529,
+      "percent": 0.004985675069697553
+    },
+    {
+      "source": "../../source/src/crdt/accountCapture.ts",
+      "line": 710,
+      "column": 6,
+      "name": null,
+      "generatedName": "runCaptureTask",
+      "selfMs": 1.528,
+      "percent": 0.00498241432733673
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 3269,
+      "column": 11,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.528,
+      "percent": 0.00498241432733673
+    },
+    {
+      "source": "../../source/src/crdt/workerChannel.ts",
+      "line": 237,
+      "column": 4,
+      "name": null,
+      "generatedName": "request",
+      "selfMs": 1.528,
+      "percent": 0.00498241432733673
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1364,
+      "column": 15,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.527,
+      "percent": 0.004979153584975908
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 3318,
+      "column": 29,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.525,
+      "percent": 0.004972632100254263
+    },
+    {
+      "source": "../../source/src/crdt/incrementalAccountLedger.ts",
+      "line": 300,
+      "column": 52,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.524,
+      "percent": 0.004969371357893441
+    },
+    {
+      "source": "../../source/src/crdt/workerFrameStream.ts",
+      "line": 64,
+      "column": 4,
+      "name": null,
+      "generatedName": "next",
+      "selfMs": 1.524,
+      "percent": 0.004969371357893441
+    },
+    {
+      "source": "../../source/src/crdt/accountWorkerOwner.ts",
+      "line": 347,
+      "column": 15,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.522,
+      "percent": 0.004962849873171795
+    },
+    {
+      "source": "../../source/src/crdt/verificationMemo.ts",
+      "line": 38,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.522,
+      "percent": 0.004962849873171795
+    },
+    {
+      "source": "../../source/account-protocol/inboundTransport.ts",
+      "line": 126,
+      "column": 17,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.521,
+      "percent": 0.0049595891308109735
+    },
+    {
+      "source": "../../source/src/crdt/receiveSelection.ts",
+      "line": 21,
+      "column": 16,
+      "name": null,
+      "generatedName": "Bu",
+      "selfMs": 1.519,
+      "percent": 0.004953067646089328
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 48,
+      "column": 8,
+      "name": null,
+      "generatedName": "o",
+      "selfMs": 1.519,
+      "percent": 0.004953067646089328
+    },
+    {
+      "source": "../../source/src/crdt/receiveSelection.ts",
+      "line": 61,
+      "column": 16,
+      "name": null,
+      "generatedName": "Hu",
+      "selfMs": 1.519,
+      "percent": 0.004953067646089328
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 9,
+      "column": 13,
+      "name": null,
+      "generatedName": "ur",
+      "selfMs": 1.518,
+      "percent": 0.004949806903728505
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 287,
+      "column": 8,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.517,
+      "percent": 0.004946546161367683
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 47,
+      "column": 4,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.517,
+      "percent": 0.004946546161367683
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 100,
+      "column": 16,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.517,
+      "percent": 0.004946546161367683
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1081,
+      "column": 41,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.516,
+      "percent": 0.004943285419006861
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 24,
+      "column": 12,
+      "name": null,
+      "generatedName": "c",
+      "selfMs": 1.516,
+      "percent": 0.004943285419006861
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 546,
+      "column": 17,
+      "name": null,
+      "generatedName": "o",
+      "selfMs": 1.516,
+      "percent": 0.004943285419006861
+    },
+    {
+      "source": "../../source/src/crdt/finalApplyGate.ts",
+      "line": 36,
+      "column": 14,
+      "name": null,
+      "generatedName": "settle",
+      "selfMs": 1.516,
+      "percent": 0.004943285419006861
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 1610,
+      "column": 4,
+      "name": null,
+      "generatedName": "select",
+      "selfMs": 1.516,
+      "percent": 0.004943285419006861
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 268,
+      "column": 22,
+      "name": null,
+      "generatedName": "Yi",
+      "selfMs": 1.515,
+      "percent": 0.004940024676646038
+    },
+    {
+      "source": "../../source/src/crdt/receivePageTransport.ts",
+      "line": 59,
+      "column": 35,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.515,
+      "percent": 0.004940024676646038
+    },
+    {
+      "source": "../../source/src/crdt/accountLedgerMetrics.ts",
+      "line": 116,
+      "column": 13,
+      "name": null,
+      "generatedName": "o",
+      "selfMs": 1.515,
+      "percent": 0.004940024676646038
+    },
+    {
+      "source": "../../source/src/crdt/localBaselineMode.ts",
+      "line": 3,
+      "column": 13,
+      "name": null,
+      "generatedName": "Gr",
+      "selfMs": 1.514,
+      "percent": 0.004936763934285215
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 63,
+      "column": 22,
+      "name": null,
+      "generatedName": "Er.promise",
+      "selfMs": 1.514,
+      "percent": 0.004936763934285215
+    },
+    {
+      "source": "../../source/src/crdt/accountReceiveDriver.ts",
+      "line": 195,
+      "column": 22,
+      "name": null,
+      "generatedName": "Lu",
+      "selfMs": 1.513,
+      "percent": 0.004933503191924394
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 2048,
+      "column": 24,
+      "name": null,
+      "generatedName": "beforeCommit",
+      "selfMs": 1.512,
+      "percent": 0.004930242449563571
+    },
+    {
+      "source": "../../source/src/crdt/localBaselineMetadata.ts",
+      "line": 47,
+      "column": 4,
+      "name": null,
+      "generatedName": "payload",
+      "selfMs": 1.51,
+      "percent": 0.004923720964841926
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1687,
+      "column": 28,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.509,
+      "percent": 0.004920460222481104
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 171,
+      "column": 22,
+      "name": null,
+      "generatedName": "Se",
+      "selfMs": 1.509,
+      "percent": 0.004920460222481104
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 73,
+      "column": 8,
+      "name": null,
+      "generatedName": "l",
+      "selfMs": 1.509,
+      "percent": 0.004920460222481104
+    },
+    {
+      "source": "../../source/account-protocol/contentDelivery.ts",
+      "line": 121,
+      "column": 16,
+      "name": null,
+      "generatedName": "hn",
+      "selfMs": 1.509,
+      "percent": 0.004920460222481104
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 36,
+      "column": 17,
+      "name": null,
+      "generatedName": "o",
+      "selfMs": 1.509,
+      "percent": 0.004920460222481104
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 10051,
+      "column": 6,
+      "name": null,
+      "generatedName": "get lastId",
+      "selfMs": 1.508,
+      "percent": 0.004917199480120281
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1218,
+      "column": 25,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.508,
+      "percent": 0.004917199480120281
+    },
+    {
+      "source": "../../source/src/crdt/accountSyncDriver.ts",
+      "line": 136,
+      "column": 8,
+      "name": null,
+      "generatedName": "_",
+      "selfMs": 1.507,
+      "percent": 0.004913938737759458
+    },
+    {
+      "source": "../../source/src/crdt/localBaselineMetadata.ts",
+      "line": 58,
+      "column": 43,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.507,
+      "percent": 0.004913938737759458
+    },
+    {
+      "source": "../../source/src/crdt/accountSyncDriver.ts",
+      "line": 212,
+      "column": 12,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.507,
+      "percent": 0.004913938737759458
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 35,
+      "column": 28,
+      "name": null,
+      "generatedName": "x",
+      "selfMs": 1.506,
+      "percent": 0.0049106779953986355
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "Headers",
+      "selfMs": 1.506,
+      "percent": 0.0049106779953986355
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js",
+      "line": 105,
+      "column": 13,
+      "name": null,
+      "generatedName": "$e",
+      "selfMs": 1.506,
+      "percent": 0.0049106779953986355
+    },
+    {
+      "source": "../../source/src/crdt/incrementalAccountLedger.ts",
+      "line": 439,
+      "column": 51,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.506,
+      "percent": 0.0049106779953986355
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 638,
+      "column": 25,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.505,
+      "percent": 0.004907417253037814
+    },
+    {
+      "source": "../../source/account-protocol/ceremonyExchange.ts",
+      "line": 248,
+      "column": 16,
+      "name": null,
+      "generatedName": "N",
+      "selfMs": 1.505,
+      "percent": 0.004907417253037814
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 282,
+      "column": 22,
+      "name": null,
+      "generatedName": "Vi",
+      "selfMs": 1.505,
+      "percent": 0.004907417253037814
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 305,
+      "column": 22,
+      "name": null,
+      "generatedName": "Hi",
+      "selfMs": 1.502,
+      "percent": 0.004897635025955346
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "get subtle",
+      "selfMs": 1.501,
+      "percent": 0.004894374283594524
+    },
+    {
+      "source": "../../source/src/crdt/finalApplyGate.ts",
+      "line": 21,
+      "column": 8,
+      "name": null,
+      "generatedName": "wrap",
+      "selfMs": 1.5,
+      "percent": 0.004891113541233701
+    },
+    {
+      "source": "../../source/src/crdt/workspaceBridge.ts",
+      "line": 23,
+      "column": 19,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.498,
+      "percent": 0.004884592056512056
+    },
+    {
+      "source": "../../source/account-protocol/positionDecision.ts",
+      "line": 125,
+      "column": 16,
+      "name": null,
+      "generatedName": "pi",
+      "selfMs": 1.498,
+      "percent": 0.004884592056512056
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9362,
+      "column": 26,
+      "name": null,
+      "generatedName": "Eo",
+      "selfMs": 1.497,
+      "percent": 0.004881331314151234
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 487,
+      "column": 22,
+      "name": null,
+      "generatedName": "Fe",
+      "selfMs": 1.494,
+      "percent": 0.0048715490870687665
+    },
+    {
+      "source": "../../source/account-protocol/successor.ts",
+      "line": 97,
+      "column": 6,
+      "name": null,
+      "generatedName": "k",
+      "selfMs": 1.494,
+      "percent": 0.0048715490870687665
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 3278,
+      "column": 25,
+      "name": null,
+      "generatedName": "Te",
+      "selfMs": 1.488,
+      "percent": 0.004851984632903832
+    },
+    {
+      "source": "../../source/src/crdt/accountWorkerOwner.ts",
+      "line": 424,
+      "column": 20,
+      "name": null,
+      "generatedName": "flushJournal",
+      "selfMs": 1.484,
+      "percent": 0.004838941663460542
+    },
+    {
+      "source": "../../source/account-protocol/membership.ts",
+      "line": 295,
+      "column": 16,
+      "name": null,
+      "generatedName": "Xn",
+      "selfMs": 1.481,
+      "percent": 0.004829159436378074
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 542,
+      "column": 15,
+      "name": null,
+      "generatedName": "Ia",
+      "selfMs": 1.479,
+      "percent": 0.004822637951656429
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 559,
+      "column": 13,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.479,
+      "percent": 0.004822637951656429
+    },
+    {
+      "source": "../../source/src/crdt/accountAuthority.ts",
+      "line": 70,
+      "column": 12,
+      "name": null,
+      "generatedName": "c",
+      "selfMs": 1.477,
+      "percent": 0.004816116466934785
+    },
+    {
+      "source": "../../source/src/crdt/verifiedRecords.ts",
+      "line": 37,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.471,
+      "percent": 0.00479655201276985
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 782,
+      "column": 27,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.471,
+      "percent": 0.00479655201276985
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 52,
+      "column": 8,
+      "name": null,
+      "generatedName": "s",
+      "selfMs": 1.46,
+      "percent": 0.004760683846800803
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2847,
+      "column": 6,
+      "name": null,
+      "generatedName": "Oi",
+      "selfMs": 1.457,
+      "percent": 0.004750901619718336
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 707,
+      "column": 52,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.449,
+      "percent": 0.004724815680831756
+    },
+    {
+      "source": "../../source/account-protocol/successor.ts",
+      "line": 218,
+      "column": 9,
+      "name": null,
+      "generatedName": "dt",
+      "selfMs": 1.429,
+      "percent": 0.004659600833615306
+    },
+    {
+      "source": "../../source/src/crdt/accountSessionBridge.ts",
+      "line": 151,
+      "column": 16,
+      "name": null,
+      "generatedName": "ie",
+      "selfMs": 1.416,
+      "percent": 0.004617211182924613
+    },
+    {
+      "source": "../../source/src/crdt/custodyCrypto.ts",
+      "line": 45,
+      "column": 13,
+      "name": null,
+      "generatedName": "w",
+      "selfMs": 1.411,
+      "percent": 0.0046009074711205016
+    },
+    {
+      "source": "../../source/src/crdt/workerWorkspaceQueues.ts",
+      "line": 91,
+      "column": 8,
+      "name": null,
+      "generatedName": "u",
+      "selfMs": 1.408,
+      "percent": 0.004591125244038034
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1097,
+      "column": 16,
+      "name": null,
+      "generatedName": "yn",
+      "selfMs": 1.344,
+      "percent": 0.0043824377329453965
+    },
+    {
+      "source": "../../source/account-protocol/submission.ts",
+      "line": 68,
+      "column": 16,
+      "name": null,
+      "generatedName": "n",
+      "selfMs": 1.338,
+      "percent": 0.004362873278780461
+    },
+    {
+      "source": "",
+      "line": 0,
+      "column": -1,
+      "name": "throwIfAborted",
+      "selfMs": 1.315,
+      "percent": 0.004287876204481545
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2814,
+      "column": 23,
+      "name": null,
+      "generatedName": "Di",
+      "selfMs": 1.306,
+      "percent": 0.004258529523234142
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 9910,
+      "column": 2,
+      "name": null,
+      "generatedName": "integrate",
+      "selfMs": 1.295,
+      "percent": 0.004222661357265095
+    },
+    {
+      "source": "../../source/src/crdt/startupStorage.ts",
+      "line": 92,
+      "column": 7,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.294,
+      "percent": 0.004219400614904273
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 109,
+      "column": 13,
+      "name": null,
+      "generatedName": "x",
+      "selfMs": 1.268,
+      "percent": 0.004134621313522889
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1798,
+      "column": 8,
+      "name": null,
+      "generatedName": "Gn",
+      "selfMs": 1.265,
+      "percent": 0.004124839086440422
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 93,
+      "column": 22,
+      "name": null,
+      "generatedName": "qi",
+      "selfMs": 1.249,
+      "percent": 0.004072667208667262
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1298,
+      "column": 34,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.244,
+      "percent": 0.00405636349686315
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 591,
+      "column": 31,
+      "name": null,
+      "generatedName": "Re",
+      "selfMs": 1.243,
+      "percent": 0.004053102754502327
+    },
+    {
+      "source": "../../source/src/crdt/accountCapture.ts",
+      "line": 413,
+      "column": 4,
+      "name": null,
+      "generatedName": "y",
+      "selfMs": 1.241,
+      "percent": 0.004046581269780683
+    },
+    {
+      "source": "../../source/src/crdt/writeSession.ts",
+      "line": 127,
+      "column": 8,
+      "name": null,
+      "generatedName": "b",
+      "selfMs": 1.227,
+      "percent": 0.004000930876729168
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 3282,
+      "column": 20,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.219,
+      "percent": 0.003974844937842587
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 130,
+      "column": 17,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.211,
+      "percent": 0.003948758998956008
+    },
+    {
+      "source": "../../source/src/crdt/accountCapture.ts",
+      "line": 163,
+      "column": 20,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.207,
+      "percent": 0.003935716029512718
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 151,
+      "column": 16,
+      "name": null,
+      "generatedName": "C",
+      "selfMs": 1.2,
+      "percent": 0.003912890832986961
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 2220,
+      "column": 26,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.197,
+      "percent": 0.0039031086059044934
+    },
+    {
+      "source": "../../source/account-protocol/admission.ts",
+      "line": 110,
+      "column": 6,
+      "name": null,
+      "generatedName": "S",
+      "selfMs": 1.193,
+      "percent": 0.003890065636461204
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 202,
+      "column": 16,
+      "name": null,
+      "generatedName": "Ro",
+      "selfMs": 1.19,
+      "percent": 0.0038802834093787366
+    },
+    {
+      "source": "../../source/src/crdt/runtimePorts.ts",
+      "line": 51,
+      "column": 4,
+      "name": null,
+      "generatedName": "online",
+      "selfMs": 1.183,
+      "percent": 0.003857458212852979
+    },
+    {
+      "source": "../../source/account-protocol/historySourceRefs.ts",
+      "line": 14,
+      "column": 28,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.176,
+      "percent": 0.0038346330163272217
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 104,
+      "column": 16,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.163,
+      "percent": 0.0037922433656365296
+    },
+    {
+      "source": "../../source/account-protocol/envelope.ts",
+      "line": 52,
+      "column": 6,
+      "name": null,
+      "generatedName": "X",
+      "selfMs": 1.134,
+      "percent": 0.0036976818371726784
+    },
+    {
+      "source": "../../source/src/crdt/warmContent.ts",
+      "line": 71,
+      "column": 10,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.111,
+      "percent": 0.0036226847628737613
+    },
+    {
+      "source": "../../source/account-protocol/activation.ts",
+      "line": 45,
+      "column": 16,
+      "name": null,
+      "generatedName": "ae",
+      "selfMs": 1.104,
+      "percent": 0.0035998595663480036
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 674,
+      "column": 18,
+      "name": null,
+      "generatedName": "t",
+      "selfMs": 1.095,
+      "percent": 0.0035705128851006023
+    },
+    {
+      "source": "../../source/account-protocol/admissionHistory.ts",
+      "line": 74,
+      "column": 24,
+      "name": null,
+      "generatedName": "$",
+      "selfMs": 1.092,
+      "percent": 0.0035607306580181346
+    },
+    {
+      "source": "../../source/src/crdt/accountReceive.ts",
+      "line": 1903,
+      "column": 56,
+      "name": null,
+      "generatedName": "",
+      "selfMs": 1.088,
+      "percent": 0.0035476876885748446
+    },
+    {
+      "source": "../../source/src/crdt/accountInbound.ts",
+      "line": 233,
+      "column": 9,
+      "name": null,
+      "generatedName": "ka",
+      "selfMs": 1.073,
+      "percent": 0.003498776553162508
+    },
+    {
+      "source": "../../source/src/crdt/cpuBudget.ts",
+      "line": 29,
+      "column": 11,
+      "name": null,
+      "generatedName": "wait",
+      "selfMs": 1.066,
+      "percent": 0.00347595135663675
+    },
+    {
+      "source": "../../source/src/crdt/contentStore.ts",
+      "line": 205,
+      "column": 17,
+      "name": null,
+      "generatedName": "x",
+      "selfMs": 1.064,
+      "percent": 0.0034694298719151057
+    },
+    {
+      "source": "../../source/src/crdt/inboundLedger.ts",
+      "line": 236,
+      "column": 16,
+      "name": null,
+      "generatedName": "Bo",
+      "selfMs": 1.063,
+      "percent": 0.003466169129554283
+    },
+    {
+      "source": "../../source/src/account/privateAccess.ts",
+      "line": 5,
+      "column": 32,
+      "name": null,
+      "generatedName": "u",
+      "selfMs": 1.045,
+      "percent": 0.003407475767059479
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/lib0@0.2.117/node_modules/lib0/decoding.js",
+      "line": 245,
+      "column": 27,
+      "name": null,
+      "generatedName": "O",
+      "selfMs": 1.045,
+      "percent": 0.003407475767059479
+    },
+    {
+      "source": "../../source/account-protocol/membershipDelivery.ts",
+      "line": 87,
+      "column": 16,
+      "name": null,
+      "generatedName": "jn",
+      "selfMs": 1.03,
+      "percent": 0.003358564631647142
+    },
+    {
+      "source": "../../source/account-protocol/membershipDelivery.ts",
+      "line": 71,
+      "column": 6,
+      "name": null,
+      "generatedName": "L",
+      "selfMs": 0.891,
+      "percent": 0.0029053214434928186
+    },
+    {
+      "source": "",
+      "line": 57,
+      "column": 16,
+      "name": "isError",
+      "selfMs": 0.583,
+      "percent": 0.0019010127963594984
+    },
+    {
+      "source": "../../source/account-protocol/proofWork.ts",
+      "line": 6,
+      "column": 16,
+      "name": null,
+      "generatedName": "v",
+      "selfMs": 0.298,
+      "percent": 0.0009717012235250953
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 1216,
+      "column": 2,
+      "name": null,
+      "generatedName": "writeString",
+      "selfMs": 0.125,
+      "percent": 0.0004075927951028085
+    },
+    {
+      "source": "../../source/account-protocol/membership.ts",
+      "line": 108,
+      "column": 9,
+      "name": null,
+      "generatedName": "R",
+      "selfMs": 0.115,
+      "percent": 0.0003749853714945838
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 1209,
+      "column": 2,
+      "name": null,
+      "generatedName": "writeInfo",
+      "selfMs": 0.047,
+      "percent": 0.00015325489095865597
+    },
+    {
+      "source": "../../../../../Users/thomasingalls/.codex/worktrees/c030/done/node_modules/.pnpm/yjs@13.6.31_patch_hash=d0dc9f5d5ad6abe7084f30e66d0832bb379af9f1432107920e8bb297294303a1/node_modules/yjs/dist/yjs.mjs",
+      "line": 2870,
+      "column": 6,
+      "name": null,
+      "generatedName": "V",
+      "selfMs": 0.021,
+      "percent": 0.00006847558957727182
+    }
+  ],
+  "readStartCycleMs": {
+    "productive": {
+      "n": 171,
+      "meanMs": 117.34637415478801,
+      "p50Ms": 110.3798828125,
+      "p95Ms": 176.42431640625
+    },
+    "quiet": {
+      "n": 143,
+      "meanMs": 66.33481581894668,
+      "p50Ms": 60.840576171875,
+      "p95Ms": 99.355712890625
+    }
+  },
+  "cycleLimitation": "Previous reply/apply plus next preparation; not exclusive CPU or a direct per-stage timer. Profile includes diagnostic capture tail.",
+  "screen": {
+    "positionsAt30s": 680,
+    "tokenUnits": 330,
+    "nativeCommits": 171,
+    "windowMessages": 7067,
+    "windowCalls": 3536,
+    "ledgerPlaintextBytes": 9181019,
+    "ledgerCipherBytes": 9219099,
+    "externalPageBytes": 0,
+    "perPosition": {
+      "tokenUnits": 0.4852941176470588,
+      "nativeCommits": 0.2514705882352941,
+      "windowMessages": 10.39264705882353,
+      "windowCalls": 5.2,
+      "ledgerPlaintextBytes": 13501.498529411765,
+      "ledgerCipherBytes": 13557.498529411765,
+      "externalPageBytes": 0
+    }
+  },
+  "spans": {
+    "crypto:signCalls": 330,
+    "crypto:signMs": 19.599966049194336,
+    "crypto:digestCalls": 5099,
+    "crypto:digestMs": 61.30000305175781,
+    "crypto:importKeyCalls": 6074,
+    "crypto:importKeyMs": 43.19997978210449,
+    "crypto:verifyCalls": 4715,
+    "crypto:verifyMs": 232.1999797821045,
+    "emptyCheckCalls": 138,
+    "emptyCheckMs": 2224.0999965667725,
+    "crypto:deriveKeyCalls": 1362,
+    "crypto:deriveKeyMs": 16.099994659423828,
+    "crypto:encryptCalls": 1,
+    "crypto:encryptMs": 0,
+    "crypto:decryptCalls": 1361,
+    "crypto:decryptMs": 10.400014877319336,
+    "receivePageCalls": 171,
+    "receivePageMs": 10270.80001449585,
+    "receiveGroupCalls": 170,
+    "receiveGroupMs": 9113.500003814697
+  }
+}

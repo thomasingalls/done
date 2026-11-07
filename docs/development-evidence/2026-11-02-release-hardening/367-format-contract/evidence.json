@@ -1,0 +1,53 @@
+{
+  "phase": 367,
+  "lane": "Stage3.1 proposed contract only; no lab or runtime change",
+  "formatApproved": false,
+  "operatorDecisionPending": true,
+  "contract": "../../../account-inbound-page-receipts.md",
+  "contractSha256": "3a1f7775381e89c6431e44213b39eaa1a279b95a8a84c8a5a56feb5b7411410c",
+  "review": {
+    "schemaOffsetsIndependentlyComputed": true,
+    "magicBytes": 29,
+    "headerBytes": 239,
+    "maxPayloadBytes": 4194065,
+    "requiredDirectReaders": 10,
+    "releasedClosedParserSources": {
+      "src/crdt/promotionRecord.ts": {
+        "sha256": "f2943f1024ef6290003a2853d792130ea09c99d1f75f44aa721042f9f688e7c9",
+        "bytes": 19608
+      },
+      "src/crdt/joinedAccount.ts": {
+        "sha256": "7cbd69d3cda075a1411cb8b3d5a3c36d1c67276f23b0009e9f3c39864b2f0671",
+        "bytes": 42577
+      },
+      "src/crdt/membershipReading.ts": {
+        "sha256": "fa823c6f7575a985def64b2dc69ac6daf7a8cb7a6f6df658bd609487fd50fc6b",
+        "bytes": 12181
+      }
+    },
+    "contractSha256": "3a1f7775381e89c6431e44213b39eaa1a279b95a8a84c8a5a56feb5b7411410c",
+    "codeChanges": false,
+    "formatApproved": false,
+    "firstPass": true
+  },
+  "knownReleasedSource": "b6f0160a",
+  "sourceReviewMeaning": "Offline source and repository release-record review, no fresh production inspection. Latest released ancestry has no v2/lab runtime tag introduction.",
+  "functionalCheckpoint": "../366-stage2-closed/evidence.json",
+  "checkpointReuse": "Application, protocol, service and tests unchanged by this documentation phase; no monolithic final check pass claimed. Exact-tree documentation receipts refreshed separately after freezing.",
+  "noNewWriterActivation": true,
+  "nextAllowedWork": "Independent Stage4 idle-start audit while Stage3 waits for operator approval. No Stage3.2 code before approval.",
+  "evidence": [
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/367-format-source-review.json",
+      "artifact": "objects/8ef93ab47dd3b2993af11fc1f7d77330883374848ef02a298b73d3104f2316b9.gz",
+      "sha256": "8ef93ab47dd3b2993af11fc1f7d77330883374848ef02a298b73d3104f2316b9",
+      "bytes": 8909
+    },
+    {
+      "original": "/private/tmp/done-release-hardening-20261102/367-document-review.json",
+      "artifact": "objects/9bb1e9cd1a72f5cb28017fccb6e1860c1e6a88d71f0fa9ce80b4d988f0ee01b9.gz",
+      "sha256": "9bb1e9cd1a72f5cb28017fccb6e1860c1e6a88d71f0fa9ce80b4d988f0ee01b9",
+      "bytes": 798
+    }
+  ]
+}

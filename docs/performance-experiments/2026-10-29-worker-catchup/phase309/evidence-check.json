@@ -1,0 +1,23 @@
+{
+  "rawCopiesAndOriginalsVerified": 99,
+  "phase308RawOriginalsStillMatch": 777,
+  "phase308SourcesAssetsUnchanged": true,
+  "canonicalInputsUnchanged": 1552,
+  "frozenTraceSourceAssetsApparatusMatch": true,
+  "applicationJourneys": 4,
+  "plansAndResultsBothDirections": true,
+  "attemptRowsIndependentlyChecked": 66,
+  "interruptionCausesChecked": 14,
+  "unhintedPollCauses": 12,
+  "typingFlushCauses": 2,
+  "bothOverlapKeys": 120,
+  "coldAttempts": 1,
+  "coldExactPasses": 1,
+  "actualUnitChildExit": 0,
+  "contractChecksPassed": 7,
+  "markdownLinksExist": true,
+  "realIndexEmpty": true,
+  "SYPorHardeningBuilt": false,
+  "labOnly": true,
+  "acceptanceCredit": false
+}

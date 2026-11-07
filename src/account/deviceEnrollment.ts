@@ -1,4 +1,11 @@
-import { authenticationResponse } from './passkeyResponse';
+import {
+  pageEnrollmentWorkspace,
+  createPageDeviceEnrollmentBrowser,
+  type EnrollmentWorkspaceExecution,
+  type EnrollmentWorkspaceOpened,
+  type EnrollmentBrowserFactory,
+} from './enrollmentExecution';
+import type { SetupWorkspacePort } from './setupWorkspace';
 import { defaultDeviceName } from '../lib/browser';
 import { bootstrapFetch, legacyAccess } from './bootstrapHttp';
 import {
@@ -10,12 +17,10 @@ import {
 import { NetworkLogin, prewarmSlotLogin, postSession } from './networkLogin';
 import { checkEnrollmentLogin, completeEnrollmentLogin } from './enrollmentLogin';
 import { hasJoinedAccount } from '../crdt/joinedAccount';
-import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
 import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 /** Private two-device approval and certified key-installation coordinator. */
 import { continueContentHandoff, type ContentHandoffState } from './contentHandoff';
 import { openApprovedWriting, type ContentReaderState } from './contentReader';
-import { assertSlotPasskey } from './assertSlotPasskey';
 import {
   parseCertificationSuccessor,
   verifyCertificationSuccessor,
@@ -27,7 +32,7 @@ import { freshEnrollmentChallenge } from './enrollmentChallenge';
 import { pendingDeviceSlot, rememberPendingDevice } from './deviceConnectionRoutes';
 export { pendingDeviceSlot } from './deviceConnectionRoutes';
 import { beginLocalGenesis, inspectLocalStartup, resumeLocalGenesis } from '../crdt/localGenesis';
-import type { StartupDisposition, StartupKind } from '../crdt/startupState';
+import { DevicePreparationError } from './devicePreparationError';
 import { random, hex } from '../crdt/custodyCrypto';
 import { closed } from '../../account-protocol/preparation';
 import { digest, unhex } from '../../account-protocol/recovery';
@@ -111,7 +116,7 @@ interface Progress {
   reading?: ContentReaderState;
   terminal: 'expired' | 'restart-required' | 'cancelled' | null;
 }
-export interface EnrollmentView {
+export interface EnrollmentView<W = AdmittedWorkspace> {
   /** Retry retained progress soon even when the notification stream is healthy. */
   retryPending?: boolean;
   /** A disabled continuation action must not claim to remove pending membership. */
@@ -137,7 +142,7 @@ export interface EnrollmentView {
   code?: string;
   message: string;
   editor?: {
-    workspace: AdmittedWorkspace;
+    workspace: W;
     sync?: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
     devices: import('./deviceRoster').DeviceRoster;
     actorId: string;
@@ -150,41 +155,6 @@ const capability = () =>
     .replaceAll('+', '-')
     .replaceAll('/', '_')
     .replaceAll('=', '');
-type DevicePreparationRefusal = Exclude<StartupKind, 'fresh'>;
-const preparationMessages: Record<DevicePreparationRefusal, string> = {
-  'unlock-required':
-    'A saved device setup already exists. Return to accounts and resume it with its unlock code.',
-  'creation-pending':
-    'A saved device setup already exists. Return to accounts and resume it with its unlock code.',
-  'migration-required':
-    'Existing local data needs migration before you can connect this device. Keep your existing installation and verified export available.',
-  'app-update-required':
-    'Saved storage needs a compatible app. Reopen with a compatible app version, then try again. Your saved data has been kept.',
-  clearing:
-    'Workspace removal is unfinished. Return to accounts and resume removal before preparing this device.',
-  cleared: 'This device setup was removed. Return to accounts to start a separate connection.',
-  'repair-required':
-    'Saved data needs attention before this device can be prepared. Keep your browser data and backups available for recovery.',
-  'slot-closed': 'This workspace is closed. Return to accounts and choose another workspace.',
-  'identity-required':
-    'The saved workspace could not be identified. Keep your browser data and backups available for recovery.',
-  'unlock-failed':
-    'The saved workspace could not be unlocked. Return to accounts and try its established unlock code.',
-  busy: 'Another tab is using this workspace. Finish its operation or close it, then try again.',
-  unavailable:
-    'Could not read this browser’s saved storage. Check storage access and try again. Your saved data has been kept.',
-  unsupported:
-    'This browser cannot provide the secure storage and coordination needed to connect a device.',
-  cancelled: 'Device setup was cancelled. Try again when you are ready.',
-};
-class DevicePreparationError extends Error {
-  override readonly name = 'DevicePreparationError';
-  readonly disposition: Readonly<StartupDisposition>;
-  constructor(kind: DevicePreparationRefusal, reason: string) {
-    super(preparationMessages[kind]);
-    this.disposition = Object.freeze({ kind, reason });
-  }
-}
 export async function preparePendingDevice(workspace: string, signal: AbortSignal) {
   unhex(workspace, 16);
   const slot = pendingDeviceSlot(workspace) ?? 'enrollment-' + hex(random(16));
@@ -215,7 +185,9 @@ export const enrollmentMessages: Record<EnrollmentView['kind'], string> = {
   cancelled: 'This attempt was cancelled.',
 };
 const messages = enrollmentMessages;
-export function createDeviceEnrollment(
+export function createDeviceEnrollmentCoordinator<W extends SetupWorkspacePort>(
+  execution: EnrollmentWorkspaceExecution<W>,
+  browserFactory: EnrollmentBrowserFactory,
   config: SetupConfig,
   slotId: string,
   code: string,
@@ -236,16 +208,17 @@ export function createDeviceEnrollment(
     | { scope: GrantScope; identity: { accountId: string; credentialId: string } }
     | undefined;
   if (pin.origin !== location.origin) throw Error('Account service differs from this page');
-  let opened: Awaited<ReturnType<typeof openOwnedSyncingAccountWorkspace>> | undefined;
+  let opened: EnrollmentWorkspaceOpened<W> | undefined;
   const editors = new Set<() => void>();
   let running = false,
-    last: EnrollmentView = { kind: 'locked', message: messages.locked };
+    last: EnrollmentView<W> = { kind: 'locked', message: messages.locked };
   // The link is a signed invitation, not a freshness challenge. Keep it stable for
   // this unlocked owner; bootstrap still uses a fresh nonce and verifies authority.
   let existingInvitation: ReturnType<typeof parseCeremonyInvitation> | null = null;
-  const view = (kind: EnrollmentView['kind'], extra: Partial<EnrollmentView> = {}) =>
+  const view = (kind: EnrollmentView<W>['kind'], extra: Partial<EnrollmentView<W>> = {}) =>
     (last = { kind, message: messages[kind], ...extra });
   const guard = () => lifetime.signal.throwIfAborted();
+  const browser = browserFactory(lifetime.signal, guard);
   const bootstrapRequest = async (route: string, body: unknown): Promise<any> => {
     guard();
     if (
@@ -316,7 +289,7 @@ export function createDeviceEnrollment(
     cancel?: true;
     read?: true;
     reconnect?: true;
-  }): Promise<EnrollmentView> => {
+  }): Promise<EnrollmentView<W>> => {
     if (running) return last;
     running = true;
     try {
@@ -534,14 +507,11 @@ export function createDeviceEnrollment(
                 if (en.loginRetryKey)
                   await checkEnrollmentLogin(challenge.context, en.loginRetryKey, loginIdentity);
                 en.challenge = challenge.context;
-                const credential = (await navigator.credentials.get({
-                  publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
-                    await enrollmentOptions(challenge.context),
-                  ),
-                  signal: lifetime.signal,
-                })) as PublicKeyCredential | null;
+                const response = await browser.authenticate(
+                  await enrollmentOptions(challenge.context),
+                  lifetime.signal,
+                );
                 guard();
-                if (!credential) throw Error('Passkey cancelled');
                 if (Date.now() >= challenge.context.expiresAt)
                   throw Error(
                     'The passkey step expired. Use the account passkey again to renew it.',
@@ -549,7 +519,7 @@ export function createDeviceEnrollment(
                 en.proof = {
                   retryKey: en.retryKey,
                   attemptId: challenge.context.attemptId,
-                  response: authenticationResponse(credential),
+                  response,
                   possession: await owner.sign(enrollmentPossessionMessage(challenge.context)),
                   ...(en.loginRetryKey ? { loginRetryKey: en.loginRetryKey } : {}),
                 };
@@ -686,7 +656,7 @@ export function createDeviceEnrollment(
             owner,
             { base: boot.base, successor, certification },
             {
-              assert: assertSlotPasskey(lifetime.signal),
+              assert: browser.assertSlot,
               token: readingAccess(),
               historyAvailable: () => config.membershipContinuation === true,
               signal: lifetime.signal,
@@ -961,13 +931,16 @@ export function createDeviceEnrollment(
     if (!joined) return null;
     if (workspaceInput !== joined.workspaceId)
       throw Error('Saved workspace differs from this connection');
-    opened = await openOwnedSyncingAccountWorkspace(
+    opened = await execution.open(
       {
         slotId,
         membershipContinuation: () => config.membershipContinuation === true,
+        ...(config.onMembershipContinuationChange
+          ? { onMembershipContinuationChange: config.onMembershipContinuationChange }
+          : {}),
         code,
         pin,
-        assertPasskey: assertSlotPasskey(lifetime.signal),
+        assertPasskey: browser.assertSlot,
         signal: lifetime.signal,
         ...(networkLogin ? { networkLogin } : {}),
         identity: {
@@ -1053,4 +1026,26 @@ export function createDeviceEnrollment(
       return running;
     },
   };
+}
+
+export function createDeviceEnrollment(
+  config: SetupConfig,
+  slotId: string,
+  code: string,
+  role: CeremonyRole,
+  workspaceInput?: string,
+  invitationInput?: unknown,
+  networkLogin?: NetworkLogin,
+) {
+  return createDeviceEnrollmentCoordinator(
+    pageEnrollmentWorkspace,
+    createPageDeviceEnrollmentBrowser,
+    config,
+    slotId,
+    code,
+    role,
+    workspaceInput,
+    invitationInput,
+    networkLogin,
+  );
 }

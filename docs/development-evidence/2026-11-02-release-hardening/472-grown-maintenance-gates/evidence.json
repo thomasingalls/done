@@ -1,0 +1,2163 @@
+{
+  "phase": 472,
+  "date": "2026-11-06",
+  "scope": "grown normal/withheld three replicates each with >=60 overlap and both owners observed",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-final-grown.py.gz",
+      "sha256": "47a641e5ca455a2fef1b25241d9765f7856fa80c0c125bee5808d2d409f7d40d",
+      "bytes": 2934
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase321/apparatus/harness/test/account-continuation-lab/grown-maintenance.spec.ts.gz",
+      "sha256": "09cc1edcb58b2655558f99723e7f87129c00240602ccd649e7f8a5da71433d87",
+      "bytes": 3923
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/warmAuditScheduler.ts",
+      "sha256": "00f32596e332c09d74003f4965c0102339b174198994758e19c46793cdde8867",
+      "bytes": 3123
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/contentMaintenance.ts",
+      "sha256": "133c4dee725c8b43083d235eecbe5212f17f9081e6ff3e680a338e4d97035b1a",
+      "bytes": 5220
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-private-files.json",
+      "sha256": "eab1d84b1fb43e2c4a36e5607908da6d31e60c9309b59317e20ae191885f3a64",
+      "bytes": 1447458
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-summary.json",
+      "sha256": "a9e5949d457c03d0f852b5d101e39e8a1ebb3d19da600e5fa57793a81bfec989",
+      "bytes": 53342
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-declaration.json",
+      "sha256": "1884584f2ab4c4dd0f72b9f5ce0d4ba13cce7d869801848ad21e5641a170f808",
+      "bytes": 2956
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-progress.json",
+      "sha256": "f3ae15fb7678d571a08203e01d47bd4439355ea1b63e5ac8a6300f6106d0687c",
+      "bytes": 49538
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-final-proof.json",
+      "sha256": "ad216cb2fa9239d301ded2e54c5effb373e33533d4a87cc17ae0cd01e840ae26",
+      "bytes": 410
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-observer-repair-declaration.json",
+      "sha256": "b253b9eae5ab5e7074af8deac13ab803666229b8873283b3a657d9e830f63dcd",
+      "bytes": 783
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-disposable-cleanup.json",
+      "sha256": "0fef13ea7ee48486ac171b9e214e24d84005cc25c093390811207e093d41a7fb",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-progress-before-observer-repair.json",
+      "sha256": "0d97d6770c338370e38a8d487246072a42b63c6afe5b4005cdc5caf76c175921",
+      "bytes": 352
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/472-driver-preparation-attempt.json",
+      "sha256": "efadc6ab342ecac3742fcf58715ef7fade2a9f729a546ab034d11cced6d095b4",
+      "bytes": 225
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/prepare472.py",
+      "sha256": "3c46fccd9ff660c47628094c83356d9514c5e34b913d5b89bf7f09fb9ad2cff4",
+      "bytes": 3402
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/run472.py",
+      "sha256": "84093fdf8c1cbe246aae947c73b9ebcb70111c1aaebc36d3dfd6e7162452b9bb",
+      "bytes": 5736
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/analyze-grown.py",
+      "sha256": "1326f4acf9f963093d92ed573b761618fd3b844e82fe7dd31d73002d9fd880af",
+      "bytes": 5015
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/summarize472.py",
+      "sha256": "320717efc16f879da66d9644793fe28deb6eb234a4e9e1f5d23415888f85b5a6",
+      "bytes": 3222
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/record472.py",
+      "sha256": "d84ae2f2a8805907012bd03b4343dc0c89a55354bf2bf1d6237f5428aecdb9c0",
+      "bytes": 14321
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/observer-controls.test.mjs",
+      "sha256": "e5b8d27962c1628763bffbb54bfc6af7f1e93c03cfaf4c7708fb5d3c91523527",
+      "bytes": 1481
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/presentation.ts",
+      "sha256": "20e89d55c04124034d97dcfac0a2beba5a713a850c00dc6587f36fbbc2c69d11",
+      "bytes": 2450
+    },
+    {
+      "localPath": "/private/tmp/done-grown-maintenance-472-20261106/presentation-before-closed-guard.ts.txt",
+      "sha256": "c94519a44b998e085da340113cb82b0851b3a8dcea04b8e6795594006d06ef2a",
+      "bytes": 2192
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/child.log",
+      "sha256": "4a9bf2eeec66ed9ac7a6c956c368bc58800b89046d230a0e2c740b9e73134803",
+      "bytes": 376
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/host-load.jsonl",
+      "sha256": "370415b16d94ff454e42d39bd2289a3f72511e6de4b4732b8c381060c7f6e074",
+      "bytes": 1505
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/power-assertions-before.txt",
+      "sha256": "ba0b89d788d22202226117a471c247b1fe3d52620ad1204bc0f9fe32e55bb161",
+      "bytes": 1614
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/power-log-after.meta.json",
+      "sha256": "8d326f3359ed05b58730fffc5a0c73529bc8cb031e83bcda2c0f8fdcf129dcba",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/power-log-before.meta.json",
+      "sha256": "27800d9eca61a78a6b1d5bb869a7cb6172faaea71cc3fe0daa828e8c5c0915c3",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-observer-controls/run.json",
+      "sha256": "f8e828c4f1b73ac3511bcb90798ee712c5cbcc390c2e4b348804ab6b2568fa40",
+      "bytes": 910
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/child.log",
+      "sha256": "2181bdd7cc3a099ef8711129fb366ff805478ca00e58447b779d8330a7c6c585",
+      "bytes": 1849
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/host-load.jsonl",
+      "sha256": "7b62c26d90f07d0212674a9d13d8535173f8d0051ebc0b842090226ddbc7df81",
+      "bytes": 44294
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/power-assertions-before.txt",
+      "sha256": "d258484dbac997334fd0f63897e6af59a7520cf004224703eebbfca7493c8139",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/power-log-after.meta.json",
+      "sha256": "4809760620797fb51c9063d1487b22beb62ca54fa6cacdd9807e371f36b7dabf",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/power-log-after.txt",
+      "sha256": "ed5f5a7a8084db6dab331f9a2a50f8391c0cd7258bcbd50532037d0f7073bff3",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/power-log-before.meta.json",
+      "sha256": "15c7d819069b35b597d74d186663756bc48807a8063f4919a415e364fc6c62bf",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal/run.json",
+      "sha256": "a091e9f34f9a6e2e38fb9dc8b0fa9f851309d5b7d84514d7b03b71214c67fe94",
+      "bytes": 2037
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/child.log",
+      "sha256": "20bf74edb725c79eae4f1d4e3799dce3e1ad355fcdde3721d117bd2c6d521c4f",
+      "bytes": 411
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/host-load.jsonl",
+      "sha256": "6683dc0838c784d6b283ef3ba20867f2b0014d5194e169cecc77b83d71a3d649",
+      "bytes": 42827
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/power-assertions-before.txt",
+      "sha256": "29d30a1fb7dafc2fb6c2230ef5014205352cce4c82a2e61467b71a10884a8eec",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/power-log-after.meta.json",
+      "sha256": "d1ee44d88f1547693ff68f24d3eabbf7671313a0b61b275e0603dc9581ac770f",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/power-log-after.txt",
+      "sha256": "415246bd7acb6d5089c7b97cd8bc01817c24f07986283e05daf55429bb748a49",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/power-log-before.meta.json",
+      "sha256": "d7fa8661da2f6a9782f7a9cb1f721ad5a0cd01d4746d416c068166dad5de376c",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-normal-harness-retry/run.json",
+      "sha256": "3e568ec304852934f10217450d7ee4035e12f48090455fb61602009f76d2b91b",
+      "bytes": 2065
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/child.log",
+      "sha256": "a23d7cbf956130774af2b4c78eea10c459cbddeaeb04c6e33aa7f45c6d8ccb59",
+      "bytes": 411
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/host-load.jsonl",
+      "sha256": "00ca1a8ca911ae8a2b9fd2a63930f6614c6c2e8508ac38633f8dbc03115ab729",
+      "bytes": 49065
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/power-assertions-before.txt",
+      "sha256": "c16ca849b6e5e030f43f905769f9c32de662c5378bd00a2fbb72f49629845d2d",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/power-log-after.meta.json",
+      "sha256": "7a857e253e369fadcc8eb7852bc13071e60e6724e06330c35595bf6027f87baa",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/power-log-after.txt",
+      "sha256": "5be51b35a811ff6e98d9a48c7d45e6653b0ce961dd16c2629e0a61ccc9e6617e",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/power-log-before.meta.json",
+      "sha256": "b3654e63507552d7f6fc193f2104d13738861592b3f114b2902fa4815a2b75c6",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r1-grown-withheld/run.json",
+      "sha256": "2f89f554dcf671d5b60c8da11ecdf8ba15b8b9e4e47d2223eaa09de2f8ab5d6f",
+      "bytes": 2042
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/child.log",
+      "sha256": "9c744350bd3fab31c7702982352fe25d26190dd23841b22c8c539377b3bffff0",
+      "bytes": 411
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/host-load.jsonl",
+      "sha256": "f0958e89c0864d4520020b064a330fd54d3cfdc85fc12660badd424d8a2bd86f",
+      "bytes": 41086
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/power-assertions-before.txt",
+      "sha256": "057de09bb4c4db468ae62ab7e8654f2886839634bb7f0a07225de08e1698091e",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/power-log-after.meta.json",
+      "sha256": "3cd714f8c649511d5b69fa94cf05d12108eadbfa457f228c9fed4a53f04c78e1",
+      "bytes": 485
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/power-log-after.txt",
+      "sha256": "01178bfbd4a0de3b6c6ad4843ddf75c53c7e20d4b49ead1f8478e1922e12d295",
+      "bytes": 4016
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/power-log-before.meta.json",
+      "sha256": "63640c7cb4bc452a9f16ed1d796edf10584c63bd9dbce6ee56786d83eb5b92dc",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-normal/run.json",
+      "sha256": "e656be1c38b25e36e8ac34638196e12141857d5ec0a5c815d48babe5838b6f00",
+      "bytes": 2037
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/child.log",
+      "sha256": "e1ce6055ecd24847767b3523ca7381585d12547f773a1435e7dd5360bbc0c523",
+      "bytes": 411
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/host-load.jsonl",
+      "sha256": "fc92554e61c035330f14eeb0663362c50b6e6fc447853ee2c589a5c1db986524",
+      "bytes": 49099
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/power-assertions-before.txt",
+      "sha256": "d9988a3b9303eade0e26b93ad47f69b3fc371e4961ddc5751d1afe482333d580",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/power-log-after.meta.json",
+      "sha256": "b1212798162fc188bd5abb3d37899fd6e77035c896322aaf15b2bc4b5c62611e",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/power-log-after.txt",
+      "sha256": "fd1ccb6f52e4b2890037e6b93dfd47ecdf77ab02bb659e1aabc20137f4d63fc8",
+      "bytes": 4878
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/power-log-before.meta.json",
+      "sha256": "e4a3272a6aba884b1847dec87fc10bf218c92842880cc42a9d0907c0e7117d7e",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r2-grown-withheld/run.json",
+      "sha256": "590f948ad1d4768e6fabd961b777f5ca4f834bc442694acc38633d06c76b10f4",
+      "bytes": 2041
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/child.log",
+      "sha256": "058d9c1ef2dc09432c09f9e0ab757d77ecf16838eb1fdb230dad2b7876a761d5",
+      "bytes": 411
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/host-load.jsonl",
+      "sha256": "2c15f8f87ea862f5d609e0de1e8ad66b0013ba48803945035b1b707877e7db6e",
+      "bytes": 42593
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/power-assertions-before.txt",
+      "sha256": "8394d35a7893be7ad790a20fbb5952bd12c39dd4ccc17455f2f01f13fd2e75b8",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/power-log-after.meta.json",
+      "sha256": "cc8594d99bb5a1bb5421c26f3e53cf40bd014c76eee91cc61cf2ceb3c4341e3c",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/power-log-after.txt",
+      "sha256": "4e9de61924f48d8ad1f2d334a778a3be73a13445af96526d00656f4d15cab82b",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/power-log-before.meta.json",
+      "sha256": "ea50dff061f5a4add854652087914d868f529e4cf8590efbb779aa73b50f5832",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-normal/run.json",
+      "sha256": "b5762200176de72ffab2102a20a35aff282eed95b3cd4f4fbb55ab950b88a36d",
+      "bytes": 2038
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/child.log",
+      "sha256": "b956e5e2a4d9adc3df1043fd9c9a1ba45cdbf773d69d15f4bb62a3935db5cca8",
+      "bytes": 411
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/host-load.jsonl",
+      "sha256": "111635185aa319716faffd9760d1b97101b305e91b9f87ef9c5b4b56287ec31a",
+      "bytes": 49018
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/power-assertions-before.txt",
+      "sha256": "d8bd0f1351156d81fbbabf09ed0645130457650186454cbabcc319fafb12282c",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/power-log-after.meta.json",
+      "sha256": "a2de6a811f01a957460bb2995a88e449f4a7c071d76e2af796cf199a1b6378f2",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/power-log-after.txt",
+      "sha256": "6dc36833a7cffc7be1d9e8669055e87c6b55319b610104ac9fa88029705ca9ed",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/power-log-before.meta.json",
+      "sha256": "f57a765b4fbe81e91cbeb147d6b44f6c11b3e82df26453549d72aaf368be2020",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/472-r3-grown-withheld/run.json",
+      "sha256": "21aa2cabae4406a26bae99694e2474fec87615353448d607fdfacd90015b4b95",
+      "bytes": 2041
+    }
+  ],
+  "summary": {
+    "phase": 472,
+    "candidate": "phase469 repair / exact ordinary phase470 assets",
+    "case": "phase466 bound phase321 grown body, all assertions/waits unchanged",
+    "cells": {
+      "grown-normal": {
+        "replicates": 3,
+        "accepted": true,
+        "failedPredicates": []
+      },
+      "grown-withheld": {
+        "replicates": 3,
+        "accepted": true,
+        "failedPredicates": []
+      }
+    },
+    "allCellsAccepted": true,
+    "appAttempts": 7,
+    "gradedJourneys": 6,
+    "harnessFailures": [
+      {
+        "name": "r1-grown-normal",
+        "key": "472-r1-grown-normal",
+        "cell": "grown-normal",
+        "replicate": 1,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 1,
+        "failure": "no app result; inspect apparatus",
+        "harnessFailure": true,
+        "acceptanceCredit": false,
+        "functionalObservation": "Partial record has both owner completions and exact cold exports; final result was not saved"
+      }
+    ],
+    "rows": [
+      {
+        "name": "r1-grown-normal-harness-retry",
+        "key": "472-r1-grown-normal-harness-retry",
+        "cell": "grown-normal",
+        "replicate": 1,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 27,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 63341,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 63306,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 15.001830816268921
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.607421875,
+        "peerP95Ms": 1030.139892578125,
+        "worstMarkerMs": 972.5732421875,
+        "backlogMs": 84410.64916992188,
+        "overlapKeys": 120,
+        "gates": {
+          "finalNewDelivery30s": true,
+          "faultExposed": true,
+          "trustedFocusedVisibleInput": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "overlap60": true,
+          "backlog600s": true,
+          "functionalAndOriginalWriterDeadline": true,
+          "bothColdExact": true
+        },
+        "owners": [
+          {
+            "role": "reader",
+            "publicAttempts": 2,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969260787.7002,
+                "endObservedAt": 1793969263651,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 1.900146484375
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969263652.9001,
+                "endObservedAt": 1793969268943.3,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 2,
+                "elapsedMs": 5292
+              }
+            },
+            "terminal": {
+              "role": "reader",
+              "observedAt": 1793969269781.249,
+              "sampleReturnedAt": 1793969269784.5105,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 2,
+                "interruptions": 0,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 39291.641357421875,
+            "completionHostOffsetBoundsMs": [
+              -1.343505859375,
+              1.4560546875
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          },
+          {
+            "role": "writer",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969166668.4001,
+                "endObservedAt": 1793969169549.2,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.5
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969169549.7,
+                "endObservedAt": 1793969170495.5,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 84161.5
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969254657,
+                "endObservedAt": 1793969258018.1,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.5
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969258018.6,
+                "endObservedAt": 1793969262704.3,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 4686
+              }
+            },
+            "terminal": {
+              "role": "writer",
+              "observedAt": 1793969262743.5225,
+              "sampleReturnedAt": 1793969262746.4292,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 2,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 33052.451904296875,
+            "completionHostOffsetBoundsMs": [
+              -1.154052734375,
+              1.503662109375
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          }
+        ],
+        "ownerCold": [
+          {
+            "role": "reader",
+            "startedAt": 1793969269861.5146,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969272977.2725,
+            "inclusiveDurationMs": 3115.7578125
+          },
+          {
+            "role": "writer",
+            "startedAt": 1793969272981.8699,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969275597.1807,
+            "inclusiveDurationMs": 2615.310791015625
+          }
+        ],
+        "savedPreparationRequiredAndObserved": true,
+        "allColdInclusiveUnder15s": true
+      },
+      {
+        "name": "r1-grown-withheld",
+        "key": "472-r1-grown-withheld",
+        "cell": "grown-withheld",
+        "replicate": 1,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 31,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 63675,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 63645,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 40.00968098640442
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 4.42041015625,
+        "peerP95Ms": 1473.400390625,
+        "worstMarkerMs": 1337.976806640625,
+        "backlogMs": 70314.30200195312,
+        "overlapKeys": 114,
+        "gates": {
+          "finalNewDelivery30s": true,
+          "faultExposed": true,
+          "trustedFocusedVisibleInput": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "overlap60": true,
+          "backlog600s": true,
+          "functionalAndOriginalWriterDeadline": true,
+          "bothColdExact": true
+        },
+        "owners": [
+          {
+            "role": "reader",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969377112.5,
+                "endObservedAt": 1793969378126.7002,
+                "furthestObservedStage": "opening",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 10604.099853515625
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969388730.8,
+                "endObservedAt": 1793969389746.8,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 26093.0
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969415839.8,
+                "endObservedAt": 1793969418599.5,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.7001953125
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969418600.2002,
+                "endObservedAt": 1793969424027.3,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 5427
+              }
+            },
+            "terminal": {
+              "role": "reader",
+              "observedAt": 1793969424055.4285,
+              "sampleReturnedAt": 1793969424059.2073,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 3,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 61787.154541015625,
+            "completionHostOffsetBoundsMs": [
+              -1.137451171875,
+              1.474365234375
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          },
+          {
+            "role": "writer",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969299236.5,
+                "endObservedAt": 1793969302138.4,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.7001953125
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969302139.1,
+                "endObservedAt": 1793969303075.5,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 86661.0
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969389736.5,
+                "endObservedAt": 1793969393169.3,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.599853515625
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969393169.9,
+                "endObservedAt": 1793969397839.6,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 4671
+              }
+            },
+            "terminal": {
+              "role": "writer",
+              "observedAt": 1793969397881.7942,
+              "sampleReturnedAt": 1793969397884.8137,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 2,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 35599.61865234375,
+            "completionHostOffsetBoundsMs": [
+              -1.301513671875,
+              1.44970703125
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          }
+        ],
+        "ownerCold": [
+          {
+            "role": "reader",
+            "startedAt": 1793969424146.3308,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969426752.5872,
+            "inclusiveDurationMs": 2606.25634765625
+          },
+          {
+            "role": "writer",
+            "startedAt": 1793969426757.1697,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969429156.2397,
+            "inclusiveDurationMs": 2399.070068359375
+          }
+        ],
+        "savedPreparationRequiredAndObserved": true,
+        "allColdInclusiveUnder15s": true
+      },
+      {
+        "name": "r2-grown-normal",
+        "key": "472-r2-grown-normal",
+        "cell": "grown-normal",
+        "replicate": 2,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 26,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 64043,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 62641,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 64012,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 45.00794291496277
+            },
+            {
+              "pid": 64306,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 5.079345703125,
+        "peerP95Ms": 1031.1826171875,
+        "worstMarkerMs": 1001.8369140625,
+        "backlogMs": 84509.9326171875,
+        "overlapKeys": 120,
+        "gates": {
+          "finalNewDelivery30s": true,
+          "faultExposed": true,
+          "trustedFocusedVisibleInput": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "overlap60": true,
+          "backlog600s": true,
+          "functionalAndOriginalWriterDeadline": true,
+          "bothColdExact": true
+        },
+        "owners": [
+          {
+            "role": "reader",
+            "publicAttempts": 2,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969545474.2998,
+                "endObservedAt": 1793969548348.2998,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 1.800048828125
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969548350.0999,
+                "endObservedAt": 1793969553747.4,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 2,
+                "elapsedMs": 5399
+              }
+            },
+            "terminal": {
+              "role": "reader",
+              "observedAt": 1793969553926.9631,
+              "sampleReturnedAt": 1793969553930.6787,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 2,
+                "interruptions": 0,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 38174.824951171875,
+            "completionHostOffsetBoundsMs": [
+              -1.2099609375,
+              1.518310546875
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          },
+          {
+            "role": "writer",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969452612.6,
+                "endObservedAt": 1793969455484.5,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.60009765625
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969455485.1,
+                "endObservedAt": 1793969456427.6,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 89357.30004882812
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969545784.9001,
+                "endObservedAt": 1793969549119.8,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.60009765625
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969549120.4001,
+                "endObservedAt": 1793969553893.1,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 4773
+              }
+            },
+            "terminal": {
+              "role": "writer",
+              "observedAt": 1793969553927.2703,
+              "sampleReturnedAt": 1793969553930.004,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 2,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 38320.524658203125,
+            "completionHostOffsetBoundsMs": [
+              -1.20947265625,
+              1.606201171875
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          }
+        ],
+        "ownerCold": [
+          {
+            "role": "reader",
+            "startedAt": 1793969554006.767,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969557315.4048,
+            "inclusiveDurationMs": 3308.6376953125
+          },
+          {
+            "role": "writer",
+            "startedAt": 1793969557319.804,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969560082.2373,
+            "inclusiveDurationMs": 2762.433349609375
+          }
+        ],
+        "savedPreparationRequiredAndObserved": true,
+        "allColdInclusiveUnder15s": true
+      },
+      {
+        "name": "r2-grown-withheld",
+        "key": "472-r2-grown-withheld",
+        "cell": "grown-withheld",
+        "replicate": 2,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 31,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 64413,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 62641,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 64375,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 60.008331060409546
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.92138671875,
+        "peerP95Ms": 1584.940673828125,
+        "worstMarkerMs": 1952.41162109375,
+        "backlogMs": 69319.86743164062,
+        "overlapKeys": 112,
+        "gates": {
+          "finalNewDelivery30s": true,
+          "faultExposed": true,
+          "trustedFocusedVisibleInput": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "overlap60": true,
+          "backlog600s": true,
+          "functionalAndOriginalWriterDeadline": true,
+          "bothColdExact": true
+        },
+        "owners": [
+          {
+            "role": "reader",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969663583,
+                "endObservedAt": 1793969664597.4,
+                "furthestObservedStage": "opening",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 10506.5
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969675103.9,
+                "endObservedAt": 1793969676120.2,
+                "furthestObservedStage": "opening",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 23834.10009765625
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969699954.3,
+                "endObservedAt": 1793969702780.0999,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 1.7001953125
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969702781.8,
+                "endObservedAt": 1793969708114.5999,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 5335
+              }
+            },
+            "terminal": {
+              "role": "reader",
+              "observedAt": 1793969708466.351,
+              "sampleReturnedAt": 1793969708477.0693,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 3,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 61509.9443359375,
+            "completionHostOffsetBoundsMs": [
+              -1.287353515625,
+              1.548828125
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          },
+          {
+            "role": "writer",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969583618.9,
+                "endObservedAt": 1793969586488.0999,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.7001953125
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969586488.8,
+                "endObservedAt": 1793969587427.3,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 88699.89990234375
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969676127.2,
+                "endObservedAt": 1793969679526.3,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.599853515625
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969679526.9,
+                "endObservedAt": 1793969684271.9,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 4746
+              }
+            },
+            "terminal": {
+              "role": "writer",
+              "observedAt": 1793969684318.0254,
+              "sampleReturnedAt": 1793969684320.8074,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 2,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 37667.123779296875,
+            "completionHostOffsetBoundsMs": [
+              -1.166748046875,
+              1.495849609375
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          }
+        ],
+        "ownerCold": [
+          {
+            "role": "reader",
+            "startedAt": 1793969708575.8499,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969711154.1494,
+            "inclusiveDurationMs": 2578.299560546875
+          },
+          {
+            "role": "writer",
+            "startedAt": 1793969711159.1536,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969713516.9692,
+            "inclusiveDurationMs": 2357.815673828125
+          }
+        ],
+        "savedPreparationRequiredAndObserved": true,
+        "allColdInclusiveUnder15s": true
+      },
+      {
+        "name": "r3-grown-normal",
+        "key": "472-r3-grown-normal",
+        "cell": "grown-normal",
+        "replicate": 3,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 27,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 64778,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 4.99207878112793
+            },
+            {
+              "pid": 62641,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 64745,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 40.005220890045166
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.896240234375,
+        "peerP95Ms": 1015.44921875,
+        "worstMarkerMs": 866.314453125,
+        "backlogMs": 83981.8505859375,
+        "overlapKeys": 120,
+        "gates": {
+          "finalNewDelivery30s": true,
+          "faultExposed": true,
+          "trustedFocusedVisibleInput": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "overlap60": true,
+          "backlog600s": true,
+          "functionalAndOriginalWriterDeadline": true,
+          "bothColdExact": true
+        },
+        "owners": [
+          {
+            "role": "reader",
+            "publicAttempts": 3,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969832166.4001,
+                "endObservedAt": 1793969834753.3,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 1.900146484375
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969834755.2002,
+                "endObservedAt": 1793969838717.7002,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.599853515625
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969838718.3,
+                "endObservedAt": 1793969843226.3,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 3,
+                "elapsedMs": 4507
+              }
+            },
+            "terminal": {
+              "role": "reader",
+              "observedAt": 1793969843656.6687,
+              "sampleReturnedAt": 1793969843667.7231,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 3,
+                "interruptions": 0,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 43404.77001953125,
+            "completionHostOffsetBoundsMs": [
+              -1.314453125,
+              1.3720703125
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          },
+          {
+            "role": "writer",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969736905.5,
+                "endObservedAt": 1793969739734,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 1.89990234375
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969739735.9,
+                "endObservedAt": 1793969740666,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 82820.30004882812
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969823486.3,
+                "endObservedAt": 1793969826796.0999,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 2.800048828125
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969826798.9,
+                "endObservedAt": 1793969831533.3,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 4737
+              }
+            },
+            "terminal": {
+              "role": "writer",
+              "observedAt": 1793969831577.9004,
+              "sampleReturnedAt": 1793969831581.7026,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 2,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 31711.708740234375,
+            "completionHostOffsetBoundsMs": [
+              -1.253173828125,
+              1.446044921875
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          }
+        ],
+        "ownerCold": [
+          {
+            "role": "reader",
+            "startedAt": 1793969843764.7322,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969846290.1335,
+            "inclusiveDurationMs": 2525.4013671875
+          },
+          {
+            "role": "writer",
+            "startedAt": 1793969846295.0684,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793969848558.2722,
+            "inclusiveDurationMs": 2263.203857421875
+          }
+        ],
+        "savedPreparationRequiredAndObserved": true,
+        "allColdInclusiveUnder15s": true
+      },
+      {
+        "name": "r3-grown-withheld",
+        "key": "472-r3-grown-withheld",
+        "cell": "grown-withheld",
+        "replicate": 3,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 31,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 65129,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 5.005016088485718
+            },
+            {
+              "pid": 62641,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 65099,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 24.997888803482056
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 4.145751953125,
+        "peerP95Ms": 1600.450927734375,
+        "worstMarkerMs": 938.775390625,
+        "backlogMs": 69285.23315429688,
+        "overlapKeys": 112,
+        "gates": {
+          "finalNewDelivery30s": true,
+          "faultExposed": true,
+          "trustedFocusedVisibleInput": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "overlap60": true,
+          "backlog600s": true,
+          "functionalAndOriginalWriterDeadline": true,
+          "bothColdExact": true
+        },
+        "owners": [
+          {
+            "role": "reader",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969949479,
+                "endObservedAt": 1793969950494.2,
+                "furthestObservedStage": "opening",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 10602.10009765625
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969961096.3,
+                "endObservedAt": 1793969962106.8,
+                "furthestObservedStage": "opening",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 27155.199951171875
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969989262,
+                "endObservedAt": 1793969992079.1,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 1.800048828125
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969992080.9001,
+                "endObservedAt": 1793969997393.7,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 5315
+              }
+            },
+            "terminal": {
+              "role": "reader",
+              "observedAt": 1793969998229.5818,
+              "sampleReturnedAt": 1793969998236.613,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 3,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 62403.66357421875,
+            "completionHostOffsetBoundsMs": [
+              -1.17626953125,
+              1.597412109375
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          },
+          {
+            "role": "writer",
+            "publicAttempts": 4,
+            "publicCompletions": 1,
+            "presentationDerived": true,
+            "attempts": [
+              {
+                "attempt": 1,
+                "startObservedAt": 1793969872007.7,
+                "endObservedAt": 1793969874898,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.5
+              },
+              {
+                "attempt": 2,
+                "startObservedAt": 1793969874898.5,
+                "endObservedAt": 1793969875833.5,
+                "furthestObservedStage": "verifying",
+                "outcome": "activity-or-journal",
+                "reason": "activity-or-journal",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 83020.0
+              },
+              {
+                "attempt": 3,
+                "startObservedAt": 1793969958853.5,
+                "endObservedAt": 1793969962248,
+                "furthestObservedStage": "verifying",
+                "outcome": "preparation-saved",
+                "reason": "preparation-saved",
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": 0.699951171875
+              },
+              {
+                "attempt": 4,
+                "startObservedAt": 1793969962248.7,
+                "endObservedAt": 1793969966965,
+                "furthestObservedStage": "complete",
+                "outcome": "completion-observed",
+                "reason": null,
+                "configuredRetryClockMs": null,
+                "exactInterruptionJob": null,
+                "journalBytes": null,
+                "observedEndToNextStartMs": null
+              }
+            ],
+            "statusAtCold": {
+              "phase": "idle",
+              "progress": {
+                "stage": "complete",
+                "attempt": 4,
+                "elapsedMs": 4717
+              }
+            },
+            "terminal": {
+              "role": "writer",
+              "observedAt": 1793969967008.5137,
+              "sampleReturnedAt": 1793969967011.762,
+              "status": {
+                "phase": "idle",
+                "stage": "complete",
+                "attempts": 4,
+                "interruptions": 2,
+                "completions": 1
+              },
+              "kind": "completion-observed"
+            },
+            "firstCompletionObservedAfterLastKeyMs": 31974.9912109375,
+            "completionHostOffsetBoundsMs": [
+              -1.203857421875,
+              1.627685546875
+            ],
+            "startsDuringWriterTypingObserved": [],
+            "startsDuringReaderDrainObserved": [],
+            "observedCapacityAttempts": [],
+            "nativeJournalBytes": null,
+            "nativeCapacityCeilingBytes": null,
+            "nativeRetryClocks": null,
+            "exactInterruptionJobs": null,
+            "unavailableReason": "Shipping public session presentation has no native preparation journal or job trace",
+            "observerOverflow": 0
+          }
+        ],
+        "ownerCold": [
+          {
+            "role": "reader",
+            "startedAt": 1793969998334.9937,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793970000846.2056,
+            "inclusiveDurationMs": 2511.2119140625
+          },
+          {
+            "role": "writer",
+            "startedAt": 1793970000850.922,
+            "outcome": "passed",
+            "archiveExact": true,
+            "completedAt": 1793970003314.6501,
+            "inclusiveDurationMs": 2463.72802734375
+          }
+        ],
+        "savedPreparationRequiredAndObserved": true,
+        "allColdInclusiveUnder15s": true
+      }
+    ],
+    "allOverlap60": true,
+    "overlapRange": [
+      112,
+      120
+    ],
+    "peakInputP95Ms": 5.079345703125,
+    "peakPeerP95Ms": 1600.450927734375,
+    "peakMarkerMs": 1952.41162109375,
+    "allOwnersCompleted": true,
+    "capacityStatusObserved": false,
+    "allSavedPreparationRequiredAndObserved": true,
+    "allInclusiveColdUnder15s": true,
+    "coldMaxInclusiveMs": 3308.6376953125,
+    "nativePreparationJournalBytesAvailable": false,
+    "nativeInterruptionJobsAvailable": false,
+    "nativeRetryClockAvailable": false,
+    "currentCandidateBlockingJourneysPassed": 12,
+    "remainingBlockingJourneys": 24,
+    "earlierSourcePassesNotTransferred": true,
+    "appSourceChanges": 0,
+    "caseChanges": 0,
+    "helperRepair": "Optional closed-page observer only;4controls pass; ungraded first attempt preserved",
+    "allGuardsAndDeadlinesUnchanged": true,
+    "committed": false,
+    "pushed": false,
+    "writerCompletionObservedRangeMs": [
+      31711.708740234375,
+      38320.524658203125
+    ],
+    "readerCompletionObservedRangeMs": [
+      38174.824951171875,
+      62403.66357421875
+    ]
+  },
+  "proof": {
+    "caseByteExact": true,
+    "caseSha256": "23ace13bd67eb95af87e3549f7bf586ebc3c318573f295a78786286760a3fd5f",
+    "originalMetricBlockIndentationOnly": true,
+    "metricBlockSha256": "0333792f3ab7b2c6d296705b44ca6f1476a5660efe708c627bc24b537c15abf9",
+    "shippingFilesExact": 125,
+    "canonicalWorkingBindingsExact": 7,
+    "observerControlsPassed": 4,
+    "appOrCaseChanges": 0,
+    "ungradedHarnessAttemptKept": true
+  },
+  "timedMatrixJourneysStarted": 7,
+  "gradedBlockingJourneys": 6,
+  "appOrCaseChanges": false,
+  "privateHelperRepair": "Optional observer handles intentionally closed pages; live errors still throw;4controls pass",
+  "allOriginalGuardsAndDeadlinesUnchanged": true,
+  "noOldFixtureAmendmentsApplied": true,
+  "host": "Operator quiet-host handshake; all valid runs display on, swap constant, no failed-replicate noise retry;5s CPU/top/display and windowed power identities kept",
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "next": "Native context/resumable/deep block on the same repaired source, then remaining Stage5 journeys and report-only cells if no blockers; next tight-block host handshake requested"
+}

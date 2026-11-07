@@ -1,0 +1,595 @@
+{
+  "phase": 450,
+  "date": "2026-11-05",
+  "scope": "operator-approved four-check test repair, permanent copied-database guard tests, required registration and stopped bookkeeping checkpoint",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-index/past-index.spec.ts",
+      "sha256": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "bytes": 17521
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/dense.spec.ts",
+      "sha256": "aec2ce85e53cddf5b0c125408de34e7a22a082ca5c4a7d3c3284497a542a61fd",
+      "bytes": 7438
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/group-cut.spec.ts",
+      "sha256": "80793a21f86e60ed4feace3aee743c4f6d727c17a8990c4318186bd4055c2d48",
+      "bytes": 5016
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-audit/idle.spec.ts",
+      "sha256": "e9d665f3e3e417ca679d3af08acc4588797c1af5b64991baaa60c6b67d7fea4e",
+      "bytes": 6903
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-compat/owners.spec.ts",
+      "sha256": "285ec5cbbd3404626f8b6131bd63cbcd3e4a2bd7ccb60f14cf78077db852edc2",
+      "bytes": 16603
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f",
+      "bytes": 11736
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveQuietPages.ts",
+      "sha256": "4a42098e79fe9aa4bff7df6e20a1ac62789d196233a929427fe7177211d5848b",
+      "bytes": 7756
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receivePageTransport.ts",
+      "sha256": "381659b70f376d44fba18da534236ae07119263100cb637b544512ed89225c58",
+      "bytes": 6489
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/inboundBatch.ts",
+      "sha256": "770c4e522f29c91d3ed3f848802ba1c0ff21976aeaf868e333744d729a98cf23",
+      "bytes": 1852
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/check.mjs",
+      "sha256": "c1dc4742aa3edabc6fa55e200bf55a209caa2789b6758250ce91d488e2f0a50f",
+      "bytes": 1522
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/inventory.mjs",
+      "sha256": "dc598433de2f15e27bf385fbcde5874e60a0c97628917505835682297ac25487",
+      "bytes": 15074
+    }
+  ],
+  "workingSourceReferences": [
+    {
+      "path": "test/inbound-native/fixtures.ts",
+      "sha256": "4fc6265d0f89a0e1e0eafe3e62f6cda40963e41a35d3c1bfffbbfdd8cffd0e19",
+      "bytes": 5016,
+      "state": "working tree in sequential phase450 patch; not a signed source identity",
+      "base": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "sha256": "5760fc000f8ebba39b5b370832b38b14eb03182ea65620b5c065620cee97efeb",
+        "bytes": 4971
+      }
+    },
+    {
+      "path": "test/acceptedRows.test.ts",
+      "sha256": "a82a5f83d39472cd91d40fc30151433a1a9c0d51d0138e737f9f65a73bf3f326",
+      "bytes": 6628,
+      "state": "working tree in sequential phase450 patch; not a signed source identity"
+    },
+    {
+      "path": "scripts/release-validation/general-tests.json",
+      "sha256": "3a26af80cd31e2a435ccf47677380d15b9792c1d95a6fe047f7452fb6546c34a",
+      "bytes": 3975,
+      "state": "working tree in sequential phase450 patch; not a signed source identity",
+      "base": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "sha256": "1716abc56378678d4ab8438ade91d829f39202e9d64ebcb3ab5eaa449956077d",
+        "bytes": 3942
+      }
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "sha256": "bf6e8f896bc0ed959f000feb688cc58d50e37050087e2d45e636d7a39905f9cc",
+      "bytes": 13479,
+      "state": "working tree in sequential phase450 patch; not a signed source identity",
+      "base": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "sha256": "f18ea0d33445deed6b40b5bcf418bc485df1b47ab3f443900ee493b427e2f566",
+        "bytes": 13479
+      }
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "d609fd6cbb711f3a5c184ca25c43b7a5a380d976f4bfe3878b40f36498c1d70b",
+      "bytes": 583506,
+      "state": "working tree in sequential phase450 patch; not a signed source identity",
+      "base": {
+        "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+        "sha256": "89490f84120d5c3b8e8d12fb997486b23c80769c9fe43abfd7b7de1cc803761c",
+        "bytes": 583096
+      }
+    }
+  ],
+  "declaration": {
+    "phase": 450,
+    "declaredEpoch": 1793898230.978285,
+    "scope": "approved exact four-check test-only repair, permanent eight-case original/strict controls, required census registration",
+    "checkOrder": [
+      "typecheck",
+      "lint",
+      "permanent unit guard file",
+      "release-validation inventory and reviewed denominator tests"
+    ],
+    "allFailuresStop": true,
+    "appRuntimeChanges": false,
+    "helperInverseProof": "450-approved-fixture-inverse.json",
+    "guardDatabaseRule": "construct and close synthetic source; every census observes a private copy; source hash and file list remain exact",
+    "additionalBookkeeping": "register new reviewed test; update only exact case/file denominators and planning snapshot; no guard/deadline/skip changes",
+    "next": "freeze repair before requested native importer runs, then audit timed cells and host handshake"
+  },
+  "inverseProof": {
+    "helperEntireFileInverseExact": true,
+    "exactlyFourMatchersAndOneImport": true,
+    "permanentOracleInverseExact": true,
+    "guardUnitCasesPassed": 8,
+    "typecheckAndLintPassed": true,
+    "firstFailure": "reviewed general-tests denominator actual2573 expected2570",
+    "furtherCommandsStopped": true,
+    "appSpecRuns": 0,
+    "timedRuns": 0
+  },
+  "checks": [
+    {
+      "key": "450-typecheck",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-release-hardening-20261102/tools/pnpm",
+          "typecheck"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-release-hardening-20261102/tools/pnpm",
+          "typecheck"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 2400,
+        "started": 1793898293.617306,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 69350,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793898294.3829608
+      }
+    },
+    {
+      "key": "450-lint",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-release-hardening-20261102/tools/pnpm",
+          "lint"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-release-hardening-20261102/tools/pnpm",
+          "lint"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 2400,
+        "started": 1793898296.214706,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 69393,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793898297.0362
+      }
+    },
+    {
+      "key": "450-accepted-rows-unit",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/acceptedRows.test.ts"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "node_modules/vitest/vitest.mjs",
+          "run",
+          "test/acceptedRows.test.ts"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 180,
+        "started": 1793898298.888118,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 69429,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793898299.7899961
+      }
+    },
+    {
+      "key": "450-census-policy",
+      "exit": 1,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "--test",
+          "test/release-validation/inventory.test.mjs",
+          "test/release-validation/inventory-snapshot.test.mjs",
+          "test/release-validation/general-tests.test.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "--test",
+          "test/release-validation/inventory.test.mjs",
+          "test/release-validation/inventory-snapshot.test.mjs",
+          "test/release-validation/general-tests.test.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+        "deadlineSeconds": 2400,
+        "started": 1793898301.632431,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 69457,
+        "childExit": 1,
+        "timedOut": false,
+        "finished": 1793898306.03442
+      }
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/450-approved-fixture-inverse.json",
+      "sha256": "a26cd3eb87fd255a5d4f9e518eb5e4fe4e52868de1c550b8e0848d4da173dcb6",
+      "bytes": 347,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/450-check-results.json",
+      "sha256": "11edd36bff1ab6e49a992468a68f3bcfc27e195a9d0ecb754eaa9296b9da7020",
+      "bytes": 4069,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/450-declaration.json",
+      "sha256": "dd2b3e7b16401270b358b23b9a4706d6983f393bfef248508d1586915dd3ab96",
+      "bytes": 862,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/450-final-inverse-proof.json",
+      "sha256": "3b0ad4831bb44e1775a776e4bfea3f2e079a26e92eba7dce8d6eff1f5ff77f2d",
+      "bytes": 340,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/450-inventory-record.log",
+      "sha256": "e1aa369fb2418498a668e6271c80419b97a0cb45ca89374c761520808e478e77",
+      "bytes": 324,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/450-legacy-oracle-inverse.json",
+      "sha256": "24d4b01ec95d130e7dc3d33c1bd60c1a94ee8da4ceb2ee3a41872ada4b44f07f",
+      "bytes": 436,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/check450.py",
+      "sha256": "bc1af525db36a3c8b18461aa298edac6a83e50a51518422ba62ce09c02be4a21",
+      "bytes": 1304,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-repair-450-20261105/record450.py",
+      "sha256": "4011664d08f251e21cbb2134f9db911af140ada5d35264c09ffe726ae0451e1e",
+      "bytes": 14544,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/child.log",
+      "sha256": "9b0f1615908606880ccef9511e5951285a58231559426af60dcce8fb7a54290f",
+      "bytes": 231,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/host-load.jsonl",
+      "sha256": "6e44c10d6c79c2f332a194cd537d097fc2c60402b631349dc39f08eeadd93362",
+      "bytes": 1484,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/power-assertions-before.txt",
+      "sha256": "0ae9d76373d969c3b28885b005ac0f5f66129c52d25381b707ad8df0d778bc91",
+      "bytes": 1900,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/power-log-after.meta.json",
+      "sha256": "6bd5c5735646778581fabcbbade85d811d042e1b6119b9ee6793b2449e78d591",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/power-log-after.txt",
+      "sha256": "318959e56cc76b6618a6f7fd78b55470b0b009590254407fab705a5f27da21e6",
+      "bytes": 231,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/power-log-before.meta.json",
+      "sha256": "a23dca514fde6d1951b817b8ec7e7d2c0c1783c9f84ea76c51c5d8838958fc02",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-accepted-rows-unit/run.json",
+      "sha256": "661b5c93fd0bd7445ed631967d7902ecf47c7c4a37fcb6d24232627ea5ebe458",
+      "bytes": 882,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/child.log",
+      "sha256": "8f75f076cbe0e2c933f94e02e2c420f6467e5a43a0b46efb9f721cc2b4fca037",
+      "bytes": 2619,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/host-load.jsonl",
+      "sha256": "1a36c8238b08356f076ab0c0932d92a0b89044a3baee15a22867cf396fed4530",
+      "bytes": 1484,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/power-assertions-before.txt",
+      "sha256": "215a203ca001a330eecf722be16c1de553516fe56a19b0d562276499de0ece4a",
+      "bytes": 1900,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/power-log-after.meta.json",
+      "sha256": "0d1e348de6bdeb175951a5ce8aa2e230a65a6536e8d7c7170b4afc191d201af6",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/power-log-after.txt",
+      "sha256": "ec759835a36c93b0ce392e9e9b4e782a86a6ba57fdd7d2759879373f79f26bb7",
+      "bytes": 309,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/power-log-before.meta.json",
+      "sha256": "c16c92322c47f61819f3df3e8b9a962372101bbf4137116476ee200a6f0bbd74",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-census-policy/run.json",
+      "sha256": "bfa6ab19729dd9e47d24c4580811ba5abe0bea5ba8fdc068a5c6fc47dda9160e",
+      "bytes": 1071,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/child.log",
+      "sha256": "4dbbb5d9326c5cf032406db1cc4c28f14315fc922a84998f8001df32db5e6314",
+      "bytes": 24,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/host-load.jsonl",
+      "sha256": "a029cbfe5f26a9e83e3c5691215ffbc994d09e76840d24726f419e15886cdd2e",
+      "bytes": 1529,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/power-assertions-before.txt",
+      "sha256": "5d763fba71251cc002d372ff29fbe6f6550fe839691ecd0659f8911b66c2ec2b",
+      "bytes": 1900,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/power-log-after.meta.json",
+      "sha256": "f934316ee7b7c282278312d96e423764218b79045820ceed1aefc9b527d3cb4c",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/power-log-before.meta.json",
+      "sha256": "5b99dca8d1363da54818a74134e6f5078b7bf6de0565a34d7ba227212f8d6c15",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-lint/run.json",
+      "sha256": "37846fe801f80e34a089b471aa09f06725e3bf98e4919e78b5d1ce15c17adc51",
+      "bytes": 714,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/child.log",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/host-load.jsonl",
+      "sha256": "ce9e0c7b11308222f71784c12d6b80a12e5b4d561adf0feee30ff52c06580fd5",
+      "bytes": 1529,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/power-assertions-before.txt",
+      "sha256": "85c2db71a940156bd1d372e076fa6a42f98c8db45afb5c12002d1ef8b96d6c5d",
+      "bytes": 1674,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/power-log-after.meta.json",
+      "sha256": "59722b039f13eaed92057376758859ba0f0e71de3fb33a6dc4abe3aea41e4370",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/power-log-after.txt",
+      "sha256": "4ca4740fc95868421faf3fe72101bf2d476e282b180ce62dc93bf320dbf90afb",
+      "bytes": 468,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/power-log-before.meta.json",
+      "sha256": "65fa0ec5850ba1e705c52a8cb256de7ca771ce909ed65aafcb663c34c31348ba",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/450-typecheck/run.json",
+      "sha256": "09cd506db0a588a0cf3cf21fc6b988583eeebfc9a23cf3122c25da42ea313be6",
+      "bytes": 727,
+      "stored": "original local artifact only"
+    }
+  ],
+  "status": "stopped at first failing census/policy command",
+  "failure": {
+    "file": "test/release-validation/general-tests.test.mjs",
+    "line": 36,
+    "actual": 2573,
+    "expected": 2570,
+    "commandTests": 16,
+    "passed": 15,
+    "failed": 1,
+    "unresolved": "the three-case difference is not reconciled; do not raise the count or classify as stale without provenance"
+  },
+  "requestedBrowserSpecsRun": 0,
+  "timedPathAuditComplete": false,
+  "batchCapStage6ObservationRecorded": true,
+  "hostHandshakeRequested": false,
+  "applicationChanges": false,
+  "limitsBudgetsGatesTrustAndFormatChanges": false,
+  "priorFailuresRetained": true,
+  "committed": false,
+  "pushed": false
+}

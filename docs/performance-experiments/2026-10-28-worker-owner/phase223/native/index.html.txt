@@ -1,0 +1,1 @@
+<!doctype html><meta charset="utf-8"><title>Actual asynchronous account worker</title><textarea></textarea><script type="module" src="./main.mjs"></script>

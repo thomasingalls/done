@@ -1,0 +1,14 @@
+case,actor,realm,kind,afterTypingMs,origin,code,closed,explicitlyClosed,traceName,channel,pending,active,outPeak,inPeak
+trace327-ready-paired150-d0-reference,1,page,channel-close,7573.505859375,,closed,,,,4,0,0,3,2
+trace327-ready-paired150-d0-reference,1,page,ceremony-cohort-abort,7576.805908203125,,,,,,,,,,
+trace327-ready-paired150-d0-reference,1,page,ceremony-fail,7576.805908203125,session-cohort-abort,,True,True,,,,,,
+trace327-ready-paired150-d0-reference,1,page,channel-close,7581.90576171875,,closed,,,,3,0,0,1,2
+trace327-ready-paired150-d0-reference,1,page,ceremony-fail,7581.90576171875,control-channel,closed,True,True,,,,,,
+trace327-ready-paired150-d0-reference,1,http://localhost:53781/assets/enrollmentOwner.worker-riH2a8PC.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N,channel-close,7573.105712890625,,closed,,,,3,0,0,2,2
+trace327-tagged-paired150-d0-reference,1,page,channel-close,7716.109130859375,,closed,,,,4,0,0,3,2
+trace327-tagged-paired150-d0-reference,1,page,ceremony-cohort-abort,7719.708984375,,,,,,,,,,
+trace327-tagged-paired150-d0-reference,1,page,ceremony-fail,7719.80908203125,session-cohort-abort,,True,True,,,,,,
+trace327-tagged-paired150-d0-reference,1,page,channel-close,7725.509033203125,,closed,,,,3,0,0,1,2
+trace327-tagged-paired150-d0-reference,1,page,ceremony-fail,7725.509033203125,control-channel,closed,True,True,,,,,,
+trace327-tagged-paired150-d0-reference,1,http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N,native-owner-terminal-close,7715.109130859375,,repair-required,,,accountCapture.ts:380:schedule,,,,,
+trace327-tagged-paired150-d0-reference,1,http://localhost:53781/assets/enrollmentOwner.worker-p0nJW4lu.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N,channel-close,7715.9091796875,,closed,,,,3,0,0,2,2

@@ -1,0 +1,50 @@
+{
+  "run": "late-normal-R1",
+  "armAndRearmEvents": 7,
+  "distinctActiveEpisodes": 1,
+  "events": [
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399028697,
+      "at": 1793398998697.7
+    },
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399032898,
+      "at": 1793399002898.0999
+    },
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399035798,
+      "at": 1793399005798.4
+    },
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399036308,
+      "at": 1793399006308
+    },
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399040512,
+      "at": 1793399010512.3
+    },
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399043491,
+      "at": 1793399013490.9
+    },
+    {
+      "kind": "repairActivation",
+      "publisher": "34b6cdc7a1f2b9a449c3097b6935c688",
+      "until": 1793399053918,
+      "at": 1793399023918.5999
+    }
+  ],
+  "definition": "The existing lab repairActivations counter increments on each arm or rearm, not just inactive-to-active edges. Episodes reconstructed from event at/until values. No runtime change."
+}

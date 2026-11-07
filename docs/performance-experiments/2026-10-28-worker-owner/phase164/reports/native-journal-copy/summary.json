@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "selection": "standalone-journal",
+  "claim": "Only this bounded selection; no native aggregate or release qualification.",
+  "status": "passed",
+  "stages": [
+    {
+      "id": "journal:full",
+      "key": "1ef6a842ba298ed554a68ce5bda65bb5cd0fb2ef8738528bb961e3b3b0b17fcb",
+      "reused": false,
+      "status": "passed",
+      "elapsedMs": 81611,
+      "cases": 23,
+      "reason": null,
+      "groupDrained": true
+    }
+  ],
+  "startedAt": "2026-10-28T21:04:19.555Z",
+  "input": "006d92ef3462b76e03698685a4b2aa53c6fcf6193df29090d333d6a7807c5f52",
+  "completedAt": "2026-10-28T21:06:33.434Z"
+}

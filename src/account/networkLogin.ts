@@ -1,3 +1,4 @@
+import { pageRuntimePorts } from '../crdt/runtimePorts';
 import { authenticationResponse } from './passkeyResponse';
 import { consumeRecoveryOpening, type RecoveryOpening } from './recoveryOpening';
 import type { RecoverySuccessor } from '../../account-protocol/recoveryTransition';
@@ -173,6 +174,7 @@ export class NetworkLogin {
   #access: { token: string; expires: number } | undefined;
   #renewing: Promise<string | undefined> | undefined;
   #assert: LocalPasskey | undefined;
+  #stopOnline: (() => void) | undefined;
   constructor(pin: AuthorityPin, slotId: string, post: Post = postSession) {
     this.#pin = parseAuthorityPin(pin);
     if (this.#pin.origin !== location.origin)
@@ -493,7 +495,7 @@ export class NetworkLogin {
   activate(live: WriteSession) {
     this.#live = live;
     live.signal.addEventListener('abort', () => this.close(), { once: true });
-    globalThis.addEventListener?.('online', this.#online);
+    this.#stopOnline ??= pageRuntimePorts.activity.onGlobal('online', this.#online);
     void this.access();
   }
   /** Deduplicated background renewal; access bytes live only in this owner. */
@@ -707,7 +709,8 @@ export class NetworkLogin {
   close() {
     if (this.#stop.signal.aborted) return;
     clearTimeout(this.#expiryTimer);
-    globalThis.removeEventListener?.('online', this.#online);
+    this.#stopOnline?.();
+    this.#stopOnline = undefined;
     ++this.#epoch;
     this.#stop.abort();
     this.#networkStop.abort();

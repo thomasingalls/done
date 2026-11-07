@@ -1,0 +1,316 @@
+// @vitest-environment node
+import { afterEach, expect, it, vi } from 'vitest';
+import { pageRuntimePorts } from '../src/crdt/runtimePorts';
+import { createJournalOwner, eraseJournalSnapshot } from '../src/crdt/journalStore';
+import { createJournalCodec } from '../src/crdt/journalCodec';
+import {
+  onSlotRetirement,
+  openWriteSession,
+  retireSlotWriters,
+  withDeviceRemovalSlot,
+  type SessionTask,
+} from '../src/crdt/writeSession';
+
+const scope = {
+  slotId: 'runtime-port-slot',
+  principalId: 'principal',
+  workspaceId: 'workspace',
+  storeId: '11'.repeat(16),
+  rootId: '22'.repeat(16),
+};
+const cleanup: (() => void)[] = [];
+afterEach(() => {
+  for (const stop of cleanup.splice(0).reverse()) stop();
+  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+});
+
+class JournalStorage implements Storage {
+  [key: string]: unknown;
+  get length() {
+    return Object.keys(this).length;
+  }
+  getItem(key: string) {
+    return Object.hasOwn(this, key) ? (this[key] as string) : null;
+  }
+  setItem(key: string, value: string) {
+    Object.defineProperty(this, key, {
+      value,
+      writable: true,
+      enumerable: true,
+      configurable: true,
+    });
+  }
+  removeItem(key: string) {
+    delete this[key];
+  }
+  key(index: number) {
+    return Object.keys(this)[index] ?? null;
+  }
+  clear() {
+    for (const key of Object.keys(this)) delete this[key];
+  }
+}
+function journal() {
+  const storage = new JournalStorage();
+  vi.stubGlobal('localStorage', storage);
+  const owner = createJournalOwner(scope, 'runtime-ports', 1, new Uint8Array(32).fill(7));
+  cleanup.push(() => owner.dispose());
+  return { owner, storage };
+}
+function globalEvents() {
+  const target = new EventTarget();
+  vi.stubGlobal('addEventListener', target.addEventListener.bind(target));
+  vi.stubGlobal('removeEventListener', target.removeEventListener.bind(target));
+  return target;
+}
+class RetirementChannel {
+  static instances: RetirementChannel[] = [];
+  onmessage: ((event: MessageEvent) => void) | null = null;
+  closed = false;
+  constructor(readonly name: string) {
+    RetirementChannel.instances.push(this);
+  }
+  postMessage(data: unknown) {
+    for (const peer of RetirementChannel.instances)
+      if (peer !== this && peer.name === this.name && !peer.closed)
+        peer.onmessage?.({ data } as MessageEvent);
+  }
+  close() {
+    this.closed = true;
+  }
+}
+
+it('keeps page endpoints fixed and exposes no caller ownership override', () => {
+  const storage = vi.fn(() => {
+    throw Error('storage must stay lazy');
+  });
+  vi.stubGlobal('localStorage', undefined);
+  Object.defineProperty(globalThis, 'localStorage', { get: storage, configurable: true });
+  expect(Object.isFrozen(pageRuntimePorts)).toBe(true);
+  expect(Object.values(pageRuntimePorts).every(Object.isFrozen)).toBe(true);
+  expect(typeof pageRuntimePorts.journal.storage).toBe('function');
+  expect(storage).not.toHaveBeenCalled();
+  const consumer = () => {
+    // @ts-expect-error callers cannot replace lifetime or journal authority through options
+    void openWriteSession('slot', { runtime: pageRuntimePorts });
+  };
+  expect(typeof consumer).toBe('function');
+});
+
+it('resolves the native lock manager afresh and preserves the secure-context refusal', () => {
+  vi.stubGlobal('isSecureContext', true);
+  const first = {},
+    second = {};
+  vi.stubGlobal('navigator', { locks: first });
+  expect(pageRuntimePorts.lifetime.requireLocks()).toBe(first);
+  vi.stubGlobal('navigator', { locks: second });
+  expect(pageRuntimePorts.lifetime.requireLocks()).toBe(second);
+  vi.stubGlobal('isSecureContext', false);
+  expect(() => pageRuntimePorts.lifetime.requireLocks()).toThrow('supported secure context');
+});
+
+it('uses the current actual storage for each journal append instead of a captured view', () => {
+  const { owner, storage } = journal();
+  expect(owner.append(Uint8Array.of(1)).status).toBe('journalled');
+  const second = new JournalStorage();
+  vi.stubGlobal('localStorage', second);
+  expect(owner.append(Uint8Array.of(2)).status).toBe('journalled');
+  expect(storage.length).toBe(1);
+  expect(second.length).toBe(1);
+  const entries = owner.snapshot();
+  expect(entries.map((e) => [...e.bytes])).toEqual([[2]]);
+  eraseJournalSnapshot(entries);
+});
+
+it('returns a local acknowledgment only after the synchronous sealed journal is recoverable', () => {
+  const { owner, storage } = journal(),
+    bytes = new TextEncoder().encode('fictional local edit');
+  const receipt = owner.append(bytes);
+  expect(receipt).not.toBeInstanceOf(Promise);
+  expect(receipt.status).toBe('journalled');
+  if (receipt.status !== 'journalled') throw Error('Missing local carrier');
+  const value = storage.getItem(receipt.key)!;
+  expect(value).not.toContain('fictional local edit');
+  const reader = createJournalCodec(scope.workspaceId, 1, new Uint8Array(32).fill(7));
+  try {
+    const recovered = reader.open(receipt.key, value).bytes;
+    expect(recovered).toEqual(bytes);
+    recovered.fill(0);
+  } finally {
+    reader.dispose();
+  }
+});
+
+it('preserves unavailable journal refusal when the live storage getter is denied', () => {
+  const { owner } = journal();
+  Object.defineProperty(globalThis, 'localStorage', {
+    configurable: true,
+    get() {
+      throw new DOMException('denied', 'SecurityError');
+    },
+  });
+  expect(owner.append(Uint8Array.of(1))).toEqual({ status: 'refused', reason: 'unavailable' });
+});
+
+it('preserves acknowledged journal bytes when a subsequent native write hits quota', () => {
+  const { owner, storage } = journal();
+  expect(owner.append(Uint8Array.of(1)).status).toBe('journalled');
+  const before = { ...storage };
+  vi.spyOn(storage, 'setItem').mockImplementation(() => {
+    throw new DOMException('quota', 'QuotaExceededError');
+  });
+  expect(owner.append(Uint8Array.of(2))).toEqual({ status: 'refused', reason: 'quota' });
+  expect({ ...storage }).toEqual(before);
+});
+
+it('delivers immutable-entry replacement events to the existing journal damage gate', () => {
+  const events = globalEvents(),
+    { owner, storage } = journal();
+  const receipt = owner.append(Uint8Array.of(1));
+  if (receipt.status !== 'journalled') throw Error('Missing local carrier');
+  const event = new Event('storage');
+  Object.defineProperties(event, {
+    storageArea: { value: storage },
+    key: { value: receipt.key },
+    oldValue: { value: storage.getItem(receipt.key) },
+    newValue: { value: 'replaced' },
+  });
+  events.dispatchEvent(event);
+  const before = { ...storage };
+  expect(() => owner.append(Uint8Array.of(2))).toThrow('immutable journal entry');
+  expect({ ...storage }).toEqual(before);
+});
+
+it('removes the same journal event listener when its owner is disposed', () => {
+  globalEvents();
+  const added = vi.spyOn(globalThis, 'addEventListener'),
+    removed = vi.spyOn(globalThis, 'removeEventListener');
+  const { owner } = journal();
+  const listener = added.mock.calls.find(([kind]) => kind === 'storage')![1];
+  owner.dispose();
+  expect(removed).toHaveBeenCalledWith('storage', listener);
+  expect(() => owner.append(Uint8Array.of(1))).toThrow('disposed');
+});
+
+it('routes document activity and page-show separately and reads current visibility', () => {
+  const documentTarget = new EventTarget(),
+    windowTarget = new EventTarget();
+  let visibility = 'hidden';
+  Object.defineProperty(documentTarget, 'visibilityState', { get: () => visibility });
+  vi.stubGlobal('document', documentTarget);
+  vi.stubGlobal('window', windowTarget);
+  const observed: string[] = [];
+  for (const kind of ['visibilitychange', 'freeze', 'resume'] as const)
+    cleanup.push(pageRuntimePorts.activity.onDocument(kind, () => observed.push(kind)));
+  cleanup.push(pageRuntimePorts.activity.onPageShow(() => observed.push('pageshow')));
+  expect(pageRuntimePorts.activity.visibilityState()).toBe('hidden');
+  visibility = 'visible';
+  expect(pageRuntimePorts.activity.visibilityState()).toBe('visible');
+  for (const kind of ['visibilitychange', 'freeze', 'resume'])
+    documentTarget.dispatchEvent(new Event(kind));
+  documentTarget.dispatchEvent(new Event('pageshow'));
+  windowTarget.dispatchEvent(new Event('freeze'));
+  windowTarget.dispatchEvent(new Event('pageshow'));
+  expect(observed).toEqual(['visibilitychange', 'freeze', 'resume', 'pageshow']);
+});
+
+it('detaches activity from its original target even if the environment target is replaced', () => {
+  const original = new EventTarget(),
+    replacement = new EventTarget(),
+    called = vi.fn();
+  vi.stubGlobal('document', original);
+  const stop = pageRuntimePorts.activity.onDocument('resume', called);
+  vi.stubGlobal('document', replacement);
+  stop();
+  original.dispatchEvent(new Event('resume'));
+  replacement.dispatchEvent(new Event('resume'));
+  expect(called).not.toHaveBeenCalled();
+});
+
+it('keeps pagehide one-shot, detachable and distinct from freeze', () => {
+  const target = globalEvents(),
+    called = vi.fn();
+  const stop = pageRuntimePorts.lifetime.onPageHide(called);
+  target.dispatchEvent(new Event('freeze'));
+  expect(called).not.toHaveBeenCalled();
+  target.dispatchEvent(new Event('pagehide'));
+  target.dispatchEvent(new Event('pagehide'));
+  expect(called).toHaveBeenCalledTimes(1);
+  stop();
+  const removed = vi.fn(),
+    detach = pageRuntimePorts.lifetime.onPageHide(removed);
+  detach();
+  target.dispatchEvent(new Event('pagehide'));
+  expect(removed).not.toHaveBeenCalled();
+});
+
+it('preserves exact-slot retirement filtering, sender close and subscription disposal', () => {
+  RetirementChannel.instances = [];
+  vi.stubGlobal('BroadcastChannel', RetirementChannel);
+  vi.stubGlobal('window', new EventTarget());
+  const first = vi.fn(),
+    other = vi.fn(),
+    stop = onSlotRetirement('one', first),
+    stopOther = onSlotRetirement('two', other);
+  cleanup.push(stop, stopOther);
+  retireSlotWriters('one');
+  expect(first).toHaveBeenCalledTimes(1);
+  expect(other).not.toHaveBeenCalled();
+  expect(RetirementChannel.instances.at(-1)!.closed).toBe(true);
+  const sender = new RetirementChannel('done/slot-lifecycle');
+  sender.postMessage({ kind: 'other', slotId: 'one' });
+  expect(first).toHaveBeenCalledTimes(1);
+  stop();
+  retireSlotWriters('one');
+  expect(first).toHaveBeenCalledTimes(1);
+  expect(other).not.toHaveBeenCalled();
+  sender.close();
+});
+
+it('keeps retirement inert outside a page rather than manufacturing a browser endpoint', () => {
+  const channel = vi.fn();
+  vi.stubGlobal('window', undefined);
+  vi.stubGlobal('BroadcastChannel', channel);
+  const stop = onSlotRetirement('one', vi.fn());
+  retireSlotWriters('one');
+  stop();
+  expect(channel).not.toHaveBeenCalled();
+});
+
+it('invalidates pagehide effects immediately while native lifetime release waits for queued work', async () => {
+  const events = globalEvents();
+  let released = false,
+    task!: SessionTask,
+    finish!: () => void,
+    entered!: () => void;
+  const ready = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  const work = new Promise<void>((resolve) => {
+    finish = resolve;
+  });
+  const request = vi.fn(async (_name: string, _options: unknown, callback: () => Promise<void>) => {
+    await callback();
+    released = true;
+  });
+  vi.stubGlobal('isSecureContext', true);
+  vi.stubGlobal('navigator', { locks: { request } });
+  const result = withDeviceRemovalSlot('exact-slot', async (scope) => {
+    task = scope;
+    await scope.wait(() => {
+      entered();
+      return work;
+    });
+  });
+  const refused = expect(result).rejects.toMatchObject({ code: 'inactive' });
+  await ready;
+  expect(request.mock.calls[0]![0]).toBe('done/slot-writer/"exact-slot"');
+  expect(request.mock.calls[0]![1]).toMatchObject({ mode: 'exclusive' });
+  events.dispatchEvent(new Event('pagehide'));
+  expect(() => task.step(() => 'late effect')).toThrow('no longer live');
+  expect(released).toBe(false);
+  finish();
+  await refused;
+  expect(released).toBe(true);
+});

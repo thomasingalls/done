@@ -53,6 +53,7 @@ export function createWarmContent(
       for (const row of added) addShape(row);
       appended += added.length;
     },
+    pendingRows: () => appended,
     due: () => appended >= WARM_AUDIT_ROWS || performance.now() - completedAt >= WARM_AUDIT_MS,
     delay: () =>
       appended >= WARM_AUDIT_ROWS

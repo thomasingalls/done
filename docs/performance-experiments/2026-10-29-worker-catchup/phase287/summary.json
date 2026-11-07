@@ -1,0 +1,63 @@
+{
+  "outcome": "failed",
+  "gateMs": 30000,
+  "observedWaitMs": 30084.920654296875,
+  "receivedThrough": 747,
+  "receiveFailures": 0,
+  "httpRequests": 349,
+  "readHttp": 331,
+  "signedReads": 331,
+  "rangeLimits": {
+    "1": 147,
+    "3": 1,
+    "4": 183
+  },
+  "perWidth": {
+    "1": {
+      "headersWallMs": {
+        "n": 147,
+        "p50": 13.22900390625,
+        "p95": 19.153564453125
+      },
+      "http": 147,
+      "statuses": {
+        "200": 147
+      }
+    },
+    "3": {
+      "headersWallMs": {
+        "n": 1,
+        "p50": 18.43701171875,
+        "p95": 18.43701171875
+      },
+      "http": 1,
+      "statuses": {
+        "200": 1
+      }
+    },
+    "4": {
+      "headersWallMs": {
+        "n": 183,
+        "p50": 18.17236328125,
+        "p95": 30.45703125
+      },
+      "http": 183,
+      "statuses": {
+        "200": 183
+      }
+    }
+  },
+  "dropped": 0,
+  "malformed": 0,
+  "sourceAcceptedBeforeClose": true,
+  "markerUndoColdGuardsReached": false,
+  "rawResultSha256": "b7ee7aa3fdc54a143d7690328fde9a23ef209292dcf77211266ded0e0c0ecdc8",
+  "before279ReceivedThroughAtFailure": 451,
+  "before279ActualWaitStartRecorded": false,
+  "defaultLimits": {
+    "session": 16,
+    "process": 64
+  },
+  "profiling": false,
+  "acceptance": false
+}

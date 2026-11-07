@@ -1,0 +1,1039 @@
+{
+  "phase": 475,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-case.py.gz",
+      "sha256": "f7c0a36a2b3f57cbe91132b7c2bfc79908ec8a5098b5cbb096cf9a5c102b549f",
+      "bytes": 2021
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase318/apparatus/harness/test/account-continuation-lab/r-late.spec.ts.gz",
+      "sha256": "8240b070cf058cf90160b2f9deb773372da2e14109eeb91cc344da4b855209c3",
+      "bytes": 3855
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/packaged-account/devices.ts",
+      "sha256": "008a381a02c5d12be940361ee1c08a3779713b1da66769c18bdd348c60cb6f34",
+      "bytes": 5506
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/475-private-files.json",
+      "sha256": "ee77799d5ab368e5b6b371ce4826ef2d02ab05bd47d5acc9f90c7b8ff476f519",
+      "bytes": 1206757
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/475-summary.json",
+      "sha256": "12da28e1b20e8ff7a4a27e689af1ab1e77d96193f926f3943e3095a4fd816f49",
+      "bytes": 18147
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/475-declaration.json",
+      "sha256": "af46dc36576702e183331501e076b551bc27d8543f37517539c0bf1e36d5107e",
+      "bytes": 2322
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/475-progress.json",
+      "sha256": "dfcc0196728221ac21834482b1b8a40544ddd642584f6447b942fd054ef54f00",
+      "bytes": 12284
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/475-preparation.json",
+      "sha256": "19f8bc96676ae4fc8dc194997d00fcb15f97f4f15bd3fc03b8c69d7235b89fb2",
+      "bytes": 2094
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/record475.py",
+      "sha256": "a3dc6692f85444acbd57db5ed8ac0b7200e7193eea49ac149e50d9d5fce271b0",
+      "bytes": 11263
+    },
+    {
+      "localPath": "/private/tmp/done-live-catchup-475-20261106/run475.py",
+      "sha256": "5a68030f6b69d3855e8aa09c8f67e0b06cff092f232c712bf4fba70a9e08350c",
+      "bytes": 5174
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/child.log",
+      "sha256": "f565f993885b1043382cbfa09ed8a8b15420705dfb4a33aaa933c72d96105cbc",
+      "bytes": 379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/host-load.jsonl",
+      "sha256": "cb90341cd8abe66f050f48150656dbe3b14668578ab5910cdc6b2a9012d1028f",
+      "bytes": 27056
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/power-assertions-before.txt",
+      "sha256": "2fdb4677c2595232e7230478e8e019d1293a56b71ab7dd6206fa44a80c548155",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/power-log-after.meta.json",
+      "sha256": "59c4370df58da8c4516c32f60d918cdbb3b166b72583428dc98bcd786c94e85a",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/power-log-after.txt",
+      "sha256": "6d32b2ea53adb553f47fa73b7787e27003d0ee807654ec758a5a669f6b72d4b3",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/power-log-before.meta.json",
+      "sha256": "e80e0333ae8df604aa1ea55abc166db3e067b44374bb7166f18dec4c8c635737",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-normal/run.json",
+      "sha256": "071fc87d4202bec460ef1e1046fea7a45b0453b2498e5698bb6b642cea01f706",
+      "bytes": 2008
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/child.log",
+      "sha256": "d089d8f6ba3abde7aed44bdafb09497f73010c1537b0f37aea44231e8a2bcd09",
+      "bytes": 379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/host-load.jsonl",
+      "sha256": "64e5a6c251ef92acc832e525f0fe620eb7fe9538247ce4f15e79ce0b0042864d",
+      "bytes": 27115
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/power-assertions-before.txt",
+      "sha256": "070c36d49e9e0cc83a460627699b0c6e256162ee536502bc60d8a7400bb36f5e",
+      "bytes": 1907
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/power-log-after.meta.json",
+      "sha256": "1b9a72c88234499b75a6ab1457ff58f92db588d9a93f95d2541f72e7f6a05f2b",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/power-log-after.txt",
+      "sha256": "16220813b365f0610358d118280deb37b44cbebead15a79a1f569e0dce604fc2",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/power-log-before.meta.json",
+      "sha256": "199fdcfbf46286f6ef15f435f6ad7eeb22c1653001a2a22ea3bf80de6368ffc7",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r1-late-withheld/run.json",
+      "sha256": "171c29d312ae9d6287319d4145913f00df827d781c7d9c0ec6740d17d06b2e2a",
+      "bytes": 2012
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/child.log",
+      "sha256": "520bd46c7b52cd865e3bfe6105fbb02a37ef0afe6c2e6e12cceb89bdbb07e1f5",
+      "bytes": 379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/host-load.jsonl",
+      "sha256": "95b0f59b4afb612b41fa249a8dbc2682027cfd1353c943b32ed90c414d90973f",
+      "bytes": 26942
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/power-assertions-before.txt",
+      "sha256": "8baecc666d5834d0f9b5ccad5bbe2097fc301e4d66af0613d12502c5556b1c56",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/power-log-after.meta.json",
+      "sha256": "2913070844ad6c427f564e7665c1a0e6ec8f388d1270278945bcea0344a7d2fe",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/power-log-after.txt",
+      "sha256": "f79ef791c57b1745b9f6ed6fc26e2202c9d13d739abda38889c3ddea8e230128",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/power-log-before.meta.json",
+      "sha256": "d76f55c674bbe55e05368d91f534e8e1c40ab53aeb86699eb51fcb5dca32b448",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-normal/run.json",
+      "sha256": "ceafd46e64e174118680fc730bd013fcc8f399cbb5a6cb52e0730eb93a7193b9",
+      "bytes": 2007
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/child.log",
+      "sha256": "bf8d6a3529832dff6e9e6a49d8c295aeca702388944ef9ff693926bbee0d673f",
+      "bytes": 379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/host-load.jsonl",
+      "sha256": "05c20180731dc1ff88ab9c2633c8b49ef7223189beccb053a04c7a34d927b74e",
+      "bytes": 26892
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/power-assertions-before.txt",
+      "sha256": "21e5ff1c0455bda51dfcc618bbd3bd88334d039c947113292f32ab4af811a743",
+      "bytes": 2185
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/power-log-after.meta.json",
+      "sha256": "0041fd63627c6a2210b02403805176f8a00cf6ff8c1ccc491a24c66e2a46f643",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/power-log-after.txt",
+      "sha256": "a8518390c0a621f94b5a2b56ed6d2869a073b19690bd9f668a4a657f4e2eb72d",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/power-log-before.meta.json",
+      "sha256": "60de3022b9de1ba1bf91d6ec3e6a8d5465f900c786acc9aff484934936cdbf18",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r2-late-withheld/run.json",
+      "sha256": "e0d9117feb16862a63bca0e02cee3fb2b5d57d2b9ea11804fef648ad3a384d37",
+      "bytes": 2011
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/child.log",
+      "sha256": "e11d3563a56b85cce17aecd0496f1a0bddc01b3d99751f5f22117c0baed77124",
+      "bytes": 379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/host-load.jsonl",
+      "sha256": "99fc4f860bf4d6dce5718067d18ac7dd57cf0a5e18c2f237142d7a7f37563bd0",
+      "bytes": 27000
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/power-assertions-before.txt",
+      "sha256": "6b00a07ca65827664e2a82aed6ec844fc5dfdf921ee4ec7c30a82a114762a6cf",
+      "bytes": 2185
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/power-log-after.meta.json",
+      "sha256": "5e72a119ea9b6be0025b29147013ae2c1579803d9ca74a4c6bb8fe298197cdde",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/power-log-after.txt",
+      "sha256": "eced345dbc683887ba14797bf7c9fb890d7c017ad899c99ad3409e9c31e044d2",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/power-log-before.meta.json",
+      "sha256": "e607307aa957754d0deed041e720de2bc3ef1eb6782a84c16122585859b5c6af",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-normal/run.json",
+      "sha256": "ee05cd2458c2ca90a4a945b456bbc8dc38194b6495f4acdb53a7d1a803843dc2",
+      "bytes": 2006
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/child.log",
+      "sha256": "2d00c70d04551b6564ae46404fad6714637c647694194d00c9ff1617f0d6f663",
+      "bytes": 379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/host-load.jsonl",
+      "sha256": "bef04d4c82c48b09994abe3642ef05cbbb46ef0a563ac54b616602c0573e1898",
+      "bytes": 27030
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/power-assertions-before.txt",
+      "sha256": "593dcec756578ddfafd19e03ace0373485225a1b3f98be0ae9764dd4ef25e313",
+      "bytes": 2178
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/power-log-after.meta.json",
+      "sha256": "e31a08bd92e8b721c3626cd168cffeda3530e8c8cb2c32efde7894268759cd9c",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/power-log-after.txt",
+      "sha256": "cb051a7680dc0ac6efaa63872a9118ce1fa5bdb194f39534f8e0733995e601bf",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/power-log-before.meta.json",
+      "sha256": "b551d2bc7ad1be8004c7356ea0c45f1c1637c2f8acf806adb41271d32ddc8207",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/475-r3-late-withheld/run.json",
+      "sha256": "d1dfb2004a2f5623244b945b05f647aadb6f540827a0287df6f7fe747f980faa",
+      "bytes": 2012
+    }
+  ],
+  "summary": {
+    "phase": 475,
+    "rows": [
+      {
+        "name": "r1-late-normal",
+        "key": "475-r1-late-normal",
+        "cell": "late-normal",
+        "replicate": 1,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 10.001520156860352
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 10.001520156860352
+            },
+            {
+              "pid": 70404,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 72028,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 10.00081491470337
+            },
+            {
+              "pid": 72061,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 15.001312017440796
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "inputP95Ms": 3.955078125,
+        "peerP95Ms": 1033.3603515625,
+        "markersMs": [
+          714.79296875,
+          804.058837890625,
+          1021.12109375
+        ],
+        "backlogMs": 66236.62524414062,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "keysAfterReaderDrain": 26,
+        "keysAfterBothDrains": 0,
+        "coldExact": true,
+        "postTypingThroughWrapperFinishUpperMs": 11158.691650390625,
+        "postReaderDrainPeerMs": {
+          "n": 26,
+          "p95": 1290.814208984375,
+          "max": 1458.09326171875
+        },
+        "postBothDrainsPeerMs": {
+          "n": 0,
+          "unexposed": true
+        },
+        "withheldFacts": null
+      },
+      {
+        "name": "r1-late-withheld",
+        "key": "475-r1-late-withheld",
+        "cell": "late-withheld",
+        "replicate": 1,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12924.44,
+            "min": 12924.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            },
+            {
+              "pid": 70404,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 72339,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 19.99587893486023
+            },
+            {
+              "pid": 1204,
+              "process": "ghostty",
+              "seconds": 0
+            },
+            {
+              "pid": 72373,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 10.00222110748291
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.212646484375,
+        "peerP95Ms": 1779.78173828125,
+        "markersMs": [
+          796.166259765625,
+          1530.3505859375,
+          716.16064453125
+        ],
+        "backlogMs": 54643.682861328125,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "keysAfterReaderDrain": 57,
+        "keysAfterBothDrains": 20,
+        "coldExact": true,
+        "postTypingThroughWrapperFinishUpperMs": 11172.41357421875,
+        "postReaderDrainPeerMs": {
+          "n": 57,
+          "p95": 1926.383056640625,
+          "max": 2016.407958984375
+        },
+        "postBothDrainsPeerMs": {
+          "n": 20,
+          "p95": 1869.929931640625,
+          "max": 1926.383056640625
+        },
+        "withheldFacts": {
+          "ready": 1,
+          "hint": 0,
+          "content": 120,
+          "heartbeat": 6,
+          "withheld": 120
+        }
+      },
+      {
+        "name": "r2-late-normal",
+        "key": "475-r2-late-normal",
+        "cell": "late-normal",
+        "replicate": 2,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12924.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12924.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 14.999289989471436
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 14.999289989471436
+            },
+            {
+              "pid": 1204,
+              "process": "ghostty",
+              "seconds": 0
+            },
+            {
+              "pid": 72614,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 20.00039291381836
+            },
+            {
+              "pid": 72645,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 24.99856925010681
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "inputP95Ms": 3.71044921875,
+        "peerP95Ms": 1037.58984375,
+        "markersMs": [
+          589.556884765625,
+          854.669677734375,
+          860.814208984375
+        ],
+        "backlogMs": 67254.36157226562,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "keysAfterReaderDrain": 22,
+        "keysAfterBothDrains": 0,
+        "coldExact": true,
+        "postTypingThroughWrapperFinishUpperMs": 11113.160888671875,
+        "postReaderDrainPeerMs": {
+          "n": 22,
+          "p95": 981.616943359375,
+          "max": 990.870361328125
+        },
+        "postBothDrainsPeerMs": {
+          "n": 0,
+          "unexposed": true
+        },
+        "withheldFacts": null
+      },
+      {
+        "name": "r2-late-withheld",
+        "key": "475-r2-late-withheld",
+        "cell": "late-withheld",
+        "replicate": 2,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12900.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12900.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 29.99585485458374
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 44079,
+              "process": "secd",
+              "seconds": 0
+            },
+            {
+              "pid": 70404,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 29.99585485458374
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 74958,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 10.00133204460144
+            },
+            {
+              "pid": 75004,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 4.999779224395752
+            },
+            {
+              "pid": 75852,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 76065,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "inputP95Ms": 4.48095703125,
+        "peerP95Ms": 1937.68017578125,
+        "markersMs": [
+          1004.447021484375,
+          917.691650390625,
+          803.0576171875
+        ],
+        "backlogMs": 63222.396728515625,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "keysAfterReaderDrain": 52,
+        "keysAfterBothDrains": 3,
+        "coldExact": true,
+        "postTypingThroughWrapperFinishUpperMs": 10278.072998046875,
+        "postReaderDrainPeerMs": {
+          "n": 52,
+          "p95": 2007.179931640625,
+          "max": 2093.6455078125
+        },
+        "postBothDrainsPeerMs": {
+          "n": 3,
+          "p95": 1574.9013671875,
+          "max": 1574.9013671875
+        },
+        "withheldFacts": {
+          "ready": 1,
+          "hint": 0,
+          "content": 117,
+          "heartbeat": 6,
+          "withheld": 117
+        }
+      },
+      {
+        "name": "r3-late-normal",
+        "key": "475-r3-late-normal",
+        "cell": "late-normal",
+        "replicate": 3,
+        "withhold": false,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12900.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12900.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 5.0001137256622314
+            },
+            {
+              "pid": 70404,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 44079,
+              "process": "secd",
+              "seconds": 0
+            },
+            {
+              "pid": 76178,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 30.001341104507446
+            },
+            {
+              "pid": 76228,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 25.002957105636597
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "accepted": true,
+        "inputP95Ms": 3.853271484375,
+        "peerP95Ms": 1029.259033203125,
+        "markersMs": [
+          648.555908203125,
+          839.277099609375,
+          991.396484375
+        ],
+        "backlogMs": 66236.650390625,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "keysAfterReaderDrain": 24,
+        "keysAfterBothDrains": 0,
+        "coldExact": true,
+        "postTypingThroughWrapperFinishUpperMs": 11302.205810546875,
+        "postReaderDrainPeerMs": {
+          "n": 24,
+          "p95": 1018.048095703125,
+          "max": 1088.837890625
+        },
+        "postBothDrainsPeerMs": {
+          "n": 0,
+          "unexposed": true
+        },
+        "withheldFacts": null
+      },
+      {
+        "name": "r3-late-withheld",
+        "key": "475-r3-late-withheld",
+        "cell": "late-withheld",
+        "replicate": 3,
+        "withhold": true,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "appOutcome": "passed",
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12900.44,
+            "last": 12900.44,
+            "min": 12900.44,
+            "max": 12900.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 14.991755962371826
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 70404,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 14.991755962371826
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 77768,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 19.995548009872437
+            },
+            {
+              "pid": 77711,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 4.9951910972595215
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "accepted": true,
+        "inputP95Ms": 4.765380859375,
+        "peerP95Ms": 1994.494384765625,
+        "markersMs": [
+          881.805908203125,
+          1143.834716796875,
+          1338.09716796875
+        ],
+        "backlogMs": 67412.421875,
+        "gates": {
+          "all120KeysComplete": true,
+          "local16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "fullBacklog600s": true,
+          "finalNewDelivery30s": true,
+          "archiveAndColdGuards": true,
+          "faultExercised": true
+        },
+        "keysAfterReaderDrain": 45,
+        "keysAfterBothDrains": 0,
+        "coldExact": true,
+        "postTypingThroughWrapperFinishUpperMs": 12357.286865234375,
+        "postReaderDrainPeerMs": {
+          "n": 45,
+          "p95": 2033.4580078125,
+          "max": 2217.094482421875
+        },
+        "postBothDrainsPeerMs": {
+          "n": 0,
+          "unexposed": true
+        },
+        "withheldFacts": {
+          "ready": 1,
+          "hint": 0,
+          "content": 116,
+          "heartbeat": 6,
+          "withheld": 116
+        }
+      }
+    ],
+    "allAccepted": true,
+    "validJourneys": 6,
+    "failedPredicates": 0,
+    "functionalFailures": 0,
+    "noiseRetries": 0,
+    "inputMaximumP95Ms": 4.765380859375,
+    "peerMaximumP95Ms": 1994.494384765625,
+    "worstMarkerMs": 1530.3505859375,
+    "coldMaximumJointUpperBoundMs": 12357.286865234375,
+    "noIndividualColdTimingClaim": true,
+    "postDrainInterpretation": "Original late predicates pass. Zero post-both-drain keys is unexposed, not liveness evidence; three keys is a small diagnostic sample. No report-only exposure minimum added.",
+    "currentCandidateBlockingPassed": 27,
+    "remainingBlocking": 9,
+    "bindings": [
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/r-late.spec.ts",
+        "sha256": "691af28c44021d607fed0b846e90bc817a5a0868db16e78a63727955620eab83",
+        "bytes": 11606
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/r-late.config.ts",
+        "sha256": "436e2fe5b44bbffeb008e0afdb59de284c78bd9ded5389e6fe843dc667a1050d",
+        "bytes": 283
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/analyze-case.py",
+        "sha256": "3686b66f22b86cff4ff97ac720160cfdc5c8a8225984c06544d53e5764f590db",
+        "bytes": 4884
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/runtime.mjs",
+        "sha256": "543c96a67d43db34e03b26b8b68800f9d3b2bcc79845d4483fbf9d62818a2e03",
+        "bytes": 1210
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/presentation.ts",
+        "sha256": "c94519a44b998e085da340113cb82b0851b3a8dcea04b8e6795594006d06ef2a",
+        "bytes": 2192
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/seed-profile.ts",
+        "sha256": "e10fced3d7796f26c84c07f891bdf25ca85f527b72ca00fc43d91a9fd5d00fb4",
+        "bytes": 1539
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/fixture-roles.mjs",
+        "sha256": "c0d1b2b3c488b9fdc708f4ff23a767871dc6bb7fda128a4355b0f59a13c612f9",
+        "bytes": 955
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/notification-observer.ts",
+        "sha256": "015f16198043373a7aad2f4b7519b0d1d03cabbe632c8d806fd56133ae931cc1",
+        "bytes": 656
+      },
+      {
+        "localPath": "/private/tmp/done-live-catchup-475-20261106/read-request.mjs",
+        "sha256": "388a2b0d2365892cb87aa1eb25806a2fb18b9e4be00252ee31a0b70835bb9c3a",
+        "bytes": 1003
+      }
+    ],
+    "workingSourceReferencesVerified": [
+      {
+        "path": "src/crdt/accountCapture.ts",
+        "sha256": "686d632644bffe1f6d0d8c0a6d45bcc7905816bac188c714c199634db87c3fa6",
+        "bytes": 34348
+      },
+      {
+        "path": "src/crdt/maintenanceTurns.ts",
+        "sha256": "de1ccf9f716f46256d3ed384c7b610442930127f36516c4dad2adf24157aeeb7",
+        "bytes": 754
+      },
+      {
+        "path": "test/maintenanceTurns.test.ts",
+        "sha256": "ae0c83e672c586becf5a8ac0c5f3a0ec37119bfdf78b97ef74d4c768633517d1",
+        "bytes": 7920
+      },
+      {
+        "path": "scripts/release-validation/general-tests.json",
+        "sha256": "88079dec0bc47ed12ed899bcc173ded6063f75b0753da7315629e563e2a96b6d",
+        "bytes": 4060
+      },
+      {
+        "path": "test/release-validation/general-tests.test.mjs",
+        "sha256": "4d07a6e410d76c25590bd7ff94f8acac235ba10badc15d87916aa9770bfd33dc",
+        "bytes": 13479
+      },
+      {
+        "path": "docs/release-validation-graph.json",
+        "sha256": "67e9ede6f39e4b65f7dab9e8263b46de46894d8b7f3ff8c53cbbda57e5716f0e",
+        "bytes": 584377
+      },
+      {
+        "path": "docs/account-crypto/census.json",
+        "sha256": "d3745be95f2c2bb7ae00f9b4590bae58aa84ba4c933fb0c4db36467119fab455",
+        "bytes": 120351
+      }
+    ]
+  },
+  "timedMatrixJourneysStarted": 6,
+  "originalLateAnalyzerByteExact": true,
+  "nineApparatusBindingsExact": true,
+  "ordinaryAssetsVerified": 125,
+  "workingSourceReferencesVerified": 7,
+  "hostHandshake": "operator Ready; keep the host quiet for these blocks",
+  "guardWaitDeadlineAndGateChanges": false,
+  "profiler": false,
+  "committed": false,
+  "pushed": false,
+  "next": "Fairness and Goals, then report-only cells and Stage6; separate quiet-host confirmation before the final tight block"
+}

@@ -1,0 +1,12 @@
+{
+  "scripts/storage-conformance/observe.mjs": "4e8ea5450223e203c77fe5b1a77c94797b34505f7dda6fec87a82dfcbdba7457",
+  "scripts/storage-conformance/observe.d.mts": "42147474d753cd5348f7eb80f8d4f2751908f0cbf87b8651cea15c2093cfa777",
+  "test/nativeStateObserver.test.ts": "4cfab9a26172bb33f0106caa9bc25bac26ad963c687f1d406695b84b86ae506f",
+  "test/account-worker-cohort/observer.spec.ts": "7588bed61cf3bea4ceb3d20973394ba39878ea19448bba482adef69a64706b7a",
+  "scripts/admission/scenarios.mjs": "1ef941900b0d743cdf059bb02ad13eba02c4eeef5a4ed2b7fd16dc6854da8fb8",
+  "scripts/admission/worker.mjs": "6d60524f00330b984f2ec16de7668bd0549e4dc8bd62ff60617cdc9443445ae8",
+  "scripts/journal/scenarios.mjs": "24d465299a561f80718ea9d8b4326a86eaf754091e2cc5ca79cf490a04031f93",
+  "scripts/journal/worker.mjs": "a4a69c0654047a24fc0d6f0bd47a6bd20222d04235eae2b6057d41f61b34f2f5",
+  "scripts/write-session/scenarios.mjs": "b7e3eefb8e7b5bfe28f21f728698640665d12402ba7112fa047bb803d7da72bf",
+  "scripts/write-session/worker.mjs": "578a8cc6fc1f7ad82822892118a7d638fc3535cd132ef7060c0c2ff5d34b6a32"
+}

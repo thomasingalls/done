@@ -1,0 +1,27 @@
+import {REQUEST_LIMITS} from '/app/account-service/requestBudget.ts';
+import {createHash} from 'node:crypto';
+import {contexts,sha,observe,take} from '/experiment/observer.mjs';
+import {createServer} from 'node:http';
+import {createInterface} from 'node:readline';
+import {readFileSync} from 'node:fs';
+import {monitorEventLoopDelay,performance} from 'node:perf_hooks';
+import {openDevelopmentAccountService} from '/app/account-service/development-runtime.ts';
+const service=openDevelopmentAccountService({directory:'/state',networkSessions:true,membershipContinuation:true,policy:{origin:'http://localhost:53781',rpId:'localhost'}});
+const cg=()=>Object.fromEntries(['cpu.max','cpu.stat','memory.max','memory.swap.max','memory.current','memory.peak','memory.events','pids.max'].map(k=>[k,readFileSync('/sys/fs/cgroup/'+k,'utf8').trim()]));
+let metrics,interval,hist,closing=false;
+let serial=0,active=0;
+const server=createServer((req,res)=>{const ctx={id:++serial,path:(req.url??'').split('?')[0]},parts=[];const json=['/account/membership/v2/discover','/account/grant/v1/begin','/account/history/v1/checkpoint'].includes(ctx.path);const readPath=['/account/delivery/read-v2','/account/delivery/read-v2-batch'].includes(ctx.path);let size=0;const bodyHash=createHash('sha256');
+ if(json||readPath){req.on('data',b=>{bodyHash.update(b);size+=b.length;if(size<=8192)parts.push(Buffer.from(b));});req.on('end',()=>{const body=Buffer.concat(parts);ctx.bodySha256=bodyHash.digest('hex');try{const v=JSON.parse(body);ctx.scope=typeof v.kind==='string'?v.kind:undefined;ctx.credentialSha256=typeof v.credentialId==='string'?sha(v.credentialId):undefined;}catch{}body.fill(0);});}
+ active++;let done=false;const finish=()=>{if(!done){active--;done=true;}};res.once('finish',finish);res.once('close',finish);
+ const end=res.end;res.end=function(chunk,...args){if((json||(readPath&&res.statusCode>=400))&&chunk){try{const value=JSON.parse(Buffer.isBuffer(chunk)?chunk.toString():String(chunk));const safe={status:res.statusCode,scope:ctx.scope};for(const k of ['kind','refusal','reason'])if(typeof value[k]==='string'&&/^[a-z-]{1,64}$/.test(value[k]))safe[k]=value[k];contexts.run(ctx,()=>observe('http-result',safe));}catch{}}return end.call(this,chunk,...args)};
+ if(metrics){metrics.requests++;res.once('finish',()=>{const k=String(res.statusCode);if(metrics)metrics.statuses[k]=(metrics.statuses[k]??0)+1;});}
+ contexts.run(ctx,()=>{void service.handle(req,res,()=>res.writeHead(404,{'Cache-Control':'no-store'}).end());});});
+await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(53110,'0.0.0.0',resolve)});
+const send=v=>process.stdout.write(JSON.stringify(v)+'\n');send({ready:true,port:53110,node:process.version,requestLimits:REQUEST_LIMITS,cgroup:cg()});
+const lines=createInterface({input:process.stdin});
+lines.on('line',async line=>{const msg=JSON.parse(line);try{
+ if(msg.kind==='trace'){send({id:msg.id,active,events:take()});}
+ else if(msg.kind==='start'){hist=monitorEventLoopDelay({resolution:10});hist.enable();metrics={requests:0,statuses:{},cpu:process.cpuUsage(),started:performance.now(),elu:performance.eventLoopUtilization(),rss:[process.memoryUsage().rss],cgroupBefore:cg()};interval=setInterval(()=>{const rss=process.memoryUsage().rss;metrics?.rss.push(rss);if(rss>1024**3)send({resourceStop:'RSS exceeded1GiB'})},20);send({id:msg.id,ok:true});}
+ else if(msg.kind==='end'){clearInterval(interval);hist.disable();const m=metrics;metrics=undefined;send({id:msg.id,metrics:{requests:m.requests,statuses:m.statuses,cpu:process.cpuUsage(m.cpu),elapsedMs:performance.now()-m.started,eventLoopUtilization:performance.eventLoopUtilization(m.elu),loopDelayMs:{p50:hist.percentile(50)/1e6,p95:hist.percentile(95)/1e6,p99:hist.percentile(99)/1e6,max:hist.max/1e6},rssStart:m.rss[0],rssEnd:process.memoryUsage().rss,rssSampledPeak:Math.max(...m.rss),rssSamples:m.rss.length,cgroupBefore:m.cgroupBefore,cgroupAfter:cg()}});}
+ else if(msg.kind==='stop'){if(closing)return;closing=true;clearInterval(interval);hist?.disable();const drained=service.close();server.closeAllConnections();await Promise.all([drained,new Promise(resolve=>server.close(resolve))]);send({id:msg.id,ok:true});lines.close();process.stdin.destroy();}
+ }catch(e){send({id:msg.id,error:String(e.message)})}});

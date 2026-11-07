@@ -48,3 +48,10 @@ export function accountPreparationFlags(environment: Readonly<Record<string, str
     'import.meta.env.VITE_ACCOUNT_HISTORY_AUTO': JSON.stringify(service),
   };
 }
+
+/** Encoding writer selection only; ordinary and rollback builds retain compatible readers. */
+export function accountRangeFlags(environment: Readonly<Record<string, string | undefined>>) {
+  const value = environment['VITE_ACCOUNT_RANGE_RECEIVE'] || '0';
+  if (value !== '0' && value !== '1') throw Error('VITE_ACCOUNT_RANGE_RECEIVE must be 0 or 1');
+  return { 'import.meta.env.VITE_ACCOUNT_RANGE_RECEIVE': JSON.stringify(value) };
+}

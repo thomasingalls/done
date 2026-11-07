@@ -17,8 +17,8 @@ import {
   readRow,
   readScopedRows,
   checkLayout,
-  journalCount,
-  legacyJournalCount,
+  readJournalCount,
+  readLegacyJournalCount,
 } from './startupStorage';
 import { assertNoLocalClear } from './localClearState';
 import { assertNoPreactiveImport } from './legacyImportState';
@@ -222,12 +222,12 @@ export const classifyUnderPermit = async (
     }
   }
   const disk = await contentCensus(task, name);
-  const journal = journalCount(task, journalPrefix(name));
+  const journal = await readJournalCount(task, journalPrefix(name));
   if (!route) {
     if (rows.length || disk || journal)
       stopStartup('repair-required', 'retained-material-without-index');
     const legacy = await probeDatabase(task, 'done', async () => true);
-    if (legacy || legacyJournalCount(task))
+    if (legacy || (await readLegacyJournalCount(task)))
       stopStartup('migration-required', 'unassigned-legacy-carrier');
     stopStartup('fresh', 'requested-carriers-absent');
   }

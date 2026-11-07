@@ -104,11 +104,7 @@
       "authority": "eligible signing member at pinned epoch; raw SV/DS independently rederived from plaintext; digest alone is not coverage",
       "home": "docs/account-admission-bounds.md",
       "next": "A: explicit empty first-epoch vector; retain current v2 descriptor vectors",
-      "labels": [
-        "done/cp-manifest/v2",
-        "done/cp-admit/v2",
-        "done/headvec/v1"
-      ],
+      "labels": ["done/cp-manifest/v2", "done/cp-admit/v2", "done/headvec/v1"],
       "note": ""
     },
     {
@@ -117,11 +113,7 @@
       "authority": "K_g comes from factor-opened Local custody; HPKE base-mode recipient authority comes from authenticated candidate/recovery state",
       "home": "docs/account-admission.md",
       "next": "B/D: bridge runtime HPKE/checkpoint to published suite vectors",
-      "labels": [
-        "done/gen-wrap/v1",
-        "done/checkpoint/v1",
-        "done/cp/v1"
-      ],
+      "labels": ["done/gen-wrap/v1", "done/checkpoint/v1", "done/cp/v1"],
       "note": ""
     },
     {
@@ -130,10 +122,7 @@
       "authority": "K_auth binds actual registered passkey; offline assertion checks that pinned binding; signing credential ID is a different namespace",
       "home": "docs/account-handoff.md",
       "next": "A: reuse selected slot encodings, pin receipt-passkey dependency",
-      "labels": [
-        "done/slotbind/v1",
-        "done/slotunlock/v1"
-      ],
+      "labels": ["done/slotbind/v1", "done/slotunlock/v1"],
       "note": ""
     },
     {
@@ -172,10 +161,7 @@
       "authority": "device signing key certified at active root-pinned epoch; parent must be an owned issued closure",
       "home": "docs/account-decisions.md",
       "next": "C: wire/submission signing vectors and independent negative corpus",
-      "labels": [
-        "done/envelope-submission/v1",
-        "done/envelope-submission-wire/v1"
-      ],
+      "labels": ["done/envelope-submission/v1", "done/envelope-submission-wire/v1"],
       "note": ""
     },
     {
@@ -214,9 +200,7 @@
       "authority": "enclosed submission signature and service membership checks, not this frame label",
       "home": "docs/account-transport.md",
       "next": "C: document carrier versus signature and cover size/canonical decoding",
-      "labels": [
-        "done/private-submit/v1"
-      ],
+      "labels": ["done/private-submit/v1"],
       "note": ""
     },
     {
@@ -225,15 +209,12 @@
       "authority": "K_accept under pinned epoch; witness authenticates local census and never substitutes for an acceptance head",
       "home": "docs/account-service-delivery.md",
       "next": "C: witness/chain vectors and tamper/omission cases",
-      "labels": [
-        "done/service-delivery-witness/v1",
-        "done/service-delivery-chain/v1"
-      ],
+      "labels": ["done/service-delivery-witness/v1", "done/service-delivery-chain/v1"],
       "note": ""
     },
     {
       "id": "local-account-ledger",
-      "kind": "JSON carriers and completeness hash",
+      "kind": "JSON/binary carriers and completeness hash",
       "authority": "outer encrypted records use K_store; counter-v2 HMAC under K_meta commits complete ordered census",
       "home": "docs/account-spool.md",
       "next": "D: capsule/spool/delivery/inbound formats and counter-witness coupling",
@@ -242,7 +223,9 @@
         "done/account-spool/v1",
         "done/account-spool-chain/v1\u0000",
         "done/account-delivery/v1",
-        "done/account-inbound/v1"
+        "done/account-inbound/v1",
+        "done/account-inbound/v2",
+        "done/account-inbound/page/v1"
       ],
       "note": "Spool chain domain ends in a literal NUL and uses binary u32be length, not LP. Carrier labels do not themselves authenticate records."
     },
@@ -556,9 +539,7 @@
       "authority": "current unlocked metadata/store keys; completed verifier results only, never admission or deletion authority",
       "home": "docs/account-local-retention-preparation-journal.md",
       "next": "Implement owned encrypted native checkpoint lifecycle and qualify exact input/context/implementation invalidation, interruption and independent final checks",
-      "labels": [
-        "done/local-preparation/draft-1"
-      ],
+      "labels": ["done/local-preparation/draft-1"],
       "note": "Preparation-only work reuse; service automation remains off and all aggregate obligations remain open."
     }
   ],
@@ -574,49 +555,32 @@
     },
     {
       "pattern": "done/legacy-cleanup-fingerprint/v${version}",
-      "values": [
-        "done/legacy-cleanup-fingerprint/v1",
-        "done/legacy-cleanup-fingerprint/v2"
-      ],
+      "values": ["done/legacy-cleanup-fingerprint/v1", "done/legacy-cleanup-fingerprint/v2"],
       "source": "src/crdt/legacyCleanupRecord.ts: CleanupVersion"
     },
     {
       "pattern": "done/env/v${h.v}",
-      "values": [
-        "done/env/v1",
-        "done/env/v2"
-      ],
+      "values": ["done/env/v1", "done/env/v2"],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/env-sig/v${h.v}",
-      "values": [
-        "done/env-sig/v1",
-        "done/env-sig/v2"
-      ],
+      "values": ["done/env-sig/v1", "done/env-sig/v2"],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/envelope-wire/v${e.v}",
-      "values": [
-        "done/envelope-wire/v1",
-        "done/envelope-wire/v2"
-      ],
+      "values": ["done/envelope-wire/v1", "done/envelope-wire/v2"],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/envelope-wire/v${version}",
-      "values": [
-        "done/envelope-wire/v1",
-        "done/envelope-wire/v2"
-      ],
+      "values": ["done/envelope-wire/v1", "done/envelope-wire/v2"],
       "source": "account-protocol/envelope.ts: EnvelopeHeader v and wire parser"
     },
     {
       "pattern": "done/slot-writer/${JSON.stringify(slotId)}",
-      "values": [
-        "non-crypto: arbitrary validated slot name encoded as JSON"
-      ],
+      "values": ["non-crypto: arbitrary validated slot name encoded as JSON"],
       "source": "src/crdt/writeSession.ts: slotLockName; no finite crypto-domain expansion"
     },
     {
@@ -637,26 +601,17 @@
     },
     {
       "pattern": "done/enrollment-ceremony-context/v${c.v}",
-      "values": [
-        "done/enrollment-ceremony-context/v1",
-        "done/enrollment-ceremony-context/v2"
-      ],
+      "values": ["done/enrollment-ceremony-context/v1", "done/enrollment-ceremony-context/v2"],
       "source": "account-protocol/ceremonyExchange.ts: closed version union and parser; inventory expansion only"
     },
     {
       "pattern": "done/enrollment-ceremony-relay/v${body.v}",
-      "values": [
-        "done/enrollment-ceremony-relay/v1",
-        "done/enrollment-ceremony-relay/v2"
-      ],
+      "values": ["done/enrollment-ceremony-relay/v1", "done/enrollment-ceremony-relay/v2"],
       "source": "account-protocol/ceremonyRelay.ts: closed version union and parser; inventory expansion only"
     },
     {
       "pattern": "done/enrollment-ceremony-reveal/v${r.v}",
-      "values": [
-        "done/enrollment-ceremony-reveal/v1",
-        "done/enrollment-ceremony-reveal/v2"
-      ],
+      "values": ["done/enrollment-ceremony-reveal/v1", "done/enrollment-ceremony-reveal/v2"],
       "source": "account-protocol/ceremonyExchange.ts: closed version union and parser; inventory expansion only"
     },
     {
@@ -693,18 +648,12 @@
     },
     {
       "pattern": "done/membership-key-delivery/v${body.v}",
-      "values": [
-        "done/membership-key-delivery/v2",
-        "done/membership-key-delivery/v3"
-      ],
+      "values": ["done/membership-key-delivery/v2", "done/membership-key-delivery/v3"],
       "source": "account-protocol/membershipDelivery.ts: closed version union and parser; inventory expansion only"
     },
     {
       "pattern": "done/membership-key-installed/v${body.v}",
-      "values": [
-        "done/membership-key-installed/v2",
-        "done/membership-key-installed/v3"
-      ],
+      "values": ["done/membership-key-installed/v2", "done/membership-key-installed/v3"],
       "source": "account-protocol/membershipDelivery.ts: closed version union and parser; inventory expansion only"
     }
   ],

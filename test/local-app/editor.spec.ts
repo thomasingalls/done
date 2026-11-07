@@ -3,9 +3,11 @@ import { expect, type Page } from '@playwright/test';
 import * as fc from 'fast-check';
 import { openApp, reloadApp, protectApp, openMenuSection } from '../geometry/openApp';
 import { addDays } from '../../src/lib/date';
+import { refuseNativeContent, allowNativeContent } from './native-storage-faults';
 const day = (page: Page) => page.locator('.day-panel[data-active="true"]');
-const faults = async (page: Page) =>
-  page.evaluate(() => {
+const faults = async (page: Page) => {
+  await refuseNativeContent(page);
+  return page.evaluate(() => {
     const state = { enabled: true, journal: 0, database: 0 };
     Object.assign(window, { editorFaults: state });
     const set = Storage.prototype.setItem;
@@ -26,14 +28,17 @@ const faults = async (page: Page) =>
       return request;
     };
   });
-const allowStorage = async (page: Page) =>
-  page.evaluate(() => {
+};
+const allowStorage = async (page: Page) => {
+  const native = await allowNativeContent(page);
+  return page.evaluate((native) => {
     const state = (
       window as unknown as { editorFaults: { enabled: boolean; journal: number; database: number } }
     ).editorFaults;
     state.enabled = false;
-    return { journal: state.journal, database: state.database };
-  });
+    return { journal: state.journal, database: state.database + native };
+  }, native);
+};
 
 test('compose keeps its draft through native refusal; retry admits it once and reopen retains it', async ({
   page,

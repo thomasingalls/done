@@ -1,0 +1,109 @@
+{
+  "phase": 330,
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "classification": "New harness assumes C is already caught up, but its frozen profile is deliberately behind; the offline final-archive assertion fails before any checkpoint call. No install was attempted. Preserve this failure and do not rerun under current stop instruction.",
+  "applicationDefectEstablished": false,
+  "childExit": 1,
+  "runnerExit": 5,
+  "originalStopReceiptPreserved": true,
+  "historyRequests": 0,
+  "checkpointCreated": false,
+  "returnComparisonsRun": 0,
+  "loadedCreationAdmissionRuns": 0,
+  "requestedMetrics": "not measured",
+  "roles": [
+    {
+      "role": "A",
+      "actorIndex": 0,
+      "stores": [
+        {
+          "store": "content",
+          "records": 1066
+        },
+        {
+          "store": "heads",
+          "records": 3092
+        },
+        {
+          "store": "outbound",
+          "records": 3117
+        }
+      ]
+    },
+    {
+      "role": "C",
+      "actorIndex": 2,
+      "stores": [
+        {
+          "store": "content",
+          "records": 6
+        },
+        {
+          "store": "heads",
+          "records": 7
+        },
+        {
+          "store": "outbound",
+          "records": 3
+        }
+      ]
+    },
+    {
+      "role": "B",
+      "actorIndex": 1,
+      "stores": [
+        {
+          "store": "content",
+          "records": 42
+        },
+        {
+          "store": "heads",
+          "records": 12
+        },
+        {
+          "store": "outbound",
+          "records": 3
+        }
+      ]
+    }
+  ],
+  "sourceFixture": "/private/tmp/done-checkpoint-return-lab-20261101/private-fixture/fixture.json",
+  "sourceFixtureSha256": "d10347e30137dcd4b37154be0c86e6cd6d945a1b88ef73ba5d5b489d7740c4be",
+  "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[33m@@ -55,11 +55,11 @@\u001b[39m\n\n\u001b[2m  - H planning item 0: Review decisions and follow up.\u001b[22m\n\n\u001b[2m  - Fair H reverse:\u001b[22m\n\n\u001b[32m- - Fair H target: Seed H all-device boundary;0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123\u001b[39m\n\u001b[31m+ - Fair H target: Seed H all-device boundary;\u001b[39m\n\n\u001b[2m  - Keep the first device writing\u001b[22m\n\u001b[2m  \",\u001b[22m\n\u001b[2m    \"master.md\": \"# Account H\u001b[22m\n",
+  "hostLoad": {
+    "samples": 4,
+    "busyMedian": 37.02536826766365,
+    "busyMax": 48.597573105231746,
+    "path": "prepare330-admitted-checkpoint/host-load.jsonl"
+  },
+  "sourceObserverCalls": 12,
+  "strippingObservationsRestoresExactRepairedParent": true,
+  "canonicalInputsUnchanged": 1552,
+  "realIndexEmpty": true,
+  "frozenInputsVerified": [
+    {
+      "family": "sourceRoots",
+      "root": "/private/tmp/done-checkpoint-return-lab-20261101/source",
+      "count": 447
+    },
+    {
+      "family": "assetRoots",
+      "root": "/private/tmp/done-checkpoint-return-lab-20261101/build/combined-dist",
+      "count": 606
+    },
+    {
+      "family": "serverSources",
+      "count": 829
+    },
+    {
+      "family": "apparatus",
+      "count": 93
+    },
+    {
+      "family": "support",
+      "count": 6
+    }
+  ],
+  "nextAttemptRequirement": "Allow C to catch up through real sync and compare its whole archive before creating/admitting. Do not rewrite its saved content, skip an archive check, force historyRequired, or alter verification."
+}

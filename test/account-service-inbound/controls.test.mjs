@@ -30,12 +30,12 @@ async function buildMutant(t, control) {
               : '(auth.historicalMembers ?? auth.members).find(\n    (member) => member.id === request.publisher,\n  )',
             'auth.members[0]',
           );
-        if (control === 'publisher')
-          code = replace(
-            code,
-            'const auth = selectPublisher(\n            await reuseInboundAuthority(authorityReuse, s, issuer, verifyCurrentWorkspaceAuthority),\n            s.publisher,\n          ),\n          { reader, publisher } = resolveInboundRoles(auth, request);',
-            'const auth = await reuseInboundAuthority(authorityReuse, s, issuer, verifyCurrentWorkspaceAuthority),\n          { reader, publisher } = resolveInboundRoles(auth, request);',
-          );
+        if (control === 'publisher') {
+          const pattern =
+            /const auth = selectPublisher\(\s*(await reuseInboundAuthority\([\s\S]*?\)),\s*before.publisher,\s*\),\s*(\{ reader, publisher \} = resolveInboundRoles\(auth, request\);)/g;
+          assert.equal([...code.matchAll(pattern)].length, 1, 'Unique publisher selection anchor');
+          code = code.replace(pattern, 'const auth = $1,\n          $2');
+        }
         if (control === 'signature') {
           const re =
             /!\(await crypto\.subtle\.verify\(\s*'Ed25519',\s*reader.key,\s*unhex\(request.signature, 64\),\s*inboundRequestMessage\(request\),\s*\)\)/g;

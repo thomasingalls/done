@@ -1,0 +1,159 @@
+{
+  "diagnosticRuns": 1,
+  "knownFailureReproduced": true,
+  "noNewAppRefusalOrClosureObserved": true,
+  "noGateCredit": true,
+  "phase": 506,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineReuse.ts",
+      "sha256": "1a54dffcb5108fc332f2ea4ce2dbcd0ca7e2662f11f0f381ca87168f5f674a6b",
+      "bytes": 10493
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "70fbc44e2b79471bd665cce324bd818a555d8103c03560c8fdbf5c8a8241dd28",
+      "bytes": 70672
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountEnvelopePreparation.ts",
+      "sha256": "6c902857fe885510c8caa727bc54f076211a335e9322bd44e06a35c37567147e",
+      "bytes": 9671
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source-flow-506-20261107/506-private-files.json",
+      "sha256": "06e7e6839b5e4c547ec00cf37a08446778d6d89e5fac2979bb29b5610202f49d",
+      "bytes": 6040
+    },
+    {
+      "localPath": "/private/tmp/done-source-flow-506-20261107/506-declaration.json",
+      "sha256": "99cc48dee36bed5431e59e76dcc5799904fcd30a54b3c033ee1bf08fffdc5f0a",
+      "bytes": 876
+    },
+    {
+      "localPath": "/private/tmp/done-source-flow-506-20261107/506-summary.json",
+      "sha256": "3b99b3d1ac92250bef7c6f64ce0ef7d394a4170c64960bf9599c72b12c4e8930",
+      "bytes": 1805
+    },
+    {
+      "localPath": "/private/tmp/done-source-flow-506-20261107/506-failing-turn.json",
+      "sha256": "7f44121026f1ed8d4ca1756049b9d7304dee46a0643442284266ee04963e9cd8",
+      "bytes": 10663
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/child.log",
+      "sha256": "39856d5cae2044a21042eff15efe6de7c7b169285150607975efa093c9ac3a6d",
+      "bytes": 11409
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/host-load.jsonl",
+      "sha256": "ad4561b813b62f79998104c94b1f6e5f1867314e4ada57252ad36535bc848c19",
+      "bytes": 18368
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/power-assertions-before.txt",
+      "sha256": "bb5eb8eb73f56aba784013fe25a23bf2b8ab4b09b3454e49612ef5665378e99e",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/power-log-after.meta.json",
+      "sha256": "afcd07012faffc39c077a2a1cabdc2f4ed8231cdde88f7f77078ae2aa3ff6e0d",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/power-log-after.txt",
+      "sha256": "666647ec764059f5743fb490200204f71695c8f6a5c160c15a64b749b6545dc1",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/power-log-before.meta.json",
+      "sha256": "4ba3f2f4d2a2da04df1d41a79235d00706614e96dbe569d6899513d184cfdf1d",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/506-source-flow/run.json",
+      "sha256": "60944b36bf8ed60975dd639e506d32a2dd8ae9eef9ac3cc591faaebe1c088ad4",
+      "bytes": 1604
+    }
+  ],
+  "summary": {
+    "phase": 506,
+    "outcome": "knownstall reproduced atnewedit43after42acceptances",
+    "acceptedNew": 42,
+    "expectedNext": 2680,
+    "observedPrefix": 2679,
+    "sourceId": "5d5b617289c9e8a47dc4cda5e8383170",
+    "sourceInNativeCatalog": true,
+    "nativeCatalogCount": 114,
+    "selection": {
+      "site": "envelope-selection",
+      "sourceCount": 113,
+      "positionCount": 113,
+      "origin": 1794009313965.3,
+      "selected": [],
+      "latestId": "5d5b617289c9e8a47dc4cda5e8383170",
+      "latestPresent": false,
+      "usedBy": [],
+      "originUsed": [],
+      "ordinal": "816",
+      "realm": "worker",
+      "at": 1794009336518,
+      "additional": 43,
+      "observedAt": 1794009336519
+    },
+    "localHintReceived": true,
+    "localAndRetryWakesObserved": true,
+    "nativePersistenceSequences": [
+      18907,
+      18908
+    ],
+    "sendActuallyRan": true,
+    "sourceAbsentFromSelection": true,
+    "inputNonemptyBytes": 18,
+    "windowWorkspace": {
+      "state": "active",
+      "revision": 44,
+      "pendingItems": 0,
+      "pendingBytes": 0,
+      "reservedBytes": 0,
+      "durable": true,
+      "pressure": null
+    },
+    "observationErrors": [],
+    "workerStats": {
+      "ordinal": "857",
+      "failures": 0,
+      "origin": 1794009313965.3,
+      "realm": "worker"
+    },
+    "noAppSourceChange": true,
+    "allGuardsAndDeadlinesUnchanged": true,
+    "causalFinding": "Source captured andpersisted; localnotificationandretry are delivered, andsend executesafterdurabilitybarrier. Its113source selectionlacks latestcapsule,whileindependent nativecatalog has114includingit. Stale semanticprojection, not missingwakeup atthis turn.",
+    "hypothesisToTest": "baselineReuse.advance can publish its own identity before contentStore installs returnedlogical; interruptionbetween may leave oldlogical under newphysicalidentity. Noappfix until deterministiccounterexample."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

@@ -1,0 +1,839 @@
+{
+  "labRoot": "/private/tmp/done-dense-page-screen-lab-20261031",
+  "items": [
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/canonical-start.json",
+      "copy": "evidence/canonical-start.json.gz",
+      "rawSha256": "7482468a97b646569a5e41184bac93bc815491ec55ecf194ff9b141c06fff928",
+      "bytes": 172002,
+      "gzipSha256": "15347b9e3533707b19409a73c5006c4a162437927e8d3d3d26866ab9c05f5a59"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-flags.json",
+      "copy": "evidence/build-flags.json.gz",
+      "rawSha256": "34c47f4cc50c559a9084c6d8840b9955f35f7c02d2662e4cbf303b44de826456",
+      "bytes": 308,
+      "gzipSha256": "28523bc47fbb44a77d05f0a39294d44decadd0d97701b3a5c71d8461246b600d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/build-identity.json",
+      "copy": "evidence/build-identity.json.gz",
+      "rawSha256": "7656a8c923827ceb19ac10bf65e236480868c3ec373f66188af50af8447f2be5",
+      "bytes": 75053,
+      "gzipSha256": "b0e80952b006dca1c608042c9d77c1484dd8b29fa38795f5ecf2e5b6fe29ee21"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/typecheck.log",
+      "copy": "evidence/typecheck.log.gz",
+      "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "gzipSha256": "ac73670af3abed54ac6fb4695131f4099be9fbe39d6076c5d0264a6bbdae9d83"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/frontend-build.log",
+      "copy": "evidence/frontend-build.log.gz",
+      "rawSha256": "0b01117446549cd0d825d2a2ef200e8608067813ab31c6496b2b02686a7243c6",
+      "bytes": 8294,
+      "gzipSha256": "478f16b228d6ab77029ac0cf693ff9144227517f1706179bcc8377e25234aae7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/lab-build.log",
+      "copy": "evidence/lab-build.log.gz",
+      "rawSha256": "cf738bdd362588c8a164208e99287c705e0cf97910c366a07138ff9d5f035d1f",
+      "bytes": 18804,
+      "gzipSha256": "3508dfc12d1f2125714b1e02d6616ff1279e9a4f6a28e1b9c75b76b357c6dcab"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-inputs.json",
+      "copy": "evidence/cohort-inputs.json.gz",
+      "rawSha256": "b782ab00a9e5ce5a761ecb50fd185e5de5abbaac12a6e243485e3359b54dd47c",
+      "bytes": 120869,
+      "gzipSha256": "97a9e6d29d57816957a92e9af221bd608074798b43888a6b1e8846b78bc77ffe"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort2-inputs.json",
+      "copy": "evidence/cohort2-inputs.json.gz",
+      "rawSha256": "b782ab00a9e5ce5a761ecb50fd185e5de5abbaac12a6e243485e3359b54dd47c",
+      "bytes": 120869,
+      "gzipSha256": "97a9e6d29d57816957a92e9af221bd608074798b43888a6b1e8846b78bc77ffe"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-results.json",
+      "copy": "evidence/cohort-results.json.gz",
+      "rawSha256": "78dd54a8473d39d0c45e40da12b27fba53e02255db920ec3f1cfef3d95582a7b",
+      "bytes": 899,
+      "gzipSha256": "4c7259a4af31e790be9cf8d3270ae1a4ea89e01c0eeba2b51225551a8930be3a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort2-results.json",
+      "copy": "evidence/cohort2-results.json.gz",
+      "rawSha256": "21c54f6bea5a690a8a53704b43f3c1795b9b0cbc7eff40024fd83c7b7b6112eb",
+      "bytes": 1046,
+      "gzipSha256": "ca19c40a02d53f3c6b4f3080718d81dad4b48c7444f026db1e0f8bce0f63236b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/COHORT-PROTOCOL.md",
+      "copy": "evidence/COHORT-PROTOCOL.md.gz",
+      "rawSha256": "93958cade0737472a91442b3982d53e4d723343d4c377c0eaeb6a0d157d5df46",
+      "bytes": 873,
+      "gzipSha256": "33d9d15ca38ebfd6291e927df9f5a2a209e16b705f074dd11de32cfbf6b3df65"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-plan.json",
+      "copy": "evidence/deep-plan.json.gz",
+      "rawSha256": "558d2f281b78536068c2937cc563e8fb63b28e9508e504e1476492852f461abd",
+      "bytes": 3855,
+      "gzipSha256": "78a49daf441cc6d59a82386d3ca7bbaba518bef903493041ae57694bc8d8a74c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-inputs.json",
+      "copy": "evidence/deep-inputs.json.gz",
+      "rawSha256": "21fc77fc74a6025247c8bb3680480cfbec5554794b0e1ca641be79982716348d",
+      "bytes": 133774,
+      "gzipSha256": "5971756e4ca39bf9a18297511b65e0578274a49ff65c58930c9a86dfc4c31779"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-results.json",
+      "copy": "evidence/deep-results.json.gz",
+      "rawSha256": "e3b718d0341d364da7d14d4f20516fdf8d4b146bd56c2eda0b39dbb3ee166e91",
+      "bytes": 14615,
+      "gzipSha256": "98f199fcdb6ddabd425d17403d2cf3a03b8cfa1c4daa996896d4f5324618d194"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/DEEP-PROTOCOL.md",
+      "copy": "evidence/DEEP-PROTOCOL.md.gz",
+      "rawSha256": "78578986a5c64fc314db275695399cf0944568d1e802089687caac182a537721",
+      "bytes": 957,
+      "gzipSha256": "e2c422eba03a430df94aa74048295e4ca195135ca7e6e8b3a4dbb63c9b51974a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-analysis.json",
+      "copy": "evidence/deep-analysis.json.gz",
+      "rawSha256": "30c3fd58f945383c9c0d6c8dee9c1c85046f5aa08f7a0414f3fd4b1b4a3e3bcd",
+      "bytes": 142745,
+      "gzipSha256": "3cf45675edcf5ba97b6d4145493c4c70e5ee1ae5e8a6bb7ffd5fea7bca5a8510"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-analysis-console.log",
+      "copy": "evidence/deep-analysis-console.log.gz",
+      "rawSha256": "1fd642186f236ab81fa85ba3adfa3d721a3f869b6a93a73875dc12006b7215a0",
+      "bytes": 774,
+      "gzipSha256": "36e76ddac19b952b014ed5ab5a8074281aad63b40a0fd554de3f0386514f3046"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/DEEP.md",
+      "copy": "evidence/DEEP.md.gz",
+      "rawSha256": "1fd642186f236ab81fa85ba3adfa3d721a3f869b6a93a73875dc12006b7215a0",
+      "bytes": 774,
+      "gzipSha256": "36e76ddac19b952b014ed5ab5a8074281aad63b40a0fd554de3f0386514f3046"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation-P0/console.log",
+      "copy": "evidence/cohort-preparation-P0/console.log.gz",
+      "rawSha256": "7b2abf1d611ec4fc6d6c29dcdd03b749507ef2707d890c8b6d87b952e8bd034a",
+      "bytes": 858,
+      "gzipSha256": "b61e520abef9216d83a83c8e8a8bb57737b5f9c3bef92603d79893328e2e00d2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation-P0/receipt.json",
+      "copy": "evidence/cohort-preparation-P0/receipt.json.gz",
+      "rawSha256": "3308f9e27935a13caae0c1ec9954d18953801d458f2f31bbfa36aad0e01af779",
+      "bytes": 413,
+      "gzipSha256": "64be380e8b236335baf27634da787e1b4e47eb54dcb426068e3eabbf57809a6d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation-P0/host-load.jsonl",
+      "copy": "evidence/cohort-preparation-P0/host-load.jsonl.gz",
+      "rawSha256": "159e9d9134ef79429a16f8b33945a9a8f9e2e7c17976267a9c1c3075c37b8a4f",
+      "bytes": 784,
+      "gzipSha256": "f282484de9c793e0837d9835ed847e369aa2cd9cd521a6f073c13399042cb7e5"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation-P1/console.log",
+      "copy": "evidence/cohort-preparation-P1/console.log.gz",
+      "rawSha256": "7b2abf1d611ec4fc6d6c29dcdd03b749507ef2707d890c8b6d87b952e8bd034a",
+      "bytes": 858,
+      "gzipSha256": "b61e520abef9216d83a83c8e8a8bb57737b5f9c3bef92603d79893328e2e00d2"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation-P1/receipt.json",
+      "copy": "evidence/cohort-preparation-P1/receipt.json.gz",
+      "rawSha256": "20a41baf469d7d2e25f17b19a25f6a1ecc27e222bf25631c60f2e8011b419c4a",
+      "bytes": 413,
+      "gzipSha256": "8f3d46dcd32fb1da5bb5a5b1e1dc86bfd89b15a9abb5cd032c34345f075661b8"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation-P1/host-load.jsonl",
+      "copy": "evidence/cohort-preparation-P1/host-load.jsonl.gz",
+      "rawSha256": "8aac5f234afd081eb249f79719f208ac142c1809719d1c2667d71ee42a8cb3d8",
+      "bytes": 784,
+      "gzipSha256": "3f4dd3f8623557730791456765b77031a0b91f3026021259050afbb231e2defb"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P0/console.log",
+      "copy": "evidence/cohort-preparation2-P0/console.log.gz",
+      "rawSha256": "f7c3bce725975d7379b6e1a92ed79cb240695c40f404b78ca16de49e64d9e8eb",
+      "bytes": 359,
+      "gzipSha256": "a4a8ef6d02382f002a94cd6961296477f49d58fdb4f8b6c9e34ac2d540d47638"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P0/receipt.json",
+      "copy": "evidence/cohort-preparation2-P0/receipt.json.gz",
+      "rawSha256": "0de8c6142f954ce5c73bbd72d0d53610ba6cde86de84ee8482fc4083a2b87458",
+      "bytes": 487,
+      "gzipSha256": "5be3a8cd9bf2ad15ac761f644b6baeda567faa1352f431ef459c9937fc03c9ec"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P0/result.json",
+      "copy": "evidence/cohort-preparation2-P0/result.json.gz",
+      "rawSha256": "c0a0d3988b666535836b82a1bc3882277d2dbb8918841168448b0d9f6fab7b9d",
+      "bytes": 31569453,
+      "gzipSha256": "c87e1d4a4b5109ed9dabbd6e2dcb873a9ecb52e451c34b210bdf3807233009c9"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P0/host-load.jsonl",
+      "copy": "evidence/cohort-preparation2-P0/host-load.jsonl.gz",
+      "rawSha256": "e6e195946e4fb2f753c3d294e339236914fa03e38f0b36b53b422c6eb19a51a6",
+      "bytes": 34101,
+      "gzipSha256": "33b220ac09355fedb7b587902e6c4f10784c388c30b2f158ba0e6a6be0c08999"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P0/container-identity.json",
+      "copy": "evidence/cohort-preparation2-P0/container-identity.json.gz",
+      "rawSha256": "4ebef08e8ba27ed5504792ab37b126d5248faff8715787af45c2ff0126bf1cce",
+      "bytes": 2704,
+      "gzipSha256": "cf9704fd7a4f382bff283206216281e05d6ba3c913a0a22e7672b68a94175689"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P1/console.log",
+      "copy": "evidence/cohort-preparation2-P1/console.log.gz",
+      "rawSha256": "592d0b7752f419481ce5609e4341e8ce00d690e59130869b829ea26f001deeb9",
+      "bytes": 361,
+      "gzipSha256": "8015896863458fd398e1ce6a473d7af4052ee60e7d91ee81575fd131596e1933"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P1/receipt.json",
+      "copy": "evidence/cohort-preparation2-P1/receipt.json.gz",
+      "rawSha256": "5185a7054910355bb9d2716f6b108888756cbeddfe67caad2e50c7170a2b15f4",
+      "bytes": 486,
+      "gzipSha256": "739c7d155178aed212786604a9698103512c72f4d34c471e83dccfd64aea8044"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P1/result.json",
+      "copy": "evidence/cohort-preparation2-P1/result.json.gz",
+      "rawSha256": "a2893a6b23a4b7aef491b3d28843cd676795556fea7e60b3aa63e67897f29457",
+      "bytes": 31631904,
+      "gzipSha256": "1cd7d01b7d4b1481b0abd64d4f7e5c4053fe4c40c0f1019cfd63823ad37a38e4"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P1/host-load.jsonl",
+      "copy": "evidence/cohort-preparation2-P1/host-load.jsonl.gz",
+      "rawSha256": "b464a719e45f9158c2930c71d2534147c676b950f53a49363b3a9edbefb89100",
+      "bytes": 17303,
+      "gzipSha256": "3febb813192078d8a6298e88bb9a689877260f0be242f02abb7afba58eda8df1"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/cohort-preparation2-P1/container-identity.json",
+      "copy": "evidence/cohort-preparation2-P1/container-identity.json.gz",
+      "rawSha256": "12676e0ef000784f92ed54dc2124762f8ea9799ea0afb266860fa1ca7c42dfa5",
+      "bytes": 2703,
+      "gzipSha256": "702cc33f67327e8ff87e97241d2698a817158ca19e520633261ba6403ac2f03c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-01-P0V0/console.log",
+      "copy": "evidence/deep-01-P0V0/console.log.gz",
+      "rawSha256": "afbb2d5956f1acf3135d6782b70323a842592f896d8aaa60a81057a6121113e4",
+      "bytes": 912,
+      "gzipSha256": "87936f74e0a106962500dbf027b92d782887bdd1d75045cf82fda03e8857f05f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-01-P0V0/list.log",
+      "copy": "evidence/deep-01-P0V0/list.log.gz",
+      "rawSha256": "f4ccb87ebc44d66086d61123b884cf989ffd77696f18120eb7052e69c3f382a5",
+      "bytes": 435,
+      "gzipSha256": "5f6c8d3e50ac01a8f8fd819eae425a3906e2aa49d4fbfe0e075c627450e75890"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-01-P0V0/receipt.json",
+      "copy": "evidence/deep-01-P0V0/receipt.json.gz",
+      "rawSha256": "3b0c16a02230b73ae41c3d82dc5440a9ed877a781648182a3c2319f3432b88a9",
+      "bytes": 1127,
+      "gzipSha256": "d24f516c51e1e6c2ab92738ed912334816815f9c196964b1b9508b7e6d6a2493"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-01-P0V0/deep-gv/result.json",
+      "copy": "evidence/deep-01-P0V0/deep-gv/result.json.gz",
+      "rawSha256": "e14c0f7a7995b64f4249ca7f45565c1746395ebd9721b4591eaae0c484c403e1",
+      "bytes": 36385831,
+      "gzipSha256": "6d69f4b0bfc238807253c82d2ae25b033973572aaef28a1a94b0949c128bed22"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-01-P0V0/host-load.jsonl",
+      "copy": "evidence/deep-01-P0V0/host-load.jsonl.gz",
+      "rawSha256": "379c9754a39322833e3fbcf881c835f6aa319a760718fecef692264a088d278e",
+      "bytes": 17298,
+      "gzipSha256": "eb8f29764aad16421f5236d8525e683923b3a141b1ae8ea2f133c5b6d2422311"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-01-P0V0/deep-gv/container-identity.json",
+      "copy": "evidence/deep-01-P0V0/deep-gv/container-identity.json.gz",
+      "rawSha256": "f4d422f495928fbde7c26ecc234f2ea5a05c62a02c22f1c17475bb8aba0465db",
+      "bytes": 2701,
+      "gzipSha256": "6d869238c9c3f397398fd436c2a970f0b58200bc8e2101cf5c3cad773975d072"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-02-P1V1/console.log",
+      "copy": "evidence/deep-02-P1V1/console.log.gz",
+      "rawSha256": "a1ff67a9c4defc261dc668a6ad1bcc6ea13b229d049811065f56f37a19b6461f",
+      "bytes": 912,
+      "gzipSha256": "8876d326bb5c0fd1bf4686b8db2e81e2deadf9a0a44b100420dbf1995d8eb1ea"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-02-P1V1/list.log",
+      "copy": "evidence/deep-02-P1V1/list.log.gz",
+      "rawSha256": "63b69c7718d7322eb6683227495c32b0f857e4a325c1bfe456449be0c6fba411",
+      "bytes": 435,
+      "gzipSha256": "75f21a714c30574e3c3ea3476c510d8f9a8dcb8ab02c2fcd32e69d5aa0b3054e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-02-P1V1/receipt.json",
+      "copy": "evidence/deep-02-P1V1/receipt.json.gz",
+      "rawSha256": "19eddcd5417dd52ea32d3d2a86b4e2cbb9326717333476584a18320d9b023f8b",
+      "bytes": 1125,
+      "gzipSha256": "d70cb77c5b2610f42d08a781478d4ec2780aa4fa1b1d54d9259dbd5049e4ec49"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-02-P1V1/deep-gv/result.json",
+      "copy": "evidence/deep-02-P1V1/deep-gv/result.json.gz",
+      "rawSha256": "3d38875e186fae8f5394ebe9592c64d652ef0f44a9d3054ebbe3110e2d7dd2ef",
+      "bytes": 8521083,
+      "gzipSha256": "ad9282db8a9ee80a4e2cdc3a32c18d2c277883e2141c5409916f1438d5ccf1e5"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-02-P1V1/host-load.jsonl",
+      "copy": "evidence/deep-02-P1V1/host-load.jsonl.gz",
+      "rawSha256": "edf6da7ca2445e34c89189414152ba1b13b62db4d60f512ac6806e5646f41966",
+      "bytes": 15563,
+      "gzipSha256": "a234458c983af94e91d23c966efc7b15ebcef3e6e1fb7a6d68c69f00da081791"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-02-P1V1/deep-gv/container-identity.json",
+      "copy": "evidence/deep-02-P1V1/deep-gv/container-identity.json.gz",
+      "rawSha256": "39297e0d0604a13d18c9b70a72dd54fd008411e7b82dfc4cd568739efdaa3675",
+      "bytes": 2701,
+      "gzipSha256": "773df8a212da9d7793877ac346b921346bd094a2018fea5657b24f9089817714"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-03-P0V1/console.log",
+      "copy": "evidence/deep-03-P0V1/console.log.gz",
+      "rawSha256": "8b02bcb3c67dba1ffa7364560bddbdf576995d0f9aae34bee938a5c20c2eec30",
+      "bytes": 912,
+      "gzipSha256": "02a4b7f1898857873fea573fac26de5eb5d4d8705f534a60e8ca4ef24acbfa43"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-03-P0V1/list.log",
+      "copy": "evidence/deep-03-P0V1/list.log.gz",
+      "rawSha256": "a1f2a06d6b1e87f1724b99a2588d7d1f49a4909616a676715746e841f1e3ccde",
+      "bytes": 435,
+      "gzipSha256": "5f94ea25e46cbc0c04ee298ddb687bb7401df20a0798cd902d87e7d0f68b6786"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-03-P0V1/receipt.json",
+      "copy": "evidence/deep-03-P0V1/receipt.json.gz",
+      "rawSha256": "ca178c6aa78dfd367e3d09980fb0e823a2536451bcc105a4dd0601c3bcb6c155",
+      "bytes": 1139,
+      "gzipSha256": "bd7d33090e8bdac4d375307be337e541149ea9e16fc25cbb191ba2a9e234c576"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-03-P0V1/deep-gv/result.json",
+      "copy": "evidence/deep-03-P0V1/deep-gv/result.json.gz",
+      "rawSha256": "928cc602d5472d026d32512a646fcde89548479bd67f835e5f84ef432610dd3d",
+      "bytes": 7632031,
+      "gzipSha256": "46144c6d13650ad0e46e6ab79006abe90dbf379b059e811aa6bfef21b206567d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-03-P0V1/host-load.jsonl",
+      "copy": "evidence/deep-03-P0V1/host-load.jsonl.gz",
+      "rawSha256": "d523b58b5e1cb427721050d42a7ae3ddff9d0d263dc6646749de65ec7fb30ca3",
+      "bytes": 17261,
+      "gzipSha256": "01c2f356a76e892ffe946b138c6a27cb07bb93b7dcd08231cf91a68bc80584b9"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-03-P0V1/deep-gv/container-identity.json",
+      "copy": "evidence/deep-03-P0V1/deep-gv/container-identity.json.gz",
+      "rawSha256": "6a00dfd3c0543031904053a414285514b889306eef4591174536a2b11e996333",
+      "bytes": 2701,
+      "gzipSha256": "797c2ed9402d619d6c5ac0b66c11b1f561cb9ea23006bc8e7ef6bba0267f1ee3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-04-P1V0/console.log",
+      "copy": "evidence/deep-04-P1V0/console.log.gz",
+      "rawSha256": "01e8742baea3979ed38d97744e613e79991d0426026187dafa48553e289dce14",
+      "bytes": 912,
+      "gzipSha256": "1315f628f8ab3ae45e620c6819177fabc32c77db09de8674beba87c3fce58e9a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-04-P1V0/list.log",
+      "copy": "evidence/deep-04-P1V0/list.log.gz",
+      "rawSha256": "b28f3d3df8df499262503849b57e5a1242bc7da521c5f3570a32b0389b38302e",
+      "bytes": 435,
+      "gzipSha256": "170a478048153ae9a82ced11329848f90176eee6b4b9c4ef701f5b56802e2a4e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-04-P1V0/receipt.json",
+      "copy": "evidence/deep-04-P1V0/receipt.json.gz",
+      "rawSha256": "b9fff2c947ded59a96500a79929f259f2643e7d3d69d3db206764c7f649007d2",
+      "bytes": 1127,
+      "gzipSha256": "e06846ba17259c145c0dea3f9c427adf135180eb5c22c204aa5895bcafd0c402"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-04-P1V0/deep-gv/result.json",
+      "copy": "evidence/deep-04-P1V0/deep-gv/result.json.gz",
+      "rawSha256": "8a0cb1d0c586e2dead276ac871fe686faa8dd8cb780bba74c0f258b5eb8efc50",
+      "bytes": 26159430,
+      "gzipSha256": "e9f1d9c13c2a6ec9d90dab144eb67351151918cbf3d00dd2eb764990e173b7a6"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-04-P1V0/host-load.jsonl",
+      "copy": "evidence/deep-04-P1V0/host-load.jsonl.gz",
+      "rawSha256": "8003d423f4b7b0061e27959f74bcd026f5cb8cbf46750741a384854024429ac5",
+      "bytes": 17209,
+      "gzipSha256": "65a35808d11b19dc888951fdaaeca57f75e886a8efc860f0b6dde0f90f527b3c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-04-P1V0/deep-gv/container-identity.json",
+      "copy": "evidence/deep-04-P1V0/deep-gv/container-identity.json.gz",
+      "rawSha256": "3a9d43cd0670c3bea992cb784cd850b5cfb3c4b3f43fd4cb5abce4e9283e42d1",
+      "bytes": 2701,
+      "gzipSha256": "21947de3c64079f3d62cf3710a113aa895ee653c6fec53cf9f19e8b5eb80eb14"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-05-P1V0/console.log",
+      "copy": "evidence/deep-05-P1V0/console.log.gz",
+      "rawSha256": "2ef61fd6ef7d2f2f940c9eec66e20211873fb0989369fd85108580ad6534a813",
+      "bytes": 912,
+      "gzipSha256": "4d715d5425af3b3f8edb6158ff6eb06b1192844331de8def10b5601cc2f0d458"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-05-P1V0/list.log",
+      "copy": "evidence/deep-05-P1V0/list.log.gz",
+      "rawSha256": "6ed34a78f47dd7a316e1672fa45ec48a4077ea505c4b12e43f74baf2cf0c8538",
+      "bytes": 435,
+      "gzipSha256": "f66c140733585fcbc8dd8efad23cb20a688f2b64ec59be36991f896e13546e9f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-05-P1V0/receipt.json",
+      "copy": "evidence/deep-05-P1V0/receipt.json.gz",
+      "rawSha256": "907dc2541815119f5a38efbd632f18a0b69f3ba02406611684f5e1196de905b2",
+      "bytes": 1139,
+      "gzipSha256": "ab1a50cb5ae0f4897405b1fddea09f68e1ee75dbfb839b561453894898d7b0cc"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-05-P1V0/deep-gv/result.json",
+      "copy": "evidence/deep-05-P1V0/deep-gv/result.json.gz",
+      "rawSha256": "8b21630a14f7a8798f44abb011f2d732df56f06174ad82c754c7b1e5a7c996ea",
+      "bytes": 25689562,
+      "gzipSha256": "e6443411e7925a73546384c0bc76b41e332095144207714fba4f48e38222dbb6"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-05-P1V0/host-load.jsonl",
+      "copy": "evidence/deep-05-P1V0/host-load.jsonl.gz",
+      "rawSha256": "03e21658da6be201d1b3bccd328bfb4ecb2600810dee4d087b9edf72af2cfd18",
+      "bytes": 17266,
+      "gzipSha256": "8bbaf425f9fe2f7ad89ddfd0f5db3a98071a8027361e8bae957f5772f1f833e3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-05-P1V0/deep-gv/container-identity.json",
+      "copy": "evidence/deep-05-P1V0/deep-gv/container-identity.json.gz",
+      "rawSha256": "dd03603aa01d200cb927bcdc6e411405235eb29e437434ca9167d275ef71672a",
+      "bytes": 2702,
+      "gzipSha256": "cab075e7c3f616845b932fafa426cb1f781180629f89f7b8eaf767289def0bd7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-06-P0V0/console.log",
+      "copy": "evidence/deep-06-P0V0/console.log.gz",
+      "rawSha256": "d98cf1b796e4bb4117d65cb8cec96184e54c170a805cbdb203d88b5b79f33867",
+      "bytes": 912,
+      "gzipSha256": "7f1c1214caf0afff522e093d76635c9c1f4a70e96557a6d50d7df622fc2cbb73"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-06-P0V0/list.log",
+      "copy": "evidence/deep-06-P0V0/list.log.gz",
+      "rawSha256": "71a2e8c9ffaf48da58238cfa26c1b6dfaa4971e06e9a919d551d863ec5580663",
+      "bytes": 435,
+      "gzipSha256": "9494a6362e51212df4b2eecadb07657e3f2e32b3ce008ead09ad8daa0c4ae424"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-06-P0V0/receipt.json",
+      "copy": "evidence/deep-06-P0V0/receipt.json.gz",
+      "rawSha256": "f40040f8d6819dab904dd5cd0bc7d49fc452a79e4d1c43755b2e1a17aa7ec28b",
+      "bytes": 1128,
+      "gzipSha256": "8632a4f94da1cf573c2c69badb8f9c7b3d81256abe84966372ccf2d9a2eee0d0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-06-P0V0/deep-gv/result.json",
+      "copy": "evidence/deep-06-P0V0/deep-gv/result.json.gz",
+      "rawSha256": "789544c3cfec835d32747dc9843149fdf6c23019cbbf7690b2765cd406e27969",
+      "bytes": 36383091,
+      "gzipSha256": "09dcf043601d5e32ab5dd40769fba29f672e5bf3331cd8c0609ffd87eadc3740"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-06-P0V0/host-load.jsonl",
+      "copy": "evidence/deep-06-P0V0/host-load.jsonl.gz",
+      "rawSha256": "cef7e8e96d17ea3e307f93903249439cbeaa926e4594c8d2410e8fb777ad144c",
+      "bytes": 17233,
+      "gzipSha256": "2caf7cbd1d972e4146744169ed650f6e7286129ddc987c3f1dfb013f13321ac1"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-06-P0V0/deep-gv/container-identity.json",
+      "copy": "evidence/deep-06-P0V0/deep-gv/container-identity.json.gz",
+      "rawSha256": "d985b44ee18ae78fdd34cf407327809c75d51ceeda04aff06b455fc6b780d628",
+      "bytes": 2701,
+      "gzipSha256": "dc8cb32217a040aacc4597e1613775e536c18f365f2a1721b382f3c4d0b0166d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-07-P1V1/console.log",
+      "copy": "evidence/deep-07-P1V1/console.log.gz",
+      "rawSha256": "0f48ba847402e631784121d82212dab0fd7ce50cd42b6c7fcb3ef6c4c98fec00",
+      "bytes": 912,
+      "gzipSha256": "e4830ef7a64e64a20f09f4a85d53d5bbdb5c71f7a20f5648090bdfbfd2b50ab4"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-07-P1V1/list.log",
+      "copy": "evidence/deep-07-P1V1/list.log.gz",
+      "rawSha256": "aee2b3a31028ed09c871a26f489a0a0cd061e10f6745ebc60307bd8a822eebe1",
+      "bytes": 435,
+      "gzipSha256": "2e540fd32b69ba26bb10171555f27069a91005b398d77839786c39437e51e948"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-07-P1V1/receipt.json",
+      "copy": "evidence/deep-07-P1V1/receipt.json.gz",
+      "rawSha256": "b02bfb6e33539cf53f747e5deef022855961fc33942250192a40f6d209c80f12",
+      "bytes": 1127,
+      "gzipSha256": "9ae76c641fc6ab51a8f9a4503d68caf4e3729756060e9e9e59f506892fd533fe"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-07-P1V1/deep-gv/result.json",
+      "copy": "evidence/deep-07-P1V1/deep-gv/result.json.gz",
+      "rawSha256": "40b3e7898bac7e66c678c117b12f6ec3e6a70b0e186920bc4f142a90d311ca41",
+      "bytes": 7883865,
+      "gzipSha256": "b59e86f16a141b1649bc934d8a5588cb1c3fcf01a2f1f29b160f4028e688084d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-07-P1V1/host-load.jsonl",
+      "copy": "evidence/deep-07-P1V1/host-load.jsonl.gz",
+      "rawSha256": "d8bd6bd2479e7878781865a894cec47f9067b1043dceaa85d8caf7a2f8545177",
+      "bytes": 15603,
+      "gzipSha256": "a993b586cf42c64e6f34c63046514fd4e757df71cee08fe0187b2ad5a223b0ac"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-07-P1V1/deep-gv/container-identity.json",
+      "copy": "evidence/deep-07-P1V1/deep-gv/container-identity.json.gz",
+      "rawSha256": "bb42e06ad5cdb14229a78d468ac70154b6e3fdaa6819895275223a4eb35efe86",
+      "bytes": 2701,
+      "gzipSha256": "55eacd7d9381987d95983fead6b6c9e0b92c01111196946c823796f710aa9659"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-08-P0V1/console.log",
+      "copy": "evidence/deep-08-P0V1/console.log.gz",
+      "rawSha256": "de03b15842de112e93972442b2c69e14070eca9c7a3e7cd7cdecb22a444fc004",
+      "bytes": 912,
+      "gzipSha256": "2576c2686ec0bf8dadfa96869c40a7f9837d4554bd2eac62881d1a2fae996a52"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-08-P0V1/list.log",
+      "copy": "evidence/deep-08-P0V1/list.log.gz",
+      "rawSha256": "28514344715394a1c69dc1c58a209a271ca62346f1d7e809249872fbd56b3bfb",
+      "bytes": 435,
+      "gzipSha256": "b10a3f2b93ecc1e35e34b2d5aad7e2c133514463d695217c3e895da090af1b91"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-08-P0V1/receipt.json",
+      "copy": "evidence/deep-08-P0V1/receipt.json.gz",
+      "rawSha256": "ead91a8bff34b20271eba92b28c0099c2aefaeacd91cd90f59c2dc60cc2ebcdc",
+      "bytes": 1140,
+      "gzipSha256": "eb0444c086f202856e5c97cee580e34087252c8362cd896ba3188926b1ba6838"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-08-P0V1/deep-gv/result.json",
+      "copy": "evidence/deep-08-P0V1/deep-gv/result.json.gz",
+      "rawSha256": "d79e0d15159baa2f80d63010d36ee909cbaf0c3d6cf19676ffc1c8e3cc75a784",
+      "bytes": 7663472,
+      "gzipSha256": "2a3a83b8409632396f213492f96bccd6daa0c916f88e6fba769f9618de966004"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-08-P0V1/host-load.jsonl",
+      "copy": "evidence/deep-08-P0V1/host-load.jsonl.gz",
+      "rawSha256": "ed4f25c52cb8ad92b27ba5a44296a6704322fd0fd19d344d14e154498bb30a3d",
+      "bytes": 15632,
+      "gzipSha256": "8f8d1d31079d3eb248b785fc659f265a52eb327dc345e10e976f504281151ae1"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-08-P0V1/deep-gv/container-identity.json",
+      "copy": "evidence/deep-08-P0V1/deep-gv/container-identity.json.gz",
+      "rawSha256": "f517c34cb8763c0e386027a22b84f2c5a6953de00203fc89e8cdda3bf2c7fb35",
+      "bytes": 2701,
+      "gzipSha256": "a348272a9677eeb33d552534eae12ebb5190cf360285cd4ceb369f1f67d83bb4"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-09-P0V1/console.log",
+      "copy": "evidence/deep-09-P0V1/console.log.gz",
+      "rawSha256": "ed1bfd68b8b26639882bb9becc03bece735acadb9bee28112889df848f495dea",
+      "bytes": 912,
+      "gzipSha256": "e12519ceb557b0bea24f900489bd3ea7ad9f2b29cf9d8d08dba5c26d39a58cb0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-09-P0V1/list.log",
+      "copy": "evidence/deep-09-P0V1/list.log.gz",
+      "rawSha256": "489e049a96e59ae393cae5d20bb7f27c3e18af8a55388008fd03a9b49048171e",
+      "bytes": 435,
+      "gzipSha256": "341e70f6e83adf979f1e76ae560cb3fac7c6b6278374a83c778adccf6cd35d65"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-09-P0V1/receipt.json",
+      "copy": "evidence/deep-09-P0V1/receipt.json.gz",
+      "rawSha256": "d403765bfc21e7ba4d556b027b60cada4f293ee0f1ed6f48818fb3a8329932d7",
+      "bytes": 1136,
+      "gzipSha256": "be7bbd816df1500ad965195e75dba9eb50ce3ba1443a24fe09455dad2f0fe2ab"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-09-P0V1/deep-gv/result.json",
+      "copy": "evidence/deep-09-P0V1/deep-gv/result.json.gz",
+      "rawSha256": "ca2486ddec8372c3fe64736b35756b199edf5e152c0264694aad4ef1ad22684d",
+      "bytes": 7566521,
+      "gzipSha256": "a63edf8591879e7a7d41daf6db96190f56f230a343b3b8ba5a0b2ffd24fce025"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-09-P0V1/host-load.jsonl",
+      "copy": "evidence/deep-09-P0V1/host-load.jsonl.gz",
+      "rawSha256": "8b63a6d6d84af6fdc11aafd3baa66c9c35a3c91c1e263904b23fa108f8be0ca4",
+      "bytes": 15603,
+      "gzipSha256": "f88aa3b9f193c56b4f74919fe72ac8e758de34e8072b4c11b7fa0ba031d6df6f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-09-P0V1/deep-gv/container-identity.json",
+      "copy": "evidence/deep-09-P0V1/deep-gv/container-identity.json.gz",
+      "rawSha256": "a4b22aa8320cdaceab3ca9813d2d5f90ffcb6e271daa227b6ba4f6a85ac5b31e",
+      "bytes": 2701,
+      "gzipSha256": "de3c95b5cfd65da73d19249e4cb6cbaf83d3d9e8c179ddbac16e34f7456b9b42"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-10-P1V0/console.log",
+      "copy": "evidence/deep-10-P1V0/console.log.gz",
+      "rawSha256": "f86d94cc6d76d979eaeeb2ebf3964c7a88e8c0fd771863176eec7bd640676d2c",
+      "bytes": 912,
+      "gzipSha256": "5e224c6ce0e8af2e275b2f8c86c00ca9895e4d97d00d590774c34f0a24c2740e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-10-P1V0/list.log",
+      "copy": "evidence/deep-10-P1V0/list.log.gz",
+      "rawSha256": "7f8d19c0c5428b477f24284fc04b36b9c7c770bb43298d4ddef71ac35022243d",
+      "bytes": 435,
+      "gzipSha256": "14053e58abed9df715ac17ccf11c63e93d71711decdd5e7bea5b71d8e3c07a8f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-10-P1V0/receipt.json",
+      "copy": "evidence/deep-10-P1V0/receipt.json.gz",
+      "rawSha256": "fcd69158d8e4c806b9624df3c8010bf539611596de2c94136cf2973d7462f312",
+      "bytes": 1137,
+      "gzipSha256": "9237d594896351915c77a68acd35ad9cbe680039cfc04f5d60a00f84f93568b8"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-10-P1V0/deep-gv/result.json",
+      "copy": "evidence/deep-10-P1V0/deep-gv/result.json.gz",
+      "rawSha256": "745cd81740f6473f482d262b7c5808347aa9f38a6856df0b06bb9ba4e13ab335",
+      "bytes": 26153099,
+      "gzipSha256": "e2612ecbb8f75c91f6dfc4f477b0026fd9c221b9dd2466a16df4f207d7a391bf"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-10-P1V0/host-load.jsonl",
+      "copy": "evidence/deep-10-P1V0/host-load.jsonl.gz",
+      "rawSha256": "d6b9427c372fcadf7fe3ec84da5f140749c62c292edaccd970af40b02b135d7e",
+      "bytes": 17194,
+      "gzipSha256": "4295365979183379e40b09aec717e4f7e5514f85ce3a2d1d827de7a1be5eba7f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-10-P1V0/deep-gv/container-identity.json",
+      "copy": "evidence/deep-10-P1V0/deep-gv/container-identity.json.gz",
+      "rawSha256": "a59f34325409a17c9ddca614194ed960cc78439c07faba9fc2eefee1741ac13e",
+      "bytes": 2701,
+      "gzipSha256": "b3ecd0230bb6e1b4400392cb1589ede27a12fcd69bb6c53ab4d4a19676f773a0"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-11-P0V0/console.log",
+      "copy": "evidence/deep-11-P0V0/console.log.gz",
+      "rawSha256": "09cbfff2df7d3c8f7984490d98094ef616bfb11205e13f53f2b2cf216c3ab417",
+      "bytes": 912,
+      "gzipSha256": "b2649807d3c900ce005bfd5ed0e3d30832c93d6aa4ea7e117a28c905e3bdac3c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-11-P0V0/list.log",
+      "copy": "evidence/deep-11-P0V0/list.log.gz",
+      "rawSha256": "f065282624e42251961180ff79a2422b1e0cf290b520d78505b33b8e4ccf7926",
+      "bytes": 435,
+      "gzipSha256": "98a118194d6f436e11054f200d9a22dc1f7e697a4109c4eea2c9cdb2db537355"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-11-P0V0/receipt.json",
+      "copy": "evidence/deep-11-P0V0/receipt.json.gz",
+      "rawSha256": "805924632ab0473374fb3a19d2d85a2f89cd6e95af7f0c54166c439f320d6cc1",
+      "bytes": 1129,
+      "gzipSha256": "d33d0c68f4a02a0cdb1d526a9de996a00f5f1f2c5d8b4fee6236e443a7926983"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-11-P0V0/deep-gv/result.json",
+      "copy": "evidence/deep-11-P0V0/deep-gv/result.json.gz",
+      "rawSha256": "69937ef7e9be655891eb9e043d1f655e04607effc5cfd64264e4e632d4a3d397",
+      "bytes": 35967179,
+      "gzipSha256": "6e0cbd6582049dc1a12996b8ee909639bee3e112decb785842aad17493a7d836"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-11-P0V0/host-load.jsonl",
+      "copy": "evidence/deep-11-P0V0/host-load.jsonl.gz",
+      "rawSha256": "2d39838d58bda0e44e50aafe60eb0e15ea60bd56d5a3396cfbe3e39ef121f1ad",
+      "bytes": 19063,
+      "gzipSha256": "a22f950ceb76acf8d7910c7ae8fba071631097133e07e56079ea7a9ce365f9e9"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-11-P0V0/deep-gv/container-identity.json",
+      "copy": "evidence/deep-11-P0V0/deep-gv/container-identity.json.gz",
+      "rawSha256": "847627edae6ea1df5dd9f36092e2fcdcde781bbbb57c184f25dc22ea1da37af0",
+      "bytes": 2702,
+      "gzipSha256": "4a5aab43fd8d49be2c0de6294c3fafa423dc9785de32a49dc3d9ef5d55fc2dc1"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-12-P1V1/console.log",
+      "copy": "evidence/deep-12-P1V1/console.log.gz",
+      "rawSha256": "0e8f4b4061b577ba38f5aba1043ddb36ad61f86011157d3794818b72a91c75f8",
+      "bytes": 912,
+      "gzipSha256": "9f33e8d0e8dd9a9909d0218716b49c53702dfdd998a881adb0637f6fc1332bf7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-12-P1V1/list.log",
+      "copy": "evidence/deep-12-P1V1/list.log.gz",
+      "rawSha256": "fc2fce2d495b8ecca26aa28eb2cb1ba3088217c9508df1e8e43d7c42913a9ba1",
+      "bytes": 435,
+      "gzipSha256": "8497cc4a7d98d82fdf7579bd469928d68c7a69925c9bee54998b931a0757630c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-12-P1V1/receipt.json",
+      "copy": "evidence/deep-12-P1V1/receipt.json.gz",
+      "rawSha256": "e2fb68c781140d83790832a9bd05d5923bead888c4e04b7ffb5f716a610b029e",
+      "bytes": 1138,
+      "gzipSha256": "7a773a918eab8c5aa266a02d830f59a7a7ab9897ddd4df3fb60ae2892d92585d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-12-P1V1/deep-gv/result.json",
+      "copy": "evidence/deep-12-P1V1/deep-gv/result.json.gz",
+      "rawSha256": "dc53e588d4048be5ea68c74aeca4f0c3663fff71f5030b822091a657ec695b29",
+      "bytes": 7659961,
+      "gzipSha256": "cd890a51f275e202a1d36ef3deeae3881efa7b570ddce5529bd11f578929d78b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-12-P1V1/host-load.jsonl",
+      "copy": "evidence/deep-12-P1V1/host-load.jsonl.gz",
+      "rawSha256": "9f1798973b55fc0e4f2c00b99ffc84ff1772881596c79bca56e031a3927ee02a",
+      "bytes": 17424,
+      "gzipSha256": "b76c493ea34d8f1288afbf7c8e22e5ca7b762fadd243b281ff3226ee5999e126"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/deep-12-P1V1/deep-gv/container-identity.json",
+      "copy": "evidence/deep-12-P1V1/deep-gv/container-identity.json.gz",
+      "rawSha256": "b4f5fb28798637efd155f806c25b71df9c0ec27d8521e6e79c98712dfb7c1dee",
+      "bytes": 2701,
+      "gzipSha256": "959b2a9471e64c98088646d46a6b643bd94d7f1fe0b6d397b506714e2807574a"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-matrix.py",
+      "copy": "apparatus/run-matrix.py.gz",
+      "rawSha256": "26267fbf8db2bf43ae579ce90b2c4da50fa702372bbedee9cb150f02e2d2aa64",
+      "bytes": 4064,
+      "gzipSha256": "08a1f22a41cd87f927dfe10adee49744e0b29a1451c4d3764b2709f39bba93e3"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-cohorts.py",
+      "copy": "apparatus/run-cohorts.py.gz",
+      "rawSha256": "ffb570e64b11afdb28cb19c039a1af01e79269a0dd148846e781ff431ca15209",
+      "bytes": 2712,
+      "gzipSha256": "b85284292fc99dac18aacdd97a6a0701aadf972f27db97c24d4549efcb366650"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/run-cohorts-attempt1.py",
+      "copy": "apparatus/run-cohorts-attempt1.py.gz",
+      "rawSha256": "be848c2250fda66d5cf48ec5c9aba0f33252fadc6eaf1775ab392ec6b6260b65",
+      "bytes": 2709,
+      "gzipSha256": "811fb0059990f48055eda40e24a44e722bea13cd61e2a4f6997a69cc9cab1a05"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/host_load.py",
+      "copy": "apparatus/host_load.py.gz",
+      "rawSha256": "38620b8228ccb8eedd741c7bc82a615dbcdb2213dfc709fd6ea797ee24cb960f",
+      "bytes": 3560,
+      "gzipSha256": "b6799bdbe889580d12a6c810890c178acf2acc532096e0616b7ef822ba48193d"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/lab-context.mjs",
+      "copy": "apparatus/lab-context.mjs.gz",
+      "rawSha256": "bbf1049bc2737f46d6d1734aff44828869675ad9f59c875eac859d57495674e5",
+      "bytes": 2362,
+      "gzipSha256": "a3a67dd638a60d9738f369edd01c4f05318beaa1cc30c2926da063c9a906e34c"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/analyze-deep.py",
+      "copy": "apparatus/analyze-deep.py.gz",
+      "rawSha256": "9fcb2d95e373dc0ba04640552aaeaf6b2e0728bf25c338f2a52c104f984b37a1",
+      "bytes": 6961,
+      "gzipSha256": "eb5cc3cdb5b4b0dcd0d78dc9614d4e56a876759278cc0161a1a5258e8e6fd097"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/declare-deep.py",
+      "copy": "apparatus/declare-deep.py.gz",
+      "rawSha256": "c0250350150be82b2229dddd72531d4ae944f53894dff9a520d11846b81dee45",
+      "bytes": 1565,
+      "gzipSha256": "b2f3a2844e4d4a4050efaebfe7ba8dcd626c64a25d49858b1af8bd7a06f96f6e"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/dense-cohort.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.spec.ts.gz",
+      "rawSha256": "13a5e12cdbb148d542147264c12aa12e803cc5e526745e5282110307a4de5603",
+      "bytes": 4350,
+      "gzipSha256": "d6c91e6f3ed23d0d719c3021cb2522e520a4039b7cd645bfb6ea84ec0d1a2e5b"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/dense-cohort.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/dense-cohort.config.ts.gz",
+      "rawSha256": "88520272e626e2ff47081cff1f15d40a07da943ef37b4717a79921ed11a3e132",
+      "bytes": 289,
+      "gzipSha256": "f3a0f452a0fc5f2c4fa8c0a4d09e39b8753af125fd083c60f114f4c820e137c4"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/worker-owner.spec.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.spec.ts.gz",
+      "rawSha256": "e78aef07069ca37efd45bf5d2c2144f7ed66ebf7602f5653bbaa34a1c4a9c056",
+      "bytes": 156534,
+      "gzipSha256": "fb2f6ef24bf04e662b88ef7469c2b0927fceb8ad0d8c03971b9c7d12fdfd863f"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/worker-owner.config.ts",
+      "copy": "apparatus/harness/test/account-continuation-lab/worker-owner.config.ts.gz",
+      "rawSha256": "51a6a8ba5e326e169f571208c17ee8741fec1174b14c6faffff638090022acc9",
+      "bytes": 289,
+      "gzipSha256": "5741c02b5b3d0dcf68d10dcb9dbb40c1259ab7bf100459e33e9a6ae8e995efc7"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/runtime.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "rawSha256": "27c8d3859ef0a10a573d74b7563b0ded9df3f608ae27e5512935b3e67950e29b",
+      "bytes": 4410,
+      "gzipSha256": "8344e7274c252dcc01c56ff72ae3789e25dda19fb7c2cd6df9fd4d76f27ae552"
+    },
+    {
+      "source": "/private/tmp/done-dense-page-screen-lab-20261031/harness/test/account-continuation-lab/deep-traffic.mjs",
+      "copy": "apparatus/harness/test/account-continuation-lab/deep-traffic.mjs.gz",
+      "rawSha256": "8034faf0c4e8f695881710fa38ebfa7f7a9b8cbc6c1b61aa5268cf5ede13c471",
+      "bytes": 2142,
+      "gzipSha256": "6ca92b0bd9bf364f1b71904c574ee6864e743d7c3119799766bedc6586e7153f"
+    }
+  ],
+  "credentialsProfilesDatabasesBuildsNotCopied": true
+}

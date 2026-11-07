@@ -1,0 +1,130 @@
+{
+  "phase": 463,
+  "date": "2026-11-06",
+  "scope": "untimed real-sync preparation of original1024maintenance writer",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase333/apparatus/harness/test/account-continuation-lab/old1024-cohort.spec.ts.gz",
+      "sha256": "b4e6d4c2c66e08fd8b2ef4cbb8ae771004e67b150532f0d9180309d9a7f28b54",
+      "bytes": 1849
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-fixtures-463-20261106/463-private-files.json",
+      "sha256": "353d6e9e4403f213dfb892b9ce1a99cc4d54d161d80fd0d2e61bffbafd36eae1",
+      "bytes": 100226
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-fixtures-463-20261106/463-fixture-proof.json",
+      "sha256": "2de531a7565509005ea16304438001ef8cebd5cf635ba8ca70b1793496640d14",
+      "bytes": 808
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-maintenance-fixtures-463-20261106/463-declaration.json",
+      "sha256": "8f8b3e51262f7e9bd8806b7eb62dcd708c6fd509767507f9b9d6caf26fe237a2",
+      "bytes": 1165
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/child.log",
+      "sha256": "0756994527fa888ea04dff641274988fef39fb8151cd67fbe5066c9a9345a534",
+      "bytes": 413
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/host-load.jsonl",
+      "sha256": "cc9fc32617402c56f9ecd0ea02df0295d71ee5941478448049dbc1f12f09b907",
+      "bytes": 9328
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/power-assertions-before.txt",
+      "sha256": "08cd1c598863d7fbc7f58fbbbac56b29a6b0d62213ba4feeeea70f6db032774a",
+      "bytes": 1952
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/power-log-after.meta.json",
+      "sha256": "b25718e47f41ecaf6bce0a8f9a109044f15063d7113abd2a9a5085fcfd0cedd6",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/power-log-after.txt",
+      "sha256": "9b8a6690fad7aa56669075fd0149037812a870a07897d7d62023c62c15a3043d",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/power-log-before.meta.json",
+      "sha256": "62869ba6c6cfab6f9e7ea8d0be4d8a41d142b685d1b4da0b1d5ec2856ddd87bb",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/463-prepare-old-maintenance/run.json",
+      "sha256": "d79d221702833acaba4fb0c59378164280a8af3687ee8260e934619373a81a8c",
+      "bytes": 1646
+    }
+  ],
+  "proof": {
+    "sameArchivesDatesBacklogs": true,
+    "onlyActorH2StorageAndCredentialsRefreshed": true,
+    "serviceAcceptedRows": {
+      "privateCopiesOnly": true,
+      "rows": [
+        {
+          "label": "before",
+          "accepted": 1335
+        },
+        {
+          "label": "after",
+          "accepted": 1335
+        }
+      ],
+      "acceptedRowsUnchanged": true
+    },
+    "counterVersion": 2,
+    "retainedStores": {
+      "content": {
+        "rows": 1030,
+        "cipherBytes": 74177
+      },
+      "heads": {
+        "rows": 264,
+        "cipherBytes": 1764306
+      },
+      "meta": {
+        "rows": 1,
+        "cipherBytes": 0
+      },
+      "outbound": {
+        "rows": 3,
+        "cipherBytes": 2644
+      }
+    },
+    "originalAssertionsExact": {
+      "assertionCalls": 16,
+      "explicitWaits": 1,
+      "ASTsExact": true
+    },
+    "timedAcceptanceCredit": false
+  },
+  "privateManifestFiles": 345,
+  "applicationOrShippingChanges": false,
+  "timedMatrixJourneysStarted": 0,
+  "stage5BlockingCompletedBeforePhase": 15,
+  "next": "grow2048through real accepted edits, then prepare its writer with the original2048recipe; no stored-data editing",
+  "committed": false,
+  "pushed": false
+}

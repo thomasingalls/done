@@ -1,0 +1,1989 @@
+{
+  "phase": 445,
+  "date": "2026-11-05",
+  "title": "Stage5preflight held on sparse-publisher liveness",
+  "sourceRevision": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "package.json",
+      "sha256": "0f36597716b4ee2785570a7bafaa0b9e1891510bfbfb812fc998007920a52c02",
+      "bytes": 17023
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/receiveSelection.ts",
+      "sha256": "8020cb868ab8bbd579a557f27cdd084c16a0241a5a4ef06baa6a6608232fe72f",
+      "bytes": 11736
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/server.mjs",
+      "sha256": "22930b1e10b0866e2f96ab4ec8ad8d4e5dbf649d48c0eb33acd35b64747d6dd2",
+      "bytes": 5479
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-index/past-index.spec.ts",
+      "sha256": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "bytes": 17521
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite/inboundContinuationFixture.config.ts",
+      "sha256": "d3071a6e0456204ec0c0f17b14a9a05c4fa28829f7248c2f5e790eed01207f60",
+      "bytes": 2300
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite/inboundIndexFixture.config.ts",
+      "sha256": "b3a61cb644a794fb949bbabc72bc47875f67f91c584f6f10b7fbea08e9ef43ef",
+      "bytes": 7990
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/policy.json",
+      "sha256": "4dfaab3c6fb1e94638633f49a3c2fc05c11f2c55c8a759d018c45b18f42417d9",
+      "bytes": 12889
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/capture_storage.py",
+      "sha256": "1ae4d40e0f6d8dee76f067e94d23c58e00114ba1d06477dea84a427c1f0527e4",
+      "bytes": 3112
+    }
+  ],
+  "approvedLintChange": {
+    "baseCommit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "path": ".oxlintrc.json",
+    "baseSha256": "7616e2477d5f6dee14dfe39dd7ba6bc24b35293603a745ba3d3deb305bd63e62",
+    "workingSha256": "0e4f75301ff975af866147ac23c122e051114d4a673da554d2caaba7d01cfad8",
+    "approvedReviewPatch": "/private/tmp/done-stage5-hardening-20261105/445-three-archive-lint-exclusions.patch",
+    "patchSha256": "5283ab13e83884eca24e5ff048012e71f8347e90474759eb4d60d768ec4a4c94",
+    "scope": "exact three archived files; all rules and active-source inspection unchanged"
+  },
+  "outcome": {
+    "phase": 445,
+    "state": "stopped on failed functional preflight; no timed matrix journeys",
+    "base": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+    "preconditions": {
+      "acceptedAppCheckpoint": "432\u2013436 per operator",
+      "srcDiffSince436": [],
+      "typecheck": "passed445command0",
+      "lint": "original1213archiveerrors;operator-approvedthreeexclusions;normalpnpm lint passes",
+      "unit": "330files3210passed+1existing skip;137.46s",
+      "inventoryPolicy": "passed",
+      "powerWindow": "passed;231bytes stored from3,925,451full bytes with hash/size",
+      "frozenReleaseBuild": "passed unchanged package build script after pnpm copied-context precondition failure",
+      "fairness": "seed passed;known-backlog normal failed sparseSeen[20,40]instead[20,40,60];remaining4casesnotrun",
+      "pastIndex": "not run after stop"
+    },
+    "noise": {
+      "run": "445-native-fairness-preflight",
+      "samples": 20,
+      "nonTestCpuRuns": [
+        {
+          "pid": 50444,
+          "name": "firefox",
+          "first": 1793882212.200543,
+          "last": 1793882212.200543,
+          "samples": 1,
+          "maxCpu": 111.3,
+          "spanSeconds": 0.0
+        }
+      ],
+      "qualifyingCpuRuns": [],
+      "swapFirst": {
+        "at": 1793882177.1981912,
+        "usedMiB": 16520.31
+      },
+      "swapLast": {
+        "at": 1793882272.196557,
+        "usedMiB": 16512.31
+      },
+      "swapIncreases": [],
+      "noisePredicate": false,
+      "qualification": "preflight sparse-liveness failure, not a timed matrix replicate; no automatic credit or silent regrading",
+      "rootResult": "known-backlog normal lacks LB60 before hot typing stops; initial seed passed"
+    },
+    "shippingAssetDigest": "1916374e6ff0cd9f9cc5e3d006e447c85d25792d0ba8c32e5661208c44d07fa7",
+    "releaseFlags": {
+      "VITE_ACCOUNT_BASELINE_READ": "1",
+      "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+      "VITE_ACCOUNT_RETENTION": "1",
+      "VITE_ACCOUNT_RETENTION_AUTO": "1",
+      "VITE_ACCOUNT_RETENTION_RESUME": "1",
+      "VITE_ACCOUNT_RANGE_RECEIVE": "1",
+      "VITE_ACCOUNT_HISTORY_AUTO": "0",
+      "VITE_ACCOUNT_BATCH": "coordinated-2000",
+      "VITE_ACCOUNT_LEDGER": "incremental",
+      "VITE_ACCOUNT_LEDGER_PROFILE": "0"
+    },
+    "timedJourneysStarted": 0,
+    "stage5Verdict": "blocked by functional precondition; no acceptance credit",
+    "archiveAndCold": "not reached in failed case; no claim of durable loss or cold exactness",
+    "appFixAttempted": false,
+    "sourceOrExistingTestBodiesChanged": false,
+    "lintConfigChange": "exact operator-approved3archivedpaths",
+    "next": "Operator decision/next bounded diagnosis of sparse-publisher liveness before resuming preflight/matrix",
+    "noPush": true,
+    "noDeployment": true
+  },
+  "shippingBuild": {
+    "build": "/private/tmp/done-stage5-hardening-20261105/build-r2/ordinary",
+    "assetDigest": "1916374e6ff0cd9f9cc5e3d006e447c85d25792d0ba8c32e5661208c44d07fa7",
+    "flags": {
+      "VITE_ACCOUNT_BASELINE_READ": "1",
+      "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+      "VITE_ACCOUNT_RETENTION": "1",
+      "VITE_ACCOUNT_RETENTION_AUTO": "1",
+      "VITE_ACCOUNT_RETENTION_RESUME": "1",
+      "VITE_ACCOUNT_RANGE_RECEIVE": "1",
+      "VITE_ACCOUNT_HISTORY_AUTO": "0",
+      "VITE_ACCOUNT_BATCH": "coordinated-2000",
+      "VITE_ACCOUNT_LEDGER": "incremental",
+      "VITE_ACCOUNT_LEDGER_PROFILE": "0"
+    },
+    "sourceDigest": "b1a1cd901c68395d27899351a08e7def3e4eb0dd7f90f8f94628db008cfae1a3",
+    "labAndObservationMarkersAbsent": true
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/child.log",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/host-load.jsonl",
+      "sha256": "478bf37afd1c86621a5462b21ccdcab94bb174122ad9756cde5d7498759a244d",
+      "bytes": 1528,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/power-assertions-before.txt",
+      "sha256": "8b42f521ba0784cf3bc05aea98975c549b7c55117ca6802f0883c6481b7da22d",
+      "bytes": 1681,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/power-log-after.meta.json",
+      "sha256": "987bc11e032b6f23fc241daf9a59b5f3c9ce4ab6a8a796b4abac0d96212f47aa",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/power-log-after.txt",
+      "sha256": "dc7f3c14f7ab260ff4cea6bc65353dd85e5d6014e07d14caf530be75e8aef89f",
+      "bytes": 468,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/power-log-before.meta.json",
+      "sha256": "774e29da05268e7d683da11dcb1431e6525438b783de5b2be03949a42afbb6fc",
+      "bytes": 479,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-00-typecheck/run.json",
+      "sha256": "7484cd6c815883fd8a4c3bb9fe88624e754a2daa6669f8bda8194d22a2ebf2cc",
+      "bytes": 624,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/child.log",
+      "sha256": "b97e93504cabb180cf5e8999957cfaecfdc6d49f8761733b14772d1f51d84d42",
+      "bytes": 147,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/host-load.jsonl",
+      "sha256": "231bdf8e4aec16e854702683e3a862d031254d484faf5d7033f2c5fa3a1bd12c",
+      "bytes": 1562,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/power-assertions-before.txt",
+      "sha256": "f66bbb9615e6d51e84b5830e1258908b9e5195593f0e2dbcd4a2b2ac953dd9ff",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/power-log-after.meta.json",
+      "sha256": "025bad0ff6d4ba59e4ec91e6d07c8b6804845a7057bf544e67e337abff61b236",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/power-log-after.txt",
+      "sha256": "9e58bc5d31d14d73af0c53bd83241d2564daf0775dfa839ec554a7c9f28bf9ec",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/power-log-before.meta.json",
+      "sha256": "8b3c7d59828e928c88b64168f180b558d8b0185487faa9dda1c28b440f07399d",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-01-yjs-check/run.json",
+      "sha256": "618e9812cea0aad51de0ab4f39aab0d9dde5780fd12507a40f743ec1ee57338e",
+      "bytes": 622,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/child.log",
+      "sha256": "d6c7ce2f9f5122f77983c2927904fe6f0816745f1705564ea3883a484f1a9559",
+      "bytes": 5388,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/host-load.jsonl",
+      "sha256": "71628f43496e92f168b90e18db62c263d609f4c40a268ed4bdeb2d6ae641ada5",
+      "bytes": 3068,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/power-assertions-before.txt",
+      "sha256": "d66850182388c3e3b39fda481d4fa0ef6517ad7b3e3d1c24aa9c37a48da0e54b",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/power-log-after.meta.json",
+      "sha256": "eaf096399ccf65e7c148f81aab48f58b9d9dec848645cc82b65f1cc44cc31e81",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/power-log-after.txt",
+      "sha256": "5e8b27e5ccfccc0457fa372316e20b1a4cda1e3c27be9078c2cfce1290dfc745",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/power-log-before.meta.json",
+      "sha256": "bb74f0382aa149f02db479bf87dcbd1d784bf349824a7f4145defce3a1052150",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-02-vectors-check/run.json",
+      "sha256": "e99b87b43f810863e29532e510fc87fd9c707287379c26b61f1af65142a370a7",
+      "bytes": 632,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/child.log",
+      "sha256": "bf7de01cff29449a257d46bfe40ace0f62a66d51f8438a2a15288abeae236e65",
+      "bytes": 627,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/host-load.jsonl",
+      "sha256": "848aabf5aa36a78f584ebda5e7acabae62112bfbcdcdd96b543b242aece02663",
+      "bytes": 1569,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/power-assertions-before.txt",
+      "sha256": "a377deb540777bd16e0128b6dbd0804cf2e56e26238589dc64be8c1381007863",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/power-log-after.meta.json",
+      "sha256": "4eada52138404649c636c8978f26a96b3c8b10716737de9a6707f0533021b1a0",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/power-log-after.txt",
+      "sha256": "9295d5b503a6f4ddd6ea9963dc3c35d95c146648fb301249d1d15f38413f5b97",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/power-log-before.meta.json",
+      "sha256": "be7550d77cb8bdab60786fc71f54459b8a444a5538b52d6056bdb5c1c80ed016",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-03-retention-check/run.json",
+      "sha256": "7d83cd3e1f79a441f58da7756fa071e557cd27cf87afdf6dbcae59baf036ab03",
+      "bytes": 638,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/child.log",
+      "sha256": "ae7ff0b81b1a7e3ad005c51de472c31bff91794560f4e54d4b00c7395a1e3643",
+      "bytes": 397,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/host-load.jsonl",
+      "sha256": "856fbecbd6b77a1ba1d27b89851b14aefe1dd17a82fdd5baea6e1ba00b628bd7",
+      "bytes": 1565,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/power-assertions-before.txt",
+      "sha256": "5896fb7f7be10aa5a3a8736b3d7b261ed3b7fb3c3d4c7ebe205b3694f6d0e8ab",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/power-log-after.meta.json",
+      "sha256": "eb9b2c6ab0279356e51a49d0de269e932cabfb897302b3c95431a602d4c73156",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/power-log-after.txt",
+      "sha256": "30446eb5849f90c39e84ed2dedb81e37fbbb16673e71f6a70a56c9f4c5ae40eb",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/power-log-before.meta.json",
+      "sha256": "6754d29cf0172a8cd2fba41d965bedda81fb77edf6e5da63c7c020df67010989",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-04-status-check/run.json",
+      "sha256": "f19beae9b0e47c08a6445b6889711516c1f5cd25b79552c0bde188b04226caec",
+      "bytes": 631,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/child.log",
+      "sha256": "d0e4269eac4c1996566d2da50f4b351fc612aa76618bce4fadfd9c40e6fecd01",
+      "bytes": 222,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/host-load.jsonl",
+      "sha256": "10b951ee74fec87f36d80a00edc6cee5afcb44a3b4f76752e866c2279ff292b8",
+      "bytes": 1524,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/power-assertions-before.txt",
+      "sha256": "442a1e53ea7b1393381a3cbd09c9c296aaac595c91acb8d52c29b360e0fbc551",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/power-log-after.meta.json",
+      "sha256": "b68ab765cfc81492ec3bbd648630f7dded50e18846963ca1e541b0a1c2f9dca5",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/power-log-after.txt",
+      "sha256": "f73f9bb4879180a978265633719cfa9ec4725b4170885df9ce72dd98c7564ddc",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/power-log-before.meta.json",
+      "sha256": "05a97a888eaac3202a66f0051d60dc84f31acfaf3a7ee2e0b6d7ddb0bfcb32ff",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-05-limit-check/run.json",
+      "sha256": "a45b8c3cf6649a7ce038f35ba1b888971463a9913022cbfaa8b80bd5c9e8946f",
+      "bytes": 629,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/child.log",
+      "sha256": "a27fa5f7456524ab685dd0e38806f62a74aa41565501b632c5e3c6535d0444e2",
+      "bytes": 790,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/host-load.jsonl",
+      "sha256": "64cddb07830a06e9c8a9a332b7c07808fae06edd62e6268aeec25ed29f0f05f4",
+      "bytes": 1507,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/power-assertions-before.txt",
+      "sha256": "66fb2da9609346e6adba1be6a856e759ee8d50f26ffa0f9d27fd673d67656b9f",
+      "bytes": 1900,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/power-log-after.meta.json",
+      "sha256": "3b17921ed2cb5cd8c1b270a905186b15b0ef38f719200335e595954b10f7b267",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/power-log-after.txt",
+      "sha256": "520b03e401413dcec896b704013604d03dad2359d284a3a8c69b4db517b4b337",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/power-log-before.meta.json",
+      "sha256": "44c08788e89e01ed5c4af7a6d2fb64c968ce811382721afbe83880d3eadafea9",
+      "bytes": 479,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-06-authority-check/run.json",
+      "sha256": "0672d12c805649d63bdf4219a63bef195b139877a39cffddedd343c9a9a82b9d",
+      "bytes": 635,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/child.log",
+      "sha256": "8626baf7abceaadbfdb793d3801cde43b51375dc77ff28812523854dfef5d346",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/host-load.jsonl",
+      "sha256": "d054db94c3e99613717e01bc3717f208b6878efaec2e32e3239b367ea4c9df99",
+      "bytes": 1565,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/power-assertions-before.txt",
+      "sha256": "6e5b8515b172359d5cd3d82d45c1252f851381812a3c3c3a16900a56f167a543",
+      "bytes": 1900,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/power-log-after.meta.json",
+      "sha256": "a232bc3879fd6d58a6436e9255a0ff79460d9e1e40d585d0bfd609b453ed189e",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/power-log-after.txt",
+      "sha256": "16e6431a50d965ac64e0e27843934d98a87cf9bf6137abba24fc7f6506733e74",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/power-log-before.meta.json",
+      "sha256": "b9b8318f31bc8c4e1d3c8c8c31ea0d80e107ac6c3d8376cf2923f1ccf94c1d87",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-07-recipient-check/run.json",
+      "sha256": "d48691c080a3a3d74c9a98c31c899e7baa640fbebd832fc37b2bab14006263cc",
+      "bytes": 637,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/child.log",
+      "sha256": "29d25a23c5364b32598981ec800fb3cefa101fa79911d2df68f15b28d971dd67",
+      "bytes": 487,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/host-load.jsonl",
+      "sha256": "cd8563f3110730b5ffd9e8423456e3f3fee196730e3c74516f6b07ae4c4a359f",
+      "bytes": 1549,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/power-assertions-before.txt",
+      "sha256": "9d9b5e58386b537eafe87e479e2de844c00c0e0ba41cebaee068e80470052e3b",
+      "bytes": 1900,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/power-log-after.meta.json",
+      "sha256": "bacbd35c8a72e5d2b7b027d0f69cc6ee53fb5e7b65e64838e013eca67741e3e8",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/power-log-after.txt",
+      "sha256": "589345349e239e2c8317883375476e361f0c0ed8df8f72609ae316df9a451ce7",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/power-log-before.meta.json",
+      "sha256": "fc80e9bdd4c50ca15e18be50e58999bea8d21f9639de511eb7a70c9fd672b251",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-08-admission-check/run.json",
+      "sha256": "ad438b214f298963ad095e2ac598d22e5fb3846a8ee0dbfc467c2d7b8457cc9d",
+      "bytes": 635,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/child.log",
+      "sha256": "ad4091e2b07760a5ae9ca9b2925eec27981e5ece54a044f6e13c358e72b83d2e",
+      "bytes": 501,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/host-load.jsonl",
+      "sha256": "3aeee77fe8eed30a311219fde7c41f37c95cce00ed12bbd1f3651ced0b8ccbe5",
+      "bytes": 1498,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/power-assertions-before.txt",
+      "sha256": "d1fae31ce2133b17cad80ed67fb3abd4da8e0b1714840f9ab0e9d28f132cfa17",
+      "bytes": 1900,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/power-log-after.meta.json",
+      "sha256": "adbbb09828b5ece0ee8cd81d89703e0bdf1ab10bb0192b9544170de65285dad0",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/power-log-after.txt",
+      "sha256": "c4c9ffdba30f9115a47c0fa4e299dd57d43926ec58a5043110c6e9c57c1fb9e7",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/power-log-before.meta.json",
+      "sha256": "a9cff1ec5cbda53b797a2ff8b0dcf80144046b310426ed32c804a5633fa9aa77",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-09-remediation-check/run.json",
+      "sha256": "0030f1bbc18c7493e1b05aa891c2f863c0bcb86742d1b1947f215c7d0cf43b8a",
+      "bytes": 641,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/child.log",
+      "sha256": "f5e86f525ba36cc07c9b221945db6b1fb79dd9701d89cb3c53ac96e90c6b08be",
+      "bytes": 352,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/host-load.jsonl",
+      "sha256": "d4e8a3f1f62c88d237c1c45c9d41353d74097e921b0bfe556ddd110516b445d7",
+      "bytes": 1571,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/power-assertions-before.txt",
+      "sha256": "647648e330232f1e1fe2c5aeabc87cb820fa6c18f0eb93af9b357624b61a2bd5",
+      "bytes": 1900,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/power-log-after.meta.json",
+      "sha256": "dafc247c928b506c75d722a36ee7034aaeeee45d4d8cde4145290d70770093fb",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/power-log-after.txt",
+      "sha256": "c20d18550365e6c004f3f26a67dedcdeb95d77ed42a315d741055c88e2b634c5",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/power-log-before.meta.json",
+      "sha256": "b94711eb43e935c252dcfc6e039acbb3a2693f995d6285b1e2698c8288f4cf34",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-10-debts-check/run.json",
+      "sha256": "d9a9184e3ac85037b34852820d6959277a3559246ef157af2b1a4eff0eb28446",
+      "bytes": 628,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/child.log",
+      "sha256": "e88167a8a86e5a53b69eea8245b3b812f8c17dcedd1f1264364c789a575266e4",
+      "bytes": 390,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/host-load.jsonl",
+      "sha256": "9939bd9fbcf9aa1c2bc56743c267c7d142e7675bd9f816630f504f9f50f56832",
+      "bytes": 1565,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/power-assertions-before.txt",
+      "sha256": "41164e26a823d9da03898bdc2fe0cb2fd5c743787fcd8c9fe2dc1d9723182f36",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/power-log-after.meta.json",
+      "sha256": "aa5dc6ac11975f8706297742767e447b42874045b02ad05c9b511cf130c1eac7",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/power-log-before.meta.json",
+      "sha256": "555ac3be7216044c186e92944d94106d2f87328b4ee308a2a2018225cbe0ce8d",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-11-wasm-verify/run.json",
+      "sha256": "180ca34a2932ed0e891960c568ea64cbb3af8ef5e5e3167e947de9ea2b7a865d",
+      "bytes": 628,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/child.log",
+      "sha256": "397475a9cefb55938030d3b1a8b82cc073cb2848ff249ae34750b7b62f5e9040",
+      "bytes": 277,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/host-load.jsonl",
+      "sha256": "658806debaf8d5b70714c1286e78f889ae14c9dff4e5b7debbf05fb34fdd7f22",
+      "bytes": 42671,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/power-assertions-before.txt",
+      "sha256": "9a92d3fbe0808ade7f1584fb9cd22c82c3d8b0f474a97f4b22f79a48f5285e8a",
+      "bytes": 1900,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/power-log-after.meta.json",
+      "sha256": "2318e192fadf0a3a3ab446e91581b743003efb7213f9bdb5933726cf64f26582",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/power-log-after.txt",
+      "sha256": "95a130c766953434a90920c3a69bee820e5f271dae2f5c69634e80225d203a27",
+      "bytes": 655,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/power-log-before.meta.json",
+      "sha256": "cb778cd91586e75c4b51f2411cb4278532ab18cc1326a383ca008fa22d433a9e",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-12-test/run.json",
+      "sha256": "61b187ce4785336f52edafa3fb7fbebf4c569c4290ee374d24628990c65b7889",
+      "bytes": 802,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/child.log",
+      "sha256": "698617c9d4c819628ac323bb454696f31c26cfe23c64bc82c916c49409f67549",
+      "bytes": 769,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/host-load.jsonl",
+      "sha256": "27efa84e77842f82a422101728be1a6d489501bcc0b2fc82bdeaa5cabb1e5fb5",
+      "bytes": 22787,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/power-assertions-before.txt",
+      "sha256": "fd643d0a4930f9fa9fba3c4487c297bc14aaea5ad0593e4a6f8f5c418e0f4276",
+      "bytes": 1907,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/power-log-after.meta.json",
+      "sha256": "1852eea2a9918d3145f6b27476f26d14f356a1e485ffa16e186c2c75f93d548d",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/power-log-after.txt",
+      "sha256": "5fc07fc7d2df7696d86017e6b7b18978fd55b514b61ad7861c146ee766272c68",
+      "bytes": 309,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/power-log-before.meta.json",
+      "sha256": "8f34286ab9121ec31acd2c7e24f7de0d0c3669bfbe59003b21282acddf0d964d",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-13-storage-harness/run.json",
+      "sha256": "8789c375a8aba71fb60a485062d77bd764f4147e54dd7345ec7c6d0565be5f2d",
+      "bytes": 637,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/child.log",
+      "sha256": "d12038fadce0e9b3883d0f7b18c38813484554229af0d23995acea2f1aa636f6",
+      "bytes": 557,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/host-load.jsonl",
+      "sha256": "b4d440c9d7bb18bae51a502398dcac58857c00b405a37711a47d79fc3f38492a",
+      "bytes": 38314,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/power-assertions-before.txt",
+      "sha256": "284aa2a978e63fca06349b03ec0c3ac66b89a8e66f68d48ac4bfd6f59199b134",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/power-log-after.meta.json",
+      "sha256": "3f8545e4db6a382b291cb245b76e37c133db0fd35b7cbe03c56ed37e0fceda88",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/power-log-after.txt",
+      "sha256": "d1b9138c760a5d1f799d9fe1eefdbbdc47bcc0f12d764937caf65a3b1351ad9c",
+      "bytes": 461,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/power-log-before.meta.json",
+      "sha256": "6d1ebe9f3d35cc938dabe5c70b9fc5b6caa83d433ced1f7f33140ac36dc11cfc",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-14-storage-session/run.json",
+      "sha256": "09e3d85c8d44b309b84c35d5376da942048e3b5c7e7670c1599496220da44723",
+      "bytes": 636,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/child.log",
+      "sha256": "3afa23836a5993589dcad3e2d863ed8ce5efac454d3085c3f6f9baaa62777d63",
+      "bytes": 11344,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/host-load.jsonl",
+      "sha256": "854a628ff838c9027f12ccbc4f912fe02e3b29bb9a9c3c771c3dc98843989828",
+      "bytes": 1509,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/power-assertions-before.txt",
+      "sha256": "d5ff7c95159a12000346a4b8f4239f33b46c2115d3f95c06378c640cd792068c",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/power-log-after.meta.json",
+      "sha256": "20b38b316d15bbaaed0dafde4a9498db51497873ea98ba6fcbe19eaa80966ef4",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/power-log-after.txt",
+      "sha256": "5e7b056108b5fcaefefe901a14c763e0c3645d27327d90f90f5fd641ba4b1813",
+      "bytes": 309,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/power-log-before.meta.json",
+      "sha256": "e5ded2aee000d20317a4449c1ff81e505c6c8b3716507de7a4d0c1747dff716b",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-negative/run.json",
+      "sha256": "fc4dcb8565a622e20db8ac676b38d7ba4ceb5f2d4c0b4e5eb7b303466d8383ba",
+      "bytes": 1238,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/child.log",
+      "sha256": "182d58729de410b7881eee460645a0a205af09c86927f4f7270f0e7f55ac6df2",
+      "bytes": 9454,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/host-load.jsonl",
+      "sha256": "9ffbee275232b8118d31168510bf2aeb7fba132c2f3991fb0a627d029ad64511",
+      "bytes": 1494,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/power-assertions-before.txt",
+      "sha256": "c9609f6c896b5fad32655bbcc25e20e63216161c82b8277d503852c90d5df921",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/power-log-after.meta.json",
+      "sha256": "4c36597dc7e0232facf1a80a3d193a62289526f10ac65fe95d5d21b599f2dad2",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/power-log-after.txt",
+      "sha256": "741927e3d5f315e94082ae8ed876248af0a00d6d555653540afa85da9c5044ce",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/power-log-before.meta.json",
+      "sha256": "2d19e463696349723635f6910d06777166e08baf4cc92dcc1c3f079889e076f4",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-fair-positive/run.json",
+      "sha256": "cc774757df5a2f3a8d289abd84f3948713cce63f8efde84a0e2c0862d968d3ba",
+      "bytes": 1238,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/child.log",
+      "sha256": "437b4959fc517e3f2739e0975ce309f74b679257c301a3de8aa741a26615167d",
+      "bytes": 13746,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/host-load.jsonl",
+      "sha256": "c7a21e196bdba9a166e663842d36aadb20efd8d79b099eba579edea0341396cd",
+      "bytes": 1530,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/power-assertions-before.txt",
+      "sha256": "5799c366810f83e5e681986077fe5fcea2a445f61f9d29339ccf86690e7a17d3",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/power-log-after.meta.json",
+      "sha256": "14d7adb24cfc556ba642cb390f2f272a357e9427322171788abfeda947acf493",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/power-log-after.txt",
+      "sha256": "57eb8310f8f3f8236f08758f2f5c98d3f9118cdee4cb3c351e251098c4e5fad5",
+      "bytes": 309,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/power-log-before.meta.json",
+      "sha256": "b90ba3deadc412c3db4c5fb7e047709faba939649f9a05563ac89e9cedf8042e",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-build-r2-index-positive/run.json",
+      "sha256": "ebc20196ec783daf1f4af11389953f15f583523de539fb26d9e29aac78a6e2f7",
+      "bytes": 1223,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/child.log",
+      "sha256": "bcbb373a6186119a56d5f5f54fd31f6db6acdb1ad179b93f8bd660e8639a2b5d",
+      "bytes": 2323,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/host-load.jsonl",
+      "sha256": "598dbe80cafc14e0cad37c4733410afd96d4754d3bab6c7c15e0a1927a95837d",
+      "bytes": 1544,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/power-assertions-before.txt",
+      "sha256": "625095afa20667328958f5f1cc7c9b28bf710422b2a2b702e8532372e5e26015",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/power-log-after.meta.json",
+      "sha256": "8d91027e5cd895ee3a3f04490f9954d273c2953306451f47e4e6dfadcd8a7b27",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/power-log-after.txt",
+      "sha256": "1128aab50e131ef3f4c729010220a00502135646493c1596d9f9257222f674c5",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/power-log-before.meta.json",
+      "sha256": "35e0e938bf3565b141e1dc7b1d52f4e125f8742cb13dcff3fa69acbe7cf4e250",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build/run.json",
+      "sha256": "5d58f45f775225931a280a6a41f93561d6746adfc668573c9d79a10c9c48fdd4",
+      "bytes": 626,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/child.log",
+      "sha256": "8847685c50f0a432cf3fdb300b7d010f7cb3b3f5e364fd0f6e0813d612beae19",
+      "bytes": 10609,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/host-load.jsonl",
+      "sha256": "ac2e51d1a3e63e13015201b98198704b9637054d3ace0c778be50a00201fea7c",
+      "bytes": 3051,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/power-assertions-before.txt",
+      "sha256": "c53d6c9bdf9ad0a0f029bcbf32b3a8fce2afb3b2b5f56646bcd270a097a44bc9",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/power-log-after.meta.json",
+      "sha256": "0b83f3f8ac4a014d04eef6feedb8d6da3d048d1f7323beb5e2713b9babd72531",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/power-log-after.txt",
+      "sha256": "9fe6933947af26160aa3e43f157b511406fdfeffaa3509cebec130e3294a4549",
+      "bytes": 459,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/power-log-before.meta.json",
+      "sha256": "448800e3c367263b71d654df3bcf7e35da1e1a7ae08b888f7be0291a0befb82a",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-frozen-release-build-r2/run.json",
+      "sha256": "444f2d200f27cbaf01972d26b9ef034a9b333655b4b0821630d6cbf81716b74f",
+      "bytes": 909,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/child.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/host-load.jsonl",
+      "sha256": "e5d625baa2cb6f14746ff76e69b08f3d133bbe03e334558eff148967f275a8ae",
+      "bytes": 1544,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/power-assertions-before.txt",
+      "sha256": "9d5c3502e9dd5fbc26a73cdddeaa1d77b2d81fa321382bb60ab82ed9dfb56e8c",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/power-log-after.meta.json",
+      "sha256": "5fcc600f0f6c24591417fe4c42c3f36818c31745ea64d872374672c4bdb91e4b",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/power-log-before.meta.json",
+      "sha256": "82a5b1a51170f9851b34b7b1a5b279fc3ee292d30c3ff17a5109f7c9015e6a7c",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-lint-three-path-proposal/run.json",
+      "sha256": "3f654c02674eb0ab1658fc07a66e36ecbfc7015185ef09f942994b067c8dde36",
+      "bytes": 1433,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/child.log",
+      "sha256": "2c702ff29bdb2a583766b15f04d263667f4063b8ef9051d149a4998e74a8fb00",
+      "bytes": 9047,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/host-load.jsonl",
+      "sha256": "be3da64db9b0e6d21e45df493e16bedb0be25b44ffad460f92ceca62b6bfc5b4",
+      "bytes": 12349,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/power-assertions-before.txt",
+      "sha256": "2af6e5b9339b972041d398105537684afb13c8419e9f446e46fb6444f170ae7a",
+      "bytes": 2184,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/power-log-after.meta.json",
+      "sha256": "227d5392abe6916f322256f0af3084de2a4ddbf15eb24a4b1b91df968a925ac7",
+      "bytes": 483,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/power-log-after.txt",
+      "sha256": "012a5fbf3e79d6488dc846ffa8f2b97a100b356192b8b74c294b6ac4029bf277",
+      "bytes": 461,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/power-log-before.meta.json",
+      "sha256": "13f4b205e0524ac6f3cd63773db2948ce5ae3ed930827df1d21cc82cbd4a1790",
+      "bytes": 481,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-inventory-policy/run.json",
+      "sha256": "3346777cd9c144c258dc2ffacc04a82f828dfc915b7f3aae3be9e2061324bf62",
+      "bytes": 1018,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/child.log",
+      "sha256": "4f08ce17c817f41884b13694ba95fe7198090fea90c4a7ea59b5ba3166fa4565",
+      "bytes": 250502,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/host-load.jsonl",
+      "sha256": "45114f26f5fd4522d40c44aeaa0384cb364f45cb688e84b36f7d99d71c4a5802",
+      "bytes": 1506,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/power-assertions-before.txt",
+      "sha256": "d4b70c69fdfc150e91912421a4c13b8bdc56503e373f6f35701bb38aa057ee50",
+      "bytes": 1681,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/power-log-after.meta.json",
+      "sha256": "00a662adf8c888c3e4144ce00f5c5efdf2254d1ab211646d12851fcec9c22db7",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/power-log-after.txt",
+      "sha256": "d5da8e3fa3f19753889779674955ebc3e8d754eafa35902f19079b8d357ebfce",
+      "bytes": 468,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/power-log-before.meta.json",
+      "sha256": "d5506ca3c08711429410ffd9fc4950f7804975da7825c8eae6fd69589aae0146",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint/run.json",
+      "sha256": "6428bf9fe5843d9c611e9eb867ee71cdc4149521300e1d6662773c6642fc6204",
+      "bytes": 614,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/child.log",
+      "sha256": "4dbbb5d9326c5cf032406db1cc4c28f14315fc922a84998f8001df32db5e6314",
+      "bytes": 24,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/host-load.jsonl",
+      "sha256": "392fe46c96916646a0a87416daf5440d25aed6a65e2773e6ec0a7c87fa62a543",
+      "bytes": 1504,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/power-assertions-before.txt",
+      "sha256": "5bd76b4788a20f637764a4109e6e823188251347fbb111f954435feaf3cd4ba8",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/power-log-after.meta.json",
+      "sha256": "410b3226774441762f717221d2f253c5cf4767049d441fb3b6d6ca1daf6b8dc0",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/power-log-before.meta.json",
+      "sha256": "cb323254b57d3284f635aadae68dcc2c18705fad75688dd06928758e32e6210c",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-narrow-lint-approved/run.json",
+      "sha256": "6d08722879e6c2beed27eb7c18954c1efeb6e7040735bac29cf3b52c0b1b72c1",
+      "bytes": 615,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/child.log",
+      "sha256": "0f6b2d424e525abde786e42c8c831e77fbbdfc531f70504d74017467aa5ceefe",
+      "bytes": 2324,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/host-load.jsonl",
+      "sha256": "98da7f0be4abdc7dbd9826e9a07fc63586c0da5863fb081df726a92a24b2a059",
+      "bytes": 30716,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/power-assertions-before.txt",
+      "sha256": "e51b0099d0f8749008f6006f0e59e97e4d0acaa7fa1436f7bc25320431e5a922",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/power-log-after.meta.json",
+      "sha256": "803206402218b51c61d51eb341f5432088effc997663508a56448dbd91212e83",
+      "bytes": 484,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/power-log-after.txt",
+      "sha256": "5f258d4d4b5114012def19c55e81cf74da3171e8b6287131275309504bc97100",
+      "bytes": 655,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/power-log-before.meta.json",
+      "sha256": "6463babaa9863483ac03f530d4b62605a7981fae89f261678ec5b981a44636f6",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-native-fairness-preflight/run.json",
+      "sha256": "f2612ff001bb3a29d32b9f3b2437bae6695ce3bbd1a135f0cb3037c10473463e",
+      "bytes": 1782,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/child.log",
+      "sha256": "2b86da8a2b4509420dbf345d7793cad134b162ca632bdab21253d646efa3fd21",
+      "bytes": 23,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/host-load.jsonl",
+      "sha256": "1e2918a665bba6b05661e2e122822f7ec718148e6898672ed4016853245cc4f5",
+      "bytes": 3071,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/power-assertions-before.txt",
+      "sha256": "aae08ee1d1e0f6f95a383a49eebd1a0f14939b1fa5c6cd8f1d3d88045efc720a",
+      "bytes": 2178,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/power-log-after.meta.json",
+      "sha256": "ecae7df33991b0c2b82bd2ddfee1d1a811bd5cc25074f70a2730158ce1e26cc1",
+      "bytes": 482,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/power-log-after.txt",
+      "sha256": "e904427063a16c11d03300f9656d020c5340c4236717e169bc159ccfcb6765ef",
+      "bytes": 231,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/power-log-before.meta.json",
+      "sha256": "1be086062f09b1a038aeb428557fd2224f6bf4f2e60cdc7f84387a7383ed6738",
+      "bytes": 480,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/445-windowed-capture-dry/run.json",
+      "sha256": "9c702bd578dd5c9eb67668b92869d9b79e2090d20b84e3c7be9b1ad95ae4ee9e",
+      "bytes": 875,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-browser-amendment.json",
+      "sha256": "c6d25eb07997c74fb37f90817c719f0e4a2ed29b75665c24ad6e961f83fe6aff",
+      "bytes": 715,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-build-complete.json",
+      "sha256": "04a83e186905d18ab0a353761842007efec931e06610e4e24d8e5d1415046257",
+      "bytes": 78135,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-build-console-r2.log",
+      "sha256": "7aa91157ed324775fba321326d0f0757759d168fc998a07b378b91e747c7a656",
+      "bytes": 4392,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-build-console.log",
+      "sha256": "a8cc81e6f33f0ee3c8be05324879e0b6399e483cdf5e6604cf32c0ce1b3762b0",
+      "bytes": 1985,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-build-source.json",
+      "sha256": "3e423670ab8bab47ea9ae34b2b6d6c6e5ace6d2f3cbdbb8843f76a8c4c55ca38",
+      "bytes": 516728,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-capture-independent-check.json",
+      "sha256": "a1ff1d87c1485a5b7da36d2befcf93de113eab94611c82133ec04bfde8b5f792",
+      "bytes": 554,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-checkpoint-console.log",
+      "sha256": "8db8f6e2e52515a8616711cdf7c87ecf44ebab8d52c0771b70b8c9a795708838",
+      "bytes": 10981,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-checkpoint-declaration.json",
+      "sha256": "c1f7e711615c46ebdea125fa35fa43e055595f68e3f07238e5065bc70c346272",
+      "bytes": 9540,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-checkpoint-pin-check.json",
+      "sha256": "38b135b3705b71a48c72125a74e56b59f21fa357412ca887d8dfa5b45828dc1a",
+      "bytes": 165,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-checkpoint-results.json",
+      "sha256": "3d836ce80a22f124efc7183f3616beee83358f68425df990defa9ef9538f7498",
+      "bytes": 11906,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-checkpoint-source-pins.json",
+      "sha256": "17eaf80e9e3dcf569907dcbe9f4051b0f517b5a13ad2db18ad112b1e9eb3e13c",
+      "bytes": 7800150,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-fair-negative-identity.json",
+      "sha256": "0eed9042280106e163731d2d6bbc7acbe9a6bbe6a85c1651cb3e209973ad3aa2",
+      "bytes": 947,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-fair-positive-identity.json",
+      "sha256": "8f0c188e1715e7f4b1287aabeb85a2a02345c537c11d468c2c2a7107b12855ab",
+      "bytes": 41,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-fairness-failed-results.json",
+      "sha256": "cb95a25deca279f8f8350803bd3639dde7c9c4be894881b085a9b60a1f65be61",
+      "bytes": 12938,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-fairness-noise-review.json",
+      "sha256": "54b6a56d1664512a14d880728d9269c0676a390dcb12d094d0cc1f61da1c6f93",
+      "bytes": 731,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-index-positive-identity.json",
+      "sha256": "2260e75e960f626c60a8ca75e20d8f66ccfca37ad7f30b65bf1f10beb6575e62",
+      "bytes": 4387,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-lint-classification.json",
+      "sha256": "6b6d4fb5f118eeb4740e9de326b9148894f93cccddd981fa101d80448a3a5ace",
+      "bytes": 1441,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-lint-diagnostic-command.json",
+      "sha256": "2c48ca35003447707096b31fec6bab43960f3bb6ae934d3d04d460a1ac959c5c",
+      "bytes": 417,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-narrow-check-results.json",
+      "sha256": "4f4b722f857c22e64e5a7be86c6ba073b91950804ab549f52693fd3350337c3d",
+      "bytes": 775,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-narrow-console.log",
+      "sha256": "931c482c4800a760d48b6b8113b4a6e0c80600e836d70cb274619b6a3bf725b3",
+      "bytes": 599,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-operator-stage5-amendment.json",
+      "sha256": "bb58ca6e73929de5856696694804c97ec1fa3fc14dae78c31dcb53740fac8ec6",
+      "bytes": 1338,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-preflight-hold.json",
+      "sha256": "b1f30f7264bd36ad226f1f2e1ebacb1748d78f3c9b3ec5b30ea3abc22530a7b4",
+      "bytes": 2654,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-proposed-oxlintrc.json",
+      "sha256": "0e4f75301ff975af866147ac23c122e051114d4a673da554d2caaba7d01cfad8",
+      "bytes": 1225,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-remaining-static-console.log",
+      "sha256": "7483970f694616e95ffef980f08490bb8a850a1ef3e7b82760426ebe305c66a7",
+      "bytes": 1889,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-remaining-static-results.json",
+      "sha256": "34385d63d8ee9e33c88ede0bf2871e755fae14404265f2f694c4f6cbc932eeb2",
+      "bytes": 2241,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-shipping-assets.json",
+      "sha256": "fa03d5d247ab933eddfc6cade6d054d38147447c83e9967abbc5cd9320bc31b4",
+      "bytes": 19026,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-spec-preflight-console.log",
+      "sha256": "404e6f351355f525dcb627d2dd1f68ce79a94eb8ca880864229df66958244e13",
+      "bytes": 1723,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-spec-preflight-declaration.json",
+      "sha256": "7aaad56c4768a4b4e9e436dbf0c1b258bdf71ae41aadc7066d199eb96e56077e",
+      "bytes": 1224,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-spec-preflight-results.json",
+      "sha256": "0e444937c3552c699215e2e08a06df0912cafb775ad4626f3440299edd470c00",
+      "bytes": 3342,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/445-three-archive-lint-exclusions.patch",
+      "sha256": "5283ab13e83884eca24e5ff048012e71f8347e90474759eb4d60d768ec4a4c94",
+      "bytes": 621,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/build445-r2.py",
+      "sha256": "462a3ffb0e52725419048c1d12b01fc754967b247e45677a182c6c176328daed",
+      "bytes": 6798,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/build445.py",
+      "sha256": "99a774c8e8a82fa24d645fa428e797f632b6ab2f0aa462aa7a27cf8eccd84ccf",
+      "bytes": 6691,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/checkpoint445.py",
+      "sha256": "ee565033cb01924fab7130759fd9d387f13b8e3a840904c45d8f78236068991d",
+      "bytes": 4894,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/last-extra-command-result.json",
+      "sha256": "c85bf3619241f787ab32ddf14fd90d57b6f4a770a0c61b5beb5884af9bd60735",
+      "bytes": 816,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/operator-preflight-narrowing.json",
+      "sha256": "292289245ae77475e7a2d8023098d332268116809216fce2b8ed0046d988d453",
+      "bytes": 1113,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/spec-preflight445.py",
+      "sha256": "7d8c8f7ff24bfd332af975184582ea6a85257603ae73782f433c0d1c34ee748c",
+      "bytes": 3219,
+      "stored": "original local artifact; no duplicate archive"
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-hardening-20261105/stage5-declaration.json",
+      "sha256": "2e90f794f3a5ea927b6e9d5a68c2b94b2076464b5898bf3aa06d75d52c0fc03b",
+      "bytes": 9671,
+      "stored": "original local artifact; no duplicate archive"
+    }
+  ],
+  "allFailedAttemptsRetained": true,
+  "timedJourneysStarted": 0,
+  "stage5Credit": false,
+  "noiseOwnershipIndependentCrossCheck": {
+    "allProcessesAbove100Percent": [
+      {
+        "pid": 50444,
+        "process": "firefox",
+        "sampleEpochs": [
+          1793882212.200543
+        ],
+        "maximumPossibleSpanSeconds": 0.0
+      },
+      {
+        "pid": 37002,
+        "process": "node",
+        "sampleEpochs": [
+          1793882267.199145,
+          1793882272.196557
+        ],
+        "maximumPossibleSpanSeconds": 4.9974119663238525
+      }
+    ],
+    "conclusion": "No PID spans10sabove100%, even if all such processes were treated as non-test; ownership classification cannot alter this false CPU-noise result."
+  }
+}

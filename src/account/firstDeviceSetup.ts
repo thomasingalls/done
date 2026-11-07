@@ -20,19 +20,21 @@ import { prepareLocalPromotion } from '../crdt/promotionOwner';
 import { preparePromotionGenesis } from '../crdt/promotionGenesis';
 import { admitLocalPromotion } from '../crdt/promotionAdmission';
 import { finishPromotionHandoff } from '../crdt/promotionHandoff';
-import { openOwnedSyncingAccountWorkspace } from '../crdt/accountReceive';
+import {
+  pageSetupWorkspace,
+  type SetupWorkspaceExecution,
+  type SetupWorkspacePort,
+} from './setupWorkspace';
 import { withPromotionSlot, onSlotRetirement, openWriteSession } from '../crdt/writeSession';
 import { readLocalClaim } from '../crdt/localGenesisRecord';
 import type { StartupDisposition } from '../crdt/startupState';
 import { readPromotion } from '../crdt/promotionRecord';
 import { hex } from '../crdt/custodyCrypto';
-import type { LocalPasskey } from '../crdt/accountAccess';
-import type { AdmittedWorkspace } from '../crdt/admittedWorkspace';
 import { withRecoveryOwner } from './recoveryOwner';
 import { verifyPendingProof } from '../../account-protocol/preparation';
 import type { PromotionOpening } from './promotionOpening';
 import { SetupRetired } from './setupMetadata';
-import { registrationResponse, authenticationResponse } from './passkeyResponse';
+import { createPageSetupBrowser, type SetupBrowserFactory } from './setupBrowser';
 
 import {
   SETUP_DB,
@@ -58,10 +60,12 @@ export {
 class SetupNotice extends Error {}
 class SetupContinuationNotice extends Error {}
 
-export function createFirstDeviceSetup(
+export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
   input: SetupConfig,
-  slotId = 'local',
-  takeInitialCode?: () => string | undefined,
+  slotId: string,
+  takeInitialCode: (() => string | undefined) | undefined,
+  execution: SetupWorkspaceExecution<W>,
+  browserFactory: SetupBrowserFactory = createPageSetupBrowser,
 ) {
   progressKey(slotId);
   const progress = createSetupProgress(slotId);
@@ -73,7 +77,7 @@ export function createFirstDeviceSetup(
   let networkLogin = input.networkSessions ? new NetworkLogin(pin, slotId) : undefined;
   const listeners = new Set<() => void>();
   const editors = new Set<() => void>();
-  let state: SetupState = { kind: 'intro' };
+  let state: SetupState<W> = { kind: 'intro' };
   let saved: Retained | null = null;
   let code = '';
   let draftName: string | undefined;
@@ -82,7 +86,7 @@ export function createFirstDeviceSetup(
   let recoveryDisplay: string | undefined;
   let openedPrincipal: string | undefined;
   let context: RecoveryContext | undefined;
-  let workspace: AdmittedWorkspace | undefined;
+  let workspace: W | undefined;
   let sync: import('../crdt/accountSyncDriver').SyncRuntime | undefined;
   let devices: import('./deviceRoster').DeviceRoster | undefined;
   let operation: Promise<void> | undefined;
@@ -142,7 +146,7 @@ export function createFirstDeviceSetup(
   const guard = () => {
     if (lifetime.signal.aborted) throw Error('Setup closed');
   };
-  const publish = (next: SetupState) => {
+  const publish = (next: SetupState<W>) => {
     if (lifetime.signal.aborted) return;
     state = {
       ...next,
@@ -199,51 +203,9 @@ export function createFirstDeviceSetup(
     abandon: (body: unknown) => request('preparation/abandon', body),
   };
   const proveAuthority = (body: unknown) => request('authority/prove', body);
-  const assert = async (options: unknown) => {
-    guard();
-    const credential = (await navigator.credentials.get({
-      publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(
-        options as PublicKeyCredentialRequestOptionsJSON,
-      ),
-      signal: lifetime.signal,
-    })) as PublicKeyCredential | null;
-    guard();
-    if (!credential) throw Error('Passkey request cancelled');
-    return authenticationResponse(credential);
-  };
-  const assertPasskey: LocalPasskey = async ({
-    rpId,
-    credentialId,
-    challenge,
-    signal: ceremonySignal,
-  }) => {
-    const credential = (await navigator.credentials.get({
-      publicKey: {
-        rpId,
-        challenge: new Uint8Array(challenge),
-        userVerification: 'required',
-        allowCredentials: [
-          {
-            id: Uint8Array.from(atob(credentialId.replaceAll('-', '+').replaceAll('_', '/')), (c) =>
-              c.charCodeAt(0),
-            ),
-            type: 'public-key',
-          },
-        ],
-      },
-      signal: ceremonySignal ? AbortSignal.any([lifetime.signal, ceremonySignal]) : lifetime.signal,
-    })) as PublicKeyCredential | null;
-    guard();
-    if (!credential) throw Error('Passkey request cancelled');
-    const response = credential.response as AuthenticatorAssertionResponse;
-    return {
-      credentialId: credential.id,
-      authenticatorData: new Uint8Array(response.authenticatorData),
-      clientDataJSON: new Uint8Array(response.clientDataJSON),
-      signature: new Uint8Array(response.signature),
-      userHandle: response.userHandle ? new Uint8Array(response.userHandle) : null,
-    };
-  };
+  const browser = browserFactory(lifetime.signal, guard);
+  const assert = (options: unknown) => browser.authenticate(options, lifetime.signal);
+  const assertPasskey = browser.assertSlot;
   const checkedSaved = (value: Retained | null) => {
     if (
       value &&
@@ -342,7 +304,7 @@ export function createFirstDeviceSetup(
   const run = (
     message: string,
     fallback: Exclude<
-      SetupState,
+      SetupState<W>,
       { kind: 'ready' | 'working' | 'save-recovery' | 'save-device-code' | 'approve-passkey' }
     >['kind'],
     work: () => Promise<void>,
@@ -399,9 +361,8 @@ export function createFirstDeviceSetup(
   const finishOpening = async () => {
     if (!workspace || !openedPrincipal || !saved || !devices)
       throw Error('Unlock the account first');
-    const name = displayName(
-      workspace.read().actors.find((actor) => actor.id === openedPrincipal)?.name,
-    );
+    const name = displayName(await execution.actorName(workspace, openedPrincipal));
+    guard();
     saved = { ...saved, connected: true, ...(name ? { name } : {}) };
     delete saved.requestedName;
     await progress(saved);
@@ -417,9 +378,12 @@ export function createFirstDeviceSetup(
     publish({ kind: 'working', message: 'Opening your workspace…' });
     const opening = promotionOpening;
     promotionOpening = undefined;
-    const opened = await openOwnedSyncingAccountWorkspace(
+    const opened = await execution.open(
       {
         membershipContinuation: () => input.membershipContinuation === true,
+        ...(input.onMembershipContinuationChange
+          ? { onMembershipContinuationChange: input.onMembershipContinuationChange }
+          : {}),
         slotId: slotId,
         code,
         pin,
@@ -472,14 +436,14 @@ export function createFirstDeviceSetup(
         void workspace?.close().catch(() => {});
       });
       code = '';
-      const existingName = workspace.read().actors.find((actor) => actor.id === principalId)?.name;
+      const existingName = await execution.actorName(workspace, principalId);
+      guard();
       if (!saved?.requestedName && !saved?.name && (!existingName || existingName === 'You')) {
         publish({ kind: 'name' });
         return;
       }
       if (saved?.requestedName && existingName !== saved.requestedName) {
-        await workspace.command({ kind: 'actor', patch: { name: saved.requestedName } }).accepted;
-        await workspace.whenDurable();
+        await execution.rename(workspace, principalId, saved.requestedName);
         guard();
       }
       await finishOpening();
@@ -646,7 +610,9 @@ export function createFirstDeviceSetup(
     let lastName: string | undefined;
     try {
       lastName = displayName(
-        workspace?.read().actors.find((actor) => actor.id === openedPrincipal)?.name,
+        workspace && openedPrincipal
+          ? execution.closingName(workspace, openedPrincipal)
+          : undefined,
       );
     } catch {
       /* A retired workspace has no readable name. */
@@ -699,6 +665,18 @@ export function createFirstDeviceSetup(
       return networkLogin;
     },
     getSnapshot: () => state,
+    whenIdle: () => operation ?? Promise.resolve(),
+    visitableSteps(): readonly string[] {
+      if (lifetime.signal.aborted || operation) return [];
+      if (
+        deviceEnrollment?.displayCode &&
+        ['intro', 'save-device-code', 'confirm-device-code'].includes(state.kind)
+      )
+        return ['intro', 'save-device-code', 'confirm-device-code'];
+      if (recoveryDisplay && ['save-recovery', 'confirm-recovery'].includes(state.kind))
+        return ['save-recovery', 'confirm-recovery'];
+      return [];
+    },
     approvePasskey: () => approval?.invoke(),
     hasRecoveryDisplay: () => recoveryDisplay !== undefined,
     visit(step: string): boolean {
@@ -856,8 +834,7 @@ export function createFirstDeviceSetup(
         const name = displayName(inputName);
         if (!name) throw new SetupNotice('Enter a name of up to 80 characters.');
         if (!workspace || !openedPrincipal) throw Error('Unlock your account first');
-        await workspace.command({ kind: 'actor', patch: { name } }).accepted;
-        await workspace.whenDurable();
+        await execution.rename(workspace, openedPrincipal, name);
         guard();
         await finishOpening();
       }),
@@ -894,25 +871,9 @@ export function createFirstDeviceSetup(
           const view = saved.view;
           let response: unknown;
           if (view.operation === 'register') {
-            const options = PublicKeyCredential.parseCreationOptionsFromJSON(
-              view.options as PublicKeyCredentialCreationOptionsJSON,
-            );
-            if (saved.requestedName)
-              options.user = {
-                ...options.user,
-                // The generated account ID disambiguates matching personal names in
-                // credential details. Never change the service-issued user handle.
-                name: (view.options as PublicKeyCredentialCreationOptionsJSON).user.id,
-                displayName: `${saved.requestedName} · ${(view.options as PublicKeyCredentialCreationOptionsJSON).user.id}`,
-              };
-            const credential = (await navigator.credentials.create({
-              publicKey: options,
-              signal: lifetime.signal,
-            })) as PublicKeyCredential | null;
-            guard();
-            if (!credential) throw Error('Passkey request cancelled');
-            response = registrationResponse(credential);
+            response = await browser.register(view.options, saved.requestedName, lifetime.signal);
           } else response = await assert(view.options);
+          guard();
           saved = {
             ...saved,
             proof: {
@@ -1052,4 +1013,10 @@ export function createFirstDeviceSetup(
     close,
   };
 }
+/** Existing Page host remains unchanged until explicit Worker UI activation. */
+export const createFirstDeviceSetup = (
+  input: SetupConfig,
+  slotId = 'local',
+  takeInitialCode?: () => string | undefined,
+) => createFirstDeviceCoordinator(input, slotId, takeInitialCode, pageSetupWorkspace);
 export type FirstDeviceSetup = ReturnType<typeof createFirstDeviceSetup>;

@@ -1,0 +1,657 @@
+{
+  "labOnly": true,
+  "acceptanceCredit": false,
+  "cells": [
+    {
+      "arm": "full",
+      "n": 3,
+      "allOriginalMeasuredGates": true,
+      "drainMs": [
+        69194.72998046875,
+        68634.21264648438,
+        69139.93310546875
+      ],
+      "peerP95Ms": [
+        1572.547607421875,
+        1612.5244140625,
+        1603.33349609375
+      ],
+      "inputP95Ms": [
+        7.16162109375,
+        6.244384765625,
+        7.076416015625
+      ],
+      "failedPredicates": {
+        "removals323-r1-full": [],
+        "removals323-r2-full": [],
+        "removals323-r3-full": []
+      },
+      "postDrainKeys": [
+        10,
+        11,
+        10
+      ],
+      "postDrainP95Ms": [
+        1885.384765625,
+        2070.486083984375,
+        2112.315185546875
+      ],
+      "tokensTypingWindow": [
+        796,
+        801,
+        801
+      ],
+      "budgetRefusals": 0,
+      "owners": {
+        "reader": {
+          "completedWithin120s": 2,
+          "completionAfterLastKeyMs": [
+            115719.59008789062,
+            null,
+            90587.47534179688
+          ],
+          "attempts": [
+            11,
+            12,
+            9
+          ],
+          "interruptions": [
+            5,
+            7,
+            3
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            28727.800537109375,
+            22273.0,
+            22002.900390625
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 31299084,
+          "peakDurablePayloadBytes": 27572555,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000
+            ]
+          ]
+        },
+        "writer": {
+          "completedWithin120s": 3,
+          "completionAfterLastKeyMs": [
+            95398.69018554688,
+            99907.07275390625,
+            96013.9755859375
+          ],
+          "attempts": [
+            11,
+            12,
+            11
+          ],
+          "interruptions": [
+            5,
+            6,
+            5
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            25156.199951171875,
+            28262.199951171875,
+            23702.000244140625
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 30709790,
+          "peakDurablePayloadBytes": 25807043,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "arm": "Roff",
+      "n": 3,
+      "allOriginalMeasuredGates": false,
+      "drainMs": [
+        69140.85815429688,
+        69794.9970703125,
+        68146.80419921875
+      ],
+      "peerP95Ms": [
+        16798.8271484375,
+        13639.114013671875,
+        14961.49755859375
+      ],
+      "inputP95Ms": [
+        6.66650390625,
+        11.53125,
+        7.427001953125
+      ],
+      "failedPredicates": {
+        "removals323-r1-Roff": [
+          "peer2500ms",
+          "everyMarker2500ms"
+        ],
+        "removals323-r2-Roff": [
+          "peer2500ms",
+          "everyMarker2500ms"
+        ],
+        "removals323-r3-Roff": [
+          "peer2500ms",
+          "everyMarker2500ms"
+        ]
+      },
+      "postDrainKeys": [
+        10,
+        9,
+        12
+      ],
+      "postDrainP95Ms": [
+        19301.49658203125,
+        16141.252685546875,
+        17465.52734375
+      ],
+      "tokensTypingWindow": [
+        787,
+        785,
+        769
+      ],
+      "budgetRefusals": 0,
+      "owners": {
+        "reader": {
+          "completedWithin120s": 2,
+          "completionAfterLastKeyMs": [
+            null,
+            102440.39916992188,
+            118559.1416015625
+          ],
+          "attempts": [
+            13,
+            12,
+            13
+          ],
+          "interruptions": [
+            5,
+            4,
+            5
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            33419.10009765625,
+            31127.5,
+            31055.099853515625
+          ],
+          "unfinishedReplaySpans": [
+            1,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 31299566,
+          "peakDurablePayloadBytes": 30212263,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ]
+          ]
+        },
+        "writer": {
+          "completedWithin120s": 3,
+          "completionAfterLastKeyMs": [
+            75328.74975585938,
+            117493.59912109375,
+            95905.04150390625
+          ],
+          "attempts": [
+            10,
+            14,
+            11
+          ],
+          "interruptions": [
+            3,
+            7,
+            4
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            22541.699951171875,
+            28096.000244140625,
+            27901.199951171875
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 30709790,
+          "peakDurablePayloadBytes": 27117306,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "arm": "quietOff",
+      "n": 3,
+      "allOriginalMeasuredGates": false,
+      "drainMs": [
+        40128.429443359375,
+        40106.126953125,
+        40086.729248046875
+      ],
+      "peerP95Ms": [
+        22726.934814453125,
+        22911.642333984375,
+        22702.18115234375
+      ],
+      "inputP95Ms": [
+        6.5390625,
+        8.109375,
+        6.001708984375
+      ],
+      "failedPredicates": {
+        "removals323-r1-quietOff": [
+          "peer2500ms",
+          "everyMarker2500ms",
+          "overlap60"
+        ],
+        "removals323-r2-quietOff": [
+          "peer2500ms",
+          "everyMarker2500ms",
+          "overlap60"
+        ],
+        "removals323-r3-quietOff": [
+          "peer2500ms",
+          "everyMarker2500ms",
+          "overlap60"
+        ]
+      },
+      "postDrainKeys": [
+        68,
+        68,
+        68
+      ],
+      "postDrainP95Ms": [
+        2002.2373046875,
+        1949.241943359375,
+        1950.51513671875
+      ],
+      "tokensTypingWindow": [
+        522,
+        522,
+        522
+      ],
+      "budgetRefusals": 0,
+      "owners": {
+        "reader": {
+          "completedWithin120s": 3,
+          "completionAfterLastKeyMs": [
+            97986.78198242188,
+            99468.50659179688,
+            96471.9140625
+          ],
+          "attempts": [
+            10,
+            10,
+            10
+          ],
+          "interruptions": [
+            4,
+            4,
+            4
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            23496.400146484375,
+            24256.89990234375,
+            21800.30029296875
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 31471636,
+          "peakDurablePayloadBytes": 27730040,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000
+            ]
+          ]
+        },
+        "writer": {
+          "completedWithin120s": 3,
+          "completionAfterLastKeyMs": [
+            102026.88208007812,
+            80139.50659179688,
+            59064.9140625
+          ],
+          "attempts": [
+            11,
+            10,
+            8
+          ],
+          "interruptions": [
+            5,
+            4,
+            2
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            30878.80029296875,
+            20720.19970703125,
+            19154.499755859375
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 30709790,
+          "peakDurablePayloadBytes": 25743179,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              10000,
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000,
+              10000,
+              10000
+            ],
+            [
+              10000,
+              10000
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "arm": "noRetryDelay",
+      "n": 3,
+      "allOriginalMeasuredGates": true,
+      "drainMs": [
+        70143.57543945312,
+        69680.8095703125,
+        68652.244140625
+      ],
+      "peerP95Ms": [
+        1518.2158203125,
+        1526.24462890625,
+        1662.74267578125
+      ],
+      "inputP95Ms": [
+        7.6435546875,
+        5.713134765625,
+        6.85546875
+      ],
+      "failedPredicates": {
+        "removals323-r1-noRetryDelay": [],
+        "removals323-r2-noRetryDelay": [],
+        "removals323-r3-noRetryDelay": []
+      },
+      "postDrainKeys": [
+        8,
+        9,
+        11
+      ],
+      "postDrainP95Ms": [
+        2014.44775390625,
+        1910.94873046875,
+        2068.509765625
+      ],
+      "tokensTypingWindow": [
+        815,
+        812,
+        805
+      ],
+      "budgetRefusals": 0,
+      "owners": {
+        "reader": {
+          "completedWithin120s": 3,
+          "completionAfterLastKeyMs": [
+            75272.69775390625,
+            76454.7236328125,
+            76277.10302734375
+          ],
+          "attempts": [
+            22,
+            22,
+            22
+          ],
+          "interruptions": [
+            16,
+            16,
+            16
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            20826.69970703125,
+            22727.2998046875,
+            23205.899658203125
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 31084881,
+          "peakDurablePayloadBytes": 28114693,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ]
+          ]
+        },
+        "writer": {
+          "completedWithin120s": 3,
+          "completionAfterLastKeyMs": [
+            52278.997802734375,
+            52826.023681640625,
+            47752.802978515625
+          ],
+          "attempts": [
+            9,
+            9,
+            7
+          ],
+          "interruptions": [
+            3,
+            3,
+            1
+          ],
+          "knownReplayElapsedMsLowerBoundPerAttemptCountedOnce": [
+            20624.30029296875,
+            21505.800537109375,
+            18898.2001953125
+          ],
+          "unfinishedReplaySpans": [
+            0,
+            0,
+            0
+          ],
+          "capacityRefusals": 0,
+          "peakMapBytes": 30709790,
+          "peakDurablePayloadBytes": 25476106,
+          "allNoStartsDuringTypingOrReaderDrain": true,
+          "retryClocksMs": [
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0
+            ],
+            [
+              0
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "qualification": "Replay spans are elapsed time including awaits, not sampled CPU; unfinished spans have no end and are excluded from the known lower bound; do not infer a CPU increase from attempt count. One failing replicate fails a cell. Reader120s is a separately reported diagnostic."
+}

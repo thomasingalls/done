@@ -1,0 +1,151 @@
+{
+  "canonicalSourceChanges": false,
+  "appFixtureRunsStarted": 1,
+  "appRunsStartedAfterStop": 0,
+  "reportOnlyJourneysStarted": 0,
+  "stopRule": "functional hardened-app request failure; no approved apparatus classification",
+  "hostAuthorization": "operator quiet for all remaining work",
+  "phase": 485,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerChannel.ts",
+      "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+      "bytes": 9454
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "sha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44",
+      "bytes": 21097
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-index-cohort-485-20261106/485-private-files.json",
+      "sha256": "3595025bcf5dfe588e5d3b5e46a2b0ab5db4877bcd68b9a83f8db8b85b2561ba",
+      "bytes": 5234
+    },
+    {
+      "localPath": "/private/tmp/done-index-cohort-485-20261106/485-stop-summary.json",
+      "sha256": "fa0f6dc52c9bf29c1ac8eddfb5bc6f3309fdc8c2167ec0007d5fcee49fedbd78",
+      "bytes": 1932
+    },
+    {
+      "localPath": "/private/tmp/done-index-cohort-485-20261106/485-declaration.json",
+      "sha256": "65258a3da76ec56dd3f99eeaf0d5f9f20906bf61dd203f39d03e2e1efe0e4b82",
+      "bytes": 656
+    },
+    {
+      "localPath": "/private/tmp/done-index-journey-486-20261106/486-prepared-files.json",
+      "sha256": "5353a358ea7c607e62850f3b1c2e7e0a9bb2e730cc022b55934bed9f058e8dbb",
+      "bytes": 1282
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/child.log",
+      "sha256": "3ba953c39df1a79fbe16c7a1b1d92c184c877e4561cbe8d01065576895eb2d3e",
+      "bytes": 1508
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/host-load.jsonl",
+      "sha256": "675a165f21f9a0816df337eac1927f83585530640fb7baba1bc25bb28b01436b",
+      "bytes": 43414
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/power-assertions-before.txt",
+      "sha256": "ba40ae455928d8c2223e13197ab922e1431b15a17d73684b540db4314eede31e",
+      "bytes": 1389
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/power-log-after.meta.json",
+      "sha256": "aeca5b83367036481fbdcd8c56af6444954083b31e9dad194c539a2dfc62b3c7",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/power-log-after.txt",
+      "sha256": "cf74b486024c14fa1c748adfd85f7d0b9026d977f8acf52ffd7b549c92d5c31f",
+      "bytes": 528
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/power-log-before.meta.json",
+      "sha256": "c9a89a9aecd09e393f689f51d589d385ade827a35d26ec55187e9f661f2ed6ab",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/485-grow3072/run.json",
+      "sha256": "8010e36301b913dbf70d86c5a14eef0b9740b4b45b510ffc99cee82174b699b4",
+      "bytes": 1609
+    }
+  ],
+  "summary": {
+    "phase": 485,
+    "outcome": "functional-request-failure; stop",
+    "caseMs": 139286.395072937,
+    "wrapperTimedOut": false,
+    "recipeInverseByteExact": true,
+    "confirmedAdditionalPositions": 76,
+    "lastConfirmedPosition": 2130,
+    "beforePosition": 2054,
+    "sqlBefore": {
+      "delivery_decisions": {
+        "acceptedRows": 2352,
+        "maxPosition": 2054
+      },
+      "publisher_decisions": {
+        "acceptedRows": 7,
+        "maxPosition": 1
+      }
+    },
+    "sqlAfter": {
+      "delivery_decisions": {
+        "acceptedRows": 2429,
+        "maxPosition": 2131
+      },
+      "publisher_decisions": {
+        "acceptedRows": 7,
+        "maxPosition": 1
+      }
+    },
+    "additionalSqlAcceptedDecisions": 77,
+    "sqlQualification": "read-only stored service fields, not a fresh cryptographic acceptance proof",
+    "failureLocation": "grow.spec.ts:42: compositionStatus().sync.send.acceptedThrough poll",
+    "error": "Error: page.evaluate: WorkerChannelError: Worker operation could not finish.\n    at MessagePort.g (http://localhost:53781/assets/writeSession-qesLzgfg.js:2:4028)",
+    "classification": "Worker request refused or failed; exact code not captured. This is not demonstrated to be a harness precondition. Owner closure, lost writing, integrity failure and the responsible guard are not established. Stop pending diagnosis.",
+    "copiedApparatusOnlyFlagQualification": "result.json inherited apparatusOnly:true from the fixture recipe. It describes fixture purpose and does not classify this failure as apparatus.",
+    "releaseAppBuild": "plain473native delegate with exact470ordinary assets; no484index observations",
+    "noFavorableRetry": true,
+    "blockingJourneysPreviouslyPassed": 36,
+    "reportOnlyPreviouslyCompleted": 9,
+    "remainingReports": 1,
+    "stage6": "not complete; blocked by functional stop",
+    "unrunReaderRoot": "/private/tmp/done-index-journey-486-20261106",
+    "unrunReaderControlsPassed": 6,
+    "noAppFixOrNewAppRunAfterStop": true
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

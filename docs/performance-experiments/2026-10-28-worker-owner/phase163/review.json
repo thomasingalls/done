@@ -1,0 +1,28 @@
+{
+  "nativeCases": 14,
+  "protocolCases": 14,
+  "declaredTransformedModulesIndependentlyReconstructed": 3,
+  "unchangedSourceFiles": 440,
+  "unchangedShippingFrontendFiles": 86,
+  "lostAckBeforeAfterAndNativeMixedOwnerOrderChecked": true,
+  "negativeControls": [
+    {
+      "fault": "missing-guard",
+      "rejected": true
+    },
+    {
+      "fault": "early-acknowledgment",
+      "rejected": true
+    },
+    {
+      "fault": "altered-writing",
+      "rejected": true
+    },
+    {
+      "fault": "queued-shared-join",
+      "rejected": true
+    }
+  ],
+  "oldTestsAndRuntimeUnchanged": true,
+  "qualification": "Feasibility only; no actual Goals/threaded-client repair, phone claim,16ms/2.5s/30s acceptance or aggregate credit."
+}

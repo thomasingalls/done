@@ -1,0 +1,19 @@
+{
+  "runtimeSources": 503,
+  "changedSourceRecords": [
+    "src/crdt/accountReceive.ts",
+    "src/crdt/receivePageTransport.ts",
+    "src/crdt/receiveSelection.ts"
+  ],
+  "domainsUnchanged": 199,
+  "specifiedContractsRetained": 78,
+  "openConstructionsUnchanged": 16,
+  "priorManifestRowsRetained": 1030,
+  "newRequiredUncreditedTest": [
+    "test:test/multiEntryReceiveScheduling.test.ts"
+  ],
+  "rowsAfter": 1031,
+  "unresolvedBefore": 483,
+  "unresolvedAfter": 484,
+  "nativeFourPositionAllowanceUnchanged": true
+}

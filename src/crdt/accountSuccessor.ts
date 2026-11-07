@@ -1,3 +1,4 @@
+import type { InboundReceiptTurn } from './accountInbound';
 import { requireFullSpool } from './retainedHistory';
 import {
   parseCertificationSuccessor,
@@ -13,15 +14,14 @@ import {
 } from '../../account-protocol/admissionHistory';
 import { closed } from '../../account-protocol/preparation';
 import { unhex } from '../../account-protocol/recovery';
-import { decodeInboundRequest } from '../../account-protocol/inboundTransport';
 import type { PromotionRecord } from './promotionRecord';
 import { captureRoute, captureError, type CaptureRoute } from './sourceCapture';
 import { emptySpoolWitness, sameSpoolWitness, type SpoolWitness } from './contentRecord';
 import { extendSpoolWitness, type SpoolState } from './spoolRecord';
-import { decodeInboundRecord } from './inboundRecord';
 import type { VerificationMemo } from './verificationMemo';
 import {
   installedMembershipHistory,
+  membershipEventEpoch,
   verifyInstalledMembership,
   type InstalledMembership,
 } from './accountMembership';
@@ -140,6 +140,7 @@ export async function verifyInstalledSuccessor(
   subtle: SubtleCrypto,
   reuse?: { memo: VerificationMemo; current(): void },
   membership?: InstalledMembership,
+  syntaxTurn?: InboundReceiptTurn,
 ): Promise<void> {
   requireFullSpool(spool);
   if (membership) {
@@ -152,6 +153,7 @@ export async function verifyInstalledSuccessor(
       originalMembershipBoundaries(installed),
       subtle,
       reuse,
+      syntaxTurn,
     );
     return;
   }
@@ -176,11 +178,7 @@ export async function verifyInstalledSuccessor(
   let witness = emptySpoolWitness();
   let certifiedWitness = witness;
   for (const [index, bytes] of spool.events.entries()) {
-    const v = JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(bytes));
-    const epoch =
-      v[0] === 'done/account-inbound/v1'
-        ? decodeInboundRequest(decodeInboundRecord(bytes).request).epoch
-        : v[5];
+    const epoch = membershipEventEpoch(bytes, syntaxTurn);
     if (
       epoch !==
       (index < cut.events

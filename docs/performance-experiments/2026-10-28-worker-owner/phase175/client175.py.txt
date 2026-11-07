@@ -1,0 +1,53 @@
+from pathlib import Path
+p=Path('/Users/thomasingalls/.codex/worktrees/7fda/done/src/crdt/accountWorkerClient.ts');s=p.read_text();s="import { parseAuthorityPin } from '../../account-protocol/authority';\nimport { captureWorkerLocalBaselineCommand, type WorkerLocalBaselineCommand } from './workerLocalBaseline';\nimport { requireWindowAccountMirrorController, type createWindowAccountMirrorController } from './windowAccountMirror';\n"+s
+s=s.replace("type Opened = Awaited", "type MirrorController = Awaited<ReturnType<typeof createWindowAccountMirrorController>>;\ntype Opened = Awaited",1)
+a=s.index('  let worker: Worker');s=s[:a]+'''  const slotId = input.slotId, pin = parseAuthorityPin(input.pin), identity = structuredClone(input.identity),
+    assertPasskey = input.assertPasskey, signal = input.signal;
+  const continuation = input.membershipContinuation;
+  const membershipContinuation = typeof continuation === 'function' ? continuation() : continuation;
+  let code = input.code, ready = false, baselineSequence = 0;
+'''+s[a:]
+s=s.replace('    input.slotId,','    slotId,',1).replace('    input.signal,','    signal,',1).replace('await input.assertPasskey({ ...request, signal: cohort.signal })','await assertPasskey({ ...request, signal: cohort.signal })')
+s=s.replace('    const opened = await channel.request<{','    const openingRequest = channel.request<{',1)
+s=s.replace('      slotId: input.slotId,\n      code: input.code,\n      pin: structuredClone(input.pin),\n      identity: structuredClone(input.identity),','      slotId,\n      code,\n      pin,\n      identity,',1)
+a=s.index('      ...(input.membershipContinuation !== undefined');b=s.index('    material = opened.opening;',a)
+s=s[:a]+'''      ...(membershipContinuation !== undefined ? {membershipContinuation} : {}),
+    });
+    code = '';
+    const opened = await openingRequest;
+'''+s[b:]
+s=s.replace("      ready: () => channel!.request('ready'),", '''      ready: async () => {
+        cohort.write(() => {});
+        if (ready) return;
+        await channel!.request('ready');
+        cohort.write(() => {});
+        ready = true;
+      },
+      maintainLocalHistory: (controller: MirrorController, input: WorkerLocalBaselineCommand) => {
+        requireWindowAccountMirrorController(controller, cohort);
+        const command = captureWorkerLocalBaselineCommand(input);
+        if (!ready) throw Error('Worker editor is not ready for history maintenance');
+        return controller.journalFence(async (fence) => {
+          requireWindowAccountMirrorController(controller, cohort);
+          const id = ++baselineSequence;
+          let reply: {id: number; result: Awaited<ReturnType<NonNullable<Opened['installLocalBaseline']>>>; opening: AccountMirrorOpening} | undefined;
+          try {
+            reply = await channel!.request('baselineStart', {id, command});
+            cohort.write(() => {});
+            if (reply!.id !== id) throw Error('Worker local-history operation changed');
+            await controller.rebind(fence, reply!.opening);
+            await channel!.request('baselineFinish', {id});
+            cohort.write(() => {});
+            const revision = reply!.opening.binding?.era.revision;
+            return {...reply!.result, ...(revision !== undefined ? {journalEraRevision: revision} : {})};
+          } catch (cause) {
+            // A missing reply can follow a native commit. Abort now and let owned drain finish;
+            // waiting on our own queue head here would deadlock root cleanup.
+            void cohort.close().catch(() => {});
+            throw cause;
+          } finally {
+            eraseWorkerMessage(reply?.opening);
+          }
+        });
+      },''')
+s=s.replace('  } catch (cause) {\n    eraseWorkerMessage(material);','  } catch (cause) {\n    code = \'\';\n    eraseWorkerMessage(material);');p.write_text(s)

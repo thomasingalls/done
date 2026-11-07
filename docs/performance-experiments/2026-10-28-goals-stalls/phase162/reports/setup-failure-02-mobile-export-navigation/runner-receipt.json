@@ -1,0 +1,17 @@
+{
+  "case": {
+    "name": "03-mobile4x",
+    "mobile": true,
+    "profile": false
+  },
+  "startedAt": 1793212314407,
+  "command": [
+    "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+    "node_modules/@playwright/test/cli.js",
+    "test",
+    "--config",
+    "test/account-continuation-lab/stall.config.ts"
+  ],
+  "exit": 1,
+  "finishedAt": 1793212354530
+}

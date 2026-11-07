@@ -21,7 +21,12 @@
       "serve:public-account-app",
       "upgrade:account-setup"
     ],
-    "generator": ["vectors", "trace", "wasm", "latency:record"],
+    "generator": [
+      "vectors",
+      "trace",
+      "wasm",
+      "latency:record"
+    ],
     "optional-check": [
       "test:https",
       "storage:conformance",
@@ -156,31 +161,58 @@
   "extraRoots": [
     {
       "id": "private-privacy",
-      "argv": ["node", "scripts/private-release/run.mjs", "privacy"]
+      "argv": [
+        "node",
+        "scripts/private-release/run.mjs",
+        "privacy"
+      ]
     },
     {
       "id": "private-failures",
-      "argv": ["node", "scripts/private-release/run.mjs", "failures"]
+      "argv": [
+        "node",
+        "scripts/private-release/run.mjs",
+        "failures"
+      ]
     },
     {
       "id": "private-recovery",
-      "argv": ["node", "scripts/private-release/run.mjs", "recovery"]
+      "argv": [
+        "node",
+        "scripts/private-release/run.mjs",
+        "recovery"
+      ]
     },
     {
       "id": "private-maintenance",
-      "argv": ["node", "scripts/private-release/run.mjs", "maintenance"]
+      "argv": [
+        "node",
+        "scripts/private-release/run.mjs",
+        "maintenance"
+      ]
     },
     {
       "id": "private-projection",
-      "argv": ["node", "scripts/private-release/run.mjs", "projection"]
+      "argv": [
+        "node",
+        "scripts/private-release/run.mjs",
+        "projection"
+      ]
     },
     {
       "id": "private-marker",
-      "argv": ["node", "scripts/private-release/run.mjs", "marker"]
+      "argv": [
+        "node",
+        "scripts/private-release/run.mjs",
+        "marker"
+      ]
     },
     {
       "id": "validation-controls",
-      "argv": ["node", "scripts/validation-controls/run.mjs"]
+      "argv": [
+        "node",
+        "scripts/validation-controls/run.mjs"
+      ]
     }
   ],
   "campaignExceptions": {
@@ -196,9 +228,26 @@
     "test/account-service-delivery/native.test.mjs": "Retired v8 HTTP client interoperability fixture; current service core/generated/controls/restart and v9 sync interoperability remain required."
   },
   "playwright": {
-    "test/compiler-loading": ["playwright.compiler-loading.config.ts"],
-    "test/geometry": ["playwright.config.ts", "test:geometry"],
-    "test/latency": ["playwright.latency.config.ts", "test:latency"],
+    "test/inbound-native": [
+      "playwright.inbound-native.config.ts"
+    ],
+    "test/inbound-receipt-floor": [
+      "playwright.inbound-floor.config.ts"
+    ],
+    "test/account-worker-cohort": [
+      "playwright.account-worker-cohort.config.ts"
+    ],
+    "test/compiler-loading": [
+      "playwright.compiler-loading.config.ts"
+    ],
+    "test/geometry": [
+      "playwright.config.ts",
+      "test:geometry"
+    ],
+    "test/latency": [
+      "playwright.latency.config.ts",
+      "test:latency"
+    ],
     "test/local-app": [
       "playwright.local-startup.config.ts",
       "storage:app-startup",
@@ -212,15 +261,54 @@
       "playwright.storage-compatibility.config.ts",
       "storage:compatibility"
     ],
-    "test/app-upgrades": ["playwright.app-upgrades.config.ts", "storage:app-upgrades"],
-    "test/device-enrollment": ["playwright.device-enrollment.config.ts", "test:device-enrollment"],
-    "test/first-device-setup": ["playwright.account-setup.config.ts", "test:account-setup"],
+    "test/app-upgrades": [
+      "playwright.app-upgrades.config.ts",
+      "storage:app-upgrades"
+    ],
+    "test/device-enrollment": [
+      "playwright.device-enrollment.config.ts",
+      "test:device-enrollment"
+    ],
+    "test/first-device-setup": [
+      "playwright.account-setup.config.ts",
+      "test:account-setup"
+    ],
     "test/first-device-upgrade": [
       "playwright.account-upgrade.config.ts",
       "test:account-setup-upgrade-browser"
     ],
-    "test/packaged-account": ["playwright.packaged-account.config.ts", "test:packaged-account"],
-    "test/local-baseline": ["playwright.local-baseline.config.ts", "test:local-baseline"]
+    "test/packaged-account": [
+      "playwright.packaged-account.config.ts",
+      "test:packaged-account"
+    ],
+    "test/local-baseline": [
+      "playwright.local-baseline.config.ts",
+      "test:local-baseline"
+    ],
+    "test/inbound-installation": [
+      "playwright.inbound-installation.config.ts"
+    ],
+    "test/inbound-floor-reply": [
+      "playwright.inbound-floor-reply.config.ts"
+    ],
+    "test/inbound-audit": [
+      "playwright.inbound-audit.config.ts"
+    ],
+    "test/inbound-compat": [
+      "playwright.inbound-compat.config.ts"
+    ],
+    "test/inbound-lifecycle": [
+      "playwright.inbound-lifecycle.config.ts"
+    ],
+    "test/inbound-rollback": [
+      "playwright.inbound-rollback.config.ts"
+    ],
+    "test/inbound-continuation": [
+      "playwright.inbound-continuation.config.ts"
+    ],
+    "test/inbound-index": [
+      "playwright.inbound-index.config.ts"
+    ]
   },
   "vectorGenerators": {
     "test/vectors/account-checkpoint.json": "scripts/account-checkpoint-contract/vectors.mjs",

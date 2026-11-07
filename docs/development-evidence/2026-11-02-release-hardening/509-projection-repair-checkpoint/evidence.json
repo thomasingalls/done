@@ -1,0 +1,113 @@
+{
+  "phase": 509,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/manifest.mjs",
+      "sha256": "2a5ae63de5c5d073cec74b639341450e0fcf094f0afd0bc3ba4223749e0cc27f",
+      "bytes": 52005
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/account-crypto-prep/census.mjs",
+      "sha256": "db1546777d411b06d15d4b5d4671fe5d7987def6f973e09ca5e3f0ba689c2bdc",
+      "bytes": 4528
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-projection-checkpoint-509-20261107/509-private-files.json",
+      "sha256": "c692af1e4cd829b1390e34e62a4a551ee5501e4e576bc98ac2d133356f863615",
+      "bytes": 280313
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-typecheck/run.json",
+      "sha256": "4b2291a48bbac7e4612292bc6f3a665fda433da3707df329a646c9b322670c60",
+      "bytes": 727
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-typecheck/child.log",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-lint/run.json",
+      "sha256": "744d84036a70af861eab0be458b4892f0dc17d8bcabdc051da3a284dae30e8d9",
+      "bytes": 716
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-lint/child.log",
+      "sha256": "0bd09c2430da12ad99372dd0b67f85f3b8b9d92ea6414f39b0bfecca4490972a",
+      "bytes": 945
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-full-unit/run.json",
+      "sha256": "96ea0c812beb9be96be0ca6220aefaf22a643ecd8bf40babbcdde0beb0d5c3e9",
+      "bytes": 716
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-full-unit/child.log",
+      "sha256": "60d65bc29df754ac75bc449ba7eed916a14caa9cac3b7d6c89cbf6cf3ab3fd30",
+      "bytes": 277
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-lint-approved/run.json",
+      "sha256": "5b9296ab7006c526a0d2ba6903ccdb7c5c7cad2c34a3f541e73466d3c644739c",
+      "bytes": 715
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-lint-approved/child.log",
+      "sha256": "4dbbb5d9326c5cf032406db1cc4c28f14315fc922a84998f8001df32db5e6314",
+      "bytes": 24
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-changed-format/run.json",
+      "sha256": "ae007fbe817db791a7c809661123c7b59f0bd354646aca672e7a0fb51261ec63",
+      "bytes": 1200
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-changed-format/child.log",
+      "sha256": "366484959abf8476b01c8743a477bf6647d82a3f5788fdf009127f6e0c472ed0",
+      "bytes": 112
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-inventory-policy/run.json",
+      "sha256": "a4be36772aa0aa4b0171d7313875ef24cad5d89d6f75d5ca5f6c138342b1eef9",
+      "bytes": 1142
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-inventory-policy/child.log",
+      "sha256": "cde489d20916e4a5724dd6bc656edb5e23cf3776bf75d6081dd99064ac4457e1",
+      "bytes": 1137
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-inventory-policy-retry/run.json",
+      "sha256": "fe2ac4f8fc0ee95e151dbb786e9074f9ac4dc6c4303ad91765e887cd3d7252a9",
+      "bytes": 1223
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/509-inventory-policy-retry/child.log",
+      "sha256": "84b3a05ca0bd99c1233ddb59474aaab7a5703beb001da8efa0c36c215cbe82c9",
+      "bytes": 3797
+    }
+  ],
+  "summary": {
+    "unitFiles": 333,
+    "unitPassed": 3231,
+    "existingSkipped": 1,
+    "unitDurationSeconds": 128.18,
+    "typecheck": true,
+    "lint": true,
+    "changedFormat": true,
+    "inventoryPolicyControls": 21,
+    "addedCases": 5,
+    "removedCases": 0,
+    "releaseBlocksUnchanged": true,
+    "normalGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

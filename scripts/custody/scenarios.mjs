@@ -1,4 +1,5 @@
 import { isDeepStrictEqual } from 'node:util';
+import { waitCustodyState, CUSTODY_STATE_TIMEOUT_MS } from './wait.mjs';
 
 export async function runCase(definition, env) {
   const assertions = [],
@@ -16,14 +17,15 @@ export async function runCase(definition, env) {
   const page = async (ctx) => {
     const p = await ctx.newPage();
     p.on('pageerror', (e) => pageErrors.push(e.message));
-    p.setDefaultTimeout(8000);
+    p.setDefaultTimeout(CUSTODY_STATE_TIMEOUT_MS);
     await p.goto(env.url);
-    await p.waitForFunction(() => Boolean(window.custody));
+    await waitCustodyState(p, () => Boolean(window.custody));
     return p;
   };
   const snapshot = (p) => call(p, 'snapshot');
   const settled = async (p, id) => {
-    await p.waitForFunction(
+    await waitCustodyState(
+      p,
       (id) => ['resolved', 'rejected'].includes(window.custody.snapshot().entries[id]?.status),
       id,
     );
@@ -46,7 +48,7 @@ export async function runCase(definition, env) {
     await done(p, id);
   };
   const gate = async (p, name) =>
-    p.waitForFunction((name) => window.custody.snapshot().gates.includes(name), name);
+    waitCustodyState(p, (name) => window.custody.snapshot().gates.includes(name), name);
   const crash = async (p) => {
     artifacts.push({
       point: 'before-renderer-death',
@@ -122,6 +124,13 @@ export async function runCase(definition, env) {
           ? route.continue()
           : route.abort('blockedbyclient'),
       );
+      if (definition.id === 'C12.frame-independent-waits') {
+        // Install before Playwright captures its builtins in the first state wait.
+        await context.addInitScript(() => {
+          window.withheldCustodyFrames = 0;
+          window.requestAnimationFrame = () => ++window.withheldCustodyFrames;
+        });
+      }
       let a = await page(context);
       const b = await page(context);
       switch (definition.id) {
@@ -199,6 +208,121 @@ export async function runCase(definition, env) {
           check('winner-custody-unchanged', await call(b, 'record'), before);
           break;
         }
+        case 'C12.frame-independent-waits': {
+          const code = await call(a, 'begin', 'c');
+          await call(a, 'fault', 'gate-keygen');
+          await call(a, 'confirm', 'c', code);
+          // Independent setup observations: a broken subject waiter must not hide the fault
+          // behind an unfinished precondition. The operation stays at a real crypto gate.
+          await a.waitForFunction(
+            () => window.custody.snapshot().gates.includes('keygen'),
+            undefined,
+            { polling: 25 },
+          );
+          const oldPolicy = a
+            .waitForFunction(
+              () => {
+                window.legacyCustodySampled = true;
+                return ['resolved', 'rejected'].includes(
+                  window.custody.snapshot().entries.c?.status,
+                );
+              },
+              undefined,
+              { timeout: 300 },
+            )
+            .then(
+              async (handle) => {
+                await handle.dispose();
+                return 'completed';
+              },
+              (error) => error.name,
+            );
+          await a.waitForFunction(() => window.legacyCustodySampled, undefined, { polling: 25 });
+          if (!(await a.evaluate(() => window.withheldCustodyFrames > 0)))
+            throw Error('Frame-withholding fault did not reach the observer');
+          const completion = waitCustodyState(a, () => {
+            window.timerCustodySampled = true;
+            return ['resolved', 'rejected'].includes(window.custody.snapshot().entries.c?.status);
+          }).then(
+            (value) => ({ completed: value === true }),
+            (error) => ({ completed: false, errorName: error.name }),
+          );
+          await a.waitForFunction(() => window.timerCustodySampled, undefined, { polling: 25 });
+          await call(a, 'release', 'keygen');
+          const observed = await completion;
+          if (!observed.completed && observed.errorName !== 'TimeoutError')
+            throw Error('Unexpected state-wait failure: ' + observed.errorName);
+          check(
+            'native-creation-finishes-without-frames',
+            (await snapshot(a)).entries.c.status,
+            'resolved',
+          );
+          check('default-frame-poll-misses-completed-state', await oldPolicy, 'TimeoutError');
+          check(
+            'animation-frames-were-requested-but-withheld',
+            await a.evaluate(() => window.withheldCustodyFrames > 0),
+            true,
+          );
+          if (!check('timer-observes-custody-completion-without-frames', observed.completed, true))
+            break;
+          check(
+            'frame-independent-creation-is-protected',
+            (await call(a, 'record')).state,
+            'protected',
+          );
+          schedule.push(
+            'Withhold animation-frame callbacks; release real key generation after both waiters sampled pending state',
+          );
+          break;
+        }
+        case 'C12.async-state-waits': {
+          const code = await call(a, 'begin', 'c');
+          await call(a, 'fault', 'gate-keygen');
+          await call(a, 'confirm', 'c', code);
+          await a.waitForFunction(
+            () => window.custody.snapshot().gates.includes('keygen'),
+            undefined,
+            { polling: 25 },
+          );
+          const completion = waitCustodyState(a, async () => {
+            await Promise.resolve();
+            const ready = ['resolved', 'rejected'].includes(
+              window.custody.snapshot().entries.c?.status,
+            );
+            if (!ready) window.custodyAsyncObservedPending = true;
+            return ready;
+          }).then(
+            (value) => ({ value }),
+            (error) => ({ error }),
+          );
+          // Independent setup oracle ensures the subject actually evaluated false.
+          await a.waitForFunction(() => window.custodyAsyncObservedPending, undefined, {
+            polling: 25,
+          });
+          await call(a, 'release', 'keygen');
+          await a.waitForFunction(
+            () => window.custody.snapshot().entries.c?.status === 'resolved',
+            undefined,
+            { polling: 25 },
+          );
+          check(
+            'native-async-operation-finishes',
+            (await snapshot(a)).entries.c.status,
+            'resolved',
+          );
+          const observed = await completion;
+          if (observed.error) throw observed.error;
+          check('async-state-wait-rechecks-false-result', observed.value, true);
+          check(
+            'async-observed-creation-is-protected',
+            (await call(a, 'record')).state,
+            'protected',
+          );
+          schedule.push(
+            'Hold real key generation until an asynchronous predicate has returned false; then release and observe completion',
+          );
+          break;
+        }
         case 'C12.reservation-abort': {
           const code = await call(a, 'begin', 'c');
           await call(a, 'fault', 'abort-reservation');
@@ -231,7 +355,7 @@ export async function runCase(definition, env) {
           }
           check('creation-is-not-openable', staged.state, 'creating');
           await call(b, 'open', 'partial', code);
-          await b.waitForFunction(async () =>
+          await waitCustodyState(b, async () =>
             (await navigator.locks.query()).pending.some((l) => l.mode === 'shared'),
           );
           check(
@@ -390,7 +514,7 @@ export async function runCase(definition, env) {
           await call(b, 'close', 'second');
           await done(b, 'second');
           await call(b, 'exclusive', 'exclusive');
-          await b.waitForFunction(async () => {
+          await waitCustodyState(b, async () => {
             const l = await navigator.locks.query();
             return (
               l.pending.some((x) => x.mode === 'exclusive') ||
@@ -433,7 +557,7 @@ export async function runCase(definition, env) {
           await gate(a, 'keygen');
           await call(a, 'cancel', 'c');
           await call(b, 'exclusive', 'x');
-          await b.waitForFunction(async () =>
+          await waitCustodyState(b, async () =>
             (await navigator.locks.query()).pending.some((l) => l.mode === 'exclusive'),
           );
           check(
@@ -458,7 +582,7 @@ export async function runCase(definition, env) {
           await gate(a, 'authority');
           await call(a, 'abort', 's');
           await call(b, 'exclusive', 'x');
-          await b.waitForFunction(async () =>
+          await waitCustodyState(b, async () =>
             (await navigator.locks.query()).pending.some((l) => l.mode === 'exclusive'),
           );
           check(
@@ -486,6 +610,19 @@ export async function runCase(definition, env) {
   } catch (cause) {
     error = { message: cause.message, stack: cause.stack };
     status = 'error';
+    for (const p of context?.pages() ?? []) {
+      if (p.isClosed()) continue;
+      try {
+        artifacts.push({
+          point: 'failure-before-cleanup',
+          url: p.url(),
+          snapshot: await snapshot(p),
+          locks: await p.evaluate(() => navigator.locks.query()),
+        });
+      } catch (diagnostic) {
+        artifacts.push({ point: 'failure-observation', errorClass: diagnostic.name });
+      }
+    }
   } finally {
     await context?.close();
   }

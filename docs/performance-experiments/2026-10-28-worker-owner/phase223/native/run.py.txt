@@ -1,0 +1,18 @@
+from pathlib import Path
+import os,subprocess,time,json,sys,hashlib
+r=Path(__file__).parent
+identity=json.loads((r/'build-identity.json').read_text())
+assert identity.get('labInputs'), 'No closed build-input identity; refusing stale artifact'
+for file,expected in identity['labInputs'].items():assert hashlib.sha256((r/'lab'/file).read_bytes()).hexdigest()==expected, 'Source changed after build: '+file
+actual={str(p.relative_to(r/'combined-dist')):hashlib.sha256(p.read_bytes()).hexdigest() for p in (r/'combined-dist').rglob('*') if p.is_file()}
+assert actual==identity['files'], 'Built asset set changed'
+out=r/(sys.argv[1] if len(sys.argv)>1 else 'native-owner-01');out.mkdir(mode=0o700,exist_ok=False)
+node='/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node'
+env={**os.environ,'PATH':str(Path(node).parent)+':'+os.environ['PATH'],'FAIR_OUT':str(out),'CHROMIUM_PATH':'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'}
+cmd=[node,'node_modules/@playwright/test/cli.js','test','--config','test/account-continuation-lab/worker-owner.config.ts']
+cmd+=sys.argv[2:]
+inputs=[p for p in (r/'lab').iterdir() if p.is_file() and not p.is_symlink()]+[r/p for p in ['build.mjs','build-identity.json','run.py','harness/test/account-continuation-lab/worker-owner.spec.ts','harness/test/account-continuation-lab/worker-owner.config.ts','harness/test/account-continuation-lab/runtime.mjs','harness/scripts/lib/packaged-application.mjs']]
+inputs += [Path('/Users/thomasingalls/.codex/worktrees/7fda/done')/f for f in ['account-service/webauthn.ts','account-service/protocol.ts','pnpm-lock.yaml','test/packaged-account/devices.ts','test/device-enrollment/helpers.ts','test/geometry/openApp.ts']]
+receipt={'startedAt':time.time_ns()//1000000,'command':cmd,'inputs':{(str(p.relative_to(r)) if p.is_relative_to(r) else str(p)):hashlib.sha256(p.read_bytes()).hexdigest() for p in inputs}}
+with(out/'console.log').open('w') as log:p=subprocess.run(cmd,cwd=r/'harness',env=env,stdout=log,stderr=subprocess.STDOUT)
+receipt.update(exit=p.returncode,finishedAt=time.time_ns()//1000000);(out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print('exit',p.returncode);print((out/'console.log').read_text()[-6500:]);raise SystemExit(p.returncode)

@@ -133,12 +133,14 @@ it('retains session configuration without a bearer and opens it offline without 
     pin,
     networkSessions: true,
     membershipContinuation: false,
+    onMembershipContinuationChange: expect.any(Function),
   });
   fetch.mockRejectedValue(new TypeError('offline'));
   expect(await loadPackagedConfig()).toEqual({
     pin,
     networkSessions: true,
     membershipContinuation: false,
+    onMembershipContinuationChange: expect.any(Function),
   });
   expect(fetch).toHaveBeenCalledTimes(2);
   expect(fetch.mock.calls.every(([url]) => url === '/__account-setup/config')).toBe(true);
@@ -153,6 +155,7 @@ it('upgrades an old pin-only locator offline without acquiring private access', 
     pin,
     networkSessions: true,
     membershipContinuation: false,
+    onMembershipContinuationChange: expect.any(Function),
   });
   expect(fetch).toHaveBeenCalledTimes(1);
   expect(fetch.mock.calls[0]![0]).toBe('/__account-setup/config');
@@ -170,6 +173,7 @@ it('a private fixture switching to sessions requires owner reopening instead of 
     pin,
     networkSessions: true,
     membershipContinuation: false,
+    onMembershipContinuationChange: expect.any(Function),
   });
   expect(fetch.mock.calls.some(([url]) => String(url).endsWith('/access'))).toBe(false);
 });

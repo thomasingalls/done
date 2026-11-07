@@ -1,0 +1,11 @@
+{
+  "stack": "G8,R1000,S1Y1,P1,V0,D0",
+  "repairMs": 1000,
+  "bits": "10101",
+  "SY": "11",
+  "basis": "R1500onepostdrainp95miss2514ms; bothR1000withheldandnormalrunsmeetallmeasuredpredicates/cold",
+  "normalTrafficQualification": "Ractivations5and2,notzero; no same-source normalR1500arm, do not claim unchanged normal tokens",
+  "maintenanceQualification": "Original late window censors completion; selected-dose grown gates remain required",
+  "noAcceptanceCredit": true,
+  "noHardening": true
+}

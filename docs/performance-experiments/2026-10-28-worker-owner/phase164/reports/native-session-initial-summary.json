@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "selection": "standalone-write-session",
+  "claim": "Only this bounded selection; no native aggregate or release qualification.",
+  "status": "failed",
+  "stages": [],
+  "startedAt": "2026-10-28T20:59:29.420Z",
+  "error": "AssertionError [ERR_ASSERTION]: External input symlink: .bin",
+  "completedAt": "2026-10-28T20:59:35.470Z"
+}

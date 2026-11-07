@@ -1,0 +1,106 @@
+[
+  {
+    "case": "grown329-withheld-unrepaired-P1-control",
+    "owner": "writer",
+    "attempt": 4,
+    "stage": "building",
+    "outcome": {
+      "kind": "threw",
+      "name": "Error",
+      "message": "Local baseline refused: integrity",
+      "stack": "Error: Local baseline refused: integrity\n    at qK (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:443973)\n    at iq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:450714)\n    at aq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:453195)\n    at async rq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:450064)\n    at async tq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:447684)\n    at async Loe (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:477745)\n    at async Object.M [as prepareHistoryRemoval] (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:522729)\n    at async oce (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:18:529)\n    at async http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:63:17226\n    at async http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:63:8984"
+    },
+    "mappedFrames": [
+      {
+        "frame": "    at qK (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:443973)",
+        "original": {
+          "source": "../../src/crdt/localBaselineReplay.ts",
+          "line": 96,
+          "column": 8,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at iq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:450714)",
+        "original": {
+          "source": "../../src/crdt/localBaselineReplay.ts",
+          "line": 596,
+          "column": 73,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at aq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:453195)",
+        "original": {
+          "source": "../../src/crdt/localBaselineReplay.ts",
+          "line": 741,
+          "column": 27,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async rq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:450064)",
+        "original": {
+          "source": "../../src/crdt/localBaselineReplay.ts",
+          "line": 556,
+          "column": 20,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async tq (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:447684)",
+        "original": {
+          "source": "../../src/crdt/localBaselineReplay.ts",
+          "line": 404,
+          "column": 22,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async Loe (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:477745)",
+        "original": {
+          "source": "../../src/crdt/localRetentionPlan.ts",
+          "line": 430,
+          "column": 25,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async Object.M [as prepareHistoryRemoval] (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:14:522729)",
+        "original": {
+          "source": "../../src/crdt/contentStore.ts",
+          "line": 919,
+          "column": 13,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async oce (http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:18:529)",
+        "original": {
+          "source": "../../src/crdt/preparationJournalObservation.ts",
+          "line": 19,
+          "column": 11,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:63:17226",
+        "original": {
+          "source": "../../src/crdt/accountCapture.ts",
+          "line": 782,
+          "column": 19,
+          "name": null
+        }
+      },
+      {
+        "frame": "    at async http://localhost:53781/assets/enrollmentOwner.worker-C8CFYME2.js?lab=10101&labEB=11&labFault327=1&labPP=1&labRepairMs=1000&labSY=1N:63:8984",
+        "original": {
+          "source": "../../src/crdt/accountCapture.ts",
+          "line": 342,
+          "column": 17,
+          "name": null
+        }
+      }
+    ]
+  }
+]

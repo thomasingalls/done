@@ -1,0 +1,260 @@
+{
+  "phase": 467,
+  "date": "2026-11-06",
+  "scope": "approved old-fixture amendment, then actual120scompletion failure",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountCapture.ts",
+      "sha256": "f9abd8db7b7f7a96b95d01c06d6a47e4b4d32c4068f4e3f10b1592b4982a8f36",
+      "bytes": 33645
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-old-maintenance-467-20261106/467-private-files.json",
+      "sha256": "8aeec8083d057f607fa290b1d4faaa5161bb64780945dc1b8a02e6c513d3ad37",
+      "bytes": 202809
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-old-maintenance-467-20261106/467-failure-analysis.json",
+      "sha256": "2e6843cde335a84020be33bc16b41392fe632297ffa964c5b48d794a1596dc4b",
+      "bytes": 3692
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-old-maintenance-467-20261106/467-declaration.json",
+      "sha256": "99c21124517477ef8ec7dd1a12c5659cf9ca2037f76844da8ac0f59994d4754c",
+      "bytes": 2336
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/child.log",
+      "sha256": "5fe41bcc5504f0c650cea6ed5ca8ea11972101c31260eaef4b18ff846d8b7fb7",
+      "bytes": 3834
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/host-load.jsonl",
+      "sha256": "55755105860f7d18cefe7a7909fa9bbe7503f0034725661643dcdc3a977e03c3",
+      "bytes": 65942
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/power-assertions-before.txt",
+      "sha256": "ee147e95cd25c5c8d40fa73f7819fb7fae563455da61ba4eaafe2d4df5c31c61",
+      "bytes": 1952
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/power-log-after.meta.json",
+      "sha256": "91ee4594acb1a28b2b8091c268e05bf0436de8c3227e02a89cb3cc813eeedd43",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/power-log-after.txt",
+      "sha256": "eb82d8855a9538ef35ff10c1141b02c15f5e7dbaa59f703f78a98a3463a5a195",
+      "bytes": 2030
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/power-log-before.meta.json",
+      "sha256": "a8139a4a986f84df3cee858f2b4b0354c5c0af3dee6067eef9edcfedec3d92ec",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/467-r1-old-maintenance-normal/run.json",
+      "sha256": "a8bb7b063565ec25500bf0db61ce280deba54d3d284e791c7407d51114bac9d8",
+      "bytes": 1987
+    }
+  ],
+  "analysis": {
+    "phase": 467,
+    "appTestOutcome": "failed",
+    "failure": "120s maintenance completion wait",
+    "typedKeys": 120,
+    "guardsPassedBeforeFailure": {
+      "actualPreparationAndBacklogAtTypingStart": true,
+      "fullOriginalArchivePlusOnlyOfferedAppend": true,
+      "undoAndPeerConvergence": true
+    },
+    "partialTypingMetricsOnly": {
+      "inputMs": {
+        "n": 120,
+        "p95": 3.37744140625,
+        "max": 9.140869140625
+      },
+      "peerMs": {
+        "n": 120,
+        "p95": 873.8212890625,
+        "max": 1120.7744140625
+      },
+      "markersPeerMs": [
+        754.030517578125,
+        625.582763671875,
+        744.1357421875
+      ]
+    },
+    "attempts": [
+      {
+        "attempt": 1,
+        "startAfterLastKeyMs": -59971.140869140625,
+        "observedEnd": {
+          "at": 1793963130114,
+          "reason": "activity-or-journal",
+          "stage": "verifying",
+          "elapsedMs": 374
+        },
+        "endToNextStartMs": 83135.89990234375
+      },
+      {
+        "attempt": 2,
+        "startAfterLastKeyMs": 23952.259033203125,
+        "observedEnd": {
+          "at": 1793963213252.9,
+          "reason": "activity-or-journal",
+          "stage": "durability",
+          "elapsedMs": 0
+        },
+        "endToNextStartMs": 16536.900146484375
+      },
+      {
+        "attempt": 3,
+        "startAfterLastKeyMs": 40492.1591796875,
+        "observedEnd": {
+          "at": 1793963229792.5999,
+          "reason": "activity-or-journal",
+          "stage": "durability",
+          "elapsedMs": 0
+        },
+        "endToNextStartMs": 15803.7001953125
+      },
+      {
+        "attempt": 4,
+        "startAfterLastKeyMs": 56298.6591796875,
+        "observedEnd": {
+          "at": 1793963245599.4,
+          "reason": "activity-or-journal",
+          "stage": "durability",
+          "elapsedMs": 0
+        },
+        "endToNextStartMs": 16440.0
+      },
+      {
+        "attempt": 5,
+        "startAfterLastKeyMs": 72741.75903320312,
+        "observedEnd": {
+          "at": 1793963262044.7,
+          "reason": "activity-or-journal",
+          "stage": "durability",
+          "elapsedMs": 0
+        },
+        "endToNextStartMs": 17775.800048828125
+      },
+      {
+        "attempt": 6,
+        "startAfterLastKeyMs": 90522.85913085938,
+        "observedEnd": {
+          "at": 1793963279823,
+          "reason": "activity-or-journal",
+          "stage": "durability",
+          "elapsedMs": 0
+        },
+        "endToNextStartMs": 16911
+      },
+      {
+        "attempt": 7,
+        "startAfterLastKeyMs": 107436.35913085938,
+        "observedEnd": {
+          "at": 1793963296737.8,
+          "reason": "activity-or-journal",
+          "stage": "durability",
+          "elapsedMs": 0
+        },
+        "endToNextStartMs": null
+      }
+    ],
+    "finalStatus": {
+      "phase": "idle",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "durability",
+        "attempt": 7,
+        "elapsedMs": 0
+      }
+    },
+    "diagnostics": {
+      "attempts": 7,
+      "interruptions": 7,
+      "completions": 0
+    },
+    "coldReached": false,
+    "noise": {
+      "swapFirstMiB": 12948.44,
+      "swapMaxMiB": 12948.44,
+      "swapLastMiB": 12948.44,
+      "overOneCoreConsecutive": [
+        {
+          "pid": 50116,
+          "process": "node",
+          "maxConsecutiveSpanSeconds": 0.0
+        },
+        {
+          "pid": 423,
+          "process": "WindowServer",
+          "maxConsecutiveSpanSeconds": 5.000889778137207
+        },
+        {
+          "pid": 50134,
+          "process": "com.apple.Virtualization.VirtualMachine",
+          "maxConsecutiveSpanSeconds": 0.0
+        },
+        {
+          "pid": 50164,
+          "process": "Google Chrome Helper (Renderer)",
+          "maxConsecutiveSpanSeconds": 15.004052877426147
+        }
+      ]
+    },
+    "qualification": "partial timing is not cell credit; public status does not expose exact interruption condition/job; no causal claim yet"
+  },
+  "approvedPatchAppliedExactly": "fd5f7fe7220381516800925d1efad3f08cccabb386336d9d3fe32e5e9cd70623",
+  "changedPrivateFiles": [
+    "gate-maintenance.spec.ts",
+    "analyze-case.py"
+  ],
+  "appSourceOrLimitOrDeadlineChanges": false,
+  "timedMatrixJourneysStarted": 1,
+  "stage5Passing": 15,
+  "stage5FailedJourneys": 1,
+  "stage5Unrun": 20,
+  "oldNormalCell": "failed; one failed replicate fails the cell",
+  "furtherDeclaredRunsNotStarted": 5,
+  "stopAuthority": "operator Stage1Y note: if Stage5misses120s because of retry wait, stop/report; actual repeated activity-or-journal refusals prevent completion, cause not yet proven",
+  "noiseQualification": "swap constant; WindowServer max5sconsecutive>100%; a benchmark Chrome renderer reaches15s. No qualifying unrelated heavy-work trigger is established, so no automatic noise rerun.",
+  "nextDiagnosis": "durability barrier and preparation-entry guard; distinguish current activity/journal/authority from a stale interruption; trace exact condition and job before repair. Do not infer configured retry clocks from observed gaps.",
+  "cold": "not reached; do not award archive/cold cell credit from partial timing",
+  "committed": false,
+  "pushed": false
+}

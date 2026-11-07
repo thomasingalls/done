@@ -1,3 +1,5 @@
+import { ceremonyEnvironment } from './ceremonyEnvironment';
+import { accountWorkerRuntime } from './accountWorkerRuntime';
 import { wrapAccountJournal, unwrapAccountJournal, type JournalBinding } from './journalEra';
 import { hex, random, type Bytes } from './custodyCrypto';
 import {
@@ -11,6 +13,7 @@ import {
 import type { ContentIdentity } from './contentRecord';
 import type { ContentReceipt } from './contentStore';
 import type { SessionTask } from './writeSession';
+import { pageRuntimePorts } from './runtimePorts';
 
 export type JournalAdmission =
   | { readonly status: 'journalled'; readonly key: string; readonly generation: number }
@@ -32,7 +35,7 @@ const unavailable = (cause: unknown) =>
   new JournalError('unavailable', 'Synchronous journal storage is unavailable.', { cause });
 const storage = (): Storage => {
   try {
-    return globalThis.localStorage;
+    return pageRuntimePorts.journal.storage();
   } catch (cause) {
     throw unavailable(cause);
   }
@@ -74,6 +77,8 @@ export const createJournalOwner = (
   retainedKeys: ReadonlyMap<number, Bytes> = new Map(),
   binding: () => JournalBinding | undefined = () => undefined,
 ) => {
+  const asynchronous =
+    accountWorkerRuntime(scope.slotId)?.journal ?? ceremonyEnvironment()?.journal;
   const prefix = journalPrefix(dbName),
     writer = hex(random(16));
   const openers = new Map<number, { key: Bytes; codec: ReturnType<typeof createJournalCodec> }>();
@@ -167,9 +172,27 @@ export const createJournalOwner = (
     )
       damaged = new JournalError('repair-required', 'An immutable journal entry was replaced.');
   };
-  globalThis.addEventListener?.('storage', onStorage);
+  const stopStorage = pageRuntimePorts.journal.onStorage(onStorage);
+  const openRaw = (raw: import('./windowJournalBridge').RawJournalSnapshot): ObservedEntry[] => {
+    alive();
+    const opened: ObservedEntry[] = [];
+    try {
+      const keys = new Set<string>();
+      for (const [key, value] of raw.entries) {
+        if (!key.startsWith(prefix) || keys.has(key)) throw changed();
+        keys.add(key);
+        opened.push({ key, value, ...open(key, value) });
+      }
+      observedCharacters = raw.characters;
+      return opened;
+    } catch (cause) {
+      eraseJournalSnapshot(opened);
+      throw cause;
+    }
+  };
   const snapshot = (): ObservedEntry[] => {
     alive();
+    if (asynchronous) return openRaw(asynchronous.pinned(prefix));
     const opened: ObservedEntry[] = [];
     try {
       const s = storage(),
@@ -209,7 +232,28 @@ export const createJournalOwner = (
     }
   };
   return {
+    asynchronous: !!asynchronous,
     snapshot,
+    /** Native Worker task only. Authenticate ciphertext while its Window observation is retained;
+     * no synchronous journal permission survives this scope or is inferred from its data ID. */
+    async withObservation<T>(
+      task: SessionTask,
+      operation: (id: number, entries: readonly ObservedEntry[]) => Promise<T>,
+    ): Promise<T> {
+      if (!asynchronous)
+        throw new JournalError('unavailable', 'Worker journal observation required.');
+      return task.wait(() =>
+        asynchronous.observe(prefix, async (raw, id) => {
+          let opened: ObservedEntry[] | undefined;
+          try {
+            opened = task.step(() => openRaw(raw));
+            return await operation(id, opened);
+          } finally {
+            if (opened) eraseJournalSnapshot(opened);
+          }
+        }),
+      );
+    },
     /** Read-only attempts only. The optional first failure is the synchronous invocation capture. */
     async readSnapshot(task: SessionTask, firstFailure?: JournalError): Promise<ObservedEntry[]> {
       if (firstFailure && !isJournalChanged(firstFailure)) throw firstFailure;
@@ -217,6 +261,25 @@ export const createJournalOwner = (
       for (let attempt = firstFailure ? 1 : 0; attempt < JOURNAL_SNAPSHOT_ATTEMPTS; attempt++) {
         if (changed) await retrySnapshotAfter(task, attempt === 1 ? 0 : 8);
         try {
+          if (asynchronous) {
+            let raw;
+            try {
+              raw = await task.wait(() => asynchronous.read(prefix));
+            } catch (cause) {
+              if (
+                cause &&
+                typeof cause === 'object' &&
+                'code' in cause &&
+                cause.code === 'journal-changed'
+              )
+                throw new JournalError(
+                  'journal-changed',
+                  'Journal changed during asynchronous capture.',
+                );
+              throw cause;
+            }
+            return task.step(() => openRaw(raw));
+          }
           return task.step(snapshot);
         } catch (cause) {
           if (!isJournalChanged(cause)) throw cause;
@@ -237,6 +300,7 @@ export const createJournalOwner = (
     },
     append(update: Bytes): JournalAdmission {
       alive();
+      if (asynchronous) return { status: 'refused', reason: 'unavailable' };
       if (!(update instanceof Uint8Array))
         throw new JournalError('invalid-input', 'A local update must be bytes.');
       const pair = binding();
@@ -294,6 +358,24 @@ export const createJournalOwner = (
             batch.map((e) => e.bytes),
           ),
         );
+        if (asynchronous) {
+          const receipt = await task.wait(() =>
+            asynchronous.remove(
+              prefix,
+              batch.map((e) => [e.key, e.value] as const),
+            ),
+          );
+          task.step(() => {
+            removed.count += receipt.removed;
+            retained.count += receipt.retained + receipt.changed;
+            if (receipt.changed)
+              damaged = new JournalError(
+                'repair-required',
+                'A journal entry changed before cleanup.',
+              );
+          });
+          continue;
+        }
         task.step(() => {
           for (const entry of batch) {
             try {
@@ -325,7 +407,7 @@ export const createJournalOwner = (
     },
     dispose() {
       disposed = true;
-      globalThis.removeEventListener?.('storage', onStorage);
+      stopStorage();
       for (const value of openers.values()) {
         value.codec.dispose();
         value.key.fill(0);

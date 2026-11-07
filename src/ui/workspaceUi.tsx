@@ -1,6 +1,6 @@
 import { SyncNotice } from './SyncNotice';
 import type { SyncRuntime } from '../crdt/accountSyncDriver';
-import type { NetworkLogin } from '../account/networkLogin';
+import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 /** Read projections and admitted commands for the application. No Y.Doc or legacy Store crosses this port. */
 import {
   createContext,
@@ -48,7 +48,7 @@ export interface WorkspaceUi {
   accountWorkspace: boolean;
   accountId?: string;
   switchAccount?: () => void;
-  networkLogin?: NetworkLogin;
+  networkLogin?: NetworkLoginView;
   devices?: import('../account/deviceRoster').DeviceRoster;
   showDevices?: () => void;
   protection: 'automatic' | 'protected';
@@ -89,7 +89,7 @@ export const WorkspaceUiProvider = ({
   accountWorkspace?: boolean;
   accountId?: string;
   onSwitchAccount?: () => void;
-  networkLogin?: NetworkLogin;
+  networkLogin?: NetworkLoginView;
   devices?: import('../account/deviceRoster').DeviceRoster;
   onShowDevices?: () => void;
   children: React.ReactNode;

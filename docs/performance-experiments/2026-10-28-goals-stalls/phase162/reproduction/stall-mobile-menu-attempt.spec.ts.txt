@@ -1,0 +1,98 @@
+import {test,expect,chromium,devices,type BrowserContext,type Page,type CDPSession} from '@playwright/test';
+import {readFileSync,writeFileSync,mkdirSync,cpSync} from 'node:fs';
+import {join} from 'node:path';
+import {gzipSync} from 'node:zlib';
+import {start,stop,control,resourceStop} from './runtime.mjs';
+import {seedProfile} from './seed-profile';
+import {restoreAuthenticator,openSaved} from './devices';
+import {exported as exportArchive,archiveIdentity,lock} from './common';
+import {clockBrackets} from './dispatch-probe';
+import {installStallProbe} from './stall-probe';
+const root='/private/tmp/done-goals-stall-20261028', out=process.env['FAIR_OUT']!;
+const mobile=process.env['STALL_MOBILE']==='1', profiled=process.env['STALL_PROFILE']==='1';
+const paragraph='I want to write down a complete thought before deciding which part deserves attention today. The list should stay quiet while I explain the problem, consider a few alternatives, and remember the details that will matter tomorrow. Some sentences are longer because an unfinished idea needs room to develop without turning every clause into a separate task. When I return from another application, I expect the words and the cursor to be ready where I left them. My other device may have added useful notes while this one was away, and those notes should arrive without interrupting this sentence. I can then choose the next useful action, keep the supporting context nearby, and move on with the rest of the day. A simple writing tool should give me space to think at my own pace.';
+const now=()=>performance.timeOrigin+performance.now();
+const pause=(ms:number)=>new Promise(resolve=>setTimeout(resolve,ms));
+const editor=(p:Page)=>p.locator('.goals .cm-content');
+async function exported(p:Page){if(mobile && await p.locator('.shell').getAttribute('data-goals')==='open')await p.getByRole('button',{name:'Close Goals',exact:true}).click();return exportArchive(p);}
+async function documentText(p:Page){return editor(p).evaluate((e:any)=>e.cmTile.root.view.state.doc.toString());}
+async function offer(cdp:CDPSession,text:string,period:number,result:any,label:string){
+ const began=now(), commands:Promise<unknown>[]=[];
+ for(let i=0;i<text.length;i++){
+  const planned=began+i*period; const wait=planned-now(); if(wait>0)await pause(wait);
+  const row:any={label,index:i,planned,offered:now(),done:0};result.offers.push(row);
+  const ch=text[i]!;
+  const down=cdp.send('Input.dispatchKeyEvent',{type:'keyDown',key:ch,text:ch,unmodifiedText:ch});
+  const up=cdp.send('Input.dispatchKeyEvent',{type:'keyUp',key:ch});
+  commands.push(Promise.all([down,up]).then(()=>{row.done=now();}));
+ }
+ await Promise.all(commands);
+}
+test('released Goals sustained paragraph and unlocked lifecycle return diagnostic',async()=>{
+ mkdirSync(out,{recursive:true,mode:0o700});
+ const fixture=JSON.parse(readFileSync('/private/tmp/done-envelope-projection-20261028/prepared-fixture/fixture.json','utf8'));
+ const account=fixture.accounts.find((a:any)=>a.label==='H'), saved=account.actors[2];
+ let ctx:BrowserContext|undefined,p:Page|undefined,cdp:CDPSession|undefined;
+ const result:any={outcome:'starting',mobile,profiled,offers:[],network:[],errors:[],guards:{},workload:{sentences:7,characters:paragraph.length,words:paragraph.split(/\s+/).length,periodMs:150,standardizedWpm:80},clocks:[]};
+ const save=()=>writeFileSync(join(out,'partial-result.json'),JSON.stringify(result,null,2)+'\n');
+ try{
+  const state=join(out,'state');cpSync(fixture.state,state,{recursive:true,errorOnExist:true});
+  await start(state,'/private/tmp/done-resumable-release-20261028/frontend');
+  ctx=await chromium.launchPersistentContext(join(out,'private-profile'),{executablePath:process.env['CHROMIUM_PATH']!,baseURL:'http://localhost:53781',...(mobile?devices['Pixel 7']:{viewport:{width:1440,height:1000}}),headless:true});
+  await seedProfile(ctx,saved.storage);p=ctx.pages()[0]??await ctx.newPage();
+  await restoreAuthenticator(p,saved.credentials);await p.addInitScript(installStallProbe);
+  p.on('pageerror',e=>result.errors.push(e.message));
+  const requests=new Map<any,any>();p.on('request',req=>{if(new URL(req.url()).pathname.startsWith('/account/'))requests.set(req,{path:new URL(req.url()).pathname,method:req.method(),start:now()});});
+  p.on('requestfinished',async req=>{const row=requests.get(req);if(!row)return;requests.delete(req);row.end=now();row.status=(await req.response())?.status();result.network.push(row);});
+  p.on('requestfailed',req=>{const row=requests.get(req);if(!row)return;requests.delete(req);row.end=now();row.failed=req.failure()?.errorText;result.network.push(row);});
+  await p.goto('/');await p.evaluate(()=>navigator.serviceWorker.ready);await p.reload();await p.waitForFunction(()=>!!navigator.serviceWorker.controller);
+  await openSaved(p,saved.code,true);await editor(p).waitFor();
+  // Narrow layouts can mount Goals offscreen; select its real navigation tab.
+  if(mobile)await p.locator('.day-panel[data-active="true"]').getByRole('button',{name:'Open Goals',exact:true}).click();
+  cdp=await ctx.newCDPSession(p);if(mobile)await cdp.send('Emulation.setCPUThrottlingRate',{rate:4});
+  result.browser=await cdp.send('Browser.getVersion');
+  result.original=archiveIdentity(await exported(p));expect(await documentText(p)).toBe(account.archive['master.md']);
+  result.initialTextLength=(await documentText(p)).length;
+  await p.evaluate(()=>(window as any).__stall.mark('control-start'));await p.evaluate(()=>(window as any).__stall.control());
+  await offer(cdp,'abcdefghijklmnop',150,result,'control');
+  const controlValue=await p.locator('#stall-control').inputValue();expect(controlValue).toBe('abcdefghijklmnop');
+  await pause(100);await p.evaluate(()=>(window as any).__stall.mark('control-end'));await p.evaluate(()=>(window as any).__stall.removeControl());
+  // Escape the responsive sidebar on mobile through the actual menu trigger.
+  const close=p.getByRole('button',{name:'Close menu',exact:true});if(await close.isVisible())await close.click();
+  if(mobile)await p.locator('.day-panel[data-active="true"]').getByRole('button',{name:'Open Goals',exact:true}).click();
+  await editor(p).click();await p.keyboard.press('ControlOrMeta+End');await p.keyboard.press('Enter');
+  const prefix=await documentText(p);result.clocks.push({phase:'before',rows:await clockBrackets(p)});
+  if(profiled){await cdp.send('Profiler.enable');await cdp.send('Profiler.setSamplingInterval',{interval:1000});await cdp.send('Profiler.start');}
+  await control('start');
+  await p.evaluate(()=>(window as any).__stall.mark('typing-start'));result.typingStarted=now();save();
+  console.log('Typing seven sentences:',paragraph.length,'characters; mobile4x=',mobile,'profiled=',profiled);
+  await offer(cdp,paragraph,150,result,'paragraph');result.typingFinished=now();
+  await p.evaluate(()=>(window as any).__stall.mark('typing-end'));await pause(100);
+  expect(await documentText(p)).toBe(prefix+paragraph);result.guards.exactParagraph=true;save();
+  await p.evaluate(()=>(window as any).__stall.mark('foreground-idle-start'));await pause(20000);
+  let windowId:number|undefined;
+  if(mobile){await cdp.send('Emulation.setFocusEmulationEnabled',{enabled:false});windowId=(await cdp.send('Browser.getWindowForTarget')).windowId;await cdp.send('Browser.setWindowBounds',{windowId,bounds:{windowState:'minimized'}});result.lifecycleControl='native-focus-change; hidden/freeze coverage unestablished in pilots';}
+  await p.evaluate(()=>(window as any).__stall.mark('freeze-request'));result.freezeOffered=now();
+  await cdp.send('Page.setWebLifecycleState',{state:'frozen'});await pause(20000);
+  result.resumeOffered=now();await cdp.send('Page.setWebLifecycleState',{state:'active'});if(windowId!==undefined)await cdp.send('Browser.setWindowBounds',{windowId,bounds:{windowState:'normal'}});await p.bringToFront();
+  // No extra click/focus before this first post-return input.
+  await offer(cdp,'!',150,result,'return');await pause(20000);
+  expect(await documentText(p)).toBe(prefix+paragraph+'!');result.guards.returnInputPreserved=true;
+  await p.evaluate(()=>(window as any).__stall.mark('observations-end'));
+  result.clocks.push({phase:'after',rows:await clockBrackets(p)});
+  result.observations=await p.evaluate(()=>(window as any).__stall.read());expect(result.observations.overflow).toBe(0);
+  if(profiled){const raw=(await cdp.send('Profiler.stop')).profile;writeFileSync(join(out,'main.cpuprofile.gz'),gzipSync(JSON.stringify(raw)));result.profile={samples:raw.samples?.length,nodes:raw.nodes.length};}
+  result.metrics=(await control('end')as any).metrics;
+  expect(result.errors).toEqual([]);expect(resourceStop).toBeFalsy();
+  const beforeUndo=await documentText(p);await p.keyboard.press('ControlOrMeta+z');expect(await documentText(p)).not.toBe(beforeUndo);
+  await p.keyboard.press('ControlOrMeta+Shift+z');expect(await documentText(p)).toBe(beforeUndo);result.guards.undoRedo=true;
+  const archive=await exported(p);result.finalArchive=archiveIdentity(archive);
+  await lock(p);await p.reload();await openSaved(p,saved.code,true);expect(await exported(p)).toEqual(archive);result.guards.lockReopenExact=true;
+  result.outcome='completed-diagnostic';
+ }catch(error){result.outcome='failed';result.error=String(error);throw error;}
+ finally{
+  if(p&&!p.isClosed())result.finalObservation=await p.evaluate(()=>(window as any).__stall?.read()).catch(()=>null);
+  save();writeFileSync(join(out,'result.json'),JSON.stringify(result,null,2)+'\n');
+  await ctx?.close().catch(()=>{});await stop();
+ }
+});

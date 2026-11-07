@@ -1,0 +1,22 @@
+from pathlib import Path
+r=Path('/Users/thomasingalls/.codex/worktrees/7fda/done');p=r/'test/windowAccountMirror.test.ts';s=p.read_text();a=s.index('const stops:');b=s.index('const end =');fixture=s[a:b]
+fixture=fixture.replace('afterEach(async () => {','export async function cleanupMirrorFixtures() {',1).replace("  vi.unstubAllGlobals();\n});", "  vi.unstubAllGlobals();\n}",1)
+for name in ['scope','route','identity']:fixture=fixture.replace('const '+name+' =','export const '+name+' =',1).replace('const '+name+':','export const '+name+':',1)
+fixture=fixture.replace('async function fixture()', 'export async function fixture()',1)
+fixture=fixture.replace("  const workerJournal = createJournalOwner(scope, dbName, 1, key);", "  let workerBinding: JournalBinding | undefined, workerRoute = { ...route };\n  const workerJournal = createJournalOwner(scope, dbName, 1, key, new Map(), () => workerBinding);")
+fixture=fixture.replace('decodeSourceCapsule(value, route)','decodeSourceCapsule(value, workerRoute)').replace("            route,\n", "            workerRoute,\n").replace('    route: { ...route },','    route: { ...workerRoute },\n    ...(workerBinding ? { binding: structuredClone(workerBinding) } : {}),')
+fixture=fixture.replace('  const open = () => createWindowAccountMirror(cohort, material, worker, options);','  const open = () => createWindowAccountMirror(cohort, material, worker, options);\n  const openController = () => createWindowAccountMirrorController(cohort, material, worker, options);')
+fixture=fixture.replace('    open,\n', '    open,\n    openController,\n    moveWorkerContext(epoch: number, binding?: JournalBinding) { workerRoute = { ...workerRoute, epoch }; workerBinding = binding ? structuredClone(binding) : undefined; },\n')
+imports=s[:a].replace("// @vitest-environment node\n",'').replace("import { afterEach, expect, it, vi } from 'vitest';", "import { vi } from 'vitest';").replace('  createWindowAccountMirror,','  createWindowAccountMirror,\n  createWindowAccountMirrorController,').replace("import type { SessionTask } from '../src/crdt/writeSession';", "import type { SessionTask } from '../src/crdt/writeSession';\nimport type { JournalBinding } from '../src/crdt/journalEra';").replace("'../src/", "'../../src/")
+(r/'test/fixtures').mkdir(exist_ok=True);(r/'test/fixtures/accountMirror.ts').write_text('/** Controlled carrier fixture only; this does not authenticate an Account or replace native browser evidence. */\n'+imports+fixture)
+new="""// @vitest-environment node
+import { afterEach, expect, it, vi } from 'vitest';
+import { createWindowAccountMirror } from '../src/crdt/windowAccountMirror';
+import type { WindowAccountCohort } from '../src/crdt/accountWorkerCohort';
+import { decodeSourceCapsule, eraseCapsule } from '../src/crdt/sourceCapture';
+import { eraseJournalSnapshot } from '../src/crdt/journalStore';
+import type { Bytes } from '../src/crdt/custodyCrypto';
+import { fixture, cleanupMirrorFixtures, scope, route } from './fixtures/accountMirror';
+afterEach(cleanupMirrorFixtures);
+"""+s[b:]
+p.write_text(new)

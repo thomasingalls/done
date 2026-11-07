@@ -1,0 +1,10 @@
+{
+  "multiEntryInbound.test.ts": "d1c4ef5bfb15dad53f8aef148c6e8156cf0bbeb99e4214c1d49bb942ceeb9b1d",
+  "red-indexed.log": "3c2a25560b60486d598b2117f9790fef7ea469c3e38546cbb6a6e0c84cd7b203",
+  "checkpoint.json": "e56cc76cb47e4e4f20ff16672b4a61cad3422e35f660e2547a4a7f04af33b3ca",
+  "format.log": "b90b2a0b8df9801844357b45291cbc4d7ad3f4f31ee9511929caba01c8305995",
+  "format-indexed.log": "fb3a2160ccb5ef0c27edb4b38cace7b341297261ad323fd3c8f6fd96c8d5a1e7",
+  "initial-aggregate-design.test.ts": "d1d49cc7e4a64ccf38558d47f2bf00135e3f244650fb1eb1a4d700e52b63920f",
+  "red-aggregate-attempt.log": "1ca7f3dea925a2ddb1f7cdf775e419e41ab0b38e343b562153be8cdeabd64f75",
+  "protocol.md": "dae6b5354ce335c8082fce82ae67a760acade8e345af6234d392d335a11680c3"
+}

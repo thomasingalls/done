@@ -1,3 +1,4 @@
+import { decodePositionResponse as decodeSelectedPositionResponse } from '../../account-protocol/positionDecision';
 import {
   historyAuthority,
   historyGeneration,
@@ -37,19 +38,34 @@ import {
   type InboundReadPage,
 } from '../../account-protocol/inboundTransport';
 import {
+  createOwnedInboundOriginals,
+  type OwnedInboundOriginals,
   encodeInboundRecord,
   decodeInboundRecord,
+  captureScopedInboundReceiptSyntax,
+  inboundReceiptViews,
+  inboundEntryMemoSlot,
+  INBOUND_PAGE_HEADER_BYTES,
   INBOUND_ENVELOPE_LIMIT,
   INBOUND_RECORD_LIMIT,
   INBOUND_UPDATE_BYTES,
   INBOUND_UPDATE_LIMIT,
   type InboundRecord,
+  type InboundOriginalSyntax,
+  type InboundReceiptSyntax,
+  type InboundReceiptViews,
 } from './inboundRecord';
-import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
-import { guardedSubtle } from './custodyCrypto';
+import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS, type OpenedRecord } from './contentRecord';
+import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
+import { guardedSubtle, utf8 } from './custodyCrypto';
+import { sameBytes, eraseVerified } from './verifiedRecords';
+import { eraseUnretained } from './verificationOwnership';
+import { StorageCompatibilityError } from './storageCompatibility';
+import type { VerificationMemo } from './verificationMemo';
 import { Y } from './yjs';
+import { captureInboundReceiptVersion, type InboundReceiptVersion } from './inboundReceiptVersion';
 
-export interface InboundContext {
+export interface InboundContext extends InboundReceiptVersion {
   baseline: {
     kind: 'promotion-genesis' | 'content-checkpoint' | 'history-checkpoint' | 'recovery-checkpoint';
     id: string;
@@ -121,7 +137,8 @@ const captureBytes = (bytes: Bytes, limit: number): Bytes => {
 };
 function captureContext(input: InboundContext): InboundContext {
   // Validate without copying any key until all other potentially failing fields have been captured.
-  const a = captureAuthority(input.authority),
+  const floor = captureInboundReceiptVersion(input),
+    a = captureAuthority(input.authority),
     baseline = { ...input.baseline },
     service = { ...input.service },
     reader = { ...input.reader },
@@ -200,6 +217,7 @@ function captureContext(input: InboundContext): InboundContext {
   }
   for (const [generation, key] of retainedKeys) retainedGenerationKeys.set(generation, key.slice());
   return {
+    ...floor,
     baseline,
     service,
     authority: a,
@@ -275,6 +293,10 @@ async function authenticateInboundWire(
     inboundPageMessage(p),
   );
   if (!pageVerified) fail('unverified');
+  assertInboundPagePrefix(c, r, p);
+}
+function assertInboundPagePrefix(c: InboundContext, r: InboundReadRequest, p: InboundReadPage) {
+  const a = c.authority;
   if (p.through < c.prefix.observedThrough || r.after > c.prefix.position) fail('prefix');
   if (c.history) {
     // A stored page is bounded by its own authenticated epoch. Later membership cuts cannot
@@ -359,13 +381,35 @@ async function openInboundEntry(
     throw cause;
   }
 }
+/** Private call construction only. Saved originals may have no legacy per-position encoding to
+ * compare; that never makes their expired request live, or permits an empty/duplicate receipt. */
+type InboundVerificationMode =
+  | { readonly kind: 'live' }
+  | { readonly kind: 'livePhysical'; readonly record: Bytes; readonly event: InboundRecord }
+  | {
+      readonly kind: 'stored';
+      readonly expectedRecord?: Bytes;
+      readonly originals?: InboundOriginalSyntax;
+    }
+  | {
+      readonly kind: 'storedPhysical';
+      readonly record: Bytes;
+      readonly event: InboundRecord;
+      readonly originals: InboundOriginalSyntax;
+    };
 async function verify(
   input: InboundContext,
   requestInput: Bytes,
   pageInput: Bytes,
   lifetime: InboundLifetime,
-  stored?: Bytes,
+  mode: InboundVerificationMode = { kind: 'live' },
+  selection?: {
+    index: number;
+    authenticate: typeof authenticateInboundWire;
+  },
+  liveOriginals?: OwnedInboundOriginals,
 ): Promise<InboundResult> {
+  const storedMode = mode.kind === 'stored' || mode.kind === 'storedPhysical';
   const assertCurrent = lifetime.assertCurrent.bind(lifetime),
     now = lifetime.now ? lifetime.now.bind(lifetime) : Date.now;
   const guard = () => {
@@ -373,37 +417,55 @@ async function verify(
     if (result !== undefined) fail('authority');
   };
   guard();
-  const request = captureBytes(requestInput, READ_REQUEST_LIMIT),
-    pageBytes = captureBytes(pageInput, READ_PAGE_LIMIT),
-    expectedRecord = stored ? captureBytes(stored, INBOUND_RECORD_LIMIT) : undefined;
+  const originals = storedMode ? mode.originals : liveOriginals?.syntax;
+  if (originals && (requestInput !== originals.requestBytes || pageInput !== originals.pageBytes))
+    fail('record');
+  const request = originals?.requestBytes ?? captureBytes(requestInput, READ_REQUEST_LIMIT),
+    pageBytes = originals?.pageBytes ?? captureBytes(pageInput, READ_PAGE_LIMIT),
+    expectedRecord =
+      mode.kind === 'stored' && mode.expectedRecord
+        ? captureBytes(mode.expectedRecord, INBOUND_RECORD_LIMIT)
+        : undefined;
   const c = captureContext(input),
     subtle = guardedSubtle(guard);
   let body: EnvelopeBody | undefined,
     transfer = false;
   try {
-    const r = decodeInboundRequest(request),
-      p = decodeInboundPage(pageBytes),
+    const r = originals?.request ?? decodeInboundRequest(request),
+      p = originals?.page ?? decodeInboundPage(pageBytes),
       a = c.authority;
     assertInboundScope(c, r);
-    if (r.limit !== 1) fail('unsupported');
+    if (!selection) {
+      if (r.limit !== 1) fail('unsupported');
+    } else if (
+      r.limit < 2 ||
+      !Number.isSafeInteger(selection.index) ||
+      selection.index < 0 ||
+      (p.entries.length > 0 && selection.index >= p.entries.length) ||
+      r.after + selection.index !== c.prefix.position
+    )
+      fail('prefix');
     checkInboundExtent(p, r);
     const current = () => {
       guard();
-      if (!expectedRecord) {
+      liveOriginals?.assertCurrent();
+      if (!storedMode) {
         const time = now();
         if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
         if (r.expires <= time) fail('expired');
       }
     };
     current();
-    await authenticateInboundWire(c, r, p, request, subtle);
+    await (selection?.authenticate ?? authenticateInboundWire)(c, r, p, request, subtle);
     if (!p.entries.length) {
-      if (r.after !== c.prefix.position || expectedRecord) fail('record');
+      if (r.after !== c.prefix.position || storedMode || mode.kind === 'livePhysical')
+        fail('record');
       current();
       return Object.freeze({ kind: 'empty', through: p.through, position: c.prefix.position });
     }
-    const entry = p.entries[0]!,
-      position = r.after + 1,
+    const index = selection?.index ?? 0,
+      entry = p.entries[index]!,
+      position = r.after + index + 1,
       old = position <= c.prefix.position,
       previous = old ? c.retained?.previous : c.prefix.link;
     if (!previous || (position === 1 && previous !== ZERO_REFUSAL)) fail('prefix');
@@ -422,7 +484,7 @@ async function verify(
       { proof, envelope: e, updateBytes } = checked;
     body = checked.body;
     if (old && hex(c.retained!.envelope) === hex(entry.envelope)) {
-      if (expectedRecord) fail('record');
+      if (storedMode || mode.kind === 'livePhysical') fail('record');
       current();
       return Object.freeze({ kind: 'duplicate', through: p.through, position });
     }
@@ -441,8 +503,36 @@ async function verify(
       link: proof.head.link,
       request,
       page: pageBytes,
+      ...(selection ? { entry: index } : {}),
     };
-    const record = encodeInboundRecord(event);
+    if (mode.kind === 'storedPhysical' || mode.kind === 'livePhysical') {
+      if (
+        c.inboundReceiptVersion !== 1 ||
+        kind !== 'received' ||
+        [
+          'baseline',
+          'lineage',
+          'head',
+          'reader',
+          'publisher',
+          'kind',
+          'position',
+          'previous',
+          'link',
+          'entry',
+        ].some(
+          (field) =>
+            event[field as keyof InboundRecord] !== mode.event[field as keyof InboundRecord],
+        )
+      )
+        fail('record');
+    }
+    const record =
+      mode.kind === 'storedPhysical' || mode.kind === 'livePhysical'
+        ? mode.record
+        : liveOriginals
+          ? liveOriginals.encodeLegacy(event)
+          : encodeInboundRecord(event);
     if (record.length + (kind === 'received' ? updateBytes : 0) > MAX_BATCH_BYTES) fail('size');
     if (expectedRecord && hex(record) !== hex(expectedRecord)) fail('record');
     current();
@@ -470,6 +560,247 @@ export const verifyInboundPage = (
   page: Bytes,
   lifetime: InboundLifetime,
 ): Promise<InboundResult> => verify(context, request, page, lifetime);
+/** One bounded forward range. Header crypto is shared only within this call's owned snapshots;
+ * each position, link, envelope, actor and lifetime still verifies before any result escapes.
+ * No native progress or persisted trust is produced here. */
+export const verifyInboundRange = (
+  input: InboundContext,
+  request: Bytes,
+  page: Bytes,
+  lifetime: InboundLifetime,
+): Promise<readonly InboundResult[]> => verifyRange(input, request, page, lifetime);
+/** Native preparation only: verify a fitting prefix within this turn's position allowance.
+ * An unselected raw tail is not verified, trusted or handed to the next owner. Every continuation
+ * authenticates the original again against its independently supplied current native prefix. */
+export const prepareInboundRange = (
+  input: InboundContext,
+  request: Bytes,
+  page: Bytes,
+  lifetime: InboundLifetime,
+  positions = RECEIVE_GROUP_LIMIT,
+): Promise<readonly InboundResult[]> => verifyRange(input, request, page, lifetime, positions);
+/** Prepare one self-contained physical page extent. All returned received results share the
+ * same receipt buffer: native callers must write it exactly once, atomically with every update.
+ * This prepares bytes only; the authenticated floor and native commit fence still belong to the owner. */
+export const prepareInboundPage = (
+  input: InboundContext,
+  request: Bytes,
+  page: Bytes,
+  lifetime: InboundLifetime,
+  positions = RECEIVE_GROUP_LIMIT,
+  budget: Readonly<{ bytes: number; records: number }> = {
+    bytes: MAX_BATCH_BYTES,
+    records: MAX_BATCH_RECORDS,
+  },
+): Promise<readonly InboundResult[]> =>
+  verifyRange(input, request, page, lifetime, positions, budget);
+async function verifyRange(
+  input: InboundContext,
+  requestInput: Bytes,
+  pageInput: Bytes,
+  lifetime: InboundLifetime,
+  positions?: number,
+  denseBudget?: Readonly<{ bytes: number; records: number }>,
+): Promise<readonly InboundResult[]> {
+  const assertCurrent = lifetime.assertCurrent.bind(lifetime),
+    guard = () => {
+      const result: unknown = assertCurrent();
+      if (result !== undefined) fail('authority');
+    };
+  guard();
+  const request = captureBytes(requestInput, READ_REQUEST_LIMIT),
+    page = captureBytes(pageInput, READ_PAGE_LIMIT),
+    context = captureContext(input),
+    ownedLifetime = {
+      assertCurrent: guard,
+      ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
+    },
+    results: InboundResult[] = [];
+  const dense = denseBudget && { bytes: denseBudget.bytes, records: denseBudget.records };
+  let physical: Bytes | undefined;
+  let originals: OwnedInboundOriginals | undefined;
+  let transferred = false,
+    authenticated = false,
+    bytes = 0,
+    records = 0;
+  try {
+    originals = createOwnedInboundOriginals(request, page);
+    const r = originals.syntax.request,
+      p = originals.syntax.page;
+    if (
+      dense &&
+      (context.inboundReceiptVersion !== 1 ||
+        positions === undefined ||
+        !Number.isSafeInteger(dense.bytes) ||
+        dense.bytes < 0 ||
+        dense.bytes > MAX_BATCH_BYTES ||
+        !Number.isSafeInteger(dense.records) ||
+        dense.records < 0 ||
+        dense.records > MAX_BATCH_RECORDS)
+    )
+      fail('size');
+    if (
+      positions !== undefined &&
+      (!Number.isSafeInteger(positions) || positions < 1 || positions > RECEIVE_GROUP_LIMIT)
+    )
+      fail('size');
+    const start = positions === undefined ? 0 : context.prefix.position - r.after;
+    if (
+      context.retained ||
+      !Number.isSafeInteger(start) ||
+      start < 0 ||
+      (positions === undefined && r.after !== context.prefix.position) ||
+      (positions !== undefined && (r.limit < 2 || start >= Math.max(1, p.entries.length)))
+    )
+      fail('prefix');
+    // Conservative size hint only: an indexed receipt repeats the original request/page as hex.
+    // The margin covers closed JSON fields. This grants no evidence or cursor progress; the fresh
+    // narrower read still needs the full verifier. Exact bounds remain enforced below/in the codec.
+    if (
+      positions !== undefined &&
+      (dense
+        ? INBOUND_PAGE_HEADER_BYTES + request.length + page.length > INBOUND_RECORD_LIMIT
+        : 2 * (request.length + page.length) + 1024 > INBOUND_RECORD_LIMIT)
+    ) {
+      guard();
+      transferred = true;
+      return Object.freeze(results);
+    }
+    const initialPrevious = context.prefix.link;
+    const extent = (count: number) => {
+      const proof = decodeSelectedPositionResponse(p.entries[start + count - 1]!.proof);
+      if (proof.kind !== 'accepted') return fail('record');
+      return {
+        baseline: context.baseline.id,
+        lineage: context.authority.lineage,
+        head: context.authority.head,
+        reader: context.reader.id,
+        publisher: context.publisher.id,
+        firstPosition: r.after + start + 1,
+        previous: initialPrevious,
+        lastLink: proof.head.link,
+        firstEntry: start,
+        entryCount: count,
+        request: originals!.syntax.requestBytes,
+        page: originals!.syntax.pageBytes,
+      };
+    };
+    const selected = Math.min(positions ?? 8, p.entries.length - start);
+    if (dense && selected > 0) physical = originals.encodePage(extent(selected));
+    // These bytes and authority were captured once above and never leave this call. Prefix and
+    // lifetime checks still run for every entry, including after the two wire signatures reuse.
+    const authenticate: typeof authenticateInboundWire = async (...args) => {
+      guard();
+      if (!authenticated) {
+        await authenticateInboundWire(...args);
+        guard();
+        authenticated = true;
+      } else assertInboundPagePrefix(args[0], args[1], args[2]);
+    };
+    for (let index = start; index < Math.max(1, p.entries.length); index++) {
+      if (positions !== undefined && results.length === positions) break;
+      let result: InboundResult;
+      try {
+        result = await verify(
+          context,
+          originals.syntax.requestBytes,
+          originals.syntax.pageBytes,
+          ownedLifetime,
+          physical
+            ? {
+                kind: 'livePhysical',
+                record: physical,
+                event: {
+                  baseline: context.baseline.id,
+                  lineage: context.authority.lineage,
+                  head: context.authority.head,
+                  reader: context.reader.id,
+                  publisher: context.publisher.id,
+                  kind: 'received',
+                  position: r.after + index + 1,
+                  previous: context.prefix.link,
+                  link: (() => {
+                    const proof = decodeSelectedPositionResponse(p.entries[index]!.proof);
+                    if (proof.kind !== 'accepted') return fail('record');
+                    return proof.head.link;
+                  })(),
+                  request: originals.syntax.requestBytes,
+                  page: originals.syntax.pageBytes,
+                  ...(r.limit > 1 ? { entry: index } : {}),
+                },
+              }
+            : undefined,
+          r.limit > 1 ? { index, authenticate } : undefined,
+          originals,
+        );
+      } catch (cause) {
+        // A bounded dense turn may keep only its already verified fitting prefix.
+        // The same size guard still refuses this entry; a fresh narrower read grants no trust.
+        if (dense && cause instanceof InboundError && cause.reason === 'size') break;
+        throw cause;
+      }
+      // Own plaintext before a final guard or aggregate bound can reject it.
+      results.push(result);
+      if (result.kind === 'received') {
+        bytes +=
+          (!dense || results.length === 1 ? result.record.length : 0) +
+          result.updates.reduce((n, b) => n + b.length, 0);
+        records += result.updates.length + (!dense || results.length === 1 ? 1 : 0);
+        if (
+          bytes > (dense?.bytes ?? MAX_BATCH_BYTES) ||
+          records > (dense?.records ?? MAX_BATCH_RECORDS)
+        ) {
+          if (positions === undefined) fail('size');
+          // Only a valid fitting prefix escapes. Erase this verified but unused result immediately.
+          results.pop();
+          if (!dense) result.record.fill(0);
+          for (const update of result.updates) update.fill(0);
+          break;
+        }
+        context.prefix = {
+          position: result.position,
+          link: result.link,
+          observedThrough: result.through,
+        };
+      } else if (result.kind !== 'empty') fail('prefix');
+      guard();
+    }
+    if (physical) {
+      if (!results.length) {
+        physical.fill(0);
+        physical = undefined;
+      } else if (results.length !== selected) {
+        const next = originals.encodePage(extent(results.length));
+        physical.fill(0);
+        physical = next;
+        for (let i = 0; i < results.length; i++)
+          results[i] = Object.freeze({ ...results[i]!, record: next });
+      }
+      originals.assertCurrent();
+    }
+    if (dense) {
+      const time = ownedLifetime.now ? ownedLifetime.now() : Date.now();
+      if (!Number.isSafeInteger(time) || time < 0 || r.expires > time + 60000) fail('request');
+      if (r.expires <= time) fail('expired');
+    }
+    guard();
+    transferred = true;
+    return Object.freeze(results);
+  } finally {
+    originals?.dispose();
+    request.fill(0);
+    page.fill(0);
+    context.generationKey.fill(0);
+    for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
+    if (!transferred) {
+      physical?.fill(0);
+      for (const result of results) {
+        if ('record' in result) result.record.fill(0);
+        if (result.kind === 'received') for (const update of result.updates) update.fill(0);
+      }
+    }
+  }
+}
 /** Recheck original signatures/bytes after request expiry using the independently replayed pre-event prefix.
  * This verifies one record only; the future owner must verify witness completeness and content coverage.
  */
@@ -480,7 +811,536 @@ export async function verifyStoredInbound(
 ): Promise<InboundResult> {
   const captured = captureBytes(bytes, INBOUND_RECORD_LIMIT),
     event = decodeInboundRecord(captured);
-  return verify(context, event.request, event.page, lifetime, captured);
+  return verify(
+    context,
+    event.request,
+    event.page,
+    lifetime,
+    { kind: 'stored', expectedRecord: captured },
+    event.entry === undefined
+      ? undefined
+      : { index: event.entry, authenticate: authenticateInboundWire },
+  );
+}
+
+/** Ephemeral syntax/byte ownership only. It grants no authority, accepted prefix or commit
+ * permission. Keep this object in one carrier task; never send it over the Worker boundary. */
+export interface InboundReceiptTurn {
+  inspect(record: OpenedRecord, scope: InboundReceiptVersion): InboundReceiptViews | undefined;
+  complete(retained: unknown): void;
+  dispose(): void;
+}
+interface InboundTurnRow {
+  readonly record: OpenedRecord;
+  readonly seq: number;
+  readonly gen: number;
+  readonly kind: OpenedRecord['kind'];
+  readonly input: Bytes;
+  readonly syntax: InboundReceiptSyntax;
+  readonly view: InboundReceiptViews;
+  readonly verificationViews: InboundReceiptViews;
+  readonly logical: readonly { entryIndex: number; event: InboundRecord }[];
+  claimed: boolean;
+  verified: boolean;
+}
+interface InboundTurnState {
+  inspect(record: OpenedRecord, scope: InboundReceiptVersion): InboundReceiptViews | undefined;
+  request(
+    record: OpenedRecord,
+    scope: InboundReceiptVersion,
+  ): Readonly<Pick<InboundReadRequest, 'publisher' | 'epoch' | 'after'>> | undefined;
+  epoch(bytes: Bytes): number | undefined;
+  claim(record: OpenedRecord, bytes: Bytes, scope: InboundReceiptVersion): InboundTurnRow;
+  finish(row: InboundTurnRow, result: VerifiedStoredInboundReceipt): void;
+  dispose(): void;
+}
+// This brands an ephemeral owning scope, never a stored page reference or acceptance proof.
+const inboundSyntaxTurnStates = new WeakMap<InboundReceiptTurn, InboundTurnState>();
+function freezeInboundSyntax(value: unknown, seen = new Set<object>()): void {
+  if (!value || typeof value !== 'object' || value instanceof Uint8Array || seen.has(value)) return;
+  seen.add(value);
+  for (const child of Object.values(value)) freezeInboundSyntax(child, seen);
+  Object.freeze(value);
+}
+export function createInboundReceiptTurn(): InboundReceiptTurn {
+  const rows = new Map<OpenedRecord, InboundTurnRow>(),
+    inputRows = new Map<Bytes, InboundTurnRow | null>(),
+    outputs: VerifiedStoredInboundReceipt[] = [],
+    parsers = new Set<object>();
+  let state: 'open' | 'complete' | 'closed' = 'open',
+    retained: unknown;
+  const active = () => {
+    if (state !== 'open') fail('record');
+  };
+  const dispose = () => {
+    if (state === 'closed') return;
+    state = 'closed';
+    // Map keys/input stamps are borrowed caller records and never enter the erasure graph.
+    eraseUnretained(
+      [[...rows.values()].map((r) => [r.syntax, r.view, r.logical]), outputs],
+      retained,
+    );
+    rows.clear();
+    inputRows.clear();
+    outputs.length = 0;
+    parsers.clear();
+    retained = undefined;
+  };
+  const current = (row: InboundTurnRow) => {
+    active();
+    if (
+      row.record.seq !== row.seq ||
+      row.record.gen !== row.gen ||
+      row.record.kind !== row.kind ||
+      row.record.bytes !== row.input ||
+      !sameBytes(row.input, row.syntax.bytes) ||
+      !sameBytes(row.view.receipt.record.request, row.syntax.receipt.record.request) ||
+      !sameBytes(row.view.receipt.record.page, row.syntax.receipt.record.page)
+    )
+      fail('record');
+  };
+  const capture = (record: OpenedRecord, scope: InboundReceiptVersion) => {
+    try {
+      active();
+      const floor = captureInboundReceiptVersion(scope);
+      const found = rows.get(record);
+      if (found) {
+        if (found.syntax.receipt.kind === 'page' && floor.inboundReceiptVersion !== 1)
+          throw new StorageCompatibilityError();
+        current(found);
+        return found;
+      }
+      if (
+        !Number.isSafeInteger(record.seq) ||
+        record.seq < 1 ||
+        !Number.isSafeInteger(record.gen) ||
+        record.gen < 1 ||
+        !['heads', 'outbound'].includes(record.kind)
+      )
+        fail('record');
+      const syntax = captureScopedInboundReceiptSyntax(record.bytes, scope);
+      if (!syntax) return;
+      freezeInboundSyntax(syntax);
+      const original = inboundReceiptViews(syntax);
+      // Legacy frames are decoded out of JSON; keep their public projection separate from
+      // private parsed originals. Binary projections share their one owned physical backing.
+      const receipt =
+        original.receipt.kind === 'legacy'
+          ? {
+              kind: 'legacy' as const,
+              record: {
+                ...original.receipt.record,
+                request: original.receipt.record.request.slice(),
+                page: original.receipt.record.page.slice(),
+              },
+            }
+          : original.receipt;
+      const privateLogical = [...original.entries()];
+      const verificationViews: InboundReceiptViews = Object.freeze({
+        ...original,
+        *entries() {
+          yield* privateLogical;
+        },
+      });
+      const logical = privateLogical.map((entry) =>
+        Object.freeze({
+          entryIndex: entry.entryIndex,
+          event: receipt.kind === 'legacy' ? receipt.record : entry.event,
+        }),
+      );
+      freezeInboundSyntax(receipt);
+      const view: InboundReceiptViews = Object.freeze({
+        receipt,
+        epoch: original.epoch,
+        count: original.count,
+        *entries() {
+          yield* logical;
+        },
+      });
+      for (const parser of [
+        syntax,
+        syntax.receipt,
+        syntax.originals,
+        syntax.originals.request,
+        syntax.originals.page,
+        view,
+        verificationViews,
+        receipt,
+      ])
+        parsers.add(parser);
+      const row: InboundTurnRow = {
+        record,
+        seq: record.seq,
+        gen: record.gen,
+        kind: record.kind,
+        input: record.bytes,
+        syntax,
+        view,
+        verificationViews,
+        logical,
+        claimed: false,
+        verified: false,
+      };
+      rows.set(record, row);
+      inputRows.set(row.input, inputRows.has(row.input) ? null : row);
+      return row;
+    } catch (cause) {
+      dispose();
+      throw cause;
+    }
+  };
+  const noParserEscape = (value: unknown, seen = new Set<object>()): void => {
+    if (!value || typeof value !== 'object' || value instanceof Uint8Array || seen.has(value))
+      return;
+    if (value === api || parsers.has(value)) fail('record');
+    seen.add(value);
+    if (value instanceof Map)
+      for (const [key, item] of value) {
+        noParserEscape(key, seen);
+        noParserEscape(item, seen);
+      }
+    else if (value instanceof Set) for (const item of value) noParserEscape(item, seen);
+    else for (const item of Object.values(value)) noParserEscape(item, seen);
+  };
+  const api: InboundReceiptTurn = Object.freeze({
+    inspect: (record: OpenedRecord, scope: InboundReceiptVersion) => capture(record, scope)?.view,
+    complete(value: unknown) {
+      try {
+        active();
+        for (const row of rows.values()) {
+          current(row);
+          if (!row.verified) fail('record');
+        }
+        noParserEscape(value);
+        retained = value;
+        state = 'complete';
+      } catch (cause) {
+        dispose();
+        throw cause;
+      }
+    },
+    dispose,
+  });
+  inboundSyntaxTurnStates.set(api, {
+    inspect: api.inspect,
+    request(record, scope) {
+      const row = capture(record, scope);
+      if (!row) return;
+      const { publisher, epoch, after } = row.syntax.originals.request;
+      return Object.freeze({ publisher, epoch, after });
+    },
+    epoch(bytes) {
+      try {
+        active();
+        const row = inputRows.get(bytes);
+        // Ambiguous aliased inputs take the ordinary independent classifier.
+        if (!row) return;
+        current(row);
+        return row.view.epoch;
+      } catch (cause) {
+        dispose();
+        throw cause;
+      }
+    },
+    claim(record, bytes, scope) {
+      const row = capture(record, scope);
+      if (!row || row.input !== bytes || row.kind !== 'heads' || row.claimed) fail('record');
+      row.claimed = true;
+      return row;
+    },
+    finish(row, result) {
+      current(row);
+      row.verified = true;
+      outputs.push(result);
+    },
+    dispose,
+  });
+  return api;
+}
+
+/** Brand-checked syntax projections only; supplied parser objects/functions grant nothing. */
+export function inspectOwnedInboundReceipt(
+  turn: InboundReceiptTurn,
+  record: OpenedRecord,
+  scope: InboundReceiptVersion,
+) {
+  const owner = inboundSyntaxTurnStates.get(turn);
+  if (!owner) fail('record');
+  return owner.inspect(record, scope);
+}
+export function inspectOwnedInboundRequest(
+  turn: InboundReceiptTurn,
+  record: OpenedRecord,
+  scope: InboundReceiptVersion,
+) {
+  const owner = inboundSyntaxTurnStates.get(turn);
+  if (!owner) fail('record');
+  return owner.request(record, scope);
+}
+/** Syntax epoch only, never authority. Uncaptured/ambiguous rows retain independent parsing. */
+export function ownedInboundReceiptEpoch(turn: InboundReceiptTurn, bytes: Bytes) {
+  const owner = inboundSyntaxTurnStates.get(turn);
+  if (!owner) fail('record');
+  return owner.epoch(bytes);
+}
+
+/** Detached evidence for one physical saved receipt. Logical entries share its exact owned
+ * originals. Callers still verify completeness/coverage and current native commit authority. */
+export interface VerifiedStoredInboundReceipt {
+  readonly record: Bytes;
+  readonly entries: readonly {
+    readonly index: number;
+    readonly event: InboundRecord;
+    readonly original: { readonly envelope: Bytes; readonly proof: Bytes };
+    readonly result: InboundResult;
+  }[];
+}
+/** Stored mode and owned syntax come only from these captured saved-byte arguments. Nothing
+ * supplied by a network response, parser projection or lifetime flag selects either of them. */
+export async function verifyStoredInboundReceipt(
+  input: InboundContext,
+  bytes: Bytes,
+  lifetime: InboundLifetime,
+  reuse?: { memo: VerificationMemo; sequence: number },
+  syntaxTurn?: { turn: InboundReceiptTurn; record: OpenedRecord },
+): Promise<VerifiedStoredInboundReceipt> {
+  const assertCurrent = lifetime.assertCurrent.bind(lifetime),
+    guard = () => {
+      const result: unknown = assertCurrent();
+      if (result !== undefined) fail('authority');
+    };
+  guard();
+  const context = captureContext(input),
+    ownedLifetime: InboundLifetime = {
+      assertCurrent: guard,
+      ...(lifetime.now ? { now: lifetime.now.bind(lifetime) } : {}),
+    },
+    entries: VerifiedStoredInboundReceipt['entries'][number][] = [];
+  let turnState: InboundTurnState | undefined, turnRow: InboundTurnRow | undefined;
+  let captured: InboundReceiptSyntax | undefined,
+    transferred = false,
+    physicalMemo = false;
+  let evidenceInputs: Bytes[] | undefined, memoProof: unknown, legacyMemoIndex: number | undefined;
+  try {
+    if (syntaxTurn) {
+      turnState = inboundSyntaxTurnStates.get(syntaxTurn.turn);
+      if (!turnState) fail('record');
+      turnRow = turnState.claim(syntaxTurn.record, bytes, context);
+    }
+    captured = turnRow?.syntax ?? captureScopedInboundReceiptSyntax(bytes, context);
+    if (!captured) fail('record');
+    const views = turnRow?.verificationViews ?? inboundReceiptViews(captured),
+      physical = captured.receipt.kind === 'page';
+    if (
+      captured.receipt.kind === 'page' &&
+      (context.retained || context.prefix.position !== captured.receipt.record.firstPosition - 1)
+    )
+      fail('prefix');
+    const logical = [...views.entries()],
+      syntax = captured;
+    let authenticated = false,
+      totalBytes = captured.bytes.length,
+      totalRecords = 1;
+    // No context except its fresh prefix changes inside this privately captured physical turn.
+    const authenticate: typeof authenticateInboundWire = async (...args) => {
+      guard();
+      if (!authenticated) {
+        await authenticateInboundWire(...args);
+        guard();
+        authenticated = true;
+      } else assertInboundPagePrefix(args[0], args[1], args[2]);
+    };
+    const run = async () => {
+      for (const { entryIndex, event } of logical) {
+        const original = syntax.originals.page.entries[entryIndex];
+        if (!original) fail('record');
+        const result = await verify(
+          context,
+          event.request,
+          event.page,
+          ownedLifetime,
+          physical
+            ? {
+                kind: 'storedPhysical',
+                record: syntax.bytes,
+                event,
+                originals: syntax.originals,
+              }
+            : { kind: 'stored', expectedRecord: syntax.bytes, originals: syntax.originals },
+          event.entry === undefined ? undefined : { index: entryIndex, authenticate },
+        );
+        entries.push(Object.freeze({ index: entryIndex, event, original, result }));
+        if (!('record' in result) || (physical && result.kind !== 'received')) fail('record');
+        if (result.kind === 'received') {
+          totalBytes += result.updates.reduce((sum, update) => sum + update.length, 0);
+          totalRecords += result.updates.length;
+          context.prefix = {
+            position: result.position,
+            link: result.link,
+            observedThrough: result.through,
+          };
+        }
+        if (totalBytes > MAX_BATCH_BYTES || totalRecords > MAX_BATCH_RECORDS) fail('size');
+        guard();
+      }
+    };
+    const transfer = (result: VerifiedStoredInboundReceipt) => {
+      if (turnState) turnState.finish(turnRow!, result);
+      transferred = true;
+      return result;
+    };
+    const memo = reuse?.memo;
+    if (!memo || (physical && !memo.checkReceipt)) {
+      await run();
+      guard();
+      return transfer(Object.freeze({ record: captured.bytes, entries: Object.freeze(entries) }));
+    }
+    const sequence = inboundInteger(reuse!.sequence, 1),
+      keyEntries = [...(context.retainedGenerationKeys ?? [])].sort(([a], [b]) => a - b),
+      memoContext = JSON.stringify({
+        ...context,
+        generationKey: undefined,
+        retainedGenerationKeys: keyEntries.map(([generation]) => generation),
+        retained: undefined,
+      });
+    // Own the comparison input independently: a memo erases its callback value after cloning it.
+    evidenceInputs = [
+      captured.bytes.slice(),
+      context.generationKey,
+      ...keyEntries.map(([, key]) => key),
+      ...(context.retained
+        ? [utf8(context.retained.previous), context.retained.envelope, context.retained.proof]
+        : []),
+    ];
+    if (physical) {
+      physicalMemo = true;
+      const requestLength = captured.originals.requestBytes.length,
+        pageLength = captured.originals.pageBytes.length;
+      const proof = await memo.checkReceipt!(
+        logical.map((e) => inboundEntryMemoSlot(sequence, e.entryIndex)),
+        memoContext,
+        evidenceInputs,
+        async () => {
+          await run();
+          return {
+            // The memo owns/erases callback values; an active syntax turn still owns its raw.
+            record: turnState ? captured!.bytes.slice() : captured!.bytes,
+            entries: entries.map((e) => {
+              if (e.result.kind !== 'received') fail('record');
+              const { record: _record, ...result } = e.result;
+              return {
+                index: e.index,
+                original: turnState
+                  ? { envelope: e.original.envelope.slice(), proof: e.original.proof.slice() }
+                  : e.original,
+                result,
+              };
+            }),
+          };
+        },
+        guard,
+      );
+      memoProof = proof;
+      guard();
+      if (
+        !proof ||
+        !(proof.record instanceof Uint8Array) ||
+        !sameBytes(proof.record, evidenceInputs[0]!) ||
+        !Array.isArray(proof.entries) ||
+        proof.entries.length !== logical.length
+      )
+        fail('record');
+      const request = proof.record.subarray(
+          INBOUND_PAGE_HEADER_BYTES,
+          INBOUND_PAGE_HEADER_BYTES + requestLength,
+        ),
+        page = proof.record.subarray(INBOUND_PAGE_HEADER_BYTES + requestLength);
+      if (page.length !== pageLength) fail('record');
+      const restored: VerifiedStoredInboundReceipt['entries'][number][] = [];
+      for (const [offset, view] of logical.entries()) {
+        const e = proof.entries[offset]!;
+        if (
+          !e ||
+          e.index !== view.entryIndex ||
+          e.result.kind !== 'received' ||
+          e.result.position !== view.event.position ||
+          e.result.link !== view.event.link ||
+          e.result.through !== captured.originals.page.through
+        )
+          fail('record');
+        restored.push(
+          Object.freeze({
+            index: e.index,
+            event: Object.freeze({ ...view.event, request, page }),
+            original: e.original,
+            result: Object.freeze({ ...e.result, record: proof.record }),
+          }),
+        );
+        guard();
+      }
+      return transfer(Object.freeze({ record: proof.record, entries: Object.freeze(restored) }));
+    }
+    const view = logical[0]!;
+    const result = await memo.check(
+      inboundEntryMemoSlot(sequence, view.entryIndex),
+      memoContext,
+      evidenceInputs,
+      async () => {
+        await run();
+        return entries[0]!.result;
+      },
+      guard,
+    );
+    memoProof = result;
+    guard();
+    if (!('record' in result) || !sameBytes(result.record, captured.bytes)) fail('record');
+    // The exact legacy encoding is preserved; its detached cache copy is not another retained row.
+    const restored = Object.freeze({ ...result, record: captured.bytes });
+    result.record.fill(0);
+    const entry = Object.freeze({
+      index: view.entryIndex,
+      event: view.event,
+      original: captured.originals.page.entries[view.entryIndex]!,
+      result: restored,
+    });
+    guard();
+    legacyMemoIndex = view.entryIndex;
+    return transfer(Object.freeze({ record: captured.bytes, entries: Object.freeze([entry]) }));
+  } finally {
+    context.generationKey.fill(0);
+    for (const key of context.retainedGenerationKeys?.values() ?? []) key.fill(0);
+    if (!transferred) eraseVerified(memoProof);
+    if (physicalMemo && !turnState) {
+      captured?.bytes.fill(0);
+      captured?.originals.requestBytes.fill(0);
+      captured?.originals.pageBytes.fill(0);
+    }
+    for (const input of evidenceInputs ?? []) input.fill(0);
+    const kept = transferred
+      ? new Set(
+          legacyMemoIndex === undefined ? entries.map((entry) => entry.index) : [legacyMemoIndex],
+        )
+      : undefined;
+    if (!turnState)
+      for (const [index, original] of captured?.originals.page.entries.entries() ?? [])
+        if (physicalMemo || !kept?.has(index)) {
+          original.envelope.fill(0);
+          original.proof.fill(0);
+        }
+    if (!transferred) {
+      if (!turnState) {
+        captured?.bytes.fill(0);
+        captured?.originals.requestBytes.fill(0);
+        captured?.originals.pageBytes.fill(0);
+      }
+      for (const entry of entries) {
+        if ('record' in entry.result) entry.result.record.fill(0);
+        if (entry.result.kind === 'received')
+          for (const update of entry.result.updates) update.fill(0);
+      }
+      turnState?.dispose();
+    }
+  }
 }
 
 /** Transient history reconstruction only. No durable inbound record or authority is produced.
