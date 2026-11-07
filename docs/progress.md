@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # 21runs explicitly carried; 15scoped510reruns declared
+status: in flight # native 6 declared reruns complete
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: complete native/fairness/Goals reruns; Goals quiet-host handshake pending
+blocks_on: fairness3 and Goals6; freshGoals quiet-host handshake required
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase519 records operator carryover21runs/7cells citing518 and declares15plain510reruns/5cells. Source510 ordinary125files+42separate unobservednative assets verifiedexact. Frozen specs, fixtures, browser, resourcebounds, gates anddeadlines retained. Post-run readonly copyinspection records baseline revision/historymode, with no observers added to timed runs. Execute520native six,521fairness three,522Goals six afterfreshquiet-host handshake; thenStage6amendment andstop. Noapp/gate/limit/formatchange, publication ordeployment. Post-reduction typing/full-reauth frequency remainsdebt.
-[Record](./development-evidence/2026-11-02-release-hardening/519-source510-carryover-plan/README.md).
+**Active bounded outcome.** Completed 6 declared frozen native journeys on plain510, 6/6 passing attempts, 0 noise retries; all applicable predicates retained. After each run, inspected only copies of saved end profiles; original bytes and native record digests unchanged. No timed observer or app/gate/limit/format change. 6/15 reruns complete alongside21operator-carried runs. Post-reduction typing cost remains unmeasured. Next: continue declared remainingcells, withfreshGoals handshake. Sequentialdocs-only patchprepared; no pushordeploy.
+[Record](./development-evidence/2026-11-02-release-hardening/520-source510-native-reruns/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

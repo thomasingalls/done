@@ -8392,3 +8392,10 @@ Operator directed a read-only audit, then a stop, before deciding whether old36p
 **Date:** 2026-11-07 · **Phase:** 519.
 
 Operator accepted518 and carried old-maintenance-normal/withheld, grown-normal/withheld, native-context, late-normal/withheld (21runs). Rerun only native-resumable, native-deep, fairness and bothGoals cells, three replicates each on plain510, frozen conditions unchanged. Inspect saved end profile copies after each run; add no timed observers. Preserve the noise rule and freshGoals handshake. Write Stage6amendment with21carried/15rerun and the unmeasured post-reduction typing debt, then stop. No app/gate/limit/format change.
+
+
+### Preserve frozen native conditions and post-run endpoint evidence
+
+**Date:** 2026-11-07 · **Phase:** 520.
+
+Apply the519operator decision without changing app, gates, limits or format. 6 declared native journeys complete. 6/6 attempts pass; every failed predicate and noise attempt, if any, remains visible. Post-run readonly endpoint metadata is a separate observation on copies, never a timed-run observer or proof of interruption frequency. Continue only the declared sequence, then stop afterStage6amendment.

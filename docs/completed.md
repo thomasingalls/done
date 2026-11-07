@@ -20650,3 +20650,13 @@ Recorded the operator’s explicit carryover of seven cells/21runs to source510 
 [Record](./development-evidence/2026-11-02-release-hardening/519-source510-carryover-plan/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Source510 native bounded rerun block
+
+**Date:** 2026-11-07 · **Phase:** 520.
+
+Completed 6 declared frozen native journeys on plain510, 6/6 passing attempts, 0 noise retries; all applicable predicates retained. After each run, inspected only copies of saved end profiles; original bytes and native record digests unchanged. No timed observer or app/gate/limit/format change. 6/15 reruns complete alongside21operator-carried runs. Post-reduction typing cost remains unmeasured.
+[Record](./development-evidence/2026-11-02-release-hardening/520-source510-native-reruns/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

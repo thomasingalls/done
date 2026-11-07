@@ -1,0 +1,973 @@
+{
+  "phase": 520,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+      "bytes": 2778
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source510-native-520-record-20261107/520-private-files.json",
+      "sha256": "cdc906f972584f51591a5207fbcdd3179a5326728373919dff6f377d269b5abd",
+      "bytes": 465
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/520-declaration.json",
+      "sha256": "da081ebf536bf8c0434be65847ef55fb0d27ca6cf158d549bdced3c5590bfff1",
+      "bytes": 2212
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/520-progress.json",
+      "sha256": "f39a6d2d79da6c8190a59661f52d171734891d2e6a8c361a235309b43846b8d2",
+      "bytes": 15094
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/520-block.log",
+      "sha256": "88972d05e010a6c6be3a03a4e83fa279e364d16b4124a2baf354c1a05f49d9ee",
+      "bytes": 7022
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-record-20261107/520-summary.json",
+      "sha256": "f798911a57479ba0c0d5300743ff54ce1cb2263cc8939558e6be67f744cfbfac",
+      "bytes": 15380
+    },
+    {
+      "localPath": "/private/tmp/done-source510-run-control-20261107/run-block.py",
+      "sha256": "c3e7068fc15bb34eff79f5e48879120fb99174c462c9189b314a7f0ae36e4e84",
+      "bytes": 8087
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/worker-resumable-history/result.json",
+      "sha256": "e132c01d5da706768ad3cf0c3fe495f673a29abda9c068ff5c6b802a203206ad",
+      "bytes": 28892
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/host-review.json",
+      "sha256": "ebb9e56fdbc9f9f975c08748d216ba2795607bb7d26bab3b24dece4e6ad12d84",
+      "bytes": 476
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/readonly-inspection.log",
+      "sha256": "2b64028b4be49e527d6ccefbf985898e0f97c2eb3b7ae528a65d15a94cb9393b",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/readonly-end-inspection/native-inspection.json",
+      "sha256": "8c95b410eb6c302e1bf33cce95c49184511caec96a31ba81f869892fcd7627a8",
+      "bytes": 1012
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/readonly-end-inspection/inspection-plan.json",
+      "sha256": "21ee7b24cd7d2ef9465c61a185532a3f0ab67719fa1e1e21bbbcb95556942e3a",
+      "bytes": 964
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/readonly-end-inspection/source-520-r1-native-resumable-0.json",
+      "sha256": "3e9cff87f99204ecf9f94460ba11d635142c47318384cd6d8b7fa8ef479c96fa",
+      "bytes": 5361
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/worker-resumable-history/cold-stages.jsonl",
+      "sha256": "4472bf634314f87d428001b128ec658520f16864c5fc8a167fe307ae15cfbc32",
+      "bytes": 276
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable-runner.log",
+      "sha256": "2f885ff23c4db5e0503d38caeaa25068f1fefda464d6630096565aa997d38321",
+      "bytes": 2006
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-resumable/run.json",
+      "sha256": "c63228340f60619f6d6c2a7e2b6f7301957253b3a85dfde5e532eb54e5625858",
+      "bytes": 2162
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-resumable/host-load.jsonl",
+      "sha256": "80caf3b8377d7d83a042ce3dba237e0ab20291273f954eaa10e3e2ca89b99024",
+      "bytes": 15442
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-resumable/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-resumable/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-resumable/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-resumable/power-log-after.txt",
+      "sha256": "958a235d27dc58c5c73e00a15be4840efd6b3011c1f06cdfe71da7a5a440ca20",
+      "bytes": 1890
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/composed-receive-1/result.json",
+      "sha256": "bd4c71a84b29e2685dffea29c4d0b7eeaebd04f6258879cac734ef97e9551464",
+      "bytes": 95157
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/host-review.json",
+      "sha256": "fddaee021715968e7e3062203e4ca5892700a65a273f59643de5143284212a61",
+      "bytes": 648
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/readonly-inspection.log",
+      "sha256": "46eb40cfe75dfea662ddde9b839da48e0c0146a9971e63362d95c681984b0714",
+      "bytes": 283
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/readonly-end-inspection/native-inspection.json",
+      "sha256": "a736092fa2951ea87200c28f4c1e8e6b805ef8583be777485004c8085893c884",
+      "bytes": 975
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/readonly-end-inspection/inspection-plan.json",
+      "sha256": "49852d8bc38ac98cfac5a17ce50511f25e55eb064928a0f93a9569f02de6f1dd",
+      "bytes": 948
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/readonly-end-inspection/source-520-r1-native-deep-0.json",
+      "sha256": "d389f4c2b26f65b96d9fd67c498544f5608f528a47474dbfbedf4ea076fad2a5",
+      "bytes": 6124
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/composed-receive-1/cold-stages.jsonl",
+      "sha256": "d17abe321e3c17b18e8c7c3cc271ee5df4a797f772d01be010be651f09f1ac3c",
+      "bytes": 151
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r1-native-deep-runner.log",
+      "sha256": "28367fa4b4431143d0ea28a8e6f334e2c7a447adf570584bc85d99b0959ffe56",
+      "bytes": 1950
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-deep/run.json",
+      "sha256": "e0cf4604408b616812eddfd30d51153b53c897821c9a0d7c9305cbf15f1728f7",
+      "bytes": 2106
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-deep/host-load.jsonl",
+      "sha256": "4218ccc7d7ef5e2f1ab8f0be475f65ebd3dcff4e7e1b390511153061fb6a199a",
+      "bytes": 10883
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-deep/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-deep/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-deep/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r1-native-deep/power-log-after.txt",
+      "sha256": "20f0011bbb4cd6d9da5e817d83d299fe6f6b50c34ea5a78feff4b21f1080f675",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/worker-resumable-history/result.json",
+      "sha256": "f3f618201e2e937c244758947acde7cfa78655d97c7a5c7ce63067cbcae50190",
+      "bytes": 28892
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/host-review.json",
+      "sha256": "cbf1a5c1b9a899cef7e0cf9542d8544ddc5406caca1deb421c3039e31a2f4850",
+      "bytes": 475
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/readonly-inspection.log",
+      "sha256": "907dc3241bf3fe6e0f4bd19d0498801612f8155661d1cd30b6b304d923339202",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/readonly-end-inspection/native-inspection.json",
+      "sha256": "d33c1882ff7baa2f19e1c94d089216f12680c5bb53df4d2d31270a49edb0c5ab",
+      "bytes": 1012
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/readonly-end-inspection/inspection-plan.json",
+      "sha256": "f354ae99d671859a13f1d66de2edf49e9831faf797ae0592b56d1d372dde5987",
+      "bytes": 964
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/readonly-end-inspection/source-520-r2-native-resumable-0.json",
+      "sha256": "58723156a888816a479d44c0e04e29623c392fa7e3d639e3ae9cf688dee92686",
+      "bytes": 5361
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/worker-resumable-history/cold-stages.jsonl",
+      "sha256": "aee1e716644558dcccd023bbd303be9adee5b2b3d3c717bdf036e6b89356b967",
+      "bytes": 276
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable-runner.log",
+      "sha256": "767a3918a2c4059e98ba26c9d31653dc534e21bc4b36f5e8ccec1cfd99fd8233",
+      "bytes": 2007
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-resumable/run.json",
+      "sha256": "1226e103962969256898f9711b6c7c2f889f0f73531b067cef439bc785d972d8",
+      "bytes": 2163
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-resumable/host-load.jsonl",
+      "sha256": "9a9001b0684dfd51ea497bf2aeb625d8ba9570072196ce3cf7062c7e55607f13",
+      "bytes": 13867
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-resumable/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-resumable/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-resumable/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-resumable/power-log-after.txt",
+      "sha256": "dfcf1322d1c0611f208bfc9b3f8d9ad25d3802c80635362d45b09339295548ac",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/composed-receive-1/result.json",
+      "sha256": "8c0f5f33fb32d0a9b0aa52bd4c61ab6f9636c101ad23c8cc92a32eaa5cf85636",
+      "bytes": 96232
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/host-review.json",
+      "sha256": "f98ff8b1c438f461d5a19c32196e137dcf98fe5634b10ef56bee9aeef2ff0486",
+      "bytes": 491
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/readonly-inspection.log",
+      "sha256": "fe5c2adc5f3ade457e622993203caf9a950b45ac1c01bf93feb0943cacb7ae64",
+      "bytes": 283
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/readonly-end-inspection/native-inspection.json",
+      "sha256": "af027463bc3ced18854447fe06644698b1f08e6805ca8375f4339fde6e25dd0e",
+      "bytes": 975
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/readonly-end-inspection/inspection-plan.json",
+      "sha256": "722b1a17163a78a269e255d813477a28103051ee6579b9d067c67bb01456d85d",
+      "bytes": 948
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/readonly-end-inspection/source-520-r2-native-deep-0.json",
+      "sha256": "addaa0fdd7237f5ff9aae4586ce6632b8942647aca367fa9e5c5e145de28aafc",
+      "bytes": 6124
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/composed-receive-1/cold-stages.jsonl",
+      "sha256": "e88327b0a898c1786e3202cee65c547b07b46ea213c87b1925349dfbdfee2fe0",
+      "bytes": 151
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r2-native-deep-runner.log",
+      "sha256": "8107538d037d636c3889bc42cf98ae9b706a24bdbf461193e6a3c2d7c83f3d6f",
+      "bytes": 1950
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-deep/run.json",
+      "sha256": "4c7efbb005911a51e27cab6034edc8f322b762d50ffee53594efa1d85981205b",
+      "bytes": 2106
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-deep/host-load.jsonl",
+      "sha256": "ed6fb65b92c6bcfa0f57b3f0b7a794bb6cdf87a27aecac4aabb3f83f0480b22e",
+      "bytes": 12575
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-deep/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-deep/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-deep/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r2-native-deep/power-log-after.txt",
+      "sha256": "236f135f640b8727b5e24f0319f9d769bee95a7caadee665b6e9bf075099ac34",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/worker-resumable-history/result.json",
+      "sha256": "dfff445c5d4f05100e6be480e06397131d097d0b0b538cfb5503178e5be0c6fc",
+      "bytes": 28892
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/host-review.json",
+      "sha256": "20c24a73b5fa372d929c8d318ccbd418ff26dc66f365470a2fcdca2c4fe28767",
+      "bytes": 475
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/readonly-inspection.log",
+      "sha256": "23885a9dd707f23cca8eee24061633fbeb1f14203a6f09d6440604a2336eb6bd",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/readonly-end-inspection/native-inspection.json",
+      "sha256": "efbee9b5cc5fb1035318158c6bb703b0b7e6155b58e3549a1831a0cee34d2e37",
+      "bytes": 1012
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/readonly-end-inspection/inspection-plan.json",
+      "sha256": "200fc84e8d80ca58382dc2e16f62d72b8b171cfe8e50fb86fb9071f469f7a9ed",
+      "bytes": 964
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/readonly-end-inspection/source-520-r3-native-resumable-0.json",
+      "sha256": "0904c1e53cd2a554b2f397e9a91423cc8a6c77406e05f2d9b7c230ef99dede2c",
+      "bytes": 5361
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/worker-resumable-history/cold-stages.jsonl",
+      "sha256": "eda771497a854ac390eb5b0e06dc8efc745337d74be7e4fa0f16c50f8e0468a2",
+      "bytes": 276
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable-runner.log",
+      "sha256": "cb0fe7609358fcac45ee1a2aa5a9d781e2623352484a5e5a85dad985d1dbef8c",
+      "bytes": 2005
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-resumable/run.json",
+      "sha256": "7173f5f218c6405cfffb53fe9806400ce7443f6cacb6a6401d822bd726323313",
+      "bytes": 2161
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-resumable/host-load.jsonl",
+      "sha256": "95063ea24ba3da53f2582e32304301bca3f948ac4c3b1e1ec0d772be629279e4",
+      "bytes": 13962
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-resumable/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-resumable/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-resumable/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-resumable/power-log-after.txt",
+      "sha256": "4b2d9751a96faf878246868348f2bd0d1bf791ef3b9304da5c9967219e0b2ef9",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/composed-receive-1/result.json",
+      "sha256": "5daeb22d2ac1d1d0267c0f79fef795a5f524b351c3f87b25aca90609af1f348c",
+      "bytes": 96924
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/host-review.json",
+      "sha256": "e49f7ec38c88d5b97ce58363026586a80c96a91ebfffb5942a5e1a1a99b88fbb",
+      "bytes": 697
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/readonly-inspection.log",
+      "sha256": "49094bfe19c0a96df20426e3bbbf4c00746ff72ec3acb69a51beefd4c2ef5118",
+      "bytes": 283
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/readonly-end-inspection/native-inspection.json",
+      "sha256": "ffdf6b0728f51d5d69aefafb7ee82517375746ec56ba67c8e5ceab39e273e1ff",
+      "bytes": 975
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/readonly-end-inspection/inspection-plan.json",
+      "sha256": "57d8d7f2d68b007f1eb2e75ab11c1af70da96f6965264e444f429842a7e4fbc7",
+      "bytes": 948
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/readonly-end-inspection/source-520-r3-native-deep-0.json",
+      "sha256": "89c8ef58f5e700cca35725618f4543de41c5fd8256e93e3836d4aae3975418a7",
+      "bytes": 6124
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/composed-receive-1/cold-stages.jsonl",
+      "sha256": "9ad039b2422be941b751cc1af89e016e19bdabd501231da29066755c0cbe235b",
+      "bytes": 151
+    },
+    {
+      "localPath": "/private/tmp/done-source510-native-520-20261107/r3-native-deep-runner.log",
+      "sha256": "3d83a78e756c2e182f5cffadb1bf39330f0d45f528f77ee1364a8febdc5d2fc5",
+      "bytes": 1949
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-deep/run.json",
+      "sha256": "6fa28d9f8769c46ddb55196903375a4f0a6398092b454e7b542c66a98b64da6a",
+      "bytes": 2105
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-deep/host-load.jsonl",
+      "sha256": "e58ee7e74734dfbd19ab4aeaba9d0799788bdacd62bcde4706e24ee72405fb6e",
+      "bytes": 12542
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-deep/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-deep/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-deep/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/520-r3-native-deep/power-log-after.txt",
+      "sha256": "7aa38f87cd29cd2da84012b7c2152ae396f397aae61b9b57ad0f9dbb8381f005",
+      "bytes": 231
+    }
+  ],
+  "summary": {
+    "phase": 520,
+    "block": "native",
+    "source": "plain510",
+    "declaredJourneys": 6,
+    "attempts": 6,
+    "passedAttempts": 6,
+    "allAccepted": true,
+    "failedPredicates": [],
+    "noiseRetries": 0,
+    "noTimedObserversAdded": true,
+    "postRunInspections": 6,
+    "everyInspectionReadOnly": true,
+    "rows": [
+      {
+        "name": "r1-native-resumable",
+        "key": "520-r1-native-resumable",
+        "cell": "native-resumable",
+        "replicate": 1,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+        "frozenSpec": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/worker-resumable-history/result.json",
+        "guards": {
+          "networkSchedulingParkedForLocalOnlyWork": true,
+          "savedSliceColdReopened": true,
+          "realHistoryRemoved": true,
+          "originalInputAndUndoAfterReduction": true,
+          "unchangedShippingReaderExact": true
+        },
+        "host": {
+          "samples": 10,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12740.44,
+            "min": 12740.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 16761,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 4.999711990356445
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/worker-resumable-history/private-profile",
+            "states": [
+              {
+                "database": "done.c79e23a71b16954c3bb64c6925959c3b",
+                "counterVersion": 5,
+                "revision": 2,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-native-520-20261107/r1-native-resumable/readonly-end-inspection/native-inspection.json",
+        "cold": [
+          {
+            "label": "saved-slice-reopen",
+            "ms": 7702,
+            "exact": true
+          },
+          {
+            "label": "public-shipping",
+            "ms": 2715,
+            "exact": true
+          }
+        ],
+        "catchupWaitMs": null,
+        "failedPredicates": [],
+        "accepted": true
+      },
+      {
+        "name": "r1-native-deep",
+        "key": "520-r1-native-deep",
+        "cell": "native-deep",
+        "replicate": 1,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+        "frozenSpec": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/composed-receive-1/result.json",
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "host": {
+          "samples": 7,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12740.44,
+            "min": 12740.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 17337,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 1204,
+              "process": "ghostty",
+              "seconds": 0
+            },
+            {
+              "pid": 17290,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/composed-receive-1/private-profile",
+            "states": [
+              {
+                "database": "done.676b077f8475e4198223acf65436b2d2",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-native-520-20261107/r1-native-deep/readonly-end-inspection/native-inspection.json",
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1866,
+            "exact": true
+          }
+        ],
+        "catchupWaitMs": 20042.63134765625,
+        "failedPredicates": [],
+        "accepted": true
+      },
+      {
+        "name": "r2-native-resumable",
+        "key": "520-r2-native-resumable",
+        "cell": "native-resumable",
+        "replicate": 2,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+        "frozenSpec": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/worker-resumable-history/result.json",
+        "guards": {
+          "networkSchedulingParkedForLocalOnlyWork": true,
+          "savedSliceColdReopened": true,
+          "realHistoryRemoved": true,
+          "originalInputAndUndoAfterReduction": true,
+          "unchangedShippingReaderExact": true
+        },
+        "host": {
+          "samples": 9,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12740.44,
+            "min": 12740.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 17613,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 9.996010065078735
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/worker-resumable-history/private-profile",
+            "states": [
+              {
+                "database": "done.c79e23a71b16954c3bb64c6925959c3b",
+                "counterVersion": 5,
+                "revision": 2,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-native-520-20261107/r2-native-resumable/readonly-end-inspection/native-inspection.json",
+        "cold": [
+          {
+            "label": "saved-slice-reopen",
+            "ms": 7707,
+            "exact": true
+          },
+          {
+            "label": "public-shipping",
+            "ms": 2793,
+            "exact": true
+          }
+        ],
+        "catchupWaitMs": null,
+        "failedPredicates": [],
+        "accepted": true
+      },
+      {
+        "name": "r2-native-deep",
+        "key": "520-r2-native-deep",
+        "cell": "native-deep",
+        "replicate": 2,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+        "frozenSpec": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/composed-receive-1/result.json",
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "host": {
+          "samples": 8,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12740.44,
+            "min": 12740.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 4.998183965682983
+            },
+            {
+              "pid": 19379,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 4.999620199203491
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/composed-receive-1/private-profile",
+            "states": [
+              {
+                "database": "done.676b077f8475e4198223acf65436b2d2",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-native-520-20261107/r2-native-deep/readonly-end-inspection/native-inspection.json",
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1916,
+            "exact": true
+          }
+        ],
+        "catchupWaitMs": 21827.58251953125,
+        "failedPredicates": [],
+        "accepted": true
+      },
+      {
+        "name": "r3-native-resumable",
+        "key": "520-r3-native-resumable",
+        "cell": "native-resumable",
+        "replicate": 3,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+        "frozenSpec": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/worker-resumable-history/result.json",
+        "guards": {
+          "networkSchedulingParkedForLocalOnlyWork": true,
+          "savedSliceColdReopened": true,
+          "realHistoryRemoved": true,
+          "originalInputAndUndoAfterReduction": true,
+          "unchangedShippingReaderExact": true
+        },
+        "host": {
+          "samples": 9,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12740.44,
+            "min": 12740.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 19850,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 10.00125789642334
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/worker-resumable-history/private-profile",
+            "states": [
+              {
+                "database": "done.c79e23a71b16954c3bb64c6925959c3b",
+                "counterVersion": 5,
+                "revision": 2,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-native-520-20261107/r3-native-resumable/readonly-end-inspection/native-inspection.json",
+        "cold": [
+          {
+            "label": "saved-slice-reopen",
+            "ms": 7713,
+            "exact": true
+          },
+          {
+            "label": "public-shipping",
+            "ms": 2605,
+            "exact": true
+          }
+        ],
+        "catchupWaitMs": null,
+        "failedPredicates": [],
+        "accepted": true
+      },
+      {
+        "name": "r3-native-deep",
+        "key": "520-r3-native-deep",
+        "cell": "native-deep",
+        "replicate": 3,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-native-repaired-473-20261106/native.config.ts",
+        "frozenSpec": "/private/tmp/done-native-repaired-473-20261106/native.spec.ts",
+        "appOutcome": "passed",
+        "result": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/composed-receive-1/result.json",
+        "guards": {
+          "exactSourceAcceptedBeforeSenderClosed": true,
+          "noNativeReceiveFailureAfterMarker": true,
+          "automaticNativePeerReceiveAndWindowApply": true,
+          "peerExcludedFromLocalUndo": true,
+          "originalAccountReaderColdExact": true
+        },
+        "host": {
+          "samples": 8,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12740.44,
+            "last": 12740.44,
+            "min": 12740.44,
+            "max": 12740.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 10.005276918411255
+            }
+          ],
+          "allHighCPUStreaks": [
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 10.005276918411255
+            },
+            {
+              "pid": 20362,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 20330,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 15.00209093093872
+            }
+          ],
+          "eligibleNoiseRetry": true
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/composed-receive-1/private-profile",
+            "states": [
+              {
+                "database": "done.676b077f8475e4198223acf65436b2d2",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-native-520-20261107/r3-native-deep/readonly-end-inspection/native-inspection.json",
+        "cold": [
+          {
+            "label": "original-account-reader",
+            "ms": 1871,
+            "exact": true
+          }
+        ],
+        "catchupWaitMs": 22726.0439453125,
+        "failedPredicates": [],
+        "accepted": true
+      }
+    ],
+    "carryoverRuns": 21,
+    "cumulativeRerunJourneys": 6,
+    "remainingReruns": 9
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}
