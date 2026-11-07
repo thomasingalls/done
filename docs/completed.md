@@ -20670,3 +20670,13 @@ Completed 3 declared frozen fairness journeys on plain510, 3/3 passing attempts,
 [Record](./development-evidence/2026-11-02-release-hardening/521-source510-fairness-reruns/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Source510 Goals Undo guard failure and bounded stop
+
+**Date:** 2026-11-07 · **Phase:** 522.
+
+Ran three of six declared frozen Goals journeys after the fresh quiet-host reply. Desktopr1 and mobile4xr1 pass; desktopr2 fails the original immediate Undo text-change assertion at stall.spec.ts:90, after exactParagraph and returnInputPreserved pass. No recorded page error; Redo/export/cold not reached. Failure is not noise-eligible: swapflat, displayon, maximumhighCPUstreak5.004s. Saved failure profile v2/revision0/complete excludes508’s reducedwarmcatch; underlying cause remains unproved (eventualUndo versus immediateMirror/assertion timing). Allthree endprofiles inspectedonlyoncopies, native/sourcebytesunchanged. No source/test/gate/wait/limit/formatchange, observeraddition orretry. Three laterGoalsruns remainunrun. Total12/15reruns attempted,11pass1fail;21carried remainseparate. RecordStage6amendment andstop.
+[Record](./development-evidence/2026-11-02-release-hardening/522-source510-goals-undo-stop/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

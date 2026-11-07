@@ -1,0 +1,689 @@
+{
+  "phase": 522,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+      "bytes": 2778
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-record-20261107/522-private-files.json",
+      "sha256": "c1c84d4eb9c3aeecd0c1d47a19ac0f77b094437ec1610b4980d9c2b8a390860a",
+      "bytes": 671
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/522-declaration.json",
+      "sha256": "0446b92bb7338b06c0e6c51f125f2050242485f2b77e03b0fbf3d0602e639301",
+      "bytes": 1450
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/goals-host-handshake.json",
+      "sha256": "d360dbbe61aa42b127598d1742593ef38afdc06045d0f9207b2a7626c519d9bb",
+      "bytes": 277
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/522-progress.json",
+      "sha256": "8941d2865a2de77b20d303f3c23877955302305a21c5c4d3ad6c629db12ec941",
+      "bytes": 32300
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/522-block.log",
+      "sha256": "6bbd64cfc96ae47c67e952bd7f9f7af3ec436a5efad6bbf3983be72b885899e6",
+      "bytes": 26756
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-record-20261107/522-summary.json",
+      "sha256": "06118b38d5b91d839439999c09a7241ac28edd08620d2ec097a89f8c956065d0",
+      "bytes": 11274
+    },
+    {
+      "localPath": "/private/tmp/done-source510-run-control-20261107/run-block.py",
+      "sha256": "c3e7068fc15bb34eff79f5e48879120fb99174c462c9189b314a7f0ae36e4e84",
+      "bytes": 8087
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/result.json",
+      "sha256": "669c1888cc868f021165671c6b1005d19189f133d02a1877828d413539078e0c",
+      "bytes": 2588171
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/host-review.json",
+      "sha256": "392fe478416bda5f3691025f5112360edb9e33ed0624d16c8efcdd3fbb83ac23",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/readonly-inspection.log",
+      "sha256": "3bafb25b4d7a9a6c2e3104abcf5fa6bf3cfb85065b4773e3bbeb3dfab7fc6e80",
+      "bytes": 297
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/readonly-end-inspection/native-inspection.json",
+      "sha256": "7b47b96404fad2893c7393dddd1820834c0fc5022ff4c87dba6170d02cc447d3",
+      "bytes": 973
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/readonly-end-inspection/inspection-plan.json",
+      "sha256": "d6ad1b20320f5ebfc6444acd2635185fff4bfd065337d9636b66f3ec5cb10459",
+      "bytes": 932
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/readonly-end-inspection/source-522-r1-goals-desktop-0.json",
+      "sha256": "c3a765192ef5b31c41490edc49e868d8e87db9d86730c897df3160d5652a594d",
+      "bytes": 7634
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/analysis.json",
+      "sha256": "65323b0a767576fd56e666acab158561927511afbcc39e6ad8bd51faf61063ea",
+      "bytes": 4615
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/analysis-run.log",
+      "sha256": "e2571cb09964e5ba8dcadfdf1ae4060d549ad2f065773427e6f93d202ab78e14",
+      "bytes": 1981
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/cold-stages.jsonl",
+      "sha256": "00da687248cface0ccb03608ac84c2d836872b5b2b1b5490bfece9ccb98757e7",
+      "bytes": 139
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop-runner.log",
+      "sha256": "60dc4f9b8d94c90289357603c291ec52aef68823f93144238b2c6d1c23aa96d1",
+      "bytes": 1929
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/run.json",
+      "sha256": "84b1a1e7d312862cb90525073ab1a51d0b8338e2cd72d714a009d2c3a54c88fc",
+      "bytes": 2101
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/host-load.jsonl",
+      "sha256": "fb0b3fa2bab508e951c0632fccd7b689dc023fbd0533025acaa34cee2013e388",
+      "bytes": 61750
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/child.log",
+      "sha256": "039b7c7ee69cb767affb2a939b5a63aef986ee8e9a34a7a5fbef3e45a646282c",
+      "bytes": 462
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-desktop/power-log-after.txt",
+      "sha256": "b33d759b347ad5d9fc282dd1cb2c0e43a9a37fffcd121ac749d8e023033cb4ea",
+      "bytes": 1812
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/result.json",
+      "sha256": "177fd494a25f3278d7cb67761aec0e740c4201b62e6e69b85a1535e546d3682d",
+      "bytes": 2820574
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/host-review.json",
+      "sha256": "afd2dca0dfe9247c4d2bbc4e5be8705ee6432dbed4f6d46035bbb41c484102b0",
+      "bytes": 394
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/readonly-inspection.log",
+      "sha256": "60d275e3e7b60d89ccad73eaeb88d8d2344d3239ae2f7245a89be6575dedd1b0",
+      "bytes": 298
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/readonly-end-inspection/native-inspection.json",
+      "sha256": "1960c4ec0696166a3e9b382e02c0745897783bc7365ae88e8e5a9180b4ae435f",
+      "bytes": 977
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/readonly-end-inspection/inspection-plan.json",
+      "sha256": "0eacc7faebb7fab3c2de03a070239a1bab1da1ca47cf4f4d39d0ace508356ffe",
+      "bytes": 934
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/readonly-end-inspection/source-522-r1-goals-mobile4x-0.json",
+      "sha256": "7e177d3d54b3843049f20bd3dd78ab629d093750d9d5d91f887abe12f2b840e4",
+      "bytes": 6427
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/analysis.json",
+      "sha256": "d8edc7183c7c43d75b801f80f5f7c91272778d36affca3016130e16369ef40fd",
+      "bytes": 6710
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/analysis-run.log",
+      "sha256": "b16d22102608c9f3a171fac1aa9876943db4caa8a03d274ce8aabfbdfa8133af",
+      "bytes": 1905
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/cold-stages.jsonl",
+      "sha256": "95e24bbd3e186dd08f6c527aca68077aa2f429d6999b06f1575be43ba5a77249",
+      "bytes": 139
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x-runner.log",
+      "sha256": "f7d229bd870b72c17ff04c4017bbf1aff52838c8e88e599fd77a521831a8f6cb",
+      "bytes": 1931
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/run.json",
+      "sha256": "a5cf6c06534c8fd7ad3236adfc3b6af2905fab14a1e824d3fc5f5d1e97ac520e",
+      "bytes": 2103
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/host-load.jsonl",
+      "sha256": "de64156cefdd9010e420d2cabe6f699bcc971150dd5c7d4d0df2ea0ecc9ccccb",
+      "bytes": 60336
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/child.log",
+      "sha256": "4eccff9c6d31a0906f185a11b8fa80e3d59fc3d4d0a0f72e9ad5392c15467ed4",
+      "bytes": 461
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r1-goals-mobile4x/power-log-after.txt",
+      "sha256": "f1947496d5609d2a921819d626269a97b18cb21c356979c7a32d8c8337b8e801",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/result.json",
+      "sha256": "15d9d9971e545cc692fce7650ed7bd3c50366b3b0ec95694e0ab6c480dcd453e",
+      "bytes": 4870279
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/host-review.json",
+      "sha256": "a6a5ee4478c0fd9f5e3154cae7f93503caebcc8d55a1acc467f495909323b1ff",
+      "bytes": 505
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/readonly-inspection.log",
+      "sha256": "8391675582a0a36f07744f8b5fecd206c5096b4f72f1c9f6f3507a5ffefd3fcf",
+      "bytes": 285
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/readonly-end-inspection/native-inspection.json",
+      "sha256": "c59abf2b15cf910bac847e622789122ee56e49d919e4a9ef0824dfc6963d8d8f",
+      "bytes": 962
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/readonly-end-inspection/inspection-plan.json",
+      "sha256": "0ea714e925266a8c20483895b6300a31b7838b087752600202132a1e98f172b8",
+      "bytes": 932
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/readonly-end-inspection/source-522-r2-goals-desktop-0.json",
+      "sha256": "655c316c60b14f17bd4d91ce31d3a335fbfa49ed7052c1cb469d457c4878fa95",
+      "bytes": 15114
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop-runner.log",
+      "sha256": "ad19f63f46f379cb6e5339c72727347c82d255a38c9363e3cfe6d9224a7ce448",
+      "bytes": 1926
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/run.json",
+      "sha256": "88e76a4845195defe16c206da4c0629b23ad975770c819b270c3b8e89357a051",
+      "bytes": 2098
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/host-load.jsonl",
+      "sha256": "68030bccd56a0087ce6fae12ede5cbec383c06514c7788697db2eb733f352384",
+      "bytes": 59029
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/child.log",
+      "sha256": "7d639d8d5b08c43ead43d2be099e7a04a52c80640d0fc8a1fa939441b7ccffbd",
+      "bytes": 17769
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/522-r2-goals-desktop/power-log-after.txt",
+      "sha256": "1aa3c4b0e3bf88479ad25e2c362bac6eaae584a3f8218b9f9a2cb9aabde42b40",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/artifacts/stall-released-Goals-susta-1ba5b-lifecycle-return-diagnostic/error-context.md",
+      "sha256": "63e162e456e216c78044aa563b252188abed7acf1435349db19d6192fb06e225",
+      "bytes": 26045
+    }
+  ],
+  "summary": {
+    "phase": 522,
+    "block": "goals",
+    "source": "plain510",
+    "status": "stopped-on-functional-guard",
+    "declaredJourneys": 6,
+    "attempts": 3,
+    "passedAttempts": 2,
+    "failedAttempts": 1,
+    "unrun": [
+      "r2-goals-mobile4x",
+      "r3-goals-desktop",
+      "r3-goals-mobile4x"
+    ],
+    "allAccepted": false,
+    "failedCell": "goals-desktop",
+    "incompleteCell": "goals-mobile4x",
+    "noiseRetries": 0,
+    "noiseEligibleFailure": false,
+    "noTimedObserversAdded": true,
+    "postRunInspections": 3,
+    "everyInspectionReadOnly": true,
+    "rows": [
+      {
+        "name": "r1-goals-desktop",
+        "key": "522-r1-goals-desktop",
+        "cell": "goals-desktop",
+        "replicate": 1,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-goals-gates-478-20261106/stall.config.ts",
+        "frozenSpec": "/private/tmp/done-goals-gates-478-20261106/stall.spec.ts",
+        "appOutcome": "completed-diagnostic",
+        "result": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/result.json",
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "host": {
+          "samples": 39,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12692.44,
+            "last": 12692.44,
+            "min": 12692.44,
+            "max": 12692.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 93320,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 5.001918077468872
+            },
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/private-profile",
+            "states": [
+              {
+                "database": "done.cc637a85f6c44242d12204cd6f3eee5b",
+                "counterVersion": 5,
+                "revision": 1,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-goals-522-20261107/r1-goals-desktop/readonly-end-inspection/native-inspection.json",
+        "originalDiagnosticCompleted": true,
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 6.77294921875,
+        "rafP95Ms": 15.374755859375,
+        "rafMaxMs": 25.342529296875,
+        "phases": {
+          "paragraph": {
+            "start": 1794064098120.7998,
+            "end": 1794064214831.7998,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 7288,
+              "p50": 16,
+              "p95": 17.199951171875,
+              "p99": 21.300048828125,
+              "max": 35.5,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1794064214941.0999,
+            "end": 1794064234947.5,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 17.099853515625,
+              "p99": 17.199951171875,
+              "max": 18,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1794064254950.9724,
+            "end": 1794064275015.7,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1252,
+              "p50": 16.099853515625,
+              "p95": 17.900146484375,
+              "p99": 23.099853515625,
+              "max": 52.10009765625,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 2497,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "qualification": "Unchanged frozen Goals diagnostic; key-to-rAF is not the existing mutation16ms gate and no peer gate is measured.",
+        "accepted": true,
+        "failedPredicates": []
+      },
+      {
+        "name": "r1-goals-mobile4x",
+        "key": "522-r1-goals-mobile4x",
+        "cell": "goals-mobile4x",
+        "replicate": 1,
+        "noiseRetry": false,
+        "wrapperExit": 0,
+        "frozenConfig": "/private/tmp/done-goals-gates-478-20261106/stall.config.ts",
+        "frozenSpec": "/private/tmp/done-goals-gates-478-20261106/stall.spec.ts",
+        "appOutcome": "completed-diagnostic",
+        "result": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/result.json",
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true,
+          "undoRedo": true,
+          "lockReopenExact": true
+        },
+        "host": {
+          "samples": 38,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12692.44,
+            "last": 12692.44,
+            "min": 12692.44,
+            "max": 12692.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 94068,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 29.996289014816284
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/private-profile",
+            "states": [
+              {
+                "database": "done.cc637a85f6c44242d12204cd6f3eee5b",
+                "counterVersion": 5,
+                "revision": 1,
+                "historyMode": "baseline-plus-suffix",
+                "hasBaseline": true
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-goals-522-20261107/r1-goals-mobile4x/readonly-end-inspection/native-inspection.json",
+        "originalDiagnosticCompleted": true,
+        "denominator": {
+          "offered": 779,
+          "observed": 779,
+          "matched": true,
+          "allTrustedFocusedVisible": true
+        },
+        "beforeinputP95Ms": 4.37890625,
+        "rafP95Ms": 34.3681640625,
+        "rafMaxMs": 49.528076171875,
+        "phases": {
+          "paragraph": {
+            "start": 1794064290256.8,
+            "end": 1794064406987,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 6567,
+              "p50": 16,
+              "p95": 38.5,
+              "p99": 45.5,
+              "max": 72.5,
+              "over100ms": 0
+            }
+          },
+          "idle": {
+            "start": 1794064407100.9001,
+            "end": 1794064427133,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 16.60009765625,
+              "p99": 17,
+              "max": 32,
+              "over100ms": 0
+            }
+          },
+          "return": {
+            "start": 1794064447134.857,
+            "end": 1794064467206.3,
+            "longTasks": {
+              "n": 0
+            },
+            "worstTasks": [],
+            "heartbeatGapMs": {
+              "n": 1249,
+              "p50": 16,
+              "p95": 16.699951171875,
+              "p99": 17,
+              "max": 31.39990234375,
+              "over100ms": 0
+            }
+          }
+        },
+        "workload": {
+          "sentences": 7,
+          "characters": 779,
+          "words": 135,
+          "periodMs": 150,
+          "standardizedWpm": 80
+        },
+        "initialTextLength": 13407,
+        "profiled": false,
+        "cold": [
+          {
+            "label": "goals-lock-reopen",
+            "ms": 2331,
+            "exact": true
+          }
+        ],
+        "cold15s": true,
+        "qualification": "Unchanged frozen Goals diagnostic; key-to-rAF is not the existing mutation16ms gate and no peer gate is measured.",
+        "accepted": true,
+        "failedPredicates": []
+      },
+      {
+        "name": "r2-goals-desktop",
+        "key": "522-r2-goals-desktop",
+        "cell": "goals-desktop",
+        "replicate": 2,
+        "noiseRetry": false,
+        "wrapperExit": 1,
+        "frozenConfig": "/private/tmp/done-goals-gates-478-20261106/stall.config.ts",
+        "frozenSpec": "/private/tmp/done-goals-gates-478-20261106/stall.spec.ts",
+        "appOutcome": "failed",
+        "result": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/result.json",
+        "guards": {
+          "exactParagraph": true,
+          "returnInputPreserved": true
+        },
+        "host": {
+          "samples": 37,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12692.44,
+            "last": 12692.44,
+            "min": 12692.44,
+            "max": 12692.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 21295,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 95250,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 5.004288911819458
+            }
+          ],
+          "eligibleNoiseRetry": false
+        },
+        "inspectionExit": 0,
+        "endBaselines": [
+          {
+            "profile": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/private-profile",
+            "states": [
+              {
+                "database": "done.cc637a85f6c44242d12204cd6f3eee5b",
+                "counterVersion": 2,
+                "revision": 0,
+                "historyMode": "complete",
+                "hasBaseline": false
+              }
+            ],
+            "nativeReadOnlyUnchanged": true,
+            "sourceFilesUnchanged": true
+          }
+        ],
+        "nativeInspection": "/private/tmp/done-source510-goals-522-20261107/r2-goals-desktop/readonly-end-inspection/native-inspection.json",
+        "failure": "functional or apparatus failure; classify under existing stop rules",
+        "coldFailure": false,
+        "accepted": false,
+        "failedPredicates": [
+          {
+            "predicate": "originalGoalsUndoChangesDocument",
+            "source": "frozen stall.spec.ts:90",
+            "observed": "documentText immediately after ControlOrMeta+z equals beforeUndo",
+            "classification": "unresolved functional guard failure; not a latency miss",
+            "coldAttempted": false
+          }
+        ],
+        "cause": "Not determined: eventual Undo failure versus immediate assertion/mirror timing remains unresolved"
+      }
+    ],
+    "carryoverRuns": 21,
+    "cumulativeRerunAttempts": 12,
+    "cumulativePassingReruns": 11,
+    "remainingUnrun": 3,
+    "postReductionTypingCostUnmeasured": true
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

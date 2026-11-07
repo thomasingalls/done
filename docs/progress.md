@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # fairness 3 declared reruns complete
+status: in flight # Goals stopped on original Undo guard; Stage6incomplete amendment next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: Goals6; freshquiet-host handshake required
+blocks_on: unresolved Goalsdesktopreplicate2 Undo guard; later3Goalsruns unrun; no app/test changeauthorized
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Completed 3 declared frozen fairness journeys on plain510, 3/3 passing attempts, 0 noise retries; all applicable predicates retained. After each run, inspected only copies of saved end profiles; original bytes and native record digests unchanged. No timed observer or app/gate/limit/format change. 9/15 reruns complete alongside21operator-carried runs. Post-reduction typing cost remains unmeasured. Next: continue declared remainingcells, withfreshGoals handshake. Sequentialdocs-only patchprepared; no pushordeploy.
-[Record](./development-evidence/2026-11-02-release-hardening/521-source510-fairness-reruns/README.md).
+**Active bounded outcome.** Phase522stoppedGoalsafter3of6declaredruns:desktopr1/mobile4xr1pass; desktopr2failsfrozenUndoassertion(stall.spec.ts:90, immediatepost-CmdZdocumentunchanged). Paragraph/returnchecks pass; Redo/export/coldnotreached. Noisefailurecriterionnotmet(swapflat/displayon/maxCPUstreak5.004s); noretry. Savedfailedprofilev2/revision0/complete excludes508reducedwarmcatch; eventualUndo vs immediateassertion/mirrortiming unresolved. All3endprofiles readonly-copyinspectionunchanged. Native6+fairness3pass; total12of15attempted,11pass1fail,3unrun;21carried remain. Noapp/test/gate/wait/limit/formatchange. WriteStage6incompleteamendmentthenSTOPforoperator.
+[Record](./development-evidence/2026-11-02-release-hardening/522-source510-goals-undo-stop/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

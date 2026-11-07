@@ -8406,3 +8406,10 @@ Apply the519operator decision without changing app, gates, limits or format. 6 d
 **Date:** 2026-11-07 · **Phase:** 521.
 
 Apply the519operator decision without changing app, gates, limits or format. 3 declared fairness journeys complete. 3/3 attempts pass; every failed predicate and noise attempt, if any, remains visible. Post-run readonly endpoint metadata is a separate observation on copies, never a timed-run observer or proof of interruption frequency. Continue only the declared sequence, then stop afterStage6amendment.
+
+
+### Honor functional-failure stop without changing the frozen Undo assertion
+
+**Date:** 2026-11-07 · **Phase:** 522.
+
+Goalsdesktopreplicate2 fails originalUndo text-change guard, so its cell fails and laterGoalsjourneys stop. The fixedhostnoisecriterion isnotmet; no repeat isstarted. Preservealllogs/profiles/observations. Endmetadata isrevision0complete, so the508statement isunreachable inthatworkspace; this doesnot establishharness orapp rootcause. Do not adjustthe assertion, waitforcompletion, addobservers orpatchappunderthisauthorization. Stage6muststate21carried,12attemptedof15(11pass1fail),3unrun—not falselyclaim15complete.
