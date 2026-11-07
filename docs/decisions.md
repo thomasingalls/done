@@ -7812,3 +7812,15 @@ hypothesis, not a finding that accepted writing was lost. Propose exact editor
 completion and exported-text assertions within the old setup bounds. Because
 the operator explicitly reserves assertion changes, leave the proposal unapplied
 and request approval. No app fix, gate change or timing credit follows here.
+
+
+### Approve full intended Goals text and retain the workload difference
+
+**Date:** 2026-11-06 · **Phase:** 460 · **Operator decision.**
+
+The operator approves phase459's completion assertions and full intended workload.
+Remove no old check or setup deadline. Preserve prior roots by writing the new
+private fixture under its new output directory. Actual H becomes 13,407 bytes;
+comparisons with historical 5,000-byte H are not matched document-size evidence.
+The passing recipe does not establish whether old unadmitted input was cancelled
+or lost. All Stage5 gates, functional stops and host requirements stay unchanged.

@@ -19835,3 +19835,21 @@ not apply, the narrow exact-completion/export assertion patch. The standing
 assertion-change rule requires operator approval and a workload decision before
 another app run. No timed gates started. Outcome precedes advancing the seat to
 this hold; all private seed roots stay intact. No commit, push or deployment.
+
+
+### Complete the approved Goals fixture before Stage5 timings
+
+**Date:** 2026-11-06 · **Phase:** 460 · **Scope:** fictional setup only.
+
+The approved exact-completion assertions pass. H/M/Q hold exactly
+13,407/4,157/1,049 Goals bytes, with ten devices and 1,024/256/32 genuine accepted
+backlog positions. Reconstruct the approved patch plus only the new private
+output destination; config and all 137 prior artifact references stay exact.
+Same app/API, browser, flags, limits and deadlines. Wrapper 728.70s, exit0, no
+refusal. [Record](./development-evidence/2026-11-02-release-hardening/460-complete-goals-cohort/README.md).
+
+This repairs the fixture workload, not a proved application data-loss cause.
+Historical H was 5,000 bytes and phase459 was 1,000: qualify later comparisons.
+No timed credit. Outcome precedes advancing the seat to native cases and remaining
+wrapper/fixture checks. Host handshake remains for tight cells. No commit, push
+or deployment.

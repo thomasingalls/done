@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: held # phase459 seed checks pass; Goals completion assertions need operator approval
+status: in flight # phase460 complete full-Goals cohort; declared native gate block next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: Goals seed assertion/workload decision, final closures and host handshake
+blocks_on: native/remaining apparatus closures, maintenance fixtures and tight-cell host handshake
 updated: 2026-11-06
 ```
 
@@ -191,31 +191,25 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Phase451 population reconciliation](./development-evidence/2026-11-02-release-hardening/451-reviewed-population-reconciliation/README.md)
-proves2,562+3older native controls+8new guards=2,573. All279old stages are projected
-both ways, with3added/0removed IDs and6unchanged registration inputs. The exact
-failed census/policy command passes16/16after the two-line correction. All450
-failure evidence and450'spassing typecheck/lint/8guard tests remain. No runtime,
-security, gate or limit change; no browser or timed run in this phase.
-The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
-cleared all nine former failures at120s after the daemon restart; all83root
-commands have passing segments, not a final all-target-stack check. Earlier reds,
-including393's type and sparse-address development failures, remain preserved.
-All native commands use display protection and5s host/display/fseventsd/swap logs.
+**Latest checks.** The approved phase457 clock repair passes 30 new signed
+controls, 394 affected old Node cases, types/lint, 16 census/policy cases, and the
+full 331-file Vitest suite: 3,218 passed plus the existing skip in 126.36s under
+the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
+30 added IDs and none removed. The phase452 functional preflight passes all 15
+native importer cases, including fairness sensitivity and lower-index fallback.
+These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase459's third seed attempt passes the existing
-checks: ten fictional devices, H/M/Q accepted backlogs1,024/256/32, rebuilt458
-client and effective API. Keep the first two apparatus failures and narrow SW
-agent/durable-prefix observation repairs, with original assertions and bounds.
-[Record](./development-evidence/2026-11-02-release-hardening/459-seed-goals-footprint-hold/README.md).
-The actual Goals audit finds H1,000 bytes of13,407 intended; historical323H was
-5,000 despite nominal13,000. M/Q are complete. Leaving chunked input before
-completion is plausible, but accepted writing loss is not proved. A separate
-unapplied patch checks exact editor completion before leaving and exact export
-after enrollment, retaining setup bounds. Stop for the operator's assertion/
-workload decision. No further app runs or timed gates pending that decision.
-Afterward finish current-date seed and frozen apparatus closures, then the
-required tight-cell host handshake. No timing credit, commit, push or deploy.
+**Active bounded outcome.** Phase460 completes the approved Goals seed:
+H/M/Q actual 13,407/4,157/1,049 bytes, ten fictional devices, and 1,024/256/32 real
+individually accepted positions. Existing and new checks pass. Same phase458
+app/API, Chrome156, profile, resources, limits and setup deadlines. All 137 prior
+artifacts stay exact. [Record](./development-evidence/2026-11-02-release-hardening/460-complete-goals-cohort/README.md).
+Historical H was 5,000 bytes and phase459 was 1,000; comparisons must state the
+larger workload. Completion fixes the recipe, without proving an input-loss
+mechanism. Finish apparatus closures, run the declared native block, prepare
+maintenance writer fixtures, then the remaining Stage5 cells. No timed journeys
+yet; host handshake remains required before tight 16ms/2.5s cells. No commit,
+push, publication or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

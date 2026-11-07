@@ -1,0 +1,250 @@
+{
+  "phase": 460,
+  "date": "2026-11-06",
+  "scope": "operator-approved complete intended Goals fixture",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workspaceCommands.ts",
+      "sha256": "eb8ac9ec6563a8b82956543e2b2786725ba15c838cf1c4a669ed6976570a0baa",
+      "bytes": 15633
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/460-complete-seed-proof.json",
+      "sha256": "bf741d4edacf211b2e75ef841186026fd95843ba0129a181b8aa67d38d6e62da",
+      "bytes": 834
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/460-declaration.json",
+      "sha256": "84d7fa998175f5e493733085cdf68fe32cfaee22b9a907c3665cd8681d7f5b89",
+      "bytes": 1111
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/package.json",
+      "sha256": "a90fc33418afa2b9cbf4768524b021135b965ecdf993457505bfae3ac44a8428",
+      "bytes": 33
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/artifacts/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/container-identity.json",
+      "sha256": "776d246fe4ffae7a433453d1daf027e6bb7d10bbb3255c895972fbc91dbba47f",
+      "bytes": 1823
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/container.cid",
+      "sha256": "28a0e94549f8113c884bc82f75772eace587f7d49439b206ccfee11be655f89f",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/docker-command.json",
+      "sha256": "3ec964d4c2da261b8307ad74b057131bcf4bb358628d7b886dee27a97983483c",
+      "bytes": 819
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/gateway.log",
+      "sha256": "c7246e3c2ee52bd048494a3309fb4a3e7c1793dea7dcf1506da1d269e5bc36f7",
+      "bytes": 164
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/private-fixture/fixture.json",
+      "sha256": "e30f624252f84354905d52f88bb10e30bdd7e556c485f9194cf24db25e36680d",
+      "bytes": 15093238
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/process-placement.json",
+      "sha256": "886663572763857cbad4ae1b4f34a31156bf20da9240fd8cfe02ae2044db8c92",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/runner.json",
+      "sha256": "e96dcdd2f6e22efbeba8c1bb00e55e041ccda5dafca158ffb4b14c565d728ec7",
+      "bytes": 6927
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/seed-check.json",
+      "sha256": "4aa8023805fd33e064a2370e74ac3dc66e60b7e4279997cf1350e1f49b08ca0d",
+      "bytes": 104416
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/state/account.sqlite",
+      "sha256": "b05b956515294a3c223f6374e5b75c7bd58a8d1a4260f894d8a96282147a2427",
+      "bytes": 3194880
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/state/authority.sqlite",
+      "sha256": "e05ccf0cc0b2818d88b2e6fe3a736e3e4114118c6b003b7235efad0cef0bcb5d",
+      "bytes": 8192
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/state/authority.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/state/authority.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/state/operator.key",
+      "sha256": "289dfe87f4398d96c5cf9ac08cde09614ba97ec8082ddb227fc8720d35adc649",
+      "bytes": 32
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed/state/pin.json",
+      "sha256": "fcf45b498192bf919a6aaa90bd0808c6d1e2d658816ff8f0eacc4cec3ee7815c",
+      "bytes": 185
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed.config.ts",
+      "sha256": "27a865fba23050b596be1e6ac3a080709476fe2c6c38f46499e0afce8f3e5bdc",
+      "bytes": 466
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-complete-seed-460-20261106/seed.spec.ts",
+      "sha256": "4ddbfb40e4c749ec1af42a6e24c5e4e240e77de5cbaf232d231ffd014cf0aa14",
+      "bytes": 9216
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/child.log",
+      "sha256": "2d3a63f6161dac1e6762bec10f6d8e5b952fc0c98e976a0ca16969efee4a8864",
+      "bytes": 1749
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/host-load.jsonl",
+      "sha256": "552f6d91884a2c476849d6fbaac30918b84fda413a1a1f50dd2b786b93d21ec9",
+      "bytes": 228147
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/power-assertions-before.txt",
+      "sha256": "84b199d786ff2e3e8545e63ed1afdeb1d001910c7168197df9bfe2c0c4182a57",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/power-log-after.meta.json",
+      "sha256": "0e024ff0e31750c4730a8b7890682928010e5ba181c0092115c2897131ab51ed",
+      "bytes": 485
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/power-log-after.txt",
+      "sha256": "2d82b8e4116024e28c0e15ef54be348131490717eca7efad6e785391dbc6348a",
+      "bytes": 2268
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/power-log-before.meta.json",
+      "sha256": "3e99ed773b0fd10be3f6a8e37f9330fce28eb8d54fa3d2707764b968512eb90b",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/460-complete-goals-seed/run.json",
+      "sha256": "56d6826a7c8a26b961142e654c1295e0c4fdedc8eed8ddbe950eb46625d58c8a",
+      "bytes": 1595
+    }
+  ],
+  "operatorApproval": "Exact-completion assertions and full intended workload approved in chat after459",
+  "declaration": {
+    "phase": 460,
+    "declaredEpoch": 1793956304.404345,
+    "scope": "operator-approved full intended Goals seed; no timed gate",
+    "approvedPatch": {
+      "path": "/private/tmp/done-stage5-fixtures-459-20261106/459-complete-goals-proposed.patch",
+      "sha256": "0fdc2d4225a1b3e1a12610dda3b574400297559ef2ea697a854c6ae35e922b32"
+    },
+    "previousSeedSha256": "c98e4fbc3a82d07d845e23ab9c5836a2f5430f1394294f3bc9f5765f9d237abe",
+    "conditions": "same458shipping/effectiveAPI, pinnedChrome156, same original setup/resource/rate/deadline conditions; exact new editor/export assertions approved",
+    "fixtureOutput": "fresh460out/private-fixture; previous459/458fictional states untouched",
+    "goalsIntendedBytes": {
+      "H": 13407,
+      "M": 4157,
+      "Q": 1049
+    },
+    "timedAcceptanceCredit": false,
+    "stop": "app refusal/failure, unapproved guard/limit/assertion/gate change; apparatus repairs retain all attempts",
+    "seedSha256": "4ddbfb40e4c749ec1af42a6e24c5e4e240e77de5cbaf232d231ffd014cf0aa14",
+    "configSha256": "27a865fba23050b596be1e6ac3a080709476fe2c6c38f46499e0afce8f3e5bdc",
+    "oldSourcesUnchanged": true
+  },
+  "proof": {
+    "approvedPatchAndOutputDestinationOnly": true,
+    "all459ArtifactsStillExact": 137,
+    "configExact": true,
+    "seedAccounts": [
+      {
+        "label": "H",
+        "devices": 6,
+        "backlog": 1024,
+        "before": 6,
+        "after": 1030,
+        "acceptedDelta": 1024,
+        "actualGoalsBytes": 13407,
+        "actualGoalsCharacters": 13407
+      },
+      {
+        "label": "M",
+        "devices": 2,
+        "backlog": 256,
+        "before": 5,
+        "after": 261,
+        "acceptedDelta": 256,
+        "actualGoalsBytes": 4157,
+        "actualGoalsCharacters": 4157
+      },
+      {
+        "label": "Q",
+        "devices": 2,
+        "backlog": 32,
+        "before": 5,
+        "after": 37,
+        "acceptedDelta": 32,
+        "actualGoalsBytes": 1049,
+        "actualGoalsCharacters": 1049
+      }
+    ],
+    "wrapperSeconds": 728.6981191635132,
+    "timedMatrixJourneys": 0
+  },
+  "buildAndRuntime": "same458frozen client and exact-protocol API overlay; resources, rate limits, flags, browser and setup deadlines unchanged",
+  "historicalComparison": "H actual13407bytes versus4591000and historical3235000; do not claim matched document-size performance",
+  "diagnosisLimit": "Waiting for full text resolves this recipe, without independently proving the earlier input cancellation/loss mechanism",
+  "timedMatrixJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}
