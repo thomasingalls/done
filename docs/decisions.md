@@ -8462,3 +8462,10 @@ Apply only the explicit operator carryover and guard approvals. Record three sup
 **Date:** 2026-11-07 · **Phase:** 529.
 
 Release preparation must preserve the main security runtime update rather than rebuilding the older Node base. Use a signed merge, retain all hardening signatures and exact app bytes, regenerate metadata without aggregate credit, and apply only the operator-approved three old-test values. Source-site line fixes require identical source-line and non-line-field proofs. Old receipt failures remain evidence; only fresh same-tree executions may clear traceability.
+
+
+### Bind the exact tested writer and compatible reader to one signed source and keep publication separate
+
+**Date:** 2026-11-08 · **Phase:** 530.
+
+Only RANGE_RECEIVE differs between the selected candidate and compatible reader; service-history automation remains off. Preserve both exact archives and later retain/pull-verify the compatible reader remotely before writer rollout. Preserve Stage 5 source/spec qualifications and failed apparatus/receipt attempts; do not borrow receipts across trees. Pre-release images are incompatible after the new client format floor. The operator keeps both merge buttons; exact registry publication is a separate handoff after the application merge.

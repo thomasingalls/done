@@ -20750,3 +20750,13 @@ Reconciled signed hardening head with the already-approved Node 24.22.1 main bra
 [Record](./development-evidence/2026-11-07-hardened-release/529-current-main-release-baseline/README.md).
 
 Outcome precedes active-seat update.
+
+
+### Prepare and test the signed ARM64 Worker/receive candidate and compatible rollback
+
+**Date:** 2026-11-08 · **Phase:** 530.
+
+Built and retained the exact candidate and compatible writer-off ARM64 images from signed source 759890ca. All 2,049 build inputs, 125 frontend files and 123 packaged server sources per image are exact. Each image passes 38 runtime cases and its container smoke. Stale-tab dense/legacy/offline-cold rollback and the production → candidate → reader → candidate rehearsal pass, including automatic reduction, queued/offline writing, Undo and full archive equality. All 58 executable bundles agree with source 510 after declared provenance/disabled-profile metadata normalizations; source-map contents agree and both workers regenerate exactly. Six fresh same-source receipts clear traceability. Read-only production checks preserve the Deployment/PVC/identity and observe healthy backup status. Failed preliminary apparatus and receipt checks remain visible. No new Stage 5/phone/RAM/aggregate credit is claimed; RC debts remain. Next: sign the documentation checkpoint, verify unchanged inputs, refresh current-tip checks and open the application PR. The operator retains publication and both merge handoffs.
+[Record](./development-evidence/2026-11-07-hardened-release/530-signed-arm64-candidate/README.md).
+
+Outcome precedes active-seat update.

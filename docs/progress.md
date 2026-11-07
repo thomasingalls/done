@@ -162,17 +162,17 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release preparation after Stage 6
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 529 preflight complete; sign merge then build exact artifacts
-scope: signed ARM64 candidate and compatible writer-off rollback; preserve all gates and security guarantees
-blocks_on: signed current-main merge, exact-image tests and current-tree traceability receipts
-release_validation: scoped Stage 5 complete; general manifest blocked at 1102 obligations / 551 unresolved
-updated: 2026-11-07
+status: in flight # exact ARM64 artifacts checked; sign handoff then verify current tip and open PR
+scope: prepare the tested candidate and compatible reader with all gates and guarantees preserved
+blocks_on: documentation signature, current-tip checks and application PR operator merge
+release_validation: scoped Stage 5 complete with qualifications; aggregate blocked at 1102 / 551 unresolved
+updated: 2026-11-08
 ```
 
-**Active bounded outcome.** Phase 529 preserves signed hardening head `154d3da402fd` and integrates main `ed492389` to retain Node 24.22.1's CA distrust update. No editor, Account protocol/service/storage/verifier, Vite or lockfile source changed. The merge is prepared for signature; next freeze its clean allowlisted source and build candidate and compatible rollback images from that exact identity.
+**Active outcome.** Signed source 759890ca preserves the hardening history and main's Node 24.22.1 security update. Both ARM64 images are retained and tested: candidate 3914281a… and compatible reader b81f99c1…. Each passes 38 runtime cases and container smoke. Stale-tab dense rollback and production → candidate → reader → candidate pass with full archive equality. No runtime source changed after signing.
 
-**Established checks.** Node 24.22.1 units: 333 files, 3,231 pass / one existing skip, 131.96 s suite. Types/lint/contracts/vectors/registry/inventory pass. The original authority failure is repaired by 15 byte-proved line-number updates in four construction records only. Operator-approved three-value old-fixture correction retains all assertions and blocks; full adapter retry is 178/178, after the retained 176/178 first attempt and 17 passing private-copy controls. Current manifest adds existing hardening obligations without removing old IDs or unresolved blocks: 1,102 / 551 unresolved.
+**Next.** Sign the documentation-only phase 530 checkpoint, verify all 2,049 allowlisted inputs, refresh six receipt producers and traceability at the actual signed tip, then push/open the application PR. Stop for the operator's merge. Publish neither image before application merge and the exact publication handoff; retain the compatible reader remotely before writer rollout. Keep service-history automation off.
 
-**Remaining artifact phase.** Build native ARM64 writer-on and compatible writer-off images with the approved 510 effective flags; service-history automation stays off. Test actual final runtimes and container ownership/restart/assets, dense stale-tab rollback and exact offline cold, then packaged upgrades. Origin-isolation/retention/status/limit receipts must be rerun against the settled signed source before traceability; the earlier stale-receipt refusal is preserved. No new Stage 5 timing credit or gate change.
+**Evidence and limits.** [Exact artifact/source/test handoff](./development-evidence/2026-11-07-hardened-release/530-signed-arm64-candidate/README.md). Phase 528 remains the Stage 5/6 performance outcome home. No new timing, phone, RAM or aggregate credit; failures and debts remain. Read-only live checks confirm the ready predecessor, preserved PVC/public identity and healthy existing backup status. No cluster mutation or backup download occurred.
 
-**Source and publication boundary.** [Preflight](./development-evidence/2026-11-07-hardened-release/529-current-main-release-baseline/README.md); [completed matrix and RC debts](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md). The exact predecessor image is retained and its extracted HTML matches production. No candidate image or infrastructure change exists yet. Operator keeps both merge buttons. Pre-release builds cannot reopen devices that wrote dense rows: retain the compatible reader, never clear storage or rewrite receipts.
+**Rollback.** Pre-release builds cannot reopen devices with dense rows or the new format floor. Use the tested compatible reader; never clear storage or rewrite receipts. All existing RC debts remain, including audit receive stalls, paired-150 sender latency, capacity/retry costs, history-sized Worker replies and unmeasured post-reduction/Undo typing costs.
