@@ -8087,3 +8087,21 @@ isolated controls. Do not silently turn missing hooks into idle. Likewise,
 LEDGER_PROFILE=0publishes no audit start/end; retention completion cannot stand
 in for full-audit overlap. Ask the operator to choose unavailable report debt or
 a separate observed test build. No production diagnostic hook is added.
+
+
+### Approve passive audit observation separately from release evidence
+
+**Date:** 2026-11-06 · **Phase:** 480 · **Operator approved both479choices.**
+
+Apply the narrow published-send-state readiness replacement and prepare a private
+observed artifact for the required audit-overlap field. Keep its scalar markers
+out of canonical source and shipping assets; capture both full-audit homes,
+recompute the private verifier identity, retain inverse source/ordinary binary
+proofs and grant no new gate credit. No profile flag or security check changes.
+
+Bind readiness to measured packaged owner provenance. The earlier recovery and
+general-account guesses are not evidence; the actual joined fixture runs the
+enrollment owner. Retain both failed preflights and the successful exact-archive/
+collector/idle callbacks. Do not broaden the Worker list or infer audit absence
+from no exposure. Prepare fresh legal-format fixtures through actual app sync
+and input; ask the next quiet-host handshake before tight report-only timings.

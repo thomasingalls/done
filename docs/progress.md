@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase479 blocking36/36; report-only readiness/audit decision pending
+status: in flight # phase480 observed build ready; report-only fixtures next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: report-only readiness-source/audit-observation decisions, ten named journeys and Stage6
+blocks_on: current common report-only fixtures, ten named journeys and Stage6
 updated: 2026-11-06
 ```
 
@@ -199,17 +199,19 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase479 rolls up36/36source-matched blocking
-journeys passing,12cells at3/3, with original predicates and Goals qualification.
-Ten report-only journeys remain. The old sender readiness hook is unshipped;
-a narrow packaged-owner/public-send-state proposal remains unapplied, with six
-isolated controls passing and the loader failure retained. Request the explicit
-readiness evidence-source decision under the Stage5guard rule. Full-audit overlap
-is unpublished with LEDGER_PROFILE=0; ask whether to report unavailable/debt or
-use a separate observed test build. No new app run or production hook.
-[Record](./development-evidence/2026-11-02-release-hardening/479-report-only-preparation/README.md).
-Earlier source results and all failures stay. No app/format/trust/guard/limit/
-deadline/default change, commit, push, deployment or release publication.
+**Active bounded outcome.** Phase480 implements the operator-approved private
+sender readiness binding and passive full-audit build. Ordinary control reproduces
+125release assets;2,046canonical inputs remain exact. Two private source files
+contain inverse-proven scalar observations, with a distinct recomputed verifier
+identity and no gate credit. Seven observation/six actual-callback controls and
+two final real-profile preflights pass. Keep the import failure and both wrong-
+Worker-binding attempts; actual joined provenance is the exact enrollment owner.
+No full-audit exposure is claimed by preflight.
+[Record](./development-evidence/2026-11-02-release-hardening/480-observed-report-build/README.md).
+All36plain-build blocking journeys stand. Prepare common current-date sender
+fixtures through real sync/public input, then the ten named report-only journeys
+under fresh tight-host readiness. Stage6still follows. No canonical source/test,
+format/trust/guard/limit/deadline/default change, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

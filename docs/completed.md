@@ -20218,3 +20218,23 @@ be inferred from retention status. [Record](./development-evidence/2026-11-02-re
 Outcome precedes advancing the seat. Ask the operator's readiness-source decision
 and report-only audit-observation choice, as the Stage5guard rule requires. No
 new app measurement, guard/source/build/limit/deadline change, commit or deploy.
+
+
+### Build and check the approved report-only observation artifact
+
+**Date:** 2026-11-06 · **Phase:** 480 · **Scope:** private build/harness only.
+
+The operator's readiness patch is applied. Ordinary inverse rebuild reproduces
+125release assets;2,046canonical inputs stay exact. A separate private build
+marks unreduced full reference and reduced semantic audits, with inverse-byte
+proof and conservatively recomputed verifier identity. Seven observation and
+six actual-callback controls pass. No new gate credit or profile/guard/limit/
+deadline change. [Record](./development-evidence/2026-11-02-release-hardening/480-observed-report-build/README.md).
+
+Keep the import-discovery failure and two wrong-Worker-binding preflights; their
+writing was exact. Actual provenance identifies this joined fixture's packaged
+enrollment owner, not the assumed recovery or general account route. Bind only
+that exact owner. Two final actual preflights pass archive/collector/readiness;
+no audit exposure claimed. Outcome precedes advancing the seat.36blocking passes
+stand; ten named report-only journeys remain. No canonical test edit, commit,
+push or deployment.
