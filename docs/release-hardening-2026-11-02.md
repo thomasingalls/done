@@ -227,3 +227,38 @@ Carry the4MiBencoded-baseline ceiling, continuing growth after a park and unmeas
 real-scale32MiBindex time/RAM into Stage6. Do not fix or diagnose preparation cost
 in this work. The74.4sreport-only reproduction passes its120sbound and gives no
 phone, input/peer performance, RAM or Stage5credit.
+
+
+### Operator additions to the phase 442 debts — 2026-11-05
+
+**Effective snapshot ceiling.** The 4 MiB limit applies to the encoded JSON
+baseline. `bytes()` converts the snapshot to hex before `values()` includes it
+in that record, so each snapshot byte occupies two encoded bytes, in addition
+to metadata and the other baseline fields. Usable snapshot capacity is therefore
+about 2 MiB, less that overhead. Phase 442's existing observation is a
+2,779,095-byte snapshot encoded into 5,763,419 bytes; it is not a new measurement.
+See `localBaselineRecord.ts` (`bytes`, `values`, `encodeLocalBaseline`) and
+`contentRecord.ts` (`MAX_BATCH_BYTES`).
+
+The encoded cap is the first practical capacity boundary as the snapshot grows;
+the raw-length check against 4 MiB does not provide 4 MiB of usable snapshot
+space. That early raw guard can still reject a single input already larger than
+4 MiB before encoding. It remains intact. Binary encoding or a different ceiling
+requires an explicit operator format/limit decision; neither is a repair in scope.
+
+**Repeated capacity attempts.** A capacity refusal parks the current authenticated
+hint key, not all future hints. A changed ledger hint permits another attempt
+behind `LOCAL_RETENTION_RETRY_MS` (60 seconds), with the existing quiet/readiness
+checks still applying (`automaticLocalRetention.ts`, `observation`, `schedule`,
+and the skipped-result branch). A device that continues writing can therefore
+re-enter the failing preparation/build path roughly once a minute when those
+checks permit. This is a retry-cost risk inferred from the scheduler, not an
+observed cadence: the clock runs from the refusal, and attempt duration and
+quiet/readiness delays can lengthen the interval. No permanent capacity park or
+cheap retry is established by phase 442.
+
+Stage 6 must list the **unmeasured per-attempt wall/CPU cost** of those repeated
+failures alongside the unresolved 438/439 preparation cost and production
+32 MiB index build-up/fallback time and RAM. The 74.4-second phase 442 journey
+is not a measurement of an individual failed attempt. No new timing, retry-policy,
+format, limit, guard or code change is included in these additions.

@@ -19529,3 +19529,12 @@ records the new mapping, verification, fresh source identity and tested future
 capture policy. Power logs are windowed with full-log hash/size; committed source
 inputs are referenced by commit and path. Display checks and their result logic
 remain unchanged. Stage 5 is still paused; no push, publication or deployment.
+
+
+### Record effective snapshot capacity and repeated-attempt cost debt
+
+**Date:**2026-11-05 · **Commit:**pending patch444 · **Stage:**partial Stage3.2
+
+**Exit.** The Stage6debt home now records effective snapshot capacity below2MiBafter overhead and possible repeated capacity-refused attempts behind the60sretry clock. Both are source-derived mechanisms; per-attempt costs remain unmeasured alongside438/439preparation and production-index time/RAM. Prior frozen evidence stays unchanged. [Evidence](development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
+
+**Limits.** Per-attempt wall/CPU cost, repeated-attempt cadence,438/439preparation attribution and real-scale32MiBindex time/RAM remain unmeasured. The74.4s442journey is not an individual-attempt measurement. Binary encoding or a different limit requires an operator format/limit decision. No code/test/guard/format/limit/retry change, fix, Stage5run, commit, push, publication or deployment. Outcome precedes advancing this seat.

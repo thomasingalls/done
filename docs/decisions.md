@@ -7559,3 +7559,10 @@ source identity for the changed tracked closure. Future capture stores only the
 command-window power events plus full-log hash/size, and references exact committed
 sources instead of gzipped copies. Display and acceptance checks do not change.
 [Record](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/REBUILD.md).
+
+
+### Keep the effective baseline ceiling and retry cost as operator debts
+
+**Date:**2026-11-05 · **Commit:**pending patch444
+
+Record the two operator additions without treating them as measured performance or changing a guard. The encoded record determines usable capacity; any binary representation or altered ceiling needs a separate operator decision. Capacity is keyed to the current authenticated hint, so later writing can permit another costly refusal after the retry and quiet clocks; leave that cost unmeasured. Use the existing Stage6debt home rather than adding a competing active-state document. [Evidence](development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).

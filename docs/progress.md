@@ -191,21 +191,15 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Identify the parked producer ceiling and preserve post-park writing](./development-evidence/2026-11-02-release-hardening/442-capacity-debt-observation/README.md).
-The final observer build and report-only native case pass (74,389ms, original120sbound). The actual loaded Worker reports encoded baseline5,763,419bytes exceeding LOCAL_BASELINE_LIMIT4,194,304bytes. Raw snapshot2,779,095is within that bound, sources0are below4,096and publishers3below128. The refusal is LocalBaselineCapacityError from encodeLocalBaseline's encoded-length guard, mapped by localRetentionPlan449to skipped/capacity. None of the five instrumented PreparationCapacity throws fires, so do not assign this park to the journal byte/entry guard at429. Before/after admission is active/durable with zero pending items and no pressure. One new accepted publisher position50is independently checked; the witness's complete normalized Markdown equals the producer's. Maintenance is subsequently waiting/capacity; no retry completion is claimed. The old verifier identity11048a947b5c43238bfc226346478c31de4091c6de4f79aa6f88268092fb39b7is naturally produced and present in the old ordinary artifact. All old ordinary asset bytes are preserved in the served overlay; every frozen439input and every current441build input remains exact. Independent review checks raw events, source/guard bindings and full witness result. Preserve the first private ESM module-scope collection failure and the second missing-PreparationCapacity-telemetry assertion failure before adding the baseline guard observations; neither is erased or called a pass.
+**Latest checks.** [Record effective snapshot capacity and repeated-attempt cost debt](./development-evidence/2026-11-02-release-hardening/444-capacity-debt-additions/README.md).
+Static inspection confirms the hex/JSON expansion, encoded-size boundary and changed-hint capacity retry behind the60sclock. The debt wording distinguishes the practical growth ceiling from an early raw guard on a single oversized input, and scheduler eligibility from an observed once-per-minute cadence. Source references match signed commit 4d20580c8b9385e225a6452e4ffc74711f829b38. No new measurements or app tests were run.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** The signed 335–442 sequence is rebuilt without tracked
-hardening objects, with every phase tree verified against its original. Original
-commits remain on local backup/hardening-335-443-with-objects, which must never be
-pushed. All object files remain unchanged and locally ignored. The
-[revised 443 checkpoint](./development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/REBUILD.md)
-records new commit/tree IDs, fresh source identity and the slimmer capture policy.
-Stage 5 remains paused until explicit operator resumption. No push or release work.
+**Active bounded outcome.** Phase444records the operator additions to the442Stage6debts, with exact committed source references and no new measurement or implementation. Prepare its documentation-only patch after rebuilt443; do not commit or push. The original rebuilt history/local evidence guarantees remain intact. Stage5and actual Stage6reporting remain paused for explicit operator resumption.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
