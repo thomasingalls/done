@@ -8413,3 +8413,10 @@ Apply the519operator decision without changing app, gates, limits or format. 3 d
 **Date:** 2026-11-07 · **Phase:** 522.
 
 Goalsdesktopreplicate2 fails originalUndo text-change guard, so its cell fails and laterGoalsjourneys stop. The fixedhostnoisecriterion isnotmet; no repeat isstarted. Preservealllogs/profiles/observations. Endmetadata isrevision0complete, so the508statement isunreachable inthatworkspace; this doesnot establishharness orapp rootcause. Do not adjustthe assertion, waitforcompletion, addobservers orpatchappunderthisauthorization. Stage6muststate21carried,12attemptedof15(11pass1fail),3unrun—not falselyclaim15complete.
+
+
+### Keep source510matrix incomplete andstop after the frozen Undo guard fails
+
+**Date:** 2026-11-07 · **Phase:** 523.
+
+Theoperatorcarryoverof21stands, buttheplanned15reruns areincomplete:12attempted,11pass,1functionalguardfailure,3unrun. OnefailedreplicatefailstheGoalsdesktopcell. Noisecriteriondoesnotpermitretry. Do notpresumepermanentUndofailure, harmlessharnessrace or508causation; theonlyprovedfailureisoriginalimmediatepost-CmdZtextunchanged, onanunreducedprofile. Preservealllogs/profiles/specs. Stage6amendmentmustreportthisactualoutcome, retainpost-reductiontypingcostdebt andstopforoperatorbeforeanyfurtherapp/testchangeorjourney.

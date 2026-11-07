@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # Goals stopped on original Undo guard; Stage6incomplete amendment next
+status: in flight # Stage6amendment written; stopped on unresolved original Goals Undo guard
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: unresolved Goalsdesktopreplicate2 Undo guard; later3Goalsruns unrun; no app/test changeauthorized
+blocks_on: operator disposition of Goalsdesktopreplicate2 Undo guard;3declaredGoalsruns remainunrun; nochangeauthorized
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase522stoppedGoalsafter3of6declaredruns:desktopr1/mobile4xr1pass; desktopr2failsfrozenUndoassertion(stall.spec.ts:90, immediatepost-CmdZdocumentunchanged). Paragraph/returnchecks pass; Redo/export/coldnotreached. Noisefailurecriterionnotmet(swapflat/displayon/maxCPUstreak5.004s); noretry. Savedfailedprofilev2/revision0/complete excludes508reducedwarmcatch; eventualUndo vs immediateassertion/mirrortiming unresolved. All3endprofiles readonly-copyinspectionunchanged. Native6+fairness3pass; total12of15attempted,11pass1fail,3unrun;21carried remain. Noapp/test/gate/wait/limit/formatchange. WriteStage6incompleteamendmentthenSTOPforoperator.
-[Record](./development-evidence/2026-11-02-release-hardening/522-source510-goals-undo-stop/README.md).
+**Active bounded outcome.** Phase523amendsStage6with21carried,15plannedreruns,12attempted(11pass,1fail),3unrun. Native-resumable/deep/fairness3eachpass; Goalsdesktopr1/mobile4xr1pass; desktopr2failsoriginalUndoimmediatetext-changeassertion(stall.spec.ts:90). Paragraph/returnpassed; Redo/export/coldnotreached. Noisefailurecriterionnotmet; noretry. Failedendprofilev2/revision0/complete excludes508reducedwarmcatch; eventualUndo vs UI/assertionrace remainsunresolved. All15savedprofiles readonly-copyinspectionunchanged. Matrixincomplete:Goalsdesktopfails/mobile4xincomplete. Post-reductiontyping/full-reauthfrequency/input/peercost remainsdebt. Sequential519–523docs-onlypatchesprepared; realindexempty. STOPforoperator. Noapp/test/gate/wait/limit/formatchange, extrajourney, releaseprep, staging, push, publication ordeployment.
+[Record](./development-evidence/2026-11-02-release-hardening/523-source510-stage6-undo-hold/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

@@ -20680,3 +20680,13 @@ Ran three of six declared frozen Goals journeys after the fresh quiet-host reply
 [Record](./development-evidence/2026-11-02-release-hardening/522-source510-goals-undo-stop/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Stage6amendment:21carried,11passing reruns, Undo guard stop
+
+**Date:** 2026-11-07 · **Phase:** 523.
+
+AmendedStage6with actualscoped outcome:21operator-carried runs,15plannedreruns,12attempted(11pass/1fail),3unrun. Native-resumable/deep/fairness3eachpass; Goalsdesktopr1/mobile4xr1pass; desktopr2failsoriginalimmediateUndoassertion. Goalsdesktopcellfails, mobile4xcellincomplete. Fixedhostnoisecriterionnotmet, noretry. All15savedendprofiles inspectedonlyoncopies aftertimers, original/nativebytesunchanged. Failedprofilev2/revision0/complete excludes508reducedcatch; eventualUndo versus immediateassertion/mirrorrace remainsunresolved. Post-reductiontyping/full-reauthfrequency andinput/peercost remainsunmeasureddebt; oldStage6debts/misses/rollbackrestrictions remain. Noapp/test/gate/wait/limit/formatchange. STOPforoperator; matrixnotcleared, nofurtherjourney orreleaseaction.
+[Record](./development-evidence/2026-11-02-release-hardening/523-source510-stage6-undo-hold/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
