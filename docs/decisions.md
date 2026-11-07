@@ -7842,3 +7842,20 @@ assertions/deadlines. Absent lab diagnostics stay explicitly unavailable.
 These are apparatus repairs, not relaxed guards or new trust. Nine successful
 native journeys count only for their declared cells; live input/peer predicates
 remain unmeasured. Obtain the required host handshake before those tight cells.
+
+
+### Preserve original late predicates and distinguish observed from absent data
+
+**Date:** 2026-11-06 · **Phase:** 462.
+
+Run the declared normal/withheld block only after the operator's host handshake.
+Reuse the original analyzer byte-for-byte and per-journey clock bounds; do not
+replace missing lab counters with simulated values. Public traffic/notification
+fault evidence and Window observations establish the existing late predicates.
+Use the post-typing-to-wrapper interval only as an upper bound on cold stages,
+not individual cold timing. Keep each run rather than pooling120keys as runs.
+All six pass, so the fixed failed-replicate noise rule requests no extra run.
+
+Canonical461evidence already records9journeys; repair its private sidecar counter
+without changing the frozen patch/tree or historical repo bytes. This corrects
+serialization bookkeeping and changes no documentation requirement or gate.

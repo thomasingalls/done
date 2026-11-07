@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase461 native block3/3 per cell; tight-cell preparation/host handshake next
+status: in flight # phase462 late cells3/3;15of36blocking journeys pass; maintenance fixtures next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: remaining UI metric/fixture closures, maintenance writer fixtures and tight-cell host handshake
+blocks_on: old/grown maintenance writer fixtures, remaining timed blocks and report-only cells
 updated: 2026-11-06
 ```
 
@@ -199,19 +199,19 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase461 passes all nine native journeys:3/3 each
-for context handoff, resumable maintenance and closed-sender deep receive. Deep
-intervals19.264/19.317/19.459s are below30s; all reopens exact, maximum9.688s
-below15s. Seven original chunks retain their assertions and waits. The full
-phase460 cohort has13,407-byte H Goals; historical H was5,000, so comparisons
-must qualify the workload. [Record](./development-evidence/2026-11-02-release-hardening/461-native-gate-block/README.md).
-Keep two failed wrapper attempts and fresh retries: owned-page fixture import
-and canonical Page-workspace close. Same pinned serializer/assertion,125shipping
-files exact, no app source change. A reporter error after passing r2 context is
-preserved without rerunning it. Nine of36 blocking journeys complete;27 remain
-plus report-only cells. Finish remaining UI metric/fixture bindings and maintenance
-writer fixtures. Tight16ms/2.5s cells require the operator's host handshake.
-No release prep, commit, push, publication or deployment.
+**Active bounded outcome.** Phase462 passes3/3 normal and3/3 withheld late
+journeys after the operator's host handshake. Original analyzer/guards/waits/
+deadlines stay. Input p953.21–3.62ms, normal peer0.95–0.99s, withheld1.80–1.88s,
+worst marker1.31s. All archives/offline reopens exact;20–32keys after both drains
+per run, withheld post-drain p951.89–1.94s. Whole post-typing remainder bounds
+each cold below15s. [Record](./development-evidence/2026-11-02-release-hardening/462-late-gate-block/README.md).
+The three native cells from461also remain3/3, deep19.264/19.317/19.459s and max
+cold9.688s. All5,656prior private files stay exact. Fifteen of36blocking journeys
+complete across five cells;21remain: old/grown maintenance, fairness and Goals.
+All report-only cells remain. The quiet late block is over. Prepare the old/grown
+maintenance writer fixtures next; obtain the next required tight-cell host
+handshake before its timed block. Current H Goals is13,407bytes versus historical
+5,000; no matched-size comparison. No app change, release prep, commit or deploy.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

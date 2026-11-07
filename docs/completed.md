@@ -19875,3 +19875,22 @@ raw attempt/host/power record remains local and hashed, without binary objects.
 Outcome precedes advancing the seat. Nine of36 blocking journeys complete;
 27 remain plus report-only work. Tight-cell host handshake and maintenance
 writer fixtures remain. No commit, push or deployment.
+
+
+### Pass normal and withheld late-writing gates in three replicates
+
+**Date:** 2026-11-06 · **Phase:** 462 · **Scope:** six Stage5 gate journeys.
+
+Both cells pass3/3 with the original analyzer and unchanged predicates. Input
+p953.21–3.62ms; normal peer0.95–0.99s; withheld peer1.80–1.88s; worst marker1.31s.
+Every archive/offline reopen is exact. Both-drained exposure20–32keys per run;
+withheld post-drain p951.89–1.94s. The whole post-typing remainder bounds each
+cold stage below15s, without adding a wait or claiming individual durations.
+[Record](./development-evidence/2026-11-02-release-hardening/462-late-gate-block/README.md).
+
+Retain all raw runs, five-second host logs and windowed power data. All5,656prior
+private files stay exact. No failures or noise reruns. Correct only the private
+461sidecar's hardcoded0to its canonical9; keep the old sidecar and frozen patch/
+tree unchanged. Outcome precedes advancing the seat. Fifteen of36blocking
+journeys complete;21and report-only work remain. Host block released. Prepare
+maintenance fixtures next. No app change, commit, push or deployment.
