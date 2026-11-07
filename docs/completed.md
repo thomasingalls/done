@@ -20330,3 +20330,13 @@ The directly bound observer proves compositionStatus success-reply serialization
 [Record](./development-evidence/2026-11-02-release-hardening/487-composition-status-reply-ceiling/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Repair only the grown-fixture acceptance poll
+
+**Date:** 2026-11-06 · **Phase:** 488.
+
+The approved grow recipe changes exactly its per-position accessor. Six permanent regression controls pass, including restoration of the poisoned old RPC. The source inverses to the frozen485hash; all acceptance checks, snapshots and deadlines remain byte-identical. The first full-status baseline call stays. Correct the second opinion: the487bWorker guard row exists and reached page console capture. Next run a fresh2,048fixture, then the3,072reader report and Stage6.
+[Record](./development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

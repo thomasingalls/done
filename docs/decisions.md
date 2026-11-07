@@ -8168,3 +8168,10 @@ Treat a negative message-bound reply separately from owner closure. The full sta
 **Date:** 2026-11-06 · **Phase:** 487.
 
 Keep the Worker message guard. The fixture requests an entire growing status graph to read one scalar; the next repair belongs in that diagnostic consumer, using existing bounded published status with the same exact acceptance checks. Do not raise transport limits or infer a writing/authority failure from a reply serialization refusal. Record validator counts as running accounted size, not wire size or RAM.
+
+
+### Read published accepted progress without expanding history
+
+**Date:** 2026-11-06 · **Phase:** 488.
+
+Use the already-published bounded sync status for fixture acceptance polling; do not request a history-sized graph or raise a transport limit. Preserve the exact prefix+1 checks and all deadlines. Treat a source-binding failure separately from console propagation: the successful487bguard observation is raw evidence.

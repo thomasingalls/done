@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 487: compositionStatus reply exceeds byte ceiling
+status: in flight # phase488 bounded fixture poll and six controls pass
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: bounded fixture-poll repair, then final index report and Stage 6
+blocks_on: fresh3072fixture, final reader report, Stage6
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 487 identifies the exact bytes guard on the successful compositionStatusreply at 1,048,620 accounted bytes/36,539nodes; fallback reply code message-bound. The status operation had acceptedThrough2130; Window remains active at catch. Six controls pass; one private observed source and125 byte-identical ordinary files, all guards and deadlines unchanged. First unexposed binding attempt retained; actual Worker binding proved on fresh retry. Recommended next: narrow only fixture polling to existing bounded published sync status, retaining exact acceptance assertions. Not implemented.36 prior blocking passes/9 reports stand;3,072-position report/Stage 6pending.
-[Record](./development-evidence/2026-11-02-release-hardening/487-composition-status-reply-ceiling/README.md).
+**Active bounded outcome.** Phase488 repairs exactly the grow recipe per-position poll to read published Window sync acceptedThrough. Six permanent controls pass, including a sensitive old-RPC control; inverse hash proves every other check and deadline unchanged. The initial full status call remains. Start fresh from2048; no failed-state reuse. Continue with one3072reader report and Stage6. Prior36blocking passes and9reports remain. Record the diagnostic RPC/cost debts and static reply census.487bWorker console observation is present; earlier source-binding failure stays separate.
+[Record](./development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
