@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase465 both maintenance fixtures ready; old timed block cleared
+status: in flight # phase466 old fixture amendment approved; fresh467block next
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: old/grown maintenance writer fixtures, remaining timed blocks and report-only cells
 updated: 2026-11-06
@@ -199,18 +199,17 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase465 prepares the2,048maintenance writer through
-real current-app sync. Original checks/deadlines pass: H2full archive exact,
-unreduced counter2; other actors/archives/dates/backlogs exact. Private SQL copies
-show2,359accepted rows before/after, with no added writing. [Record](./development-evidence/2026-11-02-release-hardening/465-grown-maintenance-fixture/README.md).
-Both maintenance fixtures are ready. Phase464added1,024real accepted writes to
-reach2,048, preserving readers and13,407-byte Goals. Stage5still15/36blocking
-journeys complete. The operator cleared the next six original1,024maintenance
-runs; execute them with the approved old-overlap information-only amendment and
-every other predicate intact, including the historical10percent comparison.
-Grown overlap60remains blocking and both owners must be observed through120s.
-Twenty-one blocking journeys plus report-only work remain. No app change,
-release prep, commit, push or deployment.
+**Active bounded outcome.** Phase466finds the old saved-slice prerequisite no
+longer exposed: one successful2.920s maintenance attempt, no saved slice or halt;
+the90s wait expires before typing. No input/peer/cold credit. Reader catch-up is
+observed23.943s. No host-noise rerun trigger. [Record](./development-evidence/2026-11-02-release-hardening/466-old-saved-prerequisite/README.md).
+The operator approves the narrow old1,024fixture amendment: active verification
+and unfinished backlog remain required, saved-slice presence becomes information.
+All other waits/gates and grown/native resumability stay. Preserve this run and
+apply the exact proposal in a fresh467root, then restart the old six-case block
+under the recent host handshake. Both real-sync fixtures are ready. Stage5still
+15/36passing blocking journeys;21plus report-only cells remain. No app source,
+trust, format, limit, deadline, release prep, commit, push or deployment change.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

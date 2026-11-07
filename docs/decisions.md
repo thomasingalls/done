@@ -7894,3 +7894,17 @@ checks. Refresh H2through real sync, keeping H1behind and every other snapshot
 unchanged. Verify service-row counts only on private copies. Separate fixture
 preparation from timed credit. Proceed to the separately declared old-maintenance
 block only under the renewed host handshake; grown overlap60stays blocking.
+
+
+### Approve old-fixture saved-slice information without weakening grown coverage
+
+**Date:** 2026-11-06 · **Phase:** 466 · **Operator decision.**
+
+After reviewing the failed old prerequisite and narrow proposal, the operator
+says “i approve changing the fixture.” Apply the two-file old1,024amendment:
+require active verification and unfinished backlog at typing start, but record
+saved-slice presence instead of requiring it. Keep90s and all other predicates,
+including original completion, latency, Undo, archive/cold and10percent comparison.
+This is additional to the prior old-overlap amendment. Preserve the failed run;
+restart the cell in a fresh root. Grown saved-slice and native resumability checks
+are unchanged. No application, trust, format, limit or deadline change follows.

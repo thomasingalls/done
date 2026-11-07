@@ -19938,3 +19938,19 @@ show2,359accepted rows before/after: no added writing. [Record](./development-ev
 Outcome precedes advancing the seat. Both fixtures are ready; Stage5still15/36
 blocking journeys complete. The operator cleared the next six old-maintenance
 runs. No app source, guard, gate, limit, deadline, commit, push or deploy change.
+
+
+### Preserve the expired old-fixture saved-slice prerequisite
+
+**Date:** 2026-11-06 · **Phase:** 466 · **Scope:** one precondition-only attempt.
+
+No typing starts: the old90s wait requires a saved slice, but maintenance completes
+once in2.920s with no save/halt. Reader catch-up succeeds in23.943s. No later
+checks or input/peer metrics exist; no gate credit. Host data does not trigger the
+fixed noise rerun. [Record](./development-evidence/2026-11-02-release-hardening/466-old-saved-prerequisite/README.md).
+
+Stop and preserve the attempt. The operator approves the concrete old-only
+amendment: require active verification with unfinished backlog, make saved-slice
+presence informational, retain every other gate/wait. Grown/native resumability
+stays unchanged. Apply in a fresh467root. Outcome precedes advancing the seat.
+Stage5still15/36passing journeys;21remain. No app source, limit or deployment change.
