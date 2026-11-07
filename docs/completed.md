@@ -20400,3 +20400,13 @@ The producer-precondition recipe and nine permanent controls pass. Its inverse p
 [Record](./development-evidence/2026-11-02-release-hardening/494-maintained-producer-fixture/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve the post-maintenance growth acknowledgment failure
+
+**Date:** 2026-11-06 · **Phase:** 495.
+
+Normal automatic producer maintenance completes in 93.905 s and survives native reopen with exact writing and unchanged server tuples. Growth then confirms 101 edits, averaging 383.69 ms between acknowledgments, but the next unchanged 30 s check fails at expected 2,156 versus actual 2,155. A strict stopped-service-copy observer confirms no extra acceptance. Cause and owner state remain unresolved, so stop; no 3,072 reader or cold run begins.
+[Record](./development-evidence/2026-11-02-release-hardening/495-maintained-growth-stop/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

@@ -8217,3 +8217,10 @@ Keep the proposal byte guard and full fallback. For the fixture, use genuine exi
 **Date:** 2026-11-06 · **Phase:** 494.
 
 Use existing producer automatic local maintenance as a fixture precondition, while preserving every server position the returning reader must fetch. Count preparation inside the existing setup deadline. Never resume failed growth, prune service history, alter old readers or bypass a capacity refusal.
+
+
+### Stop on the new growth failure without relaxing the poll
+
+**Date:** 2026-11-06 · **Phase:** 495.
+
+Keep the failed maintained-fixture attempt, exact service evidence and all original checks. The source-byte cliff is traced, but this new unexplained publication failure prevents declaring the proposed setup safe. Do not raise the per-position timeout, rerun for a favorable result, relax expectations or manufacture the fixture. Stop before further app runs.

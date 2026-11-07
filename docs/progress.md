@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase494 fixture controls pass; fresh full growth next
+status: in flight # phase495 new post-maintenance publication failure; hardening stop
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: fresh maintained producer setup, full3072 growth within1800s, then reader report
+blocks_on: diagnose next publication at2156 before further growth;3072reader report unavailable
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 494 adds a fixture-only normal-maintenance precondition, with nine passing controls and exact recovery of the original growth recipe. Run a fresh 2,048-position copy through reduction/reopen and all 1,024 separately accepted edits inside the same 1,800-second case. Then run the original returning-reader report. No app source, guard, format, limit or deadline change.
-[Record](./development-evidence/2026-11-02-release-hardening/494-maintained-producer-fixture/README.md).
+**Active bounded outcome.** Phase 495 completes genuine producer reduction/reopen with exact writing and server tuples, then stalls after 101 new acknowledgments. Expected position 2,156 never appears in the unchanged 30 s poll; the private service copy stops at 2,155 too. No exact refusal/owner code was captured. Stop under the app-failure rule. Original source fixture and nine other actor snapshots remain exact; no 3,072 fixture, returning-reader run or cold result exists. No app source or guard/limit/deadline change.
+[Record](./development-evidence/2026-11-02-release-hardening/495-maintained-growth-stop/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
