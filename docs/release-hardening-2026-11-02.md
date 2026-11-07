@@ -286,3 +286,21 @@ consecutive samples of the same non-test PID above 100% spanning more than ten
 seconds, and any increase in recorded swap usedMiB. Preserve the original failed
 predicates and noise qualification; no silent regrading or repeated rerun-to-green.
 All gates, other stop rules and deadlines remain unchanged.
+
+
+## Operator Stage 6 observation — bounded batch work, 2026-11-05
+
+Record without a repair: `readInboundBatch` stops adding subrequests after a
+completed read reaches the existing 250 ms work cap. Under genuine service load,
+a quiet device's appended request can lose this batch shortcut and wait for its
+native turn after up to eight busy logical positions (with ordinary eligible
+self/other turns still applying). The allowance is a logical bound and provides
+**no wall-time limit**. The cap does not bound an individual completed inner read.
+Omitted suffixes grant no quiet evidence; the 750 ms request-start cache age,
+authority/signature/chain/commit checks and native rotation stay unchanged.
+
+This is a code-level observation requested for Stage 6, not a new real-service
+load measurement or acceptance result. Keep the 250 ms cap, all budgets and the
+existing peer/marker/input gates. Phase 448 attributed the diagnosed shared-loop
+stall mainly to test reporting; phase 449's private control did not establish a
+separate production scheduling defect.

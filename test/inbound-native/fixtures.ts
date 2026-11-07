@@ -1,5 +1,6 @@
 /** Shared native-only regression helpers; never imported by an app entry. */
 import { expect, type Page } from '@playwright/test';
+import assert from 'node:assert/strict';
 import { build } from 'vite';
 import { resolve, join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -21,11 +22,11 @@ export function acceptedRows(state: string) {
             decodeSubmission(new Uint8Array(row['submission'] as Uint8Array)).envelope,
           ),
           decision = decodePositionResponse(new Uint8Array(row['response'] as Uint8Array));
-        expect(decision.kind).toBe('accepted');
+        assert.equal(decision.kind, 'accepted');
         if (decision.kind !== 'accepted') throw Error('Expected committed acceptance');
-        expect(decision.head.credential).toBe(envelope.credential_id);
-        expect(decision.head.position).toBe(envelope.seq);
-        expect(decision.leaf.digest).toBe(Buffer.from(envelope.digest).toString('hex'));
+        assert.equal(decision.head.credential, envelope.credential_id);
+        assert.equal(decision.head.position, envelope.seq);
+        assert.equal(decision.leaf.digest, Buffer.from(envelope.digest).toString('hex'));
         return {
           publisher: envelope.credential_id,
           position: envelope.seq,

@@ -8,7 +8,7 @@
     "The next orchestration phase must bind environment, dependencies, arguments, variants, source identity and actual case results before sharing prerequisite results.",
     "Run any future aggregate in a disposable checkout/build/profile. Current package/Playwright defaults include root dist output."
   ],
-  "counts": {"packageScripts":145,"campaigns":78,"testFiles":734,"requiredTestFiles":728,"excludedProductTestFiles":6,"catalogues":12,"vectorCorpora":30,"constructions":99,"vectorChainConsumers":18},
+  "counts": {"packageScripts":145,"campaigns":78,"testFiles":735,"requiredTestFiles":729,"excludedProductTestFiles":6,"catalogues":12,"vectorCorpora":30,"constructions":99,"vectorChainConsumers":18},
   "packageDispositions": {"development":["dev","dev:tailscale","preview","test:watch","lint:fix","format:fix","review:status","remediation:status","storage:private-cleanup:prepare","dev:account-setup","init:public-account","restore:public-account","serve:account","serve:account-service","serve:public-account-api","serve:public-account-app","upgrade:account-setup"],"generator":["vectors","trace","wasm","latency:record"],"optional-check":["test:https","storage:conformance","asvs:pin","wasm:stale","wasm:size","review:check","storage:legacy-host-cold","storage:legacy-host-cold:harness"],"required":["build","check","lint","format","test:latency","account:crypto-audit","account:reservation-durability","account:isolation","account:decision-composition","account:parser-conformance","account:delivery-oracle","account:admission-evidence","account:residue","account:liveness","validation:inventory","account:enrollment","account:successor","test:account-runtime","test:account-session-client-browser","test:account-sessions","test:account-setup","test:account-setup-upgrade","test:account-setup-upgrade-browser","test:device-enrollment","test:packaged-account","test:public-backup","test:public-maintenance","test:public-restore","test:public-runtime","test:local-baseline"],"alias":["account:activation","account:admission","account:admission-bounds","account:authority","account:capture","account:checkpoint-contract","account:core","account:counter-contract","account:crypto-prep","account:decisions","account:delivery","account:driver","account:editing","account:first-authority","account:genesis","account:handoff","account:inbound-codecs","account:inbound-prep","account:ledger-contract","account:local-custody","account:local-provenance","account:outbound","account:promotion","account:promotion-contract","account:receive","account:receive-driver","account:receive-editor","account:receive-transport","account:recovery","account:recovery-contract","account:service-custody","account:service-delivery","account:service-inbound","account:spool","account:store-contract","account:sync","account:transport","account:transport-contract","admission:check","authority:check","budget","debts","debts:check","limit:check","recipient:check","remediation:check","retention:check","status:check","storage:admission","storage:app-startup","storage:app-startup:packaged","storage:app-upgrades","storage:clear","storage:compatibility","storage:content","storage:contention","storage:custody","storage:delivery","storage:editor","storage:genesis","storage:harness","storage:journal","storage:legacy-cleanup","storage:legacy-cleanup:harness","storage:legacy-coordinator","storage:legacy-export","storage:legacy-host","storage:legacy-host:harness","storage:legacy-import","storage:legacy-selection","storage:legacy-source","storage:private-migration","storage:projection","storage:properties","storage:session","storage:startup","storage:trim","storage:workspace","test","test:geometry","trace:check","typecheck","vectors:check","vectors:coverage","wasm:verify","yjs:check"]},
   "packageGraph": [
     {"id":"account:activation","commands":[{"argv":["node","scripts/account-activation/run.mjs"],"env":{}}]},
@@ -278,6 +278,7 @@
     {"path":"scripts/yjs-delivery/run.mjs","disposition":"required-or-transitive","packageCommands":[[["node","scripts/yjs-delivery/run.mjs"],{}]],"extraCommands":[],"referencesVectorChain":false,"runCallSites":[],"processCallSites":[{"line":141,"form":"execFileSync","arguments":["'git'","['rev-parse', 'HEAD']","{ encoding: 'utf8' }"]},{"line":143,"form":"execFileSync","arguments":["'git'","['status', '--porcelain']","{ encoding: 'utf8' }"]}]}
   ],
   "tests": [
+    {"path":"test/acceptedRows.test.ts","status":"required","invocation":{"argv":["node","node_modules/vitest/vitest.mjs","run","test/acceptedRows.test.ts"]},"declarations":3,"propertyFamilies":[],"dynamicCaseCensus":"Required at execution; static declarations are not a case denominator."},
     {"path":"test/account-activation/controls.test.mjs","status":"required","invocation":{"argv":["node","--test","--test-concurrency=1","test/account-activation/controls.test.mjs"]},"declarations":2,"propertyFamilies":[{"line":99,"form":"fc.asyncProperty"}],"dynamicCaseCensus":"Required at execution; static declarations are not a case denominator."},
     {"path":"test/account-activation/core.test.mjs","status":"required","invocation":{"argv":["node","--test","--test-concurrency=1","test/account-activation/core.test.mjs"]},"declarations":11,"propertyFamilies":[{"line":230,"form":"fc.asyncProperty"}],"dynamicCaseCensus":"Required at execution; static declarations are not a case denominator."},
     {"path":"test/account-activation/native.test.mjs","status":"required","invocation":{"argv":["node","--test","--test-concurrency=1","test/account-activation/native.test.mjs"]},"declarations":3,"propertyFamilies":[],"dynamicCaseCensus":"Required at execution; static declarations are not a case denominator."},
@@ -1432,7 +1433,7 @@
     {"path":"scripts/release-validation/editor-admission-adapter.mjs","sha256":"768491d336e6ae3380e74ab43c5956592eb37623077bf13dd27a3dbed515f745"},
     {"path":"scripts/release-validation/execute.mjs","sha256":"4eefcbab9a9799e00f3290563768b37884f91cc698cea6638143c44d32f62269"},
     {"path":"scripts/release-validation/file-outputs.mjs","sha256":"efcac17c16a8dcdc85610c90c9b61b5c2ebbf075cea57c4272b1f8c0b3c2b5b5"},
-    {"path":"scripts/release-validation/general-tests.json","sha256":"1716abc56378678d4ab8438ade91d829f39202e9d64ebcb3ab5eaa449956077d"},
+    {"path":"scripts/release-validation/general-tests.json","sha256":"3a26af80cd31e2a435ccf47677380d15b9792c1d95a6fe047f7452fb6546c34a"},
     {"path":"scripts/release-validation/general-tests.mjs","sha256":"6b9c859e95a3dea8587e08368100107e4da2d928c95efc1b2f295aec2262d5cc"},
     {"path":"scripts/release-validation/generated-tests.mjs","sha256":"fc7c2dcc639eb968c51091e2ef97a6feea69ecad8fb9e5c9f08761aaf7fc56ba"},
     {"path":"scripts/release-validation/historical-inputs.mjs","sha256":"522b8529fd290cc556a5b6190229f0adc9a4ea1baf33bbc61676457145674e41"},
@@ -1501,6 +1502,7 @@
     {"path":"scripts/write-session/worker.mjs","sha256":"578a8cc6fc1f7ad82822892118a7d638fc3535cd132ef7060c0c2ff5d34b6a32"},
     {"path":"scripts/yjs-delivery/campaign.mjs","sha256":"17eb780a375105c528a9d5a47067f18c313aa6a1d075abeeaf68b45339d932f8"},
     {"path":"scripts/yjs-delivery/run.mjs","sha256":"5d9c463f753e1b6025f18e6b64c61480974cf669957116eab58f27c0148f2198"},
+    {"path":"test/acceptedRows.test.ts","sha256":"a82a5f83d39472cd91d40fc30151433a1a9c0d51d0138e737f9f65a73bf3f326"},
     {"path":"test/account-activation/controls.test.mjs","sha256":"c7b6c811c36da1bdff89a289b82a8a9dc35ef1b1d264aaca13a654b5a2a550a8"},
     {"path":"test/account-activation/core.test.mjs","sha256":"e6c324af6de3fbded40aa4e3d8eb215c6b80207c9c5309af9978d4a72973dd1f"},
     {"path":"test/account-activation/fixtures.mjs","sha256":"a78f6721b310de357e3f1a4d901a3e58eadc4c1275a6748ccd692d4ea3af726b"},
@@ -2117,7 +2119,7 @@
     {"path":"test/inbound-lifecycle/custody.spec.ts","sha256":"b154f2cce99d17905232171d6651eb85eb9d01fd1eeb3473b062bdadffa4279e"},
     {"path":"test/inbound-lifecycle/marker.ts","sha256":"e03d858624f74f70b781d809ec833e0221db0934088a90953efd7066798a648c"},
     {"path":"test/inbound-native/dense.spec.ts","sha256":"aec2ce85e53cddf5b0c125408de34e7a22a082ca5c4a7d3c3284497a542a61fd"},
-    {"path":"test/inbound-native/fixtures.ts","sha256":"5760fc000f8ebba39b5b370832b38b14eb03182ea65620b5c065620cee97efeb"},
+    {"path":"test/inbound-native/fixtures.ts","sha256":"4fc6265d0f89a0e1e0eafe3e62f6cda40963e41a35d3c1bfffbbfdd8cffd0e19"},
     {"path":"test/inbound-native/group-cut.spec.ts","sha256":"80793a21f86e60ed4feace3aee743c4f6d727c17a8990c4318186bd4055c2d48"},
     {"path":"test/inbound-native/inspect.ts","sha256":"b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7"},
     {"path":"test/inbound-page/append-fixtures.ts","sha256":"3e9c54a35c4fea00e1345407d38b73938f1176faed585cccb4ab05839e6e3a10"},
@@ -2413,7 +2415,7 @@
     {"path":"test/release-validation/custody.test.mjs","sha256":"5276f593462051a007e011424e748f22938a71c74ad6e51bf07d7e78abbe52c4"},
     {"path":"test/release-validation/editor-admission.test.mjs","sha256":"3427c7f8d41a5101266e406cd84be1034283379fc88082771479a8f9be92337d"},
     {"path":"test/release-validation/file-outputs.test.mjs","sha256":"7b372423d7ef7c9ef6958fb6ba051a35c10b5a67fae7ebb602add33672efef03"},
-    {"path":"test/release-validation/general-tests.test.mjs","sha256":"f18ea0d33445deed6b40b5bcf418bc485df1b47ab3f443900ee493b427e2f566"},
+    {"path":"test/release-validation/general-tests.test.mjs","sha256":"bf6e8f896bc0ed959f000feb688cc58d50e37050087e2d45e636d7a39905f9cc"},
     {"path":"test/release-validation/generated-tests.test.mjs","sha256":"78d48f501808a304747557ab68116110cc5b31dbf72a7543e8d7cc915327ac39"},
     {"path":"test/release-validation/identity.test.mjs","sha256":"b62d1024fdd27d27de7157f783edc743db3beb2891db438b80c86f411e9a22c8"},
     {"path":"test/release-validation/inventory-snapshot.test.mjs","sha256":"66ebc1ed18ae4c2e8abc3f0c5b2294f009830978623df64fff6f490e5410979e"},

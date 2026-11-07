@@ -7668,3 +7668,20 @@ restore the exact frozen source inventory without rewriting prior files, and
 query only a private copied database in guard units. Retain the failed controller
 and do not rerun the app merely to repair that harness check. No guard, budget,
 limit, format, service or wire decision changes.
+
+
+### Stop the approved fixture repair at an unreconciled population assertion
+
+**Date:** 2026-11-05 · **Phase:** 450.
+
+The operator accepts448/449 and approves exactly four strict matcher replacements,
+a permanent original/strict copied-database unit control, all acceptedRows importer
+reruns, a pre-timing assertion-loop audit and the existing cap observation. Retain
+all decoder/SQL/return behavior and every gate. The new guard test is registered
+in the repo's reviewed inventory rather than claiming credit from a green run.
+
+Typecheck, lint and the eight guards pass. The population assertion then observes
+2,573 cases rather than the proposed2,570. The operator explicitly says to stop
+and report if anything fails, so do not repair or rerun the count, begin browser
+reruns or ask for a quiet-host timing window. Preserve this non-green checkpoint
+and require provenance for the three-case difference before any next edit.

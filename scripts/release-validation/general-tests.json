@@ -1,6 +1,7 @@
 {
   "schema": 1,
   "vitest": [
+    "test/acceptedRows.test.ts",
     "test/accountDriver.test.ts",
     "test/accountInboundCodec.test.ts",
     "test/accountLiveness.test.ts",

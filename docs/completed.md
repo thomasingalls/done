@@ -19654,3 +19654,24 @@ app journey. The independent final review verifies all pins and exact seeds.
 Outcome precedes advancing this seat. Canonical tests/app remain unchanged;
 next is the narrow harness repair and original preflight. No Stage5 timing credit,
 commit, push or deployment; all earlier failures remain intact.
+
+
+### Apply the approved census repair and stop at its population checkpoint
+
+**Date:** 2026-11-05 · **Phase:** 450 · **Scope:** approved test-only repair.
+
+Exactly four Playwright checks become strict Node assertions, with whole-file
+inverse proof and no decoder/SQL/branch/return changes. The permanent original
+oracle is byte-bound; all eight copied-private-database guard cases pass, including
+source sidecar absence. Typecheck and lint pass. Required test registration and
+planning snapshot retain every old obligation, but the selected census/policy
+command fails one of16tests: actual2,573 versus proposed2,570 at general-tests.test.mjs:36.
+The three-case difference is unresolved; preserve the failure instead of raising
+the expectation. Stop at this first failure, per the operator's instruction.
+
+[Record](./development-evidence/2026-11-02-release-hardening/450-census-repair-checkpoint/README.md).
+No browser specs or timings run; the measured-path assertion audit remains
+incomplete and no host handshake starts. Record the unchanged250ms batch-cap
+logical/wall-time distinction in the Stage6plan. No app/security/gate/budget change,
+commit, push or deployment. Freeze a non-green sequential checkpoint. Outcome
+precedes replacing this seat's active state.

@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase448 frozen; private reporting control and sparse scheduling next
+status: blocked # phase450 reviewed population actual2573 expected2570; operator stop
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: narrow canonical census reporting repair and original native preflight before timed matrix
+blocks_on: reconcile the three-case population difference after the requested failure report
 updated: 2026-11-05
 ```
 
@@ -191,30 +191,26 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Phase449 private reporting/scheduling control](./development-evidence/2026-11-02-release-hardening/449-sparse-scheduling-control/README.md)
-passes the one unchanged app case including sparse visibility, native fairness,
-archives, Undo and offline cold. Strict census assertions retain all four tuple
-predicates; seven old/new guard cases and twelve omission models pass, with a
-sensitive false-credit control and unchanged750ms expiry. Census cost falls from
-profiled448's41.134s to0.668s; this is diagnosis, not application timing credit.
-A guard-only copied-DB retry repairs read-only SQLite sidecar creation; all prior
-seed bytes stay exact, new sidecars are preserved, and no second app run occurs.
-All original445–448 failures remain recorded. No independent scheduling defect
-is demonstrated; limits and security checks stay unchanged.
+**Latest checks.** [Phase450 approved census repair](./development-evidence/2026-11-02-release-hardening/450-census-repair-checkpoint/README.md)
+passes typecheck, lint and eight permanent original/strict private-copy unit tests.
+Whole-file inverse proof binds the four approved helper changes. Registration and
+planning snapshot retain old obligations. The next census/policy command fails:
+actual2,573 cases versus proposed2,570 (15passed/1failed). Stop per the operator;
+the three-case difference is unresolved. No browser or timing run, no audit
+completion or host handshake. Earlier diagnostic passes/failures remain intact.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phases448–449 close service/test attribution and
-omitted-sparse scheduling diagnosis as sequential evidence-only patches. The
-next bounded repair is canonical test-only reporting: preserve every tuple check,
-add permanent guard controls, then rerun the unchanged fairness/past-index
-preflight. Current canonical tests/app have no new edits; Stage5matrix remains
-held. The private pass grants no timing or aggregate credit; remaining fairness
-cases, original unfair sensitivity and past-index are still unrun in this round.
-No commit, push, publication or deployment.
+**Active bounded outcome.** Freeze phase450 as a non-green sequential checkpoint
+and report the first validation failure. Do not change the population expectation
+or continue the requested browser reruns until the operator resumes. All five
+fairness cases, past-index, dense/group-cut/idle/owners and the measured-path
+assertion-loop audit remain outstanding. The250ms cap observation is recorded
+for Stage6 without a repair or gate waiver. No app/security/limit change; no
+commit, push, publication, deployment or timed acceptance credit.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
