@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase499 fixture precondition timeout retained;offline preparation next
+status: in flight # phase500 offline fixture controls13pass;fresh fullsetup next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: offline-capable fixture precondition with same deadlines, full3072setup andreader report
+blocks_on: fresh3072setup with originaldeadlines, then originalreturningreader report
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase499 reaches no new writing: initial fixture reduction exceeds120s over12attempts while the workspace stays active/durable. All server tuples and captured writing are exact. Repair apparatus contention using normal browseroffline duringlocal reduction and reconnectbeforewriting; canonicalreadiness explicitly permits it. Keep120/30/1800deadlines andallStage5online gates. Noapp refusal,ownerclosure orchannelerror observed.495publicationstall remains unresolved.
-[Record](./development-evidence/2026-11-02-release-hardening/499-session-precondition-timeout/README.md).
+**Active bounded outcome.** Phase500 uses ordinary offline mode only during local producer reduction, after confirming settled prefix and before normal online reopen/writing. Thirteen controls and exactinverse proof pass; all120/30/1800deadlines,1024acceptededit checks andoldreaders remain. NoStage5onlinegate credit or appchange. Fresh fullfixture next; keep495stall unresolved andstopifitreappears.
+[Record](./development-evidence/2026-11-02-release-hardening/500-offline-fixture/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

@@ -20450,3 +20450,13 @@ The session fixture stops before writing at its unchanged 120 s maintenance prec
 [Record](./development-evidence/2026-11-02-release-hardening/499-session-precondition-timeout/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Isolate fixture reduction using ordinary offline mode
+
+**Date:** 2026-11-06 · **Phase:** 500.
+
+The fixture-only offline preparation recipe and thirteen controls pass, with exact inverse recovery of phase498. It uses actual browser offline state only while the supported canonical local reducer runs, reconnecting before each normal owner reopen and all writing. All original assertions and deadlines remain, with no online gate credit.
+[Record](./development-evidence/2026-11-02-release-hardening/500-offline-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

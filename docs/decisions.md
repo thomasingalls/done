@@ -8252,3 +8252,10 @@ Keep production policy unchanged. Use normal reopened producer sessions solely t
 **Date:** 2026-11-06 · **Phase:** 499.
 
 Use the existing offline-capable canonical local reducer for fixture preparation, with real browser offline/online transitions and explicit sync status checks. No scheduler/lifecycle guard is bypassed. Preserve the120s precondition and whole1800s setup ceiling, reconnect before writing, and leave every original online gate unchanged. The known publication stall is not resolved by this classification.
+
+
+### Keep fixture deadlines and online gate conditions unchanged
+
+**Date:** 2026-11-06 · **Phase:** 500.
+
+Repair the healthy fixture-precondition contention through a supported ordinary network state under standing apparatus permission. Do not change the120s bound or substitute offline preparation for an online maintenance gate. Preserve server tuples, old readers, original1024edit checks and one1800ssetup clock.
