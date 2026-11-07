@@ -19816,3 +19816,22 @@ failure and corrected build. [Record](./development-evidence/2026-11-02-release-
 Outcome precedes advancing the seat. Rerun455seed with root/date bindings only,
 then continue Stage5under the original gates and host handshake. No app/browser
 or timed journey, release-image claim, commit, push or deployment.
+
+
+### Rebuild the fictional cohort and expose its incomplete Goals paste
+
+**Date:** 2026-11-06 · **Phase:** 459 · **Scope:** untimed fixture preparation.
+
+Existing seed checks pass for ten devices across H/M/Q, with1,024/256/32 genuine
+accepted backlog positions. Preserve the earlier tooling-SW agent and initial
+presentation-prefix failures and their wrapper-only repairs; no app byte,
+assertion, limit or deadline changes. Enrollment no longer refuses on this run.
+[Record](./development-evidence/2026-11-02-release-hardening/459-seed-goals-footprint-hold/README.md).
+
+The Goals audit finds H only1,000 of13,407 intended bytes; historical323H was
+5,000 despite nominal13,000. M/Q are complete. Immediate navigation after a
+chunked paste is plausible; accepted-data loss is not proved. Prepare, but do
+not apply, the narrow exact-completion/export assertion patch. The standing
+assertion-change rule requires operator approval and a workload decision before
+another app run. No timed gates started. Outcome precedes advancing the seat to
+this hold; all private seed roots stay intact. No commit, push or deployment.

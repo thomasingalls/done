@@ -7798,3 +7798,17 @@ Keep the test entry separate and ordinary frontend bytes exact. A missing local
 config dependency link is apparatus failure: preserve it, fix the link without
 changing source/flags/deadlines, and continue under standing permission. No
 publication or performance credit follows from this binding check.
+
+
+### Audit actual fixture text before claiming the intended workload
+
+**Date:** 2026-11-06 · **Phase:** 459 · **Pending operator decision.**
+
+A passing peer equality check establishes agreement on sampled writing, not
+completion of the intended large paste. Keep the successful seed and all prior
+failures, record actual current/historical Goals sizes, and withhold Stage5
+timings on the undersized H cohort. The chunked-input recipe race is a qualified
+hypothesis, not a finding that accepted writing was lost. Propose exact editor
+completion and exported-text assertions within the old setup bounds. Because
+the operator explicitly reserves assertion changes, leave the proposal unapplied
+and request approval. No app fix, gate change or timing credit follows here.

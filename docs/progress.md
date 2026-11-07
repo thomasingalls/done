@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase458 repaired artifacts bound; current-date455seed retry next
+status: held # phase459 seed checks pass; Goals completion assertions need operator approval
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: current-date seed, final closures and host handshake
+blocks_on: Goals seed assertion/workload decision, final closures and host handshake
 updated: 2026-11-06
 ```
 
@@ -203,15 +203,18 @@ commands have passing segments, not a final all-target-stack check. Earlier reds
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase458rebuilds the release-profile frontend and
-separate test entry with457'sapproved clock fix. Ordinary bytes stay exact under
-the test overlay; shipping hooks are absent. A read-only current-protocol overlay
-makes the old430image foundation'seffective123fileAPIclosure current; six changed,
-one added, no hidden old-image claim. Container/gateway source/mount/byte smoke
-passes with original resources and limits. Keep the first config-link failure.
-[Record](./development-evidence/2026-11-02-release-hardening/458-repaired-runtime-bindings/README.md).
-Next rerun455seed on the current civil date with root bindings only; retain all
-original assertions/deadlines. Then finish frozen closures and Stage5with the
+**Active bounded outcome.** Phase459's third seed attempt passes the existing
+checks: ten fictional devices, H/M/Q accepted backlogs1,024/256/32, rebuilt458
+client and effective API. Keep the first two apparatus failures and narrow SW
+agent/durable-prefix observation repairs, with original assertions and bounds.
+[Record](./development-evidence/2026-11-02-release-hardening/459-seed-goals-footprint-hold/README.md).
+The actual Goals audit finds H1,000 bytes of13,407 intended; historical323H was
+5,000 despite nominal13,000. M/Q are complete. Leaving chunked input before
+completion is plausible, but accepted writing loss is not proved. A separate
+unapplied patch checks exact editor completion before leaving and exact export
+after enrollment, retaining setup bounds. Stop for the operator's assertion/
+workload decision. No further app runs or timed gates pending that decision.
+Afterward finish current-date seed and frozen apparatus closures, then the
 required tight-cell host handshake. No timing credit, commit, push or deploy.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic

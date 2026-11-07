@@ -1,0 +1,894 @@
+{
+  "phase": 459,
+  "date": "2026-11-06",
+  "scope": "untimed fictional fixture setup; existing seed checks pass, intended Goals footprint not established",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workspaceCommands.ts",
+      "sha256": "eb8ac9ec6563a8b82956543e2b2786725ba15c838cf1c4a669ed6976570a0baa",
+      "bytes": 15633
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/admissionQueue.ts",
+      "sha256": "07519eb2efbfc8949d756113b4db0fd4501a40e7985b4efaff1084998ed862e0",
+      "bytes": 48060
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "sha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44",
+      "bytes": 21097
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase323/evidence/civil01-fixture-attempt2/seed/seed-check.json.gz",
+      "sha256": "00e7a9e1015ca6c3d0ebc36cbc44f90bfaf4ad992ae4bf5738c694869b996975",
+      "bytes": 514
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-complete-goals-proposed.patch",
+      "sha256": "0fdc2d4225a1b3e1a12610dda3b574400297559ef2ea697a854c6ae35e922b32",
+      "bytes": 2721
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-declaration.json",
+      "sha256": "061ed046706ac21a51f21f6c744dc0374cf2b6c96a92403a44c8b6fc8add2555",
+      "bytes": 1777
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-entry-probe-network-enabled.json",
+      "sha256": "260af2ee3ba39840f44e9a110d7d34d8d90e340d848ecdd259a7a5535c7cdd82",
+      "bytes": 15024
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-entry-probe.json",
+      "sha256": "077b94f1bcc999183a0aaeb84aed3d0fde2ae0affb1d9cb93d39f8b2dc5cc00e",
+      "bytes": 16215
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-goals-size-audit.json",
+      "sha256": "244c831bc460b32f1516e73f9a6212538874bfc1473c456795eff287570bc1e1",
+      "bytes": 2683
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-harness-attempts.json",
+      "sha256": "bf8ab7934820674be7e5ef121279ef25c4b914fedf8722078ac175af28056fed",
+      "bytes": 1241
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/459-list.log",
+      "sha256": "5544d25bfb18d003f9e177534edc0e395cb41c32a0ac584f2495a2dc06198763",
+      "bytes": 149
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/container-identity.json",
+      "sha256": "4db027afc9c7f65bcc4d38235dea9b0b1a965fc4eddcf2eab890a7aee6fd65b5",
+      "bytes": 1823
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/container.cid",
+      "sha256": "ecce8ee5ce88b9822196d54dfe5e72ce55ce2e26bffb523ea8fc8eb9f5a14f1f",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/docker-command.json",
+      "sha256": "488644169c081cb5855add7cb5360fdc29f40e97124c4c33dec2df6ec183f61f",
+      "bytes": 823
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/process-placement.json",
+      "sha256": "f770c67779fc867f6a271cab573e1338de953c693ad0fc31dcca1d383e452855",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/state/account.sqlite",
+      "sha256": "5a56a4ca135c3861a6b6219eec117054ceea3cd7d506b0981d71069e86be39bb",
+      "bytes": 434176
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/state/authority.sqlite",
+      "sha256": "8a876f7f807160e44cbb5ed26020adb07244ac0f65501676dba85e01c122c270",
+      "bytes": 8192
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/state/authority.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/state/authority.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/state/operator.key",
+      "sha256": "b45912fae92d5bfc731b2d788a38ba3117361d9cc3b777cbd8fdfa7d126359c0",
+      "bytes": 32
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe/state/pin.json",
+      "sha256": "3761e7d91fde781f6caa882971503516095c42521828235ec0b0abfee520234f",
+      "bytes": 185
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/container-identity.json",
+      "sha256": "d6566c566957d2b6ba761aa02ef20a4533213869e595385560cf2eff6bf9034a",
+      "bytes": 1839
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/container.cid",
+      "sha256": "fceb66bddfe7dc09028a0e694c55f6eb30bf538c515c3dcbf3ca09aa6dae6fc9",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/docker-command.json",
+      "sha256": "0eedfc8d75ccca4f5dfbd5b889455fb22abf6f798af5b366b345a27ed2d212d3",
+      "bytes": 855
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/process-placement.json",
+      "sha256": "b80b7e3e1e3803ab12004a4cf548f50a70bc19b3986b5135f1403c95ad22db1d",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/state/account.sqlite",
+      "sha256": "db4017575f02e426a2eabcda68d8ccbca109bb8ca1a8518dcd8a26cba341218a",
+      "bytes": 434176
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/state/authority.sqlite",
+      "sha256": "8388a55c2475fd6e9128cd2b7e3aa6a9c2698bb17660f988f40bdc0fb619480b",
+      "bytes": 8192
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/state/authority.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/state/authority.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/state/operator.key",
+      "sha256": "f13325b9c0c4973ca5bc44febfbc366b5d57f2d9dff8e4f6c14c40bb88ad5bc9",
+      "bytes": 32
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled/state/pin.json",
+      "sha256": "fa76c2d11414cf7699b1b58ad56d26e54e06cfc9ae054e63a2b14f17744b1b69",
+      "bytes": 185
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe-network-enabled.mjs",
+      "sha256": "5444cb3ef85b676f80e17ca1f54ea6f1f873b1b0e2ae4f158eeae2fa3538d025",
+      "bytes": 2321
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/entry-probe.mjs",
+      "sha256": "ad925d4afaf20ecad5061c060540c3afc6f6bd474c784e613171a9ccb189b75a",
+      "bytes": 2256
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/package.json",
+      "sha256": "a90fc33418afa2b9cbf4768524b021135b965ecdf993457505bfae3ac44a8428",
+      "bytes": 33
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/record459.py",
+      "sha256": "7b9c4ed4bd60723f698ff2285a0b3c9d7b5279cbf2d040f16467063297e5bfb4",
+      "bytes": 10072
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/artifacts/.last-run.json",
+      "sha256": "3ce0b6f1138f287f2a12743a31e02511ea641b725e7d8965537616bb8ce24959",
+      "bytes": 96
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/artifacts/seed-seed-actual-current-a-bfff5-vidually-accepted-histories/error-context.md",
+      "sha256": "e4e56861e0d5de593bdf54cb80f179bd3d4874d4e10645d75a5bb16721105e21",
+      "bytes": 10033
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/container-identity.json",
+      "sha256": "d4c76c06f66baef16644f29fa9607b3b49873c676570d4e26242eeca557116e4",
+      "bytes": 1816
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/container.cid",
+      "sha256": "a34313a4428dbcd7ac85e0be3caf16444a0d00a32b8c7b9094bcfd1cd310f52e",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/docker-command.json",
+      "sha256": "ba8ec15dcdb01803e58a65dfdfc1de0effa0fabc5e0f5b419fc3b10d6a7a1590",
+      "bytes": 809
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/gateway.log",
+      "sha256": "05b2d4bf2d2d934e35b4ab3c349665ae02ce84e073e22ae4132b9f9ea840275e",
+      "bytes": 164
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/process-placement.json",
+      "sha256": "27ae9d0a90c1967f566b6e2ae9197bdbb1816b14244ec83653f636cc045b93b5",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/runner.json",
+      "sha256": "2109f0ebf1d6369c02b51d9d6a13e4a0f4856a722ace1ae8d88fe14443990584",
+      "bytes": 7652
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/seed-check.json",
+      "sha256": "200de2402449e0bcef76d8c48729b01804eb8fa13e5c2fe044aa2d1583fdd05f",
+      "bytes": 365
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/state/account.sqlite",
+      "sha256": "05fab6f9b74a3d7c12c0327eadd1db3fbd7e93214954e5d39d991ac9a492a6bd",
+      "bytes": 823296
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/state/authority.sqlite",
+      "sha256": "12345d3bebb377d0290eef2bc3c8c6a136b5ba058259de0bfa5ab380cc3dbcd2",
+      "bytes": 8192
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/state/authority.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/state/authority.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/state/operator.key",
+      "sha256": "111ad0d00c5fbae1c8f3b2dd8ae0e9f970d13c0d4f7bfb107a38d75459d8e8b6",
+      "bytes": 32
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed/state/pin.json",
+      "sha256": "cd52fd50bbbe462e6bcaa7dfe929f15fb0d7cec14a07e18f5fea3d9fda081cbf",
+      "bytes": 185
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-attempt1.spec.txt",
+      "sha256": "e18fb049f5b0b1136244d0430ea7441c32f08b8f4ff68ce73b046bacc9f94ccc",
+      "bytes": 8874
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-attempt2.spec.txt",
+      "sha256": "4c5cb4bb2027a42dbd5bb56aba647199914bbe01fd50ee283d842fd8e656a271",
+      "bytes": 8971
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/artifacts/.last-run.json",
+      "sha256": "3ce0b6f1138f287f2a12743a31e02511ea641b725e7d8965537616bb8ce24959",
+      "bytes": 96
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/artifacts/seed-seed-actual-current-a-bfff5-vidually-accepted-histories/error-context.md",
+      "sha256": "d654931c2d0c253b18daf988d69f54711dce1f86fc4e3e0ad5dc1bc1335c16ab",
+      "bytes": 10244
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/container-identity.json",
+      "sha256": "a4e8551c1046232f0253850746cd39637a545824d5cd42daf1707a101eb32f27",
+      "bytes": 1819
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/container.cid",
+      "sha256": "684fad43c51dc37796a10f74932f80883acc3c1be475a054791afffeddb3d88a",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/docker-command.json",
+      "sha256": "eee14da977394a0c600897598f050dbf52d8b4890f8138b28bcb8e48907833b4",
+      "bytes": 815
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/gateway.log",
+      "sha256": "f97cfa22d8f5e8d759e8793f20d97580159486577e12bc63b38760b1f40f17b1",
+      "bytes": 164
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/process-placement.json",
+      "sha256": "f857651ceb45f4d2419b096342365ce9b96401f8e2bea75822a8446d7664d062",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/runner.json",
+      "sha256": "f1731b35461605f610fbe781c58ba61cca66bba2dee8a71127a29ee6dba0a085",
+      "bytes": 9191
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/seed-check.json",
+      "sha256": "5b50a6479dce03df7d4238a73155e03376429614aa1a7929fbf5acd3a2fcace0",
+      "bytes": 620
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/state/account.sqlite",
+      "sha256": "ff8356e424442b131efb148610c7dd2764ab9cea2638aaaa36a5c33c57236aa3",
+      "bytes": 819200
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/state/authority.sqlite",
+      "sha256": "02071276dcfcf7e1522241586cb4a5683e1f0c7a9cc3bb29a52002fe680bfa49",
+      "bytes": 8192
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/state/authority.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/state/authority.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/state/operator.key",
+      "sha256": "97336a3b502635c14e2cfd6f5f2f77a24d2fa58ec69953742b5b163521e2b0d6",
+      "bytes": 32
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r2/state/pin.json",
+      "sha256": "785f5c0c94f38009b73a913c6770b2edef41e26ded3c581ccb1b353510f1642b",
+      "bytes": 185
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/artifacts/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/container-identity.json",
+      "sha256": "8c3249185906cc0b98472c1dd454cdf986b250d40de95ac554e40c7e07ce3ae7",
+      "bytes": 1819
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/container.cid",
+      "sha256": "31cc0783d784765c3e7337863e4337f12aa822221a5e15b4c1ad4c0e53a40622",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/docker-command.json",
+      "sha256": "86046a12ed7188f707dfb6d771d47eee6e39e7b7f94d76967742cba6faf2526c",
+      "bytes": 815
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/gateway.log",
+      "sha256": "209a4f149e04f945b00c0ae94fc18db25da5dffff5a9100e939c02de9ef21edf",
+      "bytes": 164
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/process-placement.json",
+      "sha256": "b117ec65a1c0c04ebeaf0117e96487cc553db0392133bebdc805f97ebfeef538",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/runner.json",
+      "sha256": "ff50fb16c768635b5e016a99ea07e7eead1cc0ed498f1924527398fecae04c65",
+      "bytes": 6911
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/seed-check.json",
+      "sha256": "6092bce64aa6767a9b75dbafc6bafbb295341b77e40bad8875f5c1f985048ac3",
+      "bytes": 104409
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/services.log",
+      "sha256": "dc6264affedd5119a24d05d72bffb2ead5f1f270bd1290885ae293492ed7e32b",
+      "bytes": 318
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/state/account.sqlite",
+      "sha256": "f8b52cbe41f4368b1000bf767578bc44e46b6ac80fd6005cbde69f9c86ec647b",
+      "bytes": 3051520
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/state/authority.sqlite",
+      "sha256": "baff5be16be1f08ef332b1b51bdb982d0b76b6ce93d512d2ddf336e611cac7c1",
+      "bytes": 8192
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/state/authority.sqlite-shm",
+      "sha256": "fd4c9fda9cd3f9ae7c962b0ddf37232294d55580e1aa165aa06129b8549389eb",
+      "bytes": 32768
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/state/authority.sqlite-wal",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/state/operator.key",
+      "sha256": "7619ffb7fe58121fe5d689169b6f596830133cafa8b0ec6c1d6829c3caabadac",
+      "bytes": 32
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed-r3/state/pin.json",
+      "sha256": "50c736ed7bf73fcdff91c22a1d0bb3c4ff12daf45376e6f97fa2a0cb28f170bc",
+      "bytes": 185
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed.config.ts",
+      "sha256": "27a865fba23050b596be1e6ac3a080709476fe2c6c38f46499e0afce8f3e5bdc",
+      "bytes": 466
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-fixtures-459-20261106/seed.spec.ts",
+      "sha256": "c98e4fbc3a82d07d845e23ab9c5836a2f5430f1394294f3bc9f5765f9d237abe",
+      "bytes": 8970
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/child.log",
+      "sha256": "bba17992a891330742788452516205bfd521c0bb994e811457ed1aa109ed90a0",
+      "bytes": 2452
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/host-load.jsonl",
+      "sha256": "df079e3b17edcd3c31404ee8b5874fd9529e4b674538a7b3cfe343759e62bb26",
+      "bytes": 45517
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/power-assertions-before.txt",
+      "sha256": "c392f10a0a3994c442234817aed249fca09bef097926beca6e5df2ab22d5d00c",
+      "bytes": 1614
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/power-log-after.meta.json",
+      "sha256": "117b3ed590edd52d7c05bee4390e10bd5cf7d72c7bd38461bfd98a2d237a0771",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/power-log-after.txt",
+      "sha256": "1f86ac97b56f6f36c83dcddf0caa86d3aafd825b53ad4d1c9acecedfac2bbb69",
+      "bytes": 678
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/power-log-before.meta.json",
+      "sha256": "f976b40e213d9eee1f2a33c00c241b632ff50a58b58fa6f285ef500ab5db4ba5",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed/run.json",
+      "sha256": "3afeafc1958d8617170e01995293a9fc3d999985648881efb9b72ca5995d1b56",
+      "bytes": 1574
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/child.log",
+      "sha256": "a89b900ab191ac07dd8fe5de2e4bbbb796b0f57f4d99a377ec847bdf5dc10964",
+      "bytes": 2946
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/host-load.jsonl",
+      "sha256": "4e19bf5b684dafad7d13c7dba6b52d76de4439058a3dedf9b4df8cf05e542936",
+      "bytes": 42462
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/power-assertions-before.txt",
+      "sha256": "83c5c1bddc8c6d2a6aafc893a052bc5b6bfdd51c787a093409bf360f8d34533d",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/power-log-after.meta.json",
+      "sha256": "e12bf0c25727371a1633e5a6329d35feb26c922faa0cdf32e970beb031f4ef7c",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/power-log-after.txt",
+      "sha256": "524fbe54c43e8fff2a0877953b4d70622222d6e39bda43815084643ef965ed1c",
+      "bytes": 628
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/power-log-before.meta.json",
+      "sha256": "4f463e535f11c5e0bb25f43c32309bbef1f58328fc7e7867679a635751f7bef0",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r2/run.json",
+      "sha256": "ed33c5afe2b1ac5c6f102d3886b0ec355d7af4de6dd70f1e7e51ae872b64518f",
+      "bytes": 1581
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/child.log",
+      "sha256": "a3b1d50a87213145b6ed120de4ad4fde0f51aaa273feda0b6ef2b69c784f09f8",
+      "bytes": 1739
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/host-load.jsonl",
+      "sha256": "c9511e5a1c70dae642ac9f04169b5285dfbc518acfe47ad64bb4bfa1355a6ad2",
+      "bytes": 225605
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/power-assertions-before.txt",
+      "sha256": "dd0490bd5c656a7e1d4e3ecc063ac0f2782e508a47366624d27c8680ec4306d9",
+      "bytes": 1614
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/power-log-after.meta.json",
+      "sha256": "87907a0822635a404c332214ecda73041726f28c25e7af695b4033c2ce454982",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/power-log-after.txt",
+      "sha256": "076885bd122fdcb27fa925b86dacf6cc84217933dab516a68023a3ab61688db8",
+      "bytes": 1060
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/power-log-before.meta.json",
+      "sha256": "9d661785d3bfbf36c8e73ec9e2d55d779d73fbb4379d2a6f3c311fa5d081a187",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-real-cohort-seed-r3/run.json",
+      "sha256": "5070e9381b6a6082339adc1e5c28051a14d58561d778be15f8c35f66b7db3ac5",
+      "bytes": 1580
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/child.log",
+      "sha256": "11076b6f557ba801dc939c3dc7c2f21ba61369ef0f4fcda300d58f332bc1a5fc",
+      "bytes": 223
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/host-load.jsonl",
+      "sha256": "26fb9f6d1e2848f3a1c612cfe738cc5b5b4e7b3028685b2dbf39adcc9c55000e",
+      "bytes": 3050
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/power-assertions-before.txt",
+      "sha256": "b249e8ba63d6296e7172e2b1953300ccab64e6a5e438e481c0ed2c776079eba3",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/power-log-after.meta.json",
+      "sha256": "9d5c6c240119174463131a8b23af8d796510d4dcaeb05b16eb8aadf314700b13",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/power-log-after.txt",
+      "sha256": "1a095a3dea524fec45a0560eeded744e66ed08b3b63744b16eee6948b336aee0",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/power-log-before.meta.json",
+      "sha256": "9e923fcaa430d52835cc7ed71d64b00127d51cdddfa03e2e012a509e142910a9",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-network-probe/run.json",
+      "sha256": "a435312c45d48c00bc2c93ad624f422839a103583e1eb64862be987c59f1b471",
+      "bytes": 889
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/child.log",
+      "sha256": "470f5e84b008792a809e8a167e7050a8089d3aa0edeb55a17e2ab005119a9e64",
+      "bytes": 224
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/host-load.jsonl",
+      "sha256": "893035d3fac30cb29972d1ef3cc82d866820011fa53b17dc6428cabe9c9bf87d",
+      "bytes": 3040
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/power-assertions-before.txt",
+      "sha256": "011c149e2b5eef489462e13bcaeb2cd4ddc3bef5ddcc3582ce97b3bcd2da85df",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/power-log-after.meta.json",
+      "sha256": "ef4835261483598b747cb78260a232a68add04371bf6e207becfda0f431b3eef",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/power-log-after.txt",
+      "sha256": "d3b77c5a7bb91215663e778c838789287117b67ae31cd6842e4f8dbaac8005ed",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/power-log-before.meta.json",
+      "sha256": "80941e267c966185e4e8b5060dd5deb32da8b80300a6de1783ac2bca4be23383",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/459-tooling-entry-probe/run.json",
+      "sha256": "a6ddecdce3e200700d9f35a3438533e5c5ad801fd94b75827531cc9f613f0f54",
+      "bytes": 857
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-rebind-458-20261106/private-fixture/fixture.json",
+      "sha256": "75340f09914aac1a29c53a78ce7144a52f3608a1f37f78623fddc4cb24cc159c",
+      "bytes": 13928887
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-rebind-458-20261106/458-api-effective-inputs.json",
+      "sha256": "dbb58d9984416acaa938b42d89163ad450fd1b796738450f56af30b60034ff25",
+      "bytes": 21211
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-rebind-458-20261106/458-build-complete.json",
+      "sha256": "adf6ff2c4ba7df86dde0951739ef36c263b943f32c6ae51789b8527c383563fa",
+      "bytes": 860
+    }
+  ],
+  "declaredConditions": {
+    "phase": 459,
+    "declaredEpoch": 1793951697.087726,
+    "purpose": "repeat455seed with approved457client/server code",
+    "source": "/private/tmp/done-stage5-fixtures-455-20261105",
+    "pins": [
+      {
+        "path": "seed.spec.ts",
+        "oldSha256": "235e9ad4b6aeb0fda7dba9ca4469660629b725e576bfc6825092714a29efacf2",
+        "newSha256": "e18fb049f5b0b1136244d0430ea7441c32f08b8f4ff68ce73b046bacc9f94ccc",
+        "inverseRootBindingExact": true
+      },
+      {
+        "path": "seed.config.ts",
+        "oldSha256": "27a865fba23050b596be1e6ac3a080709476fe2c6c38f46499e0afce8f3e5bdc",
+        "newSha256": "27a865fba23050b596be1e6ac3a080709476fe2c6c38f46499e0afce8f3e5bdc",
+        "inverseRootBindingExact": true
+      }
+    ],
+    "conditions": "same Chrome156 pin, actual account/device setup, profile, resource/rate limits, waits and30minseed budget; no source/test assertion changes",
+    "civilDate": "2026-11-06; actual browserUTC date checked by original seed",
+    "apiBinding": "458-api-effective-inputs.json",
+    "timedAcceptanceCredit": false,
+    "root": "/private/tmp/done-stage5-rebind-458-20261106",
+    "stop": "app refusal/failure; apparatus-only repairs preserve attempts under standing permission",
+    "retryAfterHarnessRepair": {
+      "epoch": 1793952204.1260622,
+      "newOutput": "seed-r2",
+      "sourceSha256": "4c5cb4bb2027a42dbd5bb56aba647199914bbe01fd50ee283d842fd8e656a271",
+      "scope": "CDP Network enable/disable around existing test-page bypass only"
+    },
+    "retry3AfterHarnessRepair": {
+      "epoch": 1793952547.311466,
+      "newOutput": "seed-r3",
+      "sourceSha256": "c98e4fbc3a82d07d845e23ab9c5836a2f5430f1394294f3bc9f5765f9d237abe",
+      "scope": "initial fixture baseline reads durable delivery prefix instead of initial presentation default; all assertions unchanged"
+    }
+  },
+  "preservedApparatusAttempts": [
+    {
+      "attempt": 1,
+      "key": "459-real-cohort-seed",
+      "outcome": "H6enrollment/archives pass; tooling readiness times out before owner open",
+      "cause": "new CDP Network agent was not enabled, so bypass setting had no effect for installedSW",
+      "controls": "tooling probes: fresh context loads; installedSW+unenabled agent returns app shell; installedSW+Network.enable loads native entry, zero module errors",
+      "repair": "enable Network on the existing authenticator session before test-only bypass, restore bypass and disable Network after entry readiness; never detach WebAuthn",
+      "noAppOrAssertionOrDeadlineChange": true
+    },
+    {
+      "attempt": 2,
+      "key": "459-real-cohort-seed-r2",
+      "outcome": "H6and tooling readiness pass; first accepted-input check expected1but observed6",
+      "cause": "fixture read the sync presentation initial0before the first progress refresh; the durable outbound prefix already held5",
+      "source": "accountWorkerOwner.ts compositionStatus returns separate delivery and sync snapshots",
+      "repair": "sample initial from authenticated durable delivery.acceptedThrough; per-input exact+1 assertion and30sdeadline stay byte-identical",
+      "appRefusalOrWritingDifference": false
+    }
+  ],
+  "successfulSeed": {
+    "existingAssertionsPassed": true,
+    "childExit": 0,
+    "wrapperSeconds": 717.5739738941193,
+    "accounts": [
+      {
+        "label": "H",
+        "devices": 6,
+        "backlog": 1024,
+        "before": 5,
+        "after": 1029,
+        "acceptedDelta": 1024,
+        "actualGoalsBytes": 1000,
+        "actualGoalsCharacters": 1000
+      },
+      {
+        "label": "M",
+        "devices": 2,
+        "backlog": 256,
+        "before": 5,
+        "after": 261,
+        "acceptedDelta": 256,
+        "actualGoalsBytes": 4157,
+        "actualGoalsCharacters": 4157
+      },
+      {
+        "label": "Q",
+        "devices": 2,
+        "backlog": 32,
+        "before": 5,
+        "after": 37,
+        "acceptedDelta": 32,
+        "actualGoalsBytes": 1049,
+        "actualGoalsCharacters": 1049
+      }
+    ]
+  },
+  "goalsAudit": {
+    "current": [
+      {
+        "accountLabel": "H",
+        "nominalGoals": 13000,
+        "actualBytes": 1000,
+        "actualCharacters": 1000,
+        "intendedBytes": 13407,
+        "actualSha256": "e81399f359f2ce8b5d5d07926abc78c8d9aa08100020a5ddea5b6759a264a2dc",
+        "intendedSha256": "9b2377ab63a2264131456db30af2cbf949b74211522ceaee3b0eb61dea69f24b",
+        "actualIsExactIntendedPrefix": true,
+        "complete": false
+      },
+      {
+        "accountLabel": "M",
+        "nominalGoals": 4000,
+        "actualBytes": 4157,
+        "actualCharacters": 4157,
+        "intendedBytes": 4157,
+        "actualSha256": "d4063ff80fade9b7c4bba79f982cde4fa1ed84ef7469ad2f5b018ebe822fed6f",
+        "intendedSha256": "d4063ff80fade9b7c4bba79f982cde4fa1ed84ef7469ad2f5b018ebe822fed6f",
+        "actualIsExactIntendedPrefix": true,
+        "complete": true
+      },
+      {
+        "accountLabel": "Q",
+        "nominalGoals": 1000,
+        "actualBytes": 1049,
+        "actualCharacters": 1049,
+        "intendedBytes": 1049,
+        "actualSha256": "afa5025f77b26a31bba3b59c0e8364a4cf6dff7807a09b90db95232e3099f0e1",
+        "intendedSha256": "afa5025f77b26a31bba3b59c0e8364a4cf6dff7807a09b90db95232e3099f0e1",
+        "actualIsExactIntendedPrefix": true,
+        "complete": true
+      }
+    ],
+    "historicalSource": "docs/performance-experiments/2026-10-29-worker-catchup/phase323/evidence/civil01-fixture-attempt2/seed/seed-check.json.gz",
+    "historical": [
+      {
+        "accountLabel": "H",
+        "nominalGoals": 13000,
+        "actualGoals": {
+          "name": "master.md",
+          "bytes": 5000,
+          "characters": 5000
+        }
+      },
+      {
+        "accountLabel": "M",
+        "nominalGoals": 4000,
+        "actualGoals": {
+          "name": "master.md",
+          "bytes": 4157,
+          "characters": 4157
+        }
+      },
+      {
+        "accountLabel": "Q",
+        "nominalGoals": 1000,
+        "actualGoals": {
+          "name": "master.md",
+          "bytes": 1049,
+          "characters": 1049
+        }
+      }
+    ],
+    "finding": "H is exact1000-character prefix of intended13407; old labHwas5000not13000. M/Qcomplete.",
+    "classification": "recipe never waits for full chunked input or compares final Goals with intended text; consistent with leaving pending paste, but accepted-data loss is not proved",
+    "source": "workspaceCommands.ts planWorkspaceText returns rest after1000characters; admissionQueue resolves the input job only after rest is consumed",
+    "proposal": "wait for exact intended editor text before leaving, then assert full exported Goals after enrollment; same30saction bound and30minsetup ceiling",
+    "proposalApplied": false,
+    "stop": "operator standing rule requires waiting for an assertion change decision; no timed gates started"
+  },
+  "classification": "racy seed input completion is plausible; no proof that accepted writing was lost; do not use this undersized H cohort for timings",
+  "proposalApplied": false,
+  "operatorDecisionNeeded": "new assertions for exact intended editor text before leaving, and exported Goals equality after enrollment; H workload becomes actual 13407 bytes instead of current1000/historical5000",
+  "timedMatrixJourneysStarted": 0,
+  "timedAcceptanceCredit": false,
+  "noFurtherAppRunsPendingDecision": true,
+  "committed": false,
+  "pushed": false
+}
