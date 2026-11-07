@@ -7685,3 +7685,16 @@ Typecheck, lint and the eight guards pass. The population assertion then observe
 and report if anything fails, so do not repair or rerun the count, begin browser
 reruns or ask for a quiet-host timing window. Preserve this non-green checkpoint
 and require provenance for the three-case difference before any next edit.
+
+
+### Update a stale denominator only after naming every additional registration
+
+**Date:** 2026-11-05 · **Phase:** 451.
+
+The operator resumes to account for450'sgap. Read the signed source/history and
+reconcile unique case IDs for all279existing reviewed stages against the last
+counter update. Identify the phase353self-boundary case and phase371'stwo idle
+audit cases; retain every old case and the separate8new guard cases. The verified
+equation is2,562+3+8=2,573. Only then update the expectation and title and rerun
+the exact failed command. Keep all failed artifacts. A passing census is not a
+runtime pass for those native cases and grants no Stage5 timing credit.

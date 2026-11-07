@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked # phase450 reviewed population actual2573 expected2570; operator stop
+status: in flight # phase451 count reconciled; original native preflight next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: reconcile the three-case population difference after the requested failure report
+blocks_on: requested native/browser preflight and timed-path audit before host handshake
 updated: 2026-11-05
 ```
 
@@ -191,26 +191,25 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Phase450 approved census repair](./development-evidence/2026-11-02-release-hardening/450-census-repair-checkpoint/README.md)
-passes typecheck, lint and eight permanent original/strict private-copy unit tests.
-Whole-file inverse proof binds the four approved helper changes. Registration and
-planning snapshot retain old obligations. The next census/policy command fails:
-actual2,573 cases versus proposed2,570 (15passed/1failed). Stop per the operator;
-the three-case difference is unresolved. No browser or timing run, no audit
-completion or host handshake. Earlier diagnostic passes/failures remain intact.
+**Latest checks.** [Phase451 population reconciliation](./development-evidence/2026-11-02-release-hardening/451-reviewed-population-reconciliation/README.md)
+proves2,562+3older native controls+8new guards=2,573. All279old stages are projected
+both ways, with3added/0removed IDs and6unchanged registration inputs. The exact
+failed census/policy command passes16/16after the two-line correction. All450
+failure evidence and450'spassing typecheck/lint/8guard tests remain. No runtime,
+security, gate or limit change; no browser or timed run in this phase.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze phase450 as a non-green sequential checkpoint
-and report the first validation failure. Do not change the population expectation
-or continue the requested browser reruns until the operator resumes. All five
-fairness cases, past-index, dense/group-cut/idle/owners and the measured-path
-assertion-loop audit remain outstanding. The250ms cap observation is recorded
-for Stage6 without a repair or gate waiver. No app/security/limit change; no
-commit, push, publication, deployment or timed acceptance credit.
+**Active bounded outcome.** Freeze451'scount reconciliation before the next
+bounded phase. Resume the operator's once-each five fairness cases (including
+unfair sensitivity), past-index, dense/group-cut/idle/owners on unchanged bodies
+and conditions. Stop/report any failing check. Before timings complete the
+service-worker measured-path assertion-loop audit and obtain the agreed quiet
+host handshake. The250ms cap observation is already recorded without a repair.
+No commit, push, publication or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

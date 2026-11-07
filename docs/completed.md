@@ -19675,3 +19675,21 @@ incomplete and no host handshake starts. Record the unchanged250ms batch-cap
 logical/wall-time distinction in the Stage6plan. No app/security/gate/budget change,
 commit, push or deployment. Freeze a non-green sequential checkpoint. Outcome
 precedes replacing this seat's active state.
+
+
+### Reconcile the three older cases before updating the denominator
+
+**Date:** 2026-11-05 · **Phase:** 451 · **Scope:** reviewed population provenance.
+
+All279existing reviewed stages project to2,562cases at the last counter update
+and2,565now. Exactly three IDs were added, none removed: phase353'sWorker self
+omission control and phase371'stwo native idle-audit controls. Six registration
+inputs remain byte-identical; case IDs agree with the current manifest in both
+directions. Add450's8guards to get2,573, not2,570. Change only the denominator
+title/value and planning snapshot. The exact failed census/policy command now
+passes16/16tests. Keep450'sfailure and the two corrected private-reader analysis
+errors. [Record](./development-evidence/2026-11-02-release-hardening/451-reviewed-population-reconciliation/README.md).
+
+No test removal, skip, deadline, guard, budget or app change. Outcome precedes
+advancing the active seat; continue the operator's requested unchanged browser
+preflight in the next bounded phase. No timed credit, commit, push or deploy.

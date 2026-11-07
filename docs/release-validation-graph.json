@@ -2415,7 +2415,7 @@
     {"path":"test/release-validation/custody.test.mjs","sha256":"5276f593462051a007e011424e748f22938a71c74ad6e51bf07d7e78abbe52c4"},
     {"path":"test/release-validation/editor-admission.test.mjs","sha256":"3427c7f8d41a5101266e406cd84be1034283379fc88082771479a8f9be92337d"},
     {"path":"test/release-validation/file-outputs.test.mjs","sha256":"7b372423d7ef7c9ef6958fb6ba051a35c10b5a67fae7ebb602add33672efef03"},
-    {"path":"test/release-validation/general-tests.test.mjs","sha256":"bf6e8f896bc0ed959f000feb688cc58d50e37050087e2d45e636d7a39905f9cc"},
+    {"path":"test/release-validation/general-tests.test.mjs","sha256":"236506f369521fd91ea8759f07d93b802a9f5aa55134d406e402c9538187f2ef"},
     {"path":"test/release-validation/generated-tests.test.mjs","sha256":"78d48f501808a304747557ab68116110cc5b31dbf72a7543e8d7cc915327ac39"},
     {"path":"test/release-validation/identity.test.mjs","sha256":"b62d1024fdd27d27de7157f783edc743db3beb2891db438b80c86f411e9a22c8"},
     {"path":"test/release-validation/inventory-snapshot.test.mjs","sha256":"66ebc1ed18ae4c2e8abc3f0c5b2294f009830978623df64fff6f490e5410979e"},

@@ -1,0 +1,379 @@
+{
+  "phase": 451,
+  "date": "2026-11-05",
+  "scope": "source/history accounting of exact three-case gap, then two-line denominator correction",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/census.mjs",
+      "sha256": "e3caf74504c904821e0a672e99d5acc2b66a0046eda93864202bc078f51ec5d1",
+      "bytes": 8114
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/vitest-census.mjs",
+      "sha256": "273fb79eeac3bfcd8ddbadde05fe51861c2537eb2685ea43112b301dc8a19a00",
+      "bytes": 7626
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/playwright-census.mjs",
+      "sha256": "7805fbd5d691fcf13d6fa28aaeabc3171f33dc18e0f622ea13348da2760740fb",
+      "bytes": 4092
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/registration-data.mjs",
+      "sha256": "85668a23ba17d9b188c859c3a1042ce9d3c8075f92beda1dcbbd54225cf41d95",
+      "bytes": 10760
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/manifest.mjs",
+      "sha256": "2a5ae63de5c5d073cec74b639341450e0fcf094f0afd0bc3ba4223749e0cc27f",
+      "bytes": 52005
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/inventory.mjs",
+      "sha256": "dc598433de2f15e27bf385fbcde5874e60a0c97628917505835682297ac25487",
+      "bytes": 15074
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/policy.json",
+      "sha256": "4dfaab3c6fb1e94638633f49a3c2fc05c11f2c55c8a759d018c45b18f42417d9",
+      "bytes": 12889
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-sync/native-controls.test.mjs",
+      "sha256": "90ef176bfd4a0904f9b75e58a4eee3d987b80312558f8a5cf177bd768a9b1d12",
+      "bytes": 14605
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-sync/native.test.mjs",
+      "sha256": "95d14d50895f5906b1db85a8f6662f9ef719a60c0ac18a1c2dd9ca01c47320be",
+      "bytes": 44167
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.local-startup.config.ts",
+      "sha256": "d0663fcb4c33648b6f12d19979c1dbdebf8e9ab21d2bba60caf1fb19e96d64e9",
+      "bytes": 1389
+    }
+  ],
+  "workingSourceReferences": [
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "sha256": "236506f369521fd91ea8759f07d93b802a9f5aa55134d406e402c9538187f2ef",
+      "bytes": 13479,
+      "state": "phase450 plus451 working tree; no signed-source claim"
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "de2a7b85d2327db34fe59d3d964ce29427da2b2e3ee69d703193e993b1b3a8bb",
+      "bytes": 583506,
+      "state": "phase450 plus451 working tree; no signed-source claim"
+    },
+    {
+      "path": "scripts/release-validation/general-tests.json",
+      "sha256": "3a26af80cd31e2a435ccf47677380d15b9792c1d95a6fe047f7452fb6546c34a",
+      "bytes": 3975,
+      "state": "phase450 plus451 working tree; no signed-source claim"
+    },
+    {
+      "path": "test/acceptedRows.test.ts",
+      "sha256": "a82a5f83d39472cd91d40fc30151433a1a9c0d51d0138e737f9f65a73bf3f326",
+      "bytes": 6628,
+      "state": "phase450 plus451 working tree; no signed-source claim"
+    },
+    {
+      "path": "test/inbound-native/fixtures.ts",
+      "sha256": "4fc6265d0f89a0e1e0eafe3e62f6cda40963e41a35d3c1bfffbbfdd8cffd0e19",
+      "bytes": 5016,
+      "state": "phase450 plus451 working tree; no signed-source claim"
+    }
+  ],
+  "sourceProjection": {
+    "counterCommit": "30b8a9ddd9f0ac61755f9f85e25a4ad4bbb195a1",
+    "existingStages": 279,
+    "oldCases": 2562,
+    "currentExistingCases": 2565,
+    "added": [
+      {
+        "id": "test/account-sync/native-controls.test.mjs::Worker receive self-envelope omission exposes the original advance-to-one boundary",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/account-sync/native.test.mjs::native warm audit waits for actual foreground settlement and all fixed input quiet periods, then closes cleanly",
+        "outcome": "pass"
+      },
+      {
+        "id": "test/account-sync/native.test.mjs::declared warm semantic-oracle disagreement closes the idle reduced owner and cold replay preserves writing",
+        "outcome": "pass"
+      }
+    ],
+    "removed": [],
+    "importedInputs": [
+      {
+        "path": "test/account-delivery-oracle/helpers.mjs",
+        "sha256": "7450f9007ec1711cd0586dee36eec4869bb0e7f86475db3e814e055569801684"
+      },
+      {
+        "path": "test/vectors/record-format.json",
+        "sha256": "922b4ce2ac33cf86a91aadba8cf298ba77510540ed3a4e5765737055eec7981f"
+      },
+      {
+        "path": "test/vectors/device-lock.json",
+        "sha256": "8e56b26b79389995d4e1d308728ab6160087dff0ea147c908334ea4759973862"
+      },
+      {
+        "path": "test/vectors/journal-aead.json",
+        "sha256": "640c6dbd45d66c0945100477c7be2d37d25045f51c42acdacd48a83722ebeef7"
+      },
+      {
+        "path": "test/vectors/envelope.json",
+        "sha256": "12953a7382ef7005ec50d6ed64449e3a9ecfd0161f2b06b33b2621e550905029"
+      },
+      {
+        "path": "test/vectors/private-envelope.json",
+        "sha256": "81a753a0aaf2e8ffb354a699340b294638f9fdb0cdbfdcbbf97cc7fc5e6b3dd5"
+      }
+    ],
+    "configurationDifference": "local startup webServer.command only; no project/registration change",
+    "newGuardCases": 8,
+    "currentTotal": 2573
+  },
+  "provenance": {
+    "phase": 451,
+    "equation": "2562 + 1 (phase353) + 2 (phase371) + 8 (phase450) = 2573",
+    "existingStages": 279,
+    "currentStages": 280,
+    "existingCaseIdsRemoved": 0,
+    "registrationInputFiles": 6,
+    "allRegistrationInputsByteIdentical": true,
+    "newGuardCases": 8,
+    "introduced": [
+      {
+        "path": "test/account-sync/native-controls.test.mjs",
+        "case": "Worker receive self-envelope omission exposes the original advance-to-one boundary",
+        "introducedCommit": "303d08cf2449db9220fb628d542517b8d3935ff1",
+        "authorDate": "2026-11-05T11:50:45+01:00",
+        "subject": "hardening: worker self boundary and classification (phase 353)"
+      },
+      {
+        "path": "test/account-sync/native.test.mjs",
+        "case": "native warm audit waits for actual foreground settlement and all fixed input quiet periods, then closes cleanly",
+        "introducedCommit": "a569532c74fccc70a16eb3c272afdce3a4b71231",
+        "authorDate": "2026-11-05T11:51:23+01:00",
+        "subject": "hardening: native idle audit (phase 371)"
+      },
+      {
+        "path": "test/account-sync/native.test.mjs",
+        "case": "declared warm semantic-oracle disagreement closes the idle reduced owner and cold replay preserves writing",
+        "introducedCommit": "a569532c74fccc70a16eb3c272afdce3a4b71231",
+        "authorDate": "2026-11-05T11:51:23+01:00",
+        "subject": "hardening: native idle audit (phase 371)"
+      }
+    ],
+    "oneChangedBrowserConfig": "playwright.local-startup.config.ts changes only webServer.command to use the approved dev fixture config; project selection and test registration unchanged",
+    "analysisHarnessFailures": [
+      {
+        "attempt": 1,
+        "issue": "Used direct Node reader for a generated registration loop; actual generated reader retained",
+        "appOrTestRun": false
+      },
+      {
+        "attempt": 2,
+        "issue": "Treated Playwright declaration array as an object with cases; fixed observer schema only",
+        "appOrTestRun": false
+      }
+    ],
+    "expectationChange": "2570 ->2573, title and exact count only",
+    "prior450FailureRetained": true
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-bidirectional-projection.json",
+      "sha256": "fded2a50087e4dbf3ccde190b7f125525a4f37238bb8c6dae813a72cf1c65e3b",
+      "bytes": 92265,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-case-differences.json",
+      "sha256": "d1ae6f3d7dece50a5eb9af5395378b1d44325b7e834f23bebeb19022efcfbbcd",
+      "bytes": 6346,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-current-population.json",
+      "sha256": "f7e74a4d6bb8b56dc431f093fac8517c17612462c036d4d7a24365ac5322bfbe",
+      "bytes": 598296,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-declaration.json",
+      "sha256": "ef1d7bdfc47d6335b9cfcf961e17afaf757c72fc4dc927d7eba3f1c6b8e38306",
+      "bytes": 395,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-harness-attempts.json",
+      "sha256": "949dfa9c42eed0fbacc8bcde17486c0a34155459768f442f5b0724ed97a014f6",
+      "bytes": 322,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-inventory-record.log",
+      "sha256": "e1aa369fb2418498a668e6271c80419b97a0cb45ca89374c761520808e478e77",
+      "bytes": 324,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/451-provenance.json",
+      "sha256": "fe6aaa19513e315ee9e41b0224b3878424ace4e31df38fe1998e62857fe3545d",
+      "bytes": 2070,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/analyze451.mjs",
+      "sha256": "3b57c8fd9635168bc1858b870ae6f31785d7475198bd0969aef759e4c0f778f1",
+      "bytes": 2543,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/compare451-attempt1.mjs",
+      "sha256": "a5795f7e6729d9673008190a378b7f70886869ad505c0c1c4ce48288b1f8fd65",
+      "bytes": 2257,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/compare451-attempt2.mjs",
+      "sha256": "b2016cd3df93ddfd1f9cce3fe3aecc092802c746b54aa398e5e6a4241cb87203",
+      "bytes": 2405,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/compare451.mjs",
+      "sha256": "dafceb18ad90a081e44611b2aca1a30570f4329fbc52bb1b3c533bdda92d0b06",
+      "bytes": 2393,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/projection451.mjs",
+      "sha256": "c3238937a1d13f07fdda31633aabdd0862347a01626f95462af8f43893781a1b",
+      "bytes": 4125,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-census-reconciliation-451-20261105/record451.py",
+      "sha256": "fdb055c385fa7003e2689b1c08fbcc501154d42ee27b8604ec7fc0bc00ed771d",
+      "bytes": 10853,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/child.log",
+      "sha256": "307714f7f94783fac13f65b3090fb604f493b1e76d823586931b49c7cba69539",
+      "bytes": 1771,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/host-load.jsonl",
+      "sha256": "2336d9774c403de4ba70ec642504a948e409b33a73112e8f5ee7b9e4f218295f",
+      "bytes": 1504,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/power-assertions-before.txt",
+      "sha256": "c146aefb59685d58238855176f25be1dec0d958c9114f706ec72e7a7b2b308e6",
+      "bytes": 1389,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/power-log-after.meta.json",
+      "sha256": "1477119cd3189aeca6bb5668963fdfcd01bcf2bb782e11c10880406047323514",
+      "bytes": 482,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/power-log-after.txt",
+      "sha256": "e6bce2b0a16e80191d794f2e6112243275b0330a6174ca7ac5201a76f41180c7",
+      "bytes": 450,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/power-log-before.meta.json",
+      "sha256": "fd7459260ff6f99eefc191c4e4b07f4178798953553257a03933333659ecde97",
+      "bytes": 480,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "stored": "original local artifact only"
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/451-census-policy/run.json",
+      "sha256": "9786f24d86b621567245d077a4514dd18bf91a09d0aad44dcddc650cbf04478b",
+      "bytes": 1072,
+      "stored": "original local artifact only"
+    }
+  ],
+  "validation": {
+    "command": {
+      "argv": [
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "--test",
+        "test/release-validation/inventory.test.mjs",
+        "test/release-validation/inventory-snapshot.test.mjs",
+        "test/release-validation/general-tests.test.mjs"
+      ],
+      "executedArgv": [
+        "/usr/bin/caffeinate",
+        "-d",
+        "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+        "--test",
+        "test/release-validation/inventory.test.mjs",
+        "test/release-validation/inventory-snapshot.test.mjs",
+        "test/release-validation/general-tests.test.mjs"
+      ],
+      "displayProtection": "caffeinate -d",
+      "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+      "cwd": "/Users/thomasingalls/.codex/worktrees/7fda/done",
+      "deadlineSeconds": 2400,
+      "started": 1793900124.942697,
+      "pinnedNodeAndBrowserEnvironment": true,
+      "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+      "childPid": 75632,
+      "childExit": 0,
+      "timedOut": false,
+      "finished": 1793900129.347636
+    },
+    "tests": 16,
+    "passed": 16,
+    "failed": 0,
+    "inventoryRecorded": true,
+    "diffCheckClean": true
+  },
+  "prior450FailureRetained": true,
+  "runtimeOrSecurityChanges": false,
+  "testsRemovedSkippedOrWeakened": false,
+  "timedJourneys": 0,
+  "committed": false,
+  "pushed": false
+}
