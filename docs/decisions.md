@@ -8037,3 +8037,15 @@ than a liveness pass, and three as a small diagnostic sample. Keep every run;
 do not rerun a passing journey to improve exposure or apply the noise rule to
 passing results. Native lab observations remain unavailable; acceptance uses the
 original Window/archive/traffic evidence. No gate or claim expansion.
+
+
+### Observe actual HTTP results without restoring internal lab hooks
+
+**Date:** 2026-11-06 · **Phase:** 476 · **Standing apparatus repair permission.**
+
+Preserve the byte-identical fairness analyzer and its trace-tag assertion by
+supplying real HTTP boundary events, with explicit non-internal provenance.
+Use no fabricated events or native budget counters. Observer failure stays a
+trace error, not a zero. Retain its failed preflight and fix only observation
+ordering. No source/format/trust/guard/gate/limit/deadline changes or acceptance
+credit. Obtain the next host handshake before timing fairness; Goals separately.

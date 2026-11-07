@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase475 live cells3/3; fairness and Goals next
+status: in flight # phase476 fairness observer prepared; next host handshake
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: nine remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
 updated: 2026-11-06
@@ -199,17 +199,17 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase475 passes normal and withheld-hint live
-catch-up3/3 each with unchanged original analyzer/predicates. Max input p954.765ms,
-peer1.994s, marker1.530s; full backlog, archives and offline cold exact. All125
-ordinary assets and seven source bindings remain exact. Native469repair has
-27/36blocking journeys passing: old/grown maintenance12, native9, live6.
-[Record](./development-evidence/2026-11-02-release-hardening/475-live-catchup-gates/README.md).
-Nine remain: fairness3 and Goals6, followed by report-only and Stage6. Post-both-
-drain exposure20and3keys in two withheld runs; all others unexposed for that
-question. No new predicate or favorable retry. All raw and host records stay.
-Prepare fairness/Goals and obtain the next separate tight-host handshake. No app
-change, commit, push, release preparation or deployment.
+**Active bounded outcome.** Phase476 prepares the test-only actual HTTP
+observer needed by the byte-identical fairness analyzer. Seven controls and
+isolated actual-container preflight pass; preserve the request-end attribution
+failure and sandbox attempt. No app/service/wire/guard/gate/deadline changes.
+[Record](./development-evidence/2026-11-02-release-hardening/476-fairness-http-observer/README.md).
+Phase475live normal/withheld cells pass3/3; source-matched total27/36. Native9,
+old/grown maintenance12 and live6 pass. Nine remain: fairness3 and Goals6, plus
+report-only and Stage6. Obtain fairness quiet-host confirmation and the separate
+Goals handshake. Post-both-drain exposure is20and3keys in two withheld runs;
+others unexposed. Correct475narrative only here: actual withheld counts120/117/116,
+not116–118; frozen records remain exact. No commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

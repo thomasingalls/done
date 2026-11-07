@@ -1,0 +1,158 @@
+{
+  "phase": 476,
+  "date": "2026-11-06",
+  "scope": "test-only fairness response observation preparation",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/analyze-fairness.py.gz",
+      "sha256": "b9c21c0344830a2c0581cfc437c023eb08e60293fbc1d774bd308642f7b3b4e3",
+      "bytes": 2195
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/development-runtime.ts",
+      "sha256": "c7e373d811ca243c09c68caab411d52ffa0784c2c82f4658fb1a5c3003586425",
+      "bytes": 4887
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-fairness-observer-476-20261106/476-private-files.json",
+      "sha256": "d3b234a42ef006bced7768f12d6aa25f1837e1247dd7a4fcd284f3349485a816",
+      "bytes": 9546
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-observer-476-20261106/476-binding-proof.json",
+      "sha256": "51fce53935b5e6beb03f0467e18a0b721b5487b81241bfad8cc79584730feed3",
+      "bytes": 425
+    },
+    {
+      "localPath": "/private/tmp/done-fairness-observer-476-20261106/record476.py",
+      "sha256": "af7e6c0511a64354c7735b4a083396ce09bdf8f843fa40bcdfa7188891e4b484",
+      "bytes": 8203
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/child.log",
+      "sha256": "7e28a978e7dc9af432c553bd9f9add76d67445b8dd4b10ec3b11bbf2c92b14bf",
+      "bytes": 892
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/host-load.jsonl",
+      "sha256": "7b8ebec27bea2ad73875af9dff5c4e0d164dc993d92ab50d1360b82ba6be2268",
+      "bytes": 1583
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/power-assertions-before.txt",
+      "sha256": "151f8f80b7d34f8c53c0504487b96fab7b49155b0b3fa66448581c19a16e6261",
+      "bytes": 1906
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/power-log-after.meta.json",
+      "sha256": "b09c61a482dc0e214621ab8f4e338bda41274f3ad5a7601b483023a8e81883a6",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/power-log-after.txt",
+      "sha256": "1a859e74a802bbcc1bf0922eb74bcc9ec61e86252e881c8c485ec4af9e48d7a9",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/power-log-before.meta.json",
+      "sha256": "b8aff984ffec299bd37a0e2fbd7dfca9e63ba5292122d27d3990508035365053",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight/run.json",
+      "sha256": "050b2ac229861383de9c880f6421b46bafc593ca9fd7d686acb05cc9e940fff8",
+      "bytes": 1030
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/child.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/host-load.jsonl",
+      "sha256": "3e91161af85ede69487980c3105be1ba5a6c9c177a89ed62e6f09b4651badd7a",
+      "bytes": 1529
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/power-assertions-before.txt",
+      "sha256": "7d73247d29bec80734907d5a1afc3ba66bf21ef51df0a51fe8bb519def8472cc",
+      "bytes": 2128
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/power-log-after.meta.json",
+      "sha256": "80c82761f9495a2458141473470c5fe13f8f39bb1740c67f2aea67264212b83f",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/power-log-after.txt",
+      "sha256": "f4c5ceabf874253493b1948044eb76bb47f63af3945860a88c72a63ba93ce0b0",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/power-log-before.meta.json",
+      "sha256": "5fdcb3793cade84804f84ff50823d52f4e0eb920946a426833fbd5a424fd7160",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/476-http-observer-preflight-retry/run.json",
+      "sha256": "9a56c0cde61e2c2ad34074a5d9d46d03c999e6ef5882ed84d010985e5945cd9b",
+      "bytes": 1041
+    }
+  ],
+  "timedMatrixJourneysStarted": 0,
+  "unchangedCaseAndAnalyzer": true,
+  "inverseByteProof": true,
+  "observerControls": 7,
+  "actualApiPreflight": "404 negative control, exact request digest, second trace empty and ordinary service worker exact",
+  "preservedFailures": [
+    "sandbox localhost EPERM control attempt",
+    "first actual preflight: response finished before request end; observation digest corrected and tested"
+  ],
+  "provenance": "actual HTTP response boundary, explicitly not native service-internal lab trace",
+  "serviceWireOrAppSourceChange": false,
+  "assertionGateLimitDeadlineChange": false,
+  "standingPermission": "operator apparatus repair permission; no guard/assertion/gate changes",
+  "phase475NarrativeCorrection": "README116\u2013118 is a transcription error: raw and summary contain120/117/116. Correct range116\u2013120; frozen phase475 stays exact.",
+  "committed": false,
+  "pushed": false
+}

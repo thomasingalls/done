@@ -20150,3 +20150,20 @@ host logs. All pass, so no noise-rule retry. No source/build/assertion/wait/gate
 change. Outcome precedes advancing the seat:27/36 blocking journeys pass on the
 repaired source, nine plus report-only/Stage6 remain. Prepare fairness/Goals with
 the next separate host handshake. No commit, push or deployment.
+
+
+### Prepare real HTTP observations for unchanged fairness assertions
+
+**Date:** 2026-11-06 · **Phase:** 476 · **Scope:** test apparatus only.
+
+Seven observer controls and the actual isolated-container preflight pass. Keep
+the sandbox failure and the earlier request-end attribution failure. The test
+observer records true statuses/request digests/refusal fields, explicitly outside
+service internals; no empty trace or zero substitution. Original fairness case,
+config/analyzer guards and metric formulas stay exact; API source/wire/limits
+stay. [Record](./development-evidence/2026-11-02-release-hardening/476-fairness-http-observer/README.md).
+
+Correct only in this append-only record the475README range typo: actual unchanged
+raw/summary counts are120/117/116, range116–120. No new journey or credit. Outcome
+precedes seat update. Candidate27/36; fairness/Goals/report-only/Stage6 remain.
+No app change, commit, push or deployment.
