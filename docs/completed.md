@@ -20490,3 +20490,13 @@ The Stage6amendment preserves all earlier gates and records a confirmed unpublis
 [Record](./development-evidence/2026-11-02-release-hardening/503-publication-stop-handoff/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Recover the saved pending edit before releasing submission
+
+**Date:** 2026-11-06 · **Phase:** 504.
+
+The corrected native diagnostic cold-recovers all583edits in877msbefore anysubmit, issuesnonewinput, and accepts exactlyone extraenvelope afterrelease. All prior server tuples/localwriting remainexact. First apparatus serialization/bodydecoder failure stays. Noordinarycoldgate or power-lossclaim; nextis private sourceavailability/notification/scheduler tracing.
+[Record](./development-evidence/2026-11-02-release-hardening/504-pending-edit-reopen/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

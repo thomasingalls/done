@@ -8280,3 +8280,10 @@ Keep the original fixture assertion: the lastedit is actually unpublished, so ch
 **Date:** 2026-11-06 · **Phase:** 503.
 
 Keep the original per-position regression check because source-complete witness evidence confirms a real pending edit, not coalescing. Stop at the functional failure and preserve the saved sender state for a bounded capture/selection/notification repair. Do not claim cold durability, resolution, complete3072evidence or release readiness.
+
+
+### Trace live liveness after proving saved-state recovery
+
+**Date:** 2026-11-06 · **Phase:** 504.
+
+Treat saved-state recovery as evidence against loss of this captured edit, while retaining the live publication failure. Do not assume a lost wake without observing source selection and scheduling. Private observations must leave canonical app sources, all verification checks and ordinary assets unchanged.
