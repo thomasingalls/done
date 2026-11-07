@@ -8301,3 +8301,10 @@ Observe only the real canonical pipeline and keep everyauthority,crypto,commit,e
 **Date:** 2026-11-06 · **Phase:** 506.
 
 Keep exact-evidence validation and allfresh authority checks. Testwhether baselinecontinuation publication can get ahead of carrierlogicalpublication on interruption; prefer conservativecacheinvalidation to publishing any view beforefresh checks ifthatcounterexample confirms. Nofix ismadeinthis phase.
+
+
+### Authenticate again after a half-installed continuation
+
+**Date:** 2026-11-07 · **Phase:** 507.
+
+A private continuation that advanced without installation cannot be retained across interruption. Invalidate that carrier cache on this boundary and authenticate again, rather than publish before fresh checks or retain only a transient full-read flag. Preserve the unchanged-identity warm path.

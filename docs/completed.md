@@ -20520,3 +20520,13 @@ The exact localcapsuleispersistedat18907–18908 andbothnotification/retryreacht
 [Record](./development-evidence/2026-11-02-release-hardening/506-stale-source-selection/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Interrupted baseline projection counterexample
+
+**Date:** 2026-11-07 · **Phase:** 507.
+
+Added five deterministic real-crypto/IndexedDB controls. Three fail before repair against an independent forced full replay; two warm-path controls pass. Both before attempts remain evidence. No app source changed and no gate credit claimed.
+[Record](./development-evidence/2026-11-02-release-hardening/507-baseline-projection-counterexample/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

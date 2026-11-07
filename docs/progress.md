@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase506 stale sourceprojection observed;deterministic interruption counterexample next
+status: in flight # phase 507 counterexample frozen; bounded carrier-view invalidation next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: prove baselineadvance/installation interruption then boundedguard-preservingrepair
+blocks_on: repair and verify interrupted projection installation; original 3072 report remains incomplete
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase506knownstallatinput43 islocated:localjournal+nativepersist+hint+retry+sendalloccur,butselected113-sourceview lacksnewcapsulepresentinnative114-catalogue. Noappsourcechange. Hypothesis:interruptedbaselinecontinuation advancesitsidentitybeforecarrierlogicalinstallation. Nextrealcrypto/IDBregressionwithindependentfullreplay;do not assumerootuntilitfails. Original3072reportstillblocked.
-[Record](./development-evidence/2026-11-02-release-hardening/506-stale-source-selection/README.md).
+**Active bounded outcome.** Phase 507 reproduces the stale source catalogue and delivery frontier in three failing cases. Two no-fault/unchanged-identity controls pass. Next invalidate only a returned-but-uninstalled continuation and run the affected security and lifecycle tests.
+[Record](./development-evidence/2026-11-02-release-hardening/507-baseline-projection-counterexample/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

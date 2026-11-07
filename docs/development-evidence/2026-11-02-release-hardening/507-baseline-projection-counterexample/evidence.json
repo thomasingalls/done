@@ -1,0 +1,56 @@
+{
+  "phase": 507,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/contentStore.ts",
+      "sha256": "70fbc44e2b79471bd665cce324bd818a555d8103c03560c8fdbf5c8a8241dd28",
+      "bytes": 70672
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineReuse.ts",
+      "sha256": "1a54dffcb5108fc332f2ea4ce2dbcd0ca7e2662f11f0f381ca87168f5f674a6b",
+      "bytes": 10493
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-baseline-publication-507-20261107/507-private-files.json",
+      "sha256": "0431c281e78ef3e17491a84564471a193b31f620fb03f46dd4bb6a3070438aa4",
+      "bytes": 856
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/507-baseline-projection-before/child.log",
+      "sha256": "dcc02a1a09703b0d44d47ff5c5be4d90562f3e74e15b380c49fe88638c2cce6f",
+      "bytes": 2109
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/507-baseline-projection-before/run.json",
+      "sha256": "250f0445adabd4b8f2e947cc42743ce50292788881841d3a4244832d9134c035",
+      "bytes": 919
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/507-baseline-projection-before-five/child.log",
+      "sha256": "0d7110a36d3de0a7bfba8214706744a1a69e79adb5e163d923e78b2120e456b7",
+      "bytes": 2903
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/507-baseline-projection-before-five/run.json",
+      "sha256": "d507eac7ed587075752f845530d0617b17ad468cb2eb18fbabad7fdd3a631a37",
+      "bytes": 918
+    }
+  ],
+  "summary": {
+    "unitCases": 5,
+    "failedBeforeRepair": 3,
+    "passedBeforeRepair": 2,
+    "appSourceChanged": false,
+    "normalGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}
