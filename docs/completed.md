@@ -20420,3 +20420,13 @@ The Stage 6 amendment preserves every earlier journey and adds the measured deta
 [Record](./development-evidence/2026-11-02-release-hardening/496-growth-stop-handoff/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Observe the maintained producer past the prior stalled position
+
+**Date:** 2026-11-06 · **Phase:** 497.
+
+The fresh observed diagnostic passes 160 accepted positions and full archive/ordinary reopen checks in 153.423 s. HTTP responses are all 200 and no channel/Window error is captured. Phase 495 is not reproduced and remains unresolved. Acknowledgment work grows across the run; plan four genuine 256-edit producer sessions with independently checked automatic local reduction inside the same overall setup deadline.
+[Record](./development-evidence/2026-11-02-release-hardening/497-post-maintenance-diagnostic/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

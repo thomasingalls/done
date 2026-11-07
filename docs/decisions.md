@@ -8231,3 +8231,10 @@ Keep the failed maintained-fixture attempt, exact service evidence and all origi
 **Date:** 2026-11-06 · **Phase:** 496.
 
 Do not treat earlier 36 passing journeys as permission to ignore the new unexplained app acknowledgment failure. Keep the original evidence gap and all prior debts, stop further app runs, and require a bounded trace of publication after automatic local reduction before attempting growth again.
+
+
+### Keep the unreproduced stall and bound fixture growth in sessions
+
+**Date:** 2026-11-06 · **Phase:** 497.
+
+Do not relabel the unreproduced 495 failure as fixed. Keep all original per-edit and final assertions. For apparatus preparation, use ordinary native lifetimes and actual automatic local reduction between fixed sessions; preserve all accepted server tuples and old reader profiles. Count every maintenance/reopen inside one original setup clock, with no guard or cooldown constant change.

@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase496 hardening stop recorded;3072report still unavailable
+status: in flight # phase497 diagnostic passes160;495failure retained;bounded fixture sessions next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: post-maintenance publication trace needed;no3072fixture;no further app run
+blocks_on: controlled full3072fixture preparation with status/error evidence, then reader report
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 496 amends Stage 6 without rewriting prior records. The detached proposal fallback explains the original growth cliff. Genuine producer reduction preserves writing and server history but the subsequent next-position acknowledgment stalls after 101 edits. Stop under the app-failure rule. Earlier 36 blocking journeys remain passes, but the candidate is not cleared for landing and the 3,072 reader report remains unrun. Sequential patches 492–496 preserve all evidence; no app/guard/limit/deadline change, commit, push or deployment.
-[Record](./development-evidence/2026-11-02-release-hardening/496-growth-stop-handoff/README.md).
+**Active bounded outcome.** Phase 497 passes a fresh 160-edit observed run beyond the old stall with exact writing and all HTTP200. Its added observations change timing; 495 remains unexplained. Next use four real 256-edit producer sessions, verifying automatic local reduction/reopen and unchanged server tuples before each. Keep one1800ssetup clock,30sposition checks, original final archive/Goals checks, and untouched old readers. Correct the private negative-code observer and capture state on any recurrence; no app change or acceptance credit.
+[Record](./development-evidence/2026-11-02-release-hardening/497-post-maintenance-diagnostic/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
