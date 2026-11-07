@@ -20274,3 +20274,19 @@ work follows typing. Eight metric/eight interpretation controls retain original
 formulas; unavailable lab counters are null. Outcome precedes seat update.
 36blocking passes stand;6of10reports done. Continue50msdeep/3072under the user's
 remaining quiet-host authorization, then Stage6and stop. No commit or deploy.
+
+
+### Complete all three50msdeep reports with exact native/cold guards
+
+**Date:** 2026-11-06 · **Phase:** 483 · **Scope:** three report-only journeys.
+
+All native/Undo/cold checks pass; completion40.010/39.412/39.987s. All miss the
+report-only30ssample; retain every miss. Cold max1.957s. Original0msblocking case
+and36/36passes remain. Reuse native offline lifecycle readiness and the original
+326report120sobservation; no lab hold/go, profiler or runtime change. This kickoff
+is not matched to the prior0mscase's early receive during opening.
+[Record](./development-evidence/2026-11-02-release-hardening/483-deep50-reports/README.md).
+
+Outcome precedes seat update. Nine of ten reports complete; one3072reader with
+exact uncapped fallback counter remains, then Stage6. All host/traffic/profile
+records remain. No commit, push or deployment.

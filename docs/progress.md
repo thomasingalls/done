@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase482 sender reports complete;50msdeep/3072next
+status: in flight # phase483 deep50reports complete;3072reader thenStage6
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: remaining50msdeep/3072report-only cells and Stage6
+blocks_on: one3072reader report with uncapped exact fallback counter, thenStage6
 updated: 2026-11-06
 ```
 
@@ -199,18 +199,17 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase482 completes all six sender reports. Every
-functional/archive and twelve offline cold/edit/Undo checks passes. Single500
-meets all numeric predicates3/3; paired150fails peer/every-marker2.5s3/3, peer
-p952.521–2.568s. All per-direction/marker values and host logs remain. Original
-policy and all gates/limits/deadlines stay. Genuine audit attempts are after
-typing, not complete by the last snapshot; do not infer full oracle cost or idle
-starvation. Original foreground guard work follows typing.
-[Record](./development-evidence/2026-11-02-release-hardening/482-sender-report-block/README.md).
-All36plain-build blocking passes stand;6of10reports complete. Continue three
-50msdeep and one3072reader, then Stage6and stop. The operator explicitly keeps
-the Mac quiet for anything remaining; no additional host handshake needed absent
-an actual precondition change. No source/guard/default, commit, push or deploy.
+**Active bounded outcome.** Phase483 completes all three50msdeep reports.
+Native receive/application/Undo/cold pass; drain40.010/39.412/39.987s, all miss
+report-only30s. Cold max1.957s. Same hardened native/ordinary bytes, real delayed
+API, no profiler or app source change. Original0ms30sblocking case stays exact;
+this offline-release kickoff is not a matched effect against its early receive.
+[Record](./development-evidence/2026-11-02-release-hardening/483-deep50-reports/README.md).
+All36blocking passes stand. Nine of ten reports complete. Build the production-
+32MiBuncapped counter fixture for one3072returning reader, then Stage6and stop.
+Sender paired2.5sreport misses and every earlier failure remain. Operator keeps
+the Mac quiet for all remaining work. No canonical guard/limit/default, commit,
+push, publication or deployment change.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

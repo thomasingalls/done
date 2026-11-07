@@ -8129,3 +8129,14 @@ the coordinated policy. Report after-typing interrupted/censored audit attempts
 as such, not completed oracle costs or zero cost. Keep original metric formulas
 and replace only unavailable lab diagnostic values with explicit null. No repeat
 host approval is required while the operator's remaining-work readiness holds.
+
+
+### Keep the50msreport window distinct from the0msblocking gate
+
+**Date:** 2026-11-06 · **Phase:** 483.
+
+Use actual native offline/online lifecycle readiness in place of unshipped lab
+hold/go. Retain the original report30ssample and120stotal observation plus native
+case/cold bounds. Preserve all original integrity/Undo/cold checks; at50msthe
+30smiss remains report-only. Do not call its different kickoff a matched effect
+against the earlier0msnative timing or alter the original blocking case.
