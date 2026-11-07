@@ -8224,3 +8224,10 @@ Use existing producer automatic local maintenance as a fixture precondition, whi
 **Date:** 2026-11-06 · **Phase:** 495.
 
 Keep the failed maintained-fixture attempt, exact service evidence and all original checks. The source-byte cliff is traced, but this new unexplained publication failure prevents declaring the proposed setup safe. Do not raise the per-position timeout, rerun for a favorable result, relax expectations or manufacture the fixture. Stop before further app runs.
+
+
+### Retain the 3072 evidence gap and new publication blocker
+
+**Date:** 2026-11-06 · **Phase:** 496.
+
+Do not treat earlier 36 passing journeys as permission to ignore the new unexplained app acknowledgment failure. Keep the original evidence gap and all prior debts, stop further app runs, and require a bounded trace of publication after automatic local reduction before attempting growth again.

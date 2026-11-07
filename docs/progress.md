@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase495 new post-maintenance publication failure; hardening stop
+status: in flight # phase496 hardening stop recorded;3072report still unavailable
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: diagnose next publication at2156 before further growth;3072reader report unavailable
+blocks_on: post-maintenance publication trace needed;no3072fixture;no further app run
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 495 completes genuine producer reduction/reopen with exact writing and server tuples, then stalls after 101 new acknowledgments. Expected position 2,156 never appears in the unchanged 30 s poll; the private service copy stops at 2,155 too. No exact refusal/owner code was captured. Stop under the app-failure rule. Original source fixture and nine other actor snapshots remain exact; no 3,072 fixture, returning-reader run or cold result exists. No app source or guard/limit/deadline change.
-[Record](./development-evidence/2026-11-02-release-hardening/495-maintained-growth-stop/README.md).
+**Active bounded outcome.** Phase 496 amends Stage 6 without rewriting prior records. The detached proposal fallback explains the original growth cliff. Genuine producer reduction preserves writing and server history but the subsequent next-position acknowledgment stalls after 101 edits. Stop under the app-failure rule. Earlier 36 blocking journeys remain passes, but the candidate is not cleared for landing and the 3,072 reader report remains unrun. Sequential patches 492–496 preserve all evidence; no app/guard/limit/deadline change, commit, push or deployment.
+[Record](./development-evidence/2026-11-02-release-hardening/496-growth-stop-handoff/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

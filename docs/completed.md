@@ -20410,3 +20410,13 @@ Normal automatic producer maintenance completes in 93.905 s and survives native 
 [Record](./development-evidence/2026-11-02-release-hardening/495-maintained-growth-stop/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Amend the landing handoff with the new growth stop
+
+**Date:** 2026-11-06 · **Phase:** 496.
+
+The Stage 6 amendment preserves every earlier journey and adds the measured detached-proposal fallback plus the new post-maintenance publication stop. The 3,072 returning-reader run remains unstarted; its case keeps every original check/deadline and six counter controls pass. The current candidate is not cleared for landing. No new app source, format, trust, limit or deadline change.
+[Record](./development-evidence/2026-11-02-release-hardening/496-growth-stop-handoff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
