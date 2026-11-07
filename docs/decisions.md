@@ -8196,3 +8196,10 @@ Do not infer a cap crossing, exact archive, successful cold reopen or3,072catch-
 **Date:** 2026-11-06 · **Phase:** 491.
 
 Keep report-only unavailability open: it is not a pass, gate waiver or evidence of archive/cold correctness. The 36 blocking journeys remain valid on their frozen source. Preserve the capacity and real-scale cost debts, the shipped full-status producer/load/decode debts and the independent 55-handler reply census. Document valid rollback flag combinations; AUTO=0 with RESUME=1 and default writers is rejected by current policy. Do not start new experiments or publication.
+
+
+### Distinguish a threshold crossing from network waiting
+
+**Date:** 2026-11-06 · **Phase:** 492.
+
+Use component times and actual index-refusal evidence before attributing growth cost. If genuine producer maintenance can remove redundant retained work, it must run through existing APIs and preserve server positions, writing and old readers; do not replace validation or fabricate fixture rows.

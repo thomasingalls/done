@@ -1,0 +1,165 @@
+{
+  "newAppRuns": 0,
+  "appOrGuardChanges": false,
+  "operatorScope": "trace slow fixture growth and find a safe path within existing deadline",
+  "phase": 492,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountLedgerMetrics.ts",
+      "sha256": "2643afc21a77f521f428286861f5d9ca9c98038f0ca44084f8a4d32a54e1c2b8",
+      "bytes": 5814
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/incrementalAccountLedger.ts",
+      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86",
+      "bytes": 22390
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-growth-evidence-492-20261106/492-private-files.json",
+      "sha256": "6d7d03150252f8398457459f87245c907b18211f9dfe4b2215cf30568211e896",
+      "bytes": 658
+    },
+    {
+      "localPath": "/private/tmp/done-growth-evidence-492-20261106/492-timing-evidence.json",
+      "sha256": "731226fb05813a0c9302fadf0ccf2f3b41ecb9bc6b6b03d47773c129303eaed7",
+      "bytes": 3139
+    }
+  ],
+  "summary": {
+    "source": {
+      "path": "/private/tmp/done-grow3072-489-20261106/grow/result.json",
+      "sha256": "f6f20a5cba1703c0786fe26bbc89b98a1aacabdaeafd2f821977e5919c4605cb"
+    },
+    "blocks": [
+      {
+        "firstAdditional": 1,
+        "lastAdditional": 64,
+        "lastPosition": 2118,
+        "intervals": 63,
+        "medianMs": 1041,
+        "meanMs": 1062.984126984127,
+        "minMs": 932,
+        "maxMs": 1335
+      },
+      {
+        "firstAdditional": 65,
+        "lastAdditional": 128,
+        "lastPosition": 2182,
+        "intervals": 63,
+        "medianMs": 1047,
+        "meanMs": 1091.6349206349207,
+        "minMs": 1022,
+        "maxMs": 1346
+      },
+      {
+        "firstAdditional": 129,
+        "lastAdditional": 192,
+        "lastPosition": 2246,
+        "intervals": 63,
+        "medianMs": 1142,
+        "meanMs": 1152.047619047619,
+        "minMs": 1029,
+        "maxMs": 1357
+      },
+      {
+        "firstAdditional": 193,
+        "lastAdditional": 256,
+        "lastPosition": 2310,
+        "intervals": 63,
+        "medianMs": 1155,
+        "meanMs": 1186.968253968254,
+        "minMs": 1039,
+        "maxMs": 1390
+      },
+      {
+        "firstAdditional": 257,
+        "lastAdditional": 320,
+        "lastPosition": 2374,
+        "intervals": 63,
+        "medianMs": 1348,
+        "meanMs": 2146.3809523809523,
+        "minMs": 1135,
+        "maxMs": 3735
+      },
+      {
+        "firstAdditional": 321,
+        "lastAdditional": 384,
+        "lastPosition": 2438,
+        "intervals": 63,
+        "medianMs": 3401,
+        "meanMs": 3403.6031746031745,
+        "minMs": 3206,
+        "maxMs": 3726
+      },
+      {
+        "firstAdditional": 385,
+        "lastAdditional": 448,
+        "lastPosition": 2502,
+        "intervals": 63,
+        "medianMs": 3504,
+        "meanMs": 3498.190476190476,
+        "minMs": 3216,
+        "maxMs": 3773
+      },
+      {
+        "firstAdditional": 449,
+        "lastAdditional": 512,
+        "lastPosition": 2566,
+        "intervals": 63,
+        "medianMs": 3622,
+        "meanMs": 3619.8888888888887,
+        "minMs": 3416,
+        "maxMs": 3870
+      },
+      {
+        "firstAdditional": 513,
+        "lastAdditional": 576,
+        "lastPosition": 2630,
+        "intervals": 63,
+        "medianMs": 3731,
+        "meanMs": 3763.7619047619046,
+        "minMs": 3428,
+        "maxMs": 4365
+      },
+      {
+        "firstAdditional": 577,
+        "lastAdditional": 640,
+        "lastPosition": 2694,
+        "intervals": 63,
+        "medianMs": 3840,
+        "meanMs": 3870.5714285714284,
+        "minMs": 3601,
+        "maxMs": 4173
+      },
+      {
+        "firstAdditional": 641,
+        "lastAdditional": 690,
+        "lastPosition": 2744,
+        "intervals": 49,
+        "medianMs": 3930,
+        "meanMs": 3944.326530612245,
+        "minMs": 3713,
+        "maxMs": 4216
+      }
+    ],
+    "qualification": "intervals between confirmed acceptances; no component attribution or input-latency claim",
+    "hypothesis": "index byte eligibility crosses32MiB and selects reference verification; currently unconfirmed",
+    "falsifier": "fresh trace shows no index transition at the cost increase, or cost lies elsewhere",
+    "next": "private profile/index observations and Window input/durable/publish stage times, fresh2048fixture; keep all limits/checks/deadlines; no acceptance credit"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

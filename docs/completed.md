@@ -20370,3 +20370,13 @@ The Stage 6 landing report lists every final blocking journey (36 pass), nine va
 [Record](./development-evidence/2026-11-02-release-hardening/491-landing-report/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Resume fixture growth diagnosis from preserved evidence
+
+**Date:** 2026-11-06 · **Phase:** 492.
+
+The saved690confirmation timestamps show a threshold-shaped cost increase: roughly1.1sper edit early,3.4–3.9slater. Record index byte fallback as an unconfirmed hypothesis and declare a bounded fresh-profile trace. No new app run or guard change. Prior491report stays immutable.
+[Record](./development-evidence/2026-11-02-release-hardening/492-fixture-growth-existing-evidence/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
