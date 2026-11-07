@@ -20390,3 +20390,13 @@ The fresh bounded trace passes298positions and full archive checks. Detached pro
 [Record](./development-evidence/2026-11-02-release-hardening/493-publication-proposal-cliff/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Prepare the growth fixture through normal producer reduction
+
+**Date:** 2026-11-06 · **Phase:** 494.
+
+The producer-precondition recipe and nine permanent controls pass. Its inverse proof recovers the complete original grow recipe. Normal automatic local reduction must preserve all writing, accepted server tuples and the old readers, and survive native owner reopen. Reduction plus all 1,024 original edits share the same 1,800-second case. The full setup is next.
+[Record](./development-evidence/2026-11-02-release-hardening/494-maintained-producer-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

@@ -1,0 +1,9 @@
+# Phase 494 — precondition the producer without changing the returning workload
+
+Phase 493 attributes slow growth to the detached publication proposal exceeding its existing 32 MiB charge. Keep that guard and its complete verification fallback. The fixture now waits for the producer's existing automatic local reduction before adding writing. It does not create, admit or prune service history. It starts from the original 2,048-position fixture and leaves both old reader profiles untouched.
+
+The precondition checks the entire archive and accepted service tuple set before and after reduction. It closes and reopens the native owner on its real persisted state, verifies the archive again, and requires the new baseline revision and reduced record count to survive. Published bounded status is polled during preparation; no repeated full compositionStatus RPC can interrupt or inflate it. Capacity or owner failure is a refusal, never permission to bypass a check.
+
+Nine controls pass, including refusal of changed writing/history and a lost reduction on reopen. Removing only the new imports and preparation block recovers the exact phase 488 recipe. All 1,024 original individually accepted edits, 30-second per-position checks, final whole archive and 13,407-byte Goals checks remain byte-identical. The 120-second preparation observation and reopen run inside the original single 1,800-second case, with the same 1,860-second wrapper. There is no reset setup clock.
+
+This phase establishes the recipe and controls, not a successful 3,072-position preparation. Run it next on a fresh source copy, with the plain phase 473 assets and no profiler. Preserve every attempt and compare old-reader snapshot identities independently. No app change, performance or gate credit, commit, push or deployment.

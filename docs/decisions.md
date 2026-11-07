@@ -8210,3 +8210,10 @@ Use component times and actual index-refusal evidence before attributing growth 
 **Date:** 2026-11-06 · **Phase:** 493.
 
 Keep the proposal byte guard and full fallback. For the fixture, use genuine existing local maintenance to remove settled producer rows while leaving server envelopes and old readers intact. Verify unchanged data/positions and reduced-owner reopen before any new writing. Count this preparation inside the30-minute setup ceiling; do not hide it in a separate reset clock.
+
+
+### Count producer maintenance inside the original growth budget
+
+**Date:** 2026-11-06 · **Phase:** 494.
+
+Use existing producer automatic local maintenance as a fixture precondition, while preserving every server position the returning reader must fetch. Count preparation inside the existing setup deadline. Never resume failed growth, prune service history, alter old readers or bypass a capacity refusal.
