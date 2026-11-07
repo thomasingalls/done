@@ -8448,3 +8448,10 @@ Operatoraccepts525(a)andexplicitlychangesonlyGoalsUndo/Redo completionguards to 
 **Date:** 2026-11-07 · **Phase:** 527.
 
 Use the operator-approved 2,500 ms completion polls, retaining exact Undo-differs and Redo-restores predicates. Keep elapsed diagnostics threshold-free and all other frozen bytes exact. The four fresh passes supplement, rather than erase, the old failed immediate-read attempt. No further journeys or app changes are needed for this scoped amendment.
+
+
+### Complete the amended Goals cells without erasing the stricter old failure
+
+**Date:** 2026-11-07 · **Phase:** 528.
+
+Apply only the explicit operator carryover and guard approvals. Record three supported passing replicates for each of the 12 cells, with source/spec identity and disposition per row. Preserve the old immediate-read failure outside the amended matrix and the six no-credit diagnostic tries. Unknown cancellation cause and Undo CPU cost remain debts. Stop after this Stage 6 amendment; no app, limit, format, other gate or deadline change and no release action.

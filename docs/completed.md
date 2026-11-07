@@ -20730,3 +20730,13 @@ All four declared desktop/mobile4x r2/r3 journeys pass on plain 510 under the ne
 [Record](./development-evidence/2026-11-02-release-hardening/527-goals-bounded-undo-reruns/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Stage 6 amendment completes the supported source 510 matrix and stops for the operator
+
+**Date:** 2026-11-07 · **Phase:** 528.
+
+The scoped matrix is complete: 36 supported passing rows across 12 cells, comprising 21 explicit source carryovers, nine native/fairness reruns, two stricter Goals r1 carries, and four fresh amended-guard Goals passes. Fifteen distinct passing plain 510 executions and one retained failed immediate-read attempt are distinguished. The old 522-r2 failure remains immutable with the accepted 525 immediate-read-race disposition. Saved endpoint copies remain read-only exact. Added the requested unknown ERR_ABORTED cause and unmeasured Undo main-thread cost debts; preserved the unmeasured post-reduction typing cost, all historical report qualifications, flags and rollback warning. No app change. Stop for operator; no further run or release action.
+[Record](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

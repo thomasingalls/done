@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # four remaining Goals replicates passed; Stage 6 amendment next
+status: blocked # Stage 6 amendment complete; awaiting operator instruction
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: Stage 6 amendment and requested operator stop
+blocks_on: operator review and next explicit instruction; no further work running
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase 527 completes the four approved Goals r2/r3 desktop/mobile4x runs on plain 510. All pass the amended Undo/Redo guards and original remaining checks. Four saved endpoint profiles are read-only exact on copies; elapsed Undo/Redo fields and five-second host records are preserved. No app changes or additional timed observations. Next write phase 528: 21 source carryovers, nine native/fairness reruns, two stricter Goals r1 carryovers and these four amended-spec passes; retain the old immediate-read failure and all debts, then stop for the operator.
-[Record](./development-evidence/2026-11-02-release-hardening/527-goals-bounded-undo-reruns/README.md).
+**Active bounded outcome.** Phase 528 completes the source 510 Stage 6 amendment: 36 supported passing rows (21 source carries, nine native/fairness reruns, two stricter Goals r1 carries and four amended Goals passes). The 522-r2 immediate-read failure is retained per accepted 525; new ERR_ABORTED cancellation and Undo CPU-cost debts are explicit, and post-reduction typing cost remains unmeasured. All original source/report qualifications, flags and rollback obligations stay. No app change, additional journey, commit, push or release preparation. STOPPED for operator review.
+[Record](./development-evidence/2026-11-02-release-hardening/528-source510-stage6-amended-goals/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
