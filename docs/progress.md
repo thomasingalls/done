@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase498 session fixture controls pass;full3072setup next
+status: in flight # phase499 fixture precondition timeout retained;offline preparation next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: fresh full fixture under1800s with original guards, then original reader report
+blocks_on: offline-capable fixture precondition with same deadlines, full3072setup andreader report
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 498 prepares four real256-edit producer sessions with normal automatic local reduction between them. Ten controls and exact inverse-byte proof pass; original1024individual acceptance checks and final archive/Goals/reader snapshots remain. Entire setup retains1800s and per-position30s. Run one fresh copy with read-only status/error evidence; stop on a recurrence. The495stall remains unexplained. No app source/policy/limit change.
-[Record](./development-evidence/2026-11-02-release-hardening/498-session-fixture/README.md).
+**Active bounded outcome.** Phase499 reaches no new writing: initial fixture reduction exceeds120s over12attempts while the workspace stays active/durable. All server tuples and captured writing are exact. Repair apparatus contention using normal browseroffline duringlocal reduction and reconnectbeforewriting; canonicalreadiness explicitly permits it. Keep120/30/1800deadlines andallStage5online gates. Noapp refusal,ownerclosure orchannelerror observed.495publicationstall remains unresolved.
+[Record](./development-evidence/2026-11-02-release-hardening/499-session-precondition-timeout/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

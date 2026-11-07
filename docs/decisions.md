@@ -8245,3 +8245,10 @@ Do not relabel the unreproduced 495 failure as fixed. Keep all original per-edit
 **Date:** 2026-11-06 · **Phase:** 498.
 
 Keep production policy unchanged. Use normal reopened producer sessions solely to prepare the requested real service workload within its fixed deadline, and prove server tuples and old readers are preserved. Report this setup variation and do not infer uninterrupted-session performance or resolution of the old stall.
+
+
+### Repair apparatus contention through a normal offline interval
+
+**Date:** 2026-11-06 · **Phase:** 499.
+
+Use the existing offline-capable canonical local reducer for fixture preparation, with real browser offline/online transitions and explicit sync status checks. No scheduler/lifecycle guard is bypassed. Preserve the120s precondition and whole1800s setup ceiling, reconnect before writing, and leave every original online gate unchanged. The known publication stall is not resolved by this classification.

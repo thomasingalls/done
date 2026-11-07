@@ -20440,3 +20440,13 @@ The four-session fixture recipe and ten controls pass. Exact inverse proof retai
 [Record](./development-evidence/2026-11-02-release-hardening/498-session-fixture/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve the online fixture maintenance precondition timeout
+
+**Date:** 2026-11-06 · **Phase:** 499.
+
+The session fixture stops before writing at its unchanged 120 s maintenance precondition. Twelve attempts reach coverage but do not complete. Workspace is active/durable; HTTP responses are all200 and no channel error is captured. Independent private-copy checks retain every server tuple and the full captured Window archive. Classify this as apparatus preconditioning, retain the failure, and use a normal offline interval during local reduction without changing any deadline or Stage5gate.
+[Record](./development-evidence/2026-11-02-release-hardening/499-session-precondition-timeout/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

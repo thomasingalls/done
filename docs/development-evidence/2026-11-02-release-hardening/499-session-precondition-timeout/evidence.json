@@ -1,0 +1,256 @@
+{
+  "fixtureSetupAttempts": 1,
+  "appRefusalObserved": false,
+  "ownerClosureObserved": false,
+  "appSourceChanged": false,
+  "allDeadlinesPreserved": true,
+  "phase": 499,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-session-grow-499-20261106/499-private-files.json",
+      "sha256": "445c65da94d9bb6048f7bd8c3ae5bd96e15d804120e173f0e0ef73c02526c178",
+      "bytes": 8161
+    },
+    {
+      "localPath": "/private/tmp/done-session-grow-499-20261106/499-declaration.json",
+      "sha256": "2c81292c781b90ff8c16f59a3f86eca999b0f7ec229ad77d646bd8b7922e6f2d",
+      "bytes": 2413
+    },
+    {
+      "localPath": "/private/tmp/done-session-grow-499-20261106/499-summary.json",
+      "sha256": "41b94d1c2ca82abf70d62fdd3ed7e621748a5ecb08db3889ebb1d88f8f2b6cbb",
+      "bytes": 3105
+    },
+    {
+      "localPath": "/private/tmp/done-session-grow-499-20261106/499-stopped-proof.json",
+      "sha256": "6492e6eca857ecac00a7d7e78a452d5515bbe59b344423c205ea3d09339c25d5",
+      "bytes": 232
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/child.log",
+      "sha256": "cf03db47b272fd07526cce9c8b0de2d31e2563dac73b31b476eb1023dbb49ce7",
+      "bytes": 1922
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/host-load.jsonl",
+      "sha256": "6d6b2ded413a9535bdabbb09549d484d899fef79aa48c09b852a6adadbd45660",
+      "bytes": 42862
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/power-assertions-before.txt",
+      "sha256": "7ce63325d797ede7b2ce56f07a3a1dd111324213de82dd1dd040c01681cefa79",
+      "bytes": 1389
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/power-log-after.meta.json",
+      "sha256": "23760b40d4192b3f9ffeafa8f203a72d29ecaa06e821eff941cf0c0d16202bd0",
+      "bytes": 485
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/power-log-after.txt",
+      "sha256": "66a6bbcc668fdb43e8d030116f1310525fb420dacf776f6d5b6283fe4311010e",
+      "bytes": 2313
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/power-log-before.meta.json",
+      "sha256": "7ba3b276dd1c361e924b3d4b18bbf5ea7001f2896fde551441e91e3e1963b662",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-session-grow3072/run.json",
+      "sha256": "92d77aa92d63323dbaabfbc0704597fd60b0d1c112a46ca75754992f09b96c4e",
+      "bytes": 1609
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/child.log",
+      "sha256": "292e47b68820d0e7429a6f1f8cf2e6909a6722683269f798ac97d5b61d7f687a",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/host-load.jsonl",
+      "sha256": "f851c6b3f93035a37215c0787c0f94a8e268a416cf813a681a1403b14ec300ac",
+      "bytes": 1504
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/power-assertions-before.txt",
+      "sha256": "e963881df54b2bf49a7279d02aa7db25a2a4f9873694b95aeb122ef68265d96d",
+      "bytes": 1843
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/power-log-after.meta.json",
+      "sha256": "c6f1c2f451dfd386048e52b5051b1914e0f6384e7d58f91af705712942218a1c",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/power-log-after.txt",
+      "sha256": "32c85f12cbbca77cd1266243523abd36288d828c5a90c0623b779e59f046dda7",
+      "bytes": 299
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/power-log-before.meta.json",
+      "sha256": "f1bbe009cfd9217dbfa0ee5678c7c481efd4315862734f43b45043b21a136385",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/499-precondition-proof/run.json",
+      "sha256": "b9386e48ed449c5158aa2b519a81227adc1087cef282bab5321b4f96a8824026",
+      "bytes": 1056
+    }
+  ],
+  "summary": {
+    "phase": 499,
+    "outcome": "fixture maintenance precondition120stimeout; no writing started",
+    "setupElapsedMs": 139046.04077339172,
+    "originalSetupDeadlineMs": 1800000,
+    "preparationObservationMs": 120000,
+    "newAcceptedPositions": 0,
+    "attempts": 12,
+    "interruptions": [
+      {
+        "attempt": 4,
+        "atAfterStartMs": 20476,
+        "stage": "opening",
+        "nextAttemptWaitMs": 10134
+      },
+      {
+        "attempt": 6,
+        "atAfterStartMs": 37669,
+        "stage": "verifying",
+        "nextAttemptWaitMs": 10123
+      },
+      {
+        "attempt": 8,
+        "atAfterStartMs": 57880,
+        "stage": "verifying",
+        "nextAttemptWaitMs": 10117
+      },
+      {
+        "attempt": 10,
+        "atAfterStartMs": 78583,
+        "stage": "verifying",
+        "nextAttemptWaitMs": 10122
+      },
+      {
+        "attempt": 11,
+        "atAfterStartMs": 94764,
+        "stage": "coverage",
+        "nextAttemptWaitMs": 10130
+      },
+      {
+        "attempt": 12,
+        "atAfterStartMs": 110455,
+        "stage": "coverage",
+        "nextAttemptWaitMs": null
+      }
+    ],
+    "lastStatus": {
+      "at": 1794006052085,
+      "phase": "waiting",
+      "reason": "activity-or-journal",
+      "progress": {
+        "stage": "coverage",
+        "completed": 544,
+        "total": 14466,
+        "attempt": 12,
+        "elapsedMs": 5644
+      }
+    },
+    "failureSync": {
+      "send": {
+        "phase": "idle",
+        "failures": 0,
+        "nextAttemptAt": null,
+        "issueSince": null,
+        "lastSuccessAt": null,
+        "reason": null,
+        "acceptedThrough": 2054
+      },
+      "receive": {
+        "phase": "idle",
+        "failures": 0,
+        "nextAttemptAt": 1794006062415.8665,
+        "issueSince": null,
+        "lastSuccessAt": 1794006043486,
+        "reason": null,
+        "receivedThrough": 2059
+      }
+    },
+    "workspace": {
+      "state": "active",
+      "revision": 1,
+      "pendingItems": 0,
+      "pendingBytes": 0,
+      "reservedBytes": 0,
+      "durable": true,
+      "pressure": null
+    },
+    "httpNon200": [],
+    "channelEvents": [],
+    "savedDisposableProfile": true,
+    "independentProof": {
+      "acceptedTuplesExact": true,
+      "allDecisionChecks": true,
+      "serverTuples": 2359,
+      "noNewWriting": true,
+      "windowArchiveExact": true,
+      "nativeColdNotRun": true,
+      "workspaceActiveDurable": true,
+      "privateCopiesOnly": true
+    },
+    "noAppRefusalOrOwnerClosureObserved": true,
+    "coldNotRun": true,
+    "no3072Fixture": true,
+    "classification": "added fixture-preparation precondition fails while the owner remains active/durable and full writing/server tuples remain exact. Not a Stage5online-maintenance gate pass or waiver. Standing apparatus permission permits repair without changing anyassertion ordeadline.",
+    "next": "temporarily take the settled producer offline onlyduring automaticlocalreduction, then normalreconnect/reopen beforewriting; keep120smaintenance,30sposition,1800scase andeveryStage5gate unchanged",
+    "limitation": "public status says activity-or-journal; exact typed guard isnotobserved. Empty reads coincide with preparation, and code confirms routinejobs caninterrupt. Offlinepreconditioning usesnormalcanonicalreadiness, not a guard change."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}
