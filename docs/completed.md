@@ -19727,3 +19727,20 @@ Outcome precedes updating the seat. Actual final harness closure/process binding
 report-only adapters and real-sync fixture refresh still precede timings; do not
 claim the final apparatus is already audited. No app or assertion change, no
 commit/push/deploy, and all Stage5gates and the quiet-host handshake stay.
+
+
+### Bind current Stage5API and isolated gateway without changing shipping bytes
+
+**Date:** 2026-11-05 · **Phase:** 454 · **Scope:** untimed apparatus binding.
+
+Restore the exact retained local ARM64image; all122APIruntime files match current
+source. Build a separate canonical-owner test entry and retain every452shipping
+file exact. A separate gateway child and bounded API container pass the transport
+smoke. Keep the failed overlay construction, before service/app start, and its
+corrected retry. No gate, budget, service/wire, format or application change.
+[Record](./development-evidence/2026-11-02-release-hardening/454-current-runtime-apparatus/README.md).
+
+The old private lab fixtures are absent; next rebuild fictional unequal cohorts
+through actual current setup and accepted edits, then bind the final selected
+closure before timings/host handshake. No timed credit, commit, push or deploy.
+Outcome precedes advancing the active seat.

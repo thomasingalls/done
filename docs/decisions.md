@@ -7724,3 +7724,17 @@ in a distinct Node process; keep the API's original resource bounds. A transport
 smoke establishes wrapper behavior, not final timed composition. Require exact
 source/process binding again when that composition exists. Do not remove checks,
 alter service behavior or start timings merely because acceptedRows is absent.
+
+
+### Recreate missing private fixtures and preserve the frozen frontend
+
+**Date:** 2026-11-05 · **Phase:** 454.
+
+The operator resumes the rest of Stage5. Prior private lab roots are absent, so
+use the retained re-runnable setup recipe and actual current UI/signed writes;
+do not reconstruct old lab rows or edit dates/storage. Reuse only the exact
+retained APIimage after matching its122source files. An extra test-entry build
+may change emitted app HTML through bundling; serve the frozen ordinary frontend
+and overlay only new test chunks/document, with equality checks for every
+shipping file. Keep the failed pre-service overlay and corrected smoke. No
+performance inference or acceptance credit from apparatus preparation.

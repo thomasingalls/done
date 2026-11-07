@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase453 assertion audit and gateway wrapper; timed composition pending
+status: in flight # phase454 current API/gateway bound; fresh fixture preparation next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: final timed apparatus/process binding, real-sync fixtures and host handshake
+blocks_on: fresh real-sync fixtures, final selected closures and host handshake
 updated: 2026-11-05
 ```
 
@@ -203,15 +203,15 @@ commands have passing segments, not a final all-target-stack check. Earlier reds
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase451 reconciles the exact2,573case census;452
-passes all15requested importer cases and six builds with original assertions and
-deadlines. Phase453 inventories timed paths: no acceptedRows references, but ZIP
-compression assertions remain during some fairness intervals. The unchanged
-gateway wrapper passes transport controls in a distinct process. [Record](./development-evidence/2026-11-02-release-hardening/453-timed-path-assertion-audit/README.md).
-Next compose/bind the final hardened timed harness, API/gateway process identities
-and report-only adapters; refresh fixtures through real sync. Audit that actual
-closure before timings. All frozen gates and quiet-host handshake remain; no
-Stage5timing credit, commit, push or deployment.
+**Active bounded outcome.** Phase454 restores the exact retained ARM64APIimage,
+with122current source matches, and passes a separate-process gateway smoke.
+A current native-owner test entry overlays only test assets; all452ordinary app
+bytes stay exact. Its first pre-service overlay failure is retained. [Record](./development-evidence/2026-11-02-release-hardening/454-current-runtime-apparatus/README.md).
+The old private lab fixtures are absent. Next recreate H6/M2/Q2fictional accounts,
+current-date writing and accepted histories through real APIs; bind selected
+native/late/maintenance/fairness/Goals/report-only closures and freeze them before
+timings. Keep all gates and the latency-sensitive host handshake. No timing
+credit, app/source change, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
