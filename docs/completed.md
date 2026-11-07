@@ -20600,3 +20600,13 @@ Completed the current-date fresh fixture in 1628.033s under the original1800s ce
 [Record](./development-evidence/2026-11-02-release-hardening/514-complete-current3072-fixture/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Rebase the approved index observer over repaired canonical source
+
+**Date:** 2026-11-07 · **Phase:** 515.
+
+Rebased six approved observations over repaired canonical inputs with exact inverse-source checks; app/native and raw inspector builds pass, production32MiB unchanged. Six uncapped-counter controls pass. The original reader case retains every assertion and deadline after identity-only rebinding. No normal-gate credit.
+[Record](./development-evidence/2026-11-02-release-hardening/515-repaired-index-observer-build/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

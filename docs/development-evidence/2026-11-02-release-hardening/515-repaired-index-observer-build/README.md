@@ -1,0 +1,7 @@
+# Phase 515 — approved observer on the repaired source
+
+The six already reviewed phase 484 observations are rebased onto all 2,047 exact canonical phase 510 inputs. Only accountReceive and incrementalAccountLedger gain observation statements, with exact inverse-source checks. The production 32 MiB ceiling and its eligibility/continuation code stay unchanged. The observed app/native driver build and separate read-only native inspector build pass, producing 135 served files. No profiler, lab factor, limit or runtime flag change is introduced. This observed variant grants no blocking-gate credit; the plain build remains separate.
+
+Both source and parent counters use uncapped BigInt-to-string ordinals. Six unchanged controls pass, including 100,001 events, missing/duplicate/order refusal, native-final agreement, observation failure and independent lifetimes. The report case inverses byte-for-byte to phase 490 after rebinding only phase/root/build/producer-record identities. Its 180-second case, 120-second catch-up and 15-second ordinary offline cold limits and every position/archive/Undo predicate remain.
+
+The now-complete fixture is the fresh current-date phase 514 three-device account. Run exactly one returning-reader report next, with the existing host/load capture and original ordinary same-profile offline-cold procedure. No full-matrix or release clearance is inferred from this component build.

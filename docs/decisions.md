@@ -8357,3 +8357,10 @@ Use the standing apparatus-repair permission for cached scalar sampling cadence;
 **Date:** 2026-11-07 · **Phase:** 514.
 
 Use this complete genuine fixture rather than an incomplete failed state. The polling adjustment changes preparation observation only; no causal production performance claim follows. Rebase the approved observer and keep the original reader-report predicates and deadlines.
+
+
+### Keep the production ceiling and original reader-report checks
+
+**Date:** 2026-11-07 · **Phase:** 515.
+
+Measure the actual production index bound on the completed genuine fixture. Reuse the reviewed observer and unchanged report body; do not lower the bound, inject trust or use the native-tool offline bootstrap as an app cold substitute.
