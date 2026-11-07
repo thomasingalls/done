@@ -20290,3 +20290,13 @@ is not matched to the prior0mscase's early receive during opening.
 Outcome precedes seat update. Nine of ten reports complete; one3072reader with
 exact uncapped fallback counter remains, then Stage6. All host/traffic/profile
 records remain. No commit, push or deployment.
+
+
+### Prepare the production-ceiling index observation build
+
+**Date:** 2026-11-06 · **Phase:** 484.
+
+The private production-32-MiB observer and native inspector builds pass. Five controls pass; all 2,046 canonical inputs match, and the two observed copies inverse to original bytes. The ordinal is uncapped BigInt with explicit failure reporting. No gate credit or canonical change.
+[Record](./development-evidence/2026-11-02-release-hardening/484-production-index-observer/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

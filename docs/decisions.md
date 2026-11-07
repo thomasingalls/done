@@ -8140,3 +8140,10 @@ hold/go. Retain the original report30ssample and120stotal observation plus nativ
 case/cold bounds. Preserve all original integrity/Undo/cold checks; at50msthe
 30smiss remains report-only. Do not call its different kickoff a matched effect
 against the earlier0msnative timing or alter the original blocking case.
+
+
+### Observe exact index events without a bounded counter
+
+**Date:** 2026-11-06 · **Phase:** 484.
+
+Keep the production ceiling and all checks exact. Bind the first fallback to uncapped native ordinals and append-only parent capture; a gap or final-count mismatch invalidates the report. Do not infer a fallback from arithmetic.

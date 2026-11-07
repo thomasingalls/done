@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase483 deep50reports complete;3072reader thenStage6
+status: in flight # phase484 observer ready;3072 fixture then report
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: one3072reader report with uncapped exact fallback counter, thenStage6
+blocks_on: 3072 fixture, one returning-reader report, Stage6
 updated: 2026-11-06
 ```
 
@@ -199,17 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase483 completes all three50msdeep reports.
-Native receive/application/Undo/cold pass; drain40.010/39.412/39.987s, all miss
-report-only30s. Cold max1.957s. Same hardened native/ordinary bytes, real delayed
-API, no profiler or app source change. Original0ms30sblocking case stays exact;
-this offline-release kickoff is not a matched effect against its early receive.
-[Record](./development-evidence/2026-11-02-release-hardening/483-deep50-reports/README.md).
-All36blocking passes stand. Nine of ten reports complete. Build the production-
-32MiBuncapped counter fixture for one3072returning reader, then Stage6and stop.
-Sender paired2.5sreport misses and every earlier failure remain. Operator keeps
-the Mac quiet for all remaining work. No canonical guard/limit/default, commit,
-push, publication or deployment change.
+**Active bounded outcome.** Phase484 prepares the production-ceiling observation build; five controls pass and no canonical source changes. All36 blocking journeys stand and nine of ten reports are complete. Grow the final fixture through real accepted edits, run one3072 report, write Stage6 and stop. Quiet-host authorization covers the remainder.
+[Record](./development-evidence/2026-11-02-release-hardening/484-production-index-observer/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
