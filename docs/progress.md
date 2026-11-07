@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: blocked # sparse trace complete; shared service/test cost and partial-batch scheduling unresolved
+status: in flight # phase448 frozen; private reporting control and sparse scheduling next
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: sparse-publisher liveness diagnosis/decision before preflight and timed matrix resume
 updated: 2026-11-05
@@ -191,29 +191,26 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Phase 447 sparse publication-to-mirror trace](./development-evidence/2026-11-02-release-hardening/447-sparse-publication-mirror-trace/README.md)
-again fails the original sparse cutoff in 68.418 s. The third sparse position is
-accepted and eventually visible in every Window; receiver visibility misses the
-cutoff by 41.4 ms after a 24.255 s offer-to-Window interval. Its final Window
-prepare/apply/reply takes 3.4 ms. Three complete hot-first replies omit sparse
-suffixes; two other bodies remain unknown. Repeated requests rule out a simple
-idle-poll-only account. Shared Node CPU attribution remains open. Frozen source,
-assets and both closed seeds are unchanged; no app repair or new timing credit.
-Earlier 445/446 failures, all diagnostics and observer limitations remain.
+**Latest checks.** [Phase 448 service/test attribution](./development-evidence/2026-11-02-release-hardening/448-service-test-attribution/README.md)
+finds 41.134 s of synchronous accepted-row checking in a 54.153 s hot interval
+(92 calls, every original assertion retained). Accepted-row ancestry is 74.37%
+of weighted samples; service ancestry 5.69%. Playwright reporting dominates.
+The same cutoff fails without phase447's observers. Swap is flat, no noise retry.
+Source/assets/seeds are exact; no app change or Stage5 timing credit. Phase447's
+accepted third position and fast final Window exchange remain recorded, with
+all earlier failures and limitations preserved.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Phase 447 closes the authorized one-case diagnosis
-and prepares its documentation-only sequential patch after 446. The next bounded
-step should distinguish shared service/test process cost from partial-batch quiet
-suffix scheduling, retaining the 250 ms work cap and native logical fairness.
-No new functional failure is claimed beyond the original liveness cutoff; later
-archive/Undo/cold assertions stay unreached. Four other fairness cases, past-index
-and all 36 blocking / 10 report-only Stage 5 journeys remain unrun. No app fix,
-commit, push, publication or deployment.
+**Active bounded outcome.** Freeze the documentation-only phase448 patch before
+continuing. Phase449 will privately retain the tuple predicates while removing
+per-row Playwright report-step creation, with discriminating controls before the
+one app run, then examine omitted sparse scheduling. Canonical app/tests, all
+guards, budgets, waits and deadlines stay unchanged. Stage5 matrix remains held;
+four other fairness cases and past-index remain unrun. No commit, push or deploy.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

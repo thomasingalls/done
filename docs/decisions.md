@@ -7635,3 +7635,17 @@ exchange takes 3.4 ms. Distinguish source-bound commit ordering from a timestamp
 commit and the busy shared test/service process from measured CPU attribution.
 Keep the work cap and native logical allowance unchanged. Freeze this evidence
 before deciding the next bounded repair or resuming Stage 5.
+
+
+### Attribute the shared event-loop stall before changing receiving
+
+**Date:** 2026-11-05 · **Phase:** 448.
+
+The operator requests service/test attribution first, then omitted sparse
+scheduling. Profile one unchanged diagnostic without the earlier browser
+observers. Keep all tuple assertions and measure their synchronous wall time.
+Classify service and fixture ancestry separately, retaining VM/native/unattributed
+samples rather than assigning them to the server. The 41.134 s census/reporting
+cost supports a private reporting-overhead control before any runtime repair.
+Retain every tuple predicate and prove malformed cases remain refused. No service
+cap, gate, deadline, trust or format change is authorized by this diagnosis.

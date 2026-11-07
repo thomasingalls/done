@@ -19605,3 +19605,22 @@ deadlines stay. Earlier failures remain red; archive/Undo/cold stay unreached.
 [Record](./development-evidence/2026-11-02-release-hardening/447-sparse-publication-mirror-trace/README.md).
 Outcome precedes advancing this seat. Documentation-only sequential patch; no app
 repair, Stage 5 timing credit, commit, push or deployment.
+
+
+### Attribute the shared Node stall to test reporting
+
+**Date:** 2026-11-05 · **Phase:** 448 · **Scope:** failing-preflight CPU diagnosis.
+
+One exact-fixture/frozen-asset diagnostic again fails the original sparse cutoff,
+without phase447's browser observers. The original 92 accepted-row checks consume
+41.134 s synchronously in a 54.153 s hot interval. Their ancestry accounts for
+74.37% of weighted profile samples, service ancestry 5.69%. Playwright step-parent
+search/creation dominates; its pinned source explains growing reporting work.
+All tuple assertions remain. Maximum check time reaches 1.052 s. Swap is flat;
+no noise retry triggers. No app change, guard relaxation or timing credit follows.
+
+[Record](./development-evidence/2026-11-02-release-hardening/448-service-test-attribution/README.md).
+Keep all earlier failures; later archive/Undo/cold remain unreached. The next
+bounded diagnostic retains the tuple predicates with lightweight strict assertions
+in a private fixture, proves its controls, then examines sparse scheduling. Outcome
+precedes advancing this seat. No commit, push or deployment.
