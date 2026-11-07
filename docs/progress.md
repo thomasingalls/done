@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase500 offline fixture controls13pass;fresh fullsetup next
+status: in flight # phase501 idle-send symptom captured;source coverage discriminator next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: fresh3072setup with originaldeadlines, then originalreturningreader report
+blocks_on: normal witness archive comparison for lastunacknowledgededit;no3072fixture
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase500 uses ordinary offline mode only during local producer reduction, after confirming settled prefix and before normal online reopen/writing. Thirteen controls and exactinverse proof pass; all120/30/1800deadlines,1024acceptededit checks andoldreaders remain. NoStage5onlinegate credit or appchange. Fresh fullfixture next; keep495stall unresolved andstopifitreappears.
-[Record](./development-evidence/2026-11-02-release-hardening/500-offline-fixture/README.md).
+**Active bounded outcome.** Phase501confirms582newpositions thenfails the unchanged30scheck. NoHTTP/channel/ownererror; Windowactive/durable has583extra characters while senderidle hasno pendingretry. Failedprofile saved. Next check a canonical caught-up witness againstfull583/582editarchives to distinguishpendingwritingfromcoalescing. Noappfix or guard/limit/deadlinechange; keepallpriorfailures and originalchecks.
+[Record](./development-evidence/2026-11-02-release-hardening/501-idle-publication-stall/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

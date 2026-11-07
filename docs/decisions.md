@@ -8259,3 +8259,10 @@ Use the existing offline-capable canonical local reducer for fixture preparation
 **Date:** 2026-11-06 · **Phase:** 500.
 
 Repair the healthy fixture-precondition contention through a supported ordinary network state under standing apparatus permission. Do not change the120s bound or substitute offline preparation for an online maintenance gate. Preserve server tuples, old readers, original1024edit checks and one1800ssetup clock.
+
+
+### Distinguish uncovered writing from position coalescing
+
+**Date:** 2026-11-06 · **Phase:** 501.
+
+Use exact archive and committed receive evidence to test whether one-input/one-position is a valid fixture assumption. Keep the original failed assertion and all deadlines. No canonical fix or waiver is justified until coverage is distinguished; a fresh reader diagnostic cannot clear the failed setup by itself.

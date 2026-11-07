@@ -20460,3 +20460,13 @@ The fixture-only offline preparation recipe and thirteen controls pass, with exa
 [Record](./development-evidence/2026-11-02-release-hardening/500-offline-fixture/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Capture the idle-send stall with durable Window state
+
+**Date:** 2026-11-06 · **Phase:** 501.
+
+The active/durable idle-send symptom reproduces after582newacceptedpositions, with no error response or owner/channel failure. The failed Window contains583extracharacters and the full disposableprofile is saved. Two maintenance/reopen boundaries preserve all data and service tuples. Next distinguish actual pendingwriting from coalesced source coverage using a normal fully caught-up witness; no app defect is assumed from position count alone.
+[Record](./development-evidence/2026-11-02-release-hardening/501-idle-publication-stall/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
