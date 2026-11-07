@@ -1,0 +1,145 @@
+{
+  "privateDiagnosticBuild": true,
+  "appSourceChanged": false,
+  "newAppRuns": 0,
+  "noGateCredit": true,
+  "phase": 505,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workspaceBridge.ts",
+      "sha256": "f7bd65ea88a17abf246b5918e0dacbeb0a1cc6d98a1c7501a992b2e04a0570fd",
+      "bytes": 7516
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountSyncDriver.ts",
+      "sha256": "f099308e33b7248e73f5815cd91b726e17c8ccca98721dc623605f86b1a87746",
+      "bytes": 20820
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountEnvelopePreparation.ts",
+      "sha256": "6c902857fe885510c8caa727bc54f076211a335e9322bd44e06a35c37567147e",
+      "bytes": 9671
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-source-probe-505-20261107/505-private-files.json",
+      "sha256": "391ec51d5335c30e9cc29dd4fe906d22eab32fcd9ec271c1905ae1cca84863d5",
+      "bytes": 463613
+    },
+    {
+      "localPath": "/private/tmp/done-source-probe-505-20261107/505-summary.json",
+      "sha256": "d1d93ff0eb275ad06d0faacd6a1c3dc06282c43a4e0520a1fc0dc1d468f1079c",
+      "bytes": 1253
+    },
+    {
+      "localPath": "/private/tmp/done-source-probe-505-20261107/505b-files.json",
+      "sha256": "9222d996021546b87e3f11c9faaae654598099e6a481a0d03b5907ed1b0e0c84",
+      "bytes": 13397
+    },
+    {
+      "localPath": "/private/tmp/done-source-probe-505b-20261107/505-source-proof.json",
+      "sha256": "0367033f4e5589f987d6466058476ca691673ebc14496dc71baa3a1aceb57e65",
+      "bytes": 7000
+    },
+    {
+      "localPath": "/private/tmp/done-source-probe-505b-20261107/505-build-proof.json",
+      "sha256": "0e04bb20b1f2281b14403b1bdd0c945a112a034d4eb9a043218454a2cbef6243",
+      "bytes": 8871
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/child.log",
+      "sha256": "cc159e2161b46f03f62280f869a584c2c2bf85b9461237505a7443af246d393d",
+      "bytes": 9563
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/host-load.jsonl",
+      "sha256": "361740facaeb5ea7b03c5931f9fa2e9ac58341dd59b4c4de8f91f812787caeeb",
+      "bytes": 1530
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/power-assertions-before.txt",
+      "sha256": "29e7bba753bbb97fe6ab493963b7d0fa34fa9dbf38bdfa0c1f80ed76d8a094ee",
+      "bytes": 1389
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/power-log-after.meta.json",
+      "sha256": "8e6990b92c2af90cc86ef08e4fe216759ba8a6d5a1e741749e25f61cff403162",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/power-log-after.txt",
+      "sha256": "c3ace8c07c3f51ce42c28b5e7ff0f7422417a2825f51c2e2423c256ca9c05dbe",
+      "bytes": 528
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/power-log-before.meta.json",
+      "sha256": "79a7fdcbb95597eeb77f6250cc9aa8856311996bcd122e2be330ce28603d9534",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/505-source-probe-build/run.json",
+      "sha256": "d1f03f52de7d30a8399b4964757a0a40d3c2f3396d83de51bf1a7699bfd1fb25",
+      "bytes": 1254
+    }
+  ],
+  "summary": {
+    "phase": 505,
+    "outcome": "private sourceprobe build passes",
+    "canonicalInputs": 2046,
+    "observedSourceFiles": 6,
+    "ordinaryFilesExact": 125,
+    "flags": {
+      "VITE_ACCOUNT_BASELINE_READ": "1",
+      "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+      "VITE_ACCOUNT_RETENTION": "1",
+      "VITE_ACCOUNT_RETENTION_AUTO": "1",
+      "VITE_ACCOUNT_RETENTION_RESUME": "1",
+      "VITE_ACCOUNT_RANGE_RECEIVE": "1",
+      "VITE_ACCOUNT_HISTORY_AUTO": "0",
+      "VITE_ACCOUNT_BATCH": "coordinated-2000",
+      "VITE_ACCOUNT_LEDGER": "incremental",
+      "VITE_ACCOUNT_LEDGER_PROFILE": "0"
+    },
+    "inverseEveryAnchorExact": true,
+    "canonicalSourceChanged": false,
+    "sampleOrGateCredit": false,
+    "firstPreparationFailure": "nonmatching indentation anchor in windowAccountMirror; failedbeforeappbuild, kept",
+    "traceScope": [
+      "local publication event",
+      "Window sourcejournal capture",
+      "Windowhint send and Workerhint delivery",
+      "native capsule persistence",
+      "fresh envelope source selection",
+      "scheduler wake/begin/result"
+    ],
+    "traceLimitations": [
+      "IDs/counts only,no writing/keys or permission",
+      "observer origin keyoverwrites originPosition field; notusedasfrontier evidence",
+      "observations change timing; no acceptancecredit"
+    ]
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

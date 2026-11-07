@@ -20500,3 +20500,13 @@ The corrected native diagnostic cold-recovers all583edits in877msbefore anysubmi
 [Record](./development-evidence/2026-11-02-release-hardening/504-pending-edit-reopen/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Build the private source and scheduler observation entry
+
+**Date:** 2026-11-06 · **Phase:** 505.
+
+The private six-file source/scheduler observation build passes with exact inverse anchors, release flags and125ordinaryassets. The first staticanchorfailure stays. Noappsource orguardchanges andno gatecredit. Nexta bounded live reproduction oncopiedfailedstorage will observe sourcecapture,persistence,selection andnotifications.
+[Record](./development-evidence/2026-11-02-release-hardening/505-source-scheduler-probe/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

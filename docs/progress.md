@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase504 saved-state recovery passes;private source/scheduler probe next
+status: in flight # phase505 private sourceprobe ready;bounded reproduction next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: source availability versus notification/scheduler cause;3072report blocked
+blocks_on: sourceavailability versus localhint/scheduler rootcause;3072report blocked
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase504valid probe recovers583edits in877msbefore anysubmit. Withoutnewinput, restartpreparesandacceptsone envelope2637, preservingallprior server tuples/localarchive. The knownlive stall isnotfixed. Firstapparatusfailurekept. Nextprivate read-onlysource/notification/selection/scheduler trace; noappsource or guard/deadlinechange. Original3072reportstillblocked.
-[Record](./development-evidence/2026-11-02-release-hardening/504-pending-edit-reopen/README.md).
+**Active bounded outcome.** Phase505privatebuild adds reversible observations at6source boundaries; all2046inputs,125ordinaryassets and releaseflags bound. Noappsourcechange,noguard/returnvaluechanges. Staticanchor failurekept. Nextrecovercopiedfailedprofile andrunboundednewedits with30spositioncheck; findfirstmissingcapture/persist/hint/selection/schedulingboundary. Noacceptancecredit.
+[Record](./development-evidence/2026-11-02-release-hardening/505-source-scheduler-probe/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

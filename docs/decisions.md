@@ -8287,3 +8287,10 @@ Keep the original per-position regression check because source-complete witness 
 **Date:** 2026-11-06 · **Phase:** 504.
 
 Treat saved-state recovery as evidence against loss of this captured edit, while retaining the live publication failure. Do not assume a lost wake without observing source selection and scheduling. Private observations must leave canonical app sources, all verification checks and ordinary assets unchanged.
+
+
+### Observe the live stall without changing authority or scheduling
+
+**Date:** 2026-11-06 · **Phase:** 505.
+
+Observe only the real canonical pipeline and keep everyauthority,crypto,commit,erasure,limit and scheduling operation byte-identical after removing the log calls. Trace IDs/counts can explain the failure but cannot authorize anything or earn performance credit.
