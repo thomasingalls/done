@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # new frozen Goals guard approved and bound; four runs declared
+status: in flight # four remaining Goals replicates passed; Stage 6 amendment next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: four remaining Goals replicates on plain510, then Stage6amendment/operator stop
+blocks_on: Stage 6 amendment and requested operator stop
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase526records explicitapprovedguardchange: onlyGoalsUndo/Redo immediate reads→expect.poll timeout2500, exactdiffer/restore checks retained; threshold-free undoPollElapsedMs/redoPollElapsedMsfrombeforekeyboardpresstopollsuccess. Newfrozenspecf57e393f…inverseproofonlylines90/91changed, resthelpers/config/fixture/analyzer/assetsunchanged. Operatorcarries522r1desktop/mobile4x stricterpasses, keeps522r2oldfailureasimmediatereadraceper525. FreshGoalsquiethostreplyrecorded. Fourremainingr2/r3desktop/mobile4xrunsdeclared for527, per-runreadonlycopyinspection, usualstop/noiserules; then528Stage6amendmentwithrequestedERR_ABORTED/UndoCPUdebtsandSTOP. Noappchange,newtimedobserver,othergate/wait/limit/formatchangeorreleaseaction.
-[Record](./development-evidence/2026-11-02-release-hardening/526-goals-bounded-undo-guard/README.md).
+**Active bounded outcome.** Phase 527 completes the four approved Goals r2/r3 desktop/mobile4x runs on plain 510. All pass the amended Undo/Redo guards and original remaining checks. Four saved endpoint profiles are read-only exact on copies; elapsed Undo/Redo fields and five-second host records are preserved. No app changes or additional timed observations. Next write phase 528: 21 source carryovers, nine native/fairness reruns, two stricter Goals r1 carryovers and these four amended-spec passes; retain the old immediate-read failure and all debts, then stop for the operator.
+[Record](./development-evidence/2026-11-02-release-hardening/527-goals-bounded-undo-reruns/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

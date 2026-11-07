@@ -8441,3 +8441,10 @@ Operator approvedpendingItems>0forAafterpost-resumesynctraffic, preservingthe524
 **Date:** 2026-11-07 · **Phase:** 526.
 
 Operatoraccepts525(a)andexplicitlychangesonlyGoalsUndo/Redo completionguards to bounded2500mspolls; exacttextdiffer/restore predicates retained, timingdiagnostics havenothreshold. Bindnewfrozenversionbyhash, cite522r2/525, preserveoldspec/failure. Carry522r1desktop/mobile4x stricterpasses, executeonlyremainingfourreplicatesonplain510underfreshquiet-hostconfirmation, usualstop/noiserules andreadonlysavedprofileinspection. AddERR_ABORTEDunknown-cancellation/serviceacceptedledger andunmeasuredUndoCPUcost debts inStage6, thenstop. Noappchange orothergate/deadlinelimit change.
+
+
+### Preserve the old failure and complete only the four approved Goals reruns
+
+**Date:** 2026-11-07 · **Phase:** 527.
+
+Use the operator-approved 2,500 ms completion polls, retaining exact Undo-differs and Redo-restores predicates. Keep elapsed diagnostics threshold-free and all other frozen bytes exact. The four fresh passes supplement, rather than erase, the old failed immediate-read attempt. No further journeys or app changes are needed for this scoped amendment.

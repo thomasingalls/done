@@ -20720,3 +20720,13 @@ Recorded explicitoperator guardchange after525(a): onlytwoimmediateUndo/Redo rea
 [Record](./development-evidence/2026-11-02-release-hardening/526-goals-bounded-undo-guard/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Four remaining Goals replicates pass the approved bounded Undo/Redo guards
+
+**Date:** 2026-11-07 · **Phase:** 527.
+
+All four declared desktop/mobile4x r2/r3 journeys pass on plain 510 under the new frozen Goals spec. All 779 input events and original paragraph, return, archive and cold checks pass; Undo/Redo elapsed diagnostics are retained without a new threshold. Four saved endpoint profiles were inspected only on copies, with exact original-file and native-record identities. No noise retry or app change. The old immediate-read failure remains recorded, and the two stricter r1 passes retain explicit operator carryover authority. Next: Stage 6 amendment, then stop.
+[Record](./development-evidence/2026-11-02-release-hardening/527-goals-bounded-undo-reruns/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
