@@ -19954,3 +19954,22 @@ amendment: require active verification with unfinished backlog, make saved-slice
 presence informational, retain every other gate/wait. Grown/native resumability
 stays unchanged. Apply in a fresh467root. Outcome precedes advancing the seat.
 Stage5still15/36passing journeys;21remain. No app source, limit or deployment change.
+
+
+### Stop at the actual maintenance completion failure after the fixture amendment
+
+**Date:** 2026-11-06 · **Phase:** 467 · **Scope:** one old-normal gate journey.
+
+Apply the approved two-file patch exactly in a fresh root. The case reaches120
+keys and passes actual preparation/backlog, complete archive-plus-append and
+Undo/peer convergence. Partial input p953.377ms, peer0.874s, all markers below
+0.755s. The unchanged120s completion wait expires: seven interrupted attempts,
+zero completions; cold not reached. [Record](./development-evidence/2026-11-02-release-hardening/467-maintenance-completion-stop/README.md).
+
+After typing, six starts at+23.95/+40.49/+56.30/+72.74/+90.52/+107.44s leave at
+durability with activity-or-journal and reported0ms. Public data cannot name the
+guard/job or configured retry clock. No qualifying unrelated-load/swap trigger
+is established. Stop under the explicit120s/retry-wait instruction, without
+changing any guard/deadline or running the remaining five cases. Outcome precedes
+advancing the seat. Stage5:15pass,1fail,20unrun; old-normal cell fails. No app
+source change, release prep, commit, push or deployment.

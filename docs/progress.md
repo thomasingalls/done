@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase466 old fixture amendment approved; fresh467block next
+status: held # phase467actual120smaintenance completion failure; diagnose durability guard next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: old/grown maintenance writer fixtures, remaining timed blocks and report-only cells
+blocks_on: actual post-input durability/preparation rejection;120scompletion gate; remaining timed/report-only cells
 updated: 2026-11-06
 ```
 
@@ -199,17 +199,20 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase466finds the old saved-slice prerequisite no
-longer exposed: one successful2.920s maintenance attempt, no saved slice or halt;
-the90s wait expires before typing. No input/peer/cold credit. Reader catch-up is
-observed23.943s. No host-noise rerun trigger. [Record](./development-evidence/2026-11-02-release-hardening/466-old-saved-prerequisite/README.md).
-The operator approves the narrow old1,024fixture amendment: active verification
-and unfinished backlog remain required, saved-slice presence becomes information.
-All other waits/gates and grown/native resumability stay. Preserve this run and
-apply the exact proposal in a fresh467root, then restart the old six-case block
-under the recent host handshake. Both real-sync fixtures are ready. Stage5still
-15/36passing blocking journeys;21plus report-only cells remain. No app source,
-trust, format, limit, deadline, release prep, commit, push or deployment change.
+**Active bounded outcome.** Phase467applies the approved old-fixture patch
+exactly in a fresh root. Typing reaches120keys; actual preparation/backlog,
+archive-plus-append and Undo/peer convergence pass. Partial input p953.377ms,
+peer0.874s, all markers below0.755s. The unchanged120s maintenance-completion
+wait fails: seven interruptions, zero completions, cold not reached. [Record](./development-evidence/2026-11-02-release-hardening/467-maintenance-completion-stop/README.md).
+Later starts at+23.95/+40.49/+56.30/+72.74/+90.52/+107.44s after typing leave at
+durability with activity-or-journal and reported0ms. Exact condition/job and
+configured retry waits are not exposed. No qualifying unrelated-load/swap trigger
+is established. Stop under the explicit120s/retry-wait rule. Diagnose durability
+barrier/preparation-entry rejection before a repair; no new app runs or guard,
+limit, deadline change. Stage5:15passing journeys,1failed,20unrun. Old-normal
+cell fails; five remaining block cases and all report-only work stay unrun.
+Both real-sync maintenance fixtures remain ready. No release prep, commit, push
+or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

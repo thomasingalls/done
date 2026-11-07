@@ -7908,3 +7908,16 @@ including original completion, latency, Undo, archive/cold and10percent comparis
 This is additional to the prior old-overlap amendment. Preserve the failed run;
 restart the cell in a fresh root. Grown saved-slice and native resumability checks
 are unchanged. No application, trust, format, limit or deadline change follows.
+
+
+### Keep the completion failure distinct from the repaired fixture and partial latency
+
+**Date:** 2026-11-06 · **Phase:** 467.
+
+The approved old-only prerequisite amendment does not relax completion. Apply it
+exactly, preserve466and stop when the actual120s wait fails. Favorable partial
+input/peer/Undo/archive results cannot pass the cell or substitute for cold.
+Do not label observed16sretry gaps as configured10s/60s timers; the public trace
+lacks exact guard/job data. Diagnose durability/preparation-entry rejection before
+repairing, preserving every interruption/authority/journal/commit guard. No noisy
+rerun is triggered by the recorded unrelated-process/swap evidence.
