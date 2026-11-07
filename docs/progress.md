@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase476 fairness observer prepared; next host handshake
+status: in flight # phase477 fairness complete; separate Goals handshake next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: nine remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
+blocks_on: six remaining repaired-source Stage 5 journeys, report-only cells and Stage 6
 updated: 2026-11-06
 ```
 
@@ -199,17 +199,15 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase476 prepares the test-only actual HTTP
-observer needed by the byte-identical fairness analyzer. Seven controls and
-isolated actual-container preflight pass; preserve the request-end attribution
-failure and sandbox attempt. No app/service/wire/guard/gate/deadline changes.
-[Record](./development-evidence/2026-11-02-release-hardening/476-fairness-http-observer/README.md).
-Phase475live normal/withheld cells pass3/3; source-matched total27/36. Native9,
-old/grown maintenance12 and live6 pass. Nine remain: fairness3 and Goals6, plus
-report-only and Stage6. Obtain fairness quiet-host confirmation and the separate
-Goals handshake. Post-both-drain exposure is20and3keys in two withheld runs;
-others unexposed. Correct475narrative only here: actual withheld counts120/117/116,
-not116–118; frozen records remain exact. No commit, push or deployment.
+**Active bounded outcome.** Phase477 finishes all three fairness journeys on
+exact repaired source, ordinary assets, case and analyzer. Outcome: **pass3/3**.
+Ten devices across H6/M2/Q2, six concurrent catch-ups,120-key delivery, durable
+pending writing, automatic post-load convergence, reverse/Undo and exact offline
+profiles retain every original guard. All raw/clock/host/HTTP observations remain.
+[Record](./development-evidence/2026-11-02-release-hardening/477-fairness-gates/README.md).
+Thirty of36blocking journeys completed; six Goals remain before the ten report-
+only journeys and Stage6. Obtain a separate quiet-host confirmation for Goals.
+No app/source/build/guard/wait/deadline change, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

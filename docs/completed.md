@@ -20167,3 +20167,20 @@ Correct only in this append-only record the475README range typo: actual unchange
 raw/summary counts are120/117/116, range116–120. No new journey or credit. Outcome
 precedes seat update. Candidate27/36; fairness/Goals/report-only/Stage6 remain.
 No app change, commit, push or deployment.
+
+
+### Finish the multi-account fairness block on repaired source
+
+**Date:** 2026-11-06 · **Phase:** 477 · **Scope:** three Stage5 fairness journeys.
+
+Cell outcome: **pass3/3**. All original device/account,120-key, pending durability,
+automatic post-load convergence, reverse-writing/Undo and offline cold guards
+remain. Exact case/analyzer, source and ordinary assets; actual test-only HTTP
+observations with explicit provenance. Every run/metric and failed predicate is
+in the [record](./development-evidence/2026-11-02-release-hardening/477-fairness-gates/README.md).
+
+No app change, profiler, guard/wait/deadline change, favorable rerun or missing
+observation substituted with zero. Outcome precedes advancing the seat. Thirty
+of36declared blocking journeys are complete; six Goals and all report-only work
+plus Stage6remain. Ask the separate Goals host handshake. No commit, push or
+deployment.

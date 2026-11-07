@@ -8049,3 +8049,16 @@ Use no fabricated events or native budget counters. Observer failure stays a
 trace error, not a zero. Retain its failed preflight and fix only observation
 ordering. No source/format/trust/guard/gate/limit/deadline changes or acceptance
 credit. Obtain the next host handshake before timing fairness; Goals separately.
+
+
+### Preserve original fairness timing and explicit HTTP provenance
+
+**Date:** 2026-11-06 · **Phase:** 477 · **Operator quiet-host answer confirmed.**
+
+Run three declared replicates on exact shipping bytes. Retain the original raw
+host/renderer metric and all its clock brackets rather than making a new clock
+correction. HTTP diagnostic counts are actual completed responses from the
+phase476boundary; they grant no trust and do not represent internal lab events.
+Keep each run and the fixed failed-replicate noise rule. A passing cold/archive
+is not an input or peer latency substitute. Obtain a separate host handshake
+before Goals; no assertion, budget, limit or gate change.
