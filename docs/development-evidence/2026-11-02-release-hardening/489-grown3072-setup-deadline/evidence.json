@@ -1,0 +1,139 @@
+{
+  "fixturePreparationRuns": 1,
+  "acceptanceCredit": false,
+  "noAppOrOldTestChanges": true,
+  "fresh2048copy": true,
+  "failedStatesNotReused": true,
+  "reportOnlyReaderStarted": false,
+  "phase": 489,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-grow3072-489-20261106/489-private-files.json",
+      "sha256": "8d9ff5d5eef3b663e3bf565346cdb93e7344d13740ab90c816b6a266758dffa2",
+      "bytes": 6387
+    },
+    {
+      "localPath": "/private/tmp/done-grow3072-489-20261106/489-declaration.json",
+      "sha256": "395049b1f7047416c820581cc46d44db75a098cab9edd70660eb293d18762787",
+      "bytes": 1398
+    },
+    {
+      "localPath": "/private/tmp/done-grow3072-489-20261106/489-accepted-proof.json",
+      "sha256": "d20bba827f8f718607ff5817e69fffb5f1f7f35cc48877e8fa8f796d16c2e2b5",
+      "bytes": 509
+    },
+    {
+      "localPath": "/private/tmp/done-grow3072-489-20261106/489-summary.json",
+      "sha256": "0850799eb8d173ed21e3235be2e5ec1b2eb6033c29e8304f1c80f773df8d4e33",
+      "bytes": 3006
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/child.log",
+      "sha256": "cec1253cc48e799d82ff7d536752a1aa29fd5b7d26b1b15b76487c09e7b79208",
+      "bytes": 2450
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/host-load.jsonl",
+      "sha256": "32b2453bfae23e67677e8e5aad3cf48028266e629321b75962ac9185ea8e0acd",
+      "bytes": 563363
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/power-assertions-before.txt",
+      "sha256": "a894417b99b9971d44b1c0c7db55c520ffd928e423ec6b9161917a29a15535c7",
+      "bytes": 1902
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/power-log-after.meta.json",
+      "sha256": "1e45c06708c11232ec72dc7b71c3f4f6d155889fe0f231b1f0f98dae271667c1",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/power-log-after.txt",
+      "sha256": "22bd333b7837331d16ad03593e8a148fe081d34afeeaffb74361fc1e4d28f0c5",
+      "bytes": 4656
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/power-log-before.meta.json",
+      "sha256": "02ec78863b9871707be2bd7a10072d9ed16f14e9e7be468a65678f6de0fb9750",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/489-grow3072-bounded/run.json",
+      "sha256": "5b293b5f43a2b4013e1a14b003978c8ee7c5020336e822759ee97789b2f5a8e3",
+      "bytes": 1593
+    }
+  ],
+  "summary": {
+    "phase": 489,
+    "fixtureOutcome": "failed",
+    "runnerStatuses": [
+      "failed"
+    ],
+    "reason": "original30-minute fixture setup ceiling exhausted; no3072reader journey exposed",
+    "perPositionPollConfirmations": 690,
+    "lastConfirmed": 2744,
+    "independentAcceptedProof": {
+      "sourcePublisherSha256": "25f1b2a3f3be27d136e6cd05045ad41fb1554dfb9a5d883164814f16b382dc9f",
+      "sourcePositions": 2744,
+      "first": 1,
+      "last": 2744,
+      "newServiceAcceptances": 690,
+      "newPollConfirmations": 690,
+      "inFlightNotConfirmed": 0,
+      "contiguous": true,
+      "kindCredentialPositionDigestChecks": true,
+      "sourceUntouched": true,
+      "qualification": "independent existing acceptedRows decoders and strict assertions on private stopped-service copy; no fresh signature verification or new app run"
+    },
+    "caseTimeoutMs": 1800000,
+    "wrapperTimeoutSeconds": 1860,
+    "wrapperTimedOut": false,
+    "wrapperElapsedMs": 1801788.873910904,
+    "originalRecipeExceptApprovedPollByteExact": true,
+    "noOtherAssertionDeadlineOrGuardChange": true,
+    "readerReady": false,
+    "fullArchiveAndOldReaderChecks": "not reached; preserved in unchanged source",
+    "fixturePath": null,
+    "failure": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m2745\u001b[39m\nReceived: \u001b[31m2744\u001b[39m\n\nCall Log:\n- Test timeout of 1800000ms exceeded",
+    "primaryRunnerErrors": [
+      {
+        "location": {
+          "file": "/private/tmp/done-grow3072-489-20261106/grow.spec.ts",
+          "column": 163,
+          "line": 42
+        },
+        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m2745\u001b[39m\nReceived: \u001b[31m2744\u001b[39m\n\nCall Log:\n- Test timeout of 1800000ms exceeded\n\n  40 |         await w.whenDurable();g.b.retrySend();\n  41 |       },value);\n> 42 |       await expect.poll(()=>page.evaluate(async()=>(globalThis as any).b.session.session.sync.status.send.acceptedThrough),{timeout:30000,intervals:[25,50,100]}).toBe(before.prefix+i+1);\n     |                                                                                                                                                                   ^\n  43 |       result.accepted.push({position:before.prefix+i+1,at:Date.now()});\n  44 |       if((i+1)%64===0){console.log('Additional accepted positions',i+1);save();}\n  45 |     }\n    at /private/tmp/done-grow3072-489-20261106/grow.spec.ts:42:163"
+      }
+    ],
+    "qualification": "setup is not an input/peer/deep acceptance benchmark; no performance gain or cold/archive result inferred from partial growth",
+    "next": "run490reader if prepared; otherwise record report-only unavailability and completeStage6with this debt. No new test workload or deadline extension."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

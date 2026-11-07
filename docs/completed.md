@@ -20340,3 +20340,13 @@ The approved grow recipe changes exactly its per-position accessor. Six permanen
 [Record](./development-evidence/2026-11-02-release-hardening/488-bounded-fixture-status/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Preserve the fresh3072fixture preparation result
+
+**Date:** 2026-11-06 · **Phase:** 489.
+
+The fresh recipe exhausts the unchanged30-minute setup ceiling before1,024extra edits. Preserve all confirmed prefixes, independent stopped-service acceptances and the timeout. Full archive/cold/3,072checks were not reached. Do not extend the deadline or substitute a smaller workload. Record the final report as unexposed and carry the limitation into Stage6; prior36blocking passes and9reports remain.
+[Record](./development-evidence/2026-11-02-release-hardening/489-grown3072-setup-deadline/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

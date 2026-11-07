@@ -8175,3 +8175,10 @@ Keep the Worker message guard. The fixture requests an entire growing status gra
 **Date:** 2026-11-06 · **Phase:** 488.
 
 Use the already-published bounded sync status for fixture acceptance polling; do not request a history-sized graph or raise a transport limit. Preserve the exact prefix+1 checks and all deadlines. Treat a source-binding failure separately from console propagation: the successful487bguard observation is raw evidence.
+
+
+### Keep the original fixture ceiling and report exact exposure
+
+**Date:** 2026-11-06 · **Phase:** 489.
+
+Retain both the exact per-position acceptance checks and setup ceiling. Partial fixture growth cannot establish3,072index/cold/Undo behavior. Report-only unavailability is a debt, not a failed result converted to a pass or a basis for silently extending a deadline.
