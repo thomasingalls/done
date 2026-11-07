@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase502 true unpublishededit confirmed;functionalstop
+status: blocked # phase503 confirmed publication failure; stopped pending operator resumption
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: sourcecapture/flush/selection versus sendernotification boundedrepair;3072report blocked
+blocks_on: operator resumption for sourcecapture/selection/notification repair;3072report unavailable
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase502valid witness proves only582extra chars and allsourcepositions7–2636, while failedsenderWindow has583. Coalescingis ruledout; originalfixtureassertion stays. Bothharnessfailures retained. Nativecounter662events exact andread-onlyreceiptstorage unchanged. Senderclaimed durablebutidlewithnonextattempt; cold durabilitynotestablished. Stopunderfunctional-failurerule. Nextisolate sourcecapture/selection andsendernotification withoutassumingrootcause. Noapp or guard/limit/deadline change.
-[Record](./development-evidence/2026-11-02-release-hardening/502-publication-coverage/README.md).
+**Active bounded outcome.** Stage6 amendment503 records confirmedunpublishededit: senderWindow583extra chars, service582newpositions, source-complete canonicalwitnessonly582chars with allsourcepositions7–2636. Coalescingruledout. Sourcecapture/flush/selection versus localnotification remainsunisolated; nativecold durabilitynotverified. All2046canonicalinputs exact470; noapp/guard/limit/deadline changes. Original36gatepasses remain butcandidate isnotcleared. Seven sequentialpatches497–503prepared; stop pendingoperatorresumption.
+[Record](./development-evidence/2026-11-02-release-hardening/503-publication-stop-handoff/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

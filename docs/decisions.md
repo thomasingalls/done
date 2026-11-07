@@ -8273,3 +8273,10 @@ Use exact archive and committed receive evidence to test whether one-input/one-p
 **Date:** 2026-11-06 · **Phase:** 502.
 
 Keep the original fixture assertion: the lastedit is actually unpublished, so changing expectedpositions would hide the symptom. Source-specific verified native storage and exact archive candidates decide coverage; cross-device aggregates alone do not. Stop under the functional-failure rule before furtherappwork.
+
+
+### Stop rather than weaken the per-position check
+
+**Date:** 2026-11-06 · **Phase:** 503.
+
+Keep the original per-position regression check because source-complete witness evidence confirms a real pending edit, not coalescing. Stop at the functional failure and preserve the saved sender state for a bounded capture/selection/notification repair. Do not claim cold durability, resolution, complete3072evidence or release readiness.

@@ -20480,3 +20480,13 @@ The valid fully caught-up witness contains only582newcharacters, while the faile
 [Record](./development-evidence/2026-11-02-release-hardening/502-publication-coverage/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Amend Stage 6 with the confirmed unpublished edit
+
+**Date:** 2026-11-06 · **Phase:** 503.
+
+The Stage6amendment preserves all earlier gates and records a confirmed unpublishededit: independent source-complete witness has582newchars while senderWindow has583. Noapp source changed and all2046buildinputs remain exact. Fixture maintenance becomes bounded through ordinary offline preparation, but full3072report remains blocked. Stop without weakening the original position assertion or any guard/deadline.
+[Record](./development-evidence/2026-11-02-release-hardening/503-publication-stop-handoff/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
