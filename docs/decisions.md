@@ -7969,3 +7969,20 @@ into performance evidence. The repaired first old-normal run passes, including
 runs and qualify earlier-source passes instead of treating them as tests of the
 new candidate. Finish the declared replicate cells on these same assets; no
 gate, limit, deadline, trust or format changes.
+
+
+### Complete maintenance replicates without changing gates or discarding runs
+
+**Date:** 2026-11-06 · **Phase:** 471 · **Operator quiet-host readiness received.**
+
+Run the remaining two normal and three withheld journeys sequentially on the
+exact phase470built assets. Retain each result; all five pass, so no noise retry
+is needed. Combine with the first normal only to close these two three-replicate
+cells. Preserve old overlap/saved-slice amendments without extending them to the
+grown fixtures. Preserve earlier failures and source-bound results; do not turn
+15 earlier-source passes into acceptance for the changed scheduling code.
+
+Use the original writer/host clock bounds and the after-maintenance-to-wrapper
+segment only as a conservative joint upper bound for cold work, not individual
+cold timings. No test assertion changes. FullStage5andStage6remain incomplete;
+no release or publication action follows from this bounded block.

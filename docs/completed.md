@@ -20044,3 +20044,28 @@ Outcome precedes advancing the seat. One blocking journey passes on this repaire
 candidate; earlier-source results are not silently carried forward as final
 acceptance. Next finish the remaining old-maintenance replicates after the host
 handshake. No commit, push, release preparation or deployment.
+
+
+### Pass both original maintenance cells on the repaired source
+
+**Date:** 2026-11-06 · **Phase:** 471 · **Scope:** five remaining runs, combined
+with the first phase 470 normal for three replicates per cell.
+
+All five pass; normal and withheld each finish 3/3. Maintenance completes
+25.692–34.719s after the last key within the unchanged 120s wait. Worst input
+p95 is 3.696ms, peer p95 1,847.544ms and marker 1,776.694ms. Every full archive,
+Undo/peer convergence, actual preparation, 120-key and ordinary offline cold
+check passes. [Record](./development-evidence/2026-11-02-release-hardening/471-maintenance-gate-block/README.md).
+
+No source/test/build or guard/deadline changes and no replacement runs. All
+original analyzer predicates plus the two explicit old-only amendments stay.
+Old overlap34–47 is information; grown >=60 remains required. Each combined
+cold/remaining-work segment is bounded below7.199s using original clock brackets;
+individual cold timings are not invented. The ten private bindings,125shipping
+assets,2,891prior private files and phase469working source remain exact.
+
+Every run and host/power/profile record remains. Swap is constant and all display
+samples are on. The two maintenance cells pass on this repaired source; earlier
+candidate results are not transferred. Outcome precedes updating the seat.
+Six of36 blocking journeys pass;30 and the report-only/Stage6 work remain.
+The timed block ends; no commit, push, release preparation or deployment.

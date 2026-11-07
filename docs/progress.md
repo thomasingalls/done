@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase470 repaired old-normal passes; remaining maintenance replicates next
+status: in flight # phase471 both old-maintenance cells3/3; next source-bound gate block pending
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: remaining maintenance replicates and source-bound Stage 5 cells; quiet-host handshake
+blocks_on: 30 remaining repaired-source Stage 5 journeys, report-only cells and Stage 6; next-block host handshake
 updated: 2026-11-06
 ```
 
@@ -191,27 +191,30 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** The approved phase457 clock repair passes 30 new signed
-controls, 394 affected old Node cases, types/lint, 16 census/policy cases, and the
-full 331-file Vitest suite: 3,218 passed plus the existing skip in 126.36s under
-the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
-30 added IDs and none removed. The phase452 functional preflight passes all 15
-native importer cases, including fairness sensitivity and lower-index fallback.
-These are functional evidence, not final timing credit; earlier reds remain.
+**Latest checks.** Phase 469 adds eight maintenance-arbitration regressions;
+the private no-serialization fault control fails as expected. All 115 focused
+cases pass, and the 332-file full unit suite passes 3,226 cases plus the existing
+skip in 128.63s under the approved 240s hang guard. Types, lint and 16 census/
+policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
+none removed. The earlier native/format functional records remain component
+evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 470 passes the byte-identical approved
-old-normal app case on ordinary release-profile output after the phase 469 full
-unit checkpoint. Maintenance finishes 26.212s after the last key; exact archive,
-120 keys, Undo and both offline cold exports pass. Input p95 3.384ms, peer p95
-796.318ms, every marker <785ms. All ten analyzer predicates pass. The runtime
-contains no lab/diagnostic code and differs from phase 458 only in the two
-scheduling files. [Record](./development-evidence/2026-11-02-release-hardening/470-maintenance-repair-confirmation/README.md).
-Keep phase 467/468 failures and all earlier-source gate results. One blocking
-journey now passes on the repaired candidate; prior-source passes are not final
-new-source acceptance. Next complete the remaining two normal and three withheld
-old-maintenance replicates on these assets after the required host handshake.
-All guards/deadlines, including 120s completion, stay. No app/test change in this
-evidence phase; no commit, push, release preparation or deployment.
+**Active bounded outcome.** Phase 471 passes the five remaining original
+maintenance journeys on the exact ordinary phase 470 assets. Combined with its
+first normal, both normal and withheld cells pass 3/3. Completion is25.692–
+34.719s after the last key; worst input p953.696ms, peer p951,847.544ms and marker
+1,776.694ms. All original active-preparation, archive,120-key,Undo and offline
+cold guards pass. [Record](./development-evidence/2026-11-02-release-hardening/471-maintenance-gate-block/README.md).
+The case/analyzers/helpers,125shipping assets and phase469source stay exact;
+no guard/deadline changes or retries. Old overlap34–47 and saved-slice information
+remain old-only amendments; grown >=60 remains required. Joint cold/remaining-
+work bounds are all <7.199s; individual cold times are not claimed. Preserve all
+failed before runs. The repaired candidate has6/36 blocking journeys passing;
+30 remain (native9,late6,fairness3,Goals6,grown6), plus report-only work andStage6.
+Earlier-source passes are not transferred. The timed block is finished; next
+bounded block may be grown maintenance with both owners observed under its120s
+wait and >=60 overlap. A new tight-block host handshake is required. No commit,
+push, release preparation or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
