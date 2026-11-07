@@ -20310,3 +20310,13 @@ Growing the final report fixture fails at the native composition-status RPC afte
 [Record](./development-evidence/2026-11-02-release-hardening/485-grown-fixture-worker-request-stop/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Capture the exact composition-status Worker refusal
+
+**Date:** 2026-11-06 · **Phase:** 486.
+
+The same-position reproduction captures message-bound on compositionStatuscall273. Last success has2,130spool positions and2,169captures; Window state is active at catch. Six capture/transport controls pass; earlier control-development failures remain. The exact ceiling/site remains to be observed. All167served asset identities and originalrecipe guards/deadlines remain exact; no acceptance credit.
+[Record](./development-evidence/2026-11-02-release-hardening/486-composition-status-error-code/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

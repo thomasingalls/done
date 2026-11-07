@@ -8154,3 +8154,10 @@ Keep the production ceiling and all checks exact. Bind the first fallback to unc
 **Date:** 2026-11-06 · **Phase:** 485.
 
 A fixture-purpose label does not make an app Worker request error a harness failure. Keep this functional stop until the responsible code/guard is identified. Do not retry automatically under the noise rule, which concerns failed latency replicates, or infer data loss from an unsuccessful status poll. Existing logs are insufficient to distinguish a nonterminal refused RPC from owner closure.
+
+
+### Trace the refused message before classifying owner failure
+
+**Date:** 2026-11-06 · **Phase:** 486.
+
+Treat a negative message-bound reply separately from owner closure. The full status graph grows, but do not claim a byte or node ceiling, or blame reply serialization, until its throw site is observed. Continue only the authorized narrow diagnosis; no product repair or gate retry.

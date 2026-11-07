@@ -1,0 +1,150 @@
+{
+  "canonicalSourceChanges": false,
+  "diagnosticAppRuns": 1,
+  "acceptanceCredit": false,
+  "freshFixtureCopy": true,
+  "old485EvidenceUnchanged": true,
+  "all167ServedAssetIdentitiesExact": true,
+  "phase": 486,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/workerChannel.ts",
+      "sha256": "8eff5cad27d093234f5c8eac7ec67816d2d7aa9d7d8cec33c752e478d5dca007",
+      "bytes": 9454
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkerOwner.ts",
+      "sha256": "adbecc4270ab21f1cb5e9cf1323c02fe61b06a9a63453486393b76896922be44",
+      "bytes": 21097
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountWorkerClient.ts",
+      "sha256": "da373ae78eaddf8ced5244fd13538f223737617370f5ecc3817c6716b1ceddb3",
+      "bytes": 23879
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountReceive.ts",
+      "sha256": "f2a7c3906c8e2e50821cb644c4592220b3712812c57f852a69ab789503f6a5af",
+      "bytes": 168639
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountDelivery.ts",
+      "sha256": "638d9d134846692d46390e7512dd8124eed91a4f6baf64dfa73f8563bf70c521",
+      "bytes": 22628
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-composition-status-trace-486-20261106/486-private-files.json",
+      "sha256": "6b14f48f1548ab2e8b50e75d538fed3ed9ffa2bd88afd3ce5a833aeccefadde7",
+      "bytes": 7920
+    },
+    {
+      "localPath": "/private/tmp/done-composition-status-trace-486-20261106/486-declaration.json",
+      "sha256": "92a8deadb5df37cecf86ab29a9df6eec3a60a75216aa4b1ddb2bf056544aa64d",
+      "bytes": 1339
+    },
+    {
+      "localPath": "/private/tmp/done-composition-status-trace-486-20261106/486-existing-evidence.json",
+      "sha256": "747bce9ea6adbdb997819244dd7ad332170ab2f2e52271feebf5da62de036b82",
+      "bytes": 2567
+    },
+    {
+      "localPath": "/private/tmp/done-composition-status-trace-486-20261106/486-summary.json",
+      "sha256": "625325c9794a61c3b766b56d398796c9cd1e867485fc04beada070863b02efe2",
+      "bytes": 1037
+    },
+    {
+      "localPath": "/private/tmp/done-composition-status-trace-486-20261106/486-controls.log",
+      "sha256": "63faa7ff815cd1f8b2fef29b25d2e96768df021408ce0b69e87dbfd70d752d1a",
+      "bytes": 764
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/child.log",
+      "sha256": "5cafbe0f9a059edf9cefadadb6dfe95fd13747abf07b3dd00389cee8efe5d836",
+      "bytes": 1583
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/host-load.jsonl",
+      "sha256": "0c1ccaaab30a9c21ec09d9033c151e1320c22b8c8ea91420e91f723995b050f0",
+      "bytes": 43450
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/power-assertions-before.txt",
+      "sha256": "0ea608e53d2a893b83873c46d379a735bc39f1bea802e6be080f8239a6f25bd7",
+      "bytes": 1898
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/power-log-after.meta.json",
+      "sha256": "81b8003ed87a6673bc386871ff50b0af9840373067e7e3a38e946e2bd7c058d2",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/power-log-after.txt",
+      "sha256": "aea96f89fc448b0779ef9acc14622da18d08d9f195c1b3de49e9f6e4c30ed111",
+      "bytes": 933
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/power-log-before.meta.json",
+      "sha256": "c56cad151dc9176b3e15df423619cf0db7db4b357d2d0ad1c3dc452e0fb1d583",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/486-composition-status-trace/run.json",
+      "sha256": "76b8ce24381243ff81f70a90ec7428b12655cad52498c6cafc95933be55aede6",
+      "bytes": 1656
+    }
+  ],
+  "summary": {
+    "exactCode": "message-bound",
+    "call": 273,
+    "lastSuccess": {
+      "call": 272,
+      "at": 1793999521805,
+      "acceptedThrough": 2130,
+      "deliveryAcceptedThrough": 2130,
+      "spoolPositions": 2130,
+      "spoolAttempts": null,
+      "captureCount": 2169,
+      "captureSourceCount": 2170
+    },
+    "windowWorkspaceStateAtCatch": "active",
+    "cachedSendAtCatch": "working",
+    "cachedReceiveAtCatch": "idle",
+    "lastConfirmedPosition": 2130,
+    "additionalConfirmed": 76,
+    "wrapperSecondsActual": 136.43739199638367,
+    "timedOut": false,
+    "controls": 6,
+    "appSourceChanges": false,
+    "guardChanges": false,
+    "diagnosis": "negative RPC reply carrying message-bound; exact guard site/node-versus-byte not yet observed",
+    "lifecycleQualification": "Worker close event7msafter rejection is recorded during failed-test cleanup; no earlier owner closure established",
+    "followup": "narrow private observation at the two unchanged message-bound throw sites to identify root method, ceiling and scalar counts; no app repair or acceptance run"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

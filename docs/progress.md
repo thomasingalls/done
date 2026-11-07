@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase485 functional stop: native Worker status request failed
+status: in flight # phase486 code captured:message-bound;pinpoint guard site
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: functional Worker request failure during3072fixture growth; then final report and Stage6
+blocks_on: compositionStatusmessage-bound site diagnosis;3072report andStage6
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase485 stops app runs: after76 confirmed additional positions, the native composition-status request fails with WorkerChannelError. Exact code is unavailable; owner closure and writing loss are not established. Read-only stopped-state SQL has77 more accepted decisions. The same plain470/473 build and unchanged recipe guards were used. No retry, fix or further app run. All36 previous blocking passes and nine completed report-only journeys remain; the3072 fixture/report and Stage6 are incomplete. Prepared486 counter controls pass6/6 but its app journey is unrun.
-[Record](./development-evidence/2026-11-02-release-hardening/485-grown-fixture-worker-request-stop/README.md).
+**Active bounded outcome.** Phase486 captures message-bound at the same failed compositionStatuspoll. Last successful accepted/spool position2,130; Window workspace active at catch. Six controls pass, all167app/native assets exact and alloriginal guards/deadlines retained. Continue the authorized diagnosis with scalar observations at unchanged message-boundthrow sites; no repair or Stage5resume. Prior36blocking passes and9reports stand;3072report andStage6remain incomplete.
+[Record](./development-evidence/2026-11-02-release-hardening/486-composition-status-error-code/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.
