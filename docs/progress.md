@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase451 count reconciled; original native preflight next
+status: in flight # phase452 green; pre-timing assertion-path audit next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: requested native/browser preflight and timed-path audit before host handshake
+blocks_on: timed-path assertion audit and current apparatus before host handshake
 updated: 2026-11-05
 ```
 
@@ -203,13 +203,13 @@ commands have passing segments, not a final all-target-stack check. Earlier reds
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze451'scount reconciliation before the next
-bounded phase. Resume the operator's once-each five fairness cases (including
-unfair sensitivity), past-index, dense/group-cut/idle/owners on unchanged bodies
-and conditions. Stop/report any failing check. Before timings complete the
-service-worker measured-path assertion-loop audit and obtain the agreed quiet
-host handshake. The250ms cap observation is already recorded without a repair.
-No commit, push, publication or deployment.
+**Active bounded outcome.** Phase452 closes all15requested importer cases once,
+including the sensitive unfair-build control. All six fresh builds pass against
+the same runtime; original bodies, individual deadlines, genuine old artifacts
+and exact seed inventories are retained. [Record](./development-evidence/2026-11-02-release-hardening/452-native-importer-preflight/README.md).
+Next audit the timed assertion/service closures, compose current frozen-gate
+apparatus and refresh fixtures through real sync. No Stage5timings before the
+quiet-host handshake; no timed credit, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

@@ -1,0 +1,1221 @@
+{
+  "phase": 452,
+  "date": "2026-11-05",
+  "scope": "once-each approved census importer preflight; unchanged runtime and original bodies/deadlines",
+  "sourceBase": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+  "workingSourceReferences": [
+    {
+      "path": "test/inbound-native/fixtures.ts",
+      "sha256": "4fc6265d0f89a0e1e0eafe3e62f6cda40963e41a35d3c1bfffbbfdd8cffd0e19",
+      "bytes": 5016,
+      "state": "approved phase450 four strict assertions; no signed-source claim"
+    }
+  ],
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fairness.spec.ts",
+      "sha256": "d1179f2d1cebd5f3f8e4195d24b1ea56ad1efd889971e3307bb91e411609e383",
+      "bytes": 18098
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-continuation/fixture.ts",
+      "sha256": "0c9afb6df8cacf1a762c9e9bb61a84fa27df44f1d8f3b32a4db5537d6fe50ab7",
+      "bytes": 7313
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-index/past-index.spec.ts",
+      "sha256": "fa5ee6caff3cef2e6be13e93ce31977271ac3b0b3e78697f958f54438d54a071",
+      "bytes": 17521
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/dense.spec.ts",
+      "sha256": "aec2ce85e53cddf5b0c125408de34e7a22a082ca5c4a7d3c3284497a542a61fd",
+      "bytes": 7438
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/group-cut.spec.ts",
+      "sha256": "80793a21f86e60ed4feace3aee743c4f6d727c17a8990c4318186bd4055c2d48",
+      "bytes": 5016
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-audit/idle.spec.ts",
+      "sha256": "e9d665f3e3e417ca679d3af08acc4588797c1af5b64991baaa60c6b67d7fea4e",
+      "bytes": 6903
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-compat/owners.spec.ts",
+      "sha256": "285ec5cbbd3404626f8b6131bd63cbcd3e4a2bd7ccb60f14cf78077db852edc2",
+      "bytes": 16603
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-continuation.config.ts",
+      "sha256": "f88e070f40bbfc23a019083b8ec362a0fea1594eb4baaef7c0b53a1c3b590faa",
+      "bytes": 446
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-index.config.ts",
+      "sha256": "9f7ae060eff3538ef31af56b2d20fb5d27d7f0bebc2218b50cc884fec028b2ee",
+      "bytes": 425
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-native.config.ts",
+      "sha256": "c7b8c8d3f4cade6cb719dcf33d89a296bbf5bb0b6def3a53ddcdd51e4718a61d",
+      "bytes": 565
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-audit.config.ts",
+      "sha256": "27cfced5d65f7a0585c38f80da3ec5956e14e13ae2d959696441e8dc2f2594bc",
+      "bytes": 359
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "playwright.inbound-compat.config.ts",
+      "sha256": "9a9b52e950dfb419d0646448455736de7a21339324dc27c982c63509feba5f77",
+      "bytes": 342
+    }
+  ],
+  "cases": [
+    {
+      "file": "fairness.spec.ts",
+      "line": 71,
+      "title": "continuous native fairness known-backlog normal",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 59116
+        }
+      ]
+    },
+    {
+      "file": "fairness.spec.ts",
+      "line": 71,
+      "title": "continuous native fairness known-backlog withheld",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 60064
+        }
+      ]
+    },
+    {
+      "file": "fairness.spec.ts",
+      "line": 71,
+      "title": "continuous native fairness caught-up normal",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 53756
+        }
+      ]
+    },
+    {
+      "file": "fairness.spec.ts",
+      "line": 71,
+      "title": "continuous native fairness caught-up withheld",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 55443
+        }
+      ]
+    },
+    {
+      "file": "fairness.spec.ts",
+      "line": 71,
+      "title": "native fairness sensitivity control",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 59425
+        }
+      ]
+    },
+    {
+      "file": "past-index.spec.ts",
+      "line": 69,
+      "title": "index build record rejects a different directory and stale or extra assets",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 250
+        }
+      ]
+    },
+    {
+      "file": "past-index.spec.ts",
+      "line": 117,
+      "title": "prepare independently accepted oversized backlog",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 68295
+        }
+      ]
+    },
+    {
+      "file": "past-index.spec.ts",
+      "line": 277,
+      "title": "actual byte-ceiling fallback continues exact native writing and ordinary cold",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 6710
+        }
+      ]
+    },
+    {
+      "file": "dense.spec.ts",
+      "line": 18,
+      "title": "dense interior cuts survive expired requests and exact cold replay original-to-joined",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 53123
+        }
+      ]
+    },
+    {
+      "file": "dense.spec.ts",
+      "line": 18,
+      "title": "dense interior cuts survive expired requests and exact cold replay joined-to-original",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 53344
+        }
+      ]
+    },
+    {
+      "file": "group-cut.spec.ts",
+      "line": 14,
+      "title": "partial first dense page stops the multi-request turn and continues without losing accepted writing",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 25234
+        }
+      ]
+    },
+    {
+      "file": "idle.spec.ts",
+      "line": 46,
+      "title": "genuine mixed receipts retain idle-audit closure and exact cold writing baseline",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 29399
+        }
+      ]
+    },
+    {
+      "file": "idle.spec.ts",
+      "line": 46,
+      "title": "genuine mixed receipts retain idle-audit closure and exact cold writing stale-turn",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 29134
+        }
+      ]
+    },
+    {
+      "file": "owners.spec.ts",
+      "line": 72,
+      "title": "frozen old-page active queued and cold owners preserve pending writing across the binary floor",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 31679
+        }
+      ]
+    },
+    {
+      "file": "owners.spec.ts",
+      "line": 72,
+      "title": "frozen old-worker active queued and cold owners preserve pending writing across the binary floor",
+      "status": "expected",
+      "results": [
+        {
+          "status": "passed",
+          "durationMs": 35491
+        }
+      ]
+    }
+  ],
+  "builds": [
+    {
+      "key": "452-frozen-release-build",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/bin/sh",
+          "-c",
+          "node scripts/check-yjs-patch.mjs && tsc -b && vite build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/bin/sh",
+          "-c",
+          "node scripts/check-yjs-patch.mjs && tsc -b && vite build && node scripts/check-budget.mjs && node scripts/check-origin-isolation.mjs"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-native-preflight-452-20261105/source",
+        "deadlineSeconds": 2400,
+        "started": 1793900699.804186,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 77083,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793900706.232505
+      }
+    },
+    {
+      "key": "452-build-fair-positive",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundContinuationFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-fair-positive"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundContinuationFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-fair-positive"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-native-preflight-452-20261105/source",
+        "deadlineSeconds": 2400,
+        "started": 1793900708.200191,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 77150,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793900712.505762
+      }
+    },
+    {
+      "key": "452-build-fair-negative",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundContinuationFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-fair-negative"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundContinuationFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-fair-negative"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-native-preflight-452-20261105/source",
+        "deadlineSeconds": 2400,
+        "started": 1793900714.536306,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 77165,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793900718.888444
+      }
+    },
+    {
+      "key": "452-build-index-positive",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundIndexFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-index-positive"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundIndexFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-index-positive"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-native-preflight-452-20261105/source",
+        "deadlineSeconds": 2400,
+        "started": 1793900720.908473,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 77188,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793900725.130229
+      }
+    },
+    {
+      "key": "452-build-native-cut",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundNativeFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-native-cut"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundNativeFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-native-cut"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-native-preflight-452-20261105/source",
+        "deadlineSeconds": 2400,
+        "started": 1793900727.178077,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 77204,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793900731.6097379
+      }
+    },
+    {
+      "key": "452-build-audit",
+      "exit": 0,
+      "metadata": {
+        "argv": [
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundAuditFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-audit"
+        ],
+        "executedArgv": [
+          "/usr/bin/caffeinate",
+          "-d",
+          "/private/tmp/done-node24-runtime/node-v24.18.0-darwin-arm64/bin/node",
+          "/Users/thomasingalls/.codex/worktrees/7fda/done/node_modules/vite/bin/vite.js",
+          "build",
+          "--config",
+          "vite/inboundAuditFixture.config.ts",
+          "--outDir",
+          "/private/tmp/done-native-preflight-452-20261105/build-audit"
+        ],
+        "displayProtection": "caffeinate -d",
+        "displayObserver": "CoreGraphics CGDisplayIsAsleep every5s, plus before/after power logs",
+        "cwd": "/private/tmp/done-native-preflight-452-20261105/source",
+        "deadlineSeconds": 2400,
+        "started": 1793900733.487604,
+        "pinnedNodeAndBrowserEnvironment": true,
+        "hostObserver": "384:5s CPU/top processes/display plus explicit fseventsd CPU/RSS and swapMiB",
+        "childPid": 77221,
+        "childExit": 0,
+        "timedOut": false,
+        "finished": 1793900737.929174
+      }
+    }
+  ],
+  "flags": {
+    "VITE_ACCOUNT_BASELINE_READ": "1",
+    "VITE_ACCOUNT_BASELINE_INSTALL": "1",
+    "VITE_ACCOUNT_RETENTION": "1",
+    "VITE_ACCOUNT_RETENTION_AUTO": "1",
+    "VITE_ACCOUNT_RETENTION_RESUME": "1",
+    "VITE_ACCOUNT_RANGE_RECEIVE": "1",
+    "VITE_ACCOUNT_HISTORY_AUTO": "0",
+    "VITE_ACCOUNT_BATCH": "coordinated-2000",
+    "VITE_ACCOUNT_LEDGER": "incremental",
+    "VITE_ACCOUNT_LEDGER_PROFILE": "0"
+  },
+  "runtimeAppBytesUnchangedSince445": true,
+  "originalSeedAndTwoCopiesExactAfterEveryBlock": true,
+  "allSourcePinsExactAfterEveryBlock": true,
+  "functionalBrowser": "installed Playwright Chromium151; original functional environment",
+  "timedBrowserUnchanged": "pinned Chrome156 remains required for Stage5",
+  "timingCredit": false,
+  "timedMatrixJourneysStarted": 0,
+  "hostLogSeconds": 5,
+  "powerLogStorage": "window lines and full log SHA-256/size only",
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-audit-identity.json",
+      "sha256": "e6707398a75660f94116dfb97f277daad962ce7193f56ce5b45c2d108f357b24",
+      "bytes": 3939
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-build-complete.json",
+      "sha256": "2d9f5461d1fc2ea5ccf59f1896c156d1bc91d43613632b289ff2e8d9277a4765",
+      "bytes": 119777
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-build-declaration.json",
+      "sha256": "d1ee9d35bf112df3bb8ff02b0d91719240f0a92ef7e17b2970d29d6ac6354569",
+      "bytes": 1354
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-build-inputs.json",
+      "sha256": "f61609a4ee0f36bd46e21d48b42189822d62b3e2faa517212cf9ac6f56aa116a",
+      "bytes": 347338
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-build-results.json",
+      "sha256": "d1428a3dd819cd39b683ff4b8c2575b7d6306bb5d155ea19d4559828ef36bd6e",
+      "bytes": 8207
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-dense-group-cut-list.log",
+      "sha256": "8d985e443ee42081b9d8857124d0f3714bd66d7b88088c9ec3fbb3bff99f79b6",
+      "bytes": 392
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-fair-negative-identity.json",
+      "sha256": "0eed9042280106e163731d2d6bbc7acbe9a6bbe6a85c1651cb3e209973ad3aa2",
+      "bytes": 947
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-fair-positive-identity.json",
+      "sha256": "8f0c188e1715e7f4b1287aabeb85a2a02345c537c11d468c2c2a7107b12855ab",
+      "bytes": 41
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-fairness-list.log",
+      "sha256": "78d60ec86b53ee611b47e1af11c20bb835a626dc7b7fdd19b46b3cef3f5b9b2b",
+      "bytes": 730
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-frozen-owners-list.log",
+      "sha256": "4150fb4cb2ea058cb23fa58737124542148d86ddb0136215586c3725fa4ab06e",
+      "bytes": 284
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-idle-audit-list.log",
+      "sha256": "23941f315ef72df962d5124259b7f5fb8f1168b7e461e93629d83eaf631e5d8d",
+      "bytes": 252
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-index-positive-identity.json",
+      "sha256": "8bf5a205ed6c6e7282bffe9caf02a9394cba2149f3b434276573c0b139882e39",
+      "bytes": 4387
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-native-cut-identity.json",
+      "sha256": "1376b254e1cca187c07748c33077d3fa748e185249588f5d21b77e6d7aaef043",
+      "bytes": 1042
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-past-index-list.log",
+      "sha256": "c5f6d960e6c62394f59478249334428e77dfa5c6ca8e79200bad4787f303f27f",
+      "bytes": 660
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-seed-inventory.json",
+      "sha256": "c7e0bcf1345a15de2c7fbdc3372605474ff886c2a566fc6a05154a1131ced8ad",
+      "bytes": 105480
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-shipping-assets.json",
+      "sha256": "750f5752cf6a4511495d106d892f8297010884f024fab55f8014d7d6e8b5ed7e",
+      "bytes": 18699
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-spec-declaration.json",
+      "sha256": "a297fb938bd4f819b820a744581e38f41b4d3fef78f0cd3f4076b21cf6cbbb2b",
+      "bytes": 4231
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/452-spec-results.json",
+      "sha256": "4df6373b7d47c3bbf0ff4c1fb49d7d752d28ae1098c5f0d9be3f3273e6e071aa",
+      "bytes": 9153
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/audit-results.json",
+      "sha256": "7527a58f44d851446d2b4aaf29caa2054c6fdc4cf3d0a944a95f516de79b5a79",
+      "bytes": 12441
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/audit.config.ts",
+      "sha256": "d90481eb5f8994a6dbd7a79a7473b839682722741d4d7f0d646450f4486ef60a",
+      "bytes": 477
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/build452.py",
+      "sha256": "17968728b2fe5852248540a5fbf83e748de79c7e59d4182456b69a9f84792377",
+      "bytes": 8288
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/fairness-results.json",
+      "sha256": "4b3a26d040c20f0e883c6073f2a8f147b2b26b860a2f0d7b1d1849777a906bc0",
+      "bytes": 661502
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/fairness.config.ts",
+      "sha256": "1d26693257651ac8ffde17937586d492dca7d773e2ccb74fee99b7af50c31f5e",
+      "bytes": 497
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/index-results.json",
+      "sha256": "0e87843ad6a74d6a7316f90de13a1a9414aeb9037ab12f52083c802a1eb451d6",
+      "bytes": 9248
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/index.config.ts",
+      "sha256": "ebc0393e3da76120e4f1b4ed4a147748facab7a41f6d27131e1bf6cc347362cd",
+      "bytes": 477
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/native-results.json",
+      "sha256": "7f9a59dc93ec470dc1ddaaf140753ef151b01c8ee448af48e6a157c7f1cfc70a",
+      "bytes": 19534
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/native.config.ts",
+      "sha256": "00ceb88992da580a655d43d41938cefe8ac6230ff85ed50398a33b98c5a811f9",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/owners-results.json",
+      "sha256": "bbeb1470c34f93e80d0e48dc6402d78f862e4ff99d8801072b63cb8357904db5",
+      "bytes": 19743
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/owners.config.ts",
+      "sha256": "57ad64a5468b9926fc8971a587d73e057fd7405b67f623d32c321e49d0fd49db",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/package.json",
+      "sha256": "a90fc33418afa2b9cbf4768524b021135b965ecdf993457505bfae3ac44a8428",
+      "bytes": 33
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/record452.py",
+      "sha256": "44fa127a60615bc3b3002c57394d28bd5bbd774a876a18f13cabf7f0b656789d",
+      "bytes": 7913
+    },
+    {
+      "localPath": "/private/tmp/done-native-preflight-452-20261105/run452.py",
+      "sha256": "e0229763ad0ef6b5c5a4f2c39e11ed2918795b65f13261b40eb5b1a8043b54e0",
+      "bytes": 5580
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/child.log",
+      "sha256": "a0208d261fcd070a32cd075121e10f28e9e07b5da73d2855167611ffea8211bd",
+      "bytes": 10609
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/host-load.jsonl",
+      "sha256": "f32393145b71a428be34353656383bd91b932e9851002d9ae21ad03b622b146b",
+      "bytes": 3066
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/power-assertions-before.txt",
+      "sha256": "98f1723e028ea18dc4589e6e7fc9c5dc451e02bf3082390f42fcff3d5be21f27",
+      "bytes": 1776
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/power-log-after.meta.json",
+      "sha256": "e3c9a6d4769df03410f2ea5d55752f01681e36819959cdc382ef46bfbd31608b",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/power-log-after.txt",
+      "sha256": "df98627eca0878a009d14eeefaa3bf88da002f0faaae3f4dded7282bcec39d63",
+      "bytes": 468
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/power-log-before.meta.json",
+      "sha256": "0dc27b9e2ddc67d7d2f0d17e5a7eb82fb8f8861e796680a19319605576847f1d",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-release-build/run.json",
+      "sha256": "30ec82f776c6d1c56022f111c7b49e4a854c0a3fb2061ff732aaef23d0fc31c8",
+      "bytes": 903
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/child.log",
+      "sha256": "19df66d49cfad41848c3e0e89a57b20e51f12f0c7bf3d77f4bfcb28186e14528",
+      "bytes": 9856
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/host-load.jsonl",
+      "sha256": "a9556782f0339ac6c034c9b3edba46e9eb3e17299f2d349e7d8b6f600c744263",
+      "bytes": 1532
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/power-assertions-before.txt",
+      "sha256": "b58983796f8b8bffe1914ba3903faf8c75a9c50eaf815f156e20cee1b07230d2",
+      "bytes": 2002
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/power-log-after.meta.json",
+      "sha256": "b23a382863f1d5895391a619efaeeb255bc56c4ba1503d2969cdf0be0aa530ff",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/power-log-after.txt",
+      "sha256": "4ece9374157cebaa32c2ffd83695282cf3b641ee175eb94c48f8d93fb35beb35",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/power-log-before.meta.json",
+      "sha256": "23aabb3e1a342f0248afb5639582c0c17ce1263c31013d82ffae53f9009ca522",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-positive/run.json",
+      "sha256": "0993c30350f34a97425aa4728cfad4d4ccc8817b00d8eab21ac144a8a8386af0",
+      "bytes": 1233
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/child.log",
+      "sha256": "a20aad7d5b2b667f80f3dec412ed8522c6e72e263911cf751ba3c5e91711e693",
+      "bytes": 11746
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/host-load.jsonl",
+      "sha256": "f40c6e49059cc5cb9cd1c56e763017f38986508a46fe2ffc3bcc334cbbd762ba",
+      "bytes": 1506
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/power-assertions-before.txt",
+      "sha256": "d79ee21b4a3a03dde712cee5a54ac85db8a9621f13e549af0325ff10aa0e4b38",
+      "bytes": 2002
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/power-log-after.meta.json",
+      "sha256": "c4618011a51b2046d4a5b01b759fee951a295251a66525960c760d6a41c0cdea",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/power-log-after.txt",
+      "sha256": "dfde69202cc6ab94d50309d69c248d7a9da9d4717b409b523eaedf5f76d1c917",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/power-log-before.meta.json",
+      "sha256": "4d2e7d3c2c36610073daef6688e43f7cb2f5798241bf98db329ee141bac2e72b",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-fair-negative/run.json",
+      "sha256": "c57920ff9d4c8760838dff6447523a7615444c1053ffa73ec41c168e77a1c0f3",
+      "bytes": 1233
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/child.log",
+      "sha256": "0e36367a609cd0b7bfdbc11bdf95aabc2b9e89a17cab3b1ba52124476c03208b",
+      "bytes": 14149
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/host-load.jsonl",
+      "sha256": "c5595bbd620a4398cdfdcc0b2d749892984c037265a734568cf87a0dbabdb03e",
+      "bytes": 1518
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/power-assertions-before.txt",
+      "sha256": "cd74e68f6a25315b869de891b3cf6381f65144c3d1b0bc383ced0049dc63695a",
+      "bytes": 2002
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/power-log-after.meta.json",
+      "sha256": "5b0abc59b952121addb9dbb488e0203e62736d0a14ab84ee5699320521fe688e",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/power-log-after.txt",
+      "sha256": "087d195d76965b597e6cfe67c850049b85d6412cb18daf8d75e2a75b166b7413",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/power-log-before.meta.json",
+      "sha256": "901ce78e02f69d3b44831d56e438803aa72b3227a65cfd2bfb4077b40ef18b53",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-index-positive/run.json",
+      "sha256": "4eb0070936dcfbf72597ae5fca696b61ebfd0ce79e6f018c9b07f1f3a91bcbc1",
+      "bytes": 1221
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/child.log",
+      "sha256": "1fba8ca55513a3e22a8db7ebac77d4c7fcde765edc4d1a0c86e91b01cdd0c98f",
+      "bytes": 10703
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/host-load.jsonl",
+      "sha256": "d24f84fd9d0aed4c6957884b2e92ad9da1c9c6fb55684d67fdcdcc30848cee21",
+      "bytes": 1503
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/power-assertions-before.txt",
+      "sha256": "ed9fcf9bcd0506b40a620ab2722b35a59aaf0d78faeabf171a2f13774609eaea",
+      "bytes": 2002
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/power-log-after.meta.json",
+      "sha256": "f4e05b387e7e98daacc78890ea72705186e94252da37aa1943774e4f2d9779b5",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/power-log-after.txt",
+      "sha256": "eb2129773d0889515c5d9e87a203788da9364c6096e38701df71421d447107a5",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/power-log-before.meta.json",
+      "sha256": "0f486ab2303e90559bfd4789591c4f9ac30aa1f205595f72ff3ced71e68c6168",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-native-cut/run.json",
+      "sha256": "08088480dd9929dc14f7c3dd81b1f8c239fc848439decde7f10763ea33e80f62",
+      "bytes": 1216
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/child.log",
+      "sha256": "be4b63251f6d49011546bd1bea82505c9e397288ed5be950bf9673b266d48328",
+      "bytes": 14553
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/host-load.jsonl",
+      "sha256": "c6494d983d019eb67631bfc85f26f01d5ed1d0035df275f8dc31b2e07a95d794",
+      "bytes": 1484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/power-assertions-before.txt",
+      "sha256": "7594e36e1b857ec3174c7d386fc6d9bd26b5ed96bcfa544e222ea3de74e0ec08",
+      "bytes": 2002
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/power-log-after.meta.json",
+      "sha256": "a5fd73e2e095b322591e75c78ca1df543171a3403f14d64cd55558fe2fb074ef",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/power-log-after.txt",
+      "sha256": "56dcddef3f9b478317ef2952b280ff9a62cc325193326c8da566608f567643c0",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/power-log-before.meta.json",
+      "sha256": "21aa56d454f0ac0272586307bb123744f552f6a81cc5001247d05352bce13f57",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-build-audit/run.json",
+      "sha256": "6aa9eaa3673cb3e2d21b2b81b0b5c2a9fcd00a7196434cdb6da3b3c344db4dc3",
+      "bytes": 1203
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/child.log",
+      "sha256": "a7fb3bc73f6b0ad904c4fe5c7ab6d03efa301147aaeb30835c6ff03cff1c6a84",
+      "bytes": 1364
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/host-load.jsonl",
+      "sha256": "27486854930c1eca25d7fedd565efdf6118b573d96a02b88dce882b198e7c856",
+      "bytes": 90285
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/power-assertions-before.txt",
+      "sha256": "a94716f389cad8015ac27a17fb6d19a85a3bbaefbda00526814297db0faf830f",
+      "bytes": 1673
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/power-log-after.meta.json",
+      "sha256": "7548457f9c2ec778f669fa9dddb5f372dfdc0295e964347a7af768b95a77a22b",
+      "bytes": 485
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/power-log-after.txt",
+      "sha256": "230f6c372a65b7ca48dd32f6d65d91b70b39223d1e9ff729ff3a4c1ecf6d42df",
+      "bytes": 2132
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/power-log-before.meta.json",
+      "sha256": "669aaf7289ad29cc566c41d6bdf6349e66aa5595a41b3a7fcc3e5fb90248ebcf",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-fairness/run.json",
+      "sha256": "ccbe44e2a2336e0afe4571ba9c9eb4f3dd3a425d02e7d7252fce6d597d3a8fd4",
+      "bytes": 1968
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/child.log",
+      "sha256": "89ad873eabfbe940a55a9381cb11ceceb73e009184ebde8c4357104b2cbc803f",
+      "bytes": 1190
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/host-load.jsonl",
+      "sha256": "e2828d3f50b8c8b36340b1c3c5148708c75f0b8700480a72e0fd7a9165eb53ac",
+      "bytes": 24621
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/power-assertions-before.txt",
+      "sha256": "8b626e7e5fc50834d12ab5e41e39c16d83ed505fc0e342dda5e70c969562fdc8",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/power-log-after.meta.json",
+      "sha256": "7c6aa51e6e5932f0bdae1e07358df4fcf27de7d85164d558918c7ef7b418eac5",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/power-log-after.txt",
+      "sha256": "f4a52bf3458587439afb689016e02678e08b65c9c23ad4832a54fef25d376d91",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/power-log-before.meta.json",
+      "sha256": "04aa4599055d223f4fe36cf963e4eb0cefccf391c439dc9e7c54e2c6318056a7",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-past-index/run.json",
+      "sha256": "49fb7917f00edb81aaa9767dca31dd330f9546fe1c73cf06916f4d402e2a4efb",
+      "bytes": 1566
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/child.log",
+      "sha256": "6003f77eedb11980f442cb13d095881b734e43ea88cc1a4c0fb1bb085b0963c4",
+      "bytes": 672
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/host-load.jsonl",
+      "sha256": "540af36a17a78d15845c5fcf04f38311c247537f76c843be7aff34a150c5d529",
+      "bytes": 41496
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/power-assertions-before.txt",
+      "sha256": "0d4bda4a5dfb1eb719487a3d2e4e07b426fbf5babd30db98b399d2c1e906eabd",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/power-log-after.meta.json",
+      "sha256": "432d01c821fdbb6f43d5712619182b237e44da23216eddd0b6f022d5e448c0d3",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/power-log-after.txt",
+      "sha256": "a98d27946d46490319f2f405fd28096d737521c498365af0b01264aa9e61bfec",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/power-log-before.meta.json",
+      "sha256": "c3e02da68d538bced6d05628ddfa555e71469b850e7eaede6329f216c5b9c7e6",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-dense-group-cut/run.json",
+      "sha256": "01ed1afd42b63c7e07e63d3b1f459eb6a44b33f77a4357129ff810740b834f0d",
+      "bytes": 1372
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/child.log",
+      "sha256": "f2e586226b7d70a4309db40e23b966e3bb0464e70ce27dedee5e18193d18f503",
+      "bytes": 497
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/host-load.jsonl",
+      "sha256": "5e4cd97ceb3ebd85ea3635789c74c151228bed6300b492c91f9b5447913b132e",
+      "bytes": 18332
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/power-assertions-before.txt",
+      "sha256": "574802f359120db6924e8019759e5f67041eab7404d7c45e70b80db7f032e1c0",
+      "bytes": 1815
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/power-log-after.meta.json",
+      "sha256": "5a2a2dd6b537a175da4d438ddfeab7833843d4b5c0b4be92a61c5dfc5100374a",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/power-log-after.txt",
+      "sha256": "b824225886a61f8e1c1c7b0e799bf2ec07efae469d0f5ceeea34e562d1545b17",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/power-log-before.meta.json",
+      "sha256": "09c8219552043c1f8bf22a9b9f5bdb7fe969281abab944ae29a50aa764a20803",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-idle-audit/run.json",
+      "sha256": "88765433dec636f1ffefef3faf4e2891c2587aab0bd654a932597e774fba3b68",
+      "bytes": 1358
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/child.log",
+      "sha256": "06d174cbb764fbc8473b11f7ae044ccf38f0c268832cb70e53c59f4645d23b80",
+      "bytes": 1036
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/host-load.jsonl",
+      "sha256": "76d9e36b668a5e96cb0384324650b97277b76a870616193937388b6a5c24a3a1",
+      "bytes": 21493
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/power-assertions-before.txt",
+      "sha256": "a48e1da0e308b1a7d097d84821498bc8498fa1beef7167038a21014f3ed49e1e",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/power-log-after.meta.json",
+      "sha256": "9cd1268890dc75b7cf988ea41bbffc5bcab73576a0c4344b26807181fff4eb7d",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/power-log-after.txt",
+      "sha256": "f920ee197d981fcaf49415b5b9f4882b392b3c785061b3784d873885b40c440c",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/power-log-before.meta.json",
+      "sha256": "cbf3fd488770fe603521943e29f2945231737cdd715d0d6e8b4b24e1aadc516b",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/452-frozen-owners/run.json",
+      "sha256": "4fe623ddc8bfd0a64600fc421454e7e0cec8d9b4e444e625b729cf2a43dce23a",
+      "bytes": 1350
+    }
+  ],
+  "limits": "all original assertions, wait bounds, individual deadlines and case selections retained; no retries",
+  "next": "audit measured assertion closures, compose current timed apparatus and refresh through real sync, then quiet-host handshake"
+}

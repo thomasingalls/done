@@ -7698,3 +7698,16 @@ audit cases; retain every old case and the separate8new guard cases. The verifie
 equation is2,562+3+8=2,573. Only then update the expectation and title and rerun
 the exact failed command. Keep all failed artifacts. A passing census is not a
 runtime pass for those native cases and grants no Stage5 timing credit.
+
+
+### Rebuild the existing controls against unchanged runtime before timing
+
+**Date:** 2026-11-05 · **Phase:** 452.
+
+The older functional control bundles predate later runtime repairs. Rebuild their
+existing canonical configs from the exact current isolated source, bind the
+ordinary32MiBasset separately from the existing1MiBindex fixture, and retain
+genuine old Page/Worker artifacts. Override only output paths and absolute test
+roots; inherit the original browser, waits, deadlines and assertions. Passing
+these15cases closes the operator's importer checklist; it does not grant timed
+performance credit or waive the measured-path assertion audit and host handshake.

@@ -19693,3 +19693,19 @@ errors. [Record](./development-evidence/2026-11-02-release-hardening/451-reviewe
 No test removal, skip, deadline, guard, budget or app change. Outcome precedes
 advancing the active seat; continue the operator's requested unchanged browser
 preflight in the next bounded phase. No timed credit, commit, push or deploy.
+
+
+### Close the unchanged native importer preflight after census reconciliation
+
+**Date:** 2026-11-05 · **Phase:** 452 · **Scope:** approved once-each browser checks.
+
+All15cases pass, including all five fairness cases and the actual unfair-build
+sensitivity, genuine past-index refusal/continuation, dense/group cuts, idle audit
+and old Page/Worker ownership. Six fresh builds pass; runtime source matches445.
+Original assertions/deadlines and genuine old artifacts stay unchanged; source
+and all three seed inventories remain exact after each block. No retry or timed
+credit. [Record](./development-evidence/2026-11-02-release-hardening/452-native-importer-preflight/README.md).
+
+Outcome precedes advancing this seat. Next complete the measured-path assertion
+audit and current timed apparatus, then request the quiet-host window. No runtime,
+security, gate, budget or limit change; no commit, push or deployment.
