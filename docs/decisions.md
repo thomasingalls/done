@@ -8350,3 +8350,10 @@ Do not extend setup, per-position or preparation deadlines. Adjust only the new 
 **Date:** 2026-11-07 · **Phase:** 513.
 
 Use the standing apparatus-repair permission for cached scalar sampling cadence; this changes no acceptance predicate, deadline or production behavior. Preserve the setup failures and start a fresh account. Do not reuse incomplete source/profile state or claim report exposure.
+
+
+### Use the completed genuine current-date fixture for the missing report
+
+**Date:** 2026-11-07 · **Phase:** 514.
+
+Use this complete genuine fixture rather than an incomplete failed state. The polling adjustment changes preparation observation only; no causal production performance claim follows. Rebase the approved observer and keep the original reader-report predicates and deadlines.

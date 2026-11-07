@@ -1,0 +1,115 @@
+{
+  "phase": 514,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/lib/account-gateway.mjs",
+      "sha256": "90c20c3d8c1067825d7954c358d14bf6fb482cda182bd28b5138120cce1972c0",
+      "bytes": 4724
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite/precacheServiceWorker.ts",
+      "sha256": "a3e0e68082d447ac4e238bd1d2e4a9982ca553411c642d285aa61906b3730bb7",
+      "bytes": 6477
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-current3072-cadence-514-20261107/514-private-files.json",
+      "sha256": "4a741ee5e784debdf00c9ce8fc3a32e882ae92faf3f9edf19cb40b62bdb3b2a4",
+      "bytes": 5150
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/514-current3072-cadence/run.json",
+      "sha256": "d93542826d928e21eca560e423fd919ac0c3011d18301ae1bf8d38389c413c95",
+      "bytes": 1633
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/514-current3072-cadence/child.log",
+      "sha256": "be8a29e2ec90ff5a12230ed436ba34f097638a2dcc99da02bbfa67e37b127f55",
+      "bytes": 2798
+    }
+  ],
+  "summary": {
+    "phase": 514,
+    "outcome": "passed",
+    "elapsedMs": 1628033,
+    "before": 6,
+    "after": 3078,
+    "individuallyAccepted": 3072,
+    "date": "2026-11-07",
+    "devices": 3,
+    "GoalsBytes": 13407,
+    "reductions": [
+      {
+        "atEdit": 256,
+        "elapsedMs": 14406
+      },
+      {
+        "atEdit": 512,
+        "elapsedMs": 15094
+      },
+      {
+        "atEdit": 768,
+        "elapsedMs": 15141
+      },
+      {
+        "atEdit": 1024,
+        "elapsedMs": 15146
+      },
+      {
+        "atEdit": 1280,
+        "elapsedMs": 15263
+      },
+      {
+        "atEdit": 1536,
+        "elapsedMs": 15291
+      },
+      {
+        "atEdit": 1792,
+        "elapsedMs": 16380
+      },
+      {
+        "atEdit": 2048,
+        "elapsedMs": 16527
+      },
+      {
+        "atEdit": 2304,
+        "elapsedMs": 15999
+      },
+      {
+        "atEdit": 2560,
+        "elapsedMs": 16725
+      },
+      {
+        "atEdit": 2816,
+        "elapsedMs": 15666
+      }
+    ],
+    "savedReadersSha256": "a666ce663ffa48eb488c6146b1d8953a96e418c202e4674b6c1f1118ee65681f",
+    "archive": {
+      "sha256": "9f862af9dcc669464927a1ea15716df99b6fe48505c44074e6e65304c9b9f0d1",
+      "files": [
+        {
+          "name": "master.md",
+          "bytes": 13407,
+          "characters": 13407
+        },
+        {
+          "name": "days/2026-11-07.md",
+          "bytes": 4513,
+          "characters": 4513
+        }
+      ]
+    },
+    "fixtureSha256": "dedc2ec6caab153f1bd9c3504fde1079fa095358d1735bcf06bc468981d6444d",
+    "allOriginalBoundsPreserved": true,
+    "normalTimedGateCredit": false
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

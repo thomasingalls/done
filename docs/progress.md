@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 513 fixture cadence controls pass; fresh preparation rerun next
+status: in flight # phase 514 current3072 fixture complete; observer rebase and ordinary cold report next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: complete fresh 3072 preparation under existing1800s ceiling, then original report
+blocks_on: run original3072reader report on repaired source; earlier timed gates retain old source binding
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase 513 changes only the new fixture cached-status cadence to25ms and records initial/last acceptance counters. Four controls pass; inverse bytes preserve every other line, including all assertions/timeouts. Next run the unchanged protocol on a fresh account; phase512deadline failures remain. No new app or build changes.
-[Record](./development-evidence/2026-11-02-release-hardening/513-fixture-status-cadence/README.md).
+**Active bounded outcome.** Phase514 completes all3072 independently paced accepted edits in the original1800s setup window, with eleven exact reductions and unchanged returning-reader snapshots. Ordinary producer reopen/full archive pass. Next build the approved six-hook observer as515 and run the original3,072 report as516, including ordinary same-profile offline cold. No new blocking gate or release clearance.
+[Record](./development-evidence/2026-11-02-release-hardening/514-complete-current3072-fixture/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

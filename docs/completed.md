@@ -20590,3 +20590,13 @@ Prepared the fixture-only fixed25ms cached-status cadence with the original exac
 [Record](./development-evidence/2026-11-02-release-hardening/513-fixture-status-cadence/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Current 3072-position fixture completes within setup ceiling
+
+**Date:** 2026-11-07 · **Phase:** 514.
+
+Completed the current-date fresh fixture in 1628.033s under the original1800s ceiling: exactly3072 accepted edits, prefix6→3078, three devices, Goals13407bytes. Eleven reductions preserve archives/serverrows/old-reader snapshots; ordinary producer reopen exact. No report or new timed-gate credit yet. Prior failures retained and last-wait censoring clarified.
+[Record](./development-evidence/2026-11-02-release-hardening/514-complete-current3072-fixture/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
