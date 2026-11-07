@@ -8378,3 +8378,10 @@ Report the observed bound honestly: no fallback through this workload, not an in
 **Date:** 2026-11-07 · **Phase:** 517.
 
 Stop at the source-qualified handoff. The missing report is complete; the full frozen blocking matrix still predates508 and must run on repaired final source before release clearance. Keep that prerequisite, all debts and compatible reader-on/writer-off rollback requirements explicit. No format, trust, limit, deadline or default change is made.
+
+
+### Replace blanket repaired-source matrix rerun with operator-reviewed reachability evidence
+
+**Date:** 2026-11-07 · **Phase:** 518.
+
+Operator directed a read-only audit, then a stop, before deciding whether old36passes carry to510. No blanket rerun remains scheduled. Preserve all old records, gates and failures; normalize only exact generated bundle names/date/verifier values, separately verify derivatives, inspect saved metadata on copies, and qualify missing ephemeral ends rather than assume them. Nine positive reduced-path candidates plus three native-deep coverage gaps remain for operator disposition. Complete-history native-context baselines are not reduced despite nonzero revision. Maintenance installation stages occur after measured input/peer markers, with old-reader later completion unobserved. No acceptance carryover is granted by this audit; post-reduction typing cost remains unmeasured.

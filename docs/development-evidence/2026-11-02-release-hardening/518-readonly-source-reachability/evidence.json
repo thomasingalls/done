@@ -1,0 +1,172 @@
+{
+  "operatorDecisionPending": true,
+  "noAppOrGateChanges": true,
+  "privateInspectionCopies": "/private/tmp/done-readonly-inspection-copies-518-20261107-attempt3",
+  "noOriginalProfileOpened": true,
+  "phase": 518,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineMetadata.ts",
+      "sha256": "40695cc8c629da3e242e2dcdc2d90d55336c78ce253f15accfad9b8460687d29",
+      "bytes": 2778
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/localBaselineReuse.ts",
+      "sha256": "1a54dffcb5108fc332f2ea4ce2dbcd0ca7e2662f11f0f381ca87168f5f674a6b",
+      "bytes": 10493
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/automaticLocalRetention.ts",
+      "sha256": "36776ea6969be271e34f9f5a65f9eb9d053098936e5fa74c8353e88a57ca940c",
+      "bytes": 10161
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/inbound-native/inspect.ts",
+      "sha256": "b7967ebf0c264a54cd211b1105f2d054a9dc9ee6da4a5fcc3b77ab9b40b7c5d7",
+      "bytes": 4959
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/518-private-files.json",
+      "sha256": "30f6bcfe5678890f4967a5a60b4fceb7f191b47d98fa5a140619f4081f830e37",
+      "bytes": 12723
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/bundle-proof.json",
+      "sha256": "2be90f90ea99e3ae6ee337c82ada0d1e6c0af080b9c906d45e1c34377e9f5f4f",
+      "bytes": 184887
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/derived-proof.json",
+      "sha256": "3126d489abbf57d13db3591364ba4cef973a8db7506b236200e8312c87126dc5",
+      "bytes": 844
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/verifier-identities.json",
+      "sha256": "25922e4a1fd1c95d15a8e221339cf2bf138921cceee7af9f4b7cc79ac497e3ee",
+      "bytes": 1902
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/native-inspection.json",
+      "sha256": "448e87ae000b8d377c6d5b858831301718572fc57944008a8fe0697a77aac0d4",
+      "bytes": 38432
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/nonmaintenance-reachability.json",
+      "sha256": "d522e946f79575591b8cae59af9605107a410f9e317a0236a759fbea7fc0863e",
+      "bytes": 74656
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/maintenance-reachability.json",
+      "sha256": "923b953f2ee85ed030d41e2d46f7dda8188cbec7235371d205dca0948e61bc3c",
+      "bytes": 33601
+    },
+    {
+      "localPath": "/private/tmp/done-readonly-reachability-518-20261107/518-summary.json",
+      "sha256": "85db0ceae97055b21e9853047002c2725cb6d48aa5207ae62f254aa9bf98aee9",
+      "bytes": 2904
+    }
+  ],
+  "summary": {
+    "phase": 518,
+    "kind": "read-only reachability, no performance acceptance credit",
+    "ordinaryBundleFilesPerBuild": 125,
+    "bundleProofCounts": {
+      "derived-sw-template-identical": 1,
+      "normalized-identical": 40,
+      "raw-identical": 32,
+      "single-insertion": 7,
+      "source-map-derived": 45
+    },
+    "normalizedExecutableDelta": "if (logical) clearView();, once in each of six Worker assets plus deviceDataRemoval",
+    "nativeInspection": {
+      "uniqueStartingStates": 10,
+      "nativeSavedEndProfiles": 33,
+      "all43SourceUnchanged": true,
+      "all43ReadOnlyNativeDigestsEqual": true,
+      "appLoaded": false,
+      "serviceWorkersBlocked": true
+    },
+    "nonmaintenance": {
+      "journeys": 24,
+      "inspectionStates": 43,
+      "uniqueStartingStates": 10,
+      "savedEndStates": 33,
+      "allSavedStatesRevisionZeroRuns": 12,
+      "completeBaselineExceptions": [
+        "474-r1-native-context",
+        "474-r2-native-context",
+        "474-r3-native-context"
+      ],
+      "reducedPathCandidates": [
+        "474-r1-native-resumable",
+        "474-r2-native-resumable",
+        "474-r3-native-resumable",
+        "477-r1-fairness",
+        "477-r2-fairness",
+        "477-r3-fairness",
+        "478-r2-goals-mobile4x",
+        "478-r3-goals-desktop",
+        "478-r3-goals-mobile4x"
+      ],
+      "additionalIncompleteEndCoverage": [
+        "474-r1-native-deep",
+        "474-r2-native-deep",
+        "474-r3-native-deep"
+      ],
+      "savedStateExcludedRuns": [
+        "474-r1-native-context",
+        "474-r1-native-deep",
+        "474-r2-native-context",
+        "474-r2-native-deep",
+        "474-r3-native-context",
+        "474-r3-native-deep",
+        "475-r1-late-normal",
+        "475-r1-late-withheld",
+        "475-r2-late-normal",
+        "475-r2-late-withheld",
+        "475-r3-late-normal",
+        "475-r3-late-withheld",
+        "478-r1-goals-desktop",
+        "478-r1-goals-mobile4x",
+        "478-r2-goals-desktop"
+      ],
+      "fullyCoveredExcludedRuns": [
+        "474-r1-native-context",
+        "474-r2-native-context",
+        "474-r3-native-context",
+        "475-r1-late-normal",
+        "475-r1-late-withheld",
+        "475-r2-late-normal",
+        "475-r2-late-withheld",
+        "475-r3-late-normal",
+        "475-r3-late-withheld",
+        "478-r1-goals-desktop",
+        "478-r1-goals-mobile4x",
+        "478-r2-goals-desktop"
+      ]
+    },
+    "maintenance": {
+      "runs": 12,
+      "writerInstallStartsAfterLastMeasuredKeyAndPeerMarker": 12,
+      "grownReaderInstallStartsAfterLastMeasuredKeyAndPeerMarker": 6,
+      "oldReaderNoInstallThroughMeasuredTraffic": 6,
+      "newOwnerColdFirstLoadFull": true,
+      "timingExceptionRuns": []
+    },
+    "newJourneys": 0,
+    "timedRuns": 0,
+    "carryoverDecision": "operator pending; no passes rebound to 510",
+    "unmeasured508Effect": "Post-reduction typing cost: rate of fresh-check interruptions after a nonempty logical advance that force full reauthentication, and input/peer latency under continued typing on a reduced device."
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

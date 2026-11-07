@@ -20630,3 +20630,13 @@ Closed the bounded stale-projection repair and missing3072report handoff. Five n
 [Record](./development-evidence/2026-11-02-release-hardening/517-repaired-source-handoff/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Read-only source reachability and carryover handoff
+
+**Date:** 2026-11-07 · **Phase:** 518.
+
+Operator replaced 517’s blanket matrix rerun with a read-only reachability check and stop. Independently verified all 125 ordinary files per build: after exact chunk/date/verifier normalization, the only executable insertion is `if (logical) clearView();` in six Worker assets plus deviceDataRemoval. Derived maps and service-worker cache fields are separately bound. Inspected ten unique start states and all 33 saved end profiles on copies, with the existing native digest and metadata seam: source bytes unchanged, every native before/after digest equal, no app/network execution. All starts revision0; nine non-maintenance runs end reduced (native-resumable ×3, fairness ×3, Goals r2-mobile4x/r3-desktop/r3-mobile4x). Three native-context ends are revision1 complete and statically excluded; three native-deep ephemeral publishers lack saved ends, explicitly unproven. Twelve maintenance writer and six grown reader installation traces start after last key and peer marker; old readers show no install through measured traffic, later completion timestamps unavailable. Fresh-owner ordinary cold first loads are full reads. No timed runs or new journeys. Carryover remains the operator’s decision. Post-reduction typing cost/frequency of forced full reauthentication is the one unmeasured effect of508.
+[Record](./development-evidence/2026-11-02-release-hardening/518-readonly-source-reachability/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
