@@ -19624,3 +19624,33 @@ Keep all earlier failures; later archive/Undo/cold remain unreached. The next
 bounded diagnostic retains the tuple predicates with lightweight strict assertions
 in a private fixture, proves its controls, then examines sparse scheduling. Outcome
 precedes advancing this seat. No commit, push or deployment.
+
+
+### Preserve tuple guards while isolating reporting and sparse scheduling
+
+**Date:** 2026-11-05 · **Phase:** 449 · **Scope:** private causal/scheduling control.
+
+All four accepted-tuple predicates and decoders remain while strict Node assertions
+replace only per-row reporting in a private helper. Seven old/new guard cases,
+both SQL branches and twelve exact-production-helper scheduling cases pass,
+including false-empty-credit sensitivity and 750 ms expiry. The one unchanged app
+case passes every original sparse, native fairness, archive, Undo, batch and cold
+assertion (59.550 s). Three sparse observations arrive about one second after the
+offers. Census wall time is 0.668 s over 93 hot calls, versus profiled448's 41.134 s
+over92. No application speedup or timing acceptance is claimed.
+
+Omitted quiet work earns no proof and retains a native sparse turn after eight hot
+positions; that bound is logical, not wall time. No independent native fairness
+or missing-writing defect is shown. All 218 observable batch replies are complete;
+13 other bodies stay unknown. The test's shared-loop reporting explains the
+principal blockage without requiring a server, wire or security change.
+
+Retain the controller postcondition failure: a read-only guard query created new
+WAL/SHM sidecars beside the original seed. Pre-existing bytes and the journey seed
+are unchanged. Preserve only those new sidecars in449 artifacts, restore the exact
+frozen seed, then pass a guard-only retry on a private database copy. No second
+app journey. The independent final review verifies all pins and exact seeds.
+[Record](./development-evidence/2026-11-02-release-hardening/449-sparse-scheduling-control/README.md).
+Outcome precedes advancing this seat. Canonical tests/app remain unchanged;
+next is the narrow harness repair and original preflight. No Stage5 timing credit,
+commit, push or deployment; all earlier failures remain intact.

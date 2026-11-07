@@ -164,7 +164,7 @@ seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
 status: in flight # phase448 frozen; private reporting control and sparse scheduling next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: sparse-publisher liveness diagnosis/decision before preflight and timed matrix resume
+blocks_on: narrow canonical census reporting repair and original native preflight before timed matrix
 updated: 2026-11-05
 ```
 
@@ -191,26 +191,30 @@ observation; peer page appends now reuse indexes under exact prefix, canonical,
 logical/owned bounds. Own/history/unknown-observation paths retain reference fallback. Every phase outcome/failure
 is in completed.md and immutable evidence, not repeated here.
 
-**Latest checks.** [Phase 448 service/test attribution](./development-evidence/2026-11-02-release-hardening/448-service-test-attribution/README.md)
-finds 41.134 s of synchronous accepted-row checking in a 54.153 s hot interval
-(92 calls, every original assertion retained). Accepted-row ancestry is 74.37%
-of weighted samples; service ancestry 5.69%. Playwright reporting dominates.
-The same cutoff fails without phase447's observers. Swap is flat, no noise retry.
-Source/assets/seeds are exact; no app change or Stage5 timing credit. Phase447's
-accepted third position and fast final Window exchange remain recorded, with
-all earlier failures and limitations preserved.
+**Latest checks.** [Phase449 private reporting/scheduling control](./development-evidence/2026-11-02-release-hardening/449-sparse-scheduling-control/README.md)
+passes the one unchanged app case including sparse visibility, native fairness,
+archives, Undo and offline cold. Strict census assertions retain all four tuple
+predicates; seven old/new guard cases and twelve omission models pass, with a
+sensitive false-credit control and unchanged750ms expiry. Census cost falls from
+profiled448's41.134s to0.668s; this is diagnosis, not application timing credit.
+A guard-only copied-DB retry repairs read-only SQLite sidecar creation; all prior
+seed bytes stay exact, new sidecars are preserved, and no second app run occurs.
+All original445–448 failures remain recorded. No independent scheduling defect
+is demonstrated; limits and security checks stay unchanged.
 The [385 segmented checkpoint](./development-evidence/2026-11-02-release-hardening/385-clean-host-nine-reruns/README.md)
 cleared all nine former failures at120s after the daemon restart; all83root
 commands have passing segments, not a final all-target-stack check. Earlier reds,
 including393's type and sparse-address development failures, remain preserved.
 All native commands use display protection and5s host/display/fseventsd/swap logs.
 
-**Active bounded outcome.** Freeze the documentation-only phase448 patch before
-continuing. Phase449 will privately retain the tuple predicates while removing
-per-row Playwright report-step creation, with discriminating controls before the
-one app run, then examine omitted sparse scheduling. Canonical app/tests, all
-guards, budgets, waits and deadlines stay unchanged. Stage5 matrix remains held;
-four other fairness cases and past-index remain unrun. No commit, push or deploy.
+**Active bounded outcome.** Phases448–449 close service/test attribution and
+omitted-sparse scheduling diagnosis as sequential evidence-only patches. The
+next bounded repair is canonical test-only reporting: preserve every tuple check,
+add permanent guard controls, then rerun the unchanged fairness/past-index
+preflight. Current canonical tests/app have no new edits; Stage5matrix remains
+held. The private pass grants no timing or aggregate credit; remaining fairness
+cases, original unfair sensitivity and past-index are still unrun in this round.
+No commit, push, publication or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

@@ -7649,3 +7649,22 @@ samples rather than assigning them to the server. The 41.134 s census/reporting
 cost supports a private reporting-overhead control before any runtime repair.
 Retain every tuple predicate and prove malformed cases remain refused. No service
 cap, gate, deadline, trust or format change is authorized by this diagnosis.
+
+
+### Keep tuple predicates while removing test-reporting contention
+
+**Date:** 2026-11-05 · **Phase:** 449.
+
+Use a private causal control before repairing the canonical fixture: change only
+four per-row Playwright matchers to strict assertions over the same schema-checked
+primitives, preserving all decoders, SQL and loops. Prove old/new refusal behavior
+before the one app run. Keep the app's original assertions and deadlines. Its
+passing full case and unchanged production-helper omission controls support a
+harness repair, not a new runtime optimization or wider liveness guarantee.
+
+A read-only SQLite connection may create WAL/SHM sidecars, so main-file equality
+is insufficient for an immutable fixture. Preserve the newly created sidecars,
+restore the exact frozen source inventory without rewriting prior files, and
+query only a private copied database in guard units. Retain the failed controller
+and do not rerun the app merely to repair that harness check. No guard, budget,
+limit, format, service or wire decision changes.
