@@ -8117,3 +8117,15 @@ checks; do not convert unreleased lab rows or rewrite fixture storage. Keep the
 actual larger Goals/history context visible when comparing reports. Harmless
 native pointer activity is setup-only, as in the original329protocol; its failed
 selector is apparatus evidence, not a product refusal or a timing result.
+
+
+### Preserve report-only misses and distinguish audit attempts from completions
+
+**Date:** 2026-11-06 · **Phase:** 482 · **Operator authorizes quiet host for all remainder.**
+
+Run all six predeclared sender cases; latency misses fail their report cell and
+never become blocking-matrix credit. Retain all paired2.5smisses without changing
+the coordinated policy. Report after-typing interrupted/censored audit attempts
+as such, not completed oracle costs or zero cost. Keep original metric formulas
+and replace only unavailable lab diagnostic values with explicit null. No repeat
+host approval is required while the operator's remaining-work readiness holds.

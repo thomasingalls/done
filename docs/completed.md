@@ -20256,3 +20256,21 @@ and fresh passing setup. No app refusal/loss is established. No stored-row edits
 performance credit or source/guard/deadline change. Outcome precedes advancing
 the seat. Declare sender report-only cases and ask the next quiet-host handshake.
 All36blocking passes stand; ten reports and Stage6remain. No commit or deployment.
+
+
+### Complete sender reports and retain all paired latency misses
+
+**Date:** 2026-11-06 · **Phase:** 482 · **Scope:** six report-only journeys.
+
+All six functional and twelve offline cold/edit/Undo checks pass. Single500Device1
+passes every numeric predicate3/3. Paired150fails peer/every-marker2.5s3/3; peer
+p952.521–2.568s. Retain every direction and marker. No noise reruns or source/
+policy/guard/default/limit/deadline changes. [Record](./development-evidence/2026-11-02-release-hardening/482-sender-report-block/README.md).
+
+Audit observations are genuine, complete-prefix/no-overflow, after typing only;
+no full completion before pre-cold snapshot. Not-completed/censored attempts
+are not full-oracle cost or idle-starvation proof. Original foreground guard
+work follows typing. Eight metric/eight interpretation controls retain original
+formulas; unavailable lab counters are null. Outcome precedes seat update.
+36blocking passes stand;6of10reports done. Continue50msdeep/3072under the user's
+remaining quiet-host authorization, then Stage6and stop. No commit or deploy.

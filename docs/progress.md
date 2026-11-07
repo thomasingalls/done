@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase481 common sender fixture ready; sender report declaration/host next
+status: in flight # phase482 sender reports complete;50msdeep/3072next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: sender report-only declaration/quiet host, remaining50msdeep/3072fixtures and Stage6
+blocks_on: remaining50msdeep/3072report-only cells and Stage6
 updated: 2026-11-06
 ```
 
@@ -199,18 +199,18 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase481 prepares the common current legal-format
-sender fixture through real catch-up, exactly two Scheduled additions and the
-byte-identical original329growth body.100keys suffice:2852physical rows against
-1536; final owners2873/2695against1024each, known padding and full exports exact.
-Keep the first pointer apparatus failure, verified cleanup and fresh passing
-setup. No storage edits or new timing credit. Fixture has2048base history and
-13,407-byteGoals, explicitly qualified against older lab material.
-[Record](./development-evidence/2026-11-02-release-hardening/481-common-sender-fixture/README.md).
-Approved observed480build/readiness are ready; all36plain-build blocking passes
-stand. Declare six sender reports and obtain a fresh quiet-host handshake.
-50msdeep x3,3072reader and Stage6also remain. No canonical source/test, guard,
-threshold, deadline, commit, push or deployment changes.
+**Active bounded outcome.** Phase482 completes all six sender reports. Every
+functional/archive and twelve offline cold/edit/Undo checks passes. Single500
+meets all numeric predicates3/3; paired150fails peer/every-marker2.5s3/3, peer
+p952.521–2.568s. All per-direction/marker values and host logs remain. Original
+policy and all gates/limits/deadlines stay. Genuine audit attempts are after
+typing, not complete by the last snapshot; do not infer full oracle cost or idle
+starvation. Original foreground guard work follows typing.
+[Record](./development-evidence/2026-11-02-release-hardening/482-sender-report-block/README.md).
+All36plain-build blocking passes stand;6of10reports complete. Continue three
+50msdeep and one3072reader, then Stage6and stop. The operator explicitly keeps
+the Mac quiet for anything remaining; no additional host handshake needed absent
+an actual precondition change. No source/guard/default, commit, push or deploy.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

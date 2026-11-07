@@ -1,0 +1,2477 @@
+{
+  "phase": 482,
+  "date": "2026-11-06",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase329/apparatus/analyze-paired329.py.gz",
+      "sha256": "b2577a129655ed81829fb05ed6177642ef22c42a981e73ffb9770fe48f807150",
+      "bytes": 3311
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase331/PROTOCOL331.md",
+      "sha256": "40d15a02178f1133981310c0e5bbac3400295c590c037fc56521d479c9d98819",
+      "bytes": 1285
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "src/crdt/accountBatchPolicy.ts",
+      "sha256": "32e7a6b7ca0ae995126a329086a36a86e61df3e920768a3f0ba4a63f4259f8ca",
+      "bytes": 661
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/development-evidence/2026-11-02-release-hardening/443-signed-checkpoint/future_runner.py",
+      "sha256": "173088d6fba5a7f0fd8decb38078456ab51a61c8f9add67af01435f0711f2420",
+      "bytes": 6197
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-private-files.json",
+      "sha256": "194500fa1bb947a76daa1feaead680ff8ca29ab5394158343d39a240197ac612",
+      "bytes": 1231990
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-summary.json",
+      "sha256": "bdf061b02e0a322bd27e4165efdc4251322c928dd68655d2298bd0ead2854825",
+      "bytes": 60892
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-declaration.json",
+      "sha256": "5bec5856f817e24adae1d93c1ffa18e2af0a65e83cb10dd5a106df5520f9b2c1",
+      "bytes": 3035
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-preparation.json",
+      "sha256": "2229439123a83248441993ced6adc5e66119e184c0298a3163cb5a7d7774edfd",
+      "bytes": 2784
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-progress.json",
+      "sha256": "2e2200b96c18e07ad615aa541b3d19f9e0a4cd56068297c39bc84cb5b8d4649c",
+      "bytes": 667970
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-metric-binding-proof.json",
+      "sha256": "c540cc0e7e8915e289f8a73114f37ad3734cd6cb0c610ecc747e09aec4140110",
+      "bytes": 325
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-metric-controls.json",
+      "sha256": "7b62f6ba9986564348e5dbf121de8c38414297a9f560f7b2df15df0e8f72be95",
+      "bytes": 522
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-audit-controls.json",
+      "sha256": "99a00391d3e43ca39f9a42a1adc4501f55c9cdcd21a2eeb4fea74d7a7b8eace0",
+      "bytes": 488
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/482-control-loader-attempt-1.json",
+      "sha256": "600728eee61c0b7dc82be713efc832c8e3bc95a1563f247c38de9ed6b3c36f81",
+      "bytes": 125
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/record482.py",
+      "sha256": "804ff322c5e77e8aa23a5e96065c603ed35bc749da7f4d862a3f939a4827d8e4",
+      "bytes": 12222
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/run482.py",
+      "sha256": "fb0a04c779b313b7ac8949c9fa5a72e9d3f6ffd1e7f7d8e92dd09601e2e36267",
+      "bytes": 3763
+    },
+    {
+      "localPath": "/private/tmp/done-sender-reports-482-20261106/analyze482.py",
+      "sha256": "6429260a16ec24402a3d6da31c96975093e2c39053513f36f22dc5e36be45405",
+      "bytes": 3329
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/child.log",
+      "sha256": "023ec01ccbe84188ba8214109ab4d491b636568ff69b802bb9ca0cd9453fd34d",
+      "bytes": 422
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/host-load.jsonl",
+      "sha256": "3964cbaa1bf6564acc25ab0b090577a13487e6c30aeabdde08c5ae0f99ae467d",
+      "bytes": 33121
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/power-assertions-before.txt",
+      "sha256": "e8f6781855599d656ee3dbfbf86545234fb8b3e8fd8ef3f7824d35bd29c8f636",
+      "bytes": 1674
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/power-log-after.meta.json",
+      "sha256": "49ba3781c9629f001ef9ecab98f2a861c1e998fcb6c8221e05319b53761ca909",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/power-log-after.txt",
+      "sha256": "ffaebf234dd0277f21f56941f0537723fcdc1a7433e69c08e1b65fde8824bee0",
+      "bytes": 546
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/power-log-before.meta.json",
+      "sha256": "ee9263cc58c4b48cd72d6154c49275221b932685ac6798e62d65b8999b288e23",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-single500-device1/run.json",
+      "sha256": "5edb203e9c059df685a205f0434fbe734f197c97c8e2202f0f5f472c471cbde1",
+      "bytes": 2197
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/child.log",
+      "sha256": "87579d43769a79e88b4f34e63ed08a768a6e8b22f70a4a71550f1c89c11ef6d2",
+      "bytes": 422
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/host-load.jsonl",
+      "sha256": "94050ea3fb3c3d319f42325b5ca31116889a6d5f8f19bebabd639ed65cbbc2f1",
+      "bytes": 26717
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/power-assertions-before.txt",
+      "sha256": "f137d1cc44fe6b7c513d6f6f3a309b8fa5457707440459ec147e8d79494d3a7e",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/power-log-after.meta.json",
+      "sha256": "5ddc317228618d4c1a5cea24c1d3b40857fbdd63e8da1bb15357f45a491fa4e7",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/power-log-after.txt",
+      "sha256": "4760b986bb98aea24ab3aef6d5219f1c3d362cc39b3c9fc986c1494370420293",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/power-log-before.meta.json",
+      "sha256": "85aec3004f2b12380e73db468156a7f3af8413157a9416e2ef9f8bdda5503b71",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r1-paired150/run.json",
+      "sha256": "f1d506526d843f65681268b29218ffb283d97f43fe6899b215181148471d95f9",
+      "bytes": 2180
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/child.log",
+      "sha256": "6a91fd304013ffe0888a23fb8e95c8a1893af3e9bdc366f28a7011b57bee1a07",
+      "bytes": 422
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/host-load.jsonl",
+      "sha256": "e6907af97098f2f8436d53c7d544add9dd9659c5c12772ea1fe89819d53c5b78",
+      "bytes": 30258
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/power-assertions-before.txt",
+      "sha256": "c7fe036626bb0f07c802ccbd47c748e1735f0bf1bb8915f0f09219dfcaf9344d",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/power-log-after.meta.json",
+      "sha256": "368eb258d2a07ef931cfdefb1cf88271954b91ce5a2cd9c72700ba4803a91dd7",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/power-log-after.txt",
+      "sha256": "ad7624837b64ce43535e434a5f5b4799674765c8fa00d3679e33b048a4a2bc18",
+      "bytes": 655
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/power-log-before.meta.json",
+      "sha256": "6bf6e9807e77ae3265a088869aef889d19c5c0965db1ca8cc10b96d5a4e90f8e",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-single500-device1/run.json",
+      "sha256": "caf56ccfd90e8cdfcfa98fdb65fbf1e54df0456268ad60d6ed3239aa8e0cd289",
+      "bytes": 2198
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/child.log",
+      "sha256": "adc2dc51f29658dce9a8ebd50b1ffa7de421fd365d218d411b504613f0c11f8e",
+      "bytes": 422
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/host-load.jsonl",
+      "sha256": "ad83d5949ef6cdce2deaf51f133fddd02effd3e8d8ee4d987d32808ef17ee15a",
+      "bytes": 26692
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/power-assertions-before.txt",
+      "sha256": "ed563dc4b1b3f65a5a3cc9fb8fe465a9be37489bd5bb61a269cce58a602a1b6d",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/power-log-after.meta.json",
+      "sha256": "3b18f9bd2f45e3e5ea750caa0345cffcff5a26f9a4390c68ad7247c60f9ddbdc",
+      "bytes": 484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/power-log-after.txt",
+      "sha256": "1c333ba5260972764f9be9754da89e69b391f9bd886a123a81e1664d88c92419",
+      "bytes": 1883
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/power-log-before.meta.json",
+      "sha256": "058d9794e738318d5fd59b5327d53ebbb7e0d4ca211b6457d01b0640fa5f542e",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r2-paired150/run.json",
+      "sha256": "ba3a96cf98d3fdbe0bf311386910e9d59701fa3b9afe51d264bcdd96b587c632",
+      "bytes": 2183
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/child.log",
+      "sha256": "3f762c6a56c4a23eb8b02e3ce3cfe01286e4d7262761884cbb9df7a27a92fbaa",
+      "bytes": 422
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/host-load.jsonl",
+      "sha256": "8d2bd200b57b12a692610bab828d8001467508aed19b220b89a9e778b92c8199",
+      "bytes": 30102
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/power-assertions-before.txt",
+      "sha256": "360e263f3d46dac56e2adc7f4babd1b51ba68d6ad45b14db6969ecfee803210c",
+      "bytes": 2128
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/power-log-after.meta.json",
+      "sha256": "103f7ce7054dc47ab9fed787bbd70cc0d5d0e7a0021137fbd19b95c672483428",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/power-log-after.txt",
+      "sha256": "475ec9d9249f5283bd8df080902755d89eab8b6bf667bc1553fd32d3d2feefbc",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/power-log-before.meta.json",
+      "sha256": "69d3c1f2132f7ef82077b8967042d1b9c07ac6732418d89f62815e80a37ec4fa",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-single500-device1/run.json",
+      "sha256": "5d74e24b502279859d9d1f62204aafc20bbd7a9ccaa0d6721c7f3c9d72dc1cbe",
+      "bytes": 2198
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/child.log",
+      "sha256": "68cddd0f44ca5dd1dfdf5ba374a24446c4d4b87fd227dfddb36e4f320d66f60c",
+      "bytes": 422
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/host-load.jsonl",
+      "sha256": "c9aee676eb9de08c9a1cf1b3e87f6647cc116d6b7fe573547acdd0efae1ad5f4",
+      "bytes": 26882
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/power-assertions-before.txt",
+      "sha256": "250eb0ccf5c22b013bb813c91410f32103b3c8188a5e293d7274b10ad1eb229a",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/power-log-after.meta.json",
+      "sha256": "3f6229722c62316ef177231167548a5da9dc551fe7d3777f7b74250b8400ba0f",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/power-log-after.txt",
+      "sha256": "abaed71e0aef150004b774ac6cca0b64962766f79ec6965917020f857786d48c",
+      "bytes": 309
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/power-log-before.meta.json",
+      "sha256": "dc90e3fdbccfb04ab1f9af4bda86d2b0635b67ffadf0bd4b871547bb4b06ab3d",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/482-r3-paired150/run.json",
+      "sha256": "5a267843ba78b10aa533b0dfd655e68794d2b2aeb30513dcfad961756b13b13d",
+      "bytes": 2181
+    }
+  ],
+  "summary": {
+    "phase": 482,
+    "scope": "six report-only sender journeys; no blocking gate credit",
+    "rows": [
+      {
+        "name": "r1-single500-device1",
+        "key": "482-r1-single500-device1",
+        "workload": "single500-device1",
+        "replicate": 1,
+        "policy": "coordinated-2000",
+        "keysPerWriter": 120,
+        "gapMs": 500,
+        "rttMs": 0,
+        "functional": true,
+        "metricPredicates": {
+          "functional": true,
+          "coldExact": true,
+          "allOfferedKeysObserved": true,
+          "trustedFocusedVisible": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "cold15s": true
+        },
+        "failedPredicates": [],
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 120,
+            "commandsOffered": 123,
+            "actualKeyIntervalsMs": {
+              "n": 119,
+              "p50": 500.03271484375,
+              "p95": 502.063232421875,
+              "max": 525.5
+            },
+            "dispatchLatenessMs": {
+              "n": 120,
+              "p50": 1.439208984375,
+              "p95": 3.0908203125,
+              "max": 26.496826171875
+            },
+            "latency": {
+              "local": {
+                "n": 120,
+                "p50": 2.810302734375,
+                "p95": 3.693359375,
+                "max": 8.26513671875
+              },
+              "peer": {
+                "n": 120,
+                "p50": 750.820068359375,
+                "p95": 875.012939453125,
+                "max": 1023.838134765625
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.19140625,
+                7.08544921875,
+                2.53271484375
+              ],
+              "peer": [
+                754.468017578125,
+                736.06201171875,
+                745.909423828125
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.023193359375,
+              1.755859375
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.2998046875,
+              1.49951171875
+            ],
+            "beforeinputCount": 123,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 119,
+            "positionsPer100Keys": 99.16666666666667,
+            "positionsPer100InputCommands": 96.7479674796748,
+            "acceptedRowDelta": 119
+          }
+        ],
+        "cold": [
+          {
+            "actor": 1,
+            "navigationStartedAt": 1793997274728.6357,
+            "unlockStartedAt": 1793997274810.4907,
+            "editableAt": 1793997279669.2283,
+            "unlockToEditableMs": 4858.737548828125,
+            "navigationToEditableMs": 4940.592529296875,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          },
+          {
+            "actor": 2,
+            "navigationStartedAt": 1793997280697.0166,
+            "unlockStartedAt": 1793997280758.7927,
+            "editableAt": 1793997285602.4543,
+            "unlockToEditableMs": 4843.66162109375,
+            "navigationToEditableMs": 4905.437744140625,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          }
+        ],
+        "requestedSignedReadUnits": 890,
+        "writeAttempts": 119,
+        "httpStatus": {
+          "200": 534
+        },
+        "fullAudits": [
+          {
+            "actor": 1,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.710693359375,
+              3.33642578125
+            ],
+            "snapshotEvents": [
+              0,
+              0,
+              2
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3714,
+                "startHostBounds": [
+                  1793997269822.8638,
+                  1793997269827.911
+                ],
+                "endHostBounds": [
+                  1793997271761.2637,
+                  1793997271766.3108
+                ],
+                "elapsedMs": 1938.39990234375,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          },
+          {
+            "actor": 2,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.357666015625,
+              3.078369140625
+            ],
+            "snapshotEvents": [
+              0,
+              0,
+              0
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          }
+        ],
+        "nativeBudgetCounters": null,
+        "nativeQuietReads": null,
+        "host": {
+          "samples": 21,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12836.44,
+            "last": 12836.44,
+            "min": 12836.44,
+            "max": 12836.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 52553,
+              "process": "Codex (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 86624,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 86677,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 87803,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        }
+      },
+      {
+        "name": "r1-paired150",
+        "key": "482-r1-paired150",
+        "workload": "paired150",
+        "replicate": 1,
+        "policy": "coordinated-2000",
+        "keysPerWriter": 300,
+        "gapMs": 150,
+        "rttMs": 0,
+        "functional": true,
+        "metricPredicates": {
+          "functional": true,
+          "coldExact": true,
+          "allOfferedKeysObserved": true,
+          "trustedFocusedVisible": true,
+          "input16ms": true,
+          "peer2500ms": false,
+          "everyMarker2500ms": false,
+          "cold15s": true
+        },
+        "failedPredicates": [
+          "peer2500ms",
+          "everyMarker2500ms"
+        ],
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.99609375,
+              "p95": 153.105712890625,
+              "max": 157.241943359375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 1.487060546875,
+              "p95": 4.3671875,
+              "max": 12.605224609375
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.205078125,
+                "p95": 6.802001953125,
+                "max": 9.27197265625
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1608.322509765625,
+                "p95": 2535.522216796875,
+                "max": 2730.451416015625
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.613037109375,
+                3.040283203125,
+                3.580078125
+              ],
+              "peer": [
+                2571.195068359375,
+                1009.722412109375,
+                870.162353515625
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.23291015625,
+              1.545166015625
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.114990234375,
+              1.52734375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 149.924560546875,
+              "p95": 152.6708984375,
+              "max": 158.01171875
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 1.51953125,
+              "p95": 4.0986328125,
+              "max": 11.478271484375
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1619.674560546875,
+                "p95": 2567.829345703125,
+                "max": 2908.354248046875
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.117919921875,
+                "p95": 6.34619140625,
+                "max": 13.68798828125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                2918.395263671875,
+                1041.386962890625,
+                1069.905029296875
+              ],
+              "local": [
+                2.87744140625,
+                3.669189453125,
+                2.58740234375
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.23291015625,
+              1.545166015625
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.114990234375,
+              1.52734375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ],
+        "cold": [
+          {
+            "actor": 1,
+            "navigationStartedAt": 1793997358526.3806,
+            "unlockStartedAt": 1793997358601.0989,
+            "editableAt": 1793997363474.0396,
+            "unlockToEditableMs": 4872.940673828125,
+            "navigationToEditableMs": 4947.658935546875,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          },
+          {
+            "actor": 2,
+            "navigationStartedAt": 1793997364491.0842,
+            "unlockStartedAt": 1793997364552.8677,
+            "editableAt": 1793997369412.474,
+            "unlockToEditableMs": 4859.6064453125,
+            "navigationToEditableMs": 4921.389892578125,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          }
+        ],
+        "requestedSignedReadUnits": 321,
+        "writeAttempts": 44,
+        "httpStatus": {
+          "200": 218
+        },
+        "fullAudits": [
+          {
+            "actor": 1,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.9228515625,
+              2.24853515625
+            ],
+            "snapshotEvents": [
+              0,
+              1,
+              8
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3914,
+                "startHostBounds": [
+                  1793997350604.6514,
+                  1793997350608.8228
+                ],
+                "endHostBounds": [
+                  1793997353388.2515,
+                  1793997353392.4229
+                ],
+                "elapsedMs": 2783.60009765625,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": true,
+                    "possibleOverlap": true,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "site": "ledger-reference",
+                "physicalRows": 3921,
+                "startHostBounds": [
+                  1793997354611.9514,
+                  1793997354616.1228
+                ],
+                "endHostBounds": [
+                  1793997354694.7515,
+                  1793997354698.9229
+                ],
+                "elapsedMs": 82.800048828125,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "3",
+                "site": "ledger-reference",
+                "physicalRows": 3928,
+                "startHostBounds": [
+                  1793997355812.3516,
+                  1793997355816.523
+                ],
+                "endHostBounds": [
+                  1793997355845.3516,
+                  1793997355849.523
+                ],
+                "elapsedMs": 33,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "4",
+                "site": "ledger-reference",
+                "physicalRows": 3930,
+                "startHostBounds": [
+                  1793997356979.1514,
+                  1793997356983.3228
+                ],
+                "endHostBounds": [
+                  1793997357123.0515,
+                  1793997357127.223
+                ],
+                "elapsedMs": 143.900146484375,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          },
+          {
+            "actor": 2,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.50146484375,
+              2.21630859375
+            ],
+            "snapshotEvents": [
+              0,
+              1,
+              6
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3736,
+                "startHostBounds": [
+                  1793997350905.3835,
+                  1793997350909.1013
+                ],
+                "endHostBounds": [
+                  1793997353697.9836,
+                  1793997353701.7014
+                ],
+                "elapsedMs": 2792.60009765625,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "site": "ledger-reference",
+                "physicalRows": 3738,
+                "startHostBounds": [
+                  1793997354916.3835,
+                  1793997354920.1013
+                ],
+                "endHostBounds": [
+                  1793997355000.6836,
+                  1793997355004.4014
+                ],
+                "elapsedMs": 84.300048828125,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "3",
+                "site": "ledger-reference",
+                "physicalRows": 3747,
+                "startHostBounds": [
+                  1793997356448.8835,
+                  1793997356452.6013
+                ],
+                "endHostBounds": [
+                  1793997356823.3835,
+                  1793997356827.1013
+                ],
+                "elapsedMs": 374.5,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          }
+        ],
+        "nativeBudgetCounters": null,
+        "nativeQuietReads": null,
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12836.44,
+            "last": 12836.44,
+            "min": 12836.44,
+            "max": 12836.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 88010,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 85968,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 88050,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 0
+            },
+            {
+              "pid": 89181,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        }
+      },
+      {
+        "name": "r2-single500-device1",
+        "key": "482-r2-single500-device1",
+        "workload": "single500-device1",
+        "replicate": 2,
+        "policy": "coordinated-2000",
+        "keysPerWriter": 120,
+        "gapMs": 500,
+        "rttMs": 0,
+        "functional": true,
+        "metricPredicates": {
+          "functional": true,
+          "coldExact": true,
+          "allOfferedKeysObserved": true,
+          "trustedFocusedVisible": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "cold15s": true
+        },
+        "failedPredicates": [],
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 120,
+            "commandsOffered": 123,
+            "actualKeyIntervalsMs": {
+              "n": 119,
+              "p50": 499.9833984375,
+              "p95": 502.4560546875,
+              "max": 505.588623046875
+            },
+            "dispatchLatenessMs": {
+              "n": 120,
+              "p50": 1.458740234375,
+              "p95": 3.664794921875,
+              "max": 14.177734375
+            },
+            "latency": {
+              "local": {
+                "n": 120,
+                "p50": 2.95166015625,
+                "p95": 3.927001953125,
+                "max": 9.193359375
+              },
+              "peer": {
+                "n": 120,
+                "p50": 759.560791015625,
+                "p95": 885.397216796875,
+                "max": 1107.1591796875
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.19384765625,
+                2.865478515625,
+                2.853271484375
+              ],
+              "peer": [
+                795.14599609375,
+                716.417724609375,
+                757.405517578125
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.26904296875,
+              1.559326171875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.22119140625,
+              1.474365234375
+            ],
+            "beforeinputCount": 123,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 119,
+            "positionsPer100Keys": 99.16666666666667,
+            "positionsPer100InputCommands": 96.7479674796748,
+            "acceptedRowDelta": 119
+          }
+        ],
+        "cold": [
+          {
+            "actor": 1,
+            "navigationStartedAt": 1793997453663.8047,
+            "unlockStartedAt": 1793997453726.2708,
+            "editableAt": 1793997458570.1973,
+            "unlockToEditableMs": 4843.926513671875,
+            "navigationToEditableMs": 4906.392578125,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          },
+          {
+            "actor": 2,
+            "navigationStartedAt": 1793997459986.8965,
+            "unlockStartedAt": 1793997460089.4006,
+            "editableAt": 1793997465499.6123,
+            "unlockToEditableMs": 5410.211669921875,
+            "navigationToEditableMs": 5512.7158203125,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          }
+        ],
+        "requestedSignedReadUnits": 895,
+        "writeAttempts": 119,
+        "httpStatus": {
+          "200": 540
+        },
+        "fullAudits": [
+          {
+            "actor": 1,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -2.647705078125,
+              2.796875
+            ],
+            "snapshotEvents": [
+              0,
+              0,
+              2
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3714,
+                "startHostBounds": [
+                  1793997448816.0032,
+                  1793997448821.4478
+                ],
+                "endHostBounds": [
+                  1793997450760.2031,
+                  1793997450765.6477
+                ],
+                "elapsedMs": 1944.199951171875,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          },
+          {
+            "actor": 2,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.48974609375,
+              2.368896484375
+            ],
+            "snapshotEvents": [
+              0,
+              0,
+              0
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          }
+        ],
+        "nativeBudgetCounters": null,
+        "nativeQuietReads": null,
+        "host": {
+          "samples": 19,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12836.44,
+            "last": 12836.44,
+            "min": 12836.44,
+            "max": 12836.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 89411,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 85968,
+              "process": "com.apple.Virtualization.VirtualMachine",
+              "seconds": 0
+            },
+            {
+              "pid": 89454,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 91855,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 92387,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        }
+      },
+      {
+        "name": "r2-paired150",
+        "key": "482-r2-paired150",
+        "workload": "paired150",
+        "replicate": 2,
+        "policy": "coordinated-2000",
+        "keysPerWriter": 300,
+        "gapMs": 150,
+        "rttMs": 0,
+        "functional": true,
+        "metricPredicates": {
+          "functional": true,
+          "coldExact": true,
+          "allOfferedKeysObserved": true,
+          "trustedFocusedVisible": true,
+          "input16ms": true,
+          "peer2500ms": false,
+          "everyMarker2500ms": false,
+          "cold15s": true
+        },
+        "failedPredicates": [
+          "peer2500ms",
+          "everyMarker2500ms"
+        ],
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.00439453125,
+              "p95": 153.021484375,
+              "max": 166.628662109375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.361083984375,
+              "p95": 5.0107421875,
+              "max": 17.9873046875
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.26220703125,
+                "p95": 6.89306640625,
+                "max": 10.5986328125
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1608.808837890625,
+                "p95": 2533.592041015625,
+                "max": 2779.424560546875
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.510986328125,
+                2.8203125,
+                2.767578125
+              ],
+              "peer": [
+                2569.3876953125,
+                990.096923828125,
+                861.744140625
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.28125,
+              1.62060546875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.157958984375,
+              1.712646484375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.05810546875,
+              "p95": 153.48046875,
+              "max": 156.128173828125
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.275634765625,
+              "p95": 4.758544921875,
+              "max": 16.99658203125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1636.62939453125,
+                "p95": 2553.6005859375,
+                "max": 2931.94140625
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.222900390625,
+                "p95": 7.00537109375,
+                "max": 40.352783203125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                2945.7880859375,
+                1023.601318359375,
+                1054.5048828125
+              ],
+              "local": [
+                2.86474609375,
+                3.278076171875,
+                3.58154296875
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.28125,
+              1.62060546875
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.157958984375,
+              1.712646484375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ],
+        "cold": [
+          {
+            "actor": 1,
+            "navigationStartedAt": 1793997540596.106,
+            "unlockStartedAt": 1793997540664.686,
+            "editableAt": 1793997545537.3286,
+            "unlockToEditableMs": 4872.642578125,
+            "navigationToEditableMs": 4941.22265625,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          },
+          {
+            "actor": 2,
+            "navigationStartedAt": 1793997546589.1006,
+            "unlockStartedAt": 1793997546651.6196,
+            "editableAt": 1793997551534.9795,
+            "unlockToEditableMs": 4883.35986328125,
+            "navigationToEditableMs": 4945.87890625,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          }
+        ],
+        "requestedSignedReadUnits": 321,
+        "writeAttempts": 44,
+        "httpStatus": {
+          "200": 218
+        },
+        "fullAudits": [
+          {
+            "actor": 1,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.6533203125,
+              2.339599609375
+            ],
+            "snapshotEvents": [
+              0,
+              1,
+              8
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3914,
+                "startHostBounds": [
+                  1793997532179.1604,
+                  1793997532183.1533
+                ],
+                "endHostBounds": [
+                  1793997535027.0605,
+                  1793997535031.0535
+                ],
+                "elapsedMs": 2847.900146484375,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": true,
+                    "possibleOverlap": true,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "site": "ledger-reference",
+                "physicalRows": 3921,
+                "startHostBounds": [
+                  1793997536078.2605,
+                  1793997536082.2534
+                ],
+                "endHostBounds": [
+                  1793997536330.1604,
+                  1793997536334.1533
+                ],
+                "elapsedMs": 251.89990234375,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "3",
+                "site": "ledger-reference",
+                "physicalRows": 3928,
+                "startHostBounds": [
+                  1793997537385.6604,
+                  1793997537389.6533
+                ],
+                "endHostBounds": [
+                  1793997537456.8604,
+                  1793997537460.8533
+                ],
+                "elapsedMs": 71.199951171875,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "4",
+                "site": "ledger-reference",
+                "physicalRows": 3930,
+                "startHostBounds": [
+                  1793997538599.0605,
+                  1793997538603.0535
+                ],
+                "endHostBounds": [
+                  1793997538770.5605,
+                  1793997538774.5535
+                ],
+                "elapsedMs": 171.5,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          },
+          {
+            "actor": 2,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.660400390625,
+              3.541259765625
+            ],
+            "snapshotEvents": [
+              0,
+              1,
+              7
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3736,
+                "startHostBounds": [
+                  1793997532488.659,
+                  1793997532493.8606
+                ],
+                "endHostBounds": [
+                  1793997535333.4587,
+                  1793997535338.6604
+                ],
+                "elapsedMs": 2844.7998046875,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": true,
+                    "possibleOverlap": true,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "site": "ledger-reference",
+                "physicalRows": 3738,
+                "startHostBounds": [
+                  1793997536400.9587,
+                  1793997536406.1604
+                ],
+                "endHostBounds": [
+                  1793997536644.659,
+                  1793997536649.8606
+                ],
+                "elapsedMs": 243.7001953125,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "3",
+                "site": "ledger-reference",
+                "physicalRows": 3747,
+                "startHostBounds": [
+                  1793997538016.9587,
+                  1793997538022.1604
+                ],
+                "endHostBounds": [
+                  1793997538461.9587,
+                  1793997538467.1604
+                ],
+                "elapsedMs": 445,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "4",
+                "site": "ledger-reference",
+                "physicalRows": 3754,
+                "startHostBounds": [
+                  1793997539481.2588,
+                  1793997539486.4604
+                ],
+                "endHostBounds": [
+                  1793997539671.2588,
+                  null
+                ],
+                "elapsedMs": null,
+                "complete": null,
+                "censoredActiveAtPreCold": true,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          }
+        ],
+        "nativeBudgetCounters": null,
+        "nativeQuietReads": null,
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12836.44,
+            "last": 12836.44,
+            "min": 12836.44,
+            "max": 12836.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 96559,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 423,
+              "process": "WindowServer",
+              "seconds": 4.998337984085083
+            },
+            {
+              "pid": 99864,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12393,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12410,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        }
+      },
+      {
+        "name": "r3-single500-device1",
+        "key": "482-r3-single500-device1",
+        "workload": "single500-device1",
+        "replicate": 3,
+        "policy": "coordinated-2000",
+        "keysPerWriter": 120,
+        "gapMs": 500,
+        "rttMs": 0,
+        "functional": true,
+        "metricPredicates": {
+          "functional": true,
+          "coldExact": true,
+          "allOfferedKeysObserved": true,
+          "trustedFocusedVisible": true,
+          "input16ms": true,
+          "peer2500ms": true,
+          "everyMarker2500ms": true,
+          "cold15s": true
+        },
+        "failedPredicates": [],
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 120,
+            "commandsOffered": 123,
+            "actualKeyIntervalsMs": {
+              "n": 119,
+              "p50": 500.11572265625,
+              "p95": 502.715576171875,
+              "max": 506.444091796875
+            },
+            "dispatchLatenessMs": {
+              "n": 120,
+              "p50": 2.35400390625,
+              "p95": 3.91064453125,
+              "max": 13.03955078125
+            },
+            "latency": {
+              "local": {
+                "n": 120,
+                "p50": 2.991943359375,
+                "p95": 3.58544921875,
+                "max": 5.786376953125
+              },
+              "peer": {
+                "n": 120,
+                "p50": 739.930908203125,
+                "p95": 844.033935546875,
+                "max": 1015.08984375
+              }
+            },
+            "markerLatency": {
+              "local": [
+                3.502197265625,
+                3.45654296875,
+                2.881591796875
+              ],
+              "peer": [
+                759.21044921875,
+                726.564697265625,
+                739.889892578125
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.471923828125,
+              1.418701171875
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.18017578125,
+              1.57470703125
+            ],
+            "beforeinputCount": 123,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 119,
+            "positionsPer100Keys": 99.16666666666667,
+            "positionsPer100InputCommands": 96.7479674796748,
+            "acceptedRowDelta": 119
+          }
+        ],
+        "cold": [
+          {
+            "actor": 1,
+            "navigationStartedAt": 1793997636155.5417,
+            "unlockStartedAt": 1793997636234.3115,
+            "editableAt": 1793997641091.1204,
+            "unlockToEditableMs": 4856.808837890625,
+            "navigationToEditableMs": 4935.57861328125,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          },
+          {
+            "actor": 2,
+            "navigationStartedAt": 1793997642110.0042,
+            "unlockStartedAt": 1793997642178.1965,
+            "editableAt": 1793997647014.553,
+            "unlockToEditableMs": 4836.3564453125,
+            "navigationToEditableMs": 4904.548828125,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          }
+        ],
+        "requestedSignedReadUnits": 887,
+        "writeAttempts": 119,
+        "httpStatus": {
+          "200": 536
+        },
+        "fullAudits": [
+          {
+            "actor": 1,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.619873046875,
+              2.251708984375
+            ],
+            "snapshotEvents": [
+              0,
+              0,
+              2
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3714,
+                "startHostBounds": [
+                  1793997631316.7483,
+                  1793997631320.6199
+                ],
+                "endHostBounds": [
+                  1793997633247.5483,
+                  1793997633251.42
+                ],
+                "elapsedMs": 1930.800048828125,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          },
+          {
+            "actor": 2,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.557861328125,
+              2.17333984375
+            ],
+            "snapshotEvents": [
+              0,
+              0,
+              0
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          }
+        ],
+        "nativeBudgetCounters": null,
+        "nativeQuietReads": null,
+        "host": {
+          "samples": 19,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12836.44,
+            "last": 12836.44,
+            "min": 12836.44,
+            "max": 12836.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 12468,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12512,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12667,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12688,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        }
+      },
+      {
+        "name": "r3-paired150",
+        "key": "482-r3-paired150",
+        "workload": "paired150",
+        "replicate": 3,
+        "policy": "coordinated-2000",
+        "keysPerWriter": 300,
+        "gapMs": 150,
+        "rttMs": 0,
+        "functional": true,
+        "metricPredicates": {
+          "functional": true,
+          "coldExact": true,
+          "allOfferedKeysObserved": true,
+          "trustedFocusedVisible": true,
+          "input16ms": true,
+          "peer2500ms": false,
+          "everyMarker2500ms": false,
+          "cold15s": true
+        },
+        "failedPredicates": [
+          "peer2500ms",
+          "everyMarker2500ms"
+        ],
+        "directions": [
+          {
+            "stream": 0,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.076171875,
+              "p95": 152.62353515625,
+              "max": 160.990234375
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.2890625,
+              "p95": 4.501953125,
+              "max": 13.998291015625
+            },
+            "latency": {
+              "local": {
+                "n": 300,
+                "p50": 3.301025390625,
+                "p95": 6.732421875,
+                "max": 8.50830078125
+              },
+              "peer": {
+                "n": 300,
+                "p50": 1587.542724609375,
+                "p95": 2520.77978515625,
+                "max": 2716.4306640625
+              }
+            },
+            "markerLatency": {
+              "local": [
+                2.89697265625,
+                4.472900390625,
+                2.639404296875
+              ],
+              "peer": [
+                2569.025146484375,
+                997.80126953125,
+                871.267822265625
+              ]
+            },
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.27978515625,
+              1.5244140625
+            ],
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.10791015625,
+              1.50146484375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          },
+          {
+            "stream": 1,
+            "keysOffered": 300,
+            "commandsOffered": 303,
+            "actualKeyIntervalsMs": {
+              "n": 299,
+              "p50": 150.027587890625,
+              "p95": 152.580810546875,
+              "max": 158.94775390625
+            },
+            "dispatchLatenessMs": {
+              "n": 300,
+              "p50": 2.457763671875,
+              "p95": 5.09912109375,
+              "max": 11.866455078125
+            },
+            "latency": {
+              "peer": {
+                "n": 300,
+                "p50": 1623.081787109375,
+                "p95": 2538.044921875,
+                "max": 2935.622314453125
+              },
+              "local": {
+                "n": 300,
+                "p50": 3.093505859375,
+                "p95": 6.167724609375,
+                "max": 7.96142578125
+              }
+            },
+            "markerLatency": {
+              "peer": [
+                2945.599365234375,
+                1033.946044921875,
+                1062.86962890625
+              ],
+              "local": [
+                2.927734375,
+                6.17431640625,
+                3.2978515625
+              ]
+            },
+            "peerMissingKeys": [],
+            "peerClockOffsetMs": [
+              -1.27978515625,
+              1.5244140625
+            ],
+            "localMissingKeys": [],
+            "localClockOffsetMs": [
+              -1.10791015625,
+              1.50146484375
+            ],
+            "beforeinputCount": 303,
+            "trustedFocusedVisible": true,
+            "acceptedPositions": 22,
+            "positionsPer100Keys": 7.333333333333333,
+            "positionsPer100InputCommands": 7.260726072607261,
+            "acceptedRowDelta": 22
+          }
+        ],
+        "cold": [
+          {
+            "actor": 1,
+            "navigationStartedAt": 1793997719811.8733,
+            "unlockStartedAt": 1793997719880.6062,
+            "editableAt": 1793997724754.2173,
+            "unlockToEditableMs": 4873.611083984375,
+            "navigationToEditableMs": 4942.343994140625,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          },
+          {
+            "actor": 2,
+            "navigationStartedAt": 1793997725771.2869,
+            "unlockStartedAt": 1793997725836.2812,
+            "editableAt": 1793997730701.981,
+            "unlockToEditableMs": 4865.69970703125,
+            "navigationToEditableMs": 4930.694091796875,
+            "archiveExact": true,
+            "offlineEditUndoExact": true
+          }
+        ],
+        "requestedSignedReadUnits": 321,
+        "writeAttempts": 44,
+        "httpStatus": {
+          "200": 218
+        },
+        "fullAudits": [
+          {
+            "actor": 1,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.630859375,
+              2.199462890625
+            ],
+            "snapshotEvents": [
+              0,
+              1,
+              8
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3914,
+                "startHostBounds": [
+                  1793997711947.5005,
+                  1793997711951.3308
+                ],
+                "endHostBounds": [
+                  1793997714735.8005,
+                  1793997714739.6309
+                ],
+                "elapsedMs": 2788.300048828125,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": true,
+                    "possibleOverlap": true,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "site": "ledger-reference",
+                "physicalRows": 3921,
+                "startHostBounds": [
+                  1793997715804.7007,
+                  1793997715808.531
+                ],
+                "endHostBounds": [
+                  1793997716039.7007,
+                  1793997716043.531
+                ],
+                "elapsedMs": 235,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "3",
+                "site": "ledger-reference",
+                "physicalRows": 3928,
+                "startHostBounds": [
+                  1793997717045.7007,
+                  1793997717049.531
+                ],
+                "endHostBounds": [
+                  1793997717164.2007,
+                  1793997717168.031
+                ],
+                "elapsedMs": 118.5,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "4",
+                "site": "ledger-reference",
+                "physicalRows": 3930,
+                "startHostBounds": [
+                  1793997718259.9006,
+                  1793997718263.731
+                ],
+                "endHostBounds": [
+                  1793997718495.6006,
+                  1793997718499.431
+                ],
+                "elapsedMs": 235.699951171875,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          },
+          {
+            "actor": 2,
+            "workerPath": "/assets/enrollmentOwner.worker-Cr1iqBft.js",
+            "clockOffsetBoundsMs": [
+              -1.4482421875,
+              2.0947265625
+            ],
+            "snapshotEvents": [
+              0,
+              1,
+              6
+            ],
+            "noOverflowOrFailure": true,
+            "sameWorkerOrigin": true,
+            "allPrefixObservationsRetained": true,
+            "fullAudits": [
+              {
+                "id": "1",
+                "site": "ledger-reference",
+                "physicalRows": 3736,
+                "startHostBounds": [
+                  1793997712235.2053,
+                  1793997712238.7483
+                ],
+                "endHostBounds": [
+                  1793997715029.8054,
+                  1793997715033.3484
+                ],
+                "elapsedMs": 2794.60009765625,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "2",
+                "site": "ledger-reference",
+                "physicalRows": 3738,
+                "startHostBounds": [
+                  1793997716114.7053,
+                  1793997716118.2483
+                ],
+                "endHostBounds": [
+                  1793997716338.3054,
+                  1793997716341.8484
+                ],
+                "elapsedMs": 223.60009765625,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              },
+              {
+                "id": "3",
+                "site": "ledger-reference",
+                "physicalRows": 3747,
+                "startHostBounds": [
+                  1793997717689.3054,
+                  1793997717692.8484
+                ],
+                "endHostBounds": [
+                  1793997718187.9053,
+                  1793997718191.4482
+                ],
+                "elapsedMs": 498.599853515625,
+                "complete": false,
+                "censoredActiveAtPreCold": false,
+                "windows": {
+                  "typing": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  },
+                  "typingThroughDelivery": {
+                    "definiteOverlap": false,
+                    "possibleOverlap": false,
+                    "boundaryAmbiguous": false
+                  }
+                }
+              }
+            ],
+            "typingAuditOverlap": false,
+            "typingPossibleAuditOverlap": false
+          }
+        ],
+        "nativeBudgetCounters": null,
+        "nativeQuietReads": null,
+        "host": {
+          "samples": 17,
+          "displayStates": [
+            "on"
+          ],
+          "swapMiB": {
+            "first": 12836.44,
+            "last": 12836.44,
+            "min": 12836.44,
+            "max": 12836.44
+          },
+          "swapGrowth": false,
+          "knownNonTestHighCPU": [],
+          "allHighCPUStreaks": [
+            {
+              "pid": 12748,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12810,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            },
+            {
+              "pid": 12967,
+              "process": "Google Chrome Helper (Renderer)",
+              "seconds": 0
+            }
+          ],
+          "eligibleNoiseRetry": false
+        }
+      }
+    ],
+    "cells": {
+      "single500-device1": {
+        "n": 3,
+        "functionalPasses": 3,
+        "allNumericPredicates": true
+      },
+      "paired150": {
+        "n": 3,
+        "functionalPasses": 3,
+        "allNumericPredicates": false
+      }
+    },
+    "allFunctional": true,
+    "allTwelveColdExact": true,
+    "coldMaxNavigationToEditableMs": 5512.7158203125,
+    "noiseRetries": 0,
+    "completedFullAuditsBeforeColdSnapshot": 0,
+    "uncompletedAuditAttemptsBeforeColdSnapshot": 24,
+    "censoredActiveAuditAttempts": 1,
+    "auditTypingOverlap": false,
+    "attemptCostQualification": "Observed not-completed/censored attempts are not full oracle completion costs or proof of idle starvation. Foreground export/Undo/read/lock work follows typing.",
+    "cadenceQualification": "coordinated2000 has300msquiet/2000msmax;500mskeys often send separately,150mskeys coalesce. Flags/default unchanged.",
+    "blockingPassesUnchanged": 36,
+    "reportOnlyCompleted": 6,
+    "reportOnlyRemaining": 4,
+    "remaining": [
+      "deep50ms x3",
+      "one3072reader with exact first-index-fallback counter"
+    ]
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 6,
+  "operatorHostReadiness": "quiet sender block; then Mac quiet for anything remaining",
+  "allOriginalTimingFormulasAndPredicatesExact": true,
+  "metricAdapter": "Only unavailable old native lab closure/quiet diagnostics become null; inverse proof and eight controls retain every formula/predicate. Eight separate audit observation controls. New private control syntax failure retained.",
+  "noNewRuntimeSourceOrCanonicalTestChange": true,
+  "gatesLimitsBudgetsAndDeadlinesUnchanged": true,
+  "noCpuProfiler": true,
+  "committed": false,
+  "pushed": false,
+  "next": "Three report-only50msdeep journeys, then3072reader, Stage6landing report and stop"
+}
