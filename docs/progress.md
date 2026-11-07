@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 510 plain repaired build ready; saved-state publication regression next
+status: in flight # phase 511 publication confirmed in three attempts; native cold apparatus red; fresh ordinary report next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: saved-state browser confirmation and current-date 3072 report
+blocks_on: current-date 3072 fixture/report and ordinary offline cold; prior source gates stay qualified
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase 510 builds the unchanged release profile from 2,047 exact canonical inputs, with no probes. The 125 ordinary assets pass budget/isolation; 42 separate native assets preserve ordinary bytes. Next verify pending-edit recovery and continued publication on a private copy of phase 506, then address current-date fixture preparation.
-[Record](./development-evidence/2026-11-02-release-hardening/510-projection-repair-build/README.md).
+**Active bounded outcome.** Phase 511 confirms recovery plus all 128 new server acceptances, exact exports and Undo in three plain-Worker attempts. Their terminal cold-tool prerequisites remain failed and retained; no cold credit. The SW intentionally routes navigation to the app shell and does not claim the native tool. Next use a fresh real current-date fixture and the original ordinary offline cold report procedure.
+[Record](./development-evidence/2026-11-02-release-hardening/511-projection-publication-confirmation/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

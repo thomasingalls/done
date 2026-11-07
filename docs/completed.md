@@ -20560,3 +20560,13 @@ Built all 2,047 canonical inputs with the original release flags and no probes: 
 [Record](./development-evidence/2026-11-02-release-hardening/510-projection-repair-build/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Plain Worker publication confirmation and native cold apparatus limit
+
+**Date:** 2026-11-07 · **Phase:** 511.
+
+On three independent copied states, the plain repaired Worker recovers the pending edit and accepts 128 further edits; independent service positions, full archives and Undo are exact. All three terminal results stay failed for the private-tool offline bootstrap, plus a failed prerequisite-only control. No app cold credit. Follow the ordinary cold procedure on the fresh report fixture instead of changing SW behavior.
+[Record](./development-evidence/2026-11-02-release-hardening/511-projection-publication-confirmation/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

@@ -8329,3 +8329,10 @@ Keep frozen reproduction bytes intact and exclude only the four specifically app
 **Date:** 2026-11-07 · **Phase:** 510.
 
 Use the unobserved repaired Worker for functional confirmation. The saved November 6 profile diagnosis may use the existing explicit test-date port, but must not be represented as a current-date or ordinary offline cold gate.
+
+
+### Use ordinary app cold for the returning-reader report
+
+**Date:** 2026-11-07 · **Phase:** 511.
+
+Keep the existing service-worker routing and lifecycle unchanged. The added native-tool cold apparatus cannot establish offline app behavior; retain its failed attempts and use the already required ordinary same-profile offline cold in the returning-reader report. Continue fixture preparation; no release clearance is claimed.
