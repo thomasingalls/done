@@ -20570,3 +20570,13 @@ On three independent copied states, the plain repaired Worker recovers the pendi
 [Record](./development-evidence/2026-11-02-release-hardening/511-projection-publication-confirmation/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Current fixture reaches setup deadline
+
+**Date:** 2026-11-07 · **Phase:** 512.
+
+Fresh current-date fixture remains unexposed: first attempt fails native-navigation precondition; fresh retry reaches overall 1,800s setup ceiling at observed sourceprefix3061 while awaiting3062. Eleven 14.4–15.9s reductions pass exactness; no publication stall or data loss observed. Both attempts and load logs remain. No index report started.
+[Record](./development-evidence/2026-11-02-release-hardening/512-current-fixture-setup-deadline/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

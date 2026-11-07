@@ -1,0 +1,85 @@
+{
+  "phase": 512,
+  "date": "2026-11-07",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "vite/precacheServiceWorker.ts",
+      "sha256": "a3e0e68082d447ac4e238bd1d2e4a9982ca553411c642d285aa61906b3730bb7",
+      "bytes": 6477
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/lib/account-gateway.mjs",
+      "sha256": "90c20c3d8c1067825d7954c358d14bf6fb482cda182bd28b5138120cce1972c0",
+      "bytes": 4724
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-current3072-512-20261107/512-private-files.json",
+      "sha256": "54b5554885d5af8f31d07a8e3b074cce6872c4e69fc4100dfcb96840a0df0747",
+      "bytes": 8663
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/512-current3072-preparation/run.json",
+      "sha256": "119e20f89c709508d01b096b40edff87dbe094dbb9708758a6ae2fb4fb408d63",
+      "bytes": 1592
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/512-current3072-preparation/child.log",
+      "sha256": "594d54bcd76a6facd05189f8e9c7ff2f3b20968fd225f1c311305fe622569920",
+      "bytes": 2597
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/512-current3072-navigation-retry/run.json",
+      "sha256": "5c536650866506cdc154df8fe4ff9e235abf314827058e78daf3c042639c2a84",
+      "bytes": 1606
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/512-current3072-navigation-retry/child.log",
+      "sha256": "b35664cd760b2ca391357caea991c5363a37d2dcab9173fb2a0d0ac7abcb2e61",
+      "bytes": 4842
+    }
+  ],
+  "summary": {
+    "phase": 512,
+    "outcome": "setup case deadline, not exposed",
+    "lastSavedHumanCheckpoint": {
+      "label": "H",
+      "accepted": 3008
+    },
+    "awaitedSourcePrefix": 3062,
+    "lastObservedSourcePrefix": 3061,
+    "allElevenReductionsComplete": true,
+    "reductionMs": [
+      14419,
+      15527,
+      15057,
+      15791,
+      15231,
+      15742,
+      15242,
+      15370,
+      15785,
+      15889,
+      15833
+    ],
+    "allCompletedReductionArchiveAndAcceptedSetChecksExact": true,
+    "sourceInitialPrefixNotSavedBeforeFailure": true,
+    "noCompleteFixtureWritten": true,
+    "indexReportStarted": false,
+    "swapStartMiB": 12804.44,
+    "swapEndMiB": 12804.44,
+    "swapRangeMiB": [
+      12804.44,
+      12804.44
+    ],
+    "noiseRule": "no sustained non-test process above100percent for more10s in top samples; swap unchanged; short external spikes retained",
+    "next": "fixture-only cached-status cadence25ms; same exact prefix, perposition30s, reduction120s, setup1800s"
+  },
+  "timedMatrixJourneysStarted": 0,
+  "timedReportOnlyJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

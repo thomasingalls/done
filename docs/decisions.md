@@ -8336,3 +8336,10 @@ Use the unobserved repaired Worker for functional confirmation. The saved Novemb
 **Date:** 2026-11-07 · **Phase:** 511.
 
 Keep the existing service-worker routing and lifecycle unchanged. The added native-tool cold apparatus cannot establish offline app behavior; retain its failed attempts and use the already required ordinary same-profile offline cold in the returning-reader report. Continue fixture preparation; no release clearance is claimed.
+
+
+### Keep the setup ceiling and reduce cached-status sampling delay
+
+**Date:** 2026-11-07 · **Phase:** 512.
+
+Do not extend setup, per-position or preparation deadlines. Adjust only the new fixture cached-status sampling cadence, retaining every acceptance predicate and production setting. Save exact initial/last counters in the rerun. This is an apparatus repair under the standing permission, not a gate/default/trust change.
