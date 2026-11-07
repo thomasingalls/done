@@ -20540,3 +20540,13 @@ Applied conditional private-view invalidation after a returned continuation cann
 [Record](./development-evidence/2026-11-02-release-hardening/508-baseline-projection-repair/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Baseline projection repair coherent checkpoint
+
+**Date:** 2026-11-07 · **Phase:** 509.
+
+Closed the coherent checkpoint: 333 unit files, 3,231 passed plus the existing skip, 128.18s; types/lint/changed-format and 21 inventory/policy controls pass. Applied both exact operator-approved bookkeeping patches. Independent population review adds five IDs, removes none and preserves every aggregate block. All failed checks remain evidence.
+[Record](./development-evidence/2026-11-02-release-hardening/509-projection-repair-checkpoint/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

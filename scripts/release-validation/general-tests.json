@@ -14,6 +14,7 @@
     "test/admittedText.test.ts",
     "test/archiveProjection.test.ts",
     "test/attribution.test.ts",
+    "test/baselineProjectionInterruption.test.ts",
     "test/breadcrumbs.test.ts",
     "test/cap.test.ts",
     "test/cardCommands.test.ts",

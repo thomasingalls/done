@@ -8315,3 +8315,10 @@ A private continuation that advanced without installation cannot be retained acr
 **Date:** 2026-11-07 · **Phase:** 508.
 
 Discard both private views at the failed installation boundary; a later interruption must not restore the stale projection. Retain the unchanged-identity warm path. No trust, format, limit or scheduling change is needed.
+
+
+### Retain immutable reproductions and exact expanded test census
+
+**Date:** 2026-11-07 · **Phase:** 509.
+
+Keep frozen reproduction bytes intact and exclude only the four specifically approved archive paths from active lint. Register every new regression and update exact census values. Record the new source identity after the approved edits rather than comparing it with the old one.

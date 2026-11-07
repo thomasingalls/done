@@ -1,0 +1,9 @@
+# Phase 509 — coherent projection-repair checkpoint
+
+The complete unit suite passes 3,231 cases across 333 files, plus the one existing skip, in 128.18 seconds under the approved 240-second hang guard. Typecheck, lint, changed-file formatting and all 21 selected inventory/policy/crypto-census controls pass. The runtime crypto review changes only contentStore's source hash: all 515 sources, 200 labels/templates, 36 groups, 15 manual entrypoints and classifications remain.
+
+The operator approved the exact four-path lint exclusion and five-value census patches. The four immutable phase 488/494/498/500 reproductions stay byte-identical; active-source lint rules do not change. A private comparison against the previous policy/inventory proves five added case IDs and zero removed IDs: 2,611 to 2,616 cases, 282 to 283 stages. Every aggregate release block is unchanged. Census success is planning coverage, not aggregate execution.
+
+Preserved unsuccessful checks: the initial normal lint found the four archive issues; two private external-config diagnostics failed because ignore patterns were rooted at the temporary config; the CLI-equivalent diagnostic passed. Private population comparison first refused a symlinked registration helper and then symlinked vector data; exact copied test inputs satisfied both unchanged realpath guards. The first inventory check correctly rejected its stale source identity after the approved config/fixture edits; a fresh snapshot and unchanged checks pass. No app or test assertion was weakened to resolve these apparatus/bookkeeping results.
+
+Next build the repaired ordinary release-profile assets and separate unobserved native entry, then verify saved pending-writing recovery and continued publication from a copied failing profile. The original 3,072 report remains incomplete; prior Stage 5 passes bind the older source and are not silently transferred to this repair.
