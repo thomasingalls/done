@@ -19924,3 +19924,17 @@ credit or prep-cost diagnosis. Keep the new bookkeeping-prefix error and failed
 premature freeze; fix records only, without an app rerun or test change. Outcome
 precedes advancing the seat. Prepare the joined writer next. Stage5still15/36
 blocking journeys complete. No app source, guard, limit, commit, push or deployment.
+
+
+### Prepare the grown maintenance writer through real sync
+
+**Date:** 2026-11-06 · **Phase:** 465 · **Scope:** untimed fixture preparation.
+
+H2receives the complete2,048workload and matches the whole archive, then is
+captured unreduced at counter2. Original16assertion-call/wait ASTs and deadlines
+stay. Other actors, archives, dates and backlog remain exact. Private SQL copies
+show2,359accepted rows before/after: no added writing. [Record](./development-evidence/2026-11-02-release-hardening/465-grown-maintenance-fixture/README.md).
+
+Outcome precedes advancing the seat. Both fixtures are ready; Stage5still15/36
+blocking journeys complete. The operator cleared the next six old-maintenance
+runs. No app source, guard, gate, limit, deadline, commit, push or deploy change.

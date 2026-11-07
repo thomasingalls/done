@@ -1,0 +1,131 @@
+{
+  "phase": 465,
+  "date": "2026-11-06",
+  "scope": "untimed actual2048maintenance-writer preparation",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase333/apparatus/harness/test/account-continuation-lab/dense-cohort.spec.ts.gz",
+      "sha256": "d6c91e6f3ed23d0d719c3021cb2522e520a4039b7cd645bfb6ea84ec0d1a2e5b",
+      "bytes": 1863
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-stage5-grown-prepare-465-20261106/465-private-files.json",
+      "sha256": "1ba48e15540c344550baa42f8e8886c096ac976cecea7ae4f350b33d62a343ff",
+      "bytes": 98535
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-grown-prepare-465-20261106/465-fixture-proof.json",
+      "sha256": "21c8f0065135b85ff6f667581191368c12e0e2b2afcb6a9a2387dfee7d5e76d0",
+      "bytes": 814
+    },
+    {
+      "localPath": "/private/tmp/done-stage5-grown-prepare-465-20261106/465-declaration.json",
+      "sha256": "b19091b4c79673d19028fea5fb291eb636971f25ae0b67d47cb00eaabf556526",
+      "bytes": 1213
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/child.log",
+      "sha256": "153a843860389dbca2e4f098063f603747e703711a4ac47b094f302ee2e637ab",
+      "bytes": 399
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/host-load.jsonl",
+      "sha256": "065a707940c5ddb22ee88dbad48e2548710047aded603297c5a9111fce01109a",
+      "bytes": 17264
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/power-assertions-before.txt",
+      "sha256": "9e8b15a8b47ad638f56c78b7365959de0077aa7a07653210af0630f4d5487093",
+      "bytes": 1899
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/power-log-after.meta.json",
+      "sha256": "c76ca3495b86f6c53b8d715e93e087899b7215bc0411b858f7fbf27c60a0adb4",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/power-log-after.txt",
+      "sha256": "a58c2f1f186feac811f7ae3fd2a71741c82e30e1ae4e2319d6aea9716d7d7716",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/power-log-before.meta.json",
+      "sha256": "107aa5ea213a9458279b35a2aa0453ff33a68f267165b3f4662d80ea3422e12d",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/465-prepare-grown-maintenance/run.json",
+      "sha256": "d2cc2cdfb8a1f3a0db6b4c1516e6e7bf38c5cf61708efd6f595a7ace8fdf58bb",
+      "bytes": 1612
+    }
+  ],
+  "proof": {
+    "sameArchivesDatesBacklogs": true,
+    "onlyH2StorageAndCredentialsRefreshed": true,
+    "serviceAcceptedRows": {
+      "privateCopiesOnly": true,
+      "rows": [
+        {
+          "label": "before",
+          "accepted": 2359
+        },
+        {
+          "label": "after",
+          "accepted": 2359
+        }
+      ],
+      "acceptedRowsUnchanged": true
+    },
+    "counterVersion": 2,
+    "retainedStores": {
+      "content": {
+        "rows": 2054,
+        "cipherBytes": 123073
+      },
+      "heads": {
+        "rows": 520,
+        "cipherBytes": 3508434
+      },
+      "meta": {
+        "rows": 1,
+        "cipherBytes": 0
+      },
+      "outbound": {
+        "rows": 3,
+        "cipherBytes": 2644
+      }
+    },
+    "originalAssertionsExact": {
+      "assertionCalls": 16,
+      "waits": 1,
+      "ASTsExact": true,
+      "appRuns": 0
+    },
+    "timedAcceptanceCredit": false
+  },
+  "privateManifestFiles": 348,
+  "appOrGuardOrLimitChanges": false,
+  "timedMatrixJourneysStarted": 0,
+  "stage5BlockingCompletedBeforePhase": 15,
+  "next": "six declared old-maintenance journeys after confirmed new host handshake, then grown cells separately",
+  "committed": false,
+  "pushed": false
+}

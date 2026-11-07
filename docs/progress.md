@@ -162,7 +162,7 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase464 grown2048ready; joined-writer preparation next
+status: in flight # phase465 both maintenance fixtures ready; old timed block cleared
 scope: Stage 5 hardened gates, then Stage 6 landing report
 blocks_on: old/grown maintenance writer fixtures, remaining timed blocks and report-only cells
 updated: 2026-11-06
@@ -199,17 +199,17 @@ the approved 240-second hang guard. Exact population: 2,603 cases/281 stages,
 native importer cases, including fairness sensitivity and lower-index fallback.
 These are functional evidence, not final timing credit; earlier reds remain.
 
-**Active bounded outcome.** Phase464 grows the workload to2,048through1,024
-real durable individually accepted edits: prefix1,030→2,054. Public export changes
-only by the target append; Goals stays13,407bytes. Original readers and other
-accounts remain exact, including the expected seed boundary. [Record](./development-evidence/2026-11-02-release-hardening/464-grown-real-writing/README.md).
-Setup passes under30minutes; wrapper1,307.25s is preparation only, without timing
-credit or prep-cost diagnosis. A new bookkeeping-prefix mistake and premature
-freeze are preserved and fixed without changing an app test or rerunning it.
-The original1,024writer fixture from463is ready, with1,335accepted service rows
-unchanged. Prepare the2,048joined writer next with original assertions/deadlines.
-Stage5remains15/36blocking journeys complete;21plus report-only work remain.
-Obtain the next tight-cell host handshake before timed runs. No app change,
+**Active bounded outcome.** Phase465 prepares the2,048maintenance writer through
+real current-app sync. Original checks/deadlines pass: H2full archive exact,
+unreduced counter2; other actors/archives/dates/backlogs exact. Private SQL copies
+show2,359accepted rows before/after, with no added writing. [Record](./development-evidence/2026-11-02-release-hardening/465-grown-maintenance-fixture/README.md).
+Both maintenance fixtures are ready. Phase464added1,024real accepted writes to
+reach2,048, preserving readers and13,407-byte Goals. Stage5still15/36blocking
+journeys complete. The operator cleared the next six original1,024maintenance
+runs; execute them with the approved old-overlap information-only amendment and
+every other predicate intact, including the historical10percent comparison.
+Grown overlap60remains blocking and both owners must be observed through120s.
+Twenty-one blocking journeys plus report-only work remain. No app change,
 release prep, commit, push or deployment.
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic

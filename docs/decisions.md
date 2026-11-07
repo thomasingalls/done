@@ -7883,3 +7883,14 @@ it does not change sender defaults or qualify timing. Keep the slow setup withou
 starting the deferred prep-cost diagnosis. A bookkeeping check must include the
 existing seed boundary, not mistake expected text for digits alone; keep its failed
 attempt and correct only that new record check.
+
+
+### Preserve original grown fixture checks and writer/reader roles
+
+**Date:** 2026-11-06 · **Phase:** 465.
+
+Use the existing2,048recipe with current module/root bindings and all original
+checks. Refresh H2through real sync, keeping H1behind and every other snapshot
+unchanged. Verify service-row counts only on private copies. Separate fixture
+preparation from timed credit. Proceed to the separately declared old-maintenance
+block only under the renewed host handshake; grown overlap60stays blocking.
