@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 515 approved observer built; original3072 reader report next
+status: in flight # phase 516 missing3072report passes; source-qualified handoff next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: execute original3072reader positions/archive/Undo/ordinary cold report
+blocks_on: write bounded handoff; older blocking timed gates do not silently cover508repair
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase515 builds the approved six-hook observer over the repaired source with the unchanged32MiB ceiling and runtime flags. Six counter controls pass; report body inverse is exact apart from identities. Next run one current-date3072 returning reader with all native positions, full archive, Undo and ordinary same-profile offline cold. Older blocking matrices remain source-qualified.
-[Record](./development-evidence/2026-11-02-release-hardening/515-repaired-index-observer-build/README.md).
+**Active bounded outcome.** Phase516passes the unchanged3072reader report: exactarchive/positions/Undo/read-onlycounter, nativeopen519ms, catchup54216ms, ordinaryofflinecold5958ms. No indexfallbackthroughdrain; chargedpeak25,969,753bytes under32MiB, notRAM. One report-onlyjourney. Next preserve the failures and source qualification in the handoff; no releaseclearance, push or deployment.
+[Record](./development-evidence/2026-11-02-release-hardening/516-complete3072-reader-report/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

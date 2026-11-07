@@ -8364,3 +8364,10 @@ Use this complete genuine fixture rather than an incomplete failed state. The po
 **Date:** 2026-11-07 · **Phase:** 515.
 
 Measure the actual production index bound on the completed genuine fixture. Reuse the reviewed observer and unchanged report body; do not lower the bound, inject trust or use the native-tool offline bootstrap as an app cold substitute.
+
+
+### Record no production index fallback through this 3072-position workload
+
+**Date:** 2026-11-07 · **Phase:** 516.
+
+Report the observed bound honestly: no fallback through this workload, not an invented extrapolated crossing. The ordinary same-profile offline cold resolves the missing cold evidence for this report; earlier native-tool failures remain apparatus evidence. Preserve old timed-matrix bindings and make no release-clearance inference.

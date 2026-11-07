@@ -20610,3 +20610,13 @@ Rebased six approved observations over repaired canonical inputs with exact inve
 [Record](./development-evidence/2026-11-02-release-hardening/515-repaired-index-observer-build/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### 3072 reader and ordinary offline cold pass
+
+**Date:** 2026-11-07 · **Phase:** 516.
+
+The original3072reader report passes all checks: exact service/native positions7–3078, fullarchive, Undo, floor1, rawobserverunchanged, exact772eventcounter. Open519ms; catchup54216ms; ordinarysameprofileofflinecold5958ms. No indexfallbackthroughdrain; peakcharged25969753bytes under33554432. Encodedsource receipts5185602bytes/769rows, notRAM/totaldisk. One report-onlyjourney; olderblockingmatrixsourcebindingstays.
+[Record](./development-evidence/2026-11-02-release-hardening/516-complete3072-reader-report/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.
