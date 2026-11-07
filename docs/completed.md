@@ -19709,3 +19709,21 @@ credit. [Record](./development-evidence/2026-11-02-release-hardening/452-native-
 Outcome precedes advancing this seat. Next complete the measured-path assertion
 audit and current timed apparatus, then request the quiet-host window. No runtime,
 security, gate, budget or limit change; no commit, push or deployment.
+
+
+### Audit timed assertions and isolate the gateway wrapper before composition
+
+**Date:** 2026-11-05 · **Phase:** 453 · **Scope:** static apparatus audit, untimed transport.
+
+No acceptedRows reference occurs in the19inventoried frozen apparatus files.
+Selected callbacks have no per-ledger-row Playwright matcher, but archive export
+retains a per-ZIP-file assertion that overlaps some fairness measurements. Keep
+it. The old gateway shares the test worker even though the API is containerized;
+a separate child wrapper passes exact asset/forwarding/refusal/close controls.
+No account/profile journey or performance credit. Preserve the private parser
+startup error and corrected Babel inventory. [Record](./development-evidence/2026-11-02-release-hardening/453-timed-path-assertion-audit/README.md).
+
+Outcome precedes updating the seat. Actual final harness closure/process binding,
+report-only adapters and real-sync fixture refresh still precede timings; do not
+claim the final apparatus is already audited. No app or assertion change, no
+commit/push/deploy, and all Stage5gates and the quiet-host handshake stay.

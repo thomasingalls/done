@@ -1,0 +1,328 @@
+{
+  "phase": 453,
+  "type": "static closure/placement audit plus untimed transport wrapper smoke",
+  "acceptedRowsOccurrencesInInventoriedFiles": 0,
+  "inventoryFiles": 19,
+  "scopes": [
+    {
+      "cells": [
+        "native-context",
+        "native-resumable",
+        "native-deep",
+        "deep-50ms"
+      ],
+      "spec": "phase320-gate-native.spec.ts",
+      "selectedLines": [
+        [
+          168,
+          179
+        ],
+        [
+          185,
+          191
+        ],
+        [
+          247,
+          259
+        ]
+      ],
+      "finding": "No acceptedRows or per-ledger-row Playwright assertion in selected callbacks. Resumable asserts per bounded attempt, not each ledger row. Archive compression assertion is per ZIP entry in shipping/cold helper."
+    },
+    {
+      "cells": [
+        "late-normal",
+        "late-withheld"
+      ],
+      "spec": "phase320-gate-maintenance.spec.ts",
+      "finding": "No acceptedRows. Original cold loop asserts once per owner after typing/catch-up measurement; common export loop retained."
+    },
+    {
+      "cells": [
+        "grown-normal",
+        "grown-withheld"
+      ],
+      "spec": "phase321-grown-maintenance.spec.ts",
+      "finding": "Same observation-only extension and per-owner cold assertions; no acceptedRows. Owner completion observation remains separate from the original writer wait."
+    },
+    {
+      "cells": [
+        "fairness"
+      ],
+      "spec": "phase320-continuation.spec.ts",
+      "finding": "No acceptedRows. Exports at each catch-up completion can overlap other catch-ups and typing; common helper has one Playwright compression assertion per ZIP file. Do not assert that reporting is absent from the measured test process."
+    },
+    {
+      "cells": [
+        "goals-desktop",
+        "goals-mobile4x"
+      ],
+      "spec": "phase320-stall.spec.ts",
+      "finding": "No acceptedRows or expectation inside paragraph key-offer loop. Export before initial text and after observation; common helper still retains compression checks."
+    }
+  ],
+  "commonExport": {
+    "file": "common.ts",
+    "line": 12,
+    "unit": "ZIP file, not ledger row",
+    "overlapsTimedFairness": true,
+    "assertionsRetained": true
+  },
+  "oldPlacement": {
+    "api": "separate resource-bounded Docker process",
+    "gateway": "startAccountGateway called inside Playwright worker; reporting can still stall forwarding"
+  },
+  "chosenPlacement": {
+    "api": "retain separate original resource-bounded process",
+    "gateway": "invoke unchanged canonical gateway in a distinct Node child",
+    "test": "only test control/reporting remains in Playwright worker"
+  },
+  "wrapperSmoke": {
+    "pass": true,
+    "scope": "untimed transport wrapper only; no account app journey",
+    "testPid": 79761,
+    "gatewayPid": 79764,
+    "applicationGatewayUnmodified": true,
+    "assetExact": true,
+    "hostRefused": true,
+    "forwardingExact": true,
+    "childClosed": true,
+    "stderr": ""
+  },
+  "limits": "No app, gateway implementation, decoders, assertions, waits, gates, budgets or rate limits changed",
+  "harnessFailure": {
+    "attempt": 1,
+    "issue": "TypeScript7 package has no importable legacy compiler JS API at the attempted path; parser never ran",
+    "appOrTestExecuted": false,
+    "repair": "Use the repo existing Babel parser; preserve attempt script"
+  },
+  "notEstablished": [
+    "final composed timed harness is not yet bound to the wrapper",
+    "transitive closure and actual process IDs must be asserted again against that exact final harness before any timed cell",
+    "report-only sender/index adapters remain to bind",
+    "no Stage5 timing or acceptance credit"
+  ],
+  "date": "2026-11-05",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/lib/account-gateway.mjs",
+      "sha256": "90c20c3d8c1067825d7954c358d14bf6fb482cda182bd28b5138120cce1972c0",
+      "bytes": 4724
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/lib/packaged-application.mjs",
+      "sha256": "9343b7de953ac3fdf78097dad8ce99dc59ca2a72576f82bb9ae8e60f9a3b02bd",
+      "bytes": 2235
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "account-service/development-server.ts",
+      "sha256": "0d9f161fa1cd20f6dfb89e1a313bbaaa0d81922144d5f5df47db357471f3b2a4",
+      "bytes": 1485
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase313/apparatus/harness/test/account-continuation-lab/runtime.mjs.gz",
+      "sha256": "8344e7274c252dcc01c56ff72ae3789e25dda19fb7c2cd6df9fd4d76f27ae552",
+      "bytes": 1931
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase311/apparatus/harness/test/account-continuation-lab/common.ts.gz",
+      "sha256": "7d60ae6fb6ca53f652eb47dfd217aaa267a471e7b30167c90e25cdd4e47db80e",
+      "bytes": 1597
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase311/apparatus/harness/test/account-continuation-lab/devices.ts.gz",
+      "sha256": "1e0ffff3d9dbf45beee96e8ff0c194df70479cb2aa37b6bdc2b41b67a57ef1ef",
+      "bytes": 1766
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase311/apparatus/harness/test/account-continuation-lab/seed-profile.ts.gz",
+      "sha256": "01b4e3fc0608083cb1b07e48a587dbba61f8c9d3150fb807c3879e10064d02e0",
+      "bytes": 800
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase311/apparatus/harness/test/account-continuation-lab/dispatch-probe.ts.gz",
+      "sha256": "35a55241211f8c79eead224ede93afcf39b90a1637b99a7814e633b740747415",
+      "bytes": 1845
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase313/apparatus/harness/test/account-continuation-lab/deep-traffic.mjs.gz",
+      "sha256": "6ca92b0bd9bf364f1b71904c574ee6864e743d7c3119799766bedc6586e7153f",
+      "bytes": 958
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase308/apparatus/harness/test/account-continuation-lab/gate-native.config.ts.gz",
+      "sha256": "ff3677b6dfeec325ef38d2b9f369cbd85227567f3cf60d3515644cf4ee069ede",
+      "bytes": 233
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase318/apparatus/harness/test/account-continuation-lab/r-late.config.ts.gz",
+      "sha256": "5bb30739474228ef550c986cfe86a764122dd74e8b6908ab939c92c19e89e42b",
+      "bytes": 228
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase308/apparatus/harness/test/account-continuation-lab/gate-maintenance.config.ts.gz",
+      "sha256": "7a10d2f124f2bb640f0e2d3a468b4a83ea154c5d53655a1d40d689dbf8aa7392",
+      "bytes": 235
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase308/apparatus/harness/test/account-continuation-lab/playwright.config.ts.gz",
+      "sha256": "cb1687309948f52fd8437ada5a7b1ac4ae1b4dc327b2d44a07a8d4c1bbfa12cd",
+      "bytes": 345
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase308/apparatus/harness/test/account-continuation-lab/stall.config.ts.gz",
+      "sha256": "bb39ada26d52a24a57c6c9ef96a89c254ca656dee81c04a5e68ce17fd17f44a2",
+      "bytes": 231
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/grown-maintenance.config.ts.gz",
+      "sha256": "a67a7cb28aa9dd3f18be236525397378b889a12ac1621b789bee115fb56704fa",
+      "bytes": 235
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/gate-native.spec.ts.gz",
+      "sha256": "8df457606b6b980c68e75c8836522e46831c92dff7dfeca5e64855ebfe817289",
+      "bytes": 28474
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/gate-maintenance.spec.ts.gz",
+      "sha256": "34fac797c554d6be981e0692a06506c7b83fd4cc7d1856edcc0820e25a597a34",
+      "bytes": 3824
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/continuation.spec.ts.gz",
+      "sha256": "005705853d4743e399a0b9bed58d148a59d79033f7d6c123ba53c22d548711a2",
+      "bytes": 5447
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/apparatus/harness/test/account-continuation-lab/stall.spec.ts.gz",
+      "sha256": "77948cd6c18872447093fb16a49aee67876059b119316b42ae9bf38ee8931735",
+      "bytes": 3882
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase321/apparatus/harness/test/account-continuation-lab/phase321/grown-maintenance.spec.ts.gz",
+      "sha256": "7093861d6747b18ae510463d4b2af131c16735df33e2b960ceed249563d13821",
+      "bytes": 4635
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "docs/performance-experiments/2026-10-29-worker-catchup/phase320/evidence/final-gates-plan.json.gz",
+      "sha256": "e5d0ec458b1d4e83e7139997873f15c7182369165ad792ba0d809a0c738a6cac",
+      "bytes": 904
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/453-assertion-inventory.json",
+      "sha256": "b02104584bdc26b4aab958b2e60d3c0ff9d3d7318e2faed5e556639a1db22959",
+      "bytes": 38422
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/453-audit-conclusion.json",
+      "sha256": "dc4ce4f4726416ac723d595e449ca02213e2ebf8d84924fa9dad12fa40e5e31e",
+      "bytes": 3677
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/453-gateway-smoke.json",
+      "sha256": "f7ae594894b6cfc71ba1b8fdc44e011655ce4bbbffdc03fb67bac0f2548a0774",
+      "bytes": 282
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/audit453-attempt1.cjs",
+      "sha256": "a52de733017cec2914d72caee6f1218146e912ef075b796edf073ec0ae749bd4",
+      "bytes": 2172
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/audit453.cjs",
+      "sha256": "1858452e9e0e6bf4fb242cb2e72047944126aaf21cefabc4c97fb8e99dcc91a2",
+      "bytes": 2291
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/gateway-child.mjs",
+      "sha256": "20dca83aa3cd01a9da12fe20dfeeb0b8585bda8d623daf15d1cbf069b6f85ed8",
+      "bytes": 1329
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/gateway-smoke.mjs",
+      "sha256": "14a473f70f0ec3cf60ac7dd7151ec1096b81d1bb6bc141715d24f40eed27cfee",
+      "bytes": 3727
+    },
+    {
+      "localPath": "/private/tmp/done-timed-path-audit-453-20261105/record453.py",
+      "sha256": "6afcac9bc9fa7fd357056a6614e622b3f09f08c71248902075642a9acb9292f0",
+      "bytes": 10260
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/child.log",
+      "sha256": "de2cac40b7e04d4f83ac1689a8483cce8a2c7cc063d18a1d0c752fe4e52440c7",
+      "bytes": 241
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/host-load.jsonl",
+      "sha256": "c05f1b7f420347afd692c5e8d4d17a836b9a5292428d7aa19d8d51ab75091e54",
+      "bytes": 4580
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/power-assertions-before.txt",
+      "sha256": "c42b4ace03a64be46256130825c71aebb19f53a81a57dfcaf2c31d876b1a3d14",
+      "bytes": 1389
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/power-log-after.meta.json",
+      "sha256": "e017ad7e82467b4c3c7160af4f77adf5ea721af53e6cc8e79a6418db676b51fb",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/power-log-after.txt",
+      "sha256": "7598c3a617b90eabbc8fe8c628b7a788018beeb923ab46de1119a521e5d1a68b",
+      "bytes": 450
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/power-log-before.meta.json",
+      "sha256": "0f94bf2005308f1718528a823908c0151f55f58aa8fed4e7c1d8b94671be58b4",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/453-gateway-transport-smoke/run.json",
+      "sha256": "92b1bbcaeb6b7d05515c8148a1bb37e116adca8cd3b5c04c96a2a8ce8848dded",
+      "bytes": 863
+    }
+  ],
+  "timedMatrixJourneysStarted": 0,
+  "committed": false,
+  "pushed": false
+}

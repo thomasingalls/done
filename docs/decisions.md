@@ -7711,3 +7711,16 @@ genuine old Page/Worker artifacts. Override only output paths and absolute test
 roots; inherit the original browser, waits, deadlines and assertions. Passing
 these15cases closes the operator's importer checklist; it does not grant timed
 performance credit or waive the measured-path assertion audit and host handshake.
+
+
+### Keep reporting outside every request-handling process
+
+**Date:** 2026-11-05 · **Phase:** 453.
+
+The operator requires the timed service worker to contain no per-row Playwright
+reporting. Do not satisfy that by relabeling the API while leaving its gateway in
+the test worker. Preserve all archive assertions and wrap the unchanged gateway
+in a distinct Node process; keep the API's original resource bounds. A transport
+smoke establishes wrapper behavior, not final timed composition. Require exact
+source/process binding again when that composition exists. Do not remove checks,
+alter service behavior or start timings merely because acceptedRows is absent.
