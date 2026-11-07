@@ -20320,3 +20320,13 @@ The same-position reproduction captures message-bound on compositionStatuscall27
 [Record](./development-evidence/2026-11-02-release-hardening/486-composition-status-error-code/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Identify the composition-status reply ceiling without changing its guard
+
+**Date:** 2026-11-06 · **Phase:** 487.
+
+The directly bound observer proves compositionStatus success-reply serialization hits the bytes ceiling at 1,048,620 accounted bytes / 36,539 visited nodes. Exact negative reply code:message-bound. The handler delivery acceptedThrough2130; Window workspace active at catch. Six controls pass; 125 ordinary files and all guards and deadlines unchanged. First unexposed private-root binding attempt retained, corrected only in a fresh diagnostic build. No fixture repair, archive/cold claim or acceptance credit.
+[Record](./development-evidence/2026-11-02-release-hardening/487-composition-status-reply-ceiling/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

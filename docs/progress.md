@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase486 code captured:message-bound;pinpoint guard site
+status: in flight # phase 487: compositionStatus reply exceeds byte ceiling
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: compositionStatusmessage-bound site diagnosis;3072report andStage6
+blocks_on: bounded fixture-poll repair, then final index report and Stage 6
 updated: 2026-11-06
 ```
 
@@ -199,8 +199,8 @@ policy cases pass. Exact population: 2,611 cases/282 stages, eight IDs added and
 none removed. The earlier native/format functional records remain component
 evidence; final acceptance stays bound to the repaired built source.
 
-**Active bounded outcome.** Phase486 captures message-bound at the same failed compositionStatuspoll. Last successful accepted/spool position2,130; Window workspace active at catch. Six controls pass, all167app/native assets exact and alloriginal guards/deadlines retained. Continue the authorized diagnosis with scalar observations at unchanged message-boundthrow sites; no repair or Stage5resume. Prior36blocking passes and9reports stand;3072report andStage6remain incomplete.
-[Record](./development-evidence/2026-11-02-release-hardening/486-composition-status-error-code/README.md).
+**Active bounded outcome.** Phase 487 identifies the exact bytes guard on the successful compositionStatusreply at 1,048,620 accounted bytes/36,539nodes; fallback reply code message-bound. The status operation had acceptedThrough2130; Window remains active at catch. Six controls pass; one private observed source and125 byte-identical ordinary files, all guards and deadlines unchanged. First unexposed binding attempt retained; actual Worker binding proved on fresh retry. Recommended next: narrow only fixture polling to existing bounded published sync status, retaining exact acceptance assertions. Not implemented.36 prior blocking passes/9 reports stand;3,072-position report/Stage 6pending.
+[Record](./development-evidence/2026-11-02-release-hardening/487-composition-status-reply-ceiling/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

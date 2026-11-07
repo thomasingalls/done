@@ -8161,3 +8161,10 @@ A fixture-purpose label does not make an app Worker request error a harness fail
 **Date:** 2026-11-06 · **Phase:** 486.
 
 Treat a negative message-bound reply separately from owner closure. The full status graph grows, but do not claim a byte or node ceiling, or blame reply serialization, until its throw site is observed. Continue only the authorized narrow diagnosis; no product repair or gate retry.
+
+
+### Keep the Worker message guard and narrow the diagnostic consumer
+
+**Date:** 2026-11-06 · **Phase:** 487.
+
+Keep the Worker message guard. The fixture requests an entire growing status graph to read one scalar; the next repair belongs in that diagnostic consumer, using existing bounded published status with the same exact acceptance checks. Do not raise transport limits or infer a writing/authority failure from a reply serialization refusal. Record validator counts as running accounted size, not wire size or RAM.
