@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from './clockSkew.ts';
 import { proofWork, type ProofCheckpoint } from './proofWork.ts';
 /** Bounded, request-bound membership discovery. Proof verification never installs an authority. */
 import { parseRecoverySuccessor } from './recoveryTransition.ts';
@@ -260,7 +261,7 @@ export async function verifyMembershipDiscoveryRequest(
     !Number.isSafeInteger(now) ||
     now < 0 ||
     r.expiresAt <= now ||
-    r.expiresAt - now > MEMBERSHIP_DISCOVERY_LIFETIME_MS ||
+    r.expiresAt - now > MEMBERSHIP_DISCOVERY_LIFETIME_MS + CLOCK_SKEW_ALLOWANCE_MS ||
     !same(r.pin, pin) ||
     r.workspaceId !== history.current.workspace ||
     r.lineageId !== history.current.lineage

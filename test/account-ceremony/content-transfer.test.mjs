@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from '../../account-protocol/clockSkew.ts';
 import {
   membershipCheckpointRequestMessage,
   verifyMembershipCheckpointRequest,
@@ -955,7 +956,7 @@ test('later certified readers authenticate the original baseline without borrowi
     { workspaceId: 'ff'.repeat(16) },
     { lineageId: 'ff'.repeat(32) },
     { expiresAt: 1000 },
-    { expiresAt: 61001 },
+    { expiresAt: 61001 + CLOCK_SKEW_ALLOWANCE_MS },
     { pin: { ...x.authority.pin, serviceId: 'ff'.repeat(16) } },
   ]) {
     const bad = membershipCheckpointRead(x, e.context.candidate.id, x.entry.key, {

@@ -304,3 +304,21 @@ load measurement or acceptance result. Keep the 250 ms cap, all budgets and the
 existing peer/marker/input gates. Phase 448 attributed the diagnosed shared-loop
 stall mainly to test reporting; phase 449's private control did not establish a
 separate production scheduling defect.
+
+
+## Operator amendment — future clock tolerance,2026-11-06
+
+The operator approves one shared120000msallowance only in the excessive-future
+bounds of enrollment, historyExchange, membershipLocator, membershipCheckpoint,
+successor and removalDiscovery. Every expired-at-now comparison, signature,
+lifetime constant, remaining authority predicate, gate, budget and deadline stays.
+This explicit product decision extends the original hardening scope only at those
+six checks. Phase457'sinverse source proof and30signed boundary controls establish
+the scope; affected suites and the331filefull-unit checkpoint pass. No wire or
+stored-format change. Rebuild both client and effective API bytes before another
+seed or Stage5journey. Current fresh-container time is6–8msbehind the Mac;455's
+clock lead is plausible but unproven, and that distinction remains in the record.
+
+Standing permission covers apparatus/harness/fixture wrapper repairs, with every
+failed attempt kept. It does not authorize another app refusal/failure, unapproved
+guard/limit/assertion/gate change or skipping the tight-cell quiet-host handshake.

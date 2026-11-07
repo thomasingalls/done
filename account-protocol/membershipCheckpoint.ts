@@ -1,3 +1,4 @@
+import { CLOCK_SKEW_ALLOWANCE_MS } from './clockSkew.ts';
 /** Read the immutable original baseline under current membership; this grants no new authority. */
 import { closed } from './preparation.ts';
 import { parseAuthorityPin, type AuthorityPin } from './authority.ts';
@@ -74,7 +75,7 @@ export function checkMembershipCheckpointLifetime(expiresAt: number, now: number
     !Number.isSafeInteger(now) ||
     now < 0 ||
     expiresAt <= now ||
-    expiresAt - now > MEMBERSHIP_CHECKPOINT_LIFETIME_MS
+    expiresAt - now > MEMBERSHIP_CHECKPOINT_LIFETIME_MS + CLOCK_SKEW_ALLOWANCE_MS
   )
     throw Error('Membership checkpoint request expired');
 }

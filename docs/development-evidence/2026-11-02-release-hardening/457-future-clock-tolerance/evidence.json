@@ -1,0 +1,1195 @@
+{
+  "phase": 457,
+  "date": "2026-11-06",
+  "scope": "explicit operator-approved future-bound allowance; no expiry grace",
+  "sourceReferences": [
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-successor/oracle.mjs",
+      "sha256": "f0956a87d24408c12eb90662c4b390b5bf7f9ef3f73a53596e1c067ab49282ad",
+      "bytes": 5207
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-enrollment/fixtures.mjs",
+      "sha256": "4d974c7e0c93fbc36bf854107347dbb5b7d821e2ac38acebddbbcfe38db1f557",
+      "bytes": 3845
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-membership/fixtures.mjs",
+      "sha256": "ddf2652cd9df6df64eff92ff3981233b2a867351823f73ee5f18d225d8539b84",
+      "bytes": 5666
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-membership/delivery-fixtures.mjs",
+      "sha256": "6036dd0d010a8cbdb64ff3eabd560ffd5833ecb8f140f99f7526aa37e865d825",
+      "bytes": 5609
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "test/account-membership/rotation-fixtures.mjs",
+      "sha256": "8d03ba00e0f395e12a9e8b8c098696b09e3b7b6f9a0cb41e3513c5981846133b",
+      "bytes": 5944
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/general-tests.mjs",
+      "sha256": "6b9c859e95a3dea8587e08368100107e4da2d928c95efc1b2f295aec2262d5cc",
+      "bytes": 2367
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/census.mjs",
+      "sha256": "e3caf74504c904821e0a672e99d5acc2b66a0046eda93864202bc078f51ec5d1",
+      "bytes": 8114
+    },
+    {
+      "commit": "4d20580c8b9385e225a6452e4ffc74711f829b38",
+      "path": "scripts/release-validation/policy.json",
+      "sha256": "4dfaab3c6fb1e94638633f49a3c2fc05c11f2c55c8a759d018c45b18f42417d9",
+      "bytes": 12889
+    }
+  ],
+  "workingSourceReferences": [
+    {
+      "path": "account-protocol/enrollment.ts",
+      "sha256": "ee02ca2c59a8602ad5f666aa54ba2c5835665527d98cdbc384a3b4ce4cbfbe3c",
+      "bytes": 13441,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "account-protocol/historyExchange.ts",
+      "sha256": "6ada6ad8a29f5c535b2b97e96ba0bc888d3d20bff56f837a2b510117945a4053",
+      "bytes": 10899,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "account-protocol/membershipLocator.ts",
+      "sha256": "5ec03456c631560d153fa70c574ede00e83dafd9a376aa82f2e3d31ecfb605c1",
+      "bytes": 11671,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "account-protocol/membershipCheckpoint.ts",
+      "sha256": "6cd2b1608d3d2346b99feaa6527d1dcfe97beeca3af08f40a6d925acef6b3ce4",
+      "bytes": 5917,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "account-protocol/successor.ts",
+      "sha256": "a82f3f183e0a5d5b0411442bb2d670e5637f47db15cabf82da386357c8cb3034",
+      "bytes": 14762,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "account-protocol/removalDiscovery.ts",
+      "sha256": "287166c2ecf70109042e6d836a8ffadc4edcd1344c042cbef9627c69bfadb3d7",
+      "bytes": 5562,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "account-protocol/clockSkew.ts",
+      "sha256": "576fe3f22e38d68dc9a6031b102f953882cd89c2b2d2c84d006925bd3df7d858",
+      "bytes": 138,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "test/account-clock-skew/formats.test.mjs",
+      "sha256": "7ee9f458c75c385a19d1cdaf1b05796782d44a7b87362dd20e8555d181814bc2",
+      "bytes": 9821,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "test/account-history/service.test.mjs",
+      "sha256": "bab10985af0872ad849e7840aedf0bf940446ce75d5abbfe85bbd650c2cc09b3",
+      "bytes": 17044,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "test/account-membership/locator.test.mjs",
+      "sha256": "222cf304b86031351af57c938c405953c449e0f74d794a02eff702820edfcd92",
+      "bytes": 9073,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "test/account-successor/protocol.test.mjs",
+      "sha256": "1eeee17cb02cd17833e5db5d394895c187a3df4496efea3281787656c841bcba",
+      "bytes": 10029,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "test/account-ceremony/content-transfer.test.mjs",
+      "sha256": "d1480003e01b2b215777a7ebdddbf98e9ecbe98c50f5508b060a6d731379f104",
+      "bytes": 310799,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "scripts/release-validation/general-tests.json",
+      "sha256": "4621d7a8c7f2e65f83302c675cdeb232c825e5306268f091e926a35697a38191",
+      "bytes": 4023,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "test/release-validation/general-tests.test.mjs",
+      "sha256": "7a0e8315f153a9e7cb5e0e48b1cfbf96293d8954e3b9f26342283302886611d0",
+      "bytes": 13479,
+      "state": "unsigned cumulative tree after approved457product fix"
+    },
+    {
+      "path": "docs/release-validation-graph.json",
+      "sha256": "63a9ce138b530d68473beacb29435ef0cc86efd0599c10da254fe7c821ba6640",
+      "bytes": 583955,
+      "state": "unsigned cumulative tree after approved457product fix"
+    }
+  ],
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/457-bookkeeping-path-repair.json",
+      "sha256": "a3073b4cca5bfd7c7f1bb0b21a6e6bf4a8954c5f6a7f35ea81a53e16993b32da",
+      "bytes": 541
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/457-check-declaration.json",
+      "sha256": "eb00783d1efc38d2be4b1bc23d4c069a0d4e48841b2856dae3b349e6fa649798",
+      "bytes": 3353
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/457-check-results.json",
+      "sha256": "1c3bd7986dcd5a4c262dea2441accfbaf4199e467e01e14393f827570d492158",
+      "bytes": 10885
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/457-final-results.json",
+      "sha256": "2f8a0456f828cbe8ac3588310f1657f495b4f1b6d1ccf30d2d53d2b1faa416c0",
+      "bytes": 3133
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/457-inverse-and-population.json",
+      "sha256": "a959442f37ea945cf2feec9366bf8cf2701aa3b55f57ffb0dd063c86c69a0516",
+      "bytes": 6536
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/457-population-fixture-note.json",
+      "sha256": "76b4d3e32e870497d3c2581357e16d0a97181df4bef5bab9757af51a2ebe7d30",
+      "bytes": 301
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/after-unit-r2.log",
+      "sha256": "28227a9aaf69d34572dcda1d0981bde1aed8067fe6e825e2f7c6c1f41d8f2031",
+      "bytes": 2441
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/after-unit.log",
+      "sha256": "d321003b833c9a37b0340a371946b6826f8656e201b00c60d3bc8d0d319ec115",
+      "bytes": 5143
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/before-unit.log",
+      "sha256": "36a6a549d49d230ae8a17685cb1c8945be1cd4a475b76fd0ee90a9ca014091c1",
+      "bytes": 28380
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/check457.py",
+      "sha256": "2ef7a40ce53ea480a3473498105f14b52ac2a4a10e06a4d00218c4eefa07c427",
+      "bytes": 2321
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/final457.py",
+      "sha256": "28eaf00c7627ebecc6958c378b4142990788e9b1d7a03e0b4b4cba28b089c325",
+      "bytes": 1178
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/format-check.log",
+      "sha256": "2093dd6527092d79c6c61aab633667b76f1e1dcd2eee2a882fa7440747b8e5a6",
+      "bytes": 195
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/format-diagnostic.log",
+      "sha256": "0a1147a26accd1fe1cbaa673a84265164ddcf902f4578b1707c57391ab6f5728",
+      "bytes": 46
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/inventory-record-r2.log",
+      "sha256": "99ee1292699bf69d2c51cc66bbd359dc1cac8860f3c11b3706d5276629a7d8ec",
+      "bytes": 324
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/inventory-record-r3.log",
+      "sha256": "99ee1292699bf69d2c51cc66bbd359dc1cac8860f3c11b3706d5276629a7d8ec",
+      "bytes": 324
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/inventory-record.log",
+      "sha256": "64759960b3f850f03771943a338545dede3e3d02f75831fdba4c08e1772a4b56",
+      "bytes": 324
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/prove457.mjs",
+      "sha256": "ffa6bb12dcd8a846682df42bcec63af76bd86059a2c6bb917dccd5fafd0f3288",
+      "bytes": 3231
+    },
+    {
+      "localPath": "/private/tmp/done-clock-skew-repair-457-20261106/record457.py",
+      "sha256": "155c116864e8c500dcfdddeeecb2872485436e2517474cf0a5a7ff7c0f078001",
+      "bytes": 12052
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/child.log",
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535",
+      "bytes": 18
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/host-load.jsonl",
+      "sha256": "3cbad3c72edc3d7f80c8f40d69ee2468802dc2eb0d044a2d1e5608e6941472e1",
+      "bytes": 1506
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/power-assertions-before.txt",
+      "sha256": "8cd6feea2b759e6234b11840858e47828a64446e58dea937dc60a516b211ae24",
+      "bytes": 1389
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/power-log-after.meta.json",
+      "sha256": "f19b697926ee1a5f0e350c8155e91e3b88c04e90ae6ecb28e65b74525b21fdc8",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/power-log-after.txt",
+      "sha256": "4b7907c422c207b093ff785db7b756758d11892a844468e57c8160a3bec70af8",
+      "bytes": 450
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/power-log-before.meta.json",
+      "sha256": "7cb3b684a6c1c8dd9a76f230da467b5e962aa9e459231932558f73ff414cebe1",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-typecheck/run.json",
+      "sha256": "e330b826fe6bd45e9b20f758e5b813bb221d9e480497bf769ad2902d854ee8f6",
+      "bytes": 725
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/child.log",
+      "sha256": "4dbbb5d9326c5cf032406db1cc4c28f14315fc922a84998f8001df32db5e6314",
+      "bytes": 24
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/host-load.jsonl",
+      "sha256": "9335d165e3c9883781e821058118943b3d8a2ae85dc1f7e73a71fe2c16fbe45b",
+      "bytes": 1510
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/power-assertions-before.txt",
+      "sha256": "e4ceae43768c2dda3caf433103dda8829b11535ec62bbb454eec2714ccb77b92",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/power-log-after.meta.json",
+      "sha256": "ef10c8ae0a7f8d97e20069b68c104eaf77ae185d99b62449b02b9a18e1f680a3",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/power-log-after.txt",
+      "sha256": "0936a97b98d930f665a7a77794fe93ef3d1f7bb533d439fcd05791c870ebbc79",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/power-log-before.meta.json",
+      "sha256": "b3baa90e1828b6f111e54fb069d49bfbff516a773a621c7ee3d6db51ae130c60",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-lint/run.json",
+      "sha256": "f8d8517fff3d6a62283c756647c523813311a3e3eb51f382eb884eaff1242649",
+      "bytes": 715
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/child.log",
+      "sha256": "acf99ef4faf2a8969f1f624f3916bdae7198e103536dd507086ca80ac8b9a971",
+      "bytes": 2437
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/host-load.jsonl",
+      "sha256": "c1830c429cffa7058b5e206d621b176e126d3b82e92b29de428515e3bc39ce8f",
+      "bytes": 1509
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/power-assertions-before.txt",
+      "sha256": "223049c82ea11f7062fa8983db0e8d71d412910833e248b7415f398cbb555814",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/power-log-after.meta.json",
+      "sha256": "95afd585fdbd06e11044b63dc0bd5406b4d321b84e0f917e5f46862d9d29f1a4",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/power-log-before.meta.json",
+      "sha256": "17d1b2de3e679dfcc3751f7a35f4ce585512021f34cca3ef55f3ce92d9cfd49c",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-clock-protocol/run.json",
+      "sha256": "140ba6e9a68fff6ae5acbe08a2b3f01d5928268d0b49dd10aa2a8444a3c719a7",
+      "bytes": 842
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/child.log",
+      "sha256": "c60d48dbc4aee722782fb6f13496532c3de0b5a3b505e95349283bb756a2d58f",
+      "bytes": 6247
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/host-load.jsonl",
+      "sha256": "15297dbbb9019b34a5fc2f351b8b5cf651bc3e17bea1e175d2ae0988d1ebf04a",
+      "bytes": 1449
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/power-assertions-before.txt",
+      "sha256": "811160eb3cf75a4d2dd285d567ce710ec07011c3da573a66581870d6574b9ab1",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/power-log-after.meta.json",
+      "sha256": "5cc68dd8f4c81e3b88fa900baa40b919e61cad9b71dd12480ca89087f4cfa32f",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/power-log-after.txt",
+      "sha256": "144e0bdeb5cbee3f2f768ae04446ae84edc1901c98f69ca083be3e2f6488aabf",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/power-log-before.meta.json",
+      "sha256": "ff19246a19ae379009dc2a6b651df536bd7e341fa1819b66458f81c32f0a9dc5",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-enrollment/run.json",
+      "sha256": "3a52bf1b3227a2a8937e4ccdab42d2d4852a86a70bd7fa9ee2fab189a00b47ee",
+      "bytes": 744
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/child.log",
+      "sha256": "bc69f8b4ddc5c05b40f7c56711025d0be420a83b52ce4a35b6d9e0cbfd68fcba",
+      "bytes": 14548
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/host-load.jsonl",
+      "sha256": "5dc0e91f162f30ae899198b8982e447962515d55bc56720c0b5786179718863f",
+      "bytes": 21663
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/power-assertions-before.txt",
+      "sha256": "1e3abdacc8ddbf93fba78c2270259cc82e2a0380389f5af0b34687130eefb8ba",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/power-log-after.meta.json",
+      "sha256": "8c5abdc7676d9cadcf2107dc5cd159d3dc93813bef6fab56ab14c16b37e52e34",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/power-log-after.txt",
+      "sha256": "b6088a889b20d404d624f6aef7cdbec72f4fcb8e8e5127d46d504e86cc80307e",
+      "bytes": 300
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/power-log-before.meta.json",
+      "sha256": "a5e813576c6ce70f0a6debe041def1f9f2139213a874c3be2cf47759ee38bb30",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-successor/run.json",
+      "sha256": "e5fd46dabb7a23211812473486ab95a253f3b7b967257e9bc4f3653ce93aa1a3",
+      "bytes": 742
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/child.log",
+      "sha256": "4100d1ccb2e4f31aab6eea8bb0dce3604b79968726a05f07b1b668ce284ddb7f",
+      "bytes": 1957
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/host-load.jsonl",
+      "sha256": "bb4cd8dedc2188d61da4a9e3ef31c54b4487445430f8f889554b2d7d7e06d533",
+      "bytes": 1485
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/power-assertions-before.txt",
+      "sha256": "e48a252859d5cff0d872605603f85cedc1f894c3308d71e5b6cf2efffe1799e2",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/power-log-after.meta.json",
+      "sha256": "a3e0534dddef4b4c8a73e103013f04b8fefeb90c352dd7ff7d4200342f72844c",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/power-log-after.txt",
+      "sha256": "35c184f59b60964580a12bf6c927586d9c04a58e19925eca0319ce05d7ec79d8",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/power-log-before.meta.json",
+      "sha256": "86cc8967ae287a6aa80996fbab6d4ddc8001562575cd18c736d9d907daa71a89",
+      "bytes": 479
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-membership/run.json",
+      "sha256": "1afd0d8b85b713c10173a494c3cfd339d2fce1105f2f4c2e3bbdc618f83d9664",
+      "bytes": 1123
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/child.log",
+      "sha256": "25bbe79990f28a8ba48283b97db101f64c35c0769e2539df09e9fccf2741991d",
+      "bytes": 8683
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/host-load.jsonl",
+      "sha256": "927c56a8d673c99aef07c6212602822741d5242c92cd4b1dd493e952d184b2be",
+      "bytes": 4522
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/power-assertions-before.txt",
+      "sha256": "08ce6c0e1e8756f3ae1df2f310869478be44f34d1a741b237b4bd74d5f9bdf31",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/power-log-after.meta.json",
+      "sha256": "97042291f1fdd7172fcd669d326f48156cb48f9d0d0c8c505623632318880f44",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/power-log-after.txt",
+      "sha256": "4be2a37cbe50194633bff729757fc301047063dbd2e4f0a87a41db9f71deed87",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/power-log-before.meta.json",
+      "sha256": "b68973b04bf595548296578f5056e96b802b7e2d1d97cebba95ee49f6ea35b60",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-history/run.json",
+      "sha256": "eb76df2613a4437005aa6298cbf57913f2331b5dae1c141125ee09dbc62a76f5",
+      "bytes": 1552
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/child.log",
+      "sha256": "67c23df0e644e0a1c1566ef5a1eda1b0d2d55aa1cd7e252b7c1150808f9673f2",
+      "bytes": 561
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/host-load.jsonl",
+      "sha256": "3167ac56811cdeebc60d8e565226d781194e93d5f311800b6bec1e7d397bec68",
+      "bytes": 1490
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/power-assertions-before.txt",
+      "sha256": "2aa290078969494d058538b06b663a24170693795837ddccb4aeae092fc41e51",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/power-log-after.meta.json",
+      "sha256": "6f90d4cbbbbdc4140077c80aca059802fe55b3d051a7dd8acbd3c81243476609",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/power-log-after.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/power-log-before.meta.json",
+      "sha256": "e677a17ad1c499a7e090f1ee8e4614b6396bee0919dd0d5c998c4d0a805bd7cf",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-removal/run.json",
+      "sha256": "40465e18188d2540baf347e2a72116a6e2b75a6af09cbb854c5187e08e0fdbd4",
+      "bytes": 845
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/child.log",
+      "sha256": "37daf4ea4515a1f83fd7a71c38be7d56c4b4e222f91113151be1604efad05146",
+      "bytes": 21342
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/host-load.jsonl",
+      "sha256": "175d4474f79941feda36560fdecf4bd3f6c85b8dfd62005e1d399ea50b4cb042",
+      "bytes": 36435
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/power-assertions-before.txt",
+      "sha256": "321cd9551a16e2014fd40d83353ef4fab723ce0ef856464d27678e5aae691b82",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/power-log-after.meta.json",
+      "sha256": "acb3c9f0a45abbe5eda6b778998cf2ef6dab9cd1ef2e1308d5acfb032f3680ab",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/power-log-after.txt",
+      "sha256": "18c1e62e28d0cd627c6febfd1c5bee989c6a4fc753c192e45e5df60bdb43ff53",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/power-log-before.meta.json",
+      "sha256": "d0e1c4cb752922a1d7cfa5d41e1cc0ff224e1dd5015a199d986bc8031b6bc03c",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-ceremony/run.json",
+      "sha256": "2563eaeb8cbd90a8ec8c05d26bfb58e004eb8678ae6375629b6900446bb8b989",
+      "bytes": 858
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/child.log",
+      "sha256": "93147bb3d277d81b2333498eee7ef17725136883d25b852c6c709c3ab2d29946",
+      "bytes": 2603
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/host-load.jsonl",
+      "sha256": "3d8cf289cbe73f4244bd36d4d0ad12c0fc30ee115214dcc93bdb5a4bd16f40fb",
+      "bytes": 1484
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/power-assertions-before.txt",
+      "sha256": "bf6c64aedb2e9629ed93c7eac4ae752e4f11ec0c827c3bdcfcd02e4521b6c0fe",
+      "bytes": 1615
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/power-log-after.meta.json",
+      "sha256": "5f2c36a96208241ef68cc2cc96b4a2d933fd1b2a43b9552eae8c3832f1e20c00",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/power-log-after.txt",
+      "sha256": "fc25c6bd66e983639226c503e77b857dc6a97ba9181362fde741cdff5d0556e1",
+      "bytes": 222
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/power-log-before.meta.json",
+      "sha256": "23c155b2a40e9ce12a303457619b09cbd81e4e0ad571f65d180cff1de2c0dd3f",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy/run.json",
+      "sha256": "07b762b045c4a448707cfee66abd6f4b6ffea6ad67b60a7feb20563fb67674d3",
+      "bytes": 1073
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/child.log",
+      "sha256": "37d16d68994fcc90e893e6bee8e10cc0ff6f2333165ad332e8a1f400ab26028a",
+      "bytes": 2437
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/host-load.jsonl",
+      "sha256": "21f7930ce7cc84d751ad1f0214f73369aa07651ed76319d24d5a77ffc768ccc0",
+      "bytes": 1501
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/power-assertions-before.txt",
+      "sha256": "d75d7510286e733e100c96337a0a95422fd89b737206772fe959b490148f2c9d",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/power-log-after.meta.json",
+      "sha256": "4c850c1eed88c4c3aad1e4e487295edabb440a47da440f252fbfe892f3fe94ab",
+      "bytes": 483
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/power-log-after.txt",
+      "sha256": "69bb45b59777a33dd8e83014c1dfde4a86138b725eeae5edc467a271419b8e39",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/power-log-before.meta.json",
+      "sha256": "e175f5b07dc05c2324f551053a7d94de9805540eed818d668624798efcf38664",
+      "bytes": 481
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-final-clock-protocol/run.json",
+      "sha256": "f9c9e02aec2a8a0423e2a43f02b7b0c93dccfb8f1910df6e4cc5ff2192d3adeb",
+      "bytes": 840
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/child.log",
+      "sha256": "59128bb9e75066130d30bb4daf24ab48a3646e1925e8ccfea2a9d2de99d70a90",
+      "bytes": 1772
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/host-load.jsonl",
+      "sha256": "6deb54f4f7e7221c72549a09e93a8a58411901b163e13d67342f94ef613bdb77",
+      "bytes": 1496
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/power-assertions-before.txt",
+      "sha256": "c906b6327c0ec6715ea7e442b70380b37bf4b8eddc892aa52c778a124c397fdf",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/power-log-after.meta.json",
+      "sha256": "2a37fdb210462da4a053d5676dfdd6b82ab5bfbb685f2f321f33455d7e3f6d24",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/power-log-after.txt",
+      "sha256": "64517f3289b814775131e924c16f238d6c2ba1047622d291a043664b232f6689",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/power-log-before.meta.json",
+      "sha256": "69039c31d31bb7d5e1c084295dc8f0c4a065b87501f8e1a7fdcc90445422d7c2",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-census-policy-r2/run.json",
+      "sha256": "14393031814d6f39602960efd31b18eb98e147851ee4caefc28273159b42203a",
+      "bytes": 1072
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/child.log",
+      "sha256": "15da5399849f74d8a599223328772fda0315b19bc6bb954c521c78a841099b2f",
+      "bytes": 277
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-actor.json",
+      "sha256": "7670352297c0907f73079e9584cdcc545ee5a06ed4d3332ab66ba262085790b7",
+      "bytes": 5296
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-baseline.json",
+      "sha256": "36d2598d44afe3739aaccca8ef55e99e30945b8f28c1f72f8502e64f1980780f",
+      "bytes": 168
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-batch-count.json",
+      "sha256": "92d893124b5d0746a2f0d4be23fab72f79293b90b756b9753fbdf9ede59bde04",
+      "bytes": 11389
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-buffer-copy.json",
+      "sha256": "fa43f524306c349f4786c287e9bf9818e88217873f724095f105a4f4a637234a",
+      "bytes": 9333
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-deletion-coverage.json",
+      "sha256": "b54be0583015b44340b7408a605a66f4f2de38a09ae6d27fd1e81a6607a7d995",
+      "bytes": 105
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-early-promotion.json",
+      "sha256": "e995f041e2caa0d7c27747fa52e78f101d58b6632bf7077f514ecd572938eef2",
+      "bytes": 89
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-global-cursor.json",
+      "sha256": "30ebd1498f7e70cab98f0e50d24bfdc815eed5f4205b2ebad9a7f28cd9d6bfd5",
+      "bytes": 64
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-late-close.json",
+      "sha256": "082df1e36acb816f17614f6f3247d3d094085774688e0456d130abc9b1a5220c",
+      "bytes": 5027
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-page-signature.json",
+      "sha256": "fce798a927d1648021c9f1cf083e193384f30b64b6f7cc228cf5e3c14de0f75b",
+      "bytes": 5318
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-pending.json",
+      "sha256": "a21711798a1f5d8f9aa8805ef6be226f59effe5238a5ee684d1b974080780517",
+      "bytes": 72
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-prefix-proof.json",
+      "sha256": "fc56ee0743fbe401be6cbe987b3cbbb7495eed9cb4c7ed6ef4f08b4a804f6288",
+      "bytes": 5379
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-record-binding.json",
+      "sha256": "d8e3fd7d7dc4c0ed28f2e611e26d099b99f8e0f12f660eebe782ce8f0ceb2318",
+      "bytes": 5205
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-relabel.json",
+      "sha256": "bb1697823ae108601b855ebfb9d0ebe1dd8bd225a9041e24ac40691ab433d833",
+      "bytes": 177
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-request-binding.json",
+      "sha256": "171022793a5add39b507e779709ae0b107802ab350c335f0c08012e8ea5f2fdc",
+      "bytes": 5377
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/control-split.json",
+      "sha256": "2bb542e39d26cf5b66e9dd736300bab749d75383aee19fc43b2196531751b164",
+      "bytes": 105
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/coverage-histories.json",
+      "sha256": "39d112a29986b0ca69d47bdcc9c70a36b830c0fe24049ac2478b49389af83c4f",
+      "bytes": 10834
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/display-after.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/display-before.json",
+      "sha256": "5268378427b3e20326d64753d10d130d1dca48fb3e10c327112f50a5dab64bdb",
+      "bytes": 383
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/fixtures.json",
+      "sha256": "11588cb35877196269f564ae5f57789b3c9308531daea5299fdcb36b834190b8",
+      "bytes": 26058
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/generated.json",
+      "sha256": "3a3732878c9cbd9f63d8ea7a41cd0e8c0ec4aada3fb7494dfd28af43a52bf58b",
+      "bytes": 1329159
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/host-load.jsonl",
+      "sha256": "2f3965473ab675482d15f254621d323283d3d225a53821c2f327ae14d3c2ff55",
+      "bytes": 39117
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/independent-bytes.json",
+      "sha256": "738dfcd8fd0298396d814746d565b7c7b84c654de2238864e88f9446294e0ed5",
+      "bytes": 23766
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/power-assertions-before.txt",
+      "sha256": "8c19cbb1bc5e2abb940a878c1ffbde9c67301483cb9fc9beb0be517e8fefc84b",
+      "bytes": 1900
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/power-log-after.meta.json",
+      "sha256": "67228c3e3a256b7716ab8aa6ab178fdc8e380f0ff1f8011a05ac256dd6be5433",
+      "bytes": 482
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/power-log-after.txt",
+      "sha256": "698794ca678a99e2edce907f1609fc055baf721008d8113a5161e19197c68fee",
+      "bytes": 231
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/power-log-before.meta.json",
+      "sha256": "08017acd4524d7fce707523d941188ec83178b47a093cac33446fdd2c644cb03",
+      "bytes": 480
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/power-log-before.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/run.json",
+      "sha256": "3b477d8a2c886c09efd538da12142aebcda2c91e10f984302afda856dda9b817",
+      "bytes": 715
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/unit-histories.json",
+      "sha256": "2efededefb8faa32b169378cdbd8747c2ade20340a82a37472432c6d76ece5fa",
+      "bytes": 631
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/unit-ledger-histories.json",
+      "sha256": "fa39c7e04f3fe9ac6e75b5508246d25d60c4646010cbf90d869faedc4d8c8e4a",
+      "bytes": 74096
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/wire-corruptions.json",
+      "sha256": "edafd6d0913ee490f991b960fa779c6be1715373ed892247edbdca23cd9c8e01",
+      "bytes": 84156
+    },
+    {
+      "localPath": "/private/tmp/done-release-hardening-20261102/457-full-unit/witness-control.json",
+      "sha256": "1c1516c52eb9d7ab5e1e3ee37c9beaa281ead0f04d206e030cc8cd684c0be98e",
+      "bytes": 234
+    }
+  ],
+  "inverseProof": {
+    "protocolChanges": [
+      {
+        "path": "account-protocol/enrollment.ts",
+        "beforeSha256": "bdc9e083eecc61cdb6407fb7059d7c0e6e507392228f464cce1c48494fafb5fc",
+        "afterSha256": "ee02ca2c59a8602ad5f666aa54ba2c5835665527d98cdbc384a3b4ce4cbfbe3c",
+        "inverseExact": true
+      },
+      {
+        "path": "account-protocol/historyExchange.ts",
+        "beforeSha256": "09f01805cf2a4295722c0af754d74f1f932106d69158aac0f292fcce889afbe3",
+        "afterSha256": "6ada6ad8a29f5c535b2b97e96ba0bc888d3d20bff56f837a2b510117945a4053",
+        "inverseExact": true
+      },
+      {
+        "path": "account-protocol/membershipLocator.ts",
+        "beforeSha256": "6b5363c297a27f48f50cf5ba34016ff416b7769c1bd16e7782c2b1809baad70e",
+        "afterSha256": "5ec03456c631560d153fa70c574ede00e83dafd9a376aa82f2e3d31ecfb605c1",
+        "inverseExact": true
+      },
+      {
+        "path": "account-protocol/membershipCheckpoint.ts",
+        "beforeSha256": "8904ba9035a8c92b5b5deee16b6a0d1413b530cff49fe337284f2a22328a7a0b",
+        "afterSha256": "6cd2b1608d3d2346b99feaa6527d1dcfe97beeca3af08f40a6d925acef6b3ce4",
+        "inverseExact": true
+      },
+      {
+        "path": "account-protocol/successor.ts",
+        "beforeSha256": "27d051db0ea7e5228be7d8b65becd0d0e6e4a6d19dbe51659f55804ed73af09d",
+        "afterSha256": "a82f3f183e0a5d5b0411442bb2d670e5637f47db15cabf82da386357c8cb3034",
+        "inverseExact": true
+      },
+      {
+        "path": "account-protocol/removalDiscovery.ts",
+        "beforeSha256": "73dd369562b6273d2d433a70a68ae25b11bbdcbbd62998b6bef58ddae3091e65",
+        "afterSha256": "287166c2ecf70109042e6d836a8ffadc4edcd1344c042cbef9627c69bfadb3d7",
+        "inverseExact": true
+      }
+    ],
+    "signatureAndExpiredChecksAndLifetimeConstantsExact": true,
+    "sharedAllowanceMs": 120000,
+    "oldStages": 280,
+    "newStages": 281,
+    "oldCases": 2573,
+    "currentCases": 2603,
+    "added": [
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::enrollment: service one second ahead is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::enrollment: exact two-minute allowance is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::enrollment: one millisecond beyond allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::enrollment: expiry at now is still refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::enrollment: invalid signature inside allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::history: service one second ahead is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::history: exact two-minute allowance is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::history: one millisecond beyond allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::history: expiry at now is still refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::history: invalid signature inside allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::locator: service one second ahead is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::locator: exact two-minute allowance is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::locator: one millisecond beyond allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::locator: expiry at now is still refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::locator: invalid signature inside allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::checkpoint: service one second ahead is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::checkpoint: exact two-minute allowance is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::checkpoint: one millisecond beyond allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::checkpoint: expiry at now is still refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::checkpoint: invalid signature inside allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::successor: service one second ahead is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::successor: exact two-minute allowance is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::successor: one millisecond beyond allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::successor: expiry at now is still refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::successor: invalid signature inside allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::removal: service one second ahead is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::removal: exact two-minute allowance is accepted",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::removal: one millisecond beyond allowance is refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::removal: expiry at now is still refused",
+      "test:test/account-clock-skew/formats.test.mjs::test/account-clock-skew/formats.test.mjs::removal: invalid signature inside allowance is refused"
+    ],
+    "removed": [],
+    "inventoryCounts": {
+      "packageScripts": 145,
+      "campaigns": 78,
+      "testFiles": 736,
+      "requiredTestFiles": 730,
+      "excludedProductTestFiles": 6,
+      "catalogues": 12,
+      "vectorCorpora": 30,
+      "constructions": 99,
+      "vectorChainConsumers": 18
+    },
+    "executionCredit": false
+  },
+  "tests": {
+    "nodeSuites": [
+      {
+        "key": "457-final-clock-protocol",
+        "tests": 30,
+        "pass": 30,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-enrollment",
+        "tests": 42,
+        "pass": 42,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-successor",
+        "tests": 101,
+        "pass": 101,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-membership",
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-history",
+        "tests": 63,
+        "pass": 63,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-removal",
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-ceremony",
+        "tests": 171,
+        "pass": 171,
+        "fail": 0,
+        "skipped": 0
+      },
+      {
+        "key": "457-census-policy-r2",
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "skipped": 0
+      }
+    ],
+    "fullVitest": {
+      "files": 331,
+      "passed": 3218,
+      "existingSkipped": 1,
+      "actualDurationSeconds": 126.36,
+      "hangGuardSeconds": 240
+    },
+    "typecheck": true,
+    "lint": true,
+    "inventoryAndPolicy": true
+  },
+  "sharedAllowanceMs": 120000,
+  "protocols": [
+    "enrollment",
+    "historyExchange",
+    "membershipLocator",
+    "membershipCheckpoint",
+    "successor",
+    "removalDiscovery"
+  ],
+  "unchanged": [
+    "all expiresAt<=now checks",
+    "all lifetime constants including sender30s",
+    "all signatures and authority predicates",
+    "all wire and durable formats",
+    "all Stage5limits/budgets/deadlines/gates"
+  ],
+  "oldTests": "four existing future-bound fixtures move beyond the newly approved maximum; zero/negative/expired/signature/scope/replay checks retained. No test or registration removed.",
+  "casePopulation": "2573+30=2603; reviewed Node66+30=96, stages280+1=281, Nodefiles10+1=11",
+  "preservedFailures": [
+    "before-unit:18of30fail on old zero-tolerance bounds",
+    "after-unit:28pass/2fail because new history test signature used wrong field order; corrected independent fixture framing only",
+    "private population proof refused new protocol.test.mjs path; renamed only new file to existing formats.test.mjs convention, policy guards unchanged",
+    "census policy15/16: old node subtotal66; corrected to96after exact30-IDaddition proof",
+    "format check identifies only pre-existing content-transfer tail styling at7520onward; broader old formatting stays deferred"
+  ],
+  "formatting": "new files and all other selected changed inputs pass; no old tail formatting applied",
+  "timedMatrixJourneysStarted": 0,
+  "next": "freeze source repair, rebuild client and effective API bytes, repeat455seed on Nov6; then continue frozen Stage5/host handshake",
+  "committed": false,
+  "pushed": false
+}

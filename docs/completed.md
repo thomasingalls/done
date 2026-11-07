@@ -19780,3 +19780,22 @@ credit. [Record](./development-evidence/2026-11-02-release-hardening/456-contain
 Outcome precedes advancing the seat. Next implement the operator-approved six
 future-only skew bounds and unit controls; no expired/signature/lifetime-constant
 change. Keep earlier failed roots. No commit, push or deployment.
+
+
+### Harden the six approved future-time bounds and preserve strict expiry
+
+**Date:** 2026-11-06 · **Phase:** 457 · **Scope:** operator-approved product repair.
+
+Six protocol sites share120000msfuture tolerance. Exact inverse bytes retain all
+expired, signature, lifetime-constant, scope and authority logic. Thirty signed
+boundary/signature controls pass, as do394affected existing Node cases, types,
+lint and16census/policy cases. Full Vitest passes331files/3,218tests and the one
+existing skip in126.36sunder240s. Reviewed population adds exactly30IDs and removes
+none:2,603cases,281stages,96Node protocol cases. Four old future fixtures track
+the approved boundary; no old assertion/test is removed.
+[Record](./development-evidence/2026-11-02-release-hardening/457-future-clock-tolerance/README.md).
+
+Retain prior red development/fixture/census attempts and old deferred tail
+formatting; no policy/guard workaround. Outcome precedes advancing the seat.
+Next bind rebuilt clients/effective server bytes and rerun455on the current date.
+No app/timed journey, commit, push or deployment in this phase.

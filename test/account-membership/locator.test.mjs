@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { CLOCK_SKEW_ALLOWANCE_MS } from '../../account-protocol/clockSkew.ts';
 import { deliveryFixture } from './delivery-fixtures.mjs';
 import { signed, message, hash } from './fixtures.mjs';
 import {
@@ -138,7 +139,7 @@ test('nonce, pin, fork, epoch and reader eligibility cannot be replaced by a cor
     { workspaceId: 'dd'.repeat(16) },
     { lineageId: 'dd'.repeat(32) },
     { expiresAt: 1000 },
-    { expiresAt: 61001 },
+    { expiresAt: 61001 + CLOCK_SKEW_ALLOWANCE_MS },
     { credentialId: f.x.c.candidate.id, epoch: 4, head: f.x.p.head },
   ]) {
     const r = f.discover(patch, patch.credentialId ? f.x.keys.new : f.f.keys.new);

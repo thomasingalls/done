@@ -7770,3 +7770,17 @@ yesterday'slead. Keep every observation. Standing permission allows apparatus/
 wrapper repairs with failed attempts preserved, while actual app failures,
 unapproved guard/limit/assertion/gate changes and the tight-cell host handshake
 still require a stop. No deployment or commit permission is added.
+
+
+### Share future tolerance without extending signed deadlines
+
+**Date:** 2026-11-06 · **Phase:** 457.
+
+Apply the explicit operator allowance at the six named comparisons only. Keep a
+single constant and independent literal boundary controls; do not reset deadlines,
+change sender lifetimes or skip signature/authority work. Existing future-bound
+fixtures must now exceed lifetime+120000, preserving their original refusal
+purpose and all other negative checks. Reconcile both exact census totals from
+the30new IDs; use the established reviewed Node formats.test.mjsname instead of
+widening the policy regex. Preserve the failed first census and test fixture
+framing attempts. This is source verification, not Stage5performance acceptance.

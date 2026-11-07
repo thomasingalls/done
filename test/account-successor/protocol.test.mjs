@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { CLOCK_SKEW_ALLOWANCE_MS } from '../../account-protocol/clockSkew.ts';
 import { readFileSync } from 'node:fs';
 import fc from 'fast-check';
 import {
@@ -195,8 +196,17 @@ test('discovery is nonce-bound creating-device proof; pending devices and replay
   const bad = { ...r, credentialId: f.context.candidate.credentialId };
   bad.signature = signed(f.nextKey, message('done/authority-discovery-request/v1', unsigned(bad)));
   await assert.rejects(verifyDiscoveryRequest(bad, f.base, f.successor, 1000));
-  for (const now of [61000, 0, -1, NaN])
-    await assert.rejects(verifyDiscoveryResponse(a, r, f.base, now));
+  const future = { ...r, expiresAt: 60001 + CLOCK_SKEW_ALLOWANCE_MS };
+  future.signature = signed(
+    f.keys.device,
+    message('done/authority-discovery-request/v1', unsigned(future)),
+  );
+  for (const now of [61000, 0, -1, NaN]) {
+    const request = now === 0 ? future : r;
+    await assert.rejects(
+      verifyDiscoveryResponse(now === 0 ? f.respond(request) : a, request, f.base, now),
+    );
+  }
   await assert.rejects(
     verifyDiscoveryResponse(a, f.discover(f.held, '99'.repeat(32)), f.base, 1000),
   );
