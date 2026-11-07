@@ -162,9 +162,9 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release-hardening
 seat: /Users/thomasingalls/.codex/worktrees/7fda/done
 branch: codex/reduce-goals-context-overhead
-status: in flight # phase 512 setup deadline retained; fixture-only cadence repair next
+status: in flight # phase 513 fixture cadence controls pass; fresh preparation rerun next
 scope: Stage 5 hardened gates, then Stage 6 landing report
-blocks_on: complete current-date 3072 fixture within original ceiling, then ordinary returning-reader report
+blocks_on: complete fresh 3072 preparation under existing1800s ceiling, then original report
 updated: 2026-11-07
 ```
 
@@ -193,8 +193,8 @@ is in completed.md and immutable evidence, not repeated here.
 
 **Latest checks.** The phase 508 interrupted-projection repair passes all 149 focused cases. Its five new real-crypto/IndexedDB regressions fail on the old implementation as expected; the private flag-only control still fails repeated interruption. Phase 509's coherent checkpoint passes 3,231 cases in 333 unit files plus the existing skip (128.18s, approved 240s hang guard), types, lint, changed formatting and 21 policy/census controls. General population is exactly 2,616 cases/283 stages: five added IDs, none removed, aggregate blocks unchanged. The two precise lint/census proposals were operator-approved. Phase 510 builds 2,047 exact inputs with the unchanged release flags and no probes. Older 36 blocking timed journeys remain evidence for the phase 469/470 source; they are not silently transferred to the phase 508 repair.
 
-**Active bounded outcome.** Phase 512 preserves two failed preparations. The corrected native-navigation retry reaches the 1,800s setup ceiling at source prefix 3,061; eleven exact reductions pass, but no complete fixture or index report exists. Next sample the same cached status at a fixed 25ms and save exact before/last acceptance counters. Every predicate, deadline, production flag and source byte stays.
-[Record](./development-evidence/2026-11-02-release-hardening/512-current-fixture-setup-deadline/README.md).
+**Active bounded outcome.** Phase 513 changes only the new fixture cached-status cadence to25ms and records initial/last acceptance counters. Four controls pass; inverse bytes preserve every other line, including all assertions/timeouts. Next run the unchanged protocol on a fresh account; phase512deadline failures remain. No new app or build changes.
+[Record](./development-evidence/2026-11-02-release-hardening/513-fixture-status-cadence/README.md).
 
 **Remaining Stage3.2.** Shared direct/indirect readers, all four aged saved semantic
 paths and arbitrary mixed full/incremental properties have isolated coverage.

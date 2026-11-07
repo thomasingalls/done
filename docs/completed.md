@@ -20580,3 +20580,13 @@ Fresh current-date fixture remains unexposed: first attempt fails native-navigat
 [Record](./development-evidence/2026-11-02-release-hardening/512-current-fixture-setup-deadline/README.md).
 
 Outcome precedes seat update. No commit, push, publication or deployment.
+
+
+### Cached-status cadence repair for preparation
+
+**Date:** 2026-11-07 · **Phase:** 513.
+
+Prepared the fixture-only fixed25ms cached-status cadence with the original exact prefix/30s wait, case1800s and reduction120s. Four controls pass; inverse bytes recover the entire prior recipe. Added only initial/last acceptance observations. App source, build, network and production scheduling remain exact.
+[Record](./development-evidence/2026-11-02-release-hardening/513-fixture-status-cadence/README.md).
+
+Outcome precedes seat update. No commit, push, publication or deployment.

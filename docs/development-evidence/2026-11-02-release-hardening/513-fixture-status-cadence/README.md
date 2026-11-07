@@ -1,0 +1,7 @@
+# Phase 513 — sample the same cached status more often
+
+The new current-date preparation recipe now samples its existing Window `sync.status.send.acceptedThrough` value every 25 ms, replacing the 25/50/100 ms progression. The exact prefix assertion and its 30-second bound stay. The 1,800-second case, 120-second reduction, reconnect waits, input pacing, actual admission/durability/retry and every archive/history/snapshot predicate stay byte-identical. No Worker RPC, network request, protocol setting or production scheduler is added or changed by a status sample.
+
+Two content-free observations also save the initial prefix and the last exact acceptance count, so a later failure has a precise counter. An inverse-byte proof removes those observations and restores the cadence to recover the entire phase 512 recipe exactly. Four controls pass: unique cadence change with other waits intact, scalar access without full-graph RPC, refusal to accept a stalled/skipped prefix, and missing-state refusal. These are preparation controls, not aggregate or performance credit.
+
+The standing permission covers apparatus pacing with the same predicates and deadlines. The failed phase 512 runs stay intact. Next run the declared recipe on another fresh fictional account; never resume the timed-out state. The unrun index-build/report drafts under old 513/514 temporary names have not executed and will be rebound after a complete fixture exists.

@@ -8343,3 +8343,10 @@ Keep the existing service-worker routing and lifecycle unchanged. The added nati
 **Date:** 2026-11-07 · **Phase:** 512.
 
 Do not extend setup, per-position or preparation deadlines. Adjust only the new fixture cached-status sampling cadence, retaining every acceptance predicate and production setting. Save exact initial/last counters in the rerun. This is an apparatus repair under the standing permission, not a gate/default/trust change.
+
+
+### Sample cached preparation progress without changing the acceptance bound
+
+**Date:** 2026-11-07 · **Phase:** 513.
+
+Use the standing apparatus-repair permission for cached scalar sampling cadence; this changes no acceptance predicate, deadline or production behavior. Preserve the setup failures and start a fresh account. Do not reuse incomplete source/profile state or claim report exposure.
