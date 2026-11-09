@@ -152,27 +152,3 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 
 **Not in this slice.** The open operations and product items listed at the previous slice's close in
 [completed.md](./completed.md). Release validation, which stays paused on purpose.
-
-
----
-
-## Active slice: release hardening — format contract and idle audit
-
-```yaml
-gate: release preparation after Stage 6
-seat: /Users/thomasingalls/.codex/worktrees/7fda/done
-branch: codex/reduce-goals-context-overhead
-status: in flight # exact ARM64 artifacts checked; sign handoff then verify current tip and open PR
-scope: prepare the tested candidate and compatible reader with all gates and guarantees preserved
-blocks_on: documentation signature, current-tip checks and application PR operator merge
-release_validation: scoped Stage 5 complete with qualifications; aggregate blocked at 1102 / 551 unresolved
-updated: 2026-11-08
-```
-
-**Active outcome.** Signed source 759890ca preserves the hardening history and main's Node 24.22.1 security update. Both ARM64 images are retained and tested: candidate 3914281a… and compatible reader b81f99c1…. Each passes 38 runtime cases and container smoke. Stale-tab dense rollback and production → candidate → reader → candidate pass with full archive equality. No runtime source changed after signing.
-
-**Next.** Sign the documentation-only phase 530 checkpoint, verify all 2,049 allowlisted inputs, refresh six receipt producers and traceability at the actual signed tip, then push/open the application PR. Stop for the operator's merge. Publish neither image before application merge and the exact publication handoff; retain the compatible reader remotely before writer rollout. Keep service-history automation off.
-
-**Evidence and limits.** [Exact artifact/source/test handoff](./development-evidence/2026-11-07-hardened-release/530-signed-arm64-candidate/README.md). Phase 528 remains the Stage 5/6 performance outcome home. No new timing, phone, RAM or aggregate credit; failures and debts remain. Read-only live checks confirm the ready predecessor, preserved PVC/public identity and healthy existing backup status. No cluster mutation or backup download occurred.
-
-**Rollback.** Pre-release builds cannot reopen devices with dense rows or the new format floor. Use the tested compatible reader; never clear storage or rewrite receipts. All existing RC debts remain, including audit receive stalls, paired-150 sender latency, capacity/retry costs, history-sized Worker replies and unmeasured post-reduction/Undo typing costs.
