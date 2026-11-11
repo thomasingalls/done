@@ -28,6 +28,7 @@
     "test/debtManifest.test.ts",
     "test/devicePreparation.test.ts",
     "test/diagnostics.test.ts",
+    "test/doneForNow.test.ts",
     "test/emptyLegacyDatabase.test.ts",
     "test/enrollmentStates.test.ts",
     "test/export.test.ts",

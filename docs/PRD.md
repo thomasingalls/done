@@ -424,7 +424,12 @@ purpose.
 | Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
 | Any collection → reordered        | Deliberate                   | Drag the visible grip with touch/mouse, use its arrow keys, or hold then drag on touch/pen. Writable days only. |
 
-**Duplicate** on a live card in Next, Done or Scheduled creates a new Scheduled card on the
+**Done for now** on a Next card records one independent copy in Done and moves the original to the
+top of Scheduled, in a single admitted, undoable action. The Done copy opens for editing at the end,
+so the person can describe what got done. Multiline writing and Goals heading context are copied;
+the original retains its identity and fields. The usual Done action still moves the whole card to Done.
+
+**Duplicate** on a live card in Done or Scheduled creates a new Scheduled card on the
 same writable day, preserving the complete multiline Markdown and leaving the source unchanged.
 It is one undoable action with a new card identity and the source ID as item provenance. A locked
 Done card can be duplicated without unlocking because its writing and membership are unchanged.

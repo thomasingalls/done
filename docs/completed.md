@@ -20778,3 +20778,12 @@ This outcome is recorded before removing only this seat's closed release slice f
 New cards and ordinary moves now land at the top in Next, Scheduled and Done. Explicit reordering, split adjacency, existing arrangements and text edits remain independent of insertion order. No new data or guards. Five new regression cases reproduce the old behavior before the repair; 88 focused cases, typecheck and 17 adapter controls pass after narrow fixture corrections. The first full unit run and its five old ordering assumptions remain recorded; the final full run follows the next phase. All old obligations and unresolved blocks are retained. [Record](./development-evidence/2026-11-09-card-ux/535-prepend-arrivals/README.md).
 
 Outcome precedes advancement of this seat's active phase.
+
+
+### Record partial completion while keeping the task for later
+
+**Phase:** 536 · **Date:** 2026-11-10.
+
+Next now offers Done for now in place of Duplicate. One admitted, undoable operation creates and focuses an independent Done copy and moves the original to the top of Scheduled. No new data or security exceptions. Eight new semantic/durability controls, the full unit suite, desktop/Android-emulated browser focus/reorder/Undo/reopen checks, typecheck, lint and adapter checks pass. Initial fixture and harness failures remain recorded. Physical Android and release/performance qualification are not claimed. [Record](./development-evidence/2026-11-09-card-ux/536-done-for-now/README.md).
+
+Outcome precedes closure of this seat's active slice. Sequential patches are prepared; no commit, push, preview restart or deployment.

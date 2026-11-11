@@ -152,25 +152,3 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 
 **Not in this slice.** The open operations and product items listed at the previous slice's close in
 [completed.md](./completed.md). Release validation, which stays paused on purpose.
-
-
----
-
-## Active slice: card arrivals and Done for now
-
-```yaml
-gate: focused card UX
-seat: /Users/thomasingalls/.codex/worktrees/7fda/done
-branch: codex/card-arrival-and-done-for-now
-status: in flight
-scope: prepend ordinary collection arrivals, then add the requested partial-completion action
-blocks_on: none # operator confirmed Next cards; phase 536 follows
-release_validation: no release preparation; existing security guarantees and limits remain
-updated: 2026-11-09
-```
-
-**Contract.** New cards and ordinary moves arrive at the top of Next, Scheduled and Done. This changes insertion position, adds no stored metadata, performs no time-based sorting, and does not reorder existing writing or manual arrangements. Explicit placement, split adjacency, bulk internal order and the existing membership-repair fallback remain.
-
-**Bounded phases.** Phase 535 fixes arrivals with regression checks and a frozen patch; its first full run and narrow ordering-fixture corrections are retained. Phase 536 replaces Duplicate on Next cards with one admitted, undoable “Done for now” operation and editing focus. It retains the same multiline writing and heading context in both independent cards.
-
-**Exit.** A single action retains one editable Done copy and moves the original to Scheduled, with no intermediate accepted state, no bypass of storage admission, and no changes to freeze, actor-scoped Undo, capacity or security checks. Focused unit and real-browser checks pass; sequential patches are prepared. No commit, push or deployment is requested.

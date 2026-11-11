@@ -21,6 +21,7 @@ import {
 } from './days';
 import {
   compose,
+  doneForNow,
   moveCard,
   reorderCard,
   removeCard,
@@ -47,6 +48,7 @@ export type TextTarget =
 export type WorkspaceCommand =
   | { readonly kind: 'compose'; readonly to: Ref; readonly text: string }
   | { readonly kind: 'duplicate'; readonly id: string }
+  | { readonly kind: 'done-for-now'; readonly id: string }
   | { readonly kind: 'move'; readonly id: string; readonly to: Ref; readonly index?: number }
   | { readonly kind: 'reorder'; readonly id: string; readonly index: number }
   | { readonly kind: 'remove'; readonly id: string }
@@ -318,6 +320,9 @@ const executeWorkspaceCommand = (
       );
       break;
     }
+    case 'done-for-now':
+      value = from ? doneForNow(workspace, from, command.id) : null;
+      break;
     case 'move':
       value = from ? moveCard(workspace, from, command.id, command.to, command.index) : false;
       break;

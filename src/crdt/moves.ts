@@ -220,6 +220,37 @@ export const moveCard = (
   });
 };
 
+/** Record partial progress and keep the original task for later, in one undo step. */
+export const doneForNow = (workspace: Workspace, from: Ref, id: string): string | null => {
+  if (from.section !== 'next' || !writable(workspace, from.date)) return null;
+  const source = collectionOf(dayAt(workspace.doc, from.date), 'next');
+  const index = source ? indexOfCard(source, id) : -1;
+  const card = cardAt(workspace.doc, id);
+  const location = card && cardLocation(workspace.doc, id);
+  if (!source || index < 0 || !card || location?.date !== from.date || location.section !== 'next')
+    return null;
+
+  const doneRef: Ref = { date: from.date, section: 'done' };
+  const laterRef: Ref = { date: from.date, section: 'scheduled' };
+  const done = collectionAt(workspace, doneRef);
+  const later = collectionAt(workspace, laterRef);
+  if (!done || !later) return null;
+  const copyId = newId();
+  const copy = newCard(cardBody(card), workspace.author, {
+    id: copyId,
+    origin: id,
+    goalsContext: cardGoalsContext(card),
+  });
+  return discrete(workspace, () => {
+    source.delete(index, 1);
+    registerCard(workspace.doc, copyId, copy, doneRef);
+    done.insert(ARRIVAL_INDEX, [copyId]);
+    later.insert(ARRIVAL_INDEX, [id]);
+    setCardLocation(workspace.doc, id, laterRef);
+    return copyId;
+  });
+};
+
 /** Reordering inside one collection. Same transaction discipline. */
 export const reorderCard = (workspace: Workspace, ref: Ref, id: string, to: number): boolean => {
   if (!writable(workspace, ref.date)) return false;

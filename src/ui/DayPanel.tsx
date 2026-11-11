@@ -15,7 +15,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react
 import { DISPLAY_SECTIONS } from '../crdt/days';
 import { isFrozen } from '../crdt/freeze';
 import { formatDay, relativeDay, type ISODate } from '../lib/date';
-import { Collection } from './Collection';
+import { Collection, type CardFocusRequest } from './Collection';
 import { useWorkspaceUi } from './workspaceUi';
 
 export interface DayPanelProps {
@@ -75,6 +75,19 @@ export const DayPanel = ({
     if (hasContent && !introDismissed) dismissIntro();
   }, [hasContent, introDismissed]);
   const frozen = isFrozen(date, today);
+  // Shared by the three collections so a structural action can focus its result.
+  // An admission that finishes after navigation must not steal focus back.
+  const [focusCard, setFocusCard] = useState<CardFocusRequest | null>(null);
+  const focusScope = useRef({ date, active, frozen });
+  focusScope.current = { date, active, frozen };
+  const requestCardFocus = useCallback((requestedDate: ISODate, request: CardFocusRequest) => {
+    const scope = focusScope.current;
+    if (scope.date === requestedDate && scope.active && !scope.frozen) setFocusCard(request);
+  }, []);
+  const leaveCard = useCallback((id: string) => {
+    setFocusCard((current) => (current?.id === id ? null : current));
+  }, []);
+  useEffect(() => setFocusCard(null), [date, active]);
   const body = useRef<HTMLDivElement>(null);
   const [touchScrollRoom, setTouchScrollRoom] = useState<TouchScrollRoom>('none');
 
@@ -200,7 +213,16 @@ export const DayPanel = ({
           </aside>
         )}
         {DISPLAY_SECTIONS.map((section) => (
-          <Collection key={section} date={date} section={section} frozen={frozen} active={active} />
+          <Collection
+            key={section}
+            date={date}
+            section={section}
+            frozen={frozen}
+            active={active}
+            focusCard={active && !frozen ? focusCard : null}
+            onFocusCard={requestCardFocus}
+            onLeaveCard={leaveCard}
+          />
         ))}
       </div>
     </section>

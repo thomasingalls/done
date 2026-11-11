@@ -56,8 +56,8 @@ export interface CardProps {
   editable: boolean;
   /** Present for live cards on the active, writable day. */
   reorder?: CardReorder;
-  /** Set after a split/merge so editing resumes at the structural join. */
-  autoFocusAt?: number;
+  /** Set after a structural action; 'end' resolves against the admitted copy. */
+  autoFocusAt?: number | 'end';
 }
 
 /** Long enough to be deliberate, matching the gesture layer's own hold (TRD §8.4). */
@@ -95,7 +95,7 @@ export const Card = ({
   const editorHost = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const pendingCaret = useRef<{ x: number; y: number } | null>(null);
-  const pendingPosition = useRef<number | null>(autoFocusAt ?? null);
+  const pendingPosition = useRef<number | 'end' | null>(autoFocusAt ?? null);
   const hold = useRef<number | undefined>(undefined);
   const pointer = useRef<ReorderPointer | null>(null);
 
@@ -180,9 +180,11 @@ export const Card = ({
     const pointed = at ? handle.view.posAtCoords({ x: at.x, y: at.y }) : null;
     const requested = pendingPosition.current;
     pendingPosition.current = null;
-    const position = pointed ?? requested ?? handle.view.state.doc.length;
+    const position =
+      pointed ?? (requested === 'end' ? null : requested) ?? handle.view.state.doc.length;
     handle.view.dispatch({
       selection: { anchor: Math.min(Math.max(position, 0), handle.view.state.doc.length) },
+      scrollIntoView: requested !== null,
     });
 
     return () => {

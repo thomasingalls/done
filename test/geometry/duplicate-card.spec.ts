@@ -12,7 +12,7 @@ const bodyOf = (card: Locator) =>
   });
 
 for (const section of ['next', 'done', 'scheduled']) {
-  test(`${section} Duplicate creates an independent multiline Scheduled card with undo and reopen`, async ({
+  test(`${section} ${section === 'next' ? 'Done for now records progress and schedules the original' : 'Duplicate creates an independent multiline Scheduled card'} with undo and reopen`, async ({
     page,
   }) => {
     await openApp(page);
@@ -27,29 +27,40 @@ for (const section of ['next', 'done', 'scheduled']) {
       await cards('scheduled')
         .getByRole('button', { name: 'Move to Next: Plan the trip', exact: true })
         .click();
-    const source = cards(section).first();
-    const id = await source.getAttribute('data-card');
+    const id = await cards(section).first().getAttribute('data-card');
+    const source = day.locator(`.card[data-card="${id}"]`);
     const duplicate = source.getByRole('button', {
-      name: 'Duplicate to Scheduled: Plan the trip',
+      name:
+        section === 'next'
+          ? 'Done for now: Plan the trip'
+          : 'Duplicate to Scheduled: Plan the trip',
       exact: true,
     });
     await expect(duplicate).toBeVisible();
+    if (section === 'next')
+      await expect(source.getByRole('button', { name: /^Duplicate to Scheduled:/ })).toHaveCount(0);
     if (section === 'done') {
       await expect(source).toHaveAttribute('data-guarded', 'true');
       await expect(source.getByRole('button', { name: /^Move to Scheduled:/ })).toHaveCount(0);
     }
     await duplicate.click();
-    // Match by identity, since Scheduled duplication deliberately retains the source.
-    const copy = day.locator(`.card[data-section="scheduled"]:not([data-card="${id}"])`);
+    const destination = section === 'next' ? 'done' : 'scheduled';
+    const copy = day.locator(`.card[data-section="${destination}"]:not([data-card="${id}"])`);
     await expect(copy).toHaveCount(1);
     const copyId = await copy.getAttribute('data-card');
     expect(copyId).not.toBe(id);
     await expect(source).toHaveAttribute('data-card', id!);
     if (section === 'done') await expect(source).toHaveAttribute('data-guarded', 'true');
-    await copy.locator('.card-surface').click();
+    if (section === 'next') {
+      await expect(cards('next')).toHaveCount(0);
+      await expect(source).toHaveAttribute('data-section', 'scheduled');
+      await expect(copy.locator('.cm-content')).toBeFocused();
+    } else await copy.locator('.card-surface').click();
     await expect.poll(() => bodyOf(copy)).toBe(body);
     await page.keyboard.insertText('independent ');
+    if (section === 'next') await expect.poll(() => bodyOf(copy)).toBe(body + 'independent ');
     await copy.locator('.cm-content').press('Enter');
+    await expect(copy.locator('.cm-content')).toHaveCount(0);
     await expect(source).not.toContainText('independent');
     await openMenuSection(page, 'Data');
     const undo = page.locator('#menu').getByRole('button', { name: 'Undo', exact: true });
@@ -58,12 +69,17 @@ for (const section of ['next', 'done', 'scheduled']) {
     await undo.click();
     await expect(copy).toHaveCount(0);
     await expect(day.locator(`.card[data-card="${id}"]`)).toHaveCount(1);
+    if (section === 'next') await expect(source).toHaveAttribute('data-section', 'next');
     await page.locator('#menu').getByRole('button', { name: 'Redo', exact: true }).click();
     await reloadApp(page);
     const coldCopy = day.locator(`.card[data-card="${copyId}"]`);
     await expect(coldCopy).toContainText('Check dates');
     await expect(day.locator(`.card[data-card="${id}"]`)).toContainText('Plan the trip');
-    await coldCopy.locator('.card-surface').click();
+    if (section === 'next') {
+      await expect(source).toHaveAttribute('data-section', 'scheduled');
+      await expect(coldCopy).toHaveAttribute('data-guarded', 'true');
+      await coldCopy.getByRole('button', { name: 'Unlock', exact: true }).click();
+    } else await coldCopy.locator('.card-surface').click();
     await expect.poll(() => bodyOf(coldCopy)).toBe(body);
   });
 }

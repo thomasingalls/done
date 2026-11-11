@@ -8476,3 +8476,8 @@ Only RANGE_RECEIVE differs between the selected candidate and compatible reader;
 **Date:** 2026-11-09 · **Phase:** 535.
 
 The operator wants Next → Later to land at the top and a consistent newest-arrival-first default across day collections. Use the existing ordered ID arrays with insertion index zero. Keep explicit reorder indices, split adjacency and batch internal order; editing existing text does not move the card. No schema, timestamp, attribution, admission or security change is needed. The rare membership-repair fallback retains its existing policy; it cannot reconstruct lost manual order or a last-move time from data the app does not store.
+
+
+### 2026-11-10 — Record partial completion from Next atomically (phase 536)
+
+The operator confirmed that Done for now replaces Duplicate on Next cards only. Preserve the original task in Scheduled and make the independent Done copy the editing target, using one admitted semantic command and one Undo step. Read text from the accepted predecessor rather than the click-time view so queued writing is included. Keep the existing provenance and heading-context fields; no new format is necessary. Focus is ephemeral, scoped to the active writable day, and consumed on leaving the copy. Existing Done/Scheduled duplication remains available.

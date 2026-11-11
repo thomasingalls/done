@@ -497,6 +497,13 @@ encoded in the update bytes. What the bytes carry is the writing document's Yjs 
 
 **Test.** §11, undo scoping; attribution authenticity.
 
+**Partial completion.** `done-for-now` resolves the current Next source inside the admitted predecessor.
+One human transaction registers a fresh Done copy (current author, original ID as provenance,
+complete text and Goals context) and moves the original to Scheduled at index zero. One Undo
+restores the original and removes the copy together. The page requests editing focus only after
+acceptance, shared across collections and discarded on day navigation; focus uses the admitted
+copy's text end. No schema or additional persisted field is needed.
+
 ### 4.9 Section order, and where an arrival lands
 
 Two different orders, and they must not be allowed to become one.
