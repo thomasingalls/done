@@ -210,6 +210,16 @@ for (const site of uncachedSites)
     expect(o.paused).toBe(false);
     expect(o.second).toEqual(new Uint8Array([7]));
   });
+const siteDetail: Record<string, unknown> = {
+  // The injected fault takes the slice-count branch, which has no byte size to report.
+  'storage-delta': { cause: 'resume-progress' },
+  'storage-head': { cause: 'resume-index', needed: expect.any(Number), allowed: 256 * 1024 - 16 },
+  'physical-prefix': {
+    cause: 'resume-history',
+    needed: expect.any(Number),
+    allowed: 64 * 1024 * 1024,
+  },
+};
 for (const [, site] of capacitySites.filter(([, s]) => !uncachedSites.includes(s)))
   it(`real ${site} refusal reaches the narrow automatic parked path`, async () => {
     const a = built.api;
@@ -240,7 +250,9 @@ for (const [, site] of capacitySites.filter(([, s]) => !uncachedSites.includes(s
     });
     run.wake();
     await vi.advanceTimersByTimeAsync(a.LOCAL_RETENTION_QUIET_MS);
-    expect(run.status).toEqual({ phase: 'idle', reason: 'capacity' });
+    // Each refusing site names its own cause (phase 543); the injected fault forces the guard,
+    // so a size, where the site has one, is the real value at that moment.
+    expect(run.status).toEqual({ phase: 'idle', reason: 'capacity', detail: siteDetail[site] });
     run.refresh();
     await vi.advanceTimersByTimeAsync(a.LOCAL_RETENTION_RETRY_MS * 3);
     expect(remove).toHaveBeenCalledTimes(1);
@@ -329,7 +341,11 @@ it('reopens an authenticated saved journal, parks at the same real delta ceiling
       await delay(5);
       await vi.advanceTimersByTimeAsync(1);
     }
-    expect(run.status).toEqual({ phase: 'idle', reason: 'capacity' });
+    expect(run.status).toEqual({
+      phase: 'idle',
+      reason: 'capacity',
+      detail: siteDetail['storage-delta'],
+    });
     expect(run.diagnostics?.ownerError).toBeUndefined();
   };
   const first = openPolicy();

@@ -118,3 +118,65 @@ it('asks for reopen on unexpected failure and offers no retry or data-erasure ac
   }
   expect(f.observers.size).toBe(0);
 });
+it('says which limit or condition parked maintenance, and falls back without a known cause (phase 543)', async () => {
+  const kept = 'Your existing history is still in place.',
+    recheck = 'It will check again after new writing or sync changes this device’s history.';
+  const general = `History maintenance reached a preparation or snapshot size limit. ${kept} ${recheck}`;
+  const cases: [LocalRetentionStatus['detail'] | Record<string, unknown> | undefined, string][] = [
+    [undefined, general],
+    [{ cause: 'a-later-cause', needed: 1, allowed: 2 }, general],
+    [
+      { cause: 'snapshot-size', needed: 9856614, allowed: 8388608 },
+      `The smaller history snapshot would need 9.4 MiB, and this version saves snapshots of up to 8.0 MiB. ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'snapshot-size' },
+      `The smaller history snapshot is larger than this version saves. ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'snapshot-sources', needed: 4100, allowed: 4096 },
+      `More writing is waiting to be sent from this device than a smaller history snapshot can hold (4100 batches; up to 4096). ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'snapshot-publishers', needed: 130, allowed: 128 },
+      `This workspace has more writing devices than a smaller history snapshot can record (130; up to 128). ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'resume-progress', needed: 34603008, allowed: 33554432 },
+      `The progress this device saves to resume history maintenance is full (33.0 MiB; up to 32.0 MiB). ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'resume-progress' },
+      `The progress this device saves to resume history maintenance is full. ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'resume-index', needed: 314572, allowed: 262128 },
+      `The list of saved history maintenance progress is full (0.3 MiB; up to 0.2 MiB). ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'resume-history', needed: 67108900, allowed: 67108864 },
+      `Saved history on this device is too large to mark a point where maintenance can resume (more than 64.0 MiB). ${kept} ${recheck}`,
+    ],
+    [
+      { cause: 'interrupted' },
+      `History maintenance was interrupted by other work on this device and had no saved progress to resume from. ${kept} It will try again after new writing or sync changes this device’s history, or when you choose Check again.`,
+    ],
+  ];
+  const f = await fixture();
+  try {
+    for (const [detail, text] of cases) {
+      await f.update({
+        phase: 'idle',
+        reason: 'capacity',
+        ...(detail ? { detail: detail as LocalRetentionStatus['detail'] } : {}),
+      } as LocalRetentionStatus);
+      expect(f.host.querySelector('p')!.textContent).toBe(text);
+      // Every cause keeps the existing attention notice and the Check again action.
+      expect(f.host.querySelector('summary')!.textContent).toContain('Maintenance paused');
+      expect(f.host.querySelector('button')!.textContent).toBe('Check again');
+    }
+    expect(cases.at(-1)![1]).not.toContain('limit');
+  } finally {
+    await f.close();
+  }
+});

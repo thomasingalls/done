@@ -205,7 +205,12 @@ export async function anchorLocalBaseline(
   previousAnchor?: BaselineAnchor,
 ): Promise<BaselineAnchor> {
   // Complete-history carriers keep the released record bound; only reduction writes larger.
-  if (input.baseline.payload.length > LOCAL_BASELINE_LIMIT) throw new LocalBaselineCapacityError();
+  if (input.baseline.payload.length > LOCAL_BASELINE_LIMIT)
+    throw new LocalBaselineCapacityError({
+      cause: 'snapshot-size',
+      needed: input.baseline.payload.length,
+      allowed: LOCAL_BASELINE_LIMIT,
+    });
   const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
   const census = task.step(() => structuredClone(censusInput));
   const baseline = task.step(() => ({

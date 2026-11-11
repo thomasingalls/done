@@ -7,6 +7,7 @@ import type {
 } from '../account/historyMaintenance';
 import type { AutomaticHistoryStatus } from '../account/automaticHistoryMaintenance';
 import type { LocalRetentionStatus } from './automaticLocalRetention';
+import { copyRetentionDetail } from './localRetentionDetail';
 import type { SyncRuntime, SyncStatus, SyncLane } from './accountSyncDriver';
 import type { WorkerChannel } from './workerChannel';
 export type NetworkLoginView = Pick<
@@ -109,8 +110,11 @@ function sync(input: unknown): SyncStatus {
   return Object.freeze(out);
 }
 function local(input: unknown): LocalRetentionStatus {
-  fields(input, ['phase', 'reason'], ['progress']);
-  const v = input as LocalRetentionStatus;
+  fields(input, ['phase', 'reason'], ['progress', 'detail']);
+  const { detail: raw, ...rest } = input as LocalRetentionStatus;
+  // Presentation only: an unknown or malformed detail is dropped and the page falls back.
+  const detail = rest.reason === 'capacity' ? copyRetentionDetail(raw) : undefined;
+  const v: LocalRetentionStatus = { ...rest, ...(detail ? { detail } : {}) };
   if (!phases.includes(v.phase) || (v.reason !== undefined && !text(v.reason))) throw fail();
   if (v.progress !== undefined) {
     const p = v.progress;

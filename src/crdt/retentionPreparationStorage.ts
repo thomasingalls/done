@@ -435,13 +435,19 @@ export async function savePreparationDelta(
       disposePreparationReceipts(proof);
     }
     if (!newEntries) throw Error('Preparation checkpoint has no new work');
-    const n = Math.ceil(delta.payload.length / PREPARATION_CHUNK_BYTES);
+    const n = Math.ceil(delta.payload.length / PREPARATION_CHUNK_BYTES),
+      total = prior.reduce((a, d) => a + d.bytes, 0) + delta.payload.length;
     if (
       prior.length + 1 > PREPARATION_MAX_CHUNKS ||
-      prior.flatMap((d) => d.chunks).length + n > PREPARATION_MAX_CHUNKS ||
-      prior.reduce((a, d) => a + d.bytes, 0) + delta.payload.length > PREPARATION_MAX_BYTES
+      prior.flatMap((d) => d.chunks).length + n > PREPARATION_MAX_CHUNKS
     )
-      throw new PreparationCapacity();
+      throw new PreparationCapacity({ cause: 'resume-progress' });
+    if (total > PREPARATION_MAX_BYTES)
+      throw new PreparationCapacity({
+        cause: 'resume-progress',
+        needed: total,
+        allowed: PREPARATION_MAX_BYTES,
+      });
     const reservation = await owner.reserve(task, n + 1);
     if (
       reservation.generation !== fresh.counter.active_gen ||
@@ -484,7 +490,12 @@ export async function savePreparationDelta(
       head.prefix,
       head.deltas.map((d) => [d.bytes, d.hash, d.mac, d.chunks]),
     ]);
-    if (headBytes.length > PREPARATION_CHUNK_BYTES - 16) throw new PreparationCapacity();
+    if (headBytes.length > PREPARATION_CHUNK_BYTES - 16)
+      throw new PreparationCapacity({
+        cause: 'resume-index',
+        needed: headBytes.length,
+        allowed: PREPARATION_CHUNK_BYTES - 16,
+      });
     header = await owner.crypt.seal(
       task,
       { v: 1, kind: 'heads', gen: reservation.generation, seq: reservation.first + n },

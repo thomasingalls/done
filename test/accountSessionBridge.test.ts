@@ -348,3 +348,46 @@ it('retains the original fractional idle-recheck deadline while counters remain 
     random.mockRestore();
   }
 });
+it('carries a known capacity cause to the page and drops an unknown or misplaced one (phase 543)', () => {
+  const state = (local: unknown) => ({
+    login: 'remembered',
+    sync: null,
+    local,
+    automatic: null,
+    devices: { remove: false, history: false, detached: false },
+  });
+  const detail = { cause: 'snapshot-size', needed: 9437184, allowed: 8388608 };
+  const kept = captureAccountSessionState(
+    state({ phase: 'idle', reason: 'capacity', detail }),
+  ).local!;
+  expect(kept).toEqual({ phase: 'idle', reason: 'capacity', detail });
+  expect(Object.isFrozen(kept.detail)).toBe(true);
+  expect(
+    captureAccountSessionState(
+      state({ phase: 'idle', reason: 'capacity', detail: { cause: 'interrupted' } }),
+    ).local,
+  ).toEqual({ phase: 'idle', reason: 'capacity', detail: { cause: 'interrupted' } });
+  // An older owner sends no detail; the status is unchanged.
+  expect(captureAccountSessionState(state({ phase: 'idle', reason: 'capacity' })).local).toEqual({
+    phase: 'idle',
+    reason: 'capacity',
+  });
+  // Unknown causes, sizes on an interruption, extra keys, bad numbers or a detail beside another
+  // reason are dropped: the page falls back to its general sentence instead of failing.
+  for (const [reason, bad] of [
+    ['capacity', { cause: 'new-limit', needed: 1, allowed: 2 }],
+    ['capacity', { cause: 'interrupted', needed: 1 }],
+    ['capacity', { cause: 'snapshot-size', needed: -1, allowed: 2 }],
+    ['capacity', { cause: 'snapshot-size', needed: 1.5, allowed: 2 }],
+    ['capacity', { cause: 'snapshot-size', needed: 1, allowed: 2, text: 'x' }],
+    ['capacity', 'snapshot-size'],
+    ['ineligible', detail],
+  ] as const)
+    expect(captureAccountSessionState(state({ phase: 'idle', reason, detail: bad })).local).toEqual(
+      { phase: 'idle', reason },
+    );
+  // The closed status itself still refuses unknown top-level fields.
+  expect(() =>
+    captureAccountSessionState(state({ phase: 'idle', reason: 'capacity', cause: 'x' })),
+  ).toThrow();
+});

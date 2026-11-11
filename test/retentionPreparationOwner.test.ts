@@ -268,6 +268,8 @@ it('routine work cutting an uncached pass parks it as capacity; foreground activ
   expect(await attempt(true, { queuePriority: true })).toEqual({
     kind: 'skipped',
     reason: 'capacity',
+    // Not a size limit: it parks the same way but is named as an interruption (phase 543).
+    detail: { cause: 'interrupted' },
   });
   // Local writing or other non-routine causes keep their normal yield and retry.
   await expect(attempt(true, { journal: true })).rejects.toBeInstanceOf(MaintenanceInterrupted);

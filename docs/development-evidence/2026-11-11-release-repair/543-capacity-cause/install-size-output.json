@@ -1,0 +1,13 @@
+{
+  "controlKind": "local-retention-dry-run",
+  "verifyCalls": 1,
+  "planOutcome": {
+    "threw": "HistoryInstallSizeError",
+    "message": "History installation exceeds supported size"
+  },
+  "status": {
+    "phase": "halted",
+    "reason": "owner-error"
+  },
+  "ownerError": "Error"
+}

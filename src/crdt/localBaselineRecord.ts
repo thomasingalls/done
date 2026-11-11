@@ -31,8 +31,17 @@ const MAX_SOURCES = 4096,
   MAX_PUBLISHERS = 128;
 /** A new candidate cannot fit; decoding persisted oversized bytes remains an integrity refusal. */
 export class LocalBaselineCapacityError extends Error {
-  constructor() {
+  /** Which bound refused, with the candidate's size or count (phase 543). Presentation only. */
+  readonly detail:
+    | {
+        readonly cause: 'snapshot-size' | 'snapshot-sources' | 'snapshot-publishers';
+        readonly needed: number;
+        readonly allowed: number;
+      }
+    | undefined;
+  constructor(detail?: LocalBaselineCapacityError['detail']) {
     super('Local baseline exceeds supported capacity');
+    this.detail = detail && Object.freeze({ ...detail });
   }
 }
 export interface BaselineAnchor {
@@ -261,14 +270,31 @@ function parse(v: unknown[]): LocalBaseline {
 export function encodeLocalBaseline(b: LocalBaseline): Bytes {
   // Only new candidates pass through here; decoding never re-encodes through this ceiling.
   const limit = b.journalEra ? LARGE_LOCAL_BASELINE_WRITE_LIMIT : LOCAL_BASELINE_LIMIT;
-  if (
-    b.snapshot.length > limit ||
-    b.sources.length > MAX_SOURCES ||
-    b.streams.length > MAX_PUBLISHERS
-  )
-    throw new LocalBaselineCapacityError();
+  if (b.sources.length > MAX_SOURCES)
+    throw new LocalBaselineCapacityError({
+      cause: 'snapshot-sources',
+      needed: b.sources.length,
+      allowed: MAX_SOURCES,
+    });
+  if (b.streams.length > MAX_PUBLISHERS)
+    throw new LocalBaselineCapacityError({
+      cause: 'snapshot-publishers',
+      needed: b.streams.length,
+      allowed: MAX_PUBLISHERS,
+    });
+  if (b.snapshot.length > limit) {
+    // Refused before hex-encoding the snapshot: report the record size it would have had.
+    const rest = utf8(JSON.stringify(values({ ...b, snapshot: new Uint8Array(1) })));
+    const needed = rest.length - 2 + 2 * b.snapshot.length;
+    rest.fill(0);
+    throw new LocalBaselineCapacityError({ cause: 'snapshot-size', needed, allowed: limit });
+  }
   const encoded = utf8(JSON.stringify(values(b)));
-  if (encoded.length > limit) throw new LocalBaselineCapacityError();
+  if (encoded.length > limit) {
+    const needed = encoded.length;
+    encoded.fill(0);
+    throw new LocalBaselineCapacityError({ cause: 'snapshot-size', needed, allowed: limit });
+  }
   decodeLocalBaseline(encoded);
   return encoded;
 }

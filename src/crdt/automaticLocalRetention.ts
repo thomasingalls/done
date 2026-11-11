@@ -8,6 +8,8 @@ import {
 } from './contentMaintenance';
 import { PreparationCapacity } from './preparationCapacity';
 import { LocalBaselineError } from './localBaselineError';
+import { copyRetentionDetail, type LocalRetentionDetail } from './localRetentionDetail';
+export type { LocalRetentionCause, LocalRetentionDetail } from './localRetentionDetail';
 export interface LocalRetentionHint {
   readonly revision: number;
   readonly records: number;
@@ -37,6 +39,8 @@ export interface LocalRetentionStatus {
   readonly phase: 'idle' | 'waiting' | 'running' | 'halted' | 'closed';
   readonly reason: string | undefined;
   readonly progress?: RetentionProgress & { readonly attempt: number; readonly elapsedMs: number };
+  /** Present only with reason `capacity`, when the owner knows which cause fired. */
+  readonly detail?: LocalRetentionDetail;
 }
 /** Presentation/retry port: never exposes evidence, counters or a mutation capability. */
 export interface LocalRetentionView {
@@ -67,7 +71,7 @@ export interface LocalRetentionObservation {
    * may ask the receive lane to skip routine idle polls. Omitted means never. */
   readonly deferPolls?: boolean;
 }
-type Outcome = { kind: string; reason?: string };
+type Outcome = { kind: string; reason?: string; detail?: unknown };
 const interruptedOutcomes = new WeakMap<Outcome, MaintenanceInterrupted>();
 /** Native scheduling metadata only. Serialization loses it and conservatively keeps 60 seconds. */
 export function localRetentionInterrupted(cause: MaintenanceInterrupted) {
@@ -122,6 +126,8 @@ export function createAutomaticLocalRetention(options: {
   let quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS,
     notBefore = 0;
   let parked: string | undefined, reason: string | undefined;
+  // Shown only beside reason `capacity`; cleared by every other outcome.
+  let detail: LocalRetentionDetail | undefined;
   let wakes = 0;
   let attempts = 0,
     interruptions = 0,
@@ -168,15 +174,22 @@ export function createAutomaticLocalRetention(options: {
             ? 'waiting'
             : 'idle';
     const hold = holdLevel();
+    const shown = reason === 'capacity' ? detail : undefined;
     if (
       status.phase === phase &&
       status.reason === reason &&
       status.progress === progress &&
+      status.detail === shown &&
       publishedHold === hold
     )
       return;
     publishedHold = hold;
-    status = Object.freeze({ phase, reason, ...(progress ? { progress } : {}) });
+    status = Object.freeze({
+      phase,
+      reason,
+      ...(progress ? { progress } : {}),
+      ...(shown ? { detail: shown } : {}),
+    });
     for (const listener of [...listeners]) {
       try {
         listener();
@@ -348,7 +361,7 @@ export function createAutomaticLocalRetention(options: {
         // All preparation ceilings share this closed class. Saved receipts remain intact;
         // the existing skipped path parks this exact hint behind the retry clock.
         if (!(cause instanceof PreparationCapacity)) throw cause;
-        result = { kind: 'skipped', reason: 'capacity' };
+        result = { kind: 'skipped', reason: 'capacity', detail: cause.detail };
       }
       if (closed) return;
       if (result.kind === 'removed' || result.kind === 'already-removed') {
@@ -356,17 +369,21 @@ export function createAutomaticLocalRetention(options: {
         removalComplete = true;
         if (progress) report({ stage: 'complete' });
         reason = undefined;
+        detail = undefined;
         notBefore = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
         releaseHold();
         again = true;
       } else if (result.kind === 'preparation-saved') {
         // Useful bounded work is durable. Yield before another slice; input/readiness still wins.
         reason = 'preparation-saved';
+        detail = undefined;
         notBefore = 0;
         again = saved = true;
       } else if (result.kind === 'skipped') {
         if (result.reason === 'activity-or-journal') interruptions++;
         reason = result.reason;
+        // Presentation only: which limit fired. Parking and retry timing never read it.
+        detail = result.reason === 'capacity' ? copyRetentionDetail(result.detail) : undefined;
         const priorityOnly =
           result.reason === 'activity-or-journal' &&
           isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result));
@@ -389,6 +406,7 @@ export function createAutomaticLocalRetention(options: {
       } else {
         halted = true;
         reason = 'unexpected-result';
+        detail = undefined;
         releaseHold();
       }
     } catch (cause) {
@@ -397,6 +415,7 @@ export function createAutomaticLocalRetention(options: {
       if (!closed) {
         halted = true;
         reason = 'owner-error';
+        detail = undefined;
         releaseHold();
         // Do not read arbitrary error names, messages, causes, stacks or getters.
         // This closed application class has data-free codes; all other failures stay generic.

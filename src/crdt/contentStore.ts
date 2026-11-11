@@ -1093,7 +1093,12 @@ export const createContentOwner = (
       // cut it short, retrying the same history would only repeat it, so it parks as capacity;
       // a changed history, manual retry or reopen tries again. Foreground activity still yields.
       if (uncached() && isPriorityOnlyMaintenanceInterruption(cause))
-        return { kind: 'skipped' as const, reason: 'capacity' as const };
+        return {
+          kind: 'skipped' as const,
+          reason: 'capacity' as const,
+          // Not a size limit: presentation says the pass was interrupted (phase 543).
+          detail: { cause: 'interrupted' as const },
+        };
       if (!(cause instanceof PreparationPause) || !preparation || !implementation) throw cause;
       // Only a still-live read task can authenticate the delta. No expired task callback escapes.
       const delta = await preparation.journal.delta(baselineAuth(task));

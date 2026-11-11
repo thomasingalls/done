@@ -2473,7 +2473,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 499,
+          "line": 508,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
@@ -2580,7 +2580,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 505,
+          "line": 514,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -2713,7 +2713,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 506,
+          "line": 515,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -6209,13 +6209,13 @@
         },
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 285,
+          "line": 311,
           "label": "done/account-local-baseline-auth/draft-2\u0000",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 286,
+          "line": 312,
           "label": "done/account-local-baseline-auth/draft-3\u0000",
           "kind": "literal"
         },

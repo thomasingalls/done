@@ -257,7 +257,12 @@ export async function planLocalRetention(
   // Resolves without a journal when none can be bound; the pass then runs uncached.
   preparation?: (counter: ContentCounter) => Promise<PreparationVerification | undefined>,
 ): Promise<
-  LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
+  | LocalRetentionPlan
+  | {
+      kind: 'skipped';
+      reason: 'capacity' | 'ineligible' | 'history-required';
+      detail?: LocalBaselineCapacityError['detail'];
+    }
 > {
   const inventory = clone(input),
     scope = { ...context.identity };
@@ -447,7 +452,11 @@ export async function planLocalRetention(
       // from that boundary as failures even though the builder now returns both results together.
       if (!buildingCandidate) throw error;
       if (error instanceof LocalBaselineCapacityError)
-        return { kind: 'skipped', reason: 'capacity' };
+        return {
+          kind: 'skipped',
+          reason: 'capacity',
+          ...(error.detail ? { detail: error.detail } : {}),
+        };
       if (
         error instanceof LocalBaselineError &&
         (error.reason === 'ineligible' || error.reason === 'history-required')

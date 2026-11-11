@@ -8,6 +8,7 @@ import {
   LOCAL_RETENTION_RETRY_MS as RETRY,
 } from '../src/crdt/automaticLocalRetention';
 import { hasAutomaticLocalRetention } from '../src/crdt/localBaselineMode';
+import { PreparationCapacity } from '../src/crdt/preparationCapacity';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -149,6 +150,67 @@ for (const reason of ['capacity', 'history-required', 'ineligible'])
     f.calls[1]!.resolve({ kind: 'removed' });
     await f.tick(0);
   });
+it('names the cause beside capacity without changing how long it parks (phase 543)', async () => {
+  const f = fixture();
+  f.run.wake();
+  await f.tick(QUIET);
+  const detail = { cause: 'snapshot-size', needed: 9 * 1024 * 1024, allowed: 8 * 1024 * 1024 };
+  f.calls[0]!.resolve({ kind: 'skipped', reason: 'capacity', detail } as { kind: string });
+  await f.tick(0);
+  expect(f.run.status).toEqual({ phase: 'idle', reason: 'capacity', detail });
+  expect(Object.isFrozen(f.run.status.detail)).toBe(true);
+  // The same park as the plain refusal above: no retry for this hint, no timer left.
+  for (let i = 0; i < 3; i++) {
+    f.run.wake();
+    await f.tick(RETRY * 2);
+  }
+  expect(f.calls).toHaveLength(1);
+  expect(vi.getTimerCount()).toBe(0);
+  // A malformed or unknown detail is dropped, not shown and not fatal.
+  f.set({ ready: true, hint: { revision: 0, records: MIN + 1 } });
+  f.run.wake();
+  await f.tick(QUIET);
+  f.calls[1]!.resolve({
+    kind: 'skipped',
+    reason: 'capacity',
+    detail: { cause: 'unknown-cause', needed: 1 },
+  } as { kind: string });
+  await f.tick(0);
+  expect(f.run.status).toEqual({ phase: 'idle', reason: 'capacity' });
+  // Any other outcome clears it.
+  f.set({ ready: true, hint: { revision: 0, records: MIN + 2 } });
+  f.run.wake();
+  // A changed hint still waits out the existing retry clock after a capacity refusal.
+  await f.tick(QUIET);
+  expect(f.calls).toHaveLength(2);
+  await f.tick(RETRY);
+  f.calls[2]!.resolve({ kind: 'skipped', reason: 'ineligible', detail } as { kind: string });
+  await f.tick(0);
+  expect(f.run.status).toEqual({ phase: 'idle', reason: 'ineligible' });
+  f.run.dispose();
+});
+it('names a preparation refusal by its site and keeps the plain one general (phase 543)', async () => {
+  const f = fixture();
+  f.run.wake();
+  await f.tick(QUIET);
+  f.calls[0]!.reject(
+    new PreparationCapacity({ cause: 'resume-index', needed: 300000, allowed: 262128 }),
+  );
+  await f.tick(0);
+  expect(f.run.status).toEqual({
+    phase: 'idle',
+    reason: 'capacity',
+    detail: { cause: 'resume-index', needed: 300000, allowed: 262128 },
+  });
+  expect(f.run.diagnostics?.ownerError).toBeUndefined();
+  f.set({ ready: true, hint: { revision: 0, records: MIN + 1 } });
+  f.run.wake();
+  await f.tick(RETRY);
+  f.calls[1]!.reject(new PreparationCapacity());
+  await f.tick(0);
+  expect(f.run.status).toEqual({ phase: 'idle', reason: 'capacity' });
+  f.run.dispose();
+});
 it('paces a transient refusal only after another event, even if the hint is unchanged', async () => {
   const f = fixture();
   f.run.wake();

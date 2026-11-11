@@ -1,0 +1,54 @@
+// @vitest-environment node
+// Phase 543 probe: what a HistoryInstallSizeError on the retention path becomes for the user.
+import { it, expect, vi } from 'vitest';
+import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
+import { writeFileSync } from 'node:fs';
+const W = process.cwd(); // run from the repository root
+const history = await import(W + '/src/crdt/historyInstall');
+const plans = await import(W + '/src/crdt/localRetentionPlan');
+const retention = await import(W + '/src/crdt/automaticLocalRetention');
+const cr = await import(W + '/src/crdt/contentRecord');
+const { inspectInbound } = await import(W + '/src/crdt/inboundLedger');
+const { extendSpoolWitness } = await import(W + '/src/crdt/spoolRecord');
+const { openContentDb } = await import(W + '/src/crdt/contentDatabase');
+const { cryptFor, keys } = await import(W + '/test/local-baseline/anchor-fixture');
+// @ts-expect-error JavaScript fixture.
+const { memberFixture } = await import(W + '/test/local-baseline/fixtures.mjs');
+const task = { signal: new AbortController().signal, step: (f: any) => f(), wait: (f: any) => Promise.resolve(f()) };
+it('HistoryInstallSizeError on the retention path', async () => {
+  vi.stubGlobal('indexedDB', new IDBFactory());
+  vi.stubGlobal('IDBKeyRange', IDBKeyRange);
+  const f = await memberFixture();
+  await f.appendOwn(); await f.appendPeer(); await f.appendHistory();
+  const ctx = f.ctx, rows = f.rows;
+  const c = inspectInbound(rows, ctx.route, ctx.inbound);
+  let spool = cr.emptySpoolWitness();
+  for (const e of c.delivery.spool.events) spool = await extendSpoolWitness(spool, e, crypto.subtle);
+  const next = rows.at(-1).seq + 4;
+  const counter: any = { v: 2, store_id: ctx.identity.storeId, intent: '04'.repeat(16), active_gen: 1, next_seq: next, reserved: { 1: next - 1 }, spool, mac: new Uint8Array(32) };
+  const crypt = cryptFor(ctx.identity, await keys());
+  counter.mac = await crypt.sign(task as any, cr.counterPayload(ctx.identity, counter));
+  const inventory: any = { rows: [], metadata: [{ key: 'counter', value: counter }] };
+  for (const r of rows) inventory.rows.push({ store: cr.recordStore(r.kind), key: r.seq, value: await crypt.seal(task as any, { v: 1, seq: r.seq, gen: r.gen, kind: r.kind }, r.bytes) });
+  const auth = { sign: (b: any) => crypt.sign(task as any, b), verify: (b: any, m: any) => crypt.verify(task as any, b, m) };
+  const run = () => plans.planLocalRetention(task as any, inventory, ctx, { open: (r: any) => crypt.open(task as any, r), verify: auth.verify, auth }, { lifetime: {}, intent: counter.intent, allowReduced: true });
+  const control = await run();
+  const spy = vi.spyOn(history, 'verifyHistoryInstall').mockImplementation(async () => { throw new history.HistoryInstallSizeError(); });
+  let planOutcome: any;
+  try { planOutcome = await run(); } catch (e: any) { planOutcome = { threw: e?.constructor?.name, message: e?.message }; }
+  const calls = spy.mock.calls.length;
+  spy.mockRestore();
+  vi.useFakeTimers(); vi.setSystemTime(0);
+  const scheduler = retention.createAutomaticLocalRetention({
+    signal: new AbortController().signal,
+    observe: () => ({ ready: true, hint: { revision: 0, records: retention.LOCAL_RETENTION_MIN_RECORDS } }),
+    remove: async () => { throw new history.HistoryInstallSizeError(); },
+  });
+  scheduler.wake();
+  await vi.advanceTimersByTimeAsync(retention.LOCAL_RETENTION_QUIET_MS);
+  const status = scheduler.status, diagnostics = scheduler.diagnostics;
+  scheduler.dispose(); vi.useRealTimers();
+  writeFileSync(process.env.PROBE_OUT!, JSON.stringify({ controlKind: (control as any).kind, verifyCalls: calls, planOutcome, status, ownerError: diagnostics?.ownerError }, null, 1));
+  f.clear();
+  expect(true).toBe(true);
+}, 120000);

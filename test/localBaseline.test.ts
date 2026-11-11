@@ -1916,7 +1916,15 @@ it('dry run skips unsettled/pending/capacity cuts but refuses damaged evidence b
     { seq, kind: 'state', gen: 1, bytes: new Uint8Array(Y.encodeStateAsUpdate(large)) },
   ]);
   large.destroy();
-  expect(await capacity.plan()).toEqual({ kind: 'skipped', reason: 'capacity' });
+  expect(await capacity.plan()).toEqual({
+    kind: 'skipped',
+    reason: 'capacity',
+    detail: {
+      cause: 'snapshot-size',
+      needed: expect.any(Number),
+      allowed: LARGE_LOCAL_BASELINE_WRITE_LIMIT,
+    },
+  });
   expect(capacity.signs()).toBe(0);
   const changed = await retentionFixture(f);
   (changed.inventory.rows[0]!.value as StoredRecord).ct[0]! ^= 1;

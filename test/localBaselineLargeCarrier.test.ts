@@ -498,7 +498,19 @@ const AT_WRITE_CEILING = LARGE_LOCAL_BASELINE_WRITE_LIMIT / 2;
 
 it('a reduction just over the write ceiling parks as capacity and writes nothing', async () => {
   const x = await reducedOwner(AT_WRITE_CEILING);
-  expect(x.result).toEqual({ kind: 'skipped', reason: 'capacity' });
+  // The refusal names the write ceiling and the encoded size the candidate needed (phase 543).
+  expect(x.result).toEqual({
+    kind: 'skipped',
+    reason: 'capacity',
+    detail: {
+      cause: 'snapshot-size',
+      needed: expect.any(Number),
+      allowed: LARGE_LOCAL_BASELINE_WRITE_LIMIT,
+    },
+  });
+  const needed = (x.result as { detail: { needed: number } }).detail.needed;
+  expect(needed).toBeGreaterThan(LARGE_LOCAL_BASELINE_WRITE_LIMIT);
+  expect(needed).toBeLessThan(LARGE_LOCAL_BASELINE_WRITE_LIMIT + 64 * 1024);
   expect(await metaRows(x.db)).toEqual(x.metaBefore);
   expect((await counterOf(x.db)).v).toBe(2);
 }, 120000);
@@ -614,6 +626,11 @@ it('a stored draft-4 baseline between the write ceiling and the read bound opens
   ).toEqual({
     kind: 'skipped',
     reason: 'capacity',
+    detail: {
+      cause: 'snapshot-size',
+      needed: expect.any(Number),
+      allowed: LARGE_LOCAL_BASELINE_WRITE_LIMIT,
+    },
   });
   expect(await metaRows(x.db)).toEqual(before);
 }, 120000);
@@ -639,7 +656,52 @@ it('the complete-history writer refuses a candidate past the released carrier be
       },
       anchor: { revision: 1, hash: sha256(payload) },
     }),
-  ).rejects.toThrow(LocalBaselineCapacityError);
+  ).rejects.toMatchObject({
+    detail: { cause: 'snapshot-size', needed: payload.length, allowed: LOCAL_BASELINE_LIMIT },
+  });
   expect(seal).not.toHaveBeenCalled();
   expect(await readCensus(task, f.owner)).toEqual(before);
+});
+
+it('a candidate refusal names its bound with exact sizes and counts (phase 543)', () => {
+  const b = decodeLocalBaseline(fromHex(released.v5.payload));
+  const refusal = (candidate: typeof b) => {
+    try {
+      encodeLocalBaseline(candidate);
+    } catch (cause) {
+      expect(cause).toBeInstanceOf(LocalBaselineCapacityError);
+      return (cause as LocalBaselineCapacityError).detail;
+    }
+    throw Error('encoded');
+  };
+  // The size a later build would have written: the same wire with this snapshot.
+  const wireLength = (snapshot: Bytes) => {
+    const wire = JSON.parse(new TextDecoder().decode(fromHex(released.v5.payload)));
+    wire[8] = toHex(snapshot);
+    return new TextEncoder().encode(JSON.stringify(wire)).length;
+  };
+  // Past the ceiling only once encoded: the measured encoded length.
+  const encodedPast = new Uint8Array(LARGE_LOCAL_BASELINE_WRITE_LIMIT / 2).fill(5);
+  expect(refusal({ ...b, snapshot: encodedPast })).toEqual({
+    cause: 'snapshot-size',
+    needed: wireLength(encodedPast),
+    allowed: LARGE_LOCAL_BASELINE_WRITE_LIMIT,
+  });
+  // A snapshot alone past the ceiling is refused before encoding, with the same exact figure.
+  const rawPast = new Uint8Array(LARGE_LOCAL_BASELINE_WRITE_LIMIT + 1).fill(5);
+  expect(refusal({ ...b, snapshot: rawPast })).toEqual({
+    cause: 'snapshot-size',
+    needed: wireLength(rawPast),
+    allowed: LARGE_LOCAL_BASELINE_WRITE_LIMIT,
+  });
+  expect(refusal({ ...b, sources: Array.from({ length: 4097 }, () => b.sources[0]!) })).toEqual({
+    cause: 'snapshot-sources',
+    needed: 4097,
+    allowed: 4096,
+  });
+  expect(refusal({ ...b, streams: Array.from({ length: 129 }, () => b.streams[0]!) })).toEqual({
+    cause: 'snapshot-publishers',
+    needed: 129,
+    allowed: 128,
+  });
 });
