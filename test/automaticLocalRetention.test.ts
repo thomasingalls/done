@@ -215,7 +215,8 @@ it('paces a transient refusal only after another event, even if the hint is unch
   const f = fixture();
   f.run.wake();
   await f.tick(QUIET);
-  f.calls[0]!.resolve({ kind: 'skipped', reason: 'durable-attempt' });
+  // Phase 546: a saved account attempt now parks (next case); a pending promotion is transient.
+  f.calls[0]!.resolve({ kind: 'skipped', reason: 'pending-promotion' });
   await f.tick(0);
   expect(vi.getTimerCount()).toBe(0);
   f.run.wake();
@@ -225,6 +226,30 @@ it('paces a transient refusal only after another event, even if the hint is unch
   expect(f.calls).toHaveLength(2);
   f.run.dispose();
   f.calls[1]!.resolve({ kind: 'removed' });
+  await f.tick(0);
+});
+it('a saved account attempt parks until history changes or a manual check (phase 546)', async () => {
+  const f = fixture();
+  f.run.wake();
+  await f.tick(QUIET);
+  f.calls[0]!.resolve({ kind: 'skipped', reason: 'durable-attempt' });
+  await f.tick(0);
+  expect(f.run.status).toEqual({ phase: 'idle', reason: 'durable-attempt' });
+  f.run.wake(); // input, sync and readiness events on the same history do not recheck
+  f.run.refresh();
+  await f.tick(4 * RETRY);
+  expect(f.calls).toHaveLength(1);
+  f.set({ ready: true, hint: { revision: 0, records: MIN + 1 } });
+  f.run.refresh();
+  await f.tick(RETRY);
+  expect(f.calls).toHaveLength(2);
+  f.calls[1]!.resolve({ kind: 'skipped', reason: 'durable-attempt' });
+  await f.tick(0);
+  expect(f.run.retry()).toBe(true); // still behind the retry delay, as the panel says
+  await f.tick(RETRY);
+  expect(f.calls).toHaveLength(3);
+  f.run.dispose();
+  f.calls[2]!.resolve({ kind: 'removed' });
   await f.tick(0);
 });
 it('remembers activity arriving during preparation without spinning on interruption', async () => {

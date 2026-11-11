@@ -1,0 +1,57 @@
+// @vitest-environment node
+// Base-tree demonstration (ee211a6a6): the reduction's fenced entries as the base composition
+// calls them (accountReceive.ts:1132 `contextQueue.run(persist)`, :3860 `enqueue(...)`), with
+// removeLocalHistory's catch (:3880-3893: only MaintenanceInterrupted becomes a skip), meeting a
+// prepared receive that holds the Worker handoff slot. Real queues, context queue and scheduler.
+import { expect, it, vi } from 'vitest';
+const W = '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1';
+it('base composition: a busy slot at save and at commit time halts the scheduler', async () => {
+  const { createWorkerWorkspaceQueues } = await import(W + '/src/crdt/workerWorkspaceQueues');
+  const { createWorkerContextQueue } = await import(W + '/src/crdt/workerContextQueue');
+  const { MaintenanceInterrupted } = await import(W + '/src/crdt/contentMaintenance');
+  const { createAutomaticLocalRetention, localRetentionInterrupted, LOCAL_RETENTION_MIN_RECORDS, LOCAL_RETENTION_QUIET_MS } =
+    await import(W + '/src/crdt/automaticLocalRetention');
+  const out: unknown[] = [];
+  for (const site of ['progress save', 'commit']) {
+    vi.useFakeTimers();
+    vi.setSystemTime(0);
+    const root = new AbortController();
+    const queues = createWorkerWorkspaceQueues({
+      channel: { request: async () => undefined } as never,
+      signal: root.signal,
+      live: () => {},
+      failed: () => {},
+      incarnation: 'i',
+      preparedPromotion: (() => async (apply: () => void) => apply()) as never,
+      withFence: async (_id: number, work: () => Promise<unknown>) => work(),
+    });
+    const context = createWorkerContextQueue(root.signal);
+    context.bind(queues.enqueue);
+    let release!: () => void;
+    const run = createAutomaticLocalRetention({
+      signal: root.signal,
+      observe: () => ({ ready: true, synchronized: true, hold: false, deferPolls: true,
+        hint: { revision: 0, records: LOCAL_RETENTION_MIN_RECORDS } }),
+      remove: async () => {
+        void queues.prepare(Uint8Array.of(9), () => new Promise<string>((r) => (release = () => r('x')))).catch(() => {});
+        try {
+          return await (site === 'progress save'
+            ? context.run(async () => ({ kind: 'preparation-saved' }))
+            : queues.enqueue(Uint8Array.of(1), async () => ({ kind: 'removed' })));
+        } catch (cause) {
+          if (cause instanceof MaintenanceInterrupted) return localRetentionInterrupted(cause);
+          throw cause;
+        }
+      },
+    });
+    run.wake();
+    await vi.advanceTimersByTimeAsync(LOCAL_RETENTION_QUIET_MS);
+    out.push({ site, status: run.status, diagnostics: run.diagnostics });
+    release();
+    root.abort();
+    await queues.close();
+    vi.useRealTimers();
+  }
+  process.stderr.write('\nBASE-COLLISION ' + JSON.stringify(out) + '\n');
+  for (const o of out as { status: { phase: string } }[]) expect(o.status.phase).not.toBe('halted');
+});

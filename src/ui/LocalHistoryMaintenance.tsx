@@ -18,7 +18,9 @@ export function localHistoryNeedsAttention(status: LocalRetentionStatus | null) 
     status !== null &&
     status.phase !== 'closed' &&
     (status.phase === 'halted' ||
-      ['capacity', 'history-required', 'ineligible'].includes(status.reason ?? ''))
+      ['capacity', 'history-required', 'ineligible', 'durable-attempt'].includes(
+        status.reason ?? '',
+      ))
   );
 }
 const mib = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)} MiB`;
@@ -68,6 +70,9 @@ export function localHistoryCapacityMessage(detail: LocalRetentionDetail | undef
     ? `History maintenance was interrupted by other work on this device and had no saved progress to resume from. ${kept} It will try again after new writing or sync changes this device’s history, or when you choose Check again.`
     : `${first} ${kept} ${recheck}`;
 }
+/** A saved account attempt (history snapshot, approval or rotation progress) blocks reduction
+ * (phase 546). The owner does not say which channel, so the sentence names them as examples. */
+export const localHistorySavedAttemptMessage = `An unfinished account step saved on this device, such as a service history snapshot, a device approval or a device removal, has to finish before history here can be reduced. ${kept} It will check again after new writing or sync changes this device’s history, or when you choose Check again.`;
 /** Local technical history, distinct from admitted snapshots and pruning on the service. */
 export function LocalHistoryMaintenance({
   runtime,
@@ -106,11 +111,13 @@ export function LocalHistoryMaintenance({
             ? 'Maintenance paused to let editing or sync finish. It will retry when this device is quiet.'
             : status.reason === 'capacity'
               ? localHistoryCapacityMessage(status.detail)
-              : status.reason === 'history-required'
-                ? 'Some history needed for a safe reduction is unavailable. Your existing history is kept. Let sync finish before checking again.'
-                : status.reason === 'ineligible'
-                  ? 'This device’s history is not ready for a safe reduction. Your existing history is kept. Let sync finish before checking again.'
-                  : 'Automatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes.';
+              : status.reason === 'durable-attempt'
+                ? localHistorySavedAttemptMessage
+                : status.reason === 'history-required'
+                  ? 'Some history needed for a safe reduction is unavailable. Your existing history is kept. Let sync finish before checking again.'
+                  : status.reason === 'ineligible'
+                    ? 'This device’s history is not ready for a safe reduction. Your existing history is kept. Let sync finish before checking again.'
+                    : 'Automatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes.';
   return (
     <section aria-label="History on this device">
       <h3 className="menu-subheading">History on this device</h3>

@@ -68,7 +68,6 @@ it('keeps ordinary deferrals quiet and preserves native collapsed Data', async (
       undefined,
       'activity-or-journal',
       'pending-promotion',
-      'durable-attempt',
       'already-preparing',
     ]) {
       await f.update({ phase: 'idle', reason });
@@ -194,4 +193,21 @@ it('names an installed service snapshot that no longer fits on re-check (phase 5
   expect(localHistoryCapacityMessage({ cause: 'installed-snapshot' })).toBe(
     'A service history snapshot installed on this device is larger than this version checks. Your existing history is still in place. It will check again after new writing or sync changes this device’s history.',
   );
+});
+it('says a saved account step blocks reduction, keeps writing safe and offers Check again (phase 546)', async () => {
+  const f = await fixture();
+  try {
+    await f.update({ phase: 'idle', reason: 'durable-attempt' });
+    expect(f.host.querySelector('p')!.textContent).toBe(
+      'An unfinished account step saved on this device, such as a service history snapshot, a device approval or a device removal, has to finish before history here can be reduced. Your existing history is still in place. It will check again after new writing or sync changes this device’s history, or when you choose Check again.',
+    );
+    expect(f.host.querySelector('summary')!.textContent).toContain('Maintenance paused');
+    expect(f.host.querySelector('details')!.open).toBe(false);
+    await act(async () => f.host.querySelector('button')!.click());
+    expect(f.retry).toHaveBeenCalledOnce();
+    await f.update({ phase: 'waiting', reason: 'durable-attempt' });
+    expect(f.host.querySelector('button')!.disabled).toBe(true);
+  } finally {
+    await f.close();
+  }
 });

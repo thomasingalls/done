@@ -1,0 +1,95 @@
+# Base tree ee211a6a6e1d827d2c326ca647fd680ef27e9246, source unchanged; new tests only. 2026-11-11T23:05:53Z
+$ pnpm exec vitest run test/reductionHoldDutyCycle.test.ts test/retentionFenceCollision.test.ts test/localHistoryMaintenance.test.tsx --maxWorkers=1
+   × says a saved account step blocks reduction, keeps writing safe and offers Check again (phase 546) 12ms
+DUTY durable-attempt unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=durable-attempt
+DUTY pending-promotion unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=pending-promotion
+DUTY activity-or-journal unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=activity-or-journal
+DUTY already-preparing unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=already-preparing
+DUTY ineligible unchanged-history held=0ms fraction=0.0000 attempts=1 status=ineligible
+DUTY capacity unchanged-history held=0ms fraction=0.0000 attempts=1 status=capacity
+DUTY history-required unchanged-history held=0ms fraction=0.0000 attempts=1 status=history-required
+DUTY a-later-reason unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=a-later-reason
+DUTY durable-attempt changing-history held=18000000ms fraction=0.8333 attempts=360
+   × with every attempt skipped as durable-attempt, six hours hold sync for at most one budget 98ms
+   × with every attempt skipped as pending-promotion, six hours hold sync for at most one budget 297ms
+   × with every attempt skipped as activity-or-journal, six hours hold sync for at most one budget 164ms
+   × with every attempt skipped as already-preparing, six hours hold sync for at most one budget 178ms
+   × with every attempt skipped as a-later-reason, six hours hold sync for at most one budget 174ms
+   × a saved attempt that never settles holds sync at most once, even while history keeps changing 164ms
+   × once the saved attempt settles, an unheld check makes progress and the hold returns 20ms
+ FAIL  test/retentionFenceCollision.test.ts [ test/retentionFenceCollision.test.ts ]
+Error: Cannot find module '../src/crdt/retentionFence' imported from /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/retentionFenceCollision.test.ts
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/localHistoryMaintenance.test.tsx > says a saved account step blocks reduction, keeps writing safe and offers Check again (phase 546)
+AssertionError: expected 'Automatic maintenance is on for this …' to be 'An unfinished account step saved on t…' // Object.is equality
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as durable-attempt, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as pending-promotion, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as activity-or-journal, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as already-preparing, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as a-later-reason, six hours hold sync for at most one budget
+AssertionError: expected 18000000 to be less than or equal to 300000
+    106|       `\nDUTY ${reason} unchanged-history held=${held}ms fraction=${(h…
+ FAIL  test/reductionHoldDutyCycle.test.ts > a saved attempt that never settles holds sync at most once, even while history keeps changing
+AssertionError: expected 18000000 to be less than or equal to 300000
+    117|     `\nDUTY durable-attempt changing-history held=${held}ms fraction=$…
+ FAIL  test/reductionHoldDutyCycle.test.ts > once the saved attempt settles, an unheld check makes progress and the hold returns
+AssertionError: expected { phase: 'waiting', …(1) } to match object { phase: 'idle', …(1) }
+ Test Files  3 failed (3)
+      Tests  8 failed | 13 passed (21)
+
+$ pnpm exec vitest run --config probe-config.mjs   # base-collision.probe.ts: base composition at both fenced sites
+BASE-COLLISION [{"site":"progress save","status":{"phase":"halted","reason":"owner-error"},"diagnostics":{"attempts":1,"interruptions":0,"completions":0,"events":[],"ownerError":"Error"}},{"site":"commit","status":{"phase":"halted","reason":"owner-error"},"diagnostics":{"attempts":1,"interruptions":0,"completions":0,"events":[],"ownerError":"Error"}}]
+   × base composition: a busy slot at save and at commit time halts the scheduler 989ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected 'halted' not to be 'halted' // Object.is equality
+     55|   process.stderr.write('\nBASE-COLLISION ' + JSON.stringify(out) + '\n…
+      Tests  1 failed (1)
+
+
+# Base source ee211a6a6e1d827d2c326ca647fd680ef27e9246 (src/ restored to ee211a6a6; retentionFence.ts absent) with phase 546 tests. 2026-11-11T23:09:58Z
+$ pnpm exec vitest run test/reductionHoldDutyCycle.test.ts test/retentionFenceCollision.test.ts test/localHistoryMaintenance.test.tsx test/automaticLocalRetention.test.ts test/retentionReductionHold.test.ts --maxWorkers=1
+DUTY durable-attempt unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=durable-attempt
+DUTY pending-promotion unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=pending-promotion
+DUTY activity-or-journal unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=activity-or-journal
+DUTY already-preparing unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=already-preparing
+DUTY ineligible unchanged-history held=0ms fraction=0.0000 attempts=1 status=ineligible
+DUTY capacity unchanged-history held=0ms fraction=0.0000 attempts=1 status=capacity
+DUTY history-required unchanged-history held=0ms fraction=0.0000 attempts=1 status=history-required
+DUTY a-later-reason unchanged-history held=18000000ms fraction=0.8333 attempts=360 status=a-later-reason
+DUTY durable-attempt changing-history held=18000000ms fraction=0.8333 attempts=360
+   × with every attempt skipped as durable-attempt, six hours hold sync for at most one budget 169ms
+   × with every attempt skipped as pending-promotion, six hours hold sync for at most one budget 200ms
+   × with every attempt skipped as activity-or-journal, six hours hold sync for at most one budget 115ms
+   × with every attempt skipped as already-preparing, six hours hold sync for at most one budget 71ms
+   × with every attempt skipped as a-later-reason, six hours hold sync for at most one budget 91ms
+   × a saved attempt that never settles holds sync at most once, even while history keeps changing 100ms
+   × once the saved attempt settles, an unheld check makes progress and the hold returns 16ms
+   × says a saved account step blocks reduction, keeps writing safe and offers Check again (phase 546) 8ms
+   × the budget starts when sync is parked under the hold, bounds even a running attempt, then yields 4ms
+   × a hold that parked sync but cannot start its attempt yields after the same budget 1ms
+   × a saved account attempt parks until history changes or a manual check (phase 546) 4ms
+ FAIL  test/retentionFenceCollision.test.ts [ test/retentionFenceCollision.test.ts ]
+Error: Cannot find module '../src/crdt/retentionFence' imported from /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/retentionFenceCollision.test.ts
+⎯⎯⎯⎯⎯⎯ Failed Tests 11 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/automaticLocalRetention.test.ts > a saved account attempt parks until history changes or a manual check (phase 546)
+AssertionError: expected [ { revision: +0, …(2) }, …(1) ] to have a length of 1 but got 2
+ FAIL  test/localHistoryMaintenance.test.tsx > says a saved account step blocks reduction, keeps writing safe and offers Check again (phase 546)
+AssertionError: expected 'Automatic maintenance is on for this …' to be 'An unfinished account step saved on t…' // Object.is equality
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as durable-attempt, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as pending-promotion, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as activity-or-journal, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as already-preparing, six hours hold sync for at most one budget
+ FAIL  test/reductionHoldDutyCycle.test.ts > with every attempt skipped as a-later-reason, six hours hold sync for at most one budget
+AssertionError: expected 18000000 to be less than or equal to 300000
+    106|       `\nDUTY ${reason} unchanged-history held=${held}ms fraction=${(h…
+ FAIL  test/reductionHoldDutyCycle.test.ts > a saved attempt that never settles holds sync at most once, even while history keeps changing
+AssertionError: expected 18000000 to be less than or equal to 300000
+    117|     `\nDUTY durable-attempt changing-history held=${held}ms fraction=$…
+ FAIL  test/reductionHoldDutyCycle.test.ts > once the saved attempt settles, an unheld check makes progress and the hold returns
+AssertionError: expected { phase: 'waiting', …(1) } to match object { phase: 'idle', …(1) }
+ FAIL  test/retentionReductionHold.test.ts > the budget starts when sync is parked under the hold, bounds even a running attempt, then yields
+AssertionError: expected { send: true, receive: false } to be undefined
+ FAIL  test/retentionReductionHold.test.ts > a hold that parked sync but cannot start its attempt yields after the same budget
+AssertionError: expected { send: true, receive: false } to be undefined
+ Test Files  5 failed (5)
+      Tests  11 failed | 49 passed (60)

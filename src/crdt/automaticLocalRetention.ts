@@ -145,6 +145,14 @@ export function createAutomaticLocalRetention(options: {
     holdYieldUntil = 0,
     holdSpent = false,
     publishedHold = 0;
+  // Holding sync is for progress (a saved slice or a completed removal). A held window that ends,
+  // by its budget or by an outcome, with neither marks the history it was engaged on: no further
+  // hold on that history until progress, a manual check or reopening. A saved account attempt
+  // blocks every history until an attempt gets past it, since no quiet sync can finish it.
+  let holdKey: string | undefined,
+    holdProgress = false,
+    holdIdleKey: string | undefined,
+    holdBlocked = false;
   // Poll deferral, on any device without the hold: a running attempt, and the saved slice it
   // continues into at once, ask the receive lane to skip routine idle polls. Hints still run.
   // Any wait between slices releases it, so the deferred poll runs before the next slice.
@@ -209,6 +217,18 @@ export function createAutomaticLocalRetention(options: {
     holdSince = undefined;
     holdSettled = false;
   };
+  /** End the held window through its budget or an outcome, marking its history if it did nothing. */
+  const closeWindow = (spend = false) => {
+    if (holdSince === undefined) return;
+    if (!holdProgress) holdIdleKey = holdKey;
+    releaseHold(spend);
+  };
+  /** Progress shows the hold is useful: it clears every bound but a spent hold. */
+  const progressed = () => {
+    holdProgress = holdSince !== undefined;
+    holdIdleKey = undefined;
+    holdBlocked = false;
+  };
   const startHoldBudget = () => {
     if (holdSince !== undefined && holdTimer === undefined)
       holdTimer = setTimeout(() => expireHold(), LOCAL_RETENTION_HOLD_MS);
@@ -230,12 +250,15 @@ export function createAutomaticLocalRetention(options: {
     else if (synchronized !== false) startHoldBudget();
     // Same rule for the poll deferral: a hidden page or pressure releases it even mid-attempt.
     if (deferPolls !== true) releasePoll();
+    const key = hint ? `${hint.revision}:${hint.records}` : undefined;
     return {
-      hint: valid
-        ? { revision: hint.revision, key: `${hint.revision}:${hint.records}` }
-        : undefined,
+      hint: valid ? { revision: hint.revision, key: key! } : undefined,
       synchronized: synchronized !== false,
-      holdable: hold === true && !holdSpent,
+      holdable:
+        hold === true &&
+        !holdSpent &&
+        !holdBlocked &&
+        (holdIdleKey === undefined || key !== holdIdleKey),
       deferrable: deferPolls === true,
     };
   };
@@ -287,7 +310,8 @@ export function createAutomaticLocalRetention(options: {
     holdTimer = undefined;
     if (closed || holdSince === undefined) return;
     // Liveness bound: routine sync resumes even mid-attempt; its next job interrupts as before.
-    releaseHold();
+    // A budget spent without progress does not come back on the same history.
+    closeWindow();
     holdYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
     if (running) publish();
     else schedule();
@@ -302,7 +326,11 @@ export function createAutomaticLocalRetention(options: {
       return;
     }
     // Due. Ask routine sync to stop at its next settled boundary; lane changes refresh us.
-    if (holdSince === undefined && holdable && now >= holdYieldUntil) holdSince = now;
+    if (holdSince === undefined && holdable && now >= holdYieldUntil) {
+      holdSince = now;
+      holdKey = hint.key;
+      holdProgress = false;
+    }
     if (!synchronized) {
       if (holdSince === undefined && holdable) schedule(); // yielding: recheck when it ends
       return;
@@ -371,6 +399,7 @@ export function createAutomaticLocalRetention(options: {
         reason = undefined;
         detail = undefined;
         notBefore = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
+        progressed();
         releaseHold();
         again = true;
       } else if (result.kind === 'preparation-saved') {
@@ -378,28 +407,36 @@ export function createAutomaticLocalRetention(options: {
         reason = 'preparation-saved';
         detail = undefined;
         notBefore = 0;
+        progressed();
         again = saved = true;
       } else if (result.kind === 'skipped') {
-        if (result.reason === 'activity-or-journal') interruptions++;
+        const why = result.reason ?? '';
+        if (why === 'activity-or-journal') interruptions++;
         reason = result.reason;
         // Presentation only: which limit fired. Parking and retry timing never read it.
-        detail = result.reason === 'capacity' ? copyRetentionDetail(result.detail) : undefined;
+        detail = why === 'capacity' ? copyRetentionDetail(result.detail) : undefined;
         const priorityOnly =
-          result.reason === 'activity-or-journal' &&
+          why === 'activity-or-journal' &&
           isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result));
         notBefore =
           Date.now() + (priorityOnly ? LOCAL_RETENTION_QUIET_MS : LOCAL_RETENTION_RETRY_MS);
-        // Retrying an unchanged capacity/history refusal cannot help. A different authenticated
-        // ledger hint permits another attempt, still behind the retry clock.
-        if (['capacity', 'history-required', 'ineligible'].includes(result.reason ?? '')) {
+        // Retrying an unchanged refusal cannot help. A different authenticated ledger hint
+        // permits another attempt, still behind the retry clock. A saved account attempt (a
+        // history snapshot, approval or rotation still in progress) waits the same way.
+        if (['capacity', 'history-required', 'ineligible', 'durable-attempt'].includes(why))
           parked = hint.key;
-          // Holding sync cannot repair capacity or missing history: do not hold again until a
-          // manual retry or reopen, even when the budget lapsed before this outcome arrived. An
-          // ineligible cut (for example an unaccepted position left while offline) may settle
-          // later, so it only releases; parking still needs a new hint.
-          if (result.reason !== 'ineligible') holdSpent = true;
-          if (holdSince !== undefined) releaseHold(result.reason !== 'ineligible');
-        }
+        // Any other outcome lifts that block. Most come from past the saved-attempt check; one
+        // that did not (an interruption before it) costs at most one held check, on new history.
+        holdBlocked = why === 'durable-attempt';
+        // Holding sync cannot repair capacity or missing history: do not hold again until a
+        // manual retry or reopen, even when the budget lapsed before this outcome arrived.
+        const spend = why === 'capacity' || why === 'history-required';
+        if (spend) holdSpent = true;
+        // Quiet lanes can help only these two: a pending receive promotion settles while receive
+        // is held, and sync's own jobs stop interrupting. Every other refusal ends the window,
+        // including an ineligible cut, which may settle later (it is parked until a new hint)
+        // and a reason this build does not know.
+        if (why !== 'activity-or-journal' && why !== 'pending-promotion') closeWindow(spend);
         // Transient refusal needs a new event, not a periodic scan of the same history. A held
         // device retries behind the same clock, bounded by the hold budget, so it cannot stall.
         again = wakes !== started || holdSince !== undefined;
@@ -493,6 +530,9 @@ export function createAutomaticLocalRetention(options: {
       if (closed || halted || running) return false;
       parked = undefined;
       holdSpent = false;
+      // A manual check is the person asking for one more try, held if the device holds.
+      holdIdleKey = undefined;
+      holdBlocked = false;
       holdYieldUntil = 0;
       pollYieldUntil = 0;
       wakes++;

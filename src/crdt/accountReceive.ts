@@ -2,6 +2,7 @@ import { receiveOriginalsFit, type ReceiveOriginalsUsage } from './receiveOrigin
 import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
 import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
 import { createWorkerContextQueue, type WorkerContextQueue } from './workerContextQueue';
+import { enterRetentionFence } from './retentionFence';
 import type { AccountMirrorContext } from './accountMirrorMaterial';
 import { eraseWorkerMessage } from './workerChannel';
 import { pageRuntimePorts } from './runtimePorts';
@@ -1129,7 +1130,10 @@ async function openAccountReceiveOwner(
             if (refused) return refused;
             return prepared.persist(task, () => assertCurrent(task), checkJournal);
           });
-        return await (contextQueue ? contextQueue.run(persist) : persist());
+        // A busy Worker handoff slot refuses before anything is saved: an interruption to retry.
+        return await (contextQueue
+          ? enterRetentionFence(() => contextQueue.run(persist))
+          : persist());
       } finally {
         prepared.dispose();
       }
@@ -3857,23 +3861,26 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                             ).finally(() => measureLedgerWork('retentionPreparation', preparing));
                             if (prepared.kind !== 'prepared-removal') return prepared;
                             try {
-                              return await enqueue(new Uint8Array([1]), async (_input, promote) => {
-                                const fenced = ledgerWorkStart();
-                                try {
-                                  const result = await prepared.commit();
-                                  promote([]);
-                                  return result;
-                                } catch (cause) {
-                                  if (!(cause instanceof MaintenanceInterrupted)) throw cause;
-                                  promote([]);
-                                  return {
-                                    kind: 'skipped' as const,
-                                    reason: 'activity-or-journal',
-                                  };
-                                } finally {
-                                  measureLedgerWork('retentionFenced', fenced);
-                                }
-                              });
+                              // A busy slot refuses before the commit starts: yield and retry.
+                              return await enterRetentionFence(() =>
+                                enqueue(new Uint8Array([1]), async (_input, promote) => {
+                                  const fenced = ledgerWorkStart();
+                                  try {
+                                    const result = await prepared.commit();
+                                    promote([]);
+                                    return result;
+                                  } catch (cause) {
+                                    if (!(cause instanceof MaintenanceInterrupted)) throw cause;
+                                    promote([]);
+                                    return {
+                                      kind: 'skipped' as const,
+                                      reason: 'activity-or-journal',
+                                    };
+                                  } finally {
+                                    measureLedgerWork('retentionFenced', fenced);
+                                  }
+                                }),
+                              );
                             } finally {
                               prepared.dispose();
                             }

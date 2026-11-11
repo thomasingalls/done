@@ -833,7 +833,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "253334d675466568074fc90fdab364ca9cc6a33d0256b7101ce4f61cbf9b053a"
+      "sha256": "72254df40f6f8f99c4a68fe52f2be3a7736380e7e55d5db991f94b84c850ccb5"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -949,7 +949,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "470059ab6b8934b797266762d1ffb609c1ebec1e968a5eed6427f6e157c883cf"
+      "sha256": "29dff4538c12ed62da9f98165d365a5cdfd5a65b293fdcce96d7015ca90bd2fc"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1448,6 +1448,10 @@
       "sha256": "69cbfee6a163711d29103ab35ba6a20c0dd824aec58e15a7c82d8c72821f0b9b"
     },
     {
+      "path": "src/crdt/retentionFence.ts",
+      "sha256": "e466bc254ef3a70200a5ec27bb72f98c2dff5fba6508912ee33e734cfdd3a099"
+    },
+    {
       "path": "src/crdt/retentionPreparation.ts",
       "sha256": "963127ae42466814929c6bc9a8f44c1b9f04ade91946412455f8b4d8a740f1b9"
     },
@@ -1693,7 +1697,7 @@
     },
     {
       "path": "src/crdt/workerWorkspaceQueues.ts",
-      "sha256": "ed5713f4d2a9538d57af03d2081fa71329e6a01369e80cf78d312c281ec74761"
+      "sha256": "7602a251586ea5863e3708210e64ec62ba6ec1a4de633b9d51a7a0aff2b1f3ba"
     },
     {
       "path": "src/crdt/workspaceBridge.ts",
@@ -1941,7 +1945,7 @@
     },
     {
       "path": "src/ui/LocalHistoryMaintenance.tsx",
-      "sha256": "0b8964a96d6e062583a41a81458fbb21dee894210b578cc0c51d8ca4685972a2"
+      "sha256": "d9ceed82d75c6e1901629194ac1b7bb12229757068b2817d20e95016a18c9b61"
     },
     {
       "path": "src/ui/LocalRecovery.tsx",
@@ -2249,7 +2253,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 942
+          "line": 943
         }
       ]
     },

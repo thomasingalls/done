@@ -193,8 +193,14 @@ it('the budget starts when sync is parked under the hold, bounds even a running 
   await f.tick(YIELD - 1);
   expect(f.run.hold).toBeUndefined();
   await f.tick(1);
-  expect(f.run.hold).toEqual(engaged);
+  // Phase 546: that window ended without progress, so the same history is not held again.
+  expect(f.run.hold).toBeUndefined();
   expect(f.calls).toHaveLength(2);
+  // New writing or sync changes the history; the next due attempt may hold again.
+  f.set({ hint: { revision: 0, records: MIN + 1 } });
+  f.run.refresh();
+  await f.tick(0);
+  expect(f.run.hold).toEqual(engaged);
   f.run.dispose();
 });
 
@@ -212,14 +218,20 @@ it('a hold that parked sync but cannot start its attempt yields after the same b
   expect(f.calls).toHaveLength(0);
   await f.tick(1);
   expect(f.run.hold).toBeUndefined();
-  // Released lanes are busy again. No hold during the yield window, then it may engage again.
+  // Released lanes are busy again. No hold during the yield window.
   f.set({ synchronized: false, ready: true });
   f.run.refresh();
   await f.tick(YIELD - 1);
   expect(f.run.hold).toBeUndefined();
   await f.tick(1);
-  expect(f.run.hold).toEqual(engaged);
+  // Phase 546: the window ended without progress, so the same history is not held again; the
+  // person kept writing, which is new history, and that may hold again once it is due.
+  expect(f.run.hold).toBeUndefined();
   expect(f.calls).toHaveLength(0);
+  f.set({ hint: { revision: 0, records: MIN + 1 } });
+  f.run.refresh();
+  await f.tick(0);
+  expect(f.run.hold).toEqual(engaged);
   f.run.dispose();
 });
 it('an attempt that starts late under a parked hold keeps the budget already running', async () => {
