@@ -18,14 +18,20 @@ export const LOCAL_RETENTION_COOLDOWN_MS = 30 * 60000;
 export const LOCAL_RETENTION_RETRY_MS = 60000;
 /** Longest a settled hold may defer routine sync before it yields (scheduling bound, unmeasured). */
 export const LOCAL_RETENTION_HOLD_MS = 5 * 60000;
-/** Normal sync window after a hold expires, before another hold may engage. */
+/** Normal sync window after a hold or poll deferral expires, before it may engage again. */
 export const LOCAL_RETENTION_HOLD_YIELD_MS = 60000;
+/** Unmeasured scheduling bound: the longest a running attempt, with the saved slices it continues
+ * into at once, may defer routine idle receive polls (counted from the first slice) before polls
+ * resume for the yield window. Hints and other sync signals are never deferred by it. */
+export const LOCAL_RETENTION_POLL_HOLD_MS = 60000;
 /** Scheduling hint for the sync lanes. Never authority: the owner still checks every effect. */
 export interface LocalRetentionHold {
   /** Do not allocate a new envelope; drive already allocated positions to acceptance. */
   readonly send: boolean;
   /** Do not start receive passes; an attempt is running or between slices. */
   readonly receive: boolean;
+  /** Skip receive passes caused only by the idle poll timer; signals still start them. */
+  readonly idlePoll?: boolean;
 }
 export interface LocalRetentionStatus {
   readonly phase: 'idle' | 'waiting' | 'running' | 'halted' | 'closed';
@@ -57,6 +63,9 @@ export interface LocalRetentionObservation {
   /** Stable owner observation: reduction is the way out of a costly path, so a due attempt may
    * ask routine sync to hold. Must not flip with transient readiness such as pending input. */
   readonly hold?: boolean;
+  /** Stable owner observation for any device, under the same rule as `hold`: a running attempt
+   * may ask the receive lane to skip routine idle polls. Omitted means never. */
+  readonly deferPolls?: boolean;
 }
 type Outcome = { kind: string; reason?: string };
 const interruptedOutcomes = new WeakMap<Outcome, MaintenanceInterrupted>();
@@ -65,6 +74,32 @@ export function localRetentionInterrupted(cause: MaintenanceInterrupted) {
   const outcome = Object.freeze({ kind: 'skipped' as const, reason: 'activity-or-journal' });
   interruptedOutcomes.set(outcome, cause);
   return outcome;
+}
+/** Re-arms the sync lanes when the hold's tier engages, changes or releases. The scheduler reads
+ * the hold live; this is deferred so a retention publish never re-enters it synchronously. */
+export function watchLocalRetentionHold(
+  retention: {
+    readonly hold: LocalRetentionHold | undefined;
+    onStatus(listener: () => void): () => void;
+  },
+  wake: () => void,
+): () => void {
+  let tier = '';
+  return retention.onStatus(() => {
+    const hold = retention.hold;
+    const next = !hold
+      ? ''
+      : hold.receive
+        ? 'settled'
+        : hold.send
+          ? 'engaged'
+          : hold.idlePoll
+            ? 'polls'
+            : '';
+    if (next === tier) return;
+    tier = next;
+    queueMicrotask(wake);
+  });
 }
 const ownerErrorCode = (cause: unknown): string => {
   if (cause instanceof LocalBaselineError) {
@@ -104,10 +139,25 @@ export function createAutomaticLocalRetention(options: {
     holdYieldUntil = 0,
     holdSpent = false,
     publishedHold = 0;
+  // Poll deferral, on any device without the hold: a running attempt, and the saved slice it
+  // continues into at once, ask the receive lane to skip routine idle polls. Hints still run.
+  // Any wait between slices releases it, so the deferred poll runs before the next slice.
+  let pollSince: number | undefined,
+    pollTimer: ReturnType<typeof setTimeout> | undefined,
+    pollYieldUntil = 0,
+    continuing = false;
   const listeners = new Set<() => void>();
   let status: LocalRetentionStatus = Object.freeze({ phase: 'idle', reason: undefined });
-  const holdLevel = () => (closed || holdSince === undefined ? 0 : holdSettled ? 2 : 1);
+  const holdLevel = () =>
+    closed ? 0 : holdSince !== undefined ? (holdSettled ? 3 : 2) : pollSince !== undefined ? 1 : 0;
+  const releasePoll = () => {
+    if (pollTimer !== undefined) clearTimeout(pollTimer);
+    pollTimer = undefined;
+    pollSince = undefined;
+  };
   const publish = () => {
+    // Every path ends here: no attempt running or continuing at once means no deferral.
+    if (pollSince !== undefined && !running && !continuing) releasePoll();
     const phase = closed
       ? 'closed'
       : halted
@@ -151,7 +201,7 @@ export function createAutomaticLocalRetention(options: {
       holdTimer = setTimeout(() => expireHold(), LOCAL_RETENTION_HOLD_MS);
   };
   const observation = () => {
-    const { ready, hint, synchronized, hold } = options.observe();
+    const { ready, hint, synchronized, hold, deferPolls } = options.observe();
     const valid =
       ready &&
       hint &&
@@ -165,17 +215,21 @@ export function createAutomaticLocalRetention(options: {
     // Quiet lanes under an engaged hold mean the sender is parked. Waiting for the envelope
     // already in flight (lanes still busy) stays unbounded; nothing new is withheld by it yet.
     else if (synchronized !== false) startHoldBudget();
+    // Same rule for the poll deferral: a hidden page or pressure releases it even mid-attempt.
+    if (deferPolls !== true) releasePoll();
     return {
       hint: valid
         ? { revision: hint.revision, key: `${hint.revision}:${hint.records}` }
         : undefined,
       synchronized: synchronized !== false,
       holdable: hold === true && !holdSpent,
+      deferrable: deferPolls === true,
     };
   };
   const schedule = () => {
     clear();
     if (closed || halted) {
+      continuing = false;
       publish();
       return;
     }
@@ -188,17 +242,32 @@ export function createAutomaticLocalRetention(options: {
     }
     // Busy sync used to leave no timer. A hold-wanting owner still needs the due moment.
     if (!hint || hint.key === parked || (!synchronized && !holdable)) {
+      continuing = false;
       publish();
       return;
     }
     const yielding = !synchronized && holdSince === undefined ? holdYieldUntil : 0;
-    timer = setTimeout(
-      () => {
-        timer = undefined;
-        void attempt().finally(publish);
-      },
-      Math.max(0, quietUntil - Date.now(), notBefore - Date.now(), yielding - Date.now()),
+    const delay = Math.max(
+      0,
+      quietUntil - Date.now(),
+      notBefore - Date.now(),
+      yielding - Date.now(),
     );
+    // A saved slice keeps the poll deferral only while its next slice is due at once.
+    continuing &&= delay === 0;
+    timer = setTimeout(() => {
+      timer = undefined;
+      continuing = false;
+      void attempt().finally(publish);
+    }, delay);
+    publish();
+  };
+  const expirePoll = () => {
+    pollTimer = undefined;
+    if (closed || pollSince === undefined) return;
+    // Liveness bound: routine polls resume even mid-attempt; the next one interrupts as before.
+    releasePoll();
+    pollYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
     publish();
   };
   const expireHold = () => {
@@ -212,7 +281,7 @@ export function createAutomaticLocalRetention(options: {
   };
   const attempt = async () => {
     if (closed || halted || running) return;
-    const { hint, synchronized, holdable } = observation();
+    const { hint, synchronized, holdable, deferrable } = observation();
     if (!hint || hint.key === parked) return;
     const now = Date.now();
     if (now < Math.max(quietUntil, notBefore)) {
@@ -226,9 +295,21 @@ export function createAutomaticLocalRetention(options: {
       return;
     }
     running = true;
-    if (holdSince !== undefined && !holdSettled) {
-      holdSettled = true;
-      startHoldBudget();
+    if (holdSince !== undefined) {
+      // The settled hold already defers every receive pass, within its own budget.
+      releasePoll();
+      if (!holdSettled) {
+        holdSettled = true;
+        startHoldBudget();
+      }
+    } else if (
+      pollSince === undefined &&
+      deferrable &&
+      now >= Math.max(pollYieldUntil, holdYieldUntil)
+    ) {
+      // Any device: a routine idle poll would cancel this attempt through the storage queue.
+      pollSince = now;
+      pollTimer = setTimeout(() => expirePoll(), LOCAL_RETENTION_POLL_HOLD_MS);
     }
     attempts++;
     const stamp = (currentAttempt = {}),
@@ -257,7 +338,8 @@ export function createAutomaticLocalRetention(options: {
     };
     publish();
     const started = wakes;
-    let again = false;
+    let again = false,
+      saved = false;
     try {
       let result: Outcome;
       try {
@@ -281,7 +363,7 @@ export function createAutomaticLocalRetention(options: {
         // Useful bounded work is durable. Yield before another slice; input/readiness still wins.
         reason = 'preparation-saved';
         notBefore = 0;
-        again = true;
+        again = saved = true;
       } else if (result.kind === 'skipped') {
         if (result.reason === 'activity-or-journal') interruptions++;
         reason = result.reason;
@@ -321,7 +403,10 @@ export function createAutomaticLocalRetention(options: {
     } finally {
       if (currentAttempt === stamp) currentAttempt = undefined;
       running = false;
+      // schedule() keeps this only if the next slice is due at once; publish() then releases.
+      continuing = saved && !closed && !halted;
       if (again) schedule();
+      else continuing = false;
       publish();
     }
   };
@@ -329,6 +414,8 @@ export function createAutomaticLocalRetention(options: {
     closed = true;
     clear();
     releaseHold();
+    continuing = false;
+    releasePoll();
     options.signal.removeEventListener('abort', dispose);
     publish();
     listeners.clear();
@@ -356,7 +443,14 @@ export function createAutomaticLocalRetention(options: {
     /** Read live by the sync scheduler; changes are also announced through onStatus. */
     get hold(): LocalRetentionHold | undefined {
       const level = holdLevel();
-      return level ? Object.freeze({ send: true, receive: level === 2 }) : undefined;
+      if (!level) return undefined;
+      // The poll deferral never parks the sender: the send lane has no idle timer, a local edit
+      // already interrupts preparation through the journal, and the owner refuses an unsettled cut.
+      return Object.freeze(
+        level === 1
+          ? { send: false, receive: false, idlePoll: true }
+          : { send: true, receive: level === 3 },
+      );
     },
     get diagnostics() {
       return Object.freeze({
@@ -379,6 +473,7 @@ export function createAutomaticLocalRetention(options: {
       parked = undefined;
       holdSpent = false;
       holdYieldUntil = 0;
+      pollYieldUntil = 0;
       wakes++;
       quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS;
       schedule();

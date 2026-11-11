@@ -29,6 +29,9 @@ export interface SyncHold {
   readonly send: boolean;
   /** Do not start receive passes. A pass already running finishes normally. */
   readonly receive: boolean;
+  /** Do not start a receive pass whose only cause is the idle reconciliation timer. A content
+   * hint, reconnection, retry, authority change or unanswered submit still starts one at once. */
+  readonly idlePoll?: boolean;
 }
 /** A completed check can yield its turn without claiming progress or a complete idle sweep. */
 export type SyncReceiveStep = ReceiveStep | { kind: 'yielded'; receivedThrough: number };
@@ -64,6 +67,8 @@ interface Lane {
   continuing: boolean;
   /** Send only: parked at a settled boundary (nothing allocated and unaccepted). */
   held: boolean;
+  /** Receive only: the pending deadline came from the idle interval and no signal since. */
+  routine: boolean;
 }
 const clockDefault: DriverClock = {
   now: () => Date.now(),
@@ -102,6 +107,7 @@ export function createSyncScheduler(options: {
     dirty: false,
     continuing: false,
     held: false,
+    routine: false,
   });
   const lanes = { send: fresh(), receive: fresh() };
   const listeners = new Set<(status: SyncStatus) => void>();
@@ -119,9 +125,13 @@ export function createSyncScheduler(options: {
       return undefined; // A hint observer cannot stop synchronization.
     }
   };
-  // A parked sender stays parked only while the hold asks; receive defers for the whole request.
-  const deferred = (name: SyncLane) =>
-    name === 'send' ? lanes.send.held && hold()?.send === true : hold()?.receive === true;
+  // A parked sender stays parked only while the hold asks; receive defers for the whole request,
+  // or only its idle reconciliation poll. Any signal clears `routine`, so it runs at once.
+  const deferred = (name: SyncLane) => {
+    if (name === 'send') return lanes.send.held && hold()?.send === true;
+    const current = hold();
+    return current?.receive === true || (lanes.receive.routine && current?.idlePoll === true);
+  };
   const laneStatus = (name: SyncLane): SyncLaneStatus => {
     const lane = lanes[name],
       gate = options.gate();
@@ -194,6 +204,7 @@ export function createSyncScheduler(options: {
       lanes[name].dirty = lanes[name].expedite = false;
       lanes[name].continuing = false;
       lanes[name].held = false;
+      lanes[name].routine = false;
     }
     options.signal.removeEventListener('abort', stop);
     options.detach();
@@ -249,6 +260,7 @@ export function createSyncScheduler(options: {
         // Keep the deadline until after observers have had their last opportunity to pause this pass.
         if (!ready() || lane.halt) return;
         lane.due = undefined;
+        lane.routine = false;
         if (!lane.continuing) lane.dirty = lane.expedite = false;
         lane.continuing = false;
         last = name;
@@ -309,8 +321,10 @@ export function createSyncScheduler(options: {
           result.kind === 'unknown' &&
           !lanes.receive.halt &&
           lanes.receive.failures === 0
-        )
+        ) {
           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
+          lanes.receive.routine = false;
+        }
         if (result.kind === 'held') {
           // Parked, not failed or idle-swept: local edits keep their dirty mark for release.
           delete lane.issueSince;
@@ -370,6 +384,9 @@ export function createSyncScheduler(options: {
                 : lane.dirty
                   ? clock.now() + 50
                   : undefined;
+          // Only a clean idle sweep's own timer is routine; a hint during the pass made it dirty.
+          lane.routine =
+            name === 'receive' && result.kind === 'idle' && !lane.expedite && !lane.dirty;
           lane.expedite = lane.dirty = false;
         }
         ready();
@@ -451,7 +468,10 @@ export function createSyncScheduler(options: {
         lane.issueSince ??= clock.now();
       if (cause === 'remote' && name === 'receive' && !lane.halt) {
         if (active === name || lane.continuing) lane.dirty = true;
-        else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+        else if (lane.failures === 0) {
+          lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+          lane.routine = false; // A hint is a real signal, never an idle-poll deferral.
+        }
       }
       // Only the owner calls this after installing verified membership. Other evidence halts stay closed.
       if (cause === 'retry' || (cause === 'authority' && name === 'send' && lane.halt === 'closed'))
@@ -474,7 +494,10 @@ export function createSyncScheduler(options: {
         lane.due = clock.now();
       if ((cause === 'online' || cause === 'authority' || cause === 'retry') && !lane.halt) {
         if (active === name || lane.continuing) lane.expedite = true;
-        else lane.due = clock.now();
+        else {
+          lane.due = clock.now();
+          lane.routine = false;
+        }
       }
     }
     arm();

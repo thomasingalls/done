@@ -2,14 +2,18 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import {
   createAutomaticLocalRetention,
+  localRetentionInterrupted,
+  watchLocalRetentionHold,
   LOCAL_RETENTION_MIN_RECORDS as MIN,
   LOCAL_RETENTION_QUIET_MS as QUIET,
   LOCAL_RETENTION_RETRY_MS as RETRY,
   LOCAL_RETENTION_COOLDOWN_MS as COOLDOWN,
   LOCAL_RETENTION_HOLD_MS as HOLD,
   LOCAL_RETENTION_HOLD_YIELD_MS as YIELD,
+  LOCAL_RETENTION_POLL_HOLD_MS as POLLS,
   type LocalRetentionObservation,
 } from '../src/crdt/automaticLocalRetention';
+import { MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
 
 afterEach(() => {
   vi.useRealTimers();
@@ -257,6 +261,157 @@ it('capacity and missing history spend the hold until a manual retry; ineligible
     f.run.dispose();
     vi.useRealTimers();
   }
+});
+
+/** An already-reduced device: indexed ledger view, so no full hold, and quiet sync lanes. */
+const ordinary = { hold: false, synchronized: true, deferPolls: true };
+const polls = { send: false, receive: false, idlePoll: true };
+const priorityOnly = () =>
+  localRetentionInterrupted(new MaintenanceInterrupted([{ queuePriority: true }]));
+const microtasks = async () => {
+  for (let n = 0; n < 10; n++) await Promise.resolve();
+};
+
+it('an ordinary device defers routine polls only while its attempt runs and never parks the sender', async () => {
+  const f = fixture(ordinary);
+  f.run.wake();
+  await f.tick(QUIET - 1);
+  expect(f.run.hold).toBeUndefined(); // waiting for quiet: polls run as usual
+  await f.tick(1);
+  expect(f.calls).toHaveLength(1);
+  expect(f.run.hold).toEqual(polls);
+  f.calls[0]!.resolve({ kind: 'removed' });
+  await f.tick(0);
+  expect(f.run.hold).toBeUndefined();
+  f.run.dispose();
+});
+
+it('a saved slice continuing at once keeps the deferral; input that delays the next slice releases it', async () => {
+  const f = fixture(ordinary);
+  f.run.wake();
+  await f.tick(QUIET);
+  f.calls[0]!.resolve({ kind: 'preparation-saved' });
+  await microtasks();
+  // Between slices: the next one is due at once, so the receive lane keeps skipping polls.
+  expect(f.calls).toHaveLength(1);
+  expect(f.run.hold).toEqual(polls);
+  await f.tick(0);
+  expect(f.calls).toHaveLength(2);
+  expect(f.run.hold).toEqual(polls);
+  f.calls[1]!.resolve({ kind: 'preparation-saved' });
+  await microtasks();
+  f.run.wake(); // a click without a journal entry restarts quiet, so the next slice waits
+  expect(f.run.hold).toBeUndefined();
+  await f.tick(QUIET);
+  expect(f.calls).toHaveLength(3);
+  expect(f.run.hold).toEqual(polls);
+  f.run.dispose();
+});
+
+it('the poll deferral is bounded from its first slice, announced when it lapses, then yields', async () => {
+  const f = fixture(ordinary);
+  f.run.wake();
+  await f.tick(QUIET);
+  // Slices that continue at once share one budget.
+  for (let n = 0; n < 3; n++) {
+    await f.tick(POLLS / 4);
+    f.calls.at(-1)!.resolve({ kind: 'preparation-saved' });
+    await f.tick(0);
+  }
+  expect(f.calls).toHaveLength(4);
+  await f.tick(POLLS / 4 - 1);
+  expect(f.run.hold).toEqual(polls);
+  const before = f.notices;
+  await f.tick(1);
+  expect(f.run.hold).toBeUndefined();
+  expect(f.run.status.phase).toBe('running');
+  expect(f.notices).toBeGreaterThan(before); // the sync scheduler must re-arm the poll
+  // The resumed poll interrupts the attempt through the storage queue, as before this change.
+  f.calls[3]!.resolve(priorityOnly());
+  await f.tick(0);
+  f.run.refresh(); // the lanes went busy and quiet again
+  await f.tick(QUIET);
+  expect(f.calls).toHaveLength(5);
+  expect(f.run.hold).toBeUndefined(); // inside the yield window: unprotected
+  f.calls[4]!.resolve(priorityOnly());
+  await f.tick(YIELD - QUIET);
+  f.run.refresh();
+  await f.tick(0);
+  expect(f.calls).toHaveLength(6);
+  expect(f.run.hold).toEqual(polls);
+  f.run.dispose();
+});
+
+it('a hidden page, a halt, disposal or any final outcome releases the poll deferral', async () => {
+  for (const end of ['hidden', 'error', 'dispose', 'interrupted', 'ineligible'] as const) {
+    const f = fixture(ordinary);
+    f.run.wake();
+    await f.tick(QUIET);
+    expect(f.run.hold).toEqual(polls);
+    if (end === 'hidden') {
+      f.set({ deferPolls: false, ready: false });
+      f.run.wake(); // visibilitychange
+      expect(f.run.hold).toBeUndefined();
+      expect(f.run.status.phase).toBe('running');
+    } else if (end === 'error') f.calls[0]!.reject(Error('owner failure'));
+    else if (end === 'dispose') f.controller.abort();
+    else if (end === 'interrupted') f.calls[0]!.resolve(priorityOnly());
+    else f.calls[0]!.resolve({ kind: 'skipped', reason: end });
+    await f.tick(0);
+    expect(f.run.hold).toBeUndefined();
+    f.run.dispose();
+    vi.useRealTimers();
+  }
+});
+
+it('without a running attempt, or without the observation, polls are never deferred', async () => {
+  const f = fixture({ ...ordinary, ready: false });
+  f.run.wake();
+  await f.tick(COOLDOWN);
+  expect(f.calls).toHaveLength(0);
+  expect(f.run.hold).toBeUndefined();
+  // Callers that never pass deferPolls keep the old contract, even while an attempt runs.
+  f.replace({ ready: true, synchronized: true, hold: false, hint: { revision: 0, records: MIN } });
+  f.run.refresh();
+  await f.tick(0);
+  expect(f.calls).toHaveLength(1);
+  expect(f.run.hold).toBeUndefined();
+  f.run.dispose();
+});
+
+it('a full-check device keeps its full hold, and polls stay undeferred in its yield window', async () => {
+  const f = fixture({ deferPolls: true });
+  await settle(f);
+  expect(f.run.hold).toEqual(settled);
+  await f.tick(HOLD);
+  expect(f.run.hold).toBeUndefined();
+  f.calls[0]!.resolve({ kind: 'preparation-saved' });
+  await f.tick(0);
+  expect(f.calls).toHaveLength(2);
+  expect(f.run.hold).toBeUndefined();
+  f.run.dispose();
+});
+
+it('the lane watcher wakes the scheduler once per tier change, never synchronously', async () => {
+  const f = fixture(ordinary);
+  let wakes = 0;
+  const stop = watchLocalRetentionHold(f.run, () => wakes++);
+  f.run.wake();
+  await f.tick(QUIET);
+  expect(f.run.hold).toEqual(polls);
+  expect(wakes).toBe(1);
+  f.calls[0]!.resolve({ kind: 'preparation-saved' });
+  await f.tick(0); // the next slice: same tier, no wake
+  expect(f.calls).toHaveLength(2);
+  expect(wakes).toBe(1);
+  f.set({ deferPolls: false });
+  f.run.refresh(); // released synchronously; the wake follows in a microtask
+  expect(f.run.hold).toBeUndefined();
+  expect(wakes).toBe(1);
+  await microtasks();
+  expect(wakes).toBe(2);
+  stop();
+  f.run.dispose();
 });
 
 it('a halt or disposal releases the hold', async () => {

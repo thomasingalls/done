@@ -17,6 +17,7 @@ import {
 import {
   createAutomaticLocalRetention,
   localRetentionInterrupted,
+  watchLocalRetentionHold,
 } from './automaticLocalRetention';
 import { createLedgerHints } from './ledgerHints';
 import {
@@ -3934,6 +3935,12 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     if (hasAutomaticLocalRetention() && result.removeLocalHistory && !account.detached) {
       if (!carrier.beforeRelease) throw Error('Missing automatic retention cleanup ownership');
       const visible = () => pageRuntimePorts.activity.visibilityState() !== 'hidden';
+      // Stable conditions only: typing and the in-flight check must not toggle a hold.
+      const stable = () =>
+        carrier.state === 'active' &&
+        workspace.status.state === 'active' &&
+        workspace.status.pressure === null &&
+        visible();
       const maintenance = createAutomaticLocalRetention({
         signal: carrier.signal,
         observe: () => ({
@@ -3947,15 +3954,12 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             workspace.status.pressure === null &&
             visible(),
           synchronized: synchronizationQuiet,
-          // Stable conditions only: typing and the in-flight check must not toggle the hold.
           // In the full-check path every ledger change costs a reference check; reduction is
           // the way out, so a due attempt may park routine sync (bounded by the retention owner).
-          hold:
-            ledgerFullCheck() &&
-            carrier.state === 'active' &&
-            workspace.status.state === 'active' &&
-            workspace.status.pressure === null &&
-            visible(),
+          hold: ledgerFullCheck() && stable(),
+          // Any device: a running attempt may skip routine idle receive polls, whose first
+          // storage job would cancel it. Hints still receive at once (bounded by the owner).
+          deferPolls: stable(),
           hint: localRetentionHint(),
         }),
         remove: result.removeLocalHistory,
@@ -4163,21 +4167,11 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         carrier.beforeRelease!(scheduler.runtime.onStatus(changed));
         changed(scheduler.runtime.status);
       }
-      if (automaticRetention) {
-        // The scheduler reads the hold live; this only re-arms lanes when it engages or releases.
-        // Deferred so a retention publish never re-enters the sync scheduler synchronously.
-        const retention = automaticRetention;
-        let held = '';
+      // The scheduler reads the hold live; this only re-arms lanes when its tier changes.
+      if (automaticRetention)
         carrier.beforeRelease!(
-          retention.onStatus(() => {
-            const hold = retention.hold;
-            const next = hold ? (hold.receive ? 'settled' : 'engaged') : '';
-            if (next === held) return;
-            held = next;
-            queueMicrotask(() => scheduler.wake('hold'));
-          }),
+          watchLocalRetentionHold(automaticRetention, () => scheduler.wake('hold')),
         );
-      }
       try {
         let previousGate = gate();
         unsubscribeLogin = options.networkLogin?.subscribe(() => {
