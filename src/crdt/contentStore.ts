@@ -190,6 +190,9 @@ export const createContentOwner = (
   let warm: ReturnType<typeof createWarmContent> | undefined;
   let baselineReuse: Awaited<ReturnType<typeof createBaselineReuse>> | undefined;
   let forceFullRead = false;
+  // A return to the app needs one completed full read before warm reuse (decision 2026-10-12).
+  // Unlike a maintenance reference request, an interrupted attempt leaves it due.
+  let resumeFullRead = false;
   const canSelect = !!(
     crypt.selectiveLoads &&
     crypt.warmLoads &&
@@ -670,6 +673,8 @@ export const createContentOwner = (
       measureLedgerWork('physicalRead', at);
       countLedgerWork('loadedRows', snapshot.rows.length);
       const result = await openSnapshot(task, snapshot, allowExactBaselineReuse);
+      // This full read completed. It settles a return to the app unless another arrived meanwhile.
+      if (!forceFullRead) resumeFullRead = false;
       if (ledgerProfiling)
         countLedgerWork(
           'loadedBytes',
@@ -692,6 +697,8 @@ export const createContentOwner = (
       // Reference loads compare every sealed row; exclusive warm loads use the authenticated
       // counter/shape guard and bounded rolling audit.
       if (!(cause instanceof MaintenanceInterrupted)) clearView();
+      // An unfinished read, even an interrupted maintenance one, leaves a return-to-app read due.
+      if (resumeFullRead) forceFullRead = true;
       throw cause;
     } finally {
       measureLedgerWork('loadElapsed', began);
@@ -1635,7 +1642,15 @@ export const createContentOwner = (
     },
     canSelect,
     select: <T>(task: SessionTask, select: (lease: ContentSelection) => T) => load(task, select),
+    /** Return to the app (visibility, resume, pageshow): every later load, foreground or audit,
+     * reads in full until one such read completes. */
     invalidateWarm() {
+      forceFullRead = true;
+      resumeFullRead = true;
+    },
+    /** Maintenance reference check only: the next load replays in full. An interrupted attempt
+     * does not move onto foreground loads; the audit that asked stays due and retries. */
+    requestReferenceRead() {
       forceFullRead = true;
     },
     hasReducedHistory: () => metadata?.reduced() === true,

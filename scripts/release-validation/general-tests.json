@@ -16,6 +16,8 @@
     "test/archiveProjection.test.ts",
     "test/attribution.test.ts",
     "test/baselineProjectionInterruption.test.ts",
+    "test/baselineReplayBuilds.test.ts",
+    "test/baselineReplayCoverage.test.ts",
     "test/breadcrumbs.test.ts",
     "test/cap.test.ts",
     "test/cardArrival.test.ts",

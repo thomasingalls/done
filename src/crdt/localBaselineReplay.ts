@@ -44,10 +44,10 @@ import { verifyHistoryInstall } from './historyInstall';
 import {
   emptyInbound,
   createInboundCoverage,
+  createPassCoverage,
   inspectInbound,
   inspectInboundCooperatively,
   publisherContext,
-  verifyInboundCoverage,
   verifyInboundLedger,
 } from './inboundLedger';
 import {
@@ -606,7 +606,7 @@ async function verifyReceipt(
   publisher: string,
   position: number,
   link: string,
-  records: readonly OpenedRecord[],
+  covered: (updates: readonly Bytes[]) => void,
   c: LocalBaselineContext,
 ) {
   const base = publisherContext(c.inbound, publisher),
@@ -659,7 +659,7 @@ async function verifyReceipt(
       !(body.actor_kind === 'system' && body.actor_id === 'system' && base.publisher.system)
     )
       refuse('integrity');
-    verifyInboundCoverage(records, body.updates);
+    covered(body.updates);
   } finally {
     for (const u of body.updates) u.fill(0);
   }
@@ -675,6 +675,7 @@ export async function replayLocalBaseline(
   const c = captureLocalBaselineContext(context);
   const syntaxTurn = createInboundReceiptTurn();
   let payload: Bytes | undefined, mac: Bytes | undefined;
+  let coverage: ReturnType<typeof createPassCoverage> | undefined;
   try {
     payload = input.payload.slice();
     mac = input.mac.slice();
@@ -707,6 +708,10 @@ export async function replayLocalBaseline(
       ...b.sources.map((s) => s.record),
       ...tail.records,
     ];
+    // Every coverage check in this pass reads these same rows, and nothing here changes them:
+    // build their document once (at the first check), not once per capsule or receipt.
+    coverage = createPassCoverage(records);
+    const covered = coverage.check;
     documentState(records.slice(0, 1), true);
     const consumed: SpoolReplayStart['consumed'][number][] = [],
       ids = new Set<string>();
@@ -721,10 +726,7 @@ export async function replayLocalBaseline(
           refuse('integrity');
         ids.add(capsule.id);
         consumed.push(...s.consumed.map((index) => ({ id: capsule.id, index })));
-        verifyInboundCoverage(
-          records,
-          capsule.sources.map((s) => s.bytes),
-        );
+        covered(capsule.sources.map((s) => s.bytes));
       } finally {
         eraseCapsule(capsule);
       }
@@ -745,7 +747,7 @@ export async function replayLocalBaseline(
     if (b.history) {
       const installed = await verifyHistoryInstall(c.inbound, b.history.bytes, undefined, c);
       try {
-        verifyInboundCoverage(records, [installed.update]);
+        covered([installed.update]);
         own.installedHistory = installed.installed;
         historyHeads = installed.heads ?? [];
         own.checkpointCuts = new Map(
@@ -757,7 +759,7 @@ export async function replayLocalBaseline(
     }
     for (const s of b.streams) {
       const base = publisherContext(c.inbound, s.publisher);
-      if (s.receipt) await verifyReceipt(s.receipt, s.publisher, s.position, s.link, records, c);
+      if (s.receipt) await verifyReceipt(s.receipt, s.publisher, s.position, s.link, covered, c);
       else if (s.position) {
         const cut = [...(base.baselineHeads ?? []), ...historyHeads].find(
           (h) => h.credentialId === s.publisher && h.position === s.position && h.link === s.link,
@@ -788,7 +790,7 @@ export async function replayLocalBaseline(
         c.route.credential,
         b.own.position,
         b.own.link,
-        records,
+        covered,
         c,
       );
       deliveryStart.responses.set(b.own.position, [b.own.receipt.proof]);
@@ -826,21 +828,11 @@ export async function replayLocalBaseline(
       },
       syntaxTurn,
     );
-    advanceSelfReceive(
-      census.delivery,
-      delivery,
-      inbound,
-      c.route,
-      (u) => verifyInboundCoverage(records, u),
-      b.own.position,
-    );
+    advanceSelfReceive(census.delivery, delivery, inbound, c.route, covered, b.own.position);
     for (const bytes of census.delivery.spool.sources.values()) {
       const capsule = decodeSourceCapsule(bytes, c.route);
       try {
-        verifyInboundCoverage(
-          records,
-          capsule.sources.map((s) => s.bytes),
-        );
+        covered(capsule.sources.map((s) => s.bytes));
       } finally {
         eraseCapsule(capsule);
       }
@@ -853,6 +845,7 @@ export async function replayLocalBaseline(
     if (e instanceof RetiredHistoryRequired) refuse('history-required');
     throw e;
   } finally {
+    coverage?.clear();
     syntaxTurn.dispose();
     payload?.fill(0);
     mac?.fill(0);

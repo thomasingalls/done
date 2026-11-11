@@ -1,0 +1,424 @@
+// @vitest-environment node
+// Read-only probe of a reduced warm owner: counts full Yjs document builds and coverage
+// verifications per replay, then times warm load vs forced read (resume) vs cold open.
+// Env: PROBE_CHARS (document characters), PROBE_SHAPE (single|fragmented),
+// PROBE_STEPS (comma list of cumulative suffix capsule counts), PROBE_PEERS (peer receipts
+// added after reduction, no capsules), PROBE_REPS, PROBE_OUT (jsonl path).
+import { it, vi } from 'vitest';
+import { appendFileSync } from 'node:fs';
+
+const C = vi.hoisted(() => ({
+  vic: 0,
+  applyCalls: 0,
+  applyBytes: 0,
+  applyMs: 0,
+  decodeCalls: 0,
+  decodeMs: 0,
+  encodeCalls: 0,
+  encodeMs: 0,
+  docs: 0,
+  fullDocs: 0,
+  threshold: Infinity,
+  docBytes: new WeakMap<object, number>(),
+  sites: {} as Record<string, number>,
+}));
+
+vi.mock(
+  '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/src/crdt/yjs.ts',
+  async (importOriginal) => {
+    const m: any = await importOriginal();
+    const Y: any = { ...m.Y };
+    const apply = m.Y.applyUpdate,
+      decode = m.Y.decodeUpdate,
+      encode = m.Y.encodeStateAsUpdate;
+    Y.applyUpdate = (doc: object, update: Uint8Array, origin?: unknown) => {
+      const t = performance.now();
+      try {
+        return apply(doc, update, origin);
+      } finally {
+        C.applyMs += performance.now() - t;
+        C.applyCalls++;
+        C.applyBytes += update.length;
+        const prev = C.docBytes.get(doc);
+        if (prev === undefined) C.docs++;
+        const next = (prev ?? 0) + update.length;
+        if ((prev ?? 0) < C.threshold && next >= C.threshold) C.fullDocs++;
+        C.docBytes.set(doc, next);
+      }
+    };
+    Y.decodeUpdate = (update: Uint8Array) => {
+      const t = performance.now();
+      try {
+        return decode(update);
+      } finally {
+        C.decodeMs += performance.now() - t;
+        C.decodeCalls++;
+      }
+    };
+    Y.encodeStateAsUpdate = (...a: unknown[]) => {
+      const t = performance.now();
+      try {
+        return encode(...a);
+      } finally {
+        C.encodeMs += performance.now() - t;
+        C.encodeCalls++;
+      }
+    };
+    return { ...m, Y };
+  },
+);
+vi.mock(
+  '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/src/crdt/inboundLedger.ts',
+  async (importOriginal) => {
+    const m: any = await importOriginal();
+    // PROBE_SHARED=1 emulates one coverage view per replay: every call inside a replay passes the
+    // same records array, so bind once and check each capsule's updates against it.
+    let lastRecords: unknown, shared: any, bound: any;
+    return {
+      ...m,
+      verifyInboundCoverage: (...a: any[]) => {
+        if (process.env.PROBE_SHARED === '1') {
+          C.vic++;
+          const frame = (new Error().stack ?? '')
+            .split('\n')
+            .find((l) => l.includes('localBaselineReplay.ts'));
+          const site = 'replay:' + (frame?.match(/localBaselineReplay\.ts:(\d+)/)?.[1] ?? '?');
+          C.sites[site] = (C.sites[site] ?? 0) + 1;
+          if (a[0] !== lastRecords) {
+            shared?.clear();
+            shared = m.createInboundCoverage();
+            bound = shared.bind(a[0]);
+            lastRecords = a[0];
+          }
+          return bound.check(a[0], a[1]);
+        }
+        C.vic++;
+        const frame = (new Error().stack ?? '')
+          .split('\n')
+          .find((l) => l.includes('localBaselineReplay.ts'));
+        const site = 'replay:' + (frame?.match(/localBaselineReplay\.ts:(\d+)/)?.[1] ?? '?');
+        C.sites[site] = (C.sites[site] ?? 0) + 1;
+        return m.verifyInboundCoverage(...a);
+      },
+    };
+  },
+);
+
+const W = process.cwd();
+const CHARS = Number(process.env.PROBE_CHARS ?? 1000000);
+const SHAPE = process.env.PROBE_SHAPE ?? 'single';
+const STEPS = (process.env.PROBE_STEPS ?? '0,50,200').split(',').map(Number);
+const PEERS = Number(process.env.PROBE_PEERS ?? 0);
+const REPS = Number(process.env.PROBE_REPS ?? 3);
+const OUT = process.env.PROBE_OUT!;
+const ms = (t: number) => Math.round((performance.now() - t) * 10) / 10;
+const rss = () => Math.round(process.memoryUsage().rss / 1048576);
+
+it('probe', async () => {
+  if (W !== '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1')
+    throw Error('Run from the worktree root');
+  vi.stubGlobal('indexedDB', new (globalThis as any).IDBFactory());
+  for (const n of [
+    'VITE_ACCOUNT_RETENTION',
+    'VITE_ACCOUNT_BASELINE_READ',
+    'VITE_ACCOUNT_BASELINE_INSTALL',
+    'VITE_ACCOUNT_LEDGER_PROFILE',
+  ])
+    vi.stubEnv(n, '1');
+  const metricsMod = await import(W + '/src/crdt/accountLedgerMetrics');
+  if (!metricsMod.ledgerProfiling) throw Error('Ledger profiling did not enable');
+  const { createContentOwner } = await import(W + '/src/crdt/contentStore');
+  const { extendSpoolWitness } = await import(W + '/src/crdt/spoolRecord');
+  const { openContentDb } = await import(W + '/src/crdt/contentDatabase');
+  const { deriveStoreName } = await import(W + '/src/crdt/storeName');
+  const { cryptFor, keys } = await import(W + '/test/local-baseline/anchor-fixture');
+  const { Y } = await import(W + '/src/crdt/yjs');
+  // @ts-expect-error JavaScript fixture.
+  const { memberFixture } = await import(W + '/test/local-baseline/fixtures.mjs');
+  const task: any = {
+    signal: new AbortController().signal,
+    step: (f: any) => f(),
+    wait: async (f: any) => f(),
+  };
+  const f = await memberFixture();
+  const context = f.ctx;
+  const crypt: any = {
+    ...cryptFor(context.identity, await keys()),
+    reuseOpened: true,
+    warmLoads: true,
+    readBaseline: true,
+    baseline: async () => ({
+      ...context,
+      identity: { ...context.identity },
+      route: { ...context.route },
+    }),
+  };
+  let owner: any = createContentOwner(context.identity, 1, crypt);
+  await owner.initialize(task, { intent: '04'.repeat(16), checkCreation() {} });
+  await owner.enableSpool(task);
+  let persisted = 0;
+  const append = async () => {
+    for (const row of f.rows.slice(persisted)) {
+      const event =
+        row.kind === 'heads' ||
+        (row.kind === 'outbound' &&
+          !new TextDecoder().decode(row.bytes).startsWith('["done/source-capture/v1"'));
+      if (event) {
+        const before = await owner.spoolWitness(task),
+          after = await extendSpoolWitness(before, row.bytes, crypto.subtle);
+        await owner.appendSpool(task, row, { before, after });
+      } else await owner.append(task, [row]);
+      persisted++;
+    }
+  };
+  await f.appendOwn();
+  await f.appendPeer();
+  await append();
+
+  // Grow the document. 'single' matches the phase 542 probe; 'fragmented' makes many small
+  // items plus retained deletions (gc:false), closer to an edited planner document.
+  let t = performance.now();
+  const doc = new Y.Doc({ gc: false });
+  const text = doc.getText('big');
+  const emit = async (fn: () => void) => {
+    let u: Uint8Array | undefined;
+    const capture = (x: Uint8Array) => {
+      u = new Uint8Array(x);
+    };
+    doc.on('update', capture);
+    doc.transact(fn);
+    doc.off('update', capture);
+    await owner.append(task, [{ kind: 'update', bytes: u! }]);
+  };
+  if (SHAPE === 'single') {
+    const step = 3 * 1024 * 1024;
+    for (let done = 0; done < CHARS; done += step)
+      await emit(() => text.insert(done, 'y'.repeat(Math.min(step, CHARS - done))));
+  } else {
+    let seed = 12345;
+    const rand = (n: number) => {
+      seed = (Math.imul(seed, 1103515245) + 12345) >>> 0;
+      return seed % Math.max(1, n);
+    };
+    let ops = 0;
+    while (text.length < CHARS) {
+      await emit(() => {
+        for (let i = 0; i < 500 && text.length < CHARS; i++, ops++) {
+          text.insert(rand(text.length + 1), 'abcdefghijklmnopqrstuvwxyz0123456789ABCD');
+          if (ops % 10 === 9 && text.length > 40) text.delete(rand(text.length - 20), 20);
+        }
+      });
+    }
+  }
+  doc.destroy();
+  const growMs = ms(t);
+  t = performance.now();
+  const removal = await owner.removeHistory(
+    task,
+    async () => {},
+    () => {},
+    0,
+  );
+  const reduceMs = ms(t);
+  if (removal?.kind && removal.kind !== 'removed') throw Error('Reduction: ' + JSON.stringify(removal));
+  const first = await owner.loadAccount(task);
+  if (first.kind !== 'baseline-plus-suffix') throw Error('Expected reduced view: ' + first.kind);
+  const snapshotBytes = first.records[0].bytes.length;
+  C.threshold = Math.floor(snapshotBytes * 0.9);
+
+  const db: IDBDatabase = await openContentDb(
+    task,
+    await deriveStoreName(context.identity.principalId, context.identity.workspaceId),
+    false,
+  );
+  const chunkBytes = await new Promise<{ chunks: number; ct: number }>((resolve, reject) => {
+    const tx = db.transaction('meta', 'readonly'),
+      store = tx.objectStore('meta'),
+      keysReq = store.getAllKeys(),
+      valuesReq = store.getAll();
+    tx.oncomplete = () => {
+      let chunks = 0,
+        ct = 0;
+      keysReq.result.forEach((k, i) => {
+        if (Array.isArray(k) && k[0] === 'local-baseline') {
+          chunks++;
+          ct += (valuesReq.result[i] as any).ct.length;
+        }
+      });
+      resolve({ chunks, ct });
+    };
+    tx.onabort = () => reject(tx.error);
+  });
+  // Proxy for option E's foreground work: one readonly transaction over every store, then a
+  // byte comparison of every stored row and chunk against a copy captured at the prime load.
+  const { equalStoredRecord } = await import(W + '/src/crdt/contentCompaction');
+  const { sameBytes } = await import(W + '/src/crdt/verifiedRecords');
+  const readAll = () =>
+    new Promise<[string, IDBValidKey, any][]>((resolve, reject) => {
+      const names = ['meta', 'content', 'heads', 'outbound'];
+      const tx = db.transaction(names, 'readonly'),
+        out: [string, IDBValidKey, any][] = [];
+      for (const name of names) {
+        const s = tx.objectStore(name),
+          v = s.getAll(),
+          k = s.getAllKeys();
+        k.onsuccess = () => {
+          for (let i = 0; i < k.result.length; i++) out.push([name, k.result[i]!, v.result[i]]);
+        };
+      }
+      tx.oncomplete = () => resolve(out);
+      tx.onabort = () => reject(tx.error);
+    });
+  const physicalCompare = (now: [string, IDBValidKey, any][], was: [string, IDBValidKey, any][]) => {
+    if (now.length !== was.length) throw Error('Row count differs');
+    let bytes = 0;
+    for (let i = 0; i < now.length; i++) {
+      const [store, key, value] = now[i]!,
+        prior = was[i]![2];
+      if (store !== was[i]![0] || indexedDB.cmp(key, was[i]![1]) !== 0) throw Error('Key differs');
+      if (store === 'meta' && key === 'counter') {
+        if (!sameBytes(value.mac, prior.mac)) throw Error('Counter differs');
+        continue;
+      }
+      if (!equalStoredRecord(value, prior)) throw Error('Row differs');
+      bytes += value.ct.length;
+    }
+    return bytes;
+  };
+  const base = {
+    shape: SHAPE,
+    chars: CHARS,
+    snapshotBytes,
+    baselineChunks: chunkBytes.chunks,
+    baselineCiphertextBytes: chunkBytes.ct,
+    growMs,
+    reduceMs,
+  };
+  console.log('BASE', JSON.stringify(base));
+
+  const snap = () => {
+    const m = metricsMod.accountLedgerMetrics();
+    return {
+      coverageBuilds: m.timings.coverageRebuild.calls,
+      coverageBuildMs: m.timings.coverageRebuild.totalMs,
+      verifyInboundCoverage: C.vic,
+      baselineFullReplays: m.work.baselineFullReplays,
+      baselineExactReuses: m.work.baselineExactReuses,
+      warmLoads: m.work.warmLoads,
+      loads: m.work.loads,
+      loadedRows: m.work.loadedRows,
+      docsBuilt: C.docs,
+      fullDocBuilds: C.fullDocs,
+      applyCalls: C.applyCalls,
+      applyMiB: C.applyBytes / 1048576,
+      applyMs: C.applyMs,
+      decodeMs: C.decodeMs,
+      encodeMs: C.encodeMs,
+      physicalReadMs: m.costs.physicalRead?.totalMs ?? 0,
+    };
+  };
+  const delta = (a: ReturnType<typeof snap>, b: ReturnType<typeof snap>) =>
+    Object.fromEntries(
+      Object.entries(b).map(([k, v]) => [k, Math.round(((v as number) - (a as any)[k]) * 10) / 10]),
+    );
+  const census = (view: any) => {
+    const suffix = view.records.filter((r: any) => r.seq >= view.firstSuffix);
+    const carried = view.records.length - suffix.length - 1;
+    const capsules = view.records.filter(
+      (r: any) =>
+        r.kind === 'outbound' &&
+        new TextDecoder().decode(r.bytes.subarray(0, 32)).startsWith('["done/source-capture/v1"'),
+    ).length;
+    return {
+      censusRecords: view.records.length,
+      suffixRecords: suffix.length,
+      carriedBaselineSources: carried,
+      capsuleRows: capsules,
+      spoolSources: view.ledger.census.delivery.spool.sources.size,
+    };
+  };
+  const measure = async (label: string, op: () => Promise<any>) => {
+    const before = snap();
+    const sitesBefore = { ...C.sites };
+    const t0 = performance.now();
+    const view = await op();
+    const elapsed = ms(t0);
+    const d = delta(before, snap());
+    const sites = Object.fromEntries(
+      Object.entries(C.sites)
+        .map(([k, v]) => [k, v - (sitesBefore[k] ?? 0)])
+        .filter(([, v]) => (v as number) > 0),
+    );
+    return { label, elapsedMs: elapsed, ...d, sites, view };
+  };
+
+  let added = 0,
+    peersAdded = 0;
+  const peerSteps = process.env.PROBE_PEER_STEPS?.split(',').map(Number);
+  for (const target of peerSteps ?? STEPS) {
+    if (peerSteps)
+      while (peersAdded < target) {
+        await f.appendPeer();
+        peersAdded++;
+      }
+    else
+      while (added < target) {
+        await f.appendOwn();
+        added++;
+      }
+    for (let i = 0; i < PEERS && target === STEPS[0] && !peerSteps; i++) await f.appendPeer();
+    await append();
+    const prime = await measure('prime', () => owner.loadAccount(task));
+    const shape = census(prime.view);
+    const captured = structuredClone(await readAll());
+    const results: any[] = [];
+    for (let r = 0; r < REPS; r++) {
+      const physical = await measure('physical', async () => {
+        const compared = physicalCompare(await readAll(), captured);
+        return { compared };
+      });
+      (physical as any).comparedBytes = physical.view.compared;
+      delete physical.view;
+      results.push({ rep: r, ...physical });
+      const warm = await measure('warm', () => owner.loadAccount(task));
+      owner.invalidateWarm();
+      const forced = await measure('forced', () => owner.loadAccount(task));
+      const cold = await measure('cold', async () => {
+        const c = createContentOwner(context.identity, 1, crypt);
+        try {
+          await c.initialize(task);
+          return await c.loadAccount(task);
+        } finally {
+          c.dispose();
+        }
+      });
+      for (const x of [warm, forced, cold]) {
+        delete x.view;
+        results.push({ rep: r, ...x });
+      }
+    }
+    delete prime.view;
+    const row = {
+      ...base,
+      peers: peerSteps ? peersAdded : PEERS,
+      suffixCapsulesAdded: added,
+      ...shape,
+      prime,
+      results,
+      rssMiB: rss(),
+    };
+    appendFileSync(OUT, JSON.stringify(row) + '\n');
+    const by = (l: string) => results.filter((x) => x.label === l);
+    const summary = (l: string) => {
+      const xs = by(l).map((x) => x.elapsedMs).sort((a, b) => a - b);
+      const e = by(l)[0];
+      return `${l} ms=[${xs.join(', ')}] replays=${e.baselineFullReplays} vic=${e.verifyInboundCoverage} covBuilds=${e.coverageBuilds} docs=${e.docsBuilt} fullDocs=${e.fullDocBuilds} applyMiB=${e.applyMiB} applyMs=${e.applyMs} warmLoads=${e.warmLoads}`;
+    };
+    console.log(
+      `ROW shape=${SHAPE} chars=${CHARS} ct=${chunkBytes.ct} N=${added} peers=${peersAdded} ${JSON.stringify(shape)}\n  ${summary('warm')}\n  ${summary('forced')}\n  ${summary('cold')}`,
+    );
+  }
+  db.close();
+  owner.dispose();
+  f.clear();
+}, 3600000);

@@ -472,7 +472,7 @@ async function openAccountReceiveOwner(
         if (!semanticAuditDue()) return true;
         await assertCurrent(task);
         auditDue = true;
-        owner.carrier.invalidateWarm();
+        owner.carrier.requestReferenceRead();
         const records = await owner.carrier.load(task);
         eraseVerified(records);
         return !auditDue;

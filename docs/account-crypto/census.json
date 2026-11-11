@@ -833,7 +833,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "870442e191e74ace2e3a700c61c0021084f266f34de9aeff3267376326fed6e3"
+      "sha256": "253334d675466568074fc90fdab364ca9cc6a33d0256b7101ce4f61cbf9b053a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -1005,7 +1005,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "7d20acf19b37597c3752ae0f68224e290e16f57a95c8145b4a3e365df5fb3bd7"
+      "sha256": "9fa848baec50c2340c2eb11e5bfe6ba548036d79397c1c42094ab0a247ee75ba"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1105,7 +1105,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "5ba60d08c7817e1f9bed7df92e71ecdc91446e3ada5e377b19bc1b967cbb5747"
+      "sha256": "b909a9b2f3d8e235201c2bd496c42bc6c89667c779b8069774e0750a75a7715b"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
@@ -1221,7 +1221,7 @@
     },
     {
       "path": "src/crdt/localBaselineReplay.ts",
-      "sha256": "9c058fa15ee7ec22734c763c70d660432a2c383fa8311f6cdca467dace6c4b7c"
+      "sha256": "b8a8fff52c1c845ec2cad290a8c5f0aed8e5f412cab4c8d15741ac594341e084"
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",

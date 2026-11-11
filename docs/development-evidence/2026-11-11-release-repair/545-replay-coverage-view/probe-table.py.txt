@@ -1,0 +1,15 @@
+import json, sys, statistics, glob
+rows = []
+for label in ['before', 'after']:
+    for path in sorted(glob.glob(f'{sys.argv[1]}/phase545-{label}-*.jsonl')):
+        for l in open(path):
+            r = json.loads(l)
+            for lab in ['warm', 'forced', 'cold']:
+                xs = [x for x in r['results'] if x['label'] == lab]
+                t = sorted(x['elapsedMs'] for x in xs)
+                e = xs[0]
+                rows.append((label, r['shape'], r['baselineCiphertextBytes'], r['suffixCapsulesAdded'], lab, statistics.median(t), t[0], t[-1], e['fullDocBuilds'], e['coverageBuilds'], e['baselineFullReplays']))
+print('| run | shape | ciphertext bytes | N | load | median ms | min | max | full builds | coverage builds | replays |')
+print('|---|---|---|---|---|---|---|---|---|---|---|')
+for r in rows:
+    print('| ' + ' | '.join(str(x) for x in r) + ' |')

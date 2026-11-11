@@ -1,0 +1,19 @@
+// Probe-only config. Lives outside the worktree; no imports so the runner loader needs nothing here.
+const W = '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1';
+const S =
+  '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/warm-view';
+export default {
+  root: W,
+  cacheDir: S + '/.vite-cache',
+  test: {
+    dir: S,
+    include: ['**/*.probe.ts'],
+    environment: 'node',
+    setupFiles: [W + '/test/setup.ts'],
+    maxWorkers: 1,
+    fileParallelism: false,
+    testTimeout: 3600000,
+    hookTimeout: 3600000,
+    cache: false,
+  },
+};

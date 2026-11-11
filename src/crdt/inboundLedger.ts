@@ -558,6 +558,8 @@ function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false
     },
   };
 }
+/** Per-call reference: builds a fresh view for one check. A pass that checks many updates against
+ * the same captured rows uses createPassCoverage; tests keep this as the equivalence reference. */
 export function verifyInboundCoverage(
   records: readonly OpenedRecord[],
   updates: readonly Bytes[],
@@ -646,6 +648,28 @@ export function createInboundCoverage(options: { incremental?: boolean; direct?:
         },
       };
     },
+  };
+}
+/** One view for a pass that checks many updates against the same immutable captured rows and stops
+ * at its first refusal. Each check gives the verifyInboundCoverage verdict: the document is built
+ * from a private copy, only ever forked, and keeps nothing between checks except proven positives.
+ * It is built at the first check, where the per-call reference builds, so a damaged row refuses at
+ * the same point. A refusal clears the view; any later check refuses. */
+export function createPassCoverage(records: readonly OpenedRecord[]) {
+  const coverage = createInboundCoverage();
+  let bound: ReturnType<typeof coverage.bind> | undefined,
+    refused = false;
+  return {
+    check(updates: readonly Bytes[]) {
+      if (refused) captureError('Coverage view was invalidated');
+      try {
+        (bound ??= coverage.bind(records)).check(records, updates);
+      } catch (e) {
+        refused = true;
+        throw e;
+      }
+    },
+    clear: coverage.clear,
   };
 }
 export async function verifyInboundLedger(
