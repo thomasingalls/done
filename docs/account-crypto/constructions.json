@@ -1874,13 +1874,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 72,
+          "line": 70,
           "label": "done/private-read/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 95,
+          "line": 93,
           "label": "done/private-read/v1",
           "kind": "literal"
         }
@@ -1971,13 +1971,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 134,
+          "line": 132,
           "label": "done/private-read-page/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 161,
+          "line": 159,
           "label": "done/private-read-page/v1",
           "kind": "literal"
         }
@@ -2068,13 +2068,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 59,
+          "line": 56,
           "label": "done/private-read/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 83,
+          "line": 80,
           "label": "done/private-read/v2",
           "kind": "literal"
         }
@@ -2165,13 +2165,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 117,
+          "line": 114,
           "label": "done/private-read-page/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 136,
+          "line": 133,
           "label": "done/private-read-page/v2",
           "kind": "literal"
         }
@@ -2302,13 +2302,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 56,
+          "line": 54,
           "label": "done/private-submit/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 60,
+          "line": 58,
           "label": "done/private-submit/v1",
           "kind": "literal"
         }
@@ -2479,19 +2479,19 @@
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 102,
+          "line": 103,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 130,
+          "line": 131,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 264,
+          "line": 261,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2556,7 +2556,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 189,
+          "line": 188,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -2586,13 +2586,13 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 164,
+          "line": 161,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 189,
+          "line": 186,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2677,19 +2677,19 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 104,
+          "line": 103,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 131,
+          "line": 130,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 177,
+          "line": 176,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
@@ -2878,7 +2878,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 501,
+          "line": 498,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }
@@ -6195,6 +6195,7 @@
         "done/local-baseline-carrier/draft-1",
         "done/local-baseline-carrier/draft-2",
         "done/local-baseline-carrier/draft-3",
+        "done/local-baseline-carrier/draft-4",
         "done/local-baseline-scope/draft-2",
         "done/upload-bootstrap-census/v1",
         "done/upload-bootstrap/v1"
@@ -6208,13 +6209,13 @@
         },
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 271,
+          "line": 285,
           "label": "done/account-local-baseline-auth/draft-2\u0000",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 272,
+          "line": 286,
           "label": "done/account-local-baseline-auth/draft-3\u0000",
           "kind": "literal"
         },
@@ -6232,38 +6233,44 @@
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 144,
+          "line": 166,
           "label": "done/content-counter/local-baseline-draft-1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 143,
+          "line": 165,
           "label": "done/content-counter/local-baseline-draft-2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 141,
+          "line": 163,
           "label": "done/content-counter/local-baseline-draft-3",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 14,
+          "line": 18,
           "label": "done/local-baseline-carrier/draft-1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 15,
+          "line": 19,
           "label": "done/local-baseline-carrier/draft-2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 16,
+          "line": 20,
           "label": "done/local-baseline-carrier/draft-3",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 22,
+          "label": "done/local-baseline-carrier/draft-4",
           "kind": "literal"
         },
         {

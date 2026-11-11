@@ -19,7 +19,14 @@ import { identity } from './custodyRecord';
 
 export const LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-2';
 export const ERA_LOCAL_BASELINE_TAG = 'done/account-local-baseline/draft-3';
+/** Every record before phase 542, and still every record without a journal era. */
 export const LOCAL_BASELINE_LIMIT = MAX_BATCH_BYTES;
+/** Read and format bound on a journal-era record; above LOCAL_BASELINE_LIMIT only the large carrier holds it. */
+export const LARGE_LOCAL_BASELINE_LIMIT = 32 * 1024 * 1024;
+/** Largest journal-era candidate this build writes. Building one costs many times its size in
+ * memory, so writes stop well below the read bound; reading to 32 MiB lets a later raise of this
+ * limit need no format change. Operator decision, 2026-11-11 (phase 542). */
+export const LARGE_LOCAL_BASELINE_WRITE_LIMIT = 8 * 1024 * 1024;
 const MAX_SOURCES = 4096,
   MAX_PUBLISHERS = 128;
 /** A new candidate cannot fit; decoding persisted oversized bytes remains an integrity refusal. */
@@ -79,9 +86,10 @@ const integer = (v: unknown, min = 0, max = Number.MAX_SAFE_INTEGER): number => 
   if (n > max) fail();
   return n;
 };
-const data = (v: unknown): Bytes => inboundBytes(v, LOCAL_BASELINE_LIMIT);
+const data = (v: unknown): Bytes => inboundBytes(v, LARGE_LOCAL_BASELINE_LIMIT);
 const bytes = (v: Bytes) => {
-  if (!(v instanceof Uint8Array) || !v.length || v.length > LOCAL_BASELINE_LIMIT) return fail();
+  if (!(v instanceof Uint8Array) || !v.length || v.length > LARGE_LOCAL_BASELINE_LIMIT)
+    return fail();
   return hex(v);
 };
 const identityTuple = (s: ContentIdentity) => [
@@ -251,27 +259,33 @@ function parse(v: unknown[]): LocalBaseline {
 }
 /** Bounds and closed framing are checked before any bytes can be authenticated. */
 export function encodeLocalBaseline(b: LocalBaseline): Bytes {
+  // Only new candidates pass through here; decoding never re-encodes through this ceiling.
+  const limit = b.journalEra ? LARGE_LOCAL_BASELINE_WRITE_LIMIT : LOCAL_BASELINE_LIMIT;
   if (
-    b.snapshot.length > LOCAL_BASELINE_LIMIT ||
+    b.snapshot.length > limit ||
     b.sources.length > MAX_SOURCES ||
     b.streams.length > MAX_PUBLISHERS
   )
     throw new LocalBaselineCapacityError();
   const encoded = utf8(JSON.stringify(values(b)));
-  if (encoded.length > LOCAL_BASELINE_LIMIT) throw new LocalBaselineCapacityError();
+  if (encoded.length > limit) throw new LocalBaselineCapacityError();
   decodeLocalBaseline(encoded);
   return encoded;
 }
 export function decodeLocalBaseline(bytes: Bytes): LocalBaseline {
-  const b = parse(parseInboundArray(bytes, LOCAL_BASELINE_LIMIT));
-  if (!sameBytes(bytes, utf8(JSON.stringify(values(b))))) fail();
+  const b = parse(parseInboundArray(bytes, LARGE_LOCAL_BASELINE_LIMIT));
+  if (
+    (!b.journalEra && bytes.length > LOCAL_BASELINE_LIMIT) ||
+    !sameBytes(bytes, utf8(JSON.stringify(values(b))))
+  )
+    fail();
   return b;
 }
 /** Reuses the owner's metadata authenticator under a distinct domain; plaintext must stay private. */
 const authenticationDomain = utf8('done/account-local-baseline-auth/draft-2\0');
 const eraAuthenticationDomain = utf8('done/account-local-baseline-auth/draft-3\0');
 export const baselineAuthenticationPayload = (payload: Bytes): Bytes => {
-  if (payload.length > LOCAL_BASELINE_LIMIT) fail();
+  if (payload.length > LARGE_LOCAL_BASELINE_LIMIT) fail();
   const decoded = decodeLocalBaseline(payload);
   const domain = decoded.journalEra ? eraAuthenticationDomain : authenticationDomain;
   eraseVerified(decoded);

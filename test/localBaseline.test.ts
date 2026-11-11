@@ -44,6 +44,7 @@ import {
   decodeLocalBaseline,
   encodeLocalBaseline,
   LOCAL_BASELINE_LIMIT,
+  LARGE_LOCAL_BASELINE_WRITE_LIMIT,
   baselineAuthenticationPayload,
 } from '../src/crdt/localBaselineRecord';
 import { verifyInboundPage } from '../src/crdt/accountInbound';
@@ -1907,8 +1908,9 @@ it('dry run skips unsettled/pending/capacity cuts but refuses damaged evidence b
     { seq, kind: 'update', gen: 1, bytes: updates[1]! },
   ]);
   expect(await pending.plan()).toEqual({ kind: 'skipped', reason: 'ineligible' });
+  // Past the reduced-baseline write ceiling (phase 542); the released 4 MiB one now completes.
   const large = new Y.Doc({ gc: false });
-  large.getText('large').insert(0, 'x'.repeat(LOCAL_BASELINE_LIMIT / 2));
+  large.getText('large').insert(0, 'x'.repeat(LARGE_LOCAL_BASELINE_WRITE_LIMIT / 2));
   const capacity = await retentionFixture(f, [
     ...f.rows,
     { seq, kind: 'state', gen: 1, bytes: new Uint8Array(Y.encodeStateAsUpdate(large)) },

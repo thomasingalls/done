@@ -61,7 +61,7 @@
     },
     {
       "path": "account-protocol/deliveryTransport.ts",
-      "sha256": "408cdbf44daf186131108849308e6e1886bd143b92531fa375c6e0b63c81141b"
+      "sha256": "977737a40abbb1c0fdca13d38f381c32a31a34c92a8b6bac28b958ae9ab37de2"
     },
     {
       "path": "account-protocol/diagnostics.ts",
@@ -101,7 +101,7 @@
     },
     {
       "path": "account-protocol/inboundTransport.ts",
-      "sha256": "60e67b703bd788444b574e739ee115b5428b7e96c5b0f8a9dc9c3dded8ed2969"
+      "sha256": "1fbdff2d4d2971396fc9f09868048cc36df5b854d2698a36872cffab17b16e80"
     },
     {
       "path": "account-protocol/lostDeviceRecovery.ts",
@@ -137,7 +137,7 @@
     },
     {
       "path": "account-protocol/recovery.ts",
-      "sha256": "671acdb07184eb89963a2becae47ea8d44131de5a797e5a0e409a4684b91a3ae"
+      "sha256": "9720b3ad3aade3c9e82b0d532e3a1bb85774e6b5e07e0e190c2702781deb8510"
     },
     {
       "path": "account-protocol/recoveryBootstrap.ts",
@@ -1037,7 +1037,7 @@
     },
     {
       "path": "src/crdt/deliveryRecord.ts",
-      "sha256": "0c2f94c1449390b7ea124da60751fb351c04eaf504408324805a2615c56adfdc"
+      "sha256": "dc5218a232321ff33e875b0ef51f11cbca1ade0e17515542f7e972d30533d84d"
     },
     {
       "path": "src/crdt/deviceDataRemoval.ts",
@@ -1197,7 +1197,7 @@
     },
     {
       "path": "src/crdt/localBaselineAnchor.ts",
-      "sha256": "f5e33ae4892c76123db3187e7a903045e017e6ae2dbbb017bbea6101f95c7314"
+      "sha256": "aa22641e793c89f2adcc18677305d68a0f593184dee85fdde27829a5f4c5fa24"
     },
     {
       "path": "src/crdt/localBaselineAuthority.ts",
@@ -1217,7 +1217,7 @@
     },
     {
       "path": "src/crdt/localBaselineRecord.ts",
-      "sha256": "35786d675814d02aab35cba0b9570f957e761cde5e5f7bfaf3067c0bf3a37c1e"
+      "sha256": "b277573d8bf1cabc9508afe3ef3e44a2d0a27a6a17cf630cfac2b5e6c71a1c39"
     },
     {
       "path": "src/crdt/localBaselineReplay.ts",
@@ -1233,7 +1233,7 @@
     },
     {
       "path": "src/crdt/localBaselineStorage.ts",
-      "sha256": "2befdce0a55b627f3ffecabb01379c038def5b2b2241fa326df7279ba602ec43"
+      "sha256": "6dba54d04eee186126337fcb619b0e64c64a7b9f47e5bd0bbec2740ad999ea37"
     },
     {
       "path": "src/crdt/localClear.ts",
@@ -1281,7 +1281,7 @@
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
-      "sha256": "c31316b0686ee28ce6ad6dabd6e0a34a2a5583f80323fddcee44a3a66c9b78f9"
+      "sha256": "165d9a3b66cbc8037b108666679405d24adc925a4802aabdfa9ddfefc893d646"
     },
     {
       "path": "src/crdt/localStartup.worker.ts",
@@ -1497,11 +1497,11 @@
     },
     {
       "path": "src/crdt/sourceCapture.ts",
-      "sha256": "8da959ec924d1914acc9ecf0f5d2ff4cdb6e144af276a436e07bef1994ce17a9"
+      "sha256": "33e3360ffb45086c585916a3e21f22724b6f6fcef04f12326f4330bf73588cea"
     },
     {
       "path": "src/crdt/spoolRecord.ts",
-      "sha256": "68392f54197c4f836bef3f430223c26bbc501717e48800b98ca0e6c810c89dc5"
+      "sha256": "26150419d06eda8185e43a7b1afa54668b7144cc2e1cde77fa8d0e7cf4597b8d"
     },
     {
       "path": "src/crdt/startupClassification.ts",
@@ -2155,15 +2155,15 @@
       "sites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 104
+          "line": 103
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 131
+          "line": 130
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 177
+          "line": 176
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
@@ -2255,7 +2255,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 271
+          "line": 285
         }
       ]
     },
@@ -2265,7 +2265,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 272
+          "line": 286
         }
       ]
     },
@@ -2365,7 +2365,7 @@
       "sites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 501
+          "line": 498
         }
       ]
     },
@@ -2375,7 +2375,7 @@
       "sites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 189
+          "line": 188
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
@@ -2395,11 +2395,11 @@
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 164
+          "line": 161
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 189
+          "line": 186
         }
       ]
     },
@@ -2575,7 +2575,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 144
+          "line": 166
         }
       ]
     },
@@ -2585,7 +2585,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 143
+          "line": 165
         }
       ]
     },
@@ -2595,7 +2595,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 141
+          "line": 163
         }
       ]
     },
@@ -3355,7 +3355,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 14
+          "line": 18
         }
       ]
     },
@@ -3365,7 +3365,7 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 15
+          "line": 19
         }
       ]
     },
@@ -3375,7 +3375,17 @@
       "sites": [
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 16
+          "line": 20
+        }
+      ]
+    },
+    {
+      "label": "done/local-baseline-carrier/draft-4",
+      "kind": "literal",
+      "sites": [
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 22
         }
       ]
     },
@@ -3713,11 +3723,11 @@
       "sites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 134
+          "line": 132
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 161
+          "line": 159
         }
       ]
     },
@@ -3727,11 +3737,11 @@
       "sites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 117
+          "line": 114
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 136
+          "line": 133
         }
       ]
     },
@@ -3751,11 +3761,11 @@
       "sites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 72
+          "line": 70
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 95
+          "line": 93
         }
       ]
     },
@@ -3765,11 +3775,11 @@
       "sites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 59
+          "line": 56
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 83
+          "line": 80
         }
       ]
     },
@@ -3779,11 +3789,11 @@
       "sites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 56
+          "line": 54
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 60
+          "line": 58
         }
       ]
     },
@@ -4207,15 +4217,15 @@
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 102
+          "line": 103
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 130
+          "line": 131
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 264
+          "line": 261
         }
       ]
     },

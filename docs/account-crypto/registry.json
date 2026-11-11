@@ -514,11 +514,12 @@
         "done/local-baseline-carrier/draft-1",
         "done/local-baseline-carrier/draft-2",
         "done/local-baseline-carrier/draft-3",
+        "done/local-baseline-carrier/draft-4",
         "done/local-baseline-scope/draft-2",
         "done/upload-bootstrap-census/v1",
         "done/upload-bootstrap/v1"
       ],
-      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open."
+      "note": "Inventory reconciliation 2026-10-15; construction qualification remains explicitly open. Phase 542 (2026-11-11) adds the draft-4 reduced carrier for records above the released 4 MiB bound."
     },
     {
       "id": "automatic-local-protection",

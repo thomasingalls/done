@@ -5,6 +5,7 @@ import {
 } from '../../account-protocol/admissionHistory';
 /** Private Account capture payload. Its enclosing journal/StoredRecord authenticates these bytes. */
 import { hex, random, utf8, type Bytes } from './custodyCrypto';
+import { lowerHexBytes } from '../../account-protocol/recovery';
 import { ContentError, MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import type { JournalRecovery } from './custody';
 import { validateContentUpdates } from './contentCompaction';
@@ -133,16 +134,11 @@ export function decodeSourceCapsule(bytes: Bytes, route: CaptureRoute): SourceCa
     )
       throw Error('shape');
     for (const source of v[8]) {
-      if (
-        !Array.isArray(source) ||
-        source.length !== 3 ||
-        typeof source[2] !== 'string' ||
-        !/^(?:[0-9a-f]{2})+$/.test(source[2])
-      )
-        throw Error('source');
-      const update = new Uint8Array(source[2].length / 2);
-      for (let i = 0; i < update.length; i++)
-        update[i] = parseInt(source[2].slice(i * 2, i * 2 + 2), 16);
+      const update =
+        Array.isArray(source) && source.length === 3 && typeof source[2] === 'string'
+          ? lowerHexBytes(source[2])
+          : undefined;
+      if (!update) throw Error('source');
       sources.push({ actor: source[0], kind: source[1], bytes: update });
     }
     const result: SourceCapsule = {

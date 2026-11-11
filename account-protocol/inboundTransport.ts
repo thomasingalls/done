@@ -1,5 +1,5 @@
 /** Closed v2 read framing. V1 remains separate. Decoding grants no membership or baseline authority. */
-import { hex, unhex } from './recovery.ts';
+import { hex, lowerHexBytes, unhex } from './recovery.ts';
 import { ENVELOPE_WIRE_LIMIT } from './envelope.ts';
 import { RESPONSE_LIMIT, type Bytes } from './positionDecision.ts';
 import {
@@ -35,11 +35,8 @@ export const inboundHex = (v: unknown, size: number): string => {
   unhex(v, size);
   return v as string;
 };
-export const inboundBytes = (v: unknown, max: number): Bytes => {
-  if (typeof v !== 'string' || v.length > max * 2 || !/^(?:[0-9a-f]{2})+$/.test(v))
-    return invalid();
-  return unhex(v, v.length / 2);
-};
+export const inboundBytes = (v: unknown, max: number): Bytes =>
+  (typeof v === 'string' && v.length <= max * 2 ? lowerHexBytes(v) : undefined) ?? invalid();
 export function parseInboundArray(bytes: Bytes, max: number): unknown[] {
   if (!(bytes instanceof Uint8Array) || bytes.length > max) return invalid();
   const text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes),
