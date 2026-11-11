@@ -116,7 +116,7 @@ it('the real cache installed graphs match the prospective charge in both ownersh
     }
   }
 });
-it('the real index refuses the clone-only excess at32MiB but keeps shared and normal clone eligibility', async () => {
+it('the real index stays available in either ownership mode when the clone-only charge passes32MiB', async () => {
   const r = rows(),
     v = view(r),
     proof = MAX_BYTES - ownedByteCapacity([r, v]);
@@ -130,7 +130,8 @@ it('the real index refuses the clone-only excess at32MiB but keeps shared and no
     proof,
     'cloned',
   ]);
-  expect(cloned).toBeUndefined();
+  expect(accountLedgerIndexUsage(v, r, proof, 'cloned').ownedBytes).toBeGreaterThan(MAX_BYTES);
+  expect(cloned).toBeDefined();
   expect(
     await Reflect.apply(indexVerifiedLedger, undefined, [
       v,

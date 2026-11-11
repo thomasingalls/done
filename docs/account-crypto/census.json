@@ -1033,7 +1033,7 @@
     },
     {
       "path": "src/crdt/days.ts",
-      "sha256": "a19a2aae98499694fbb31c4ec284c2bdf5ab73701c7df91de5960a87ac47c105"
+      "sha256": "4584858430d68cf0fbd662ce8423e943c9d585bd61d5f952eb0c994fcb864183"
     },
     {
       "path": "src/crdt/deliveryRecord.ts",
@@ -1117,7 +1117,7 @@
     },
     {
       "path": "src/crdt/incrementalAccountLedger.ts",
-      "sha256": "3bdef5999e2da2cb1ff3f05556c8fc5776f0006ae3501cffecec139cd9a22b86"
+      "sha256": "eb092588876a278110435e69ebb65c0093f623258dbf2f1071aca2ae536e24e7"
     },
     {
       "path": "src/crdt/index.ts",
@@ -1313,7 +1313,7 @@
     },
     {
       "path": "src/crdt/moves.ts",
-      "sha256": "c923e9ff55163a2c56f64cfe5dba3dda99be3ab986f7bf84818835672369de83"
+      "sha256": "d05f87945e5129fe58bf42163b937e6ec15ac5295f113795dbcdd8ac2812e1ba"
     },
     {
       "path": "src/crdt/nativeCoordination.ts",
@@ -1697,7 +1697,7 @@
     },
     {
       "path": "src/crdt/workspaceCommands.ts",
-      "sha256": "eb8ac9ec6563a8b82956543e2b2786725ba15c838cf1c4a669ed6976570a0baa"
+      "sha256": "5b3039653bed275d507c1c260504f21846e06e49a03d2c9813a4c63f5d28e0e9"
     },
     {
       "path": "src/crdt/workspacePreparation.ts",
@@ -1881,11 +1881,11 @@
     },
     {
       "path": "src/ui/Card.tsx",
-      "sha256": "6102ccb054414778b437fea40f919e531515e2c93b7616116e78d6c340d33b0c"
+      "sha256": "af2b97f4eac2dca9a607434c3d2f88499dc9626aebd0862994aae704a6e46397"
     },
     {
       "path": "src/ui/Collection.tsx",
-      "sha256": "ce98406abf34db090cc41a49d3fe417d5792b5a9b6a4b4bd4ba2f6edf6d28082"
+      "sha256": "8fdd5a8c43061b2a2f462a47d77a63cce40564d7797b3b1b602c07effae0dac3"
     },
     {
       "path": "src/ui/Compose.tsx",
@@ -1893,7 +1893,7 @@
     },
     {
       "path": "src/ui/DayPanel.tsx",
-      "sha256": "8cd4b62b5a7cc2eaeebce000392e0cf48bf093d33c55ab1ade9d3ce7429a2dbc"
+      "sha256": "b1ce5198761bc274809704cac458d5d46e66373c6533b50a1ac90deea4cd9e7a"
     },
     {
       "path": "src/ui/DayPlane.tsx",

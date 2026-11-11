@@ -113,7 +113,7 @@ export function accountLedgerIndexUsage(
     (recordOwnership === 'cloned'
       ? ownedByteCapacity(view) + records.reduce((n, row) => n + row.bytes.length, 0)
       : ownedByteCapacity([records, view])) + proofBytes;
-  return { logicalRows, ownedBytes, eligible: ownedBytes <= INDEX_MAX_BYTES };
+  return { logicalRows, ownedBytes, eligible: true }; // reported, not a gate: decisions 2026-11-11
 }
 const text = new TextDecoder('utf-8', { fatal: true });
 const fields = (r: OpenedRecord): unknown[] => {
