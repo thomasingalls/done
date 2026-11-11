@@ -17,8 +17,8 @@ import {
 import {
   createAutomaticLocalRetention,
   localRetentionInterrupted,
-  type LocalRetentionHint,
 } from './automaticLocalRetention';
+import { createLedgerHints } from './ledgerHints';
 import {
   createAutomaticServiceHistory,
   hasAutomaticServiceHistory,
@@ -270,7 +270,8 @@ async function openAccountReceiveOwner(
   });
   let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
-  let localRetentionHint: LocalRetentionHint | undefined;
+  // Scheduling hints from the last adopted view: retention growth and the full-check path.
+  const ledgerHints = createLedgerHints();
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
     sinceAuditPositions = 0,
@@ -443,7 +444,7 @@ async function openAccountReceiveOwner(
   let invalidateFinalPermission = () => {};
   let retentionAuthority = {};
   const invalidateAuthority = (checkedTransition = false) => {
-    localRetentionHint = undefined;
+    ledgerHints.withdraw();
     retentionAuthority = {};
     if (checkedTransition) baselineShadow?.authorityChanged();
     else baselineShadow?.invalidate();
@@ -645,7 +646,11 @@ async function openAccountReceiveOwner(
       await owner.carrier.enableSpool(task);
     },
     async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
-      localRetentionHint = undefined;
+      ledgerHints.begin();
+      const retentionHint = (revision: number) =>
+        hasAutomaticLocalRetention() || hasAutomaticServiceHistory()
+          ? { revision, records: records.length }
+          : undefined;
       if (baseline) {
         // The carrier has either fully replayed the authenticated origin or extended its private
         // reduced view under fresh authority. Never send these physical suffix rows to zero-origin replay.
@@ -665,14 +670,15 @@ async function openAccountReceiveOwner(
           );
           baselineReading = true;
           verifiedCounter = structuredClone(counter);
-          if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
-            localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
+          // A reduced view never pays the zero-origin reference check on the next change.
+          ledgerHints.settle(retentionHint(baseline.anchor.revision), false);
           resetSemanticAudit();
           auditDue = auditDeferred = false;
           memo.clear();
           coverage.clear();
           return;
         } catch (cause) {
+          ledgerHints.abandon();
           baselineReading = false;
           verifiedCounter = undefined;
           verified.clear();
@@ -682,6 +688,9 @@ async function openAccountReceiveOwner(
         }
       }
       baselineReading = false;
+      // Whether the view this call adopts kept its continuation indexes. Undefined: no ledger
+      // check ran (byte-equal view), or reference mode, where every check is full by choice.
+      let adoptedIndexes: boolean | undefined;
       const checkFull = async (
         records: import('./contentRecord').OpenedRecord[],
         audit = false,
@@ -816,6 +825,8 @@ async function openAccountReceiveOwner(
           }
           syntaxTurn.complete(result);
           if (!audit) resetSemanticAudit();
+          // A refused index (bounds at indexVerifiedLedger) puts every later change on this path.
+          if (incremental && !audit) adoptedIndexes = !!result.indexes;
           return result;
         } finally {
           syntaxTurn.dispose();
@@ -897,6 +908,7 @@ async function openAccountReceiveOwner(
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
                     semanticAuditDue();
                   syntaxTurn.complete(result);
+                  adoptedIndexes = !!result.indexes;
                   return result;
                 } finally {
                   syntaxTurn.dispose();
@@ -945,15 +957,22 @@ async function openAccountReceiveOwner(
           }
         }
       } catch (e) {
-        if (validationComplete && e instanceof MaintenanceInterrupted) throw e;
+        if (validationComplete && e instanceof MaintenanceInterrupted) {
+          // The delta view stays adopted; only its discretionary audit yielded.
+          ledgerHints.abandon(adoptedIndexes === undefined ? undefined : !adoptedIndexes);
+          throw e;
+        }
+        ledgerHints.abandon();
         verified.clear();
         verifiedCounter = undefined;
         memo.clear();
         coverage.clear();
         throw e;
       }
-      if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
-        localRetentionHint = { revision: localRetentionRevision ?? 0, records: records.length };
+      ledgerHints.settle(
+        retentionHint(localRetentionRevision ?? 0),
+        adoptedIndexes === undefined ? undefined : !adoptedIndexes,
+      );
     },
     dispose() {
       auditAlive = false;
@@ -972,7 +991,7 @@ async function openAccountReceiveOwner(
       membershipAnchor = undefined;
       expectedPayload.fill(0);
       verifiedCounter = undefined;
-      localRetentionHint = undefined;
+      ledgerHints.dispose();
       verified.clear();
       memo.clear();
       coverage.clear();
@@ -3362,7 +3381,9 @@ async function openAccountReceiveOwner(
     checkLocalBaseline,
     installLocalBaseline,
     prepareLocalRemoval,
-    localRetentionHint: () => localRetentionHint,
+    localRetentionHint: ledgerHints.hint,
+    ledgerFullCheck: ledgerHints.fullCheck,
+    onLedgerHint: ledgerHints.subscribe,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -3549,6 +3570,8 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     installLocalBaseline,
     prepareLocalRemoval,
     localRetentionHint,
+    ledgerFullCheck,
+    onLedgerHint,
   } = nativeOwner;
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
@@ -3910,11 +3933,11 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     // decryption, dry run, network call or writing bytes are needed to decide when to try.
     if (hasAutomaticLocalRetention() && result.removeLocalHistory && !account.detached) {
       if (!carrier.beforeRelease) throw Error('Missing automatic retention cleanup ownership');
+      const visible = () => pageRuntimePorts.activity.visibilityState() !== 'hidden';
       const maintenance = createAutomaticLocalRetention({
         signal: carrier.signal,
         observe: () => ({
           ready:
-            synchronizationQuiet &&
             historyFlights === 0 &&
             automaticHistory?.status.phase !== 'running' &&
             carrier.state === 'active' &&
@@ -3922,12 +3945,24 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             workspace.status.durable &&
             workspace.status.pendingItems === 0 &&
             workspace.status.pressure === null &&
-            pageRuntimePorts.activity.visibilityState() !== 'hidden',
+            visible(),
+          synchronized: synchronizationQuiet,
+          // Stable conditions only: typing and the in-flight check must not toggle the hold.
+          // In the full-check path every ledger change costs a reference check; reduction is
+          // the way out, so a due attempt may park routine sync (bounded by the retention owner).
+          hold:
+            ledgerFullCheck() &&
+            carrier.state === 'active' &&
+            workspace.status.state === 'active' &&
+            workspace.status.pressure === null &&
+            visible(),
           hint: localRetentionHint(),
         }),
         remove: result.removeLocalHistory,
       });
       automaticRetention = maintenance;
+      // A validation withdraws the hint while it runs; nothing else announced its return.
+      const ledgerChanged = onLedgerHint(maintenance.refresh);
       const changed = workspace.subscribe(maintenance.wake);
       // A durability barrier also publishes status. It is readiness, not new writing;
       // otherwise each saved slice would reset its own ten-second quiet window.
@@ -3943,6 +3978,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
       ];
       carrier.beforeRelease(() => {
         maintenance.dispose();
+        ledgerChanged();
         changed();
         statusChanged();
         for (const stop of stopActivity) stop();
@@ -4043,8 +4079,15 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         },
         receiveInterval: () => repairReceiveInterval(idleReceiveInterval(notificationHealthy)),
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
-        send: (beforeNewEnvelope) =>
-          driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
+        ...(automaticRetention ? { hold: () => automaticRetention?.hold } : {}),
+        send: (beforeNewEnvelope, holdNewEnvelope) =>
+          driveOutboundStep(
+            outbound,
+            operatorToken ?? '',
+            gate,
+            beforeNewEnvelope,
+            holdNewEnvelope,
+          ),
         receive: async (sendDue) => {
           const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
             receiveSweep.reset();
@@ -4119,6 +4162,21 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         };
         carrier.beforeRelease!(scheduler.runtime.onStatus(changed));
         changed(scheduler.runtime.status);
+      }
+      if (automaticRetention) {
+        // The scheduler reads the hold live; this only re-arms lanes when it engages or releases.
+        // Deferred so a retention publish never re-enters the sync scheduler synchronously.
+        const retention = automaticRetention;
+        let held = '';
+        carrier.beforeRelease!(
+          retention.onStatus(() => {
+            const hold = retention.hold;
+            const next = hold ? (hold.receive ? 'settled' : 'engaged') : '';
+            if (next === held) return;
+            held = next;
+            queueMicrotask(() => scheduler.wake('hold'));
+          }),
+        );
       }
       try {
         let previousGate = gate();

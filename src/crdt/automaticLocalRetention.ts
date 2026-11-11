@@ -16,6 +16,17 @@ export const LOCAL_RETENTION_MIN_RECORDS = 1024;
 export const LOCAL_RETENTION_QUIET_MS = 10000;
 export const LOCAL_RETENTION_COOLDOWN_MS = 30 * 60000;
 export const LOCAL_RETENTION_RETRY_MS = 60000;
+/** Longest a settled hold may defer routine sync before it yields (scheduling bound, unmeasured). */
+export const LOCAL_RETENTION_HOLD_MS = 5 * 60000;
+/** Normal sync window after a hold expires, before another hold may engage. */
+export const LOCAL_RETENTION_HOLD_YIELD_MS = 60000;
+/** Scheduling hint for the sync lanes. Never authority: the owner still checks every effect. */
+export interface LocalRetentionHold {
+  /** Do not allocate a new envelope; drive already allocated positions to acceptance. */
+  readonly send: boolean;
+  /** Do not start receive passes; an attempt is running or between slices. */
+  readonly receive: boolean;
+}
 export interface LocalRetentionStatus {
   readonly phase: 'idle' | 'waiting' | 'running' | 'halted' | 'closed';
   readonly reason: string | undefined;
@@ -37,6 +48,16 @@ export interface LocalRetentionView {
 export interface LocalRetentionRuntime extends LocalRetentionView {
   retry(): boolean;
 }
+export interface LocalRetentionObservation {
+  /** Local readiness. Without `synchronized`, the caller has also folded sync quiet into it. */
+  readonly ready: boolean;
+  readonly hint: LocalRetentionHint | undefined;
+  /** Both sync lanes are quiet. Omitted means already part of `ready`. */
+  readonly synchronized?: boolean;
+  /** Stable owner observation: reduction is the way out of a costly path, so a due attempt may
+   * ask routine sync to hold. Must not flip with transient readiness such as pending input. */
+  readonly hold?: boolean;
+}
 type Outcome = { kind: string; reason?: string };
 const interruptedOutcomes = new WeakMap<Outcome, MaintenanceInterrupted>();
 /** Native scheduling metadata only. Serialization loses it and conservatively keeps 60 seconds. */
@@ -56,7 +77,7 @@ const ownerErrorCode = (cause: unknown): string => {
 };
 export function createAutomaticLocalRetention(options: {
   signal: AbortSignal;
-  observe(): { ready: boolean; hint: LocalRetentionHint | undefined };
+  observe(): LocalRetentionObservation;
   remove(revision: number, report: RetentionProgressSink): Promise<Outcome>;
 }) {
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -74,8 +95,18 @@ export function createAutomaticLocalRetention(options: {
   let attemptEvents: LocalRetentionStatus['progress'][] = [];
   let currentAttempt: object | undefined;
   let ownerError: string | undefined;
+  // Hold: engaged when a due attempt finds sync busy (or starts on a hold-wanting owner);
+  // settled when an attempt actually starts under it. The budget runs from the first moment
+  // sync is quiet under the hold, so a parked sender never waits on local readiness unbounded.
+  let holdSince: number | undefined,
+    holdSettled = false,
+    holdTimer: ReturnType<typeof setTimeout> | undefined,
+    holdYieldUntil = 0,
+    holdSpent = false,
+    publishedHold = 0;
   const listeners = new Set<() => void>();
   let status: LocalRetentionStatus = Object.freeze({ phase: 'idle', reason: undefined });
+  const holdLevel = () => (closed || holdSince === undefined ? 0 : holdSettled ? 2 : 1);
   const publish = () => {
     const phase = closed
       ? 'closed'
@@ -83,10 +114,18 @@ export function createAutomaticLocalRetention(options: {
         ? 'halted'
         : running
           ? 'running'
-          : timer !== undefined
+          : timer !== undefined || holdSince !== undefined
             ? 'waiting'
             : 'idle';
-    if (status.phase === phase && status.reason === reason && status.progress === progress) return;
+    const hold = holdLevel();
+    if (
+      status.phase === phase &&
+      status.reason === reason &&
+      status.progress === progress &&
+      publishedHold === hold
+    )
+      return;
+    publishedHold = hold;
     status = Object.freeze({ phase, reason, ...(progress ? { progress } : {}) });
     for (const listener of [...listeners]) {
       try {
@@ -100,48 +139,97 @@ export function createAutomaticLocalRetention(options: {
     if (timer !== undefined) clearTimeout(timer);
     timer = undefined;
   };
+  const releaseHold = (spend = false) => {
+    if (spend) holdSpent = true;
+    if (holdTimer !== undefined) clearTimeout(holdTimer);
+    holdTimer = undefined;
+    holdSince = undefined;
+    holdSettled = false;
+  };
+  const startHoldBudget = () => {
+    if (holdSince !== undefined && holdTimer === undefined)
+      holdTimer = setTimeout(() => expireHold(), LOCAL_RETENTION_HOLD_MS);
+  };
   const observation = () => {
-    const { ready, hint } = options.observe();
-    if (
-      !ready ||
-      !hint ||
-      !Number.isSafeInteger(hint.revision) ||
-      hint.revision < 0 ||
-      !Number.isSafeInteger(hint.records) ||
-      hint.records < LOCAL_RETENTION_MIN_RECORDS
-    )
-      return undefined;
-    return { revision: hint.revision, key: `${hint.revision}:${hint.records}` };
+    const { ready, hint, synchronized, hold } = options.observe();
+    const valid =
+      ready &&
+      hint &&
+      Number.isSafeInteger(hint.revision) &&
+      hint.revision >= 0 &&
+      Number.isSafeInteger(hint.records) &&
+      hint.records >= LOCAL_RETENTION_MIN_RECORDS;
+    // A hint withdrawn by an in-flight validation, or pending input, never releases a hold.
+    // Only the owner's stable hold observation, outcomes, the budget and lifecycle do.
+    if (hold !== true) releaseHold();
+    // Quiet lanes under an engaged hold mean the sender is parked. Waiting for the envelope
+    // already in flight (lanes still busy) stays unbounded; nothing new is withheld by it yet.
+    else if (synchronized !== false) startHoldBudget();
+    return {
+      hint: valid
+        ? { revision: hint.revision, key: `${hint.revision}:${hint.records}` }
+        : undefined,
+      synchronized: synchronized !== false,
+      holdable: hold === true && !holdSpent,
+    };
   };
   const schedule = () => {
     clear();
-    if (closed || halted || running) {
+    if (closed || halted) {
       publish();
       return;
     }
-    const hint = observation();
-    if (!hint || hint.key === parked) {
+    // A running attempt keeps its flight, but a hidden page or cleared owner hint still releases
+    // the lanes (for example so a hidden page can publish).
+    const { hint, synchronized, holdable } = observation();
+    if (running) {
       publish();
       return;
     }
+    // Busy sync used to leave no timer. A hold-wanting owner still needs the due moment.
+    if (!hint || hint.key === parked || (!synchronized && !holdable)) {
+      publish();
+      return;
+    }
+    const yielding = !synchronized && holdSince === undefined ? holdYieldUntil : 0;
     timer = setTimeout(
       () => {
         timer = undefined;
         void attempt().finally(publish);
       },
-      Math.max(0, quietUntil - Date.now(), notBefore - Date.now()),
+      Math.max(0, quietUntil - Date.now(), notBefore - Date.now(), yielding - Date.now()),
     );
     publish();
   };
+  const expireHold = () => {
+    holdTimer = undefined;
+    if (closed || holdSince === undefined) return;
+    // Liveness bound: routine sync resumes even mid-attempt; its next job interrupts as before.
+    releaseHold();
+    holdYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
+    if (running) publish();
+    else schedule();
+  };
   const attempt = async () => {
     if (closed || halted || running) return;
-    const hint = observation();
+    const { hint, synchronized, holdable } = observation();
     if (!hint || hint.key === parked) return;
-    if (Date.now() < Math.max(quietUntil, notBefore)) {
+    const now = Date.now();
+    if (now < Math.max(quietUntil, notBefore)) {
       schedule();
       return;
     }
+    // Due. Ask routine sync to stop at its next settled boundary; lane changes refresh us.
+    if (holdSince === undefined && holdable && now >= holdYieldUntil) holdSince = now;
+    if (!synchronized) {
+      if (holdSince === undefined && holdable) schedule(); // yielding: recheck when it ends
+      return;
+    }
     running = true;
+    if (holdSince !== undefined && !holdSettled) {
+      holdSettled = true;
+      startHoldBudget();
+    }
     attempts++;
     const stamp = (currentAttempt = {}),
       began = Date.now();
@@ -187,6 +275,7 @@ export function createAutomaticLocalRetention(options: {
         if (progress) report({ stage: 'complete' });
         reason = undefined;
         notBefore = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
+        releaseHold();
         again = true;
       } else if (result.kind === 'preparation-saved') {
         // Useful bounded work is durable. Yield before another slice; input/readiness still wins.
@@ -203,13 +292,20 @@ export function createAutomaticLocalRetention(options: {
           Date.now() + (priorityOnly ? LOCAL_RETENTION_QUIET_MS : LOCAL_RETENTION_RETRY_MS);
         // Retrying an unchanged capacity/history refusal cannot help. A different authenticated
         // ledger hint permits another attempt, still behind the retry clock.
-        if (['capacity', 'history-required', 'ineligible'].includes(result.reason ?? ''))
+        if (['capacity', 'history-required', 'ineligible'].includes(result.reason ?? '')) {
           parked = hint.key;
-        // Transient refusal needs a new event, not a periodic scan of the same history.
-        again = wakes !== started;
+          // Holding sync cannot repair capacity or missing history: do not hold again until a
+          // manual retry or reopen. An ineligible cut (for example an unaccepted position left
+          // while offline) may settle later, so it only releases; parking still needs a new hint.
+          if (holdSince !== undefined) releaseHold(result.reason !== 'ineligible');
+        }
+        // Transient refusal needs a new event, not a periodic scan of the same history. A held
+        // device retries behind the same clock, bounded by the hold budget, so it cannot stall.
+        again = wakes !== started || holdSince !== undefined;
       } else {
         halted = true;
         reason = 'unexpected-result';
+        releaseHold();
       }
     } catch (cause) {
       // The removal owner already closes on uncertain mutation. Never turn integrity/storage
@@ -217,6 +313,7 @@ export function createAutomaticLocalRetention(options: {
       if (!closed) {
         halted = true;
         reason = 'owner-error';
+        releaseHold();
         // Do not read arbitrary error names, messages, causes, stacks or getters.
         // This closed application class has data-free codes; all other failures stay generic.
         ownerError = ownerErrorCode(cause);
@@ -231,6 +328,7 @@ export function createAutomaticLocalRetention(options: {
   const dispose = () => {
     closed = true;
     clear();
+    releaseHold();
     options.signal.removeEventListener('abort', dispose);
     publish();
     listeners.clear();
@@ -255,6 +353,11 @@ export function createAutomaticLocalRetention(options: {
     get status() {
       return status;
     },
+    /** Read live by the sync scheduler; changes are also announced through onStatus. */
+    get hold(): LocalRetentionHold | undefined {
+      const level = holdLevel();
+      return level ? Object.freeze({ send: true, receive: level === 2 }) : undefined;
+    },
     get diagnostics() {
       return Object.freeze({
         attempts,
@@ -274,6 +377,8 @@ export function createAutomaticLocalRetention(options: {
     retry() {
       if (closed || halted || running) return false;
       parked = undefined;
+      holdSpent = false;
+      holdYieldUntil = 0;
       wakes++;
       quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS;
       schedule();
