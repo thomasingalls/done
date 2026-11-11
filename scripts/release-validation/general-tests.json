@@ -17,6 +17,7 @@
     "test/baselineProjectionInterruption.test.ts",
     "test/breadcrumbs.test.ts",
     "test/cap.test.ts",
+    "test/cardArrival.test.ts",
     "test/cardCommands.test.ts",
     "test/commands.test.ts",
     "test/configDiscoveryCompatibility.test.ts",

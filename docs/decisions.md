@@ -8469,3 +8469,10 @@ Release preparation must preserve the main security runtime update rather than r
 **Date:** 2026-11-08 · **Phase:** 530.
 
 Only RANGE_RECEIVE differs between the selected candidate and compatible reader; service-history automation remains off. Preserve both exact archives and later retain/pull-verify the compatible reader remotely before writer rollout. Preserve Stage 5 source/spec qualifications and failed apparatus/receipt attempts; do not borrow receipts across trees. Pre-release images are incompatible after the new client format floor. The operator keeps both merge buttons; exact registry publication is a separate handoff after the application merge.
+
+
+### Prepend ordinary card arrivals without sorting or adding timestamps
+
+**Date:** 2026-11-09 · **Phase:** 535.
+
+The operator wants Next → Later to land at the top and a consistent newest-arrival-first default across day collections. Use the existing ordered ID arrays with insertion index zero. Keep explicit reorder indices, split adjacency and batch internal order; editing existing text does not move the card. No schema, timestamp, attribution, admission or security change is needed. The rare membership-repair fallback retains its existing policy; it cannot reconstruct lost manual order or a last-move time from data the app does not store.

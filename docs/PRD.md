@@ -370,9 +370,9 @@ at most three), membership that moves between them, per-item state, and per-item
 - **Next**, **Scheduled**, **Done**.
 
 A day shows them in the order **Next, Done, Scheduled**: what you are doing, what you did, and the tail of
-intentions that have not come up yet. **Done reads newest-first** — whatever was completed most recently is
-on top, and a record you only ever add to is read from the top. Next and Scheduled are ordered by intent
-rather than by time and keep the order you put them in. All three collections can be reordered on
+intentions that have not come up yet. **New cards and ordinary moves arrive at the top of all three
+collections**, so recent arrivals are easy to find. This changes insertion position, not a timestamp sort:
+existing cards and manual arrangements stay where they are, including after text edits. All three collections can be reordered on
 writable days, using the visible grip on touch or desktop, arrow keys on the grip, or a touch/pen
 hold followed by a drag. The grip remains available on mobile.
 

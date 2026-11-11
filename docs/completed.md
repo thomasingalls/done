@@ -20769,3 +20769,12 @@ Outcome precedes active-seat update.
 Application PR #62 and infrastructure PR #58 merged with merge commits. The 2026-11-08 rollout verification observed production serving tested signed source `759890ca` at the exact published ARM64 index. Reconciliation, runtime/public-byte checks, retained Deployment/PVC/public identity and existing backup health pass. [Live observations and their limits](https://codeberg.org/oxidationlabs/ol-infra/src/commit/b327ba8d5aee291a95415c0dd1dd35e625258f65/docs/evidence/2026-11-08-done-worker-receipts-live/README.md) are recorded once in infrastructure; the application publication packet and Stage 5/6 acceptance remain their existing homes. Actual cached-client adoption is still pending; no physical-phone timing, RAM saving or new aggregate qualification credit is claimed. All RC debts remain. After dense writing or the new client format floor, rollback requires the retained same-source writer-off reader; never clear storage or rewrite receipts for a pre-release build.
 
 This outcome is recorded before removing only this seat's closed release slice from progress.md. The other workstream's text is unchanged; only the obsolete separator and its trailing blank lines are removed. Documentation review/merges do not deploy another image.
+
+
+### Prepend day-card arrivals without sorting stored history
+
+**Phase:** 535 · **Started:** 2026-11-09.
+
+New cards and ordinary moves now land at the top in Next, Scheduled and Done. Explicit reordering, split adjacency, existing arrangements and text edits remain independent of insertion order. No new data or guards. Five new regression cases reproduce the old behavior before the repair; 88 focused cases, typecheck and 17 adapter controls pass after narrow fixture corrections. The first full unit run and its five old ordering assumptions remain recorded; the final full run follows the next phase. All old obligations and unresolved blocks are retained. [Record](./development-evidence/2026-11-09-card-ux/535-prepend-arrivals/README.md).
+
+Outcome precedes advancement of this seat's active phase.

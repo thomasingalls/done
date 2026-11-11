@@ -105,13 +105,11 @@ const writable = (workspace: Workspace, date: ISODate): boolean => !isFrozen(dat
 /**
  * Where a card arriving in a collection lands.
  *
- * Done reads newest-first: the thing you just finished is the thing you want to
- * see, and a record you only ever append to is read from the top. Next and
- * Scheduled are ordered by intent rather than by time, so an arrival goes to
- * the end and the order stays yours.
+ * Every collection puts ordinary arrivals on top. Existing membership order
+ * remains the user's: explicit reorder indices and split adjacency are separate,
+ * and editing text never sorts the collection or changes a timestamp.
  */
-const arrivalIndex = (section: Section, length: number): number =>
-  section === 'done' ? 0 : length;
+const ARRIVAL_INDEX = 0;
 
 /**
  * Capacity check for Next, from PRD §3. Every insert path goes through it, and
@@ -180,7 +178,7 @@ export const compose = (
   });
   return discrete(workspace, () => {
     registerCard(workspace.doc, id, card, ref);
-    target.insert(arrivalIndex(ref.section, target.length), [id]);
+    target.insert(ARRIVAL_INDEX, [id]);
     return true;
   });
 };
@@ -215,7 +213,7 @@ export const moveCard = (
 
   return discrete(workspace, () => {
     source.delete(index, 1);
-    const at = toIndex ?? arrivalIndex(to.section, target.length);
+    const at = toIndex ?? ARRIVAL_INDEX;
     target.insert(Math.min(Math.max(at, 0), target.length), [id]);
     setCardLocation(workspace.doc, id, to);
     return true;
@@ -305,7 +303,7 @@ export const fileCardTo = (workspace: Workspace, id: string, to: Ref): boolean =
   return discrete(workspace, () => {
     detachCard(workspace, id);
     setCardLocation(workspace.doc, id, to);
-    target.insert(arrivalIndex(to.section, target.length), [id]);
+    target.insert(ARRIVAL_INDEX, [id]);
     return true;
   });
 };
@@ -431,12 +429,9 @@ const placeMasterCards = (
       registerCard(workspace.doc, id, card, ref);
       return id;
     });
-    // Reversed where the section reads newest-first, so a multi-line copy keeps
-    // the order it had in master once each line has been put on top of the last.
-    target.insert(
-      arrivalIndex(ref.section, target.length),
-      ref.section === 'done' ? [...ids].reverse() : ids,
-    );
+    // Preserve the established order within a transferred block: Done inserts
+    // its lines in reverse; Next and Scheduled retain their source order.
+    target.insert(ARRIVAL_INDEX, ref.section === 'done' ? [...ids].reverse() : ids);
     removeSource?.();
     return bodies.length;
   });
@@ -594,10 +589,7 @@ export const moveAllNextTo = (workspace: Workspace, from: ISODate, to: Ref): num
       if (index >= 0) source.delete(index, 1);
       if (cardAt(workspace.doc, id)) setCardLocation(workspace.doc, id, to);
     }
-    target.insert(
-      arrivalIndex(to.section, target.length),
-      to.section === 'done' ? [...ids].reverse() : ids,
-    );
+    target.insert(ARRIVAL_INDEX, to.section === 'done' ? [...ids].reverse() : ids);
     return count;
   });
 };

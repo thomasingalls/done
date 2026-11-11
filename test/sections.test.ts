@@ -86,8 +86,8 @@ describe('Done reads newest-first', () => {
     context = await harness();
     const yesterday = addDays(TODAY, -1);
     const past = { ...context.me, today: yesterday };
-    compose(past, { date: yesterday, section: 'next' }, 'one');
     compose(past, { date: yesterday, section: 'next' }, 'two');
+    compose(past, { date: yesterday, section: 'next' }, 'one');
     compose(context.me, { date: TODAY, section: 'done' }, 'today already');
 
     moveAllNextTo(context.system, yesterday, { date: TODAY, section: 'done' });
@@ -96,18 +96,18 @@ describe('Done reads newest-first', () => {
   });
 });
 
-describe('the other sections keep the order you put them in', () => {
-  it('appends to Next', async () => {
+describe('all sections take newest arrivals first', () => {
+  it('prepends to Next', async () => {
     context = await harness();
     compose(context.me, { date: TODAY, section: 'next' }, 'cook potatoes');
     compose(context.me, { date: TODAY, section: 'next' }, 'fold laundry');
-    expect(bodies(context, 'next')).toEqual(['cook potatoes', 'fold laundry']);
+    expect(bodies(context, 'next')).toEqual(['fold laundry', 'cook potatoes']);
   });
 
-  it('appends to Scheduled', async () => {
+  it('prepends to Scheduled', async () => {
     context = await harness();
     compose(context.me, { date: TODAY, section: 'scheduled' }, 'first');
     compose(context.me, { date: TODAY, section: 'scheduled' }, 'second');
-    expect(bodies(context, 'scheduled')).toEqual(['first', 'second']);
+    expect(bodies(context, 'scheduled')).toEqual(['second', 'first']);
   });
 });
