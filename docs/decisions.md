@@ -8481,3 +8481,8 @@ The operator wants Next → Later to land at the top and a consistent newest-arr
 ### 2026-11-10 — Record partial completion from Next atomically (phase 536)
 
 The operator confirmed that Done for now replaces Duplicate on Next cards only. Preserve the original task in Scheduled and make the independent Done copy the editing target, using one admitted semantic command and one Undo step. Read text from the accepted predecessor rather than the click-time view so queued writing is included. Keep the existing provenance and heading-context fields; no new format is necessary. Focus is ephemeral, scoped to the active writable day, and consumed on leaving the copy. Existing Done/Scheduled duplication remains available.
+
+
+### 2026-11-10 — Stabilize card controls around a right-hand grip gutter (phase 537)
+
+The operator chose a reserved right-side handle gutter so writing, heading context and action labels can align on the left without a deep text indent. Keep the gutter and control-row height independent of grip availability. Next drops Remove. Done shows only Unlock as an action while locked, then keeps a fixed-width Lock button under the pointer and reveals the existing actions beside it. Retain the grip disabled during editing; explicit Lock consumes editing focus without moving focus to the text surface. This changes presentation and deliberate action exposure only; workspace protection, data, admission, Undo and freeze remain their existing mechanisms.

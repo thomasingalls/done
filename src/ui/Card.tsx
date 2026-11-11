@@ -30,7 +30,6 @@ export interface CardAction {
   hint: string;
   run: () => void;
   disabled?: boolean;
-  requiresUnlock?: boolean;
 }
 
 export interface CardReorder {
@@ -106,6 +105,13 @@ export const Card = ({
   const latestReorder = useRef(reorder);
   latestReorder.current = reorder;
 
+  const finishEditing = useCallback((focusSurface = false) => {
+    pendingPosition.current = view.current?.state.selection.main.head ?? null;
+    returnFocus.current = focusSurface;
+    setEditing(false);
+    latestHooks.current.leave();
+  }, []);
+
   useEffect(() => {
     if (editing) return;
     const host = staticHost.current;
@@ -146,12 +152,7 @@ export const Card = ({
     const bridge: CardHooks = {
       split: (at, tailFrom) => latestHooks.current.split(at, tailFrom),
       mergeBackwards: () => latestHooks.current.mergeBackwards(),
-      leave: () => {
-        pendingPosition.current = view.current?.state.selection.main.head ?? null;
-        returnFocus.current = true;
-        setEditing(false);
-        latestHooks.current.leave();
-      },
+      leave: () => finishEditing(true),
     };
 
     const handle = mountEditor(parent, { kind: 'card', id }, [
@@ -191,7 +192,7 @@ export const Card = ({
       handle.destroy();
       view.current = null;
     };
-  }, [editing, id, mountEditor]);
+  }, [editing, id, mountEditor, finishEditing]);
 
   useEffect(() => {
     if (autoFocusAt === undefined || editing || frozen || !editable) return;
@@ -433,47 +434,58 @@ export const Card = ({
 
       {!frozen && actions.length > 0 && (
         <div className="card-actions">
-          {reorder && !editing && (
-            <button
-              type="button"
-              className="card-action card-reorder-handle"
-              title="Drag to reorder; use arrow keys to move"
-              aria-label={`Reorder ${label}`}
-              onClick={(event) => event.preventDefault()}
-              onKeyDown={(event) => {
-                if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
-                event.preventDefault();
-                reorder.moveBy(event.key === 'ArrowUp' ? -1 : 1);
-              }}
-              onPointerDownCapture={onHandlePointerDown}
-              onPointerMoveCapture={onReorderPointerMove}
-              onPointerUp={onReorderPointerUp}
-              onPointerCancel={onReorderPointerCancel}
-              onLostPointerCapture={onLostPointerCapture}
-            >
-              <GripIcon />
-            </button>
-          )}
-          {guarded && !editing && (
-            <button type="button" className="card-action" onClick={() => open()}>
-              Unlock
-            </button>
-          )}
-          {actions
-            .filter((action) => !action.requiresUnlock || !guarded || editing)
-            .map((action) => (
+          <div className="card-reorder-slot">
+            {reorder && (
               <button
-                key={action.label}
                 type="button"
-                className="card-action"
-                title={action.hint}
-                aria-label={`${action.hint}: ${label}`}
-                disabled={action.disabled === true}
-                onClick={action.run}
+                className="card-action card-reorder-handle"
+                title="Drag to reorder; use arrow keys to move"
+                aria-label={`Reorder ${label}`}
+                disabled={editing}
+                onClick={(event) => event.preventDefault()}
+                onKeyDown={(event) => {
+                  if (editing) return;
+                  if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+                  event.preventDefault();
+                  reorder.moveBy(event.key === 'ArrowUp' ? -1 : 1);
+                }}
+                onPointerDownCapture={onHandlePointerDown}
+                onPointerMoveCapture={onReorderPointerMove}
+                onPointerUp={onReorderPointerUp}
+                onPointerCancel={onReorderPointerCancel}
+                onLostPointerCapture={onLostPointerCapture}
               >
-                {action.label}
+                <GripIcon />
               </button>
-            ))}
+            )}
+          </div>
+          <div className="card-action-buttons">
+            {guarded && (
+              <button
+                type="button"
+                className="card-action card-lock-toggle"
+                aria-pressed={editing}
+                onClick={() => (editing ? finishEditing() : open())}
+              >
+                {editing ? 'Lock' : 'Unlock'}
+              </button>
+            )}
+            {actions
+              .filter(() => !guarded || editing)
+              .map((action) => (
+                <button
+                  key={action.label}
+                  type="button"
+                  className="card-action"
+                  title={action.hint}
+                  aria-label={`${action.hint}: ${label}`}
+                  disabled={action.disabled === true}
+                  onClick={action.run}
+                >
+                  {action.label}
+                </button>
+              ))}
+          </div>
         </div>
       )}
     </article>

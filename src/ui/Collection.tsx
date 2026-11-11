@@ -143,7 +143,6 @@ export const Collection = ({
                 if (typeof created === 'string') onFocusCard(date, { id: created, at: 'end' });
               }),
           },
-          remove,
         ];
       }
 
@@ -177,13 +176,11 @@ export const Collection = ({
           hint: 'Move to Next',
           run: () => void execute({ kind: 'move', id, to: { date, section: 'next' } }),
           disabled: nextIsFull,
-          requiresUnlock: true,
         },
         {
           label: 'Later',
           hint: 'Move to Scheduled',
           run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
-          requiresUnlock: true,
         },
         duplicate,
         remove,

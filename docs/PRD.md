@@ -431,9 +431,9 @@ the original retains its identity and fields. The usual Done action still moves 
 
 **Duplicate** on a live card in Done or Scheduled creates a new Scheduled card on the
 same writable day, preserving the complete multiline Markdown and leaving the source unchanged.
-It is one undoable action with a new card identity and the source ID as item provenance. A locked
-Done card can be duplicated without unlocking because its writing and membership are unchanged.
-Creation still passes storage admission and frozen-day checks.
+It is one undoable action with a new card identity and the source ID as item provenance.
+On Done, unlock the card to reveal Duplicate and the other actions. Creation still passes storage
+admission and frozen-day checks. Next offers Done, Later and Done for now, with no Remove button.
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
@@ -461,8 +461,14 @@ card renders as static text and does not become editable by tapping it; unlockin
 field is always live at the foot of the list, so recording something new is a single uninterrupted keystroke
 path.
 
-While unlocked, a Done card also offers Next and Later to correct its placement. Focus can move from the
-editor to those controls without relocking; leaving the card locks it again.
+A locked Done card shows Unlock as its only action, alongside the reorder grip when available.
+Unlock becomes Lock in the same fixed-width position; Next, Later, Duplicate and Remove appear to
+its right. The grip stays visible but disabled while editing. Lock closes the editor; leaving the card
+also locks it again. Focus can move from the editor to its own controls without relocking.
+
+Cards reserve a narrow right-hand gutter for the grip even when it is unavailable. Text, Goals
+breadcrumbs and action labels share their left inset; invisible button padding does not determine
+that alignment. Coarse-pointer controls and the empty grip slot retain the same larger touch space.
 
 **TRD.** TRD §4.4 (cards render static until focused), TRD §8.4 (gestures).
 

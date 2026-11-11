@@ -20787,3 +20787,12 @@ Outcome precedes advancement of this seat's active phase.
 Next now offers Done for now in place of Duplicate. One admitted, undoable operation creates and focuses an independent Done copy and moves the original to the top of Scheduled. No new data or security exceptions. Eight new semantic/durability controls, the full unit suite, desktop/Android-emulated browser focus/reorder/Undo/reopen checks, typecheck, lint and adapter checks pass. Initial fixture and harness failures remain recorded. Physical Android and release/performance qualification are not claimed. [Record](./development-evidence/2026-11-09-card-ux/536-done-for-now/README.md).
 
 Outcome precedes closure of this seat's active slice. Sequential patches are prepared; no commit, push, preview restart or deployment.
+
+
+### Keep card geometry and Done's lock control stable
+
+**Phase:** 537 · **Date:** 2026-11-10.
+
+A permanent right-hand grip gutter aligns text, breadcrumbs and action-label ink. Next no longer offers Remove. Done keeps Unlock/Lock in the same hit target, hides its other actions while locked and retains a disabled grip while editing. Four new regressions fail on the previous build. Final desktop/Android-emulated browser checks pass 62 cases (26 existing skips), alongside 22 focused unit cases, typecheck, lint and 23 adapter controls. The updated 8443 preview passes eight additional smoke cases with the API and public configuration retained. [Record](./development-evidence/2026-11-09-card-ux/537-stable-card-controls/README.md).
+
+Outcome precedes closure of this seat's active slice. Patches 535/536 remain untouched; 537 follows them. No commit, push or production deployment.

@@ -371,6 +371,14 @@ master document or otherwise exposed as user-facing identifiers.
 Completion is `- [x]` and nothing more. **There is no `📅` scheduled-date syntax and no `✅` completion-timestamp
 syntax** — both are deadline-tracking scaffolding for a system this explicitly isn't.
 
+**Card controls.** The right grip slot is reserved independently of collection size and editing state.
+The writing, optional heading context and action-label ink share the content inset. A Done card
+keeps one fixed-width Unlock/Lock button mounted across editor transitions. Other actions render
+only while it is unlocked; its existing reorder controller remains present but disabled while editing.
+Explicit Lock consumes the transient focus request and retains the caret without returning focus to
+the text surface. Enter/Escape still return focus to the surface; external blur still relocks. These
+are presentation state only, with no changes to admission, freeze or stored card data.
+
 ### 4.7 Movement operations
 
 | Operation                       | Implementation                                                                           |

@@ -36,13 +36,16 @@ for (const section of ['next', 'done', 'scheduled']) {
           : 'Duplicate to Scheduled: Plan the trip',
       exact: true,
     });
-    await expect(duplicate).toBeVisible();
     if (section === 'next')
       await expect(source.getByRole('button', { name: /^Duplicate to Scheduled:/ })).toHaveCount(0);
     if (section === 'done') {
       await expect(source).toHaveAttribute('data-guarded', 'true');
       await expect(source.getByRole('button', { name: /^Move to Scheduled:/ })).toHaveCount(0);
+      await expect(duplicate).toHaveCount(0);
+      await source.getByRole('button', { name: 'Unlock', exact: true }).click();
+      await expect(source.getByRole('button', { name: 'Lock', exact: true })).toBeVisible();
     }
+    await expect(duplicate).toBeVisible();
     await duplicate.click();
     const destination = section === 'next' ? 'done' : 'scheduled';
     const copy = day.locator(`.card[data-section="${destination}"]:not([data-card="${id}"])`);
@@ -50,7 +53,7 @@ for (const section of ['next', 'done', 'scheduled']) {
     const copyId = await copy.getAttribute('data-card');
     expect(copyId).not.toBe(id);
     await expect(source).toHaveAttribute('data-card', id!);
-    if (section === 'done') await expect(source).toHaveAttribute('data-guarded', 'true');
+    if (section === 'done') await expect(source).toHaveAttribute('data-guarded', 'false');
     if (section === 'next') {
       await expect(cards('next')).toHaveCount(0);
       await expect(source).toHaveAttribute('data-section', 'scheduled');
