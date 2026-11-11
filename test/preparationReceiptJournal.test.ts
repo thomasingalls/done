@@ -4,13 +4,14 @@ import {
   authenticatePreparationReceipts,
   createPreparationJournal,
   disposePreparationReceipts,
-  PreparationCapacity,
+  preparationReceiptCount,
   PreparationPause,
 } from '../src/crdt/retentionPreparation';
 import {
   decodePreparationValue as decode,
   encodePreparationValue as encode,
   PREPARATION_VALUE_BYTES,
+  PREPARATION_VALUE_NODES,
 } from '../src/crdt/preparationValue';
 import { verifyStoredInboundReceipt } from '../src/crdt/accountInbound';
 import { inboundEntryMemoSlot } from '../src/crdt/inboundRecord';
@@ -346,8 +347,9 @@ it('clear, owner invalidation and caller mutation during a pending check erase f
     j.dispose();
   }
 });
-it('capacity refusal keeps the prior saved journal, and a reopened owner hits the same unchanged ceiling', async () => {
-  const j = createPreparationJournal({ context, current }),
+it('a full cache keeps its saved receipts and returns a page uncached, and so does a reopened owner', async () => {
+  let now = 0;
+  const j = createPreparationJournal({ context, current, now: () => now }),
     a = await auth();
   await j.memo.check(
     'opened:1',
@@ -357,17 +359,98 @@ it('capacity refusal keeps the prior saved journal, and a reopened owner hits th
     current,
   );
   const p = await proof(j, a),
-    next = createPreparationJournal({ context, current });
+    next = createPreparationJournal({ context, current, now: () => now });
   next.import(p);
   disposePreparationReceipts(p);
   for (const owner of [j, next]) {
-    await expect(check(owner, slots(whole), [whole.record], verify())).rejects.toBeInstanceOf(
-      PreparationCapacity,
+    const run = vi.fn(verify());
+    expect(await check(owner, slots(whole), [whole.record], run)).toEqual(whole);
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(owner.statistics).toMatchObject({ entries: 1, full: true });
+    // The kept receipt is still reused, and past the slice clock a miss no longer pauses.
+    const old = vi.fn(async () => new Uint8Array([1]));
+    expect((await owner.memo.check('opened:1', 'owner', [], old, current)).length).toBe(
+      PREPARATION_VALUE_BYTES - 1024,
     );
+    expect(old).not.toHaveBeenCalled();
+    now += 5000;
+    expect(await check(owner, slots(whole, 2), [whole.record], verify())).toEqual(whole);
     expect(owner.statistics.entries).toBe(1);
   }
   j.dispose();
   next.dispose();
+});
+it('a result kept near the ceiling always leaves a slice that encodes and signs', async () => {
+  const a = await auth();
+  // Fits the cache's own count, but its slice would not fit one signed preparation value.
+  for (const size of [PREPARATION_VALUE_BYTES - 1024, PREPARATION_VALUE_BYTES - 100]) {
+    const j = createPreparationJournal({ context, current }),
+      value = await j.memo.check(
+        'opened:1',
+        'owner',
+        [],
+        async () => new Uint8Array(size),
+        current,
+      );
+    expect(value.length).toBe(size);
+    const kept = size === PREPARATION_VALUE_BYTES - 1024;
+    expect(j.statistics).toMatchObject({
+      entries: kept ? 1 : 0,
+      pending: kept ? 1 : 0,
+      full: !kept,
+    });
+    const p = await proof(j, a);
+    expect(preparationReceiptCount(p)).toBe(kept ? 1 : 0);
+    disposePreparationReceipts(p);
+    j.dispose();
+  }
+});
+it('a slice stops at the most receipts one saved value can hold, then saves them all', async () => {
+  const j = createPreparationJournal({ context, current, now: () => 0 }),
+    a = await auth();
+  let rows = 0;
+  try {
+    for (;;) {
+      await j.memo.check(`spool:${rows + 1}`, 'owner', [], async () => {}, current);
+      rows++;
+    }
+  } catch (cause) {
+    expect(cause).toBeInstanceOf(PreparationPause);
+  }
+  expect(rows).toBe(Math.floor((PREPARATION_VALUE_NODES - 1) / 4));
+  expect(j.statistics).toMatchObject({ pending: rows, full: false });
+  const p = await proof(j, a);
+  expect(preparationReceiptCount(p)).toBe(rows);
+  disposePreparationReceipts(p);
+  j.dispose();
+});
+it('a journal given its checkpoint room keeps only a slice that room can save', async () => {
+  const room = 4096,
+    j = createPreparationJournal({ context, current, now: () => 0, room });
+  const small = await j.memo.check(
+    'opened:1',
+    'owner',
+    [],
+    async () => new Uint8Array(64),
+    current,
+  );
+  expect(small.length).toBe(64);
+  expect(j.statistics).toMatchObject({ entries: 1, full: false });
+  const large = await j.memo.check(
+    'opened:2',
+    'owner',
+    [],
+    async () => new Uint8Array(room),
+    current,
+  );
+  expect(large.length).toBe(room);
+  expect(j.statistics).toMatchObject({ entries: 1, pending: 1, full: true });
+  const d = await j.delta(await auth());
+  expect(d.payload.length).toBeLessThanOrEqual(room);
+  eraseVerified(d);
+  j.dispose();
+  expect(() => createPreparationJournal({ context, current, room: -1 })).toThrow();
+  expect(() => createPreparationJournal({ context, current, room: 0.5 })).toThrow();
 });
 it('sparse, duplicate, noncontiguous and mixed physical addresses refuse before the verifier runs', async () => {
   const j = createPreparationJournal({ context, current }),

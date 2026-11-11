@@ -2473,7 +2473,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 498,
+          "line": 499,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
@@ -2580,7 +2580,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 504,
+          "line": 505,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -2713,7 +2713,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 505,
+          "line": 506,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }

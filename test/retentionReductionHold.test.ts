@@ -263,6 +263,27 @@ it('capacity and missing history spend the hold until a manual retry; ineligible
   }
 });
 
+it('a capacity refusal that arrives after the hold expired still spends it', async () => {
+  const f = fixture();
+  await settle(f);
+  // The budget lapses mid-attempt; the pass is then cut short and parks as capacity.
+  await f.tick(HOLD);
+  expect(f.run.hold).toBeUndefined();
+  expect(f.run.status.phase).toBe('running');
+  f.calls[0]!.resolve({ kind: 'skipped', reason: 'capacity' });
+  await f.tick(0);
+  // New growth permits another attempt, but holding sync for it again cannot help.
+  f.set({ synchronized: false, hint: { revision: 0, records: MIN + 1 } });
+  f.run.refresh();
+  await f.tick(YIELD + RETRY);
+  expect(f.run.hold).toBeUndefined();
+  expect(f.calls).toHaveLength(1);
+  expect(f.run.retry()).toBe(true);
+  await f.tick(QUIET);
+  expect(f.run.hold).toEqual(engaged);
+  f.run.dispose();
+});
+
 /** An already-reduced device: indexed ledger view, so no full hold, and quiet sync lanes. */
 const ordinary = { hold: false, synchronized: true, deferPolls: true };
 const polls = { send: false, receive: false, idlePoll: true };

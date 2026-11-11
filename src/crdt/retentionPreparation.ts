@@ -3,6 +3,7 @@ import {
   encodePreparationValue,
   decodePreparationValue,
   PREPARATION_VALUE_BYTES,
+  PREPARATION_VALUE_NODES,
 } from './preparationValue';
 import { fields, hex, type Bytes } from './custodyCrypto';
 import type { ReceiptVerificationMemo } from './verificationMemo';
@@ -11,12 +12,17 @@ import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
 import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
 import type { BaselineAuthentication } from './localBaselineReplay';
 import { eraseVerified, sameBytes } from './verifiedRecords';
-import { PreparationCapacity } from './preparationCapacity';
 export { PreparationCapacity } from './preparationCapacity';
 
 const DOMAIN = 'done/local-preparation/draft-1';
 export const PREPARATION_SLICE_MS = 2000;
 export const PREPARATION_ENTRIES = 131072;
+// A saved slice is one encoded value of [slot, digest, result] rows inside a signed frame. Each
+// row costs its accounted bytes plus ROW_FRAME in the encoder's count and four values; the
+// outer array and signed frame fit in SLICE_FRAME. Within these a kept slice always saves.
+const ROW_FRAME = 19,
+  SLICE_FRAME = 256,
+  SLICE_ROWS = Math.floor((PREPARATION_VALUE_NODES - 1) / 4);
 export class PreparationPause extends Error {
   constructor() {
     super('Preparation slice saved before continuing');
@@ -346,8 +352,12 @@ export function createPreparationJournal(options: {
   current(): void;
   now?(): number;
   sliceMs?: number;
+  /** Encoded bytes the saved checkpoint can still take in one more slice. */
+  room?: number;
 }) {
   if (!hashString(options.context)) invalid();
+  const room = Math.min(options.room ?? PREPARATION_VALUE_BYTES, PREPARATION_VALUE_BYTES);
+  if (!Number.isSafeInteger(room) || room < 0) invalid();
   const current = () => {
     if (closed) throw Error('Preparation journal closed');
     options.current();
@@ -364,6 +374,10 @@ export function createPreparationJournal(options: {
     hits = 0,
     revision = 0,
     started = false;
+  // Once the cache or its checkpoint cannot take a result, the rest of this pass is uncached:
+  // nothing more is kept and no slice pauses, since a saved slice could not hold the work.
+  let full = false,
+    pendingBytes = 0;
   const now = options.now ?? performance.now.bind(performance);
   const slice = options.sliceMs ?? PREPARATION_SLICE_MS;
   if (!Number.isFinite(slice) || slice <= 0) invalid();
@@ -412,28 +426,38 @@ export function createPreparationJournal(options: {
       }
       const freshAt = now();
       began ??= freshAt;
-      if (pending.size && freshAt - began >= slice) throw new PreparationPause();
+      if (!full && pending.size && (freshAt - began >= slice || pending.size >= SLICE_ROWS))
+        throw new PreparationPause();
       const value = await verify();
       let result: Bytes | undefined;
       try {
         unchanged();
+        // The caller receives the same detached copy as from a kept result; it is not kept.
+        if (full) return structuredClone(value);
         result = encodePreparationValue(value);
         validateResult(slot, result);
         pageInput(slot, value, captured);
-        const nextBytes =
-          bytes -
-          (prior ? prior.result.length + prior.slot.length + 64 : 0) +
-          result.length +
-          slot.length +
-          64;
-        if ((!prior && entries.size >= PREPARATION_ENTRIES) || nextBytes > PREPARATION_VALUE_BYTES)
-          throw new PreparationCapacity();
+        const size = (r: Receipt) => r.result.length + r.slot.length + 64,
+          replaced = prior ? size(prior) : 0,
+          own = result.length + slot.length + 64,
+          nextBytes = bytes - replaced + own,
+          nextPending =
+            pendingBytes - (pending.has(slot) ? replaced + ROW_FRAME : 0) + own + ROW_FRAME;
+        if (
+          (!prior && entries.size >= PREPARATION_ENTRIES) ||
+          nextBytes > PREPARATION_VALUE_BYTES ||
+          nextPending + SLICE_FRAME > room
+        ) {
+          full = true;
+          return structuredClone(value);
+        }
         ownedBytes += result.length - (prior?.result.length ?? 0);
         prior?.result.fill(0);
         const receipt = { slot, digest, result };
         entries.set(slot, receipt);
         pending.set(slot, receipt);
         bytes = nextBytes;
+        pendingBytes = nextPending;
         misses++;
         result = undefined;
         return structuredClone(value);
@@ -454,6 +478,8 @@ export function createPreparationJournal(options: {
       pending.clear();
       bytes = 0;
       ownedBytes = 0;
+      pendingBytes = 0;
+      full = false;
     },
     retain() {
       /* A fixed-capture receipt journal retains its completed work until disposal. */
@@ -479,15 +505,18 @@ export function createPreparationJournal(options: {
       const p = proofs.get(proof);
       if (!p || p.context !== options.context) return invalid();
       if (started) throw Error('Preparation import after verification began');
-      // Validate aggregate capacity before changing the private map.
+      // Validate aggregate capacity before changing the private map. A saved slice that does
+      // not fit is left out whole; what was already imported stays, and the rest runs uncached.
       const merged = new Map(entries);
       for (const r of p.entries) merged.set(r.slot, r);
       const count = [...merged.values()].reduce(
         (n, r) => n + r.result.length + r.slot.length + 64,
         0,
       );
-      if (merged.size > PREPARATION_ENTRIES || count > PREPARATION_VALUE_BYTES)
-        throw new PreparationCapacity();
+      if (merged.size > PREPARATION_ENTRIES || count > PREPARATION_VALUE_BYTES) {
+        full = true;
+        return;
+      }
       for (const r of p.entries) {
         entries.get(r.slot)?.result.fill(0);
         entries.set(r.slot, { ...r, result: r.result.slice() });
@@ -521,7 +550,7 @@ export function createPreparationJournal(options: {
       }
     },
     get statistics() {
-      return Object.freeze({ entries: entries.size, pending: pending.size, hits, misses });
+      return Object.freeze({ entries: entries.size, pending: pending.size, hits, misses, full });
     },
     dispose() {
       memo.clear();

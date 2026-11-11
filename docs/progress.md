@@ -162,17 +162,17 @@ entering credentials repeatedly. The operator named it on 2026-10-10 as the phas
 gate: release repair after the 2026-11-08 rollout
 seat: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
 branch: claude/done-card-ux-patches-1e566a
-status: in flight # phases 538 to 540 on this branch; none confirmed on the affected account
+status: in flight # phases 538 to 541 on this branch; none confirmed on the affected account
 scope: restore usable start-up and sync for accounts the release pushed onto the full-check path
 blocks_on: operator commit, merge and deployment decisions; a reading from the affected account
 release_validation: paused; planning inventory 1108 / 552 unresolved
 updated: 2026-11-11
 ```
 
-**Active outcome.** A two-device production account became unusable after the release: many-minute waits behind "Input is waiting to be saved." and four to five minutes per sent position on a desktop that had never reduced. Phase 538 stops refusing the ledger index on retained bytes, which the operator approved on 2026-11-11. Phase 539 lets a device on the full-check path hold routine sync so reduction can run. Phase 540 lets a running reduction on any device skip routine idle receive polls. The branch also carries signed phases 535 to 537.
+**Active outcome.** A two-device production account became unusable after the release: many-minute waits behind "Input is waiting to be saved." and four to five minutes per sent position on a desktop that had never reduced. Phase 538 stops refusing the ledger index on retained bytes, which the operator approved on 2026-11-11. Phase 539 lets a device on the full-check path hold routine sync so reduction can run. Phase 540 lets a running reduction on any device skip routine idle receive polls. Phase 541 lets reduction continue past the resumable cache instead of parking. The branch also carries signed phases 535 to 537.
 
-**Next.** Operator review, merge and deployment decisions. Then confirm on the affected account, which is the only evidence that phase 538 addresses its cause. The affected desktop's reduction stops at the preparation budget while reading saved history, so its saved records are near 32 MiB; phases 538 to 540 may not free it, and that needs its own repair. A service snapshot above about 1.3 MiB could not be installed by any device and is not yet guarded. A sign-in refusal seen on the desktop during the phone's maintenance is unexplained and needs the service log.
+**Next.** Operator review, merge and deployment decisions. Then confirm on the affected account, which is the only evidence that phase 538 addresses its cause. The affected desktop's reduction stopped at the preparation budget while reading saved history, so its saved records are near 32 MiB; phase 541 is the repair for that, and the 4 MiB encoded-baseline guard may be the next limit it meets. A service snapshot above about 1.3 MiB could not be installed by any device and is not yet guarded. A sign-in refusal seen on the desktop during the phone's maintenance is unexplained and needs the service log.
 
-**Evidence and limits.** [Phase 538 record](./development-evidence/2026-11-11-release-repair/538-index-retained-bytes/README.md), [phase 539 record](./development-evidence/2026-11-11-release-repair/539-reduction-sync-hold/README.md) and [phase 540 record](./development-evidence/2026-11-11-release-repair/540-reduction-poll-deferral/README.md). No browser suite, timing or device run. The account's row and byte counts were not observed.
+**Evidence and limits.** [Phase 538 record](./development-evidence/2026-11-11-release-repair/538-index-retained-bytes/README.md), [phase 539 record](./development-evidence/2026-11-11-release-repair/539-reduction-sync-hold/README.md), [phase 540 record](./development-evidence/2026-11-11-release-repair/540-reduction-poll-deferral/README.md) and [phase 541 record](./development-evidence/2026-11-11-release-repair/541-reduction-past-cache-budget/README.md). No browser suite, timing or device run. The account's row and byte counts were not observed.
 
-**Rollback.** Revert phase 540, then 539, then 538; 540 builds on 539. Neither changes a stored format, wire or limit, so no device needs repair either way.
+**Rollback.** Revert phase 541, then 540, then 539, then 538; each builds on the one before except 538. Neither changes a stored format, wire or limit, so no device needs repair either way.

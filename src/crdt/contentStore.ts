@@ -1,4 +1,5 @@
 import {
+  PreparationCapacity,
   PreparationPause,
   createPreparationJournal,
   type PreparationJournal,
@@ -8,6 +9,7 @@ import {
   loadPreparationCheckpoint,
   importPreparationCheckpoint,
   disposePreparationCheckpoint,
+  preparationCheckpointRoom,
   savePreparationDelta,
   removePreparationCache,
   type PreparationCheckpoint,
@@ -27,6 +29,7 @@ import { createBaselineMetadata } from './localBaselineMetadata';
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
 import {
   MaintenanceInterrupted,
+  isPriorityOnlyMaintenanceInterruption,
   reportRetentionProgress,
   type RetentionProgressSink,
 } from './contentMaintenance';
@@ -891,6 +894,9 @@ export const createContentOwner = (
     let delivered = false;
     let preparation: { journal: PreparationJournal; checkpoint: PreparationCheckpoint } | undefined;
     let transferred = false;
+    // Set when this pass runs past what its resumable cache can hold, so nothing carries over.
+    let unbound = false;
+    const uncached = () => unbound || preparation?.journal.statistics.full === true;
     const implementation = preparationVerifierIdentity();
     try {
       const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
@@ -945,17 +951,26 @@ export const createContentOwner = (
                 async () => assertCurrent(),
                 checkCommit,
               );
-              const read = await loadPreparationCheckpoint(task, storage, {
-                context: bound,
-                inventory,
-                counter,
-              });
+              let read: Awaited<ReturnType<typeof loadPreparationCheckpoint>>;
+              try {
+                read = await loadPreparationCheckpoint(task, storage, {
+                  context: bound,
+                  inventory,
+                  counter,
+                });
+              } catch (cause) {
+                // Too large to bind any saved journal: this pass runs without one, uncached.
+                if (!(cause instanceof PreparationCapacity)) throw cause;
+                unbound = true;
+                return undefined;
+              }
               const journal = createPreparationJournal({
                 context: bound,
                 current: () => {
                   task.step(checkCommit);
                   context.assertCurrent();
                 },
+                room: preparationCheckpointRoom(read.checkpoint),
               });
               preparation = { journal, checkpoint: read.checkpoint };
               if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
@@ -1074,6 +1089,11 @@ export const createContentOwner = (
         check: checkRetained,
       });
     } catch (cause) {
+      // An uncached pass leaves nothing for the next attempt to resume. If routine queued work
+      // cut it short, retrying the same history would only repeat it, so it parks as capacity;
+      // a changed history, manual retry or reopen tries again. Foreground activity still yields.
+      if (uncached() && isPriorityOnlyMaintenanceInterruption(cause))
+        return { kind: 'skipped' as const, reason: 'capacity' as const };
       if (!(cause instanceof PreparationPause) || !preparation || !implementation) throw cause;
       // Only a still-live read task can authenticate the delta. No expired task callback escapes.
       const delta = await preparation.journal.delta(baselineAuth(task));

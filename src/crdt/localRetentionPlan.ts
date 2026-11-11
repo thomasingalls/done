@@ -254,7 +254,8 @@ export async function planLocalRetention(
   // expiring preparation task. Context/task checks still govern every preparation effect.
   retainCurrent: () => void = () => context.assertCurrent(),
   progress?: RetentionProgressSink,
-  preparation?: (counter: ContentCounter) => Promise<PreparationVerification>,
+  // Resolves without a journal when none can be bound; the pass then runs uncached.
+  preparation?: (counter: ContentCounter) => Promise<PreparationVerification | undefined>,
 ): Promise<
   LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
 > {

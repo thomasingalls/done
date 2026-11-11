@@ -276,11 +276,15 @@ async function full(
     const coverage = createInboundCoverage();
     try {
       const checking = coverage.bind(input.records);
-      const basisBytes =
-        preparation &&
-        encodePreparationValue(
-          input.records.filter((r) => r.kind === 'state' || r.kind === 'update'),
-        );
+      let basisBytes: Bytes | undefined;
+      if (preparation)
+        try {
+          basisBytes = encodePreparationValue(
+            input.records.filter((r) => r.kind === 'state' || r.kind === 'update'),
+          );
+        } catch {
+          // Content past one preparation value has no reusable basis: check coverage uncached.
+        }
       let basis: string | undefined;
       try {
         if (basisBytes) basis = await hash(basisBytes);
@@ -288,7 +292,7 @@ async function full(
         if (basisBytes) basisBytes.fill(0);
       }
       const check = async (updates: readonly Bytes[]) => {
-        if (!preparation) {
+        if (!preparation || basis === undefined) {
           checking.check(input.records, updates);
           return;
         }

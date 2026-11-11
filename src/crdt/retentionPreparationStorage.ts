@@ -218,6 +218,17 @@ export function importPreparationCheckpoint(
   p.proofs.length = 0;
   p.imported = true;
 }
+/** Encoded bytes one more saved slice may take under the delta, chunk and byte caps that
+ * savePreparationDelta enforces; zero when no further slice can be saved. */
+export function preparationCheckpointRoom(checkpoint: PreparationCheckpoint): number {
+  const p = held.get(checkpoint);
+  if (!p) throw Error('Preparation checkpoint expired');
+  const prior = p.head?.deltas ?? [];
+  if (prior.length + 1 > PREPARATION_MAX_CHUNKS) return 0;
+  const chunks = PREPARATION_MAX_CHUNKS - prior.flatMap((d) => d.chunks).length,
+    bytes = PREPARATION_MAX_BYTES - prior.reduce((a, d) => a + d.bytes, 0);
+  return Math.max(0, Math.min(bytes, chunks * PREPARATION_CHUNK_BYTES));
+}
 export function disposePreparationCheckpoint(checkpoint: PreparationCheckpoint) {
   const p = held.get(checkpoint);
   if (p) {

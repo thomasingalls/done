@@ -377,8 +377,10 @@ export function createAutomaticLocalRetention(options: {
         if (['capacity', 'history-required', 'ineligible'].includes(result.reason ?? '')) {
           parked = hint.key;
           // Holding sync cannot repair capacity or missing history: do not hold again until a
-          // manual retry or reopen. An ineligible cut (for example an unaccepted position left
-          // while offline) may settle later, so it only releases; parking still needs a new hint.
+          // manual retry or reopen, even when the budget lapsed before this outcome arrived. An
+          // ineligible cut (for example an unaccepted position left while offline) may settle
+          // later, so it only releases; parking still needs a new hint.
+          if (result.reason !== 'ineligible') holdSpent = true;
           if (holdSince !== undefined) releaseHold(result.reason !== 'ineligible');
         }
         // Transient refusal needs a new event, not a periodic scan of the same history. A held

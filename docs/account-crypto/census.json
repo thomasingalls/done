@@ -949,7 +949,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "95c1a6a89902fd5134a1e4274846d413d84fb9bc1b8f386df3de54a2e137022a"
+      "sha256": "88993784421bc2c2dc0dbb37beff18c2e9368e5470cc222f56372f825f0c5405"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1005,7 +1005,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "b7a57064fcd93d059fef2690cd260a7b54dbc67a0fd26790060be500b7b88433"
+      "sha256": "759909ee8697010d3f665fe550081eed7c7c52fc32dcc4fc40a1d1185c49984f"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1221,7 +1221,7 @@
     },
     {
       "path": "src/crdt/localBaselineReplay.ts",
-      "sha256": "a887e4d4ccbb0094df5c929a41fa4329b9e6f34c5cc297a3e548288bf6266eab"
+      "sha256": "9c058fa15ee7ec22734c763c70d660432a2c383fa8311f6cdca467dace6c4b7c"
     },
     {
       "path": "src/crdt/localBaselineReuse.ts",
@@ -1277,7 +1277,7 @@
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "5b9095f3094b26c6cd27dbf4e75abae761802b814d169ce917f7ad66264789ae"
+      "sha256": "91b9130e5af8eb29dd47573b66545c2d11f1f4a24973c8ab90756762e888f243"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -1345,7 +1345,7 @@
     },
     {
       "path": "src/crdt/preparationValue.ts",
-      "sha256": "b735e68be9279794aebdaccf665fd97c97bdcd5ae98ae0fe9e5f3a9b8b5990a1"
+      "sha256": "4f1f80c4af0934ff5605206358830014e34896a0679938124417e99f9b4df5ff"
     },
     {
       "path": "src/crdt/promotionAdmission.ts",
@@ -1445,7 +1445,7 @@
     },
     {
       "path": "src/crdt/retentionPreparation.ts",
-      "sha256": "284592f47973846e04587e20bdbd97951cdac703ad1566d187f7b5b95d806a2f"
+      "sha256": "963127ae42466814929c6bc9a8f44c1b9f04ade91946412455f8b4d8a740f1b9"
     },
     {
       "path": "src/crdt/retentionPreparationBinding.ts",
@@ -1457,7 +1457,7 @@
     },
     {
       "path": "src/crdt/retentionPreparationStorage.ts",
-      "sha256": "e2f73dcd97e7dd51186dd5fc8aea319ae95ff30bf39958201f82f57d3e1f03fa"
+      "sha256": "5a8362b43b85fd34bf5535fd65381d6755091c72c654e12be0acfd26a23394f5"
     },
     {
       "path": "src/crdt/retentionReads.ts",
@@ -2179,7 +2179,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 505
+          "line": 506
         }
       ]
     },
@@ -2391,7 +2391,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 504
+          "line": 505
         },
         {
           "path": "src/crdt/spoolRecord.ts",
@@ -4203,7 +4203,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 498
+          "line": 499
         },
         {
           "path": "src/crdt/sourceCapture.ts",
