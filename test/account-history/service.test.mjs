@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { CLOCK_SKEW_ALLOWANCE_MS } from '../../account-protocol/clockSkew.ts';
 import { randomBytes } from 'node:crypto';
 import { mutate } from '../account-successor/service-fixtures.mjs';
-import { setup } from './service-fixture.mjs';
+import { setup, largestInstallable } from './service-fixture.mjs';
 import { client as c } from './client.mjs';
 import { AuthorizationRefused } from '../../account-service/authorization.ts';
 import { AccountCore } from '../../account-service/core.ts';
@@ -376,4 +376,38 @@ test('publisher quarantine also fences checkpoint mutation until operator restar
   assert.deepEqual(await f.exchange(publish), { ok: false, refusal: 'ledger-integrity' });
   f.f.restart();
   await f.check(publish, await f.exchange(publish));
+});
+
+test('the service keeps and admits the largest installable snapshot and refuses one devices cannot install', async (t) => {
+  const f = await setup(t);
+  const largest = await largestInstallable(f);
+  const over = await f.sized(largest + 1);
+  assert(c.historyInstallBytes(over.cp) > c.HISTORY_INSTALL_LIMIT);
+  const refused = await f.makeRequest('publish', over.cp);
+  assert.deepEqual(await f.exchange(refused), { ok: false, refusal: 'checkpoint-too-large' });
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  assert.equal(f.f.rows('history_checkpoint_catalog').length, 0);
+  const fits = await f.sized(largest);
+  assert(c.historyInstallBytes(fits.cp) <= c.HISTORY_INSTALL_LIMIT);
+  const publish = await f.makeRequest('publish', fits.cp);
+  await f.check(publish, await f.exchange(publish));
+  const admit = await f.makeRequest('admit', fits.admission);
+  assert.equal((await f.check(admit, await f.exchange(admit))).catalog.latest, fits.hash);
+});
+test('a proposal an earlier build left too large to install cannot be admitted and can still be discarded', async (t) => {
+  const f = await setup(t);
+  const over = await f.sized((await largestInstallable(f)) + 1);
+  await f.legacy([over], { pending: over.hash });
+  const read = await f.makeRequest('read', 'pending');
+  assert.equal((await f.check(read, await f.exchange(read))).catalog.pending, over.hash);
+  const admit = await f.makeRequest('admit', over.admission);
+  assert.deepEqual(await f.exchange(admit), { ok: false, refusal: 'checkpoint-too-large' });
+  assert.equal(f.f.rows('history_checkpoint_records')[0].admission, null);
+  const busy = await f.makeRequest('publish', (await f.sized(10)).cp);
+  assert.equal((await f.exchange(busy)).refusal, 'checkpoint-busy');
+  const discard = await f.makeRequest('discard', over.hash);
+  await f.check(discard, await f.exchange(discard));
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  const next = await f.makeRequest('publish', (await f.sized(10)).cp);
+  await f.check(next, await f.exchange(next));
 });

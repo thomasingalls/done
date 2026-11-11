@@ -9,6 +9,7 @@ import type { AutomaticHistoryStatus } from '../account/automaticHistoryMaintena
 import type { LocalRetentionStatus } from './automaticLocalRetention';
 import { copyRetentionDetail } from './localRetentionDetail';
 import type { SyncRuntime, SyncStatus, SyncLane } from './accountSyncDriver';
+import type { ReceiveHaltDetail } from './accountReceiveDriver';
 import type { WorkerChannel } from './workerChannel';
 export type NetworkLoginView = Pick<
   NetworkLogin,
@@ -61,7 +62,7 @@ const loginStates = [
 ];
 const commands = ['inspect', 'create', 'resume', 'verify', 'discard', 'prune'];
 function history(input: unknown): HistoryMaintenanceStatus {
-  fields(input, ['sequence', 'pending', 'canDiscard'], ['pruned']);
+  fields(input, ['sequence', 'pending', 'canDiscard'], ['pruned', 'tooLarge']);
   const v = input as HistoryMaintenanceStatus;
   if (
     !number(v.sequence) ||
@@ -70,7 +71,27 @@ function history(input: unknown): HistoryMaintenanceStatus {
     (Object.hasOwn(v, 'pruned') && v.pruned !== true)
   )
     throw fail();
-  return Object.freeze({ ...v });
+  if (!Object.hasOwn(v, 'tooLarge')) return Object.freeze({ ...v });
+  const t = v.tooLarge!;
+  fields(t, ['snapshot', 'needed', 'allowed']);
+  if (
+    !['new', 'saved', 'pending', 'latest'].includes(t.snapshot) ||
+    !number(t.needed) ||
+    !number(t.allowed)
+  )
+    throw fail();
+  return Object.freeze({ ...v, tooLarge: Object.freeze({ ...t }) });
+}
+function haltDetail(input: unknown): ReceiveHaltDetail | undefined {
+  try {
+    fields(input, ['cause', 'needed', 'allowed']);
+  } catch {
+    return undefined;
+  }
+  const d = input as ReceiveHaltDetail;
+  return d.cause === 'history-snapshot' && number(d.needed) && number(d.allowed)
+    ? Object.freeze({ cause: d.cause, needed: d.needed, allowed: d.allowed })
+    : undefined;
 }
 function sync(input: unknown): SyncStatus {
   fields(input, ['send', 'receive']);
@@ -78,7 +99,11 @@ function sync(input: unknown): SyncStatus {
   for (const name of ['send', 'receive'] as const) {
     const v = (input as SyncStatus)[name],
       pos = name === 'send' ? 'acceptedThrough' : 'receivedThrough';
-    fields(v, ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos]);
+    fields(
+      v,
+      ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos],
+      ['detail'],
+    );
     if (
       !['starting', 'working', 'idle', 'retrying', 'offline', 'blocked', 'closed'].includes(
         v.phase,
@@ -105,7 +130,10 @@ function sync(input: unknown): SyncStatus {
         ].includes(v.reason))
     )
       throw fail();
-    Object.assign(out, { [name]: Object.freeze({ ...v }) });
+    // Presentation only: a malformed or misplaced detail is dropped and the page falls back.
+    const { detail: raw, ...rest } = v;
+    const detail = name === 'receive' && v.reason === 'inbound-size' ? haltDetail(raw) : undefined;
+    Object.assign(out, { [name]: Object.freeze({ ...rest, ...(detail ? { detail } : {}) }) });
   }
   return Object.freeze(out);
 }

@@ -15,6 +15,8 @@ import {
   HISTORY_CHECKPOINT_LIMIT,
   HISTORY_ADMISSION_LIMIT,
   HISTORY_HEAD_LIMIT,
+  HISTORY_INSTALL_LIMIT,
+  historyInstallBytes,
   historyCheckpointHash,
   verifyHistoryCheckpoint,
   verifyHistoryCheckpointParent,
@@ -80,6 +82,10 @@ interface RecordRow {
   admission: string | null;
 }
 const no = (refusal: string) => ({ ok: false as const, refusal });
+// The service cannot open a snapshot, but its ciphertext length bounds what a device must install.
+// Devices refuse an installation past HISTORY_INSTALL_LIMIT, so such a snapshot must never become
+// pending, admitted, or the latest one a prune relies on (phase 544).
+const uninstallable = (c: HistoryCheckpoint) => historyInstallBytes(c) > HISTORY_INSTALL_LIMIT;
 const zero = EMPTY_HISTORY_CHECKPOINT;
 // A later read can observe a legitimate append while the initial snapshot is being verified.
 // Discard that attempt and reverify a fresh snapshot within the existing bounded retry loop.
@@ -467,6 +473,7 @@ export async function exchangeHistoryCheckpoint(
           if (pending) return no('checkpoint-busy');
           const checkpoint = await verifyHistoryCheckpoint(r.payload, membership);
           if (checkpoint.manifest.producer !== r.credentialId) return no('invalid-proof');
+          if (uninstallable(checkpoint)) return no('checkpoint-too-large');
           await verifyHistoryCheckpointParent(checkpoint, latest?.checkpoint ?? null);
           await verifyCuts(checkpoint);
           if (!same(checkpoint.sources, before.handoffs.sources)) return no('sources-changed');
@@ -487,6 +494,7 @@ export async function exchangeHistoryCheckpoint(
           selected = old;
         } else {
           if (next.pending !== requestedHash) return no('checkpoint-conflict');
+          if (uninstallable(old.checkpoint)) return no('checkpoint-too-large');
           const admission = await verifyHistoryCheckpointAdmission(
             r.payload,
             old.checkpoint,
@@ -526,6 +534,8 @@ export async function exchangeHistoryCheckpoint(
           !same(r.payload, { latest: catalog.latest, previous: catalog.previous })
         )
           return no('retention-boundary-changed');
+        // A device behind the pruned floor can only continue by installing the latest snapshot.
+        if (uninstallable(latest.checkpoint)) return no('checkpoint-too-large');
         for (const item of before.records) {
           if (
             !item.row ||

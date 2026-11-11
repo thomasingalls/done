@@ -391,3 +391,57 @@ it('carries a known capacity cause to the page and drops an unknown or misplaced
     captureAccountSessionState(state({ phase: 'idle', reason: 'capacity', cause: 'x' })),
   ).toThrow();
 });
+it('carries a snapshot too large to install and a named receive size halt, refusing or dropping malformed ones (phase 544)', () => {
+  const state = (sync: unknown, history?: unknown) => ({
+    login: 'remembered',
+    sync,
+    local: null,
+    automatic: history ? { phase: 'idle', reason: 'peer', history } : null,
+    devices: { remove: false, history: true, detached: false },
+  });
+  const tooLarge = { snapshot: 'latest', needed: 4_400_000, allowed: 4_194_304 };
+  const history = { sequence: 2, pending: 'none', canDiscard: false, tooLarge };
+  const kept = captureAccountSessionState(state(null, history)).automatic!.history!;
+  expect(kept).toEqual(history);
+  expect(Object.isFrozen(kept.tooLarge)).toBe(true);
+  // A history status is a command result: unlike a presentation detail, a malformed one refuses.
+  for (const bad of [
+    { ...tooLarge, snapshot: 'other' },
+    { ...tooLarge, needed: -1 },
+    { ...tooLarge, allowed: 1.5 },
+    { ...tooLarge, extra: 1 },
+    { snapshot: 'new', needed: 1 },
+    'latest',
+  ])
+    expect(() => captureAccountSessionState(state(null, { ...history, tooLarge: bad }))).toThrow();
+  const detail = { cause: 'history-snapshot', needed: 4_400_000, allowed: 4_194_304 };
+  const blocked = {
+    ...status(7),
+    receive: {
+      ...lane,
+      phase: 'blocked' as const,
+      reason: 'inbound-size' as const,
+      issueSince: 1,
+      receivedThrough: 7,
+    },
+  };
+  const named = captureAccountSessionState(
+    state({ ...blocked, receive: { ...blocked.receive, detail } }),
+  ).sync!;
+  expect(named.receive).toEqual({ ...blocked.receive, detail });
+  expect(Object.isFrozen(named.receive.detail)).toBe(true);
+  // Status without a detail, as from an older owner, is unchanged.
+  expect(captureAccountSessionState(state(blocked)).sync).toEqual(blocked);
+  // A malformed detail, or one beside another reason or on the send lane, is dropped.
+  for (const sync of [
+    { ...blocked, receive: { ...blocked.receive, detail: { ...detail, cause: 'page' } } },
+    { ...blocked, receive: { ...blocked.receive, detail: { ...detail, needed: -1 } } },
+    { ...blocked, receive: { ...blocked.receive, detail: { ...detail, more: 1 } } },
+    { ...blocked, receive: { ...blocked.receive, reason: 'integrity', detail } },
+    { ...blocked, send: { ...blocked.send, detail } },
+  ]) {
+    const { detail: _r, ...receive } = sync.receive as typeof sync.receive & { detail?: unknown };
+    const { detail: _s, ...send } = sync.send as typeof sync.send & { detail?: unknown };
+    expect(captureAccountSessionState(state(sync)).sync).toEqual({ send, receive });
+  }
+});

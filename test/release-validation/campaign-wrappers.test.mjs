@@ -2766,13 +2766,13 @@ function syncEvidence() {
   };
   return JSON.parse(JSON.stringify(r));
 }
-test('sync wrapper binds all six commands, 84 cases and inherited browser process ownership', () => {
+test('sync wrapper binds all six commands, 85 cases and inherited browser process ownership', () => {
   const graph = JSON.parse(readFileSync('docs/release-validation-graph.json')),
     m = compileManifest(process.cwd(), graph),
     [s, ...rest] = selectStages(m, 'wrapper-account-sync');
   assert.deepEqual(rest, []);
   validateStage(s);
-  assert.equal(s.expect.cases.length, 84);
+  assert.equal(s.expect.cases.length, 85);
   assert.deepEqual(
     s.expect.steps.map((s) => s.deadlineMs),
     [60000, 60000, 600000, 90000, 150000, 450000],

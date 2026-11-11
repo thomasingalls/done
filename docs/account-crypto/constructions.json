@@ -6132,13 +6132,13 @@
         },
         {
           "path": "src/crdt/historyInstall.ts",
-          "line": 30,
+          "line": 31,
           "label": "done/history-install/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/historyInstall.ts",
-          "line": 31,
+          "line": 32,
           "label": "done/history-install/v2",
           "kind": "literal"
         },

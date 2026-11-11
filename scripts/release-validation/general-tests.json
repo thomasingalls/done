@@ -3,6 +3,7 @@
   "vitest": [
     "test/acceptedRows.test.ts",
     "test/accountDriver.test.ts",
+    "test/accountHistory.test.tsx",
     "test/accountInboundCodec.test.ts",
     "test/accountLiveness.test.ts",
     "test/accountReceiveDriver.test.ts",
@@ -40,6 +41,7 @@
     "test/gestures.test.ts",
     "test/goals.test.ts",
     "test/hexFieldValidation.test.ts",
+    "test/historyInstallBound.test.ts",
     "test/historyReplay.test.ts",
     "test/historyRetirement.test.ts",
     "test/hostedRetention.test.ts",

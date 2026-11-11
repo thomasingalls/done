@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { setup } from './service-fixture.mjs';
+import { setup, largestInstallable } from './service-fixture.mjs';
 import { client as c } from './client.mjs';
 import { mutate } from '../account-successor/service-fixtures.mjs';
 import { isPrunedDecision } from '../../account-service/prunedDecision.ts';
@@ -223,4 +223,32 @@ test('revoked commit authorization refuses pruning before either ciphertext carr
     }),
   );
   assert.deepEqual(f.f.rows('delivery_decisions'), before);
+});
+
+test('pruning refuses while the latest snapshot is one an earlier build admitted too large to install', async (t) => {
+  const f = await setup(t);
+  const first = await f.sized(10);
+  const publish = await f.makeRequest('publish', first.cp);
+  await f.check(publish, await f.exchange(publish));
+  const admit = await f.makeRequest('admit', first.admission);
+  await f.check(admit, await f.exchange(admit));
+  const over = await f.sized((await largestInstallable(f)) + 100, first.cp);
+  await f.legacy([{ ...over, admitted: true }], {
+    sequence: 2,
+    latest: over.hash,
+    previous: first.hash,
+  });
+  // Devices still read it, so each can say why it cannot install it.
+  const read = await f.makeRequest('read', 'latest');
+  assert.equal((await f.check(read, await f.exchange(read))).checkpoint.manifest.sequence, 2);
+  const kept = () =>
+    JSON.stringify([
+      f.f.rows('history_checkpoint_records'),
+      f.f.rows('history_checkpoint_catalog'),
+      f.f.rows('delivery_decisions'),
+    ]);
+  const before = kept();
+  const prune = await f.makeRequest('prune', { latest: over.hash, previous: first.hash });
+  assert.deepEqual(await f.exchange(prune), { ok: false, refusal: 'checkpoint-too-large' });
+  assert.equal(kept(), before);
 });

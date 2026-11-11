@@ -4118,11 +4118,16 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
               cause instanceof HistoryInstallSizeError ||
               (cause instanceof AdmissionError && cause.cause instanceof HistoryInstallSizeError)
             ) {
+              const size = (
+                cause instanceof HistoryInstallSizeError ? cause : cause.cause
+              ) as HistoryInstallSizeError;
               const state = await api.status();
               return {
                 kind: 'blocked',
                 reason: 'inbound-size',
                 receivedThrough: state.receivedThrough,
+                // Named beside the unchanged reason; sizes only, never snapshot content.
+                detail: { cause: 'history-snapshot', needed: size.needed, allowed: size.allowed },
               };
             }
             if (

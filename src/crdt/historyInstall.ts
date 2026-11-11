@@ -22,7 +22,8 @@ import type { InboundContext, InboundLifetime } from './accountInbound';
 import type { Bytes } from './custodyCrypto';
 
 export class HistoryInstallSizeError extends Error {
-  constructor() {
+  readonly allowed = MAX_BATCH_BYTES;
+  constructor(readonly needed = 0) {
     super('History installation exceeds supported size');
   }
 }
@@ -66,7 +67,9 @@ export function encodeHistoryInstall(e: HistoryInstall): Bytes {
       parseHistoryCheckpointAdmission(e.admission),
     ]),
   );
-  if (bytes.length > MAX_BATCH_BYTES) throw new HistoryInstallSizeError();
+  // Sized as the installer would: this event plus the plaintext it derives the update from.
+  if (bytes.length > MAX_BATCH_BYTES)
+    throw new HistoryInstallSizeError(bytes.length + e.checkpoint.ct.length / 2 - 16);
   return bytes;
 }
 export function decodeHistoryInstall(bytes: Bytes): HistoryInstall {
@@ -152,7 +155,8 @@ export async function verifyHistoryInstall(
     doc = await openHistoryCheckpoint(cp, key, authority);
     update = new Uint8Array(Y.encodeStateAsUpdate(doc));
     // Keep the existing native admission bound. A larger snapshot is refused before any write.
-    if (update.length + input.length > MAX_BATCH_BYTES) throw new HistoryInstallSizeError();
+    if (update.length + input.length > MAX_BATCH_BYTES)
+      throw new HistoryInstallSizeError(update.length + input.length);
     lifetime.assertCurrent();
     return {
       update,

@@ -7,6 +7,7 @@ import type {
 } from '../src/crdt/automaticLocalRetention';
 import {
   LocalHistoryMaintenance,
+  localHistoryCapacityMessage,
   localHistoryNeedsAttention,
   useLocalHistoryStatus,
 } from '../src/ui/LocalHistoryMaintenance';
@@ -179,4 +180,18 @@ it('says which limit or condition parked maintenance, and falls back without a k
   } finally {
     await f.close();
   }
+});
+it('names an installed service snapshot that no longer fits on re-check (phase 544)', () => {
+  expect(
+    localHistoryCapacityMessage({
+      cause: 'installed-snapshot',
+      needed: 4_300_000,
+      allowed: 4_194_304,
+    }),
+  ).toBe(
+    'A service history snapshot installed on this device needs 4.1 MiB to check, and this version checks snapshots of up to 4.0 MiB. Your existing history is still in place. It will check again after new writing or sync changes this device’s history.',
+  );
+  expect(localHistoryCapacityMessage({ cause: 'installed-snapshot' })).toBe(
+    'A service history snapshot installed on this device is larger than this version checks. Your existing history is still in place. It will check again after new writing or sync changes this device’s history.',
+  );
 });

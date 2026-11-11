@@ -2,7 +2,7 @@ import { HistoryReplyRefused } from '../account/historyHttp';
 import { type AccountAccess } from '../account/accountHttp';
 /** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
 import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
-import type { ReceiveStep } from './accountReceiveDriver';
+import type { ReceiveHaltDetail, ReceiveStep } from './accountReceiveDriver';
 import { EnvelopeSizeError } from '../../account-protocol/envelope';
 import { AdmissionError } from './admissionQueue';
 import { ContentError } from './contentRecord';
@@ -48,6 +48,8 @@ export interface SyncLaneStatus {
     | null;
   readonly issueSince: number | null;
   readonly lastSuccessAt: number | null;
+  /** Only beside a halt whose step named its cause; cleared with the halt. */
+  readonly detail?: ReceiveHaltDetail;
 }
 export interface SyncStatus {
   readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
@@ -59,6 +61,7 @@ interface Lane {
   failures: number;
   due?: number | undefined;
   halt?: SyncHalt | undefined;
+  haltDetail?: ReceiveHaltDetail | undefined;
   retryReason?: 'request-expired' | 'operation-failed' | 'network-unavailable' | undefined;
   issueSince?: number;
   lastSuccessAt?: number;
@@ -160,6 +163,7 @@ export function createSyncScheduler(options: {
           : null,
       issueSince: (lane.halt ? lane.issueSince : (signInSince ?? lane.issueSince)) ?? null,
       lastSuccessAt: lane.lastSuccessAt ?? null,
+      ...(!stopped && lane.halt && lane.haltDetail ? { detail: lane.haltDetail } : {}),
       reason: stopped
         ? null
         : (lane.halt ??
@@ -348,6 +352,8 @@ export function createSyncScheduler(options: {
           lane.dirty = lane.expedite = false;
         } else if (result.kind === 'blocked') {
           lane.halt = result.reason;
+          lane.haltDetail =
+            'detail' in result && result.detail ? Object.freeze({ ...result.detail }) : undefined;
           lane.issueSince ??= clock.now();
           lane.due = undefined;
           lane.expedite = lane.dirty = false;
@@ -475,7 +481,7 @@ export function createSyncScheduler(options: {
       }
       // Only the owner calls this after installing verified membership. Other evidence halts stay closed.
       if (cause === 'retry' || (cause === 'authority' && name === 'send' && lane.halt === 'closed'))
-        lane.halt = undefined;
+        lane.halt = lane.haltDetail = undefined;
       if (cause === 'local' && name === 'send') {
         lane.dirty = true;
         if (!lane.halt && active !== name && lane.due === undefined) lane.due = clock.now() + 50;

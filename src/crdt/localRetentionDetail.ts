@@ -15,6 +15,9 @@ export const LOCAL_RETENTION_CAUSES = [
   'resume-history',
   // A pass with nothing saved to resume was cut short by routine queued work. Not a size limit.
   'interrupted',
+  // A service history snapshot installed here no longer fits the installation bound when it is
+  // re-checked (bytes; phase 544). Raised only after that record authenticated.
+  'installed-snapshot',
 ] as const;
 export type LocalRetentionCause = (typeof LOCAL_RETENTION_CAUSES)[number];
 export interface LocalRetentionDetail {

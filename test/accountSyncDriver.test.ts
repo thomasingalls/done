@@ -835,3 +835,35 @@ it('reports a successful upload only after a newly retained acceptance, not loca
     vi.useRealTimers();
   }
 });
+
+it('a named receive size halt keeps the halt, shows its sizes, and a retry clears both (phase 544)', async () => {
+  const detail = { cause: 'history-snapshot' as const, needed: 4_400_000, allowed: 4_194_304 };
+  let calls = 0;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      send: async () => ({ kind: 'idle', acceptedThrough: 0 }),
+      receive: async () =>
+        ++calls === 1
+          ? { kind: 'blocked', reason: 'inbound-size', receivedThrough: 3, detail }
+          : { kind: 'idle', receivedThrough: 3 },
+    }),
+  );
+  f.scheduler.wake('start');
+  await f.tick(0);
+  const blocked = f.scheduler.runtime.status.receive;
+  expect(blocked).toMatchObject({ phase: 'blocked', reason: 'inbound-size', detail });
+  expect(Object.isFrozen(blocked.detail)).toBe(true);
+  // Automatic wakes cannot clear it: the halt reads only its reason, as before.
+  f.scheduler.wake('online');
+  f.scheduler.wake('remote');
+  await f.tick(60000);
+  expect(calls).toBe(1);
+  expect(f.scheduler.runtime.status.receive.detail).toEqual(detail);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  expect(calls).toBe(2);
+  expect(f.scheduler.runtime.status.receive.reason).toBeNull();
+  expect('detail' in f.scheduler.runtime.status.receive).toBe(false);
+  await f.scheduler.dispose();
+});

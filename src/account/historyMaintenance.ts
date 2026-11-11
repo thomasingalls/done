@@ -6,6 +6,8 @@ import { membershipState, type VerifiedMembership } from '../../account-protocol
 import {
   HISTORY_CHECKPOINT_LIMIT,
   HISTORY_ADMISSION_LIMIT,
+  HISTORY_INSTALL_LIMIT,
+  historyInstallBytes,
   parseHistoryCheckpoint,
   parseHistoryCheckpointAdmission,
   historyCheckpointHash,
@@ -114,11 +116,33 @@ export type HistoryMaintenanceCommand =
   | 'verify'
   | 'discard'
   | 'prune';
+/** Which snapshot is larger than devices running this build can install (phase 544). */
+export type HistorySnapshotRole = 'new' | 'saved' | 'pending' | 'latest';
+export interface HistorySnapshotTooLarge {
+  snapshot: HistorySnapshotRole;
+  /** Bytes a device's installation needs, per `historyInstallBytes`. */
+  needed: number;
+  /** HISTORY_INSTALL_LIMIT. */
+  allowed: number;
+}
 export interface HistoryMaintenanceStatus {
   sequence: number;
   pending: 'none' | 'resume' | 'verify' | 'waiting' | 'stale';
   canDiscard: boolean;
   pruned?: true;
+  /** Present when a snapshot this command met could not be installed by devices running this
+   * build. Because of it, nothing was saved, published, admitted or pruned for that snapshot. */
+  tooLarge?: HistorySnapshotTooLarge;
+}
+/** Null when every device running this build can install the checkpoint. */
+export function historySnapshotTooLarge(
+  snapshot: HistorySnapshotRole,
+  checkpoint: HistoryCheckpoint,
+): HistorySnapshotTooLarge | null {
+  const needed = historyInstallBytes(checkpoint);
+  return needed > HISTORY_INSTALL_LIMIT
+    ? { snapshot, needed, allowed: HISTORY_INSTALL_LIMIT }
+    : null;
 }
 /** One serial owner operation. An unavailable/untrusted reply never erases the retained attempt. */
 export async function runHistoryMaintenance(
@@ -248,9 +272,16 @@ export async function runHistoryMaintenance(
     await acceptCatalog(page.catalog);
     return page;
   };
-  const describe = (page: HistoryCheckpointPage): HistoryMaintenanceStatus => {
+  const describe = (
+    page: HistoryCheckpointPage,
+    latest?: HistoryCheckpoint | null,
+  ): HistoryMaintenanceStatus => {
     const cp = page.checkpoint;
+    const tooLarge =
+      (cp && historySnapshotTooLarge('pending', cp)) ||
+      (latest && historySnapshotTooLarge('latest', latest));
     return {
+      ...(tooLarge ? { tooLarge } : {}),
       sequence: page.catalog.sequence,
       pending: !cp
         ? retained?.attempt || retained?.discard
@@ -276,7 +307,9 @@ export async function runHistoryMaintenance(
     if (cp.manifest.epochHead !== p.head || !same(cp.sources, page.sources))
       return { ...describe(page), pending: 'stale' as const };
     if (cp.manifest.producer === credentialId && p.certificate.members.length > 1)
-      return { sequence: page.catalog.sequence, pending: 'waiting', canDiscard: true } as const;
+      return { ...describe(page), pending: 'waiting', canDiscard: true } as const;
+    // Admission makes it the snapshot every device installs and pruning relies on.
+    if (historySnapshotTooLarge('pending', cp)) return describe(page);
     let admission = retained?.attempt?.admission;
     if (!admission) {
       admission = await owner.admit(structuredClone(cp));
@@ -297,7 +330,16 @@ export async function runHistoryMaintenance(
   };
   if (retained?.discard && command !== 'inspect') return cancel(retained.discard);
   if (command === 'resume' && retained?.attempt) {
-    const { checkpoint } = retained.attempt;
+    const { checkpoint, admission } = retained.attempt;
+    // An earlier build may have saved it. Admitting someone else's snapshot is checked in finish.
+    const tooLarge = admission ? null : historySnapshotTooLarge('saved', checkpoint);
+    if (tooLarge)
+      return {
+        sequence: retained.catalog?.sequence ?? 0,
+        pending: 'resume',
+        canDiscard: true,
+        tooLarge,
+      };
     // Fresh request identity, exact saved semantic bytes; the service also resolves historical retries.
     return finish(await exchange('publish', checkpoint));
   }
@@ -310,7 +352,7 @@ export async function runHistoryMaintenance(
     throw Error('History advanced while reading; retry against its new baseline');
   if (pending.checkpoint)
     await verifyHistoryCheckpointParent(pending.checkpoint, latest.checkpoint);
-  if (command === 'inspect') return describe(pending);
+  if (command === 'inspect') return describe(pending, latest.checkpoint);
   if (command === 'prune') {
     if (retained?.attempt || retained?.discard)
       throw Error('Finish saved history maintenance before pruning');
@@ -326,6 +368,10 @@ export async function runHistoryMaintenance(
     )
       throw Error('Pruning requires two unchanged admitted snapshots');
     await verifyHistoryCheckpointParent(latest.checkpoint, previous.checkpoint);
+    // A device behind the pruned floor can only continue by installing the latest snapshot.
+    const tooLarge = historySnapshotTooLarge('latest', latest.checkpoint);
+    if (tooLarge)
+      return { sequence: latest.catalog.sequence, pending: 'none', canDiscard: false, tooLarge };
     const page = await exchange('prune', {
       latest: latest.catalog.latest,
       previous: latest.catalog.previous,
@@ -366,6 +412,9 @@ export async function runHistoryMaintenance(
     !same(checkpoint.sources, pending.sources)
   )
     throw Error('Prepared history source changed');
+  // Refuse before anything is saved or sent: no progress, proposal or fence is left behind.
+  const tooLarge = historySnapshotTooLarge('new', checkpoint);
+  if (tooLarge) return { ...describe(pending), tooLarge };
   await save({ ...current(), attempt: { checkpoint, admission: null } });
   return finish(await exchange('publish', checkpoint));
 }

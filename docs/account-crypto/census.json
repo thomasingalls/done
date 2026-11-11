@@ -81,7 +81,7 @@
     },
     {
       "path": "account-protocol/historyCheckpoint.ts",
-      "sha256": "3faeddc6131064a109d613d49f629b5471e08cc46a9dbafd3765a5b01ee98cf3"
+      "sha256": "3caf7e63b1a4abf2b4c58facc5c083995d68660bd5f7724daf54ac88897c9eb0"
     },
     {
       "path": "account-protocol/historyExchange.ts",
@@ -309,7 +309,7 @@
     },
     {
       "path": "account-service/historyCheckpoint.ts",
-      "sha256": "65e5306bdf57e592b9546b679b08e19f01a3204347d2a3ffbdcd6258e375df89"
+      "sha256": "c708f50d44a6031562103b735dc12fd267f4d6ce5380b50e08d1cadd04d610f7"
     },
     {
       "path": "account-service/historySources.ts",
@@ -609,7 +609,7 @@
     },
     {
       "path": "src/account/historyMaintenance.ts",
-      "sha256": "9ff10bef78498eb8175bc5a4aa239e118e0e38f0b1314e767b36054742623333"
+      "sha256": "c58e9e7de21bd1fc9367a08d15bb5db303d57c5cff0e2c9ca5578e1e0d012dc6"
     },
     {
       "path": "src/account/historyReadRetry.ts",
@@ -833,11 +833,11 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "27f8206d5dbea1ca43cbe7a74e15109bf5fffe795be2f14bf573a5535f060515"
+      "sha256": "870442e191e74ace2e3a700c61c0021084f266f34de9aeff3267376326fed6e3"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
-      "sha256": "122943e31783821655bfaf99008d22a94f26304e55381cace85871a309198efd"
+      "sha256": "98598a612fc4ddafd59ff05c8c5a4bd10e5a1832bc088e421430708ec3e32fe6"
     },
     {
       "path": "src/crdt/accountRotation.ts",
@@ -845,7 +845,7 @@
     },
     {
       "path": "src/crdt/accountSessionBridge.ts",
-      "sha256": "6373ddd013537a15c7ab5558c2364ea9aeb2298c568774baf772efc883606638"
+      "sha256": "3c6b24b2f3d6bcc7cc87fa9c4582a3a604d73bca02634140c5f71fe44b738a48"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -861,7 +861,7 @@
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
-      "sha256": "3b445550ff44fd8577ba1de8b8f2a022e2bfee96f86fb89dfa4986cfa4dac3c6"
+      "sha256": "7b3ddd86cb68117a899eb914c2af667004492b6ee23681b378df0224ddf71d28"
     },
     {
       "path": "src/crdt/accountSyncState.ts",
@@ -1081,7 +1081,7 @@
     },
     {
       "path": "src/crdt/historyCheckpoint.ts",
-      "sha256": "6e75160c2f4f01a867f432822042ad0da9d71b942f707e636e900f6ff20088a0"
+      "sha256": "aa898ec8fcd3ec93d1c4258575e48f0270318fc13d78eb256890b623a836f398"
     },
     {
       "path": "src/crdt/historyCustody.ts",
@@ -1089,7 +1089,7 @@
     },
     {
       "path": "src/crdt/historyInstall.ts",
-      "sha256": "e43091dee57c97f9f40f2d161b9275eedbbf508ec4835ee8c1c4a1a61189ac01"
+      "sha256": "12ebc3aae160e256469e690d9d77628660f5a30ab56c0059cbcbf8863b73ca22"
     },
     {
       "path": "src/crdt/historyOwner.ts",
@@ -1277,11 +1277,11 @@
     },
     {
       "path": "src/crdt/localRetentionDetail.ts",
-      "sha256": "22e787188b7508972489a30708726b13f4f9c7e7147f8a939fbeb26d92b38eb3"
+      "sha256": "897bb07c82433c08b95d9f5093348960286bba6d8a2c380e038d46ae58deaf60"
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "4958918fa85d32bd5c2e8f8cdeef64344cbc3265a126d24b560ebbf2715ffc92"
+      "sha256": "412cef06a988feec6503f39389c21a0369695c07bc52e81e4b73d7a43a2f6cb2"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -1853,7 +1853,7 @@
     },
     {
       "path": "src/ui/AccountHistory.tsx",
-      "sha256": "01eefca265969192cffd6d8d3341f86afb9679aa1483a12d4c88eb7a56ee9cf5"
+      "sha256": "687b0d8a26317130f5703d3ea5a7627435919303a423ef4f74d66c23ce8e6fc7"
     },
     {
       "path": "src/ui/AccountIdentity.tsx",
@@ -1941,7 +1941,7 @@
     },
     {
       "path": "src/ui/LocalHistoryMaintenance.tsx",
-      "sha256": "a050fbe3df84499e18874368d59328ed136539d986457eeec39da71674bc2796"
+      "sha256": "0b8964a96d6e062583a41a81458fbb21dee894210b578cc0c51d8ca4685972a2"
     },
     {
       "path": "src/ui/LocalRecovery.tsx",
@@ -1973,7 +1973,7 @@
     },
     {
       "path": "src/ui/SyncNotice.tsx",
-      "sha256": "1b2b6105d819e2cc68ebf424e4b3fa1b026097cf44db641d610f8528f3af252e"
+      "sha256": "864d25586d4f0bcd65738a4cb986e030be7871d4335358cb99b8a139710e94d2"
     },
     {
       "path": "src/ui/UnfiledPanel.tsx",
@@ -3211,7 +3211,7 @@
       "sites": [
         {
           "path": "src/crdt/historyInstall.ts",
-          "line": 30
+          "line": 31
         }
       ]
     },
@@ -3221,7 +3221,7 @@
       "sites": [
         {
           "path": "src/crdt/historyInstall.ts",
-          "line": 31
+          "line": 32
         }
       ]
     },

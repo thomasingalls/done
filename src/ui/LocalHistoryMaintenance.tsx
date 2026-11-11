@@ -54,6 +54,10 @@ export function localHistoryCapacityMessage(detail: LocalRetentionDetail | undef
         return allowed !== undefined
           ? `Saved history on this device is too large to mark a point where maintenance can resume (more than ${mib(allowed)}).`
           : 'Saved history on this device is too large to mark a point where maintenance can resume.';
+      case 'installed-snapshot':
+        return sized
+          ? `A service history snapshot installed on this device needs ${mib(needed)} to check, and this version checks snapshots of up to ${mib(allowed)}.`
+          : 'A service history snapshot installed on this device is larger than this version checks.';
       case 'interrupted':
         return undefined;
       default:
