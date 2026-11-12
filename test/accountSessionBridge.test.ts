@@ -516,3 +516,40 @@ it('carries why the last sign-in attempt failed to the page, and refuses an unkn
   expect(login.getProblem!()).toBeUndefined();
   expect(failed).not.toHaveBeenCalled();
 });
+it('carries why a lane got no result beside network-unavailable, and drops it anywhere else (phase 552)', () => {
+  const lane = {
+    phase: 'retrying',
+    failures: 1,
+    nextAttemptAt: 1000,
+    reason: 'network-unavailable',
+    issueSince: 0,
+    lastSuccessAt: null,
+  };
+  const state = (send: object, receive: object = {}) => ({
+    login: 'remembered',
+    sync: {
+      send: { ...lane, acceptedThrough: 1, ...send },
+      receive: { ...lane, receivedThrough: 1, ...receive },
+    },
+    local: null,
+    automatic: null,
+    devices: { remove: false, history: false, detached: false },
+  });
+  const kept = captureAccountSessionState(
+    state({ refusal: 'removal-pending' }, { refusal: 'history-capacity' }),
+  ).sync!;
+  expect(kept.send.refusal).toBe('removal-pending');
+  expect(kept.receive.refusal).toBe('history-capacity');
+  expect(Object.isFrozen(kept.send)).toBe(true);
+  // Unknown or malformed codes, and a code beside any other reason, are dropped; the status stays.
+  for (const [send, why] of [
+    [{ refusal: 'forged-reason' }, 'unknown code'],
+    [{ refusal: 7 }, 'malformed code'],
+    [{ refusal: 'capacity', reason: 'operation-failed' }, 'beside another reason'],
+    [{ refusal: 'capacity', reason: null, phase: 'idle' }, 'beside no reason'],
+  ] as const) {
+    const s = captureAccountSessionState(state(send)).sync!;
+    expect('refusal' in s.send, why).toBe(false);
+    expect(s.send.reason, why).toBe('reason' in send ? send.reason : 'network-unavailable');
+  }
+});

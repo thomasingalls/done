@@ -1,0 +1,46 @@
+M1 the service hint is not named: exit 1; ℹ pass 2; ℹ fail 5
+    ✖ a ledger the service cannot trust and a store it cannot read are named, for submissions and reads (62.990334ms)
+    ✖ a read the service cannot decode is named as a request from another version; one past the ledger as out of order (47.729708ms)
+    ✖ a submission from a device being removed is named, and so is the grant from before the fence (432.634167ms)
+    ✖ controls: a forged or unknown hint chooses only a sentence; nothing is recorded or returned (43.1105ms)
+    ✖ the service’s own refusals of a submission are named: out of order, future epoch, too large, invalid, unissued parent, parent required (109.461166ms)
+M2 an unknown reason in the service envelope reads as no answer: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ controls: a forged or unknown hint chooses only a sentence; nothing is recorded or returned (53.837625ms)
+M3 a timeout reads as no reply: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ controls: no reply, a timeout and a gateway page say check your connection (41.102375ms)
+M4 the login reason is not named: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ sign-in and grant refusals are named; a passkey request is left to the sign-in line (6064.340291ms)
+M5 the grant reason is not named: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ sign-in and grant refusals are named; a passkey request is left to the sign-in line (38.510334ms)
+M6 a malformed-request reply reads as no answer: exit 0; ℹ pass 7; ℹ fail 0
+M7 an answer too large to use reads as no answer: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ controls: a forged or unknown hint chooses only a sentence; nothing is recorded or returned (45.059417ms)
+M8 a passkey request is explained again beside the sign-in line: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ sign-in and grant refusals are named; a passkey request is left to the sign-in line (6112.447084ms)
+M9 the scheduler drops the explanation: exit 1; Tests  1 failed | 1 passed (2)
+    × every explanation leaves next attempts, failure counts, phases, reasons and timers as phase 551 had them 9ms
+M10 the explanation is shown beside any reason: exit 0; Tests  2 passed (2)
+M11 a refusal changes the backoff (no failure counted): exit 1; Tests  1 failed | 1 passed (2)
+    × every explanation leaves next attempts, failure counts, phases, reasons and timers as phase 551 had them 9ms
+M12 a refusal halts the lane: exit 1; Tests  1 failed | 1 passed (2)
+    × every explanation leaves next attempts, failure counts, phases, reasons and timers as phase 551 had them 10ms
+M13 the bridge drops the explanation: exit 1; Tests  1 failed | 14 passed (15)
+    × carries why a lane got no result beside network-unavailable, and drops it anywhere else (phase 552) 3ms
+M14 the bridge keeps an explanation beside another reason: exit 1; Tests  1 failed | 14 passed (15)
+    × carries why a lane got no result beside network-unavailable, and drops it anywhere else (phase 552) 3ms
+M15 the notice shows no sentence for it: exit 1; Tests  1 failed | 5 passed (6)
+    × says why a lane got no result, beside the unchanged reason, and names it in the reason line (phase 552) 5ms
+M16 the reason line keeps network-unavailable: exit 1; Tests  1 failed | 5 passed (6)
+    × says why a lane got no result, beside the unchanged reason, and names it in the reason line (phase 552) 7ms
+M17 no answer stops saying check your connection: exit 1; Tests  1 failed | 5 passed (6)
+    × says why a lane got no result, beside the unchanged reason, and names it in the reason line (phase 552) 5ms
+M18 the step note gives no answer priority: exit 1; Tests  1 failed | 1 passed (2)
+    × within one step, the service answering outranks no answer, and the first of each stands 3ms
+M19 the composition does not attach the explanation: exit 1; ℹ pass 0; ℹ fail 2
+    ✖ the composed receiver names a refused read and recovers (phase 552) (64293.460375ms)
+    ✖ the composed sender names a refused submission and a lost one, then recovers (phase 552) (64565.629292ms)
+M20 the sender passes no explanation to its submissions: exit 1; ℹ pass 1; ℹ fail 1
+    ✖ the composed sender names a refused submission and a lost one, then recovers (phase 552) (64433.35725ms)
+M21 the receiver notes no explanation for its reads: exit 1; ℹ pass 1; ℹ fail 1
+    ✖ the composed receiver names a refused read and recovers (phase 552) (64086.82425ms)
+exit 0

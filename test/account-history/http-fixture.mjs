@@ -117,6 +117,14 @@ export async function historyHttp(t, x) {
   };
   const scoped = new c.ScopedTransport(x.authority.pin, stop.signal, send);
   return {
+    /** The page's scoped access for one device, as the sync lanes use it (phase 552). */
+    access(credentialId, signer) {
+      return scoped.bind({
+        login,
+        scope: { kind: 'workspace', workspaceId: x.workspace, credentialId },
+        sign: signer,
+      });
+    },
     connect(membership, credentialId, signer, signal = new AbortController().signal) {
       return c.createHistoryTransport(
         membership,

@@ -1,0 +1,68 @@
+# Phase 552 mutation controls. Each mutation removes one piece of the change, in the worktree,
+# runs the tests that guard it, and restores the file. The named tests must fail under it.
+import subprocess, os
+T = '<worktree>'
+DEL = ['node', '--test', 'test/account-history/delivery-refusals.test.mjs']
+NAT = ['node', '--test', '--test-concurrency=1', 'test/account-sync/refusal-native.test.mjs']
+VIT = lambda *f: ['node', 'node_modules/vitest/vitest.mjs', 'run', *f]
+M = [
+ ('M1 the service hint is not named', 'src/account/privateDeliveryHttp.ts',
+  "why(reason ?? (hintEnvelope(parsed) ? 'refused' : 'unreachable'));", "why('unreachable');", DEL),
+ ('M2 an unknown reason in the service envelope reads as no answer', 'src/account/privateDeliveryHttp.ts',
+  "  Object.keys(input).sort().join() === 'kind,reason,v' &&", "  false &&", DEL),
+ ('M3 a timeout reads as no reply', 'src/account/privateDeliveryHttp.ts',
+  "  if (cause instanceof Error && cause.name === 'TimeoutError') return 'timeout';\n", "", DEL),
+ ('M4 the login reason is not named', 'src/account/privateDeliveryHttp.ts',
+  "  if (cause instanceof NetworkLoginUnavailable)", "  if (cause instanceof NetworkLoginUnavailable && false)", DEL),
+ ('M5 the grant reason is not named', 'src/account/privateDeliveryHttp.ts',
+  "  if (cause instanceof GrantDenied)", "  if (cause instanceof GrantDenied && false)", DEL),
+ ('M6 a malformed-request reply reads as no answer', 'src/account/privateDeliveryHttp.ts',
+  "          : explain && (await malformedRefusal(response, stopped))", "          : false && explain && (await malformedRefusal(response, stopped))", DEL),
+ ('M7 an answer too large to use reads as no answer', 'src/account/privateDeliveryHttp.ts',
+  "          why(hint ? 'unreachable' : 'unusable');", "          why('unreachable');", DEL),
+ ('M8 a passkey request is explained again beside the sign-in line', 'src/account/privateDeliveryHttp.ts',
+  "  if (cause instanceof NetworkSignInRequired) return undefined;", "  if (cause instanceof NetworkSignInRequired) return 'unreachable';", DEL),
+ ('M9 the scheduler drops the explanation', 'src/crdt/accountSyncDriver.ts',
+  "          lane.refusal = result.kind === 'unknown' ? result.refusal : undefined;", "          lane.refusal = undefined;", VIT('test/syncRefusal.test.ts')),
+ ('M10 the explanation is shown beside any reason', 'src/crdt/accountSyncDriver.ts',
+  "      ...(reason === 'network-unavailable' && lane.refusal ? { refusal: lane.refusal } : {}),", "      ...(lane.refusal ? { refusal: lane.refusal } : {}),", VIT('test/syncRefusal.test.ts')),
+ ('M11 a refusal changes the backoff (no failure counted)', 'src/crdt/accountSyncDriver.ts',
+  "          lane.failures = retryable ? Math.min(lane.failures + 1, 6) : 0;", "          lane.failures = retryable && !result.refusal ? Math.min(lane.failures + 1, 6) : 0;", VIT('test/syncRefusal.test.ts')),
+ ('M12 a refusal halts the lane', 'src/crdt/accountSyncDriver.ts',
+  "          lane.refusal = result.kind === 'unknown' ? result.refusal : undefined;", "          lane.refusal = result.kind === 'unknown' ? result.refusal : undefined;\n          if (lane.refusal === 'removal-pending') lane.halt = 'closed';", VIT('test/syncRefusal.test.ts')),
+ ('M13 the bridge drops the explanation', 'src/crdt/accountSessionBridge.ts',
+  "        ...(refusal ? { refusal } : {}),", "", VIT('test/accountSessionBridge.test.ts')),
+ ('M14 the bridge keeps an explanation beside another reason', 'src/crdt/accountSessionBridge.ts',
+  "    const refusal = v.reason === 'network-unavailable' && isSyncRefusal(why) ? why : undefined;", "    const refusal = isSyncRefusal(why) ? why : undefined;", VIT('test/accountSessionBridge.test.ts')),
+ ('M15 the notice shows no sentence for it', 'src/ui/SyncNotice.tsx',
+  "            {refused && <p className=\"menu-note\">{refused}</p>}", "", VIT('test/syncNotice.test.tsx')),
+ ('M16 the reason line keeps network-unavailable', 'src/ui/SyncNotice.tsx',
+  "                  {name}:{lane.refusal ?? lane.reason}", "                  {name}:{lane.reason}", VIT('test/syncNotice.test.tsx')),
+ ('M17 no answer stops saying check your connection', 'src/ui/syncRefusalMessages.ts',
+  "  unreachable: `This device could not reach the account service. Check your connection. ${RETRY}`,", "  unreachable: `This device could not reach the account service. ${RETRY}`,", VIT('test/syncNotice.test.tsx')),
+ ('M18 the step note gives no answer priority', 'src/account/syncRefusal.ts',
+  "      if (!noted || (NO_ANSWER.has(noted) && !NO_ANSWER.has(refusal))) noted = refusal;", "      if (!noted) noted = refusal;", VIT('test/syncRefusal.test.ts')),
+ ('M19 the composition does not attach the explanation', 'src/crdt/accountReceive.ts',
+  "        return result.kind === 'unknown' && refusal ? { ...result, refusal } : result;", "        return refusal ? result : result;", NAT),
+ ('M20 the sender passes no explanation to its submissions', 'src/crdt/accountReceive.ts',
+  "      explain: laneRefusals.send.note,\n", "", NAT),
+ ('M21 the receiver notes no explanation for its reads', 'src/crdt/accountReceive.ts',
+  "        for (const refusal of explained.slice(0, attempted)) laneRefusals.receive.note(refusal);\n", "", NAT),
+]
+for name, f, a, b, cmd in M:
+    p = os.path.join(T, f); s = open(p).read()
+    assert s.count(a) == 1, (name, a)
+    open(p, 'w').write(s.replace(a, b))
+    try:
+        r = subprocess.run(cmd, cwd=T, capture_output=True, text=True, timeout=900)
+        out = r.stdout + r.stderr
+        if cmd[1] == '--test':
+            failed = sorted({l.strip() for l in out.splitlines() if l.startswith('✖ ') and 'failing tests' not in l})
+            summary = [l.strip() for l in out.splitlines() if l.startswith('ℹ fail') or l.startswith('ℹ pass')]
+        else:
+            failed = [l.strip() for l in out.splitlines() if l.strip().startswith('×')]
+            summary = [l.strip() for l in out.splitlines() if l.strip().startswith('Tests ')]
+        print(f'{name}: exit {r.returncode}; {"; ".join(summary[-2:]) if summary else "?"}', flush=True)
+        for l in failed: print('   ', l[:170], flush=True)
+    finally:
+        open(p, 'w').write(s)

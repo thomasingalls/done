@@ -21,6 +21,7 @@ import {
   privateDeliveryPost,
   recordPrivateTransportDiagnostic,
 } from '../account/privateDeliveryHttp';
+import type { DeliveryRefusal } from '../account/syncRefusal';
 import { networkRoute, encodeSpoolEntry, type SpoolEntry } from './spoolRecord';
 /** Internal persistence operations attached to the spool's existing exclusive task queue. */
 import { signSubmission } from '../../account-protocol/submission';
@@ -49,6 +50,8 @@ import type { prepareAccountCustody } from './custody';
 type Owner = ReturnType<typeof prepareAccountCustody>;
 export interface DeliveryContext {
   access?: AccountAccess;
+  /** Phase 552: why a submit or read got no result, for the sync notice only. */
+  explain?(refusal: DeliveryRefusal): void;
   authority(): DecisionAuthority;
   /** Internal owner census; v8 stays strict, v9 accounts for the complete receive union. */
   inspect?: typeof inspectDelivery;
@@ -95,6 +98,7 @@ async function postSubmission(
   token: AccountAccess,
   body: Bytes,
   signal: AbortSignal,
+  explain?: (refusal: DeliveryRefusal) => void,
 ) {
   let oversized = false;
   const response = await privateDeliveryPost(
@@ -108,6 +112,10 @@ async function postSubmission(
       recordPrivateTransportDiagnostic(event);
       if (event.code === 'envelope-size') oversized = true;
     },
+    false,
+    undefined,
+    undefined,
+    explain,
   );
   // Unsigned observation halts automatic retry only; it cannot close, replace or skip a position.
   if (oversized) throw new EnvelopeSizeError();
@@ -309,6 +317,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
                 context.access ?? operatorToken,
                 payload,
                 network.signal,
+                context.explain,
               );
         });
         if (!answer) return { kind: 'unknown' as const, recorded: false };
@@ -446,6 +455,7 @@ export function createDeliveryOperations(context: DeliveryContext) {
                     context.access ?? operatorToken,
                     encodeSubmit(context.authority().workspace, bytes),
                     task.signal,
+                    context.explain,
                   ),
             );
             await context.assertCurrent(task);
@@ -497,6 +507,11 @@ export function createDeliveryOperations(context: DeliveryContext) {
               query,
               READ_PAGE_LIMIT,
               task.signal,
+              undefined,
+              false,
+              undefined,
+              undefined,
+              context.explain,
             ),
           ),
         );

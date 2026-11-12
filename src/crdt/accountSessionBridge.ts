@@ -8,6 +8,7 @@ import type {
 import type { AutomaticHistoryStatus } from '../account/automaticHistoryMaintenance';
 import type { LocalRetentionStatus } from './automaticLocalRetention';
 import { copyRetentionDetail } from './localRetentionDetail';
+import { isSyncRefusal } from '../account/syncRefusal';
 import type { SyncRuntime, SyncStatus, SyncLane } from './accountSyncDriver';
 import type { ReceiveHaltDetail } from './accountReceiveDriver';
 import type { WorkerChannel } from './workerChannel';
@@ -130,7 +131,7 @@ function sync(input: unknown): SyncStatus {
     fields(
       v,
       ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos],
-      ['detail'],
+      ['detail', 'refusal'],
     );
     if (
       !['starting', 'working', 'idle', 'retrying', 'offline', 'blocked', 'closed'].includes(
@@ -161,9 +162,17 @@ function sync(input: unknown): SyncStatus {
     )
       throw fail();
     // Presentation only: a malformed or misplaced detail is dropped and the page falls back.
-    const { detail: raw, ...rest } = v;
+    const { detail: raw, refusal: why, ...rest } = v;
     const detail = name === 'receive' && v.reason === 'inbound-size' ? haltDetail(raw) : undefined;
-    Object.assign(out, { [name]: Object.freeze({ ...rest, ...(detail ? { detail } : {}) }) });
+    // Phase 552, the same rule: only beside network-unavailable, and only a known code.
+    const refusal = v.reason === 'network-unavailable' && isSyncRefusal(why) ? why : undefined;
+    Object.assign(out, {
+      [name]: Object.freeze({
+        ...rest,
+        ...(detail ? { detail } : {}),
+        ...(refusal ? { refusal } : {}),
+      }),
+    });
   }
   return Object.freeze(out);
 }

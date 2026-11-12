@@ -605,7 +605,11 @@
     },
     {
       "path": "src/account/historyFailure.ts",
-      "sha256": "be7db70a42cbac91d309a33507ed44ab4b39cc80b36a825176800fb85f6991f0"
+      "sha256": "414bfc795c73cd77b90a0d0d70b48c107b40fa9cddbe4f944b11f7600119ab46"
+    },
+    {
+      "path": "src/account/historyFailureCodes.ts",
+      "sha256": "1f0bd7a5d35bd0e51942fae49badfde5f646885f83fd59526453879c12b1b4c0"
     },
     {
       "path": "src/account/historyHttp.ts",
@@ -689,7 +693,7 @@
     },
     {
       "path": "src/account/privateDeliveryHttp.ts",
-      "sha256": "a9d3e25464123357a3af42d8ca552ba78eab50ffedbf4b34278a850c405d9e21"
+      "sha256": "56102dfb06bfca7b48ae7ffabb5515aba84a89bfa2116745db0ec44a2d2c6d2e"
     },
     {
       "path": "src/account/privateDiscoveryHttp.ts",
@@ -764,6 +768,10 @@
       "sha256": "501e7da1c7c3a3bc2d2b1c7f91589d35a4d3f66fd03ee6ee4e6cbedde78cd1a6"
     },
     {
+      "path": "src/account/syncRefusal.ts",
+      "sha256": "ebe1c392272f9d045f8462866a4256e94b74f1fecadb21df391064293ac2db91"
+    },
+    {
       "path": "src/appUpdate.ts",
       "sha256": "7d245fe623a2ccc8b5d5c4b63b7180e35a6d7c4d420fe885c513b3c2e11afd89"
     },
@@ -793,7 +801,7 @@
     },
     {
       "path": "src/crdt/accountDelivery.ts",
-      "sha256": "638d9d134846692d46390e7512dd8124eed91a4f6baf64dfa73f8563bf70c521"
+      "sha256": "36070a9c487c32d33b215f77189f52537263b11847b47b86ef31bad27667f64e"
     },
     {
       "path": "src/crdt/accountDriver.ts",
@@ -841,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "3753f464acf1b4d9123491a676a47a0ab67b09771374bd0b9bce2dd67d28b45f"
+      "sha256": "21d89266032911eba176d814c2a6144d7d5183a20dc36496a6c4b7953dc28b45"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -853,7 +861,7 @@
     },
     {
       "path": "src/crdt/accountSessionBridge.ts",
-      "sha256": "ba815a3ec413eecb198b4fa41f9ce4e9abd86da8fb745a3884b3b4820deebf84"
+      "sha256": "77af5ef58b148739b19218f5fa4d605e7e026c08f39ce1cd2b471d478b13f305"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -869,7 +877,7 @@
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
-      "sha256": "7cf4c558d7b7f0e0b9211bbcc316ad503415990a94a55add2dfc8726fd811a45"
+      "sha256": "7a8c1bce8b42249105ab421b9e448b82e74cad4f71ca9fe4872bc39b27141666"
     },
     {
       "path": "src/crdt/accountSyncState.ts",
@@ -1993,7 +2001,7 @@
     },
     {
       "path": "src/ui/SyncNotice.tsx",
-      "sha256": "0888daddd3cf8e1d5e476212d3f467222b4b76f369205b6e845611ad4f84be48"
+      "sha256": "eb712829185d7655d4ef6f6d5ec50c595af718406c31e8349d42b49a0639ecdc"
     },
     {
       "path": "src/ui/UnfiledPanel.tsx",
@@ -2062,6 +2070,10 @@
     {
       "path": "src/ui/renewableCeremony.ts",
       "sha256": "e3176bd19a0f71fb0bb685cbbdfdaf4ecec82ee7b68ab6dbcb83e152dc5e567f"
+    },
+    {
+      "path": "src/ui/syncRefusalMessages.ts",
+      "sha256": "0640703686bb546adbf25a690b80f89fc9a34c630f6ec5fe7139dcc476de76ee"
     },
     {
       "path": "src/ui/useBreakpoint.ts",
@@ -2273,7 +2285,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 967
+          "line": 973
         }
       ]
     },

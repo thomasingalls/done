@@ -87,8 +87,8 @@ The operator wants it: "the current flow where you have to click a lot of button
 waiting just doesn't cut it." It exists behind the build flag `VITE_ACCOUNT_HISTORY_AUTO`, off in
 production. Pruning the log does not shrink the document; see compaction below.
 
-- **AUTO-HIST-STAGES — a staged path.** Stage 0, refusal messages (history maintenance and
-  sign-in done in phase 551; sync lanes next) and one status line. Stage 1,
+- **AUTO-HIST-STAGES — a staged path.** Stage 0, refusal messages (done: history maintenance and
+  sign-in in phase 551, the send and receive lanes in phase 552) and one status line. Stage 1,
   manual-flow correctness (phases 546 and 547, the scoped service cache wipe). Stage 2, automatic
   create and verify triggered by positions accepted since the latest snapshot, provisionally 1,024,
   not by local records and an hourly clock. Stage 3, automatic prune once per snapshot by the

@@ -2,6 +2,7 @@ import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { SyncLane, SyncLaneStatus, SyncRuntime } from '../crdt/accountSyncDriver';
 import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 import { LOGIN_PROBLEM_MESSAGES } from './NetworkLoginNotice';
+import { syncRefusalMessage } from './syncRefusalMessages';
 
 const noLoginSubscription = () => () => {};
 const noLoginSnapshot = () => undefined;
@@ -90,6 +91,8 @@ export function SyncNotice({
       {(details ? lanes : affected).map((name) => {
         const lane = status[name];
         const failed = lane.issueSince !== null && lane.reason !== 'local-storage';
+        // Phase 552: why the last attempt got no result, beside the unchanged reason.
+        const refused = lane.refusal ? syncRefusalMessage(lane.refusal) : undefined;
         return (
           <div key={name}>
             <p>
@@ -103,6 +106,7 @@ export function SyncNotice({
             {details && receiveHaltMessage(lane) && (
               <p className="menu-note">{receiveHaltMessage(lane)}</p>
             )}
+            {refused && <p className="menu-note">{refused}</p>}
             <p className="menu-note">
               {name === 'send' ? 'Last accepted upload' : 'Last successful receive check'}:{' '}
               {time(lane.lastSuccessAt)}
@@ -118,7 +122,7 @@ export function SyncNotice({
               <p className="menu-note">
                 Reason:{' '}
                 <code>
-                  {name}:{lane.reason}
+                  {name}:{lane.refusal ?? lane.reason}
                 </code>
               </p>
             )}

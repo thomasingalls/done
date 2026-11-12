@@ -1,0 +1,20 @@
+Phase 552 second base-tree run: the two cases added after the first run, same base sources.
+
+=== vitest run test/syncRefusal.test.ts (base sources)
+   × every explanation leaves next attempts, failure counts, phases, reasons and timers as phase 551 had them 7ms
+   × a halt, the sign-in gate or local storage shown instead hides the explanation, which returns with the reason 2ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: unreachable send 1: expected null to be 'unreachable' // Object.is equality
+- Expected:
++ Received:
+AssertionError: expected { Object (phase, failures, ...) } to match object { reason: 'network-unavailable', …(1) }
+- Expected
++ Received
+      Tests  2 failed | 1 passed (3)
+=== node --test --test-name-pattern='cannot decode' delivery-refusals (base sources)
+✖ a read the service cannot decode is named as a request from another version; one past the ledger as out of order, one past the route limit as malformed (103.079042ms)
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+    actual: undefined,
+    expected: 'invalid-request',

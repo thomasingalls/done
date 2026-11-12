@@ -1,0 +1,146 @@
+{
+ "phase": 552,
+ "date": "2026-11-12",
+ "base": "51779e97d",
+ "requested": "coordinating session, 2026-11-12: refusal messages on the send and receive lanes; change what is said, not what is done",
+ "operatorAsk": "2026-11-11: a message should help a person act; 'check your connection' is wrong when the service answered",
+ "amends": {},
+ "unchanged": [
+  "retry timing, backoff, failure counts, expedite, halts, holds, poll deferral and the standing conditions (phases 539, 540, 546, 550)",
+  "the lane reason itself (network-unavailable stays); the code travels beside it",
+  "no service change, no service logging, no stored format, wire message, route or limit"
+ ],
+ "sourceSha256": {
+  "src/account/historyFailure.ts": "414bfc795c73cd77b90a0d0d70b48c107b40fa9cddbe4f944b11f7600119ab46",
+  "src/account/historyFailureCodes.ts": "1f0bd7a5d35bd0e51942fae49badfde5f646885f83fd59526453879c12b1b4c0",
+  "src/account/privateDeliveryHttp.ts": "56102dfb06bfca7b48ae7ffabb5515aba84a89bfa2116745db0ec44a2d2c6d2e",
+  "src/account/syncRefusal.ts": "ebe1c392272f9d045f8462866a4256e94b74f1fecadb21df391064293ac2db91",
+  "src/crdt/accountDelivery.ts": "36070a9c487c32d33b215f77189f52537263b11847b47b86ef31bad27667f64e",
+  "src/crdt/accountReceive.ts": "21d89266032911eba176d814c2a6144d7d5183a20dc36496a6c4b7953dc28b45",
+  "src/crdt/accountSessionBridge.ts": "77af5ef58b148739b19218f5fa4d605e7e026c08f39ce1cd2b471d478b13f305",
+  "src/crdt/accountSyncDriver.ts": "7a8c1bce8b42249105ab421b9e448b82e74cad4f71ca9fe4872bc39b27141666",
+  "src/ui/SyncNotice.tsx": "eb712829185d7655d4ef6f6d5ec50c595af718406c31e8349d42b49a0639ecdc",
+  "src/ui/syncRefusalMessages.ts": "0640703686bb546adbf25a690b80f89fc9a34c630f6ec5fe7139dcc476de76ee"
+ },
+ "codes": {
+  "delivery": 19,
+  "receiveHistory": "phase 551 codes, by meaning"
+ },
+ "scheduleControl": {
+  "test": "test/syncRefusal.test.ts",
+  "moments": 46,
+  "expected": "recorded from the phase 551 scheduler (schedule-phase551.json, schedule-record.test.ts.txt)",
+  "runs": "no explanation, each of 19 codes, 3 history codes, one forged code: all identical to phase 551"
+ },
+ "tests": {
+  "new": {
+   "test/account-history/delivery-refusals.test.mjs": 7,
+   "test/account-sync/refusal-native.test.mjs": 2,
+   "test/syncRefusal.test.ts": 3,
+   "test/syncNotice.test.tsx": 1,
+   "test/accountSessionBridge.test.ts": 1
+  },
+  "fixtures": [
+   "test/account-history/http-fixture.mjs (access())",
+   "test/account-history/client-entry.ts (exports)",
+   "test/account-sync/scheduler-fixture.ts (optional refusal on finish)",
+   "test/syncRefusalSchedule.ts (new helper)"
+  ],
+  "producedInProcess": [
+   "out-of-order (submit, read)",
+   "unsupported-epoch",
+   "envelope-size",
+   "invalid-request (submit, read, 413)",
+   "unissued-parent",
+   "parent-required",
+   "ledger-integrity (submit, read)",
+   "storage-unavailable",
+   "removal-pending",
+   "authority-changed",
+   "access-refused",
+   "capacity"
+  ],
+  "forgedOnly": [
+   "unavailable",
+   "state-changed",
+   "refused",
+   "unusable"
+  ]
+ },
+ "baseTree": {
+  "transport": "7 of 7 fail",
+  "browser": "2 of 2 fail",
+  "vitest": "3 new fail, 19 existing pass (schedule control fails only on display; trace matches)",
+  "secondRun": "the halt/gate case and the 413 assertion, added later, fail too"
+ },
+ "mutationControls": {
+  "applied": 21,
+  "detected": 21,
+  "firstRunSurvivors": [
+   "M6 (read got a 409 hint, not a 400)",
+   "M10"
+  ],
+  "fix": "413 assertion and halt/gate case added; rerun detected both"
+ },
+ "runsThisSeat": {
+  "typecheck": "pass",
+  "oxfmt": "21 changed code files clean through stdin",
+  "oxlint": "21 changed code files, 0 diagnostics",
+  "vitestRelevant": {
+   "files": 30,
+   "cases": 343,
+   "passed": 343
+  },
+  "accountHistoryNode": {
+   "files": "test/account-history/*.test.mjs",
+   "cases": 107,
+   "passed": 107,
+   "seconds": 264
+  },
+  "sessionsNode": {
+   "cases": 90,
+   "passed": 90
+  },
+  "accountSyncSmall": {
+   "files": [
+    "test/account-sync/controls.test.mjs",
+    "test/account-sync/refusal-native.test.mjs"
+   ],
+   "cases": 7,
+   "passed": 7
+  },
+  "accountSyncNative": {
+   "file": "test/account-sync/native.test.mjs",
+   "cases": 33,
+   "passed": 27,
+   "skipped": 6,
+   "seconds": 354,
+   "note": "the six skips are the file's own conditional skips"
+  },
+  "adapters": "178/178",
+  "validationInventory": "10/10",
+  "plan": {
+   "obligations": 1129,
+   "unresolved": 558
+  },
+  "accountCryptoPrep": "6/6; census matched after record"
+ },
+ "bookkeeping": {
+  "denominator": "3032 -> 3035 (test/syncRefusal.test.ts joins the reviewed selection: files 117 -> 118, general stages 302 -> 303, reviewed Vitest stages 136 -> 137)",
+  "planningInventory": "1126/556 -> 1129/558",
+  "syncCampaign": "86 cases, unchanged",
+  "census": "three new sources, seven new hashes, no new label or cryptographic call",
+  "registry": "done/account-ledger-reference-mismatch: accountReceive.ts line 967 -> 973",
+  "anchors": "205 strings and 98 literals; phase 551 codes moved to historyFailureCodes.ts; no test, spec or script matched text that changed"
+ },
+ "notRun": [
+  "a receive-path history failure in the composed lane (the browser harness hosts no history snapshots)",
+  "unavailable and state-changed from the in-process service",
+  "a real gateway or proxy",
+  "any device"
+ ],
+ "review": {
+  "fullSuite": "pnpm test --maxWorkers=1 on the final tree: 353 files, 3,682 passed and 1 existing skip, 355.87 s",
+  "checks": "pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check, node --test test/account-history/*.test.mjs, and the CI session and history step"
+ }
+}

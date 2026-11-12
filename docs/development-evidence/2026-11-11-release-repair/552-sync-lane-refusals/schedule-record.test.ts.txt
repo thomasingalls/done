@@ -1,0 +1,12 @@
+// Phase 552: how schedule-phase551.json was recorded. Run once with the phase 551 scheduler copied
+// to src/crdt/accountSyncDriverBase551.ts (git show 51779e97d:src/crdt/accountSyncDriver.ts), then
+// both files were deleted. GOLDEN_OUT names the output file.
+// Temporary: records the phase 551 scheduler's trace for the scripted schedule.
+import { it } from 'vitest';
+import { writeFileSync } from 'node:fs';
+import { createSyncScheduler } from '../src/crdt/accountSyncDriverBase551';
+import { runSchedule, compactTrace } from './syncRefusalSchedule';
+it('records', async () => {
+  const base = await runSchedule(undefined, createSyncScheduler as never);
+  writeFileSync(process.env['GOLDEN_OUT']!, JSON.stringify(compactTrace(base.trace), null, 1));
+});

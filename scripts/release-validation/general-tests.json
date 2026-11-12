@@ -105,6 +105,7 @@
     "test/store.test.ts",
     "test/sync.test.ts",
     "test/syncDefects.test.ts",
+    "test/syncRefusal.test.ts",
     "test/textBufferBasis.test.ts",
     "test/textBufferNormalizationProbe.test.ts",
     "test/unfiledPanel.test.tsx",

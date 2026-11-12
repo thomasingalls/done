@@ -23,6 +23,14 @@ export {
   historyFailureMessage,
 } from '../../src/ui/historyFailureMessages';
 export { ScopedTransport } from '../../src/account/scopedTransport';
+// Phase 552: the sync lanes' delivery transport, its explanations and their sentences.
+export {
+  privateDeliveryPost,
+  readPrivateTransportDiagnostics,
+  clearPrivateTransportDiagnostics,
+} from '../../src/account/privateDeliveryHttp';
+export * from '../../src/account/syncRefusal';
+export { SYNC_REFUSAL_MESSAGES, syncRefusalMessage } from '../../src/ui/syncRefusalMessages';
 export { readHistorySource, historyReplayStart } from '../../src/crdt/historySource';
 export * from '../../src/account/historyReplayBound';
 export { createContentCheckpoint } from '../../src/crdt/contentCheckpoint';

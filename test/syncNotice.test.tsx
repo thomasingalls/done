@@ -9,6 +9,8 @@ import {
   NetworkLoginNotice,
   loginMessage,
 } from '../src/ui/NetworkLoginNotice';
+import { SYNC_REFUSAL_MESSAGES, syncRefusalMessage } from '../src/ui/syncRefusalMessages';
+import type { DeliveryRefusal, SyncRefusal } from '../src/account/syncRefusal';
 
 it('offers a passkey reconnect instead of ineffective lane retries, without hiding another halt', async () => {
   vi.useFakeTimers();
@@ -380,6 +382,126 @@ it('says why a reconnect did not finish, and only no answer says to check the co
     expect(loginMessage('remembered', 'busy')).toBe('Account login remembered on this device.');
     await show('reconnect', undefined);
     expect(sentences().some((s) => Object.values(LOGIN_PROBLEM_MESSAGES).includes(s))).toBe(false);
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+    vi.useRealTimers();
+  }
+});
+
+// Phase 552: why a lane's last attempt got no result. Only no usable answer says to check the
+// connection; the service answering says it is not the connection, and what to do, if anything.
+const LANE_SHIPPED: Record<DeliveryRefusal, string> = {
+  unreachable:
+    'This device could not reach the account service. Check your connection. This device will try again by itself.',
+  timeout:
+    'The account service did not answer in time. Check your connection. This device will try again by itself.',
+  'removal-pending':
+    'This device is being removed from the account, so the account service no longer accepts its changes. This is not a problem with your connection. Your writing on this device is kept.',
+  'ledger-integrity':
+    'The account service found a problem with its stored history and has paused changes until it is checked. This is not a problem with your connection. Nothing you do on this device will fix it. Your writing on this device is kept.',
+  'storage-unavailable':
+    'The account service cannot save changes right now. This is not a problem with your connection. This device will try again by itself.',
+  'invalid-request':
+    'The account service could not use a request from this version of the app. Updating the app may fix it. Your writing on this device is kept.',
+  'envelope-size':
+    'The account service could not use a request from this version of the app. Updating the app may fix it. Your writing on this device is kept.',
+  'unsupported-epoch':
+    'The account service did not accept the last attempt. This is not a problem with your connection. This device will try again by itself.',
+  'out-of-order':
+    'The account service did not accept the last attempt. This is not a problem with your connection. This device will try again by itself.',
+  'parent-required':
+    'The account service did not accept the last attempt. This is not a problem with your connection. This device will try again by itself.',
+  'unissued-parent':
+    'The account service did not accept the last attempt. This is not a problem with your connection. This device will try again by itself.',
+  unavailable:
+    'The account service did not accept the last attempt. This is not a problem with your connection. This device will try again by itself.',
+  'state-changed':
+    'The account service did not accept the last attempt. This is not a problem with your connection. This device will try again by itself.',
+  refused:
+    'The account service did not accept the last attempt, for a reason this version of the app does not know. This is not a problem with your connection. This device will try again by itself.',
+  unusable:
+    'The account service’s answer could not be used. This is not a problem with your connection. This device will try again by itself.',
+  capacity:
+    'The account service is busy. This is not a problem with your connection. This device will try again by itself.',
+  'access-refused':
+    'The account service did not accept this device’s sign-in. Lock and reopen this workspace, then try again.',
+  'authority-changed': 'Your account’s devices changed. This device will catch up by itself.',
+  'login-disconnected': 'Sync is not connected. Reconnect sync under Account in the menu.',
+};
+it('says why a lane got no result, beside the unchanged reason, and names it in the reason line (phase 552)', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(60000);
+  (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+  expect({ ...SYNC_REFUSAL_MESSAGES }).toEqual(LANE_SHIPPED);
+  for (const [code, sentence] of Object.entries(LANE_SHIPPED))
+    expect(sentence.includes('Check your connection'), code).toBe(
+      code === 'unreachable' || code === 'timeout',
+    );
+  // Receive-path history failures keep their phase 551 code and take the same meaning's sentence.
+  expect(syncRefusalMessage('history-unreachable')).toBe(LANE_SHIPPED.unreachable);
+  expect(syncRefusalMessage('history-capacity')).toBe(LANE_SHIPPED.capacity);
+  expect(syncRefusalMessage('history-ledger-integrity')).toBe(LANE_SHIPPED['ledger-integrity']);
+  expect(syncRefusalMessage('history-checkpoint-busy')).toBe(LANE_SHIPPED.unavailable);
+  expect(syncRefusalMessage('history-stopped')).toBeUndefined();
+  expect(syncRefusalMessage('history-sign-in-required')).toBeUndefined();
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  const lane = {
+    phase: 'retrying' as const,
+    failures: 2,
+    nextAttemptAt: 63000,
+    reason: 'network-unavailable' as const,
+    issueSince: 0,
+    lastSuccessAt: null,
+  };
+  let status: SyncStatus = {
+    send: { ...lane, acceptedThrough: 4 },
+    receive: { ...lane, receivedThrough: 9 },
+  };
+  const listeners = new Set<() => void>();
+  const sync: SyncRuntime = {
+    get status() {
+      return status;
+    },
+    retry: vi.fn(),
+    onStatus(f) {
+      const listener = () => f(status);
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+  };
+  const show = async (send?: SyncRefusal, receive?: SyncRefusal) => {
+    status = {
+      send: { ...lane, acceptedThrough: 4, ...(send ? { refusal: send } : {}) },
+      receive: { ...lane, receivedThrough: 9, ...(receive ? { refusal: receive } : {}) },
+    };
+    await act(async () => {
+      for (const f of listeners) f();
+    });
+  };
+  const notes = () =>
+    [...host.querySelectorAll('.sync-notice .menu-note')].map((p) => p.textContent);
+  try {
+    await act(async () => root.render(<SyncNotice sync={sync} />));
+    // No explanation: as before, no sentence and the unchanged reason.
+    expect(host.textContent).toContain('send:network-unavailable');
+    expect(notes().some((n) => Object.values(LANE_SHIPPED).includes(n!))).toBe(false);
+    for (const [code, sentence] of Object.entries(LANE_SHIPPED) as [DeliveryRefusal, string][]) {
+      await show(code, 'history-capacity');
+      expect(notes(), code).toContain(sentence);
+      expect(host.textContent).toContain(`send:${code}`);
+      expect(notes()).toContain(LANE_SHIPPED.capacity);
+      expect(host.textContent).toContain('receive:history-capacity');
+    }
+    // A retry is still offered: the lane retries as before.
+    expect([...host.querySelectorAll('button')].map((b) => b.textContent)).toEqual([
+      'Retry sending',
+      'Retry receiving',
+    ]);
   } finally {
     await act(async () => root.unmount());
     host.remove();

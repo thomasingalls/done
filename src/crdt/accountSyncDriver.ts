@@ -9,6 +9,7 @@ import { ContentError } from './contentRecord';
 import { CustodyError } from './custodyRecord';
 import { InboundError } from './accountInbound';
 import { createBatchWindow, type BatchTiming } from './batchWindow';
+import type { SyncRefusal } from '../account/syncRefusal';
 export type SyncLane = 'send' | 'receive';
 /** A receive condition that stays named while receiving otherwise continues. Not a halt. */
 export type SyncStanding = 'history-unverified' | 'history-waiting';
@@ -20,11 +21,15 @@ export type SyncHalt =
   | 'envelope-size'
   | 'integrity'
   | import('./accountReceiveDriver').ReceiveHalt;
-export type OutboundStep = { receivedThrough?: number; acceptedNow?: true } & (
-  | { kind: 'idle' | 'progress' | 'unknown' | 'paused' | 'held'; acceptedThrough: number }
-  | { kind: 'batching'; acceptedThrough: number; due: number }
-  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
-);
+/** Phase 552: why an `unknown` step got no result. Shown beside the unchanged reason only; the
+ * scheduler never reads it to decide anything. */
+export type ExplainedStep = { refusal?: SyncRefusal };
+export type OutboundStep = { receivedThrough?: number; acceptedNow?: true } & ExplainedStep &
+  (
+    | { kind: 'idle' | 'progress' | 'unknown' | 'paused' | 'held'; acceptedThrough: number }
+    | { kind: 'batching'; acceptedThrough: number; due: number }
+    | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
+  );
 /** Scheduling hint read live at each decision. Never authority: the owner still checks effects. */
 export interface SyncHold {
   /** Stop before allocating a new envelope; allocated positions still drain to acceptance. */
@@ -36,7 +41,8 @@ export interface SyncHold {
   readonly idlePoll?: boolean;
 }
 /** A completed check can yield its turn without claiming progress or a complete idle sweep. */
-export type SyncReceiveStep = ReceiveStep | { kind: 'yielded'; receivedThrough: number };
+export type SyncReceiveStep = (ReceiveStep | { kind: 'yielded'; receivedThrough: number }) &
+  ExplainedStep;
 export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
@@ -53,6 +59,8 @@ export interface SyncLaneStatus {
   readonly lastSuccessAt: number | null;
   /** Only beside a halt whose step named its cause; cleared with the halt. */
   readonly detail?: ReceiveHaltDetail;
+  /** Phase 552: only beside `network-unavailable`, why the last attempt got no result. */
+  readonly refusal?: SyncRefusal;
 }
 export interface SyncStatus {
   readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
@@ -66,6 +74,8 @@ interface Lane {
   halt?: SyncHalt | undefined;
   haltDetail?: ReceiveHaltDetail | undefined;
   retryReason?: 'request-expired' | 'operation-failed' | 'network-unavailable' | undefined;
+  /** Presentation only, set and cleared with retryReason. */
+  refusal?: SyncRefusal | undefined;
   standing?: SyncStanding | undefined;
   issueSince?: number;
   lastSuccessAt?: number;
@@ -145,6 +155,13 @@ export function createSyncScheduler(options: {
   const laneStatus = (name: SyncLane): SyncLaneStatus => {
     const lane = lanes[name],
       gate = options.gate();
+    const reason = stopped
+      ? null
+      : (lane.halt ??
+        (gate === 'local-storage' || gate === 'sign-in-required'
+          ? gate
+          : // Reads that fail because of it (a pruned stream) do not hide the cause.
+            (lane.standing ?? lane.retryReason ?? null)));
     return {
       phase: stopped
         ? 'closed'
@@ -171,13 +188,8 @@ export function createSyncScheduler(options: {
       issueSince: (lane.halt ? lane.issueSince : (signInSince ?? lane.issueSince)) ?? null,
       lastSuccessAt: lane.lastSuccessAt ?? null,
       ...(!stopped && lane.halt && lane.haltDetail ? { detail: lane.haltDetail } : {}),
-      reason: stopped
-        ? null
-        : (lane.halt ??
-          (gate === 'local-storage' || gate === 'sign-in-required'
-            ? gate
-            : // Reads that fail because of it (a pruned stream) do not hide the cause.
-              (lane.standing ?? lane.retryReason ?? null))),
+      reason,
+      ...(reason === 'network-unavailable' && lane.refusal ? { refusal: lane.refusal } : {}),
     };
   };
   const snapshot = (): SyncStatus =>
@@ -350,7 +362,7 @@ export function createSyncScheduler(options: {
           delete lane.issueSince;
           lane.phase = 'idle';
           lane.failures = 0;
-          lane.retryReason = undefined;
+          lane.retryReason = lane.refusal = undefined;
           lane.due = undefined;
           lane.expedite = false;
           lane.held = true;
@@ -363,7 +375,7 @@ export function createSyncScheduler(options: {
           delete lane.issueSince;
           lane.phase = 'idle';
           lane.failures = 0;
-          lane.retryReason = undefined;
+          lane.retryReason = lane.refusal = undefined;
           lane.due = result.due;
           lane.dirty = lane.expedite = false;
         } else if (result.kind === 'blocked') {
@@ -384,6 +396,7 @@ export function createSyncScheduler(options: {
               : retryable
                 ? 'network-unavailable'
                 : undefined;
+          lane.refusal = result.kind === 'unknown' ? result.refusal : undefined;
           if (retryable || lane.standing) lane.issueSince ??= clock.now();
           else delete lane.issueSince;
           lane.phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
@@ -438,6 +451,7 @@ export function createSyncScheduler(options: {
           else {
             lane.phase = 'retrying';
             lane.retryReason = 'operation-failed';
+            lane.refusal = undefined;
             lane.failures = Math.min(lane.failures + 1, 6);
             lane.due = clock.now() + Math.min(1000 * 2 ** (lane.failures - 1), 30000);
           }

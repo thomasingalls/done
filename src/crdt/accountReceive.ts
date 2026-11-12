@@ -75,6 +75,7 @@ import { accountBatchPolicy } from './accountBatchPolicy';
 import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
 import { historyCommandFailure } from '../account/historyFailure';
+import { createRefusalNote, type DeliveryRefusal } from '../account/syncRefusal';
 import {
   historyExchangeMessage,
   HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
@@ -164,6 +165,9 @@ import {
   createReceiveSweep,
   driveOutboundStep,
   idleReceiveInterval,
+  type ExplainedStep,
+  type SyncLane,
+  type SyncReceiveStep,
   type SyncStatus,
 } from './accountSyncDriver';
 import { networkLoginNeedsPasskey } from '../account/networkLogin';
@@ -283,6 +287,8 @@ async function openAccountReceiveOwner(
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
   // Scheduling hints from the last adopted view: retention growth and the full-check path.
   const ledgerHints = createLedgerHints();
+  // Phase 552: why each lane's last step got no result. Presentation only.
+  const laneRefusals = { send: createRefusalNote(), receive: createRefusalNote() };
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
     sinceAuditPositions = 0,
@@ -1577,6 +1583,8 @@ async function openAccountReceiveOwner(
         stamp.check();
         const signal = AbortSignal.any([network.signal, stamp.signal]);
         const events: Diagnostic[][] = requests.map(() => []);
+        // Phase 552: why each read got no result, kept and reported like its diagnostics.
+        const explained: (DeliveryRefusal | undefined)[] = requests.map(() => undefined);
         let attempted = 0;
         if (!prepared.cachedPage) {
           const wireRequests = [...requests, ...probes.map((p) => p.request)];
@@ -1626,6 +1634,12 @@ async function openAccountReceiveOwner(
                         (event) => {
                           events[index]!.push(event);
                         },
+                        false,
+                        undefined,
+                        undefined,
+                        (refusal) => {
+                          explained[index] ??= refusal;
+                        },
                       )
                     : Promise.resolve(null),
                 batch: (body, signal, limit, unsupported) =>
@@ -1648,7 +1662,11 @@ async function openAccountReceiveOwner(
                           // The aggregate's size is a transport choice, not the individual result.
                           // A failed fallback retains its own retry/refusal classification.
                           events[0]!.length = 0;
+                          explained[0] = undefined;
                           void unsupported('aggregate-limit');
+                        },
+                        (refusal) => {
+                          explained[0] ??= refusal;
                         },
                       )
                     : Promise.resolve(null),
@@ -1704,6 +1722,7 @@ async function openAccountReceiveOwner(
         // A speculative tail cannot overwrite the diagnostic for the attempted prefix.
         for (const observations of events.slice(0, attempted))
           for (const event of observations) recordPrivateTransportDiagnostic(event);
+        for (const refusal of explained.slice(0, attempted)) laneRefusals.receive.note(refusal);
         return network.step(() => ({
           request: requests[0]!,
           page: pages[0] ?? null,
@@ -1910,6 +1929,10 @@ async function openAccountReceiveOwner(
                     if (event.phase === 'response') answer = event.code;
                     recordPrivateTransportDiagnostic(event);
                   },
+                  false,
+                  undefined,
+                  undefined,
+                  laneRefusals.receive.note,
                 ),
               );
               check();
@@ -3254,6 +3277,7 @@ async function openAccountReceiveOwner(
     };
     const delivery = createDeliveryOperations({
       ...(access ? { access } : {}),
+      explain: laneRefusals.send.note,
       authority: () => base.authority,
       pin: () => options.pin,
       signer: () => signer!,
@@ -3434,6 +3458,7 @@ async function openAccountReceiveOwner(
   };
   return {
     access,
+    laneRefusals,
     deviceId: base.reader.id,
     devices: Object.freeze({
       detached: account.detached,
@@ -3753,6 +3778,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
   );
   const {
     access,
+    laneRefusals,
     devices,
     deviceId,
     publisherCount,
@@ -4312,6 +4338,17 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
           invalidateQuietReads();
           scheduler.wake('gate');
         };
+      // Phase 552: the lane's own requests say why an `unknown` step got no result. Attached to the
+      // step for the notice only; the scheduler decides exactly as it did without it.
+      const explained = async <T extends { kind: string }>(
+        lane: SyncLane,
+        step: () => Promise<T>,
+      ): Promise<T & ExplainedStep> => {
+        laneRefusals[lane].reset();
+        const result = await step();
+        const refusal = laneRefusals[lane].take();
+        return result.kind === 'unknown' && refusal ? { ...result, refusal } : result;
+      };
       const scheduler = createSyncScheduler({
         signal: carrier.signal,
         gate: () => {
@@ -4325,70 +4362,16 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         ...(automaticRetention ? { hold: () => automaticRetention?.hold } : {}),
         send: (beforeNewEnvelope, holdNewEnvelope) =>
-          driveOutboundStep(
-            outbound,
-            operatorToken ?? '',
-            gate,
-            beforeNewEnvelope,
-            holdNewEnvelope,
+          explained('send', () =>
+            driveOutboundStep(
+              outbound,
+              operatorToken ?? '',
+              gate,
+              beforeNewEnvelope,
+              holdNewEnvelope,
+            ),
           ),
-        receive: async (sendDue) => {
-          const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
-            receiveSweep.reset();
-            throw cause;
-          });
-          if (authority.kind === 'adopted') {
-            receiveSweep.reset();
-            scheduler.wake('authority');
-          }
-          if (authority.kind === 'unknown' || authority.kind === 'paused') {
-            receiveSweep.reset();
-            const state = await api.status();
-            return { kind: authority.kind, receivedThrough: state.receivedThrough };
-          }
-          try {
-            if (await receiveHistory()) {
-              receiveSweep.reset();
-              const state = await api.status();
-              return { kind: 'progress', receivedThrough: state.receivedThrough };
-            }
-          } catch (cause) {
-            receiveSweep.reset();
-            if (
-              cause instanceof HistoryInstallSizeError ||
-              (cause instanceof AdmissionError && cause.cause instanceof HistoryInstallSizeError)
-            ) {
-              const size = (
-                cause instanceof HistoryInstallSizeError ? cause : cause.cause
-              ) as HistoryInstallSizeError;
-              const state = await api.status();
-              return {
-                kind: 'blocked',
-                reason: 'inbound-size',
-                receivedThrough: state.receivedThrough,
-                // Named beside the unchanged reason; sizes only, never snapshot content.
-                detail: { cause: 'history-snapshot', needed: size.needed, allowed: size.allowed },
-              };
-            }
-            if (
-              cause instanceof HistoryTransportUnavailable ||
-              cause instanceof ReceiveAuthorityChanged ||
-              (cause instanceof AdmissionError && cause.cause instanceof ReceiveAuthorityChanged)
-            ) {
-              const state = await api.status();
-              return { kind: 'unknown', receivedThrough: state.receivedThrough };
-            }
-            throw cause;
-          }
-          // One hint concerns the workspace, not a particular publisher. Sweep every
-          // eligible stream before choosing the slow idle repair interval.
-          return receiveSweep.run(
-            sweepContext(),
-            publisherCount(),
-            () => driveReceiveStep(result, operatorToken ?? '', gate),
-            sendDue,
-          );
-        },
+        receive: (sendDue) => explained('receive', () => receiveStep(sendDue)),
         detach() {
           notifications?.close();
           operatorToken = undefined;
@@ -4398,6 +4381,65 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
           for (const stop of stopActivity.splice(0)) stop();
         },
       });
+      async function receiveStep(sendDue: () => boolean): Promise<SyncReceiveStep> {
+        const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
+          receiveSweep.reset();
+          throw cause;
+        });
+        if (authority.kind === 'adopted') {
+          receiveSweep.reset();
+          scheduler.wake('authority');
+        }
+        if (authority.kind === 'unknown' || authority.kind === 'paused') {
+          receiveSweep.reset();
+          const state = await api.status();
+          return { kind: authority.kind, receivedThrough: state.receivedThrough };
+        }
+        try {
+          if (await receiveHistory()) {
+            receiveSweep.reset();
+            const state = await api.status();
+            return { kind: 'progress', receivedThrough: state.receivedThrough };
+          }
+        } catch (cause) {
+          receiveSweep.reset();
+          if (
+            cause instanceof HistoryInstallSizeError ||
+            (cause instanceof AdmissionError && cause.cause instanceof HistoryInstallSizeError)
+          ) {
+            const size = (
+              cause instanceof HistoryInstallSizeError ? cause : cause.cause
+            ) as HistoryInstallSizeError;
+            const state = await api.status();
+            return {
+              kind: 'blocked',
+              reason: 'inbound-size',
+              receivedThrough: state.receivedThrough,
+              // Named beside the unchanged reason; sizes only, never snapshot content.
+              detail: { cause: 'history-snapshot', needed: size.needed, allowed: size.allowed },
+            };
+          }
+          if (
+            cause instanceof HistoryTransportUnavailable ||
+            cause instanceof ReceiveAuthorityChanged ||
+            (cause instanceof AdmissionError && cause.cause instanceof ReceiveAuthorityChanged)
+          ) {
+            // Named with its phase 551 code; a read's own answer, noted first, outranks it.
+            if (cause instanceof HistoryTransportUnavailable) laneRefusals.receive.note(cause.code);
+            const state = await api.status();
+            return { kind: 'unknown', receivedThrough: state.receivedThrough };
+          }
+          throw cause;
+        }
+        // One hint concerns the workspace, not a particular publisher. Sweep every
+        // eligible stream before choosing the slow idle repair interval.
+        return receiveSweep.run(
+          sweepContext(),
+          publisherCount(),
+          () => driveReceiveStep(result, operatorToken ?? '', gate),
+          sendDue,
+        );
+      }
       if (automaticRetention || automaticHistory) {
         const changed = (status: SyncStatus) => {
           const quiet = [status.send.phase, status.receive.phase].every(

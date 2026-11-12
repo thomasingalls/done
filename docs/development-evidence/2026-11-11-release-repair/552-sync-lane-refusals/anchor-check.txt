@@ -1,0 +1,384 @@
+{
+ "hooks_checked": 205,
+ "literals_checked": 98,
+ "changed": [
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "account-service/",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "authority-changed",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "checkpoint-cancelled",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "checkpoint-conflict",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "checkpoint-required",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "checkpoint-too-large",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-access-refused",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-advanced",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-authority-changed",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-capacity",
+   "base": 4,
+   "now": 3
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-finish-saved",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-local-progress",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-not-found",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-not-producer",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-prune-unchanged",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-receive-pending",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-reply-unverified",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-sign-in-required",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-storage-unavailable",
+   "base": 3,
+   "now": 2
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-sync-disconnected",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "history-unreachable",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "ledger-integrity",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "sign-in-required",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "hook",
+   "text": "storage-unavailable",
+   "base": 4,
+   "now": 3
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "`account-service/historyCheckpoint.ts`",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'checkpoint-cancelled'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'checkpoint-required'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'admission-conflict'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'checkpoint-conflict'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'retention-boundary-changed'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'source-unavailable'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'checkpoint-too-large'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'ledger-integrity'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-unreachable'",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-not-found'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-sign-in-required'",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-sync-disconnected'",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-authority-changed'",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-capacity'",
+   "base": 4,
+   "now": 3
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-storage-unavailable'",
+   "base": 3,
+   "now": 2
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-access-refused'",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-reply-unverified'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-advanced'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-finish-saved'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-prune-unchanged'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-not-producer'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-receive-pending'",
+   "base": 2,
+   "now": 1
+  },
+  {
+   "path": "src/account/historyFailure.ts",
+   "kind": "literal",
+   "text": "'history-local-progress'",
+   "base": 1,
+   "now": 0
+  },
+  {
+   "path": "src/account/privateDeliveryHttp.ts",
+   "kind": "hook",
+   "text": "application/json",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/account/privateDeliveryHttp.ts",
+   "kind": "literal",
+   "text": "'application/json'",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/crdt/accountSessionBridge.ts",
+   "kind": "hook",
+   "text": "network-unavailable",
+   "base": 1,
+   "now": 3
+  },
+  {
+   "path": "src/crdt/accountSessionBridge.ts",
+   "kind": "literal",
+   "text": "'network-unavailable'",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/crdt/accountSyncDriver.ts",
+   "kind": "hook",
+   "text": "network-unavailable",
+   "base": 3,
+   "now": 5
+  },
+  {
+   "path": "src/crdt/accountSyncDriver.ts",
+   "kind": "literal",
+   "text": "'network-unavailable'",
+   "base": 3,
+   "now": 4
+  }
+ ]
+}
