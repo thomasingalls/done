@@ -67,6 +67,7 @@
     "test/membershipEligibility.test.ts",
     "test/moves.test.ts",
     "test/multiDevice.test.ts",
+    "test/oracleReplayWindow.test.ts",
     "test/outboundSpool.test.ts",
     "test/oversizedActions.test.ts",
     "test/oversizedActionsUi.test.tsx",

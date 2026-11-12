@@ -1,0 +1,15 @@
+#!/bin/bash
+# usage: run.sh <copy> <label> <spec filter> [ENV=VALUE ...]   (copies under phase549; bounded by timeout)
+P=<scratch>
+copy=$1; label=$2; filter=$3; shift 3
+out=$P/runs/$label
+mkdir -p $out
+cd $P/$copy || exit 1
+echo "$copy $label $filter $*" > $out/params.txt
+( for i in $(seq 1 200); do echo "$(date +%T) $(sysctl -n vm.loadavg)"; sleep 10; done ) > $out/load.txt 2>&1 &
+lp=$!
+env ODD_PORT_BASE=${ODD_PORT_BASE:-54900} "$@" timeout 1800 node node_modules/@playwright/test/cli.js test --config playwright.public.config.ts $filter > $out/out.txt 2>&1
+echo "exit $?" >> $out/out.txt
+kill $lp
+cp -R test-results/public/artifacts/. $out/artifacts/ 2>/dev/null
+echo done $label

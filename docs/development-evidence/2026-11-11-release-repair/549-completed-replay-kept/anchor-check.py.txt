@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+"""Source-text anchors for phase 549. Two directions, over vite/, test/ and scripts/:
+1. every string literal (16+ characters) in those files that occurs in the base version of an
+   edited source occurs the same number of times in it now (fixture hooks and anchors);
+2. every string literal (16+ characters) of the base edited source that occurs in those files
+   still occurs the same number of times now.
+Excludes the phase's own new test file."""
+import os, re, subprocess, json
+W = '<worktree>'
+BASE = 'd1a4a653e'
+EDITED = ['src/crdt/contentStore.ts', 'src/crdt/contentMaintenance.ts', 'src/crdt/accountCapture.ts']
+SKIP = {os.path.join(W, 'test/oracleReplayWindow.test.ts')}
+lit = re.compile(r"'((?:[^'\\\n]|\\.){16,})'|\"((?:[^\"\\\n]|\\.){16,})\"|`((?:[^`\\]|\\.){16,})`", re.S)
+def unescape(s):
+    return s.replace('\\n', '\n').replace("\\'", "'").replace('\\"', '"').replace('\\`', '`').replace('\\\\', '\\')
+corpus, literals = [], set()
+for top in ['vite', 'test', 'scripts']:
+    for root, _, files in os.walk(os.path.join(W, top)):
+        for f in files:
+            p = os.path.join(root, f)
+            if p in SKIP or not f.endswith(('.ts', '.tsx', '.mjs', '.js', '.json', '.cjs')):
+                continue
+            try:
+                t = open(p, encoding='utf8').read()
+            except Exception:
+                continue
+            corpus.append(t)
+            for m in lit.finditer(t):
+                s = next(g for g in m.groups() if g)
+                literals.add(s)
+                literals.add(unescape(s))
+text = '\n'.join(corpus)
+report = {'hooks_checked': 0, 'literals_checked': 0, 'changed': []}
+for path in EDITED:
+    base = subprocess.run(['git', 'show', f'{BASE}:{path}'], cwd=W, capture_output=True, text=True).stdout
+    now = open(os.path.join(W, path)).read()
+    for s in sorted(literals):
+        if s in base:
+            report['hooks_checked'] += 1
+            if base.count(s) != now.count(s):
+                report['changed'].append({'path': path, 'kind': 'hook', 'text': s[:120], 'base': base.count(s), 'now': now.count(s)})
+    seen = set()
+    for m in lit.finditer(base):
+        s = next(g for g in m.groups() if g)
+        if s in seen or s not in text:
+            continue
+        seen.add(s)
+        report['literals_checked'] += 1
+        q = m.group(0)  # the literal with its quotes, so identifiers of the same name are not counted
+        if base.count(q) != now.count(q):
+            report['changed'].append({'path': path, 'kind': 'literal', 'text': q[:120], 'base': base.count(q), 'now': now.count(q)})
+print(json.dumps(report, indent=1, ensure_ascii=False))

@@ -70,7 +70,11 @@ its census/delivery/inbound result must match before the new view can replace it
 repair-required refusal, not silent cache repair.
 
 Synchronous input invalidates the private discretionary pass before its next guarded effect;
-interrupted work stays due and is not moved onto the following foreground load. Async work yields
+interrupted work stays due and is not moved onto the following foreground load. Queued foreground
+work interrupts it too, except in one window (phase 549): from the moment the oracle's full replay
+returns until the new reuse view records it, queued work waits, because the replay has already held
+the serialized queue and yielding would only discard it. Suspension, new input, the owner closing and
+both authority checks still stop the pass inside that window. Async work yields
 through the existing CPU budget. This is not a bound on one Yjs/native operation or on total reference
 duration, and continuous activity can postpone semantic oracle completion. Rolling sealed-byte
 checks still progress on foreground loads without waiting for idleness.

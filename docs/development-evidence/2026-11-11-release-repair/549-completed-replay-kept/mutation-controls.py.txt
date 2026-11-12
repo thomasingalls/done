@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+"""Phase 549 mutation controls. Usage: mutation-controls.py <copy of the final tree> <out file>.
+Each mutation is applied alone to the copy, the new test file runs, and the file is restored."""
+import pathlib, subprocess, sys, time, os
+root = pathlib.Path(sys.argv[1]); out = open(sys.argv[2], 'w')
+CS = 'src/crdt/contentStore.ts'; CM = 'src/crdt/contentMaintenance.ts'
+T = 'test/oracleReplayWindow.test.ts'
+mutations = [
+  ('M1 the window never opens after the oracle replay', CS,
+   '              if (oracleLoad) {\n                oracleLoad = false;\n                recordingOracle = true;\n              }\n',
+   '              if (oracleLoad) {\n                oracleLoad = false;\n              }\n'),
+  ('M2 the window stays open past the recording', CS,
+   '        recordingOracle = false; // The oracle is recorded; queued work interrupts again.\n', ''),
+  ('M3 a refused or interrupted window is not closed', CS,
+   '      } finally {\n        recordingOracle = false;\n        eraseVerified(logical);\n',
+   '      } finally {\n        eraseVerified(logical);\n'),
+  ('M4 any completed full replay opens the window', CS,
+   '              if (oracleLoad) {\n', '              if (true) {\n'),
+  ('M5 an oracle load that ends early leaves its mark', CS,
+   '          } finally {\n            oracleLoad = false;\n          }\n', '          } finally {\n          }\n'),
+  ('M6 the mark is not consumed by the first completed replay', CS,
+   '              if (oracleLoad) {\n                oracleLoad = false;\n                recordingOracle = true;\n',
+   '              if (oracleLoad) {\n                recordingOracle = true;\n'),
+  ('M7 the audit guard ignores the window', CM,
+   'queuePriority = guards.foregroundPending() && !owner.recordingOracle();',
+   'queuePriority = guards.foregroundPending();'),
+  ('M8 the oracle load is not marked', CS,
+   '          oracleLoad = true;\n', ''),
+]
+for name, rel, old, new in mutations:
+    p = root / rel; original = p.read_text()
+    if original.count(old) != 1: raise SystemExit(f'{name}: anchor count {original.count(old)}')
+    p.write_text(original.replace(old, new))
+    try:
+        t = time.time()
+        r = subprocess.run(['node', 'node_modules/vitest/vitest.mjs', 'run', T, '--reporter=verbose'],
+                           cwd=root, capture_output=True, text=True, timeout=900)
+        text = r.stdout + r.stderr
+        lines = [l for l in text.splitlines() if 'Tests ' in l or 'Test Files' in l]
+        failed = sorted({l.strip()[2:].split(' > ')[-1].rsplit(' ', 1)[0] for l in text.splitlines() if l.strip().startswith('×')})
+        out.write(f'{name} | {rel} | exit {r.returncode} | {round(time.time()-t)} s | {" / ".join(x.strip() for x in lines)} | load {os.getloadavg()[0]:.2f}\n')
+        for f in failed: out.write(f'    failed: {f}\n')
+        out.flush()
+    finally:
+        p.write_text(original)
+out.write('MUTATIONS DONE\n'); out.close()

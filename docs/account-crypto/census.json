@@ -781,7 +781,7 @@
     },
     {
       "path": "src/crdt/accountCapture.ts",
-      "sha256": "686d632644bffe1f6d0d8c0a6d45bcc7905816bac188c714c199634db87c3fa6"
+      "sha256": "81ee1e7bf277dccd7ebebd1a6c2acd3754f268b42ef62f77549941ef9c89bb74"
     },
     {
       "path": "src/crdt/accountCatchup.ts",
@@ -997,7 +997,7 @@
     },
     {
       "path": "src/crdt/contentMaintenance.ts",
-      "sha256": "133c4dee725c8b43083d235eecbe5212f17f9081e6ff3e680a338e4d97035b1a"
+      "sha256": "ed4cab9b920df28bd6c1bdeb8a6ecd665c6b7378af5ff9effabff7193d729599"
     },
     {
       "path": "src/crdt/contentRecord.ts",
@@ -1013,7 +1013,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "9fa848baec50c2340c2eb11e5bfe6ba548036d79397c1c42094ab0a247ee75ba"
+      "sha256": "8ed9a755574d6697063645455db2ca983cb61a1ac0d53cc760c2cd5d7eaf7f63"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",

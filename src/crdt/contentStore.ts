@@ -193,6 +193,11 @@ export const createContentOwner = (
   // A return to the app needs one completed full read before warm reuse (decision 2026-10-12).
   // Unlike a maintenance reference request, an interrupted attempt leaves it due.
   let resumeFullRead = false;
+  // Phase 549: auditWarm's semantic oracle marks its load. From the moment its full replay
+  // completes until the new reuse view records it, the warm audit does not yield to queued
+  // foreground work (warmAuditInterruptible); every other interruption still applies.
+  let oracleLoad = false,
+    recordingOracle = false;
   const canSelect = !!(
     crypt.selectiveLoads &&
     crypt.warmLoads &&
@@ -502,6 +507,10 @@ export const createContentOwner = (
                 crypt.readBaseline === true,
                 held.counter.v === 5,
               );
+              if (oracleLoad) {
+                oracleLoad = false;
+                recordingOracle = true;
+              }
               baselineContext = await crypt.baseline!(task, { ...scope }, counter);
               // One-shot rotation/custody readers reconstruct equivalent evidence per call.
               // Only live warm owners promise stable verifier-owned capability identities.
@@ -561,8 +570,10 @@ export const createContentOwner = (
             metadataKeys: metadata.metadataKeys,
           });
         }
+        recordingOracle = false; // The oracle is recorded; queued work interrupts again.
         return task.step(() => opened.sort((a, b) => a.seq - b.seq));
       } finally {
+        recordingOracle = false;
         eraseVerified(logical);
         eraseVerified(chunks);
       }
@@ -1654,6 +1665,8 @@ export const createContentOwner = (
       forceFullRead = true;
     },
     hasReducedHistory: () => metadata?.reduced() === true,
+    /** True only between a completed oracle replay and its recording (phase 549). */
+    recordingOracle: () => recordingOracle,
     warmAuditDue: () => Boolean(warm?.due() || baselineReuse?.due()),
     // Rolling ciphertext slices may finish while the full semantic oracle remains due.
     // Either cache's physical suffix pressure must still force an audit attempt.
@@ -1692,9 +1705,15 @@ export const createContentOwner = (
         }
         if (completed && baselineReuse?.due()) {
           // Full semantic oracle stays in interruptible maintenance, never moved to a typing task.
+          // Once its replay completes, queued work waits for it to be recorded (phase 549).
           forceFullRead = true;
-          const rows = await load(task);
-          eraseVerified(rows);
+          oracleLoad = true;
+          try {
+            const rows = await load(task);
+            eraseVerified(rows);
+          } finally {
+            oracleLoad = false;
+          }
         }
         return completed;
       } catch (cause) {
