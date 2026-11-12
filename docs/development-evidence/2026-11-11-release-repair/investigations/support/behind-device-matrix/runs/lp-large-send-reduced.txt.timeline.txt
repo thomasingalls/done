@@ -1,0 +1,36 @@
+34.1s three devices ready
+34.1s production /config {"v":2,"pin":{"v":1,"serviceId":"5474abfedcc89dab32e5a8f75e8f2a57","origin":"https://localhost:53441","rpId":"localhost","authRoot":"840f957d77ba36b7af6cde1527e8d579822016376455695229fe4cf48d5ba21e"},"networkSessions":true,"membershipContinuation":true}
+39.3s C offline (it takes no part from here)
+39.8s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+50.7s C large card 0: 33 ms
+50.7s C large card 1: 37 ms
+50.8s C large card 2: 37 ms
+50.8s C holds its unsent writing
+59.1s C reduced its local history while offline (baseline revision 1)
+95.5s snapshot 2 admitted
+111.3s A received C accepted writing after cutting
+143.6s snapshot 3 admitted
+145.7s prune 1 (floor: snapshot 2)
+236.6s A wrote 200 large cards of 5000 bytes (19797 ms saving)
+291.8s snapshot 4 admitted
+349.7s snapshot 5 admitted
+359.6s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+517.5s history written
+517.5s C online
+527.6s send-first first phase done=true
+542.7s C after second phase 15s both=false: notice=[]
+557.8s C after second phase 30s both=false: notice=[]
+573.0s C after second phase 45s both=false: notice=[]
+588.1s C after second phase 60s both=false: notice=[]
+603.3s C after second phase 75s both=false: notice=[]
+618.4s C after second phase 90s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:33:55 AMReason: receive:network-unavailableRetry receiving"]
+633.6s C after second phase 105s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:33:55 AMReason: receive:network-unavailableRetry receiving"]
+648.7s C after second phase 120s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:33:55 AMReason: receive:network-unavailableRetry receiving"]
+663.9s C after second phase 135s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:33:55 AMReason: receive:network-unavailableRetry receiving"]
+674.0s both directions arrived=true C catalog reads=10 C read requests=61 C read epochs=[5]
+674.1s C sync: ["Sending: idleLast accepted upload: 12:33:46 AMAccepted position: 10Receiving: idleLast successful receive check: 12:35:54 AMReceived positions: 564"]
+686.1s converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+686.1s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (send-first, large) (11.5m)
+  1 passed (11.5m)
+exit 0

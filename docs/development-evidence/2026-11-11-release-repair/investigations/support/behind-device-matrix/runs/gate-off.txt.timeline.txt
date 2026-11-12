@@ -1,0 +1,18 @@
+14.2s config {"v":2,"pin":{"v":1,"serviceId":"e640690623ff92f2a0f11acc002cf111","origin":"https://localhost:53441","rpId":"localhost","authRoot":"e45defad37f031ec32ad8b3cbd2c52bf833837141cdac1d4de8a1b9dc5f6663d"},"networkSessions":true}
+41.1s snapshot 1 admitted
+61.2s snapshot 2 admitted
+62.8s pruned
+74.2s B returns
+94.2s B after 20s caught=false catalog reads=0 notice=[]
+114.2s B after 40s caught=false catalog reads=0 notice=["Changes from your other devices are not arriving here.Last successful receive check: 11:53:53 PMReason: receive:network-unavailableRetry receiving"]
+134.3s B after 60s caught=false catalog reads=0 notice=["Changes from your other devices are not arriving here.Last successful receive check: 11:53:53 PMReason: receive:network-unavailableRetry receiving"]
+154.3s B after 80s caught=false catalog reads=0 notice=["Changes from your other devices are not arriving here.Last successful receive check: 11:53:53 PMReason: receive:network-unavailableRetry receiving"]
+174.3s B after 100s caught=false catalog reads=0 notice=["Changes from your other devices are not arriving here.Last successful receive check: 11:53:53 PMReason: receive:network-unavailableRetry receiving"]
+194.3s B after 120s caught=false catalog reads=0 notice=["Changes from your other devices are not arriving here.Last successful receive check: 11:53:53 PMReason: receive:network-unavailableRetry receiving"]
+194.3s B read epochs [3]
+194.3s B unsent writing reached A
+194.4s B sync: ["Sending: idleLast accepted upload: 11:53:54 PMAccepted position: 2Receiving: retryingLast successful receive check: 11:53:53 PMReceived positions: 6Reason: receive:network-unavailableRetry receiving"]
+194.4s converged=false missing on B=130 duplicated=0
+  ✓  1 test/packaged-account/gate.public.spec.ts:12:1 › gate: a returning two-device reader after pruning (continuation config off) (3.3m)
+  1 passed (3.3m)
+exit 0

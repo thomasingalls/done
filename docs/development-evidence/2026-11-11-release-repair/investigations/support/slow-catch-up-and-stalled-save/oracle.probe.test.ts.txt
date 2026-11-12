@@ -1,0 +1,131 @@
+// @vitest-environment node
+import { afterEach, expect, it, vi } from 'vitest';
+import { IDBFactory, IDBKeyRange, IDBObjectStore } from 'fake-indexeddb';
+import { createContentOwner } from '../../src/crdt/contentStore';
+import { keys, cryptFor } from '../local-baseline/anchor-fixture';
+import { extendSpoolWitness } from '../../src/crdt/spoolRecord';
+import { deriveStoreName } from '../../src/crdt/storeName';
+import { openContentDb } from '../../src/crdt/contentDatabase';
+import type { LocalBaselineContext } from '../../src/crdt/localBaselineReplay';
+import type { OpenedRecord } from '../../src/crdt/contentRecord';
+import type { SessionTask } from '../../src/crdt/writeSession';
+import { WARM_AUDIT_MS } from '../../src/crdt/warmContent';
+import { MaintenanceInterrupted } from '../../src/crdt/contentMaintenance';
+import { accountLedgerMetrics } from '../../src/crdt/accountLedgerMetrics';
+// @ts-expect-error Shared independent real protocol fixture.
+import { memberFixture } from '../local-baseline/fixtures.mjs';
+const clean: (() => void)[] = [];
+afterEach(() => {
+  clean.splice(0).forEach((f) => f());
+  vi.restoreAllMocks();
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});
+
+const task: SessionTask = {
+  signal: new AbortController().signal,
+  step: (f) => f(),
+  wait: async (f) => f(),
+};
+async function fixture() {
+  vi.stubGlobal('indexedDB', new IDBFactory());
+  vi.stubGlobal('IDBKeyRange', IDBKeyRange);
+  vi.stubEnv('VITE_ACCOUNT_RETENTION', '1');
+  vi.stubEnv('VITE_ACCOUNT_BASELINE_READ', '1');
+  vi.stubEnv('VITE_ACCOUNT_BASELINE_INSTALL', '1');
+  const f = await memberFixture();
+  clean.push(f.clear);
+  const context: LocalBaselineContext = f.ctx;
+  const auth = vi.fn(async (_task?: SessionTask) => ({
+    ...context,
+    identity: { ...context.identity },
+    route: { ...context.route },
+  }));
+  const crypt = {
+    ...cryptFor(context.identity, await keys()),
+    reuseOpened: true as const,
+    warmLoads: true as const,
+    readBaseline: true as const,
+    baseline: auth,
+  };
+  const owner = createContentOwner(context.identity, 1, crypt);
+  clean.push(() => owner.dispose());
+  await owner.initialize(task, { intent: '04'.repeat(16), checkCreation() {} });
+  await owner.enableSpool(task);
+  let persisted = 0;
+  const append = async () => {
+    for (const row of (f.rows as OpenedRecord[]).slice(persisted)) {
+      const event =
+        row.kind === 'heads' ||
+        (row.kind === 'outbound' &&
+          !new TextDecoder().decode(row.bytes).startsWith('["done/source-capture/v1"'));
+      if (event) {
+        const before = await owner.spoolWitness(task),
+          after = await extendSpoolWitness(before, row.bytes, crypto.subtle);
+        await owner.appendSpool(task, row, { before, after });
+      } else await owner.append(task, [row]);
+      persisted++;
+    }
+  };
+  await f.appendOwn();
+  await f.appendPeer();
+  await append();
+  await owner.removeHistory(
+    task,
+    async () => {},
+    () => {},
+    0,
+  );
+  await owner.loadAccount(task); // Removal deliberately closes its pre-transition cache.
+  const db = await openContentDb(
+    task,
+    await deriveStoreName(context.identity.principalId, context.identity.workspaceId),
+    false,
+  );
+  clean.push(() => db.close());
+  const mutate = (fn: (s: IDBObjectStore) => void) =>
+    new Promise<void>((resolve, reject) => {
+      const tx = db.transaction('meta', 'readwrite');
+      fn(tx.objectStore('meta'));
+      tx.oncomplete = () => resolve();
+      tx.onabort = () => reject(tx.error);
+    });
+  return { f, context, crypt, owner, auth, append, db, mutate };
+}
+// COPY-ONLY PROBE (oddities): a full oracle replay that ran to completion, then met a foreground
+// interruption at its next authority check, is discarded and replayed again from scratch.
+it('a completed oracle replay survives an interruption that arrives after it', async () => {
+  const x = await fixture();
+  await x.f.appendOwn();
+  await x.append();
+  await x.owner.loadAccount(task);
+  vi.spyOn(performance, 'now').mockReturnValue(performance.now() + WARM_AUDIT_MS + 1);
+  expect(x.owner.warmAuditDue()).toBe(true);
+  const replays = () => accountLedgerMetrics().work.baselineFullReplays;
+  const checks = () => accountLedgerMetrics().timings.coverageCheck.calls;
+  let started = replays(), interrupted = 0;
+  const real = x.auth.getMockImplementation()!;
+  x.auth.mockImplementation(async (t?: SessionTask) => {
+    // Foreground work arrived while the replay ran: the first check after it interrupts.
+    if (interrupted === 0 && replays() > started) {
+      interrupted++;
+      throw new MaintenanceInterrupted();
+    }
+    return real(t);
+  });
+  let first: unknown;
+  try {
+    while (!(await x.owner.auditWarm(task))) {}
+  } catch (e) {
+    first = e;
+  }
+  const afterInterrupted = replays();
+  console.log(JSON.stringify({ interruptedAfterReplay: interrupted, firstOutcome: first instanceof MaintenanceInterrupted ? 'interrupted' : 'completed', replaysInFirstAudit: afterInterrupted - started, dueAfterInterruption: x.owner.warmAuditDue() }));
+  started = replays();
+  while (!(await x.owner.auditWarm(task))) {}
+  console.log(JSON.stringify({ replaysInRetry: replays() - started, dueAfterRetry: x.owner.warmAuditDue() }));
+  expect(interrupted).toBe(1);
+  // A replay that already ran must count: the retry must not replay the whole baseline again.
+  expect(replays() - started).toBe(0);
+});
+

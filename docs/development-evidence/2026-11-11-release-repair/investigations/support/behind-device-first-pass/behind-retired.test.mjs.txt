@@ -1,0 +1,91 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { client as c } from './client.mjs';
+import { fixture, signed } from '../account-membership/fixtures.mjs';
+
+async function setup(t) {
+  const f = fixture(),
+    history = await c.verifyEarlyHistory(f.f.base),
+    authority = c.historyMembership(history),
+    p = c.membershipState(authority),
+    key = new Uint8Array(32).fill(47),
+    doc = new c.Y.Doc({ gc: false });
+  doc.getMap('meta').set('schemaVersion', 4);
+  doc
+    .getMap('meta')
+    .set('actor:' + p.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+  doc.getText('master').insert(0, 'snapshot-only writing');
+  const producer = f.context.existing.id,
+    sign = async (bytes) => signed(f.keys.existing, bytes),
+    cp = await c.createHistoryCheckpoint(doc, doc, key, authority, producer, p.heads, null, sign),
+    admission = await c.admitHistoryCheckpoint(cp, key, authority, producer, doc, sign),
+    base = {
+      baseline: { kind: 'promotion-genesis', id: 'ab'.repeat(32) },
+      authority: history.current,
+      checkpointAnchor: authority,
+      reader: { id: producer, publicKey: history.signingKey, active: true },
+      publisher: { id: producer },
+      generation: 1,
+      generationKey: key,
+    },
+    event = {
+      baseline: base.baseline.id,
+      workspace: p.workspaceId,
+      lineage: p.lineageId,
+      epoch: p.epoch,
+      head: p.head,
+      reader: producer,
+      checkpoint: cp,
+      admission,
+    },
+    bytes = c.encodeHistoryInstall(event);
+  t.after(() => {
+    doc.destroy();
+    key.fill(0);
+  });
+  return { f, history, authority, p, key, doc, cp, admission, base, event, bytes, sign, producer };
+}
+const lifetime = { assertCurrent() {} };
+
+test('a cut behind a peer stream this device already reduced skips the whole install, including cuts it is behind on', async (t) => {
+  const f = await setup(t),
+    history = await c.verifyCertificationHistory(
+      f.f.certification,
+      f.f.f.successor,
+      f.f.f.base,
+      f.f.anchor,
+    ),
+    base = { ...f.base, history, authority: history.current },
+    peer = f.f.context.candidate.id,
+    census = { delivery: { ledger: [], spool: { sourceRecords: [] } } };
+  // After local reduction the peer stream keeps only its received frontier (position 6).
+  const reduced = () => ({
+    prefix: { position: 0, link: '00'.repeat(32), observedThrough: 0 },
+    retained: new Map(),
+    conflict: false,
+    peers: new Map([
+      [
+        peer,
+        {
+          prefix: { position: 6, link: 'bc'.repeat(32), observedThrough: 6 },
+          retained: new Map(),
+          conflict: false,
+          retiredThrough: 6,
+        },
+      ],
+    ]),
+  });
+  // A snapshot cut at 4 lands inside the retired range with no retained link: refused as retired.
+  await assert.rejects(
+    c.applyHistoryReceiveCuts(reduced(), base, census, [
+      { credentialId: peer, position: 4, link: 'ac'.repeat(32) },
+    ]),
+    /requires retired history/,
+  );
+  // A cut at or past the frontier still applies.
+  const own = reduced();
+  await c.applyHistoryReceiveCuts(own, base, census, [
+    { credentialId: peer, position: 9, link: 'ad'.repeat(32) },
+  ]);
+  assert.equal(own.peers.get(peer).prefix.position, 9);
+});

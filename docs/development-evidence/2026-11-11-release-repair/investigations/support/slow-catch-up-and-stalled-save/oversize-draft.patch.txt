@@ -1,0 +1,27 @@
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -776,11 +776,20 @@
+         job.prepared.carrierBytes?.fill(0);
+         for (const s of job.prepared.sources ?? []) s.bytes.fill(0);
+         job.prepared = undefined;
+-        job.reservation = 2 * job.input.length + MAX_JOURNAL_UPDATE;
+-        throw new AdmissionError(
+-          'slice-required',
+-          'The command adapter must prepare a smaller slice.',
++        // DRAFT (oddities): an adapter that returned an unsliced oversize update prepares the same
++        // update on every retry from this same head. Refuse this input; keep the queue active.
++        if (job.preparation) {
++          preparation!.discard(job.preparation);
++          job.preparation = undefined;
++        }
++        if (queue[0] !== job) throw new Error('Admission queue lost its head.');
++        queue.shift();
++        erase(job);
++        job.completion.reject(
++          new AdmissionError('slice-required', 'The change is too large to save in one step.'),
+         );
++        notify();
++        return;
+       }
+     }
+     // Empty source lists are checked against the complete draft by prepareIntent. Still publish the

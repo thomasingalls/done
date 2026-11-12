@@ -1,0 +1,115 @@
+// COPY-ONLY. Stalled save probe: time each large card from Enter until the compose field clears
+// (the "Waiting to save…" span), with Window and Worker ledger metrics around each card.
+// SIZES=comma list of card bytes (repeated in order); COUNT=cards per size; GAP=ms between cards;
+// PRE=small 5 KB cards first (grow retained state); OFFLINE=1 keeps A offline (no send lane);
+// SMALL_BURST=n small cards immediately before each large card (send lane busy).
+import { test, expect, type Page } from '@playwright/test';
+import { writeFileSync, appendFileSync } from 'node:fs';
+import { pairedEditors } from './devices';
+import { startPublic } from './public-server';
+import { compose, mark } from './scenario';
+import { load, workerState, dumpTrace, sampler } from './probe';
+
+const sizes = (process.env.SIZES ?? '5000,20000').split(',').map(Number);
+const perSize = Number(process.env.COUNT ?? 10);
+const gap = Number(process.env.GAP ?? 350);
+const pre = Number(process.env.PRE ?? 0);
+const burst = Number(process.env.SMALL_BURST ?? 0);
+
+const windowMetrics = (p: Page) =>
+  p.evaluate(() => (globalThis as { __doneLedgerMetrics?: () => unknown }).__doneLedgerMetrics?.() ?? null);
+
+test('large card saves', async ({ page, browser }, info) => {
+  test.setTimeout(3600000);
+  page.setDefaultTimeout(30000);
+  const svc = await startPublic(info.outputPath('public'));
+  const t0 = Date.now();
+  const rows = info.outputPath('cards.jsonl');
+  writeFileSync(rows, '');
+  const log: string[] = [];
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s [${load()}] ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  let stop = async () => {};
+  try {
+    pair = await pairedEditors(page, browser, true);
+    const A = page;
+    note('paired');
+    for (let i = 0; i < pre; i++) {
+      await compose(A).fill(mark('pre', i) + ' ' + 'p'.repeat(5000));
+      await compose(A).press('Enter');
+      await expect(compose(A)).toHaveValue('', { timeout: 600000 });
+      await A.waitForTimeout(gap);
+    }
+    if (pre) note(`wrote ${pre} pre cards of 5000 bytes`);
+    if (process.env.OFFLINE === '1') {
+      await page.context().setOffline(true);
+      note('A offline');
+    }
+    stop = sampler(A, info.outputPath('a-samples.jsonl'), t0, 1000);
+    let k = 0;
+    for (let round = 0; round < perSize; round++)
+      for (const size of sizes) {
+        for (let j = 0; j < burst; j++) {
+          await compose(A).fill(mark('burst', k * 100 + j));
+          await compose(A).press('Enter');
+          await expect(compose(A)).toHaveValue('', { timeout: 600000 });
+        }
+        const w0 = await windowMetrics(A),
+          s0 = await workerState(A);
+        await compose(A).fill(mark('card', k) + ' ' + 'x'.repeat(size));
+        const began = Date.now();
+        await compose(A).press('Enter');
+        let sawWaiting = false,
+          watching = true;
+        const watch = (async () => {
+          while (watching) {
+            if (await A.getByText('Waiting to save…').isVisible().catch(() => false)) sawWaiting = true;
+            if (((await compose(A).inputValue().catch(() => 'x')) ?? 'x') === '') return;
+            await A.waitForTimeout(100).catch(() => {});
+          }
+        })();
+        const limit = Number(process.env.SAVE_TIMEOUT ?? 120000);
+        let saved = false;
+        while (Date.now() - began < limit) {
+          if ((await compose(A).inputValue().catch(() => 'x')) === '') {
+            saved = true;
+            break;
+          }
+          await A.waitForTimeout(100);
+        }
+        const ms = Date.now() - began;
+        if (!saved) {
+          watching = false;
+          note(`card ${k} size ${size}: NOT SAVED after ${ms} ms; waiting shown=${sawWaiting}`);
+          note('status texts ' + JSON.stringify(await A.locator('[role=status], [role=alert], .sync-notice, .workspace-status').allTextContents()));
+          await A.screenshot({ path: info.outputPath(`stuck-${k}.png`) });
+          appendFileSync(rows, JSON.stringify({ k, size, ms, saved: false, sawWaiting, t: (began - t0) / 1000, load: load(), w0, w1: await windowMetrics(A), s0, s1: await workerState(A) }) + '\n');
+          // Does the device still accept a small card after the stall?
+          const small = await compose(A).isEditable().catch(() => false);
+          note('compose editable after stall: ' + small);
+          throw new Error('stalled save at size ' + size);
+        }
+        await watch;
+        const w1 = await windowMetrics(A),
+          s1 = await workerState(A);
+        appendFileSync(
+          rows,
+          JSON.stringify({ k, size, ms, sawWaiting, t: (began - t0) / 1000, load: load(), w0, w1, s0, s1 }) + '\n',
+        );
+        note(`card ${k} size ${size}: ${ms} ms${sawWaiting ? ' (waiting shown)' : ''}`);
+        k++;
+        await A.waitForTimeout(gap);
+      }
+    await stop();
+    note('trace entries ' + (await dumpTrace(A, info.outputPath('a-trace.jsonl'))));
+  } finally {
+    await stop().catch(() => {});
+    writeFileSync(info.outputPath('timeline.txt'), log.join('\n') + '\n');
+    await pair?.other.close().catch(() => {});
+    await svc.stop();
+  }
+});

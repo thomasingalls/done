@@ -1,0 +1,93 @@
+// COPY-ONLY probe: the 4,096-position replay bound on snapshot creation and verification
+// (src/crdt/historySource.ts HISTORY_REPLAY_EVENTS), approached from below and crossed.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { sourceFixture } from '../account-membership/replacement-source-fixture.mjs';
+import { signed, hash } from '../account-membership/fixtures.mjs';
+import { client as c } from './client.mjs';
+const json = (value) => new Uint8Array(Buffer.from(JSON.stringify(value)));
+
+async function chain(t, count) {
+  const f = await sourceFixture({ client: c });
+  t.after(() => f.cleanup());
+  const base = f.input.authority.base,
+    authority = await c.verifyEarlyMembership(base),
+    p = c.membershipState(authority);
+  const input = {
+    base,
+    proofs: null,
+    binding: f.input.checkpoint.binding,
+    producer: f.input.producer,
+    keys: new Map([[1, f.input.keys.get(1)]]),
+    heads: p.heads,
+    sources: [],
+    previous: null,
+    lifetime: { assertCurrent() {}, now: () => 1000 },
+    sign: f.sign,
+    read: async () => {
+      throw Error('No accepted suffix yet');
+    },
+    exchange: async () => {
+      throw Error('No handoff sources');
+    },
+  };
+  const first = await c.readHistorySource(input);
+  const cp = await c.createHistoryCheckpoint(first, first, input.keys.get(1), authority, input.producer, input.heads, null, f.sign);
+  input.previous = {
+    checkpoint: cp,
+    admission: await c.admitHistoryCheckpoint(cp, input.keys.get(1), authority, input.producer, first, f.sign),
+  };
+  // `count` accepted positions after the admitted snapshot, one small edit each.
+  const doc = new c.Y.Doc({ gc: false });
+  c.Y.applyUpdate(doc, c.Y.encodeStateAsUpdate(first));
+  first.destroy();
+  const entries = [];
+  let previous = '00'.repeat(32);
+  for (let i = 1; i <= count; i++) {
+    const sv = c.Y.encodeStateVector(doc);
+    doc.getText('master').insert(doc.getText('master').length, 'x');
+    const e = f.entry(input.producer, f.x.f.keys.existing, c.Y.encodeStateAsUpdate(doc, sv), i % 250, {
+      epoch: 1,
+      position: i,
+      previous,
+    });
+    previous = e.link;
+    entries.push(e);
+  }
+  input.heads = [{ credentialId: input.producer, position: count, link: previous }];
+  let pages = 0;
+  input.read = async (request) => {
+    pages++;
+    const r = JSON.parse(Buffer.from(request).toString());
+    const after = r[10],
+      limit = r[11];
+    const items = entries.slice(after, after + limit);
+    const body = [
+      'done/private-read-page/v2',
+      2,
+      hash(request),
+      count,
+      after + items.length,
+      items.map((e) => [Buffer.from(e.envelope).toString('hex'), Buffer.from(e.proof).toString('hex')]),
+    ];
+    return json([...body, signed(f.x.f.f.keys.acceptance, json(body))]);
+  };
+  return { input, doc, pages: () => pages };
+}
+test('a snapshot replays 4,096 accepted positions after its predecessor', async (t) => {
+  const x = await chain(t, 4096);
+  const started = Date.now();
+  const replayed = await c.readHistorySource(x.input);
+  try {
+    assert(c.sameDocState(replayed, x.doc));
+    t.diagnostic(`4096 positions, ${x.pages()} pages, ${Date.now() - started} ms`);
+  } finally {
+    replayed.destroy();
+    x.doc.destroy();
+  }
+});
+test('one more position than the bound refuses creation and verification', async (t) => {
+  const x = await chain(t, 4097);
+  await assert.rejects(c.readHistorySource(x.input), /exceeds its event bound/);
+  x.doc.destroy();
+});

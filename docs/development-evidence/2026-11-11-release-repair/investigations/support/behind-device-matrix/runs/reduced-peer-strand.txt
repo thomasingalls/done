@@ -1,0 +1,63 @@
+
+Running 1 test using 1 worker
+
+First two editors open
+Joined Devices open
+Joined invitation unlock route
+Joined invitation unlock submitted
+21.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.4s third refusal /account/membership/v2/ceremony 409 unavailable
+28.5s third refusal /account/membership/v2/ceremony 409 authority-changed
+55.7s ids {"A":"057c3f98aa0afd4f80b25d527ce1447f","C":"11e329e77693f0910281c73bd0d04256","B":"5b93ed63cc3c687604e93ad254e3ffef"}
+55.7s third holds catalog checks and drops A reads
+56.1s third refusal /account/delivery/read-v2-batch 404 unavailable
+62.8s snapshot 2 admitted
+65.7s snapshot 3 pending
+72.7s third received B past snapshot 3 cut, still behind on A
+75.5s snapshot 3 admitted
+77.1s pruned
+77.1s third baseline before [{"name":"done.4757f889bbef9fab389ac53274127fc4","v":2,"revision":0}]
+77.1s third workers ["http://localhost:53431/assets/enrollmentOwner.worker-D6jtApCQ.js"]
+77.1s worker global true
+82.1s third local history: ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."] reduced=true
+82.2s third reduced [{"name":"done.4757f889bbef9fab389ac53274127fc4","v":5,"revision":1}]
+82.2s third back online with catalog checks and A reads allowed
+82.3s third history read:catalog
+82.4s third history read:latest
+82.8s third refusal /account/delivery/read-v2 409 unavailable
+90.9s third history read:catalog
+91.2s third refusal /account/delivery/read-v2 409 unavailable
+107.2s third history read:catalog
+107.4s third refusal /account/delivery/read-v2 409 unavailable
+127.2s after 45 s: shows A writing? false
+127.2s third notice: ["Changes from your other devices are not arriving here.Last successful receive check: 11:41:37 PMReason: receive:network-unavailableRetry receiving"]
+127.2s third sync details: ["Sending: idleLast accepted upload: 11:40:57 PMAccepted position: 2Receiving: retryingLast successful receive check: 11:41:37 PMReceived positions: 12Reason: receive:network-unavailableRetry receiving"]
+127.2s B wrote again (tomorrow list)
+137.5s third history read:catalog
+137.7s third refusal /account/delivery/read-v2 409 unavailable
+138.1s third receives new B writing? true
+139.0s third writing reaches A? true
+139.0s third refusal /account/delivery/read-v2 409 unavailable
+139.0s no retry button visible
+140.6s third history read:catalog
+140.7s third history read:latest
+140.8s third refusal /account/delivery/read-v2-batch 409 unavailable
+141.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+143.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+147.1s third history read:catalog
+147.2s third refusal /account/delivery/read-v2-batch 409 unavailable
+155.3s third history read:catalog
+155.4s third refusal /account/delivery/read-v2-batch 409 unavailable
+170.7s after reopen: shows A writing? false
+170.7s third notice after reopen: []
+171.5s third history read:catalog
+171.6s third refusal /account/delivery/read-v2-batch 409 unavailable
+175.1s snapshot 4 admitted
+201.7s third history read:catalog
+201.7s third history read:latest
+202.1s after snapshot 4: third shows A writing? true
+202.1s A reads dropped while blocked: 7
+  ✓  1 test/packaged-account/reduced-peer.spec.ts:48:1 › three devices: ahead on a reduced peer, behind on a pruned one (3.4m)
+
+  1 passed (3.4m)
+exit 0
