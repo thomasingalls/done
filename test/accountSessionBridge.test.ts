@@ -445,3 +445,43 @@ it('carries a snapshot too large to install and a named receive size halt, refus
     expect(captureAccountSessionState(state(sync)).sync).toEqual({ send, receive });
   }
 });
+it('carries where a saved snapshot stands, positions since the last one and a replay-bound refusal, refusing malformed ones (phase 547)', () => {
+  const state = (history: unknown) => ({
+    login: 'remembered',
+    sync: null,
+    local: null,
+    automatic: { phase: 'idle', reason: 'peer', history },
+    devices: { remove: false, history: true, detached: false },
+  });
+  const positions = { since: 3073, allowed: 4096 };
+  const replay = { snapshot: 'pending', needed: 4097, allowed: 4096 };
+  const history = {
+    sequence: 1,
+    pending: 'resume',
+    canDiscard: true,
+    saved: 'blocked',
+    positions,
+    replay,
+    raced: true,
+  };
+  const kept = captureAccountSessionState(state(history)).automatic!.history!;
+  expect(kept).toEqual(history);
+  expect(Object.isFrozen(kept.positions)).toBe(true);
+  expect(Object.isFrozen(kept.replay)).toBe(true);
+  for (const saved of ['sendable', 'waiting', 'blocked', 'superseded', 'stale', 'cancelling'])
+    expect(captureAccountSessionState(state({ ...history, saved })).automatic!.history!.saved).toBe(
+      saved,
+    );
+  for (const bad of [
+    { ...history, saved: 'other' },
+    { ...history, raced: false },
+    { ...history, positions: { ...positions, since: -1 } },
+    { ...history, positions: { ...positions, extra: 1 } },
+    { ...history, positions: { since: 1 } },
+    { ...history, replay: { ...replay, snapshot: 'latest' } },
+    { ...history, replay: { ...replay, needed: 1.5 } },
+    { ...history, replay: { ...replay, more: 1 } },
+    { ...history, unknown: 1 },
+  ])
+    expect(() => captureAccountSessionState(state(bad))).toThrow();
+});

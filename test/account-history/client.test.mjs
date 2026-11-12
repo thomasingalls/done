@@ -311,6 +311,8 @@ test('verification never admits a pending snapshot too large to install, and ins
   };
   assert.deepEqual(await f.run('inspect'), {
     tooLarge,
+    // Phase 547: checking history also reports positions since the last admitted snapshot.
+    positions: { since: 0, allowed: 4096 },
     sequence: 0,
     pending: 'verify',
     canDiscard: true,
@@ -345,6 +347,8 @@ test('pruning is refused while the latest snapshot is too large to install', asy
   };
   assert.deepEqual(await f.run('inspect'), {
     tooLarge,
+    // Phase 547: checking history also reports positions since the last admitted snapshot.
+    positions: { since: 0, allowed: 4096 },
     sequence: 2,
     pending: 'none',
     canDiscard: false,
@@ -357,4 +361,29 @@ test('pruning is refused while the latest snapshot is too large to install', asy
     tooLarge,
   });
   assert(!f.sent.slice(n).some((r) => r.action === 'prune'));
+});
+test('a saved snapshot left behind by a membership change is named stale, offered for discard and cancelled (phase 547)', async (t) => {
+  const f = await client(t);
+  const original = f.io.exchange;
+  f.io.exchange = async (request) => {
+    if (request.action === 'publish') throw Error('not sent');
+    return original(request);
+  };
+  await assert.rejects(f.run('create'), /not sent/);
+  const cp = f.saved().attempt.checkpoint;
+  f.io.exchange = original;
+  await f.advance();
+  const seen = await f.run('inspect');
+  assert.equal(seen.pending, 'resume');
+  assert.equal(seen.saved, 'stale');
+  assert.equal(seen.canDiscard, true);
+  const n = f.sent.length;
+  assert.equal((await f.run('discard')).pending, 'none');
+  assert.deepEqual(
+    f.sent.slice(n).map((r) => r.action),
+    ['read', 'read', 'discard'],
+  );
+  assert.deepEqual([f.saved().attempt, f.saved().discard], [null, null]);
+  assert.equal((await f.exchange(await f.makeRequest('publish', cp))).ok, false);
+  assert.equal((await f.run('create')).sequence, 1);
 });

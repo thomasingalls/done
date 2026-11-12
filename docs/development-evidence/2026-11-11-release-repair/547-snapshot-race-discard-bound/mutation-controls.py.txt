@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Phase 547 mutation controls: remove one piece, run the tests that guard it, restore the file."""
+import subprocess, sys, shutil, re, json
+W = '<worktree>'
+OUT = sys.argv[1]
+ONLY = sys.argv[2:] or None
+
+def node(*files, pattern=None):
+    cmd = ['node', '--test', '--test-concurrency=1']
+    if pattern:
+        cmd += ['--test-name-pattern', pattern]
+    return cmd + list(files)
+
+def vitest(*files):
+    return ['node', 'node_modules/vitest/vitest.mjs', 'run', '--maxWorkers=1', *files]
+
+H = 'src/account/historyMaintenance.ts'
+S = 'src/crdt/historySource.ts'
+V = 'src/ui/AccountHistory.tsx'
+BR = 'src/crdt/accountSessionBridge.ts'
+R = 'test/account-history/race.test.mjs'
+RB = 'test/account-history/replay-bound.test.mjs'
+RS = 'test/account-history/replay-bound-source.test.mjs'
+CL = 'test/account-history/client.test.mjs'
+
+MUTATIONS = [
+    ('M1 no catalog re-read after preparing (race window left open)', H,
+     """  if (
+    now.catalog.sequence !== pending.catalog.sequence ||
+    now.catalog.latest !== pending.catalog.latest ||
+    now.catalog.pending !== pending.catalog.pending
+  )
+    return { ...(await describe(now)), raced: true };""",
+     """  void now;""",
+     [node(R, pattern='creating at once')]),
+    ('M2 an own unadmitted snapshot is not offered for discard', H,
+     """        (saved !== undefined && saved !== 'cancelling') ||""",
+     "",
+     [node(R), node(CL, pattern='stale')]),
+    ('M3 discarding a blocked snapshot sends the cancellation at once (no keeping it for later)', H,
+     """        await save({ ...current(), attempt: null, discard: hash });
+      } else {""",
+     """        return cancel(hash);
+      } else {""",
+     [node(R, pattern='deadlock|kept for later')]),
+    ('M4 a kept cancellation is not cleared once the other snapshot is admitted', H,
+     """    await save({ ...current(), attempt: null, ...(fenced ? { discard: null } : {}) });""",
+     """    void fenced;
+    await save({ ...current(), attempt: null });""",
+     [node(R, pattern='deadlock')]),
+    ('M5 creating counts nothing before preparing', H,
+     """  if (needed > HISTORY_REPLAY_EVENTS) return refused(pending, 'new', needed);""",
+     """  void needed;""",
+     [node(RB, pattern='4,097')]),
+    ('M6 verifying counts nothing before admitting', H,
+     """        if (needed > HISTORY_REPLAY_EVENTS) return refused(page, 'pending', needed);""",
+     """        void needed;""",
+     [node(RB, pattern='4,097')]),
+    ('M7 the replay itself does not count before reading', S,
+     """    if (remaining > HISTORY_REPLAY_EVENTS)
+      throw new HistoryReplayLimit(remaining, HISTORY_REPLAY_EVENTS);
+    // A display""",
+     """    // A display""",
+     [node(RS)]),
+    ('M8 a bound met inside preparation is the generic failure again', H,
+     """  } catch (cause) {
+    if (!(cause instanceof HistoryReplayLimit)) throw cause;
+    return refused(pending, 'new', cause.needed, cause.allowed);
+  }""",
+     """  } catch (cause) {
+    throw cause;
+  }""",
+     [node(RB, pattern='named outcome')]),
+    ('M9 checking history reports no positions', H,
+     """      ...(latest !== undefined
+        ? {""",
+     """      ...(false
+        ? {""",
+     [node(CL, pattern='too large'), node(RB, pattern='4,097 positions with no')]),
+    ('M10 an admitted snapshot of this device is discarded instead of reconciled', H,
+     """      if (state === undefined) return finish(await exchange('publish', mine.checkpoint));""",
+     """      if (state === undefined) return cancel(hash);""",
+     [node(R, pattern='never discarded')]),
+    ('M11 the view offers Resume for snapshots resuming cannot send', V,
+     """const noResume = new Set(['blocked', 'superseded', 'stale', 'cancelling']);""",
+     """const noResume = new Set<string>([]);""",
+     [vitest('test/accountHistory.test.tsx')]),
+    ('M12 the warning starts at three quarters instead of past it', V,
+     """  if (p.since * 4 > p.allowed * 3)""",
+     """  if (p.since * 4 >= p.allowed * 3)""",
+     [vitest('test/accountHistory.test.tsx')]),
+    ('M13 the view does not say what discarding affects', V,
+     """  if (status.canDiscard && saved !== 'cancelling') parts.push(HISTORY_DISCARD_EFFECT);""",
+     "",
+     [vitest('test/accountHistory.test.tsx')]),
+    ('M14 the session bridge refuses the new fields', BR,
+     """    ['pruned', 'tooLarge', 'saved', 'positions', 'replay', 'raced'],""",
+     """    ['pruned', 'tooLarge'],""",
+     [vitest('test/accountSessionBridge.test.ts')]),
+]
+
+def summary(text):
+    lines = [l for l in text.splitlines() if re.match(r'^(✖|✔|ℹ (tests|pass|fail)|\s+(×|✓)|\s*Tests\s)', l)]
+    return '\n'.join(lines[-30:])
+
+with open(OUT, 'w') as out:
+    for name, path, old, new, runs in MUTATIONS:
+        if ONLY and not any(name.startswith(o) for o in ONLY):
+            continue
+        full = f'{W}/{path}'
+        src = open(full).read()
+        assert src.count(old) == 1, (name, src.count(old))
+        shutil.copy(full, full + '.orig')
+        try:
+            open(full, 'w').write(src.replace(old, new))
+            out.write(f'\n## {name}\n{path}: removed\n{old}\n')
+            for cmd in runs:
+                p = subprocess.run(cmd, cwd=W, capture_output=True, text=True, timeout=3000)
+                out.write(f'\n$ {" ".join(cmd)}\nexit {p.returncode}\n{summary(p.stdout + p.stderr)}\n')
+                out.flush()
+        finally:
+            shutil.move(full + '.orig', full)
+        assert open(full).read() == src
+        print('done', name, flush=True)

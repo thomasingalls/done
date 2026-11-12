@@ -609,11 +609,15 @@
     },
     {
       "path": "src/account/historyMaintenance.ts",
-      "sha256": "c58e9e7de21bd1fc9367a08d15bb5db303d57c5cff0e2c9ca5578e1e0d012dc6"
+      "sha256": "0f04f9f870d6d4da5f86600f485936d8086c3e2054c1b3966eec8928fed4dfb9"
     },
     {
       "path": "src/account/historyReadRetry.ts",
       "sha256": "79b2878c1d1e8fe086f9e63427b4b16040e4a4082b3f3cdccc20c630b1fa846d"
+    },
+    {
+      "path": "src/account/historyReplayBound.ts",
+      "sha256": "c78a15053c33c01bfcb701cb68090ee251044614f800931d9a0a1ffa21eb185e"
     },
     {
       "path": "src/account/lostDeviceRecovery.ts",
@@ -845,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountSessionBridge.ts",
-      "sha256": "3c6b24b2f3d6bcc7cc87fa9c4582a3a604d73bca02634140c5f71fe44b738a48"
+      "sha256": "ecf373a0eb4a0af087d96bc890b8c488c31ae1e53f41a532e30400314034154e"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -1093,7 +1097,7 @@
     },
     {
       "path": "src/crdt/historyOwner.ts",
-      "sha256": "feeec25034261fb2cf7f14575f4710575083ed47f3abc0080589e12a629e744c"
+      "sha256": "c871305a3fdf09a77e8528f8821b2500b2e8d71f3e820522a4fa82f7b9d88730"
     },
     {
       "path": "src/crdt/historyReceiveFence.ts",
@@ -1101,7 +1105,7 @@
     },
     {
       "path": "src/crdt/historySource.ts",
-      "sha256": "c701b4714adf48eb2013d349274a8b1cccc2470e650ae7cee910fcdcb572b8cb"
+      "sha256": "66e687834175bd3da9f4d9d035aef1b8575c421636bc0809e09039f02a2315f9"
     },
     {
       "path": "src/crdt/inboundLedger.ts",
@@ -1857,7 +1861,7 @@
     },
     {
       "path": "src/ui/AccountHistory.tsx",
-      "sha256": "687b0d8a26317130f5703d3ea5a7627435919303a423ef4f74d66c23ce8e6fc7"
+      "sha256": "0b1c4c2d6c3a3129499d759d2d8e50a730d6e0b60ba432308420e99fbb03a6dd"
     },
     {
       "path": "src/ui/AccountIdentity.tsx",
@@ -2551,7 +2555,7 @@
         },
         {
           "path": "src/crdt/historySource.ts",
-          "line": 266
+          "line": 282
         },
         {
           "path": "src/crdt/promotionGenesis.ts",

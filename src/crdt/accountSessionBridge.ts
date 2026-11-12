@@ -61,26 +61,50 @@ const loginStates = [
   'signed-out',
 ];
 const commands = ['inspect', 'create', 'resume', 'verify', 'discard', 'prune'];
+const savedSnapshots = ['sendable', 'waiting', 'blocked', 'superseded', 'stale', 'cancelling'];
 function history(input: unknown): HistoryMaintenanceStatus {
-  fields(input, ['sequence', 'pending', 'canDiscard'], ['pruned', 'tooLarge']);
+  fields(
+    input,
+    ['sequence', 'pending', 'canDiscard'],
+    ['pruned', 'tooLarge', 'saved', 'positions', 'replay', 'raced'],
+  );
   const v = input as HistoryMaintenanceStatus;
   if (
     !number(v.sequence) ||
     !['none', 'resume', 'verify', 'waiting', 'stale'].includes(v.pending) ||
     typeof v.canDiscard !== 'boolean' ||
-    (Object.hasOwn(v, 'pruned') && v.pruned !== true)
+    (Object.hasOwn(v, 'pruned') && v.pruned !== true) ||
+    (Object.hasOwn(v, 'raced') && v.raced !== true) ||
+    (Object.hasOwn(v, 'saved') && !savedSnapshots.includes(v.saved!))
   )
     throw fail();
-  if (!Object.hasOwn(v, 'tooLarge')) return Object.freeze({ ...v });
-  const t = v.tooLarge!;
-  fields(t, ['snapshot', 'needed', 'allowed']);
-  if (
-    !['new', 'saved', 'pending', 'latest'].includes(t.snapshot) ||
-    !number(t.needed) ||
-    !number(t.allowed)
-  )
-    throw fail();
-  return Object.freeze({ ...v, tooLarge: Object.freeze({ ...t }) });
+  const out: HistoryMaintenanceStatus = { ...v };
+  if (Object.hasOwn(v, 'tooLarge')) {
+    const t = v.tooLarge!;
+    fields(t, ['snapshot', 'needed', 'allowed']);
+    if (
+      !['new', 'saved', 'pending', 'latest'].includes(t.snapshot) ||
+      !number(t.needed) ||
+      !number(t.allowed)
+    )
+      throw fail();
+    out.tooLarge = Object.freeze({ ...t });
+  }
+  // Phase 547: positions since the latest admitted snapshot, and a replay-bound refusal.
+  if (Object.hasOwn(v, 'positions')) {
+    const n = v.positions!;
+    fields(n, ['since', 'allowed']);
+    if (!number(n.since) || !number(n.allowed)) throw fail();
+    out.positions = Object.freeze({ ...n });
+  }
+  if (Object.hasOwn(v, 'replay')) {
+    const r = v.replay!;
+    fields(r, ['snapshot', 'needed', 'allowed']);
+    if (!['new', 'pending'].includes(r.snapshot) || !number(r.needed) || !number(r.allowed))
+      throw fail();
+    out.replay = Object.freeze({ ...r });
+  }
+  return Object.freeze(out);
 }
 function haltDetail(input: unknown): ReceiveHaltDetail | undefined {
   try {

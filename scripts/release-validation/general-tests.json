@@ -45,6 +45,7 @@
     "test/hexFieldValidation.test.ts",
     "test/historyInstallBound.test.ts",
     "test/historyReplay.test.ts",
+    "test/historyReplayBound.test.ts",
     "test/historyRetirement.test.ts",
     "test/hostedRetention.test.ts",
     "test/id.test.ts",
