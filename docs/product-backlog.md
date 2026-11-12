@@ -103,6 +103,38 @@ production. Pruning the log does not shrink the document; see compaction below.
   service keeps the pre-compaction snapshot, the returning device re-expressing its unsent edits on
   the compacted document, and rescuing older edits as plain text for the person to place.
 
+### Long text in one action
+
+Phase 548 made a long card save in slices and made every other oversized action a refusal instead of
+a stall. What it left:
+
+- **TEXT-CEILING — lower the one-action text ceiling from 1,048,576 characters to 256 KiB.** The
+  operator decided this on 2026-11-12, for after the next release. One compose or paste may carry
+  1,048,576 UTF-16 units today, and saving near that takes minutes (below). A 256 KiB bound caps the
+  wait near 15 s in a browser. It is a new limit on pastes that work today, only slowly, so it needs
+  its own sentence and a decision entry when built.
+- **TEXT-SAVE-COST — saving sliced text costs the square of its length.** Each 1,000-unit slice
+  forks the workspace history and re-encodes the whole remaining text (read from the code; the
+  split between the two is unmeasured). Measured in phase 548:
+  200,000 characters took 14.5 s in headless Chromium; 1,048,576 single-byte characters took 114 s
+  in Node; 696,000 three-byte characters had not finished after 23 minutes. Pastes always had this
+  cost. Nothing shows progress while it runs.
+- **TEXT-REDO — Redo of a card or paste over 16 KiB is refused.** Undo removes a long card in one
+  step and Redo cannot bring it back, because Redo restores stored history as one change. Before
+  phase 548 that Redo stalled the device. Fixing it needs a sliced Redo or a larger update limit.
+- **TEXT-GOALS-COPY — copying or moving many short Goals lines whose total is over 16 KiB is
+  refused**, although it could be split per card. Duplicate, Done for now, merge, split and Next to
+  Goals over 16 KiB are refused because a crash between slices would leave a broken state; a
+  two-phase form could lift that.
+- **TEXT-STUCK-UPDATE — a page already stuck on an older build cannot update itself.** "Reload to
+  update" fails while that build's queue is blocked. The person has to press Discard pending input
+  (the draft stays in the field) or close every window. The stuck input lives only in memory.
+- **TEXT-OTHER — smaller observations.** Slices never end inside a surrogate pair, but a combining
+  accent or a joined emoji can be divided, so another device may briefly show a broken glyph while
+  slices arrive. A crash between slices keeps the slices saved and loses the rest, as for a paste.
+  Filing a long unfiled card to Goals takes the same refusal path and is untested. In reference mode
+  a refused action still emits an empty two-byte update.
+
 ### Returning to the app and start-up
 
 - **WARM-BYTE-COMPARE — compare stored bytes on return in place of a full baseline replay.**
@@ -119,6 +151,18 @@ production. Pruning the log does not shrink the document; see compaction below.
   (`src/crdt/joinedAccount.ts`) has the same shape as the original device's and needs its own change.
   Also deferred: streaming one encoded state to the page in place of paged records, and marking the
   semantic audit due at open.
+- **CATCH-UP-REDUCED — a reduced device still catches up more slowly than an unreduced one.**
+  After phase 549 kept the completed background replay, a returning reduced device at a 300 ms round
+  trip took 135.5 s where an unreduced one took 90.1 s with a similar amount of its own writing; a
+  run that sent 1 position of its own instead of 22 took 65.5 s. The remaining gap is not the
+  background replay; per-position cost on a reduced device is the likely cause (unmeasured). The
+  device's own card-membership repair sends change catch-up time about twofold.
+- **CATCH-UP-NO-VIEW — input or suspension that interrupts the background replay's index pass leaves
+  no warm view**, so the next load, possibly a foreground one, replays in full. Queued work no
+  longer causes this after phase 549; input and suspension still can.
+- **CATCH-UP-LAB-RTT — the lab runs with no round-trip time**, so its catch-up figures understate a
+  phone's. The 150 s catch-up of investigation 16 did not recur at phase 548 without a delay (24 to
+  28 s) and never finished in 180 s with 300 ms; the phase 549 record has both.
 
 ### Sending
 
