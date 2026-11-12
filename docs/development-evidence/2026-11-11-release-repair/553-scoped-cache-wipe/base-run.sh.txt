@@ -1,0 +1,11 @@
+#!/bin/sh
+# Phase 553 base-tree run: the three changed service sources at 6e88b46e0, the new test file kept.
+# Run from the worktree root; the candidate sources are restored on exit.
+set -u
+S="$1" # scratch directory holding the candidate copies
+FILES="account-service/historyCheckpoint.ts account-service/delivery.ts account-service/publisherTips.ts"
+restore() { for f in $FILES; do cp "$S/candidate/$(basename "$f")" "$f"; done; }
+trap restore EXIT
+for f in $FILES; do git show "6e88b46e0:$f" > "$f"; done
+git diff --stat 6e88b46e0 -- account-service
+timeout 900 node --test --test-concurrency=1 --test-timeout=300000 test/account-history/cache-scope.test.mjs

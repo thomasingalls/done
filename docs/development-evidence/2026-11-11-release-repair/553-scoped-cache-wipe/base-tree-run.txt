@@ -1,0 +1,301 @@
+✖ one account's publish, admit, discard and prune leave another account's verification; its prune re-verifies only its own streams (33902.797708ms)
+ℹ B's submit and read after each step, ms: {"publish":683,"admit":652,"second publish":652,"second admit":750,"third publish":696,"discard":640,"prune":649}
+✖ a capture in flight across its own account's prune fails its guard and the read retries; another account's capture stays valid (24428.408958ms)
+✖ another account writes and reads straight through a prune: no lock across its await, no retry and no census (24102.066708ms)
+✖ a submission that meets a cleared authority proof retries and is accepted, without wiping again (9156.820875ms)
+✖ a prune leaves quarantine as it was, even after the damaged bytes are restored (22471.259625ms)
+✖ a prune that commits and then fails to answer still retires its account's tips, and only those (27251.313292ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 142105.529708
+
+✖ failing tests:
+
+test at test/account-history/cache-scope.test.mjs:275:1
+✖ one account's publish, admit, discard and prune leave another account's verification; its prune re-verifies only its own streams (33902.797708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      {
+        a: {
+  +       fullCensuses: 2,
+  -       fullCensuses: 0,
+          held: 3,
+  +       verifiedRows: 768
+  -       verifiedRows: 'suffix'
+        },
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 3
+        },
+        step: 'publish'
+      },
+      {
+        a: {
+  +       fullCensuses: 2,
+  -       fullCensuses: 0,
+          held: 3,
+  +       verifiedRows: 768
+  -       verifiedRows: 'suffix'
+        },
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 3
+        },
+        step: 'admit'
+      },
+      {
+        a: {
+  +       fullCensuses: 2,
+  -       fullCensuses: 0,
+          held: 3,
+  +       verifiedRows: 1536
+  -       verifiedRows: 'suffix'
+        },
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 3
+        },
+        step: 'second publish'
+      },
+      {
+        a: {
+  +       fullCensuses: 2,
+  -       fullCensuses: 0,
+          held: 3,
+  +       verifiedRows: 1536
+  -       verifiedRows: 'suffix'
+        },
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 3
+        },
+        step: 'second admit'
+      },
+      {
+        a: {
+  +       fullCensuses: 2,
+  -       fullCensuses: 0,
+          held: 3,
+  +       verifiedRows: 1544
+  -       verifiedRows: 'suffix'
+        },
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 3
+        },
+        step: 'third publish'
+      },
+      {
+        a: {
+  +       fullCensuses: 2,
+  -       fullCensuses: 0,
+          held: 3,
+  +       verifiedRows: 1544
+  -       verifiedRows: 'suffix'
+        },
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 3
+        },
+        step: 'discard'
+      },
+      {
+        a: {
+  ...
+        b: {
+  +       authorityProofs: 1,
+  +       fullCensuses: 1,
+  +       held: 0
+  -       authorityProofs: 0,
+  -       fullCensuses: 0,
+  -       held: 1
+        },
+        step: 'prune'
+      }
+    ]
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { step: 'publish', b: [Object], a: [Object] }, { step: 'admit', b: [Object], a: [Object] }, { step: 'second publish', b: [Object], a: [Object] }, { step: 'second admit', b: [Object], a: [Object] }, { step: 'third publish', b: [Object], a: [Object] }, { step: 'discard', b: [Object], a: [Object] }, { step: 'prune', b: [Object], a: [Object] } ],
+    expected: [ { step: 'publish', b: [Object], a: [Object] }, { step: 'admit', b: [Object], a: [Object] }, { step: 'second publish', b: [Object], a: [Object] }, { step: 'second admit', b: [Object], a: [Object] }, { step: 'third publish', b: [Object], a: [Object] }, { step: 'discard', b: [Object], a: [Object] }, { step: 'prune', b: [Object], a: [Object] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-history/cache-scope.test.mjs:366:1
+✖ a capture in flight across its own account's prune fails its guard and the read retries; another account's capture stays valid (24428.408958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      censuses: 1,
+      events: [
+        'read-capture',
+        'prune-commit',
+  ...
+        covered: false,
+  +     other: false,
+  -     other: true,
+        unprunedRow: false
+      },
+      guards: 2,
+      pruneAttempts: 1,
+      pruned: true,
+  +   wipes: 2
+  -   wipes: 0
+    }
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { pruned: true, pruneAttempts: 1, events: [ 'read-capture', 'prune-commit', 'read-guard', 'read-guard' ], guards: 2, censuses: 1, fence: { other: false, unprunedRow: false, covered: false }, wipes: 2 },
+    expected: { pruned: true, pruneAttempts: 1, events: [ 'read-capture', 'prune-commit', 'read-guard', 'read-guard' ], guards: 2, censuses: 1, fence: { other: true, unprunedRow: false, covered: false }, wipes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-history/cache-scope.test.mjs:437:1
+✖ another account writes and reads straight through a prune: no lock across its await, no retry and no census (24102.066708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   censuses: 2,
+  -   censuses: 0,
+      events: [
+        'read-capture',
+        'prune-commit',
+        'read-guard',
+  +     'read-guard'
+      ],
+  +   guards: 2,
+  -   guards: 1,
+      held: 1,
+      pruneAttempts: 1,
+      pruned: true,
+  +   wipes: 2
+  -   wipes: 0
+    }
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { pruned: true, pruneAttempts: 1, events: [ 'read-capture', 'prune-commit', 'read-guard', 'read-guard' ], guards: 2, censuses: 2, held: 1, wipes: 2 },
+    expected: { pruned: true, pruneAttempts: 1, events: [ 'read-capture', 'prune-commit', 'read-guard' ], guards: 1, censuses: 0, held: 1, wipes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-history/cache-scope.test.mjs:490:1
+✖ a submission that meets a cleared authority proof retries and is accepted, without wiping again (9156.820875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+  +   fences: 0,
+  +   kind: 'unknown',
+  +   reason: 'unavailable',
+  +   wipes: 2
+  -   fences: 1,
+  -   kind: 'decision',
+  -   reason: undefined,
+  -   wipes: 1
+    }
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { kind: 'unknown', reason: 'unavailable', fences: 0, wipes: 2 },
+    expected: { kind: 'decision', reason: undefined, fences: 1, wipes: 1 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-history/cache-scope.test.mjs:525:1
+✖ a prune leaves quarantine as it was, even after the damaged bytes are restored (22471.259625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+  +   censuses: 1,
+  -   censuses: 0,
+      pruned: 0,
+      quarantined: 1,
+      refused: {
+        ok: false,
+        refusal: 'ledger-integrity'
+  ...
+      },
+  +   wiped: 2
+  -   wiped: 0
+    }
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { refused: { ok: false, refusal: 'ledger-integrity' }, wiped: 2, pruned: 0, quarantined: 1, censuses: 1, reread: { kind: 'unknown', reason: 'ledger-integrity' } },
+    expected: { refused: { ok: false, refusal: 'ledger-integrity' }, wiped: 0, pruned: 0, quarantined: 1, censuses: 0, reread: { kind: 'unknown', reason: 'ledger-integrity' } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at test/account-history/cache-scope.test.mjs:566:1
+✖ a prune that commits and then fails to answer still retires its account's tips, and only those (27251.313292ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      aCensuses: 2,
+  +   bAfterResend: 1,
+  +   bCensuses: 1,
+  -   bAfterResend: 0,
+  -   bCensuses: 0,
+      committed: 768,
+      failed: {
+        ok: false,
+        refusal: 'unavailable'
+      },
+  +   held: 0,
+  -   held: 1,
+      resent: true,
+  +   wipes: 4
+  -   wipes: 0
+    }
+  
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { failed: { ok: false, refusal: 'unavailable' }, committed: 768, held: 0, bCensuses: 1, aCensuses: 2, resent: true, bAfterResend: 1, wipes: 4 },
+    expected: { failed: { ok: false, refusal: 'unavailable' }, committed: 768, held: 1, bCensuses: 0, aCensuses: 2, resent: true, bAfterResend: 0, wipes: 0 },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,115 @@
+#!/usr/bin/env python3
+"""Phase 553 mutation controls. Each mutation is applied alone in the worktree, the named test
+runs, and the source is restored byte for byte. A mutation is detected when its test fails.
+Run from the worktree root: python3 mutation-controls.py.txt [ids...]"""
+import subprocess, sys, time
+
+H = 'account-service/historyCheckpoint.ts'
+P = 'account-service/publisherTips.ts'
+D = 'account-service/delivery.ts'
+NEW = 'test/account-history/cache-scope.test.mjs'
+T = {
+    'T1': 'publish, admit, discard and prune',
+    'T2': 'capture in flight across its own',
+    'T3': 'writes and reads straight through',
+    'T4': 'cleared authority proof',
+    'T5': 'quarantine as it was',
+    'T6': 'commits and then fails to answer',
+}
+FINALLY = "      if (pruning) reuse?.tips?.invalidateAccount(pruning);\n"
+MUTATIONS = [
+    ('M1', 'publish, admit and discard clear every account again at entry', [
+        (H, "  let pruning: string | undefined;\n",
+            "  let pruning: string | undefined;\n  if (!fast) reuse?.clear();\n")], [T['T1']]),
+    ('M2', 'every non-read attempt clears every account again in its finally', [
+        (H, FINALLY, "      if (!fast) reuse?.clear();\n")], [T['T3']]),
+    ('M3', 'prune invalidates nothing', [(H, FINALLY, "")], [T['T2']]),
+    ('M4', 'prune invalidates every other account instead of its own', [
+        (P, "      if (key.startsWith(prefix)) invalidatePublisher(key);",
+            "      if (!key.startsWith(prefix)) invalidatePublisher(key);")], [T['T3']]),
+    ('M5', 'prune names its account by workspace id, which matches no key', [
+        (H, "if (r.action === 'prune') pruning = before.original.account.id;",
+            "if (r.action === 'prune') pruning = before.original.promotion.workspace_id;")],
+     [T['T1']]),
+    ('M6', 'account invalidation retires tips but keeps capture owners', [
+        (P, "      if (key.startsWith(prefix)) invalidatePublisher(key);",
+            "      if (key.startsWith(prefix)) {\n        tips.delete(key);\n        queued.delete(key);\n      }")],
+     [T['T2']]),
+    ('M7', 'only a prune that answered invalidates its account', [
+        (H, FINALLY, ""),
+        (H, "      hook('after-commit', 'history-checkpoint');\n      return { ok: true as const, page };",
+            "      hook('after-commit', 'history-checkpoint');\n      if (pruning) reuse?.tips?.invalidateAccount(pruning);\n      return { ok: true as const, page };")],
+     [T['T6']]),
+    ('M8', 'publish, admit and discard invalidate their own account too', [
+        (H, "if (r.action === 'prune') pruning = before.original.account.id;",
+            "pruning = before.original.account.id;")], [T['T1']]),
+    ('M9', 'a submission answers unavailable on a cleared authority proof again', [
+        (D, "        if (cause instanceof AuthorityCacheClearedError) continue;\n", "")], [T['T4']]),
+    ('M10', 'a submission retries a cleared authority proof but wipes first', [
+        (D, "        if (cause instanceof AuthorityCacheClearedError) continue;\n",
+            "        if (cause instanceof AuthorityCacheClearedError) {\n          reuse?.clear();\n          continue;\n        }\n")],
+     [T['T4']]),
+    ('M11', "account invalidation lifts the account's quarantine", [
+        (P, "      if (key.startsWith(prefix)) invalidatePublisher(key);\n  };",
+            "      if (key.startsWith(prefix)) invalidatePublisher(key);\n    for (const key of [...poisoned]) if (key.startsWith(prefix)) poisoned.delete(key);\n  };")],
+     [T['T5']]),
+    ('M12', 'the prune holds its write transaction across its last await', [
+        (H, "      hook('after-verify', 'history-checkpoint');\n      db.exec('BEGIN IMMEDIATE');\n",
+            "      hook('after-verify', 'history-checkpoint');\n"),
+        (H, "      const page = await issuer.historyPage({\n",
+            "      db.exec('BEGIN IMMEDIATE');\n      const page = await issuer.historyPage({\n")],
+     [T['T3']]),
+    ('M13', "the commit fence skips its byte comparison (existing tests are its detector)", [
+        (P, "      const same =\n        fingerprint(current, countRows(db, current), selected, purpose) === c.fingerprint;",
+            "      const same = true;")],
+     ['EXISTING', T['T2']]),
+]
+
+def run(pattern):
+    if pattern == 'EXISTING':
+        argv = ['node', '--test', '--test-concurrency=1', '--test-timeout=120000',
+                'test/account-service-delivery/publisher-tips.test.mjs',
+                'test/account-service-delivery/publisher-commit-races.test.mjs']
+        label = 'publisher-tips + publisher-commit-races'
+    else:
+        argv = ['node', '--test', '--test-concurrency=1', '--test-timeout=240000',
+                '--test-name-pattern=' + pattern, NEW]
+        label = NEW + ' :: ' + pattern
+    start = time.time()
+    p = subprocess.run(argv, capture_output=True, text=True, timeout=600)
+    out = p.stdout + p.stderr
+    fails = [l for l in out.splitlines() if l.startswith('✖ ') and 'failing tests' not in l]
+    counts = [l for l in out.splitlines() if l.startswith('ℹ pass') or l.startswith('ℹ fail')]
+    first = ''
+    for l in out.splitlines():
+        s = l.strip()
+        if s.startswith('AssertionError') or s.startswith('Error:') or s.startswith('+ ') or s.startswith('- '):
+            first += s + ' | '
+            if len(first) > 600:
+                break
+    return p.returncode, label, round(time.time() - start), fails, counts, first
+
+ids = sys.argv[1:]
+for mid, name, edits, tests in MUTATIONS:
+    if ids and mid not in ids:
+        continue
+    originals = {}
+    try:
+        for path, old, new in edits:
+            src = originals.setdefault(path, open(path).read())
+            cur = open(path).read()
+            assert cur.count(old) == 1, f'{mid}: anchor not unique in {path}'
+            open(path, 'w').write(cur.replace(old, new))
+        results = [run(t) for t in tests]
+    finally:
+        for path, src in originals.items():
+            open(path, 'w').write(src)
+    detected = any(r[0] != 0 for r in results)
+    print(f'{mid} {"DETECTED" if detected else "SURVIVED"}: {name}')
+    for code, label, secs, fails, counts, first in results:
+        print(f'  {label}: exit {code}, {secs} s, {" ".join(c[2:] for c in counts)}')
+        for f in fails[:3]:
+            print('   ', f)
+        if first:
+            print('    first diff:', first[:600])
+    sys.stdout.flush()

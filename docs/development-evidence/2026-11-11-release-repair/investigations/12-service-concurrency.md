@@ -2,7 +2,7 @@
 
 A delegated agent's report from 2026-11-11, filed as delivered. Read-only at `ff8578cd0`, including the infrastructure repository's deployment file. Paths under `/private/tmp` were session scratch space and no longer exist; the supporting files that mattered are under [support](./support/).
 
-**What happened next.** The operator approved scoping the history-route wipe on 2026-11-11 (queued) and declined request logging. The rest is under the SVC items in the product backlog.
+**What happened next.** The operator approved scoping the history-route wipe on 2026-11-11 and declined request logging. [Phase 553](../553-scoped-cache-wipe/README.md) built the scoping and the submission retry this report found: publish, admit and discard retire nothing, a prune retires only its own account's tips, and another account's next request after a history step no longer re-verifies its whole ledger (620 to 750 ms to 11 to 12 ms in that phase's test). The error-path wipes, the prune's commit cost and workers are not built. The rest is under the SVC items in the product backlog.
 
 ---
 

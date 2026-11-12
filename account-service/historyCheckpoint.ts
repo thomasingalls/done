@@ -136,8 +136,10 @@ export async function exchangeHistoryCheckpoint(
           ? (r.payload as string)
           : null;
   const fast = r.action === 'read' || r.action === 'source' ? reuse : undefined;
-  // A pruning commit replaces old wire bytes under the same authority. Never reuse through it.
-  if (!fast) reuse?.clear();
+  // Publish, admit and discard write only history tables, which no verified tip or authority proof
+  // reads, so they retire nothing. A prune replaces old wire bytes of the account it prunes under
+  // the same authority: never reuse that account's tips through it (phase 553).
+  let pruning: string | undefined;
   const catalogRead = r.action === 'read' && r.payload === 'catalog';
   const capture = (authorityOnly = false) => {
     // Catalog authorization owns no publisher-history evidence yet. Capture and verify
@@ -223,6 +225,7 @@ export async function exchangeHistoryCheckpoint(
       let before = capture(catalogRead);
       db.exec('ROLLBACK');
       if (!before) return no('unavailable');
+      if (r.action === 'prune') pruning = before.original.account.id;
       const { authority: auth, history } = catalogRead
         ? await reuseWorkspaceAuthorityHistory(before.original, issuer, reuse)
         : await verifyCurrentWorkspaceAuthorityWithHistory(before.original, issuer);
@@ -683,7 +686,9 @@ export async function exchangeHistoryCheckpoint(
       rethrowAuthorization(cause);
       return no('unavailable');
     } finally {
-      if (!fast) reuse?.clear();
+      // After every attempt, including one that committed and then failed to answer. Authority
+      // proofs stay: a prune changes no authority header byte, and they are keyed by those bytes.
+      if (pruning) reuse?.tips?.invalidateAccount(pruning);
     }
   }
   return no('state-changed');

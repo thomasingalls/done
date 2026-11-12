@@ -89,7 +89,7 @@ production. Pruning the log does not shrink the document; see compaction below.
 
 - **AUTO-HIST-STAGES — a staged path.** Stage 0, refusal messages (done: history maintenance and
   sign-in in phase 551, the send and receive lanes in phase 552) and one status line. Stage 1,
-  manual-flow correctness (phases 546 and 547, the scoped service cache wipe). Stage 2, automatic
+  manual-flow correctness (phases 546 and 547; the scoped service cache wipe, done in phase 553). Stage 2, automatic
   create and verify triggered by positions accepted since the latest snapshot, provisionally 1,024,
   not by local records and an hourly clock. Stage 3, automatic prune once per snapshot by the
   admitting device. Stage 4, on by default.
@@ -205,12 +205,18 @@ a stall. What it left:
 
 - **SVC-ERROR-CLEARS — scope the error-path cache wipes** in `account-service/delivery.ts`,
   `discovery.ts` and `successor.ts` to the failing publisher. Held to be shown to the operator
-  separately from the approved history-route scoping.
+  separately from the history-route scoping, which phase 553 built. They still clear every account:
+  phase 553's quarantine test shows one refused read retiring every tip.
+- **SVC-PRUNE-OWN-TIPS — keep the pruned account's own verified tips across a prune.** *decision.*
+  Phase 553 retires them, as the 2026-10-11 policy requires, so that account's devices re-verify
+  each stream once after every prune. A prune keeps each stream's count, witness and chain
+  commitment (receipts carry the original hash), so the tips would stay valid, and the commit
+  fence still refuses any capture whose served bytes changed. Needs a separate operator amendment.
 - **SVC-PRUNE-COMMIT — make a prune's commit proportional to changed rows.** Today it captures and
   re-encodes every blob and checkpoint inside one synchronous transaction, so every request waits.
   Medium, and it needs security review because it is the destructive operation.
 - **SVC-WORKER-TIPS — verification in a worker.** Only if measurement still shows saturation after
-  the two items above.
+  SVC-ERROR-CLEARS and SVC-PRUNE-COMMIT.
 - **SVC-OPS — deployment values in the infrastructure repository.** The API container requests 100m
   CPU with no limit; the WebCrypto thread pool is at its default of four.
 - **SVC-NO-LOGS — the operator declined request and cache-wipe logging on the service**
@@ -218,7 +224,8 @@ a stall. What it left:
 - **SVC-SIGN-IN — the desktop sign-in failure during the phone's maintenance is unexplained.** The
   text recalled, "Account verification could not finish", exists only in a file nothing imports.
   Likely a census-bound step gone cold after the phone's cache wipes, or the device's own
-  four-request budget (unmeasured). The pod's restart count for 2026-11-08 would show whether it was
+  four-request budget (unmeasured). Phase 553 removes the history route's wipes; the error-path
+  wipes (SVC-ERROR-CLEARS) remain. The pod's restart count for 2026-11-08 would show whether it was
   killed.
 
 ### Tests and tooling

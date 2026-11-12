@@ -1156,6 +1156,9 @@ export async function decideSubmission(
             throw Error('Prepared removal cutoff changed');
         }
       } catch (cause) {
+        // A clear retired only mathematical evidence. As on reads, re-read and authenticate
+        // within the existing four attempts, and do not wipe again (phase 553).
+        if (cause instanceof AuthorityCacheClearedError) continue;
         note(cause);
         reuse?.clear();
         return unknown(cause instanceof LedgerIntegrityError ? 'ledger-integrity' : 'unavailable');

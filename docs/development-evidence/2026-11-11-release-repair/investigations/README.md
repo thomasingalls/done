@@ -35,7 +35,7 @@ What was built from them is in the phase records beside this folder. What was he
 | [09](./09-send-path.md) | What does one sent position cost, and did the release change it? | First fixes queued |
 | [10](./10-reduction-slicing.md) | Why does a first reduction cost the square of history? | Slice-budget change queued |
 | [11](./11-reduction-handoff-collision.md) | Can a receive collide with reduction's final step? | Yes, rarely; fixed in phase 546 |
-| [12](./12-service-concurrency.md) | Is the service starved by running on one thread? | No; a global cache wipe is the problem. Scoping approved |
+| [12](./12-service-concurrency.md) | Is the service starved by running on one thread? | No; a global cache wipe is the problem. History-route scoping built in phase 553 |
 | [16](./16-slow-catch-up-and-stalled-save.md) | Why did a reduced device take 150 s to catch up, and why did a 20 KB card never save? | Two defects, both reproduced; fixes queued |
 
 ## History snapshots and pruning

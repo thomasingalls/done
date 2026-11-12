@@ -269,7 +269,7 @@
     },
     {
       "path": "account-service/delivery.ts",
-      "sha256": "a85725d15524fae6c48acd203085a6daf37586cfe03c386fcc94d464f57b7a3c"
+      "sha256": "306f710a9a5ff2fbf4777b97e5b9a2c8dfaf38163fb80ac9e3d55c7c5e83e1aa"
     },
     {
       "path": "account-service/deliveryVerification.ts",
@@ -309,7 +309,7 @@
     },
     {
       "path": "account-service/historyCheckpoint.ts",
-      "sha256": "c708f50d44a6031562103b735dc12fd267f4d6ce5380b50e08d1cadd04d610f7"
+      "sha256": "9751180cc61f1a6f798cc768f07a4415677d058b6ef426ae3f1c25fb018abb3e"
     },
     {
       "path": "account-service/historySources.ts",
@@ -417,7 +417,7 @@
     },
     {
       "path": "account-service/publisherTips.ts",
-      "sha256": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d"
+      "sha256": "3171c42db237e4cc056bd71c00c6633490ded644c7f7c38d16db3b23e251981d"
     },
     {
       "path": "account-service/recovery.ts",
