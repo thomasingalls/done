@@ -13,11 +13,17 @@ export type { LocalRetentionCause, LocalRetentionDetail } from './localRetention
 export interface LocalRetentionHint {
   readonly revision: number;
   readonly records: number;
+  /** The adopted view holds an installation older builds cannot replay (`InboundState.foldDue`).
+   * Its reduction is due now: no growth threshold or cooldown, every other check unchanged. */
+  readonly fold?: true;
 }
 export const LOCAL_RETENTION_MIN_RECORDS = 1024;
 export const LOCAL_RETENTION_QUIET_MS = 10000;
 export const LOCAL_RETENTION_COOLDOWN_MS = 30 * 60000;
 export const LOCAL_RETENTION_RETRY_MS = 60000;
+/** Consecutive completed folds that may skip the cooldown while the owner still reports one due.
+ * A correct fold clears the report, so this only bounds a fold that did not carry it. */
+export const LOCAL_RETENTION_FOLD_STREAK = 3;
 /** Longest a settled hold may defer routine sync before it yields (scheduling bound, unmeasured). */
 export const LOCAL_RETENTION_HOLD_MS = 5 * 60000;
 /** Normal sync window after a hold or poll deferral expires, before it may engage again. */
@@ -124,7 +130,12 @@ export function createAutomaticLocalRetention(options: {
     running = false,
     halted = false;
   let quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS,
-    notBefore = 0;
+    notBefore = 0,
+    // The cooldown after a completed removal. A due fold skips it, at most once per retry
+    // interval and for a bounded streak (`foldStreak`), so a fold that does not clear cannot loop.
+    cooldownUntil = 0,
+    foldNotBefore = 0,
+    foldStreak = 0;
   let parked: string | undefined, reason: string | undefined;
   // Shown only beside reason `capacity`; cleared by every other outcome.
   let detail: LocalRetentionDetail | undefined;
@@ -235,13 +246,16 @@ export function createAutomaticLocalRetention(options: {
   };
   const observation = () => {
     const { ready, hint, synchronized, hold, deferPolls } = options.observe();
+    const fold = hint?.fold === true;
+    // The episode ends when the owner stops reporting a fold; the next one starts a new streak.
+    if (hint && !fold) foldStreak = 0;
     const valid =
       ready &&
       hint &&
       Number.isSafeInteger(hint.revision) &&
       hint.revision >= 0 &&
       Number.isSafeInteger(hint.records) &&
-      hint.records >= LOCAL_RETENTION_MIN_RECORDS;
+      (hint.records >= LOCAL_RETENTION_MIN_RECORDS || fold);
     // A hint withdrawn by an in-flight validation, or pending input, never releases a hold.
     // Only the owner's stable hold observation, outcomes, the budget and lifecycle do.
     if (hold !== true) releaseHold();
@@ -252,7 +266,18 @@ export function createAutomaticLocalRetention(options: {
     if (deferPolls !== true) releasePoll();
     const key = hint ? `${hint.revision}:${hint.records}` : undefined;
     return {
-      hint: valid ? { revision: hint.revision, key: key! } : undefined,
+      hint: valid
+        ? {
+            revision: hint.revision,
+            key: key!,
+            // Skip the cooldown only while the streak allows; the retry clocks always apply.
+            notBefore:
+              fold && foldStreak < LOCAL_RETENTION_FOLD_STREAK
+                ? Math.max(notBefore, foldNotBefore)
+                : Math.max(notBefore, cooldownUntil),
+            fold,
+          }
+        : undefined,
       synchronized: synchronized !== false,
       holdable:
         hold === true &&
@@ -286,7 +311,7 @@ export function createAutomaticLocalRetention(options: {
     const delay = Math.max(
       0,
       quietUntil - Date.now(),
-      notBefore - Date.now(),
+      hint.notBefore - Date.now(),
       yielding - Date.now(),
     );
     // A saved slice keeps the poll deferral only while its next slice is due at once.
@@ -321,7 +346,7 @@ export function createAutomaticLocalRetention(options: {
     const { hint, synchronized, holdable, deferrable } = observation();
     if (!hint || hint.key === parked) return;
     const now = Date.now();
-    if (now < Math.max(quietUntil, notBefore)) {
+    if (now < Math.max(quietUntil, hint.notBefore)) {
       schedule();
       return;
     }
@@ -398,7 +423,12 @@ export function createAutomaticLocalRetention(options: {
         if (progress) report({ stage: 'complete' });
         reason = undefined;
         detail = undefined;
-        notBefore = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
+        notBefore = 0;
+        cooldownUntil = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
+        if (hint.fold) {
+          foldStreak++;
+          foldNotBefore = Date.now() + LOCAL_RETENTION_RETRY_MS;
+        }
         progressed();
         releaseHold();
         again = true;

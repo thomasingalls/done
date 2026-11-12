@@ -52,6 +52,16 @@ The agents' reports behind these items are kept in
   survives in either order (tested with three devices, two prune cycles and conflicting edits). The
   cases that cannot catch up are an uninstallable snapshot, a cut that cannot be verified against
   reduced history, and possibly a missed key rotation. Not designed.
+- **HIST-FOLD-RESIDUAL — an older build still cannot open a store holding an unfolded verified
+  installation.** *decision.* Phase 550 commits a snapshot installation verified against reduced
+  history only when a reduction can follow at once, and that reduction carries it into the baseline
+  older builds read (10.2 to 10.3 s after the commit, measured). Three cases leave it unfolded for
+  longer: capacity first met by the fold (later installations are then held), a device closed during
+  the ten-second window or mid-fold (the next open of a newer build folds it), and writing entered
+  after the commit while sending fails (folded once it is accepted). An older build then shows
+  "Worker operation could not finish." on the unlock screen and writes nothing. Candidates: commit
+  the installation and the new baseline atomically (not chosen on 2026-11-12), or a named message in
+  a future build for a store it cannot replay.
 - **HIST-UNTESTED — two conditions were asked for and not reached.** A prune landing while a device
   is mid-receive: four attempts all converged, but the device had installed the newer snapshot
   first, so the condition was never created. A key rotation while a device is offline across a

@@ -151,6 +151,8 @@ function sync(input: unknown): SyncStatus {
           'sign-in-required',
           'request-expired',
           'network-unavailable',
+          'history-unverified',
+          'history-waiting',
         ].includes(v.reason))
     )
       throw fail();

@@ -867,3 +867,63 @@ it('a named receive size halt keeps the halt, shows its sizes, and a retry clear
   expect('detail' in f.scheduler.runtime.status.receive).toBe(false);
   await f.scheduler.dispose();
 });
+
+it('keeps an unverified history snapshot named while other devices keep arriving, until it clears', async () => {
+  let standing: 'history-unverified' | undefined,
+    calls = 0,
+    failing = true;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      send: async () => ({ kind: 'idle', acceptedThrough: 0 }),
+      // Writing from another device keeps arriving on every other pass.
+      receive: async () =>
+        failing
+          ? { kind: 'unknown', receivedThrough: calls }
+          : ++calls % 2
+            ? { kind: 'progress', receivedThrough: calls }
+            : { kind: 'idle', receivedThrough: calls },
+      standing: () => standing,
+    }),
+  );
+  f.scheduler.wake('start');
+  await f.tick(0);
+  // Control, the notice seen vanishing: a retried read is named only until progress arrives.
+  expect(f.scheduler.runtime.status.receive).toMatchObject({
+    reason: 'network-unavailable',
+    issueSince: 0,
+  });
+  failing = false;
+  await f.tick(1000);
+  expect(f.scheduler.runtime.status.receive).toMatchObject({ reason: null, issueSince: null });
+  standing = 'history-unverified';
+  const set = f.now;
+  await f.tick(5000);
+  const receive = () => f.scheduler.runtime.status.receive;
+  // Named from the first pass that reads it.
+  const since = receive().issueSince!;
+  expect(since).toBeGreaterThan(set);
+  expect(receive()).toMatchObject({ reason: 'history-unverified', issueSince: since });
+  expect(receive().phase).not.toBe('blocked');
+  const before = calls;
+  // Reads that fail because of the condition (a pruned stream) keep it named, not hidden behind
+  // a network sentence that progress would clear.
+  failing = true;
+  await f.tick(5000);
+  expect(receive()).toMatchObject({
+    phase: 'retrying',
+    reason: 'history-unverified',
+    issueSince: since,
+  });
+  failing = false;
+  await f.tick(40000);
+  // Still receiving, and still named: progress from other devices does not clear it.
+  expect(calls).toBeGreaterThan(before + 4);
+  expect(receive()).toMatchObject({ reason: 'history-unverified', issueSince: since });
+  expect(receive().lastSuccessAt).toBeGreaterThan(since);
+  // A newer snapshot installs: the owner reports it gone and the next pass clears it.
+  standing = undefined;
+  await f.tick(20000);
+  expect(receive()).toMatchObject({ reason: null, issueSince: null });
+  await f.scheduler.dispose();
+});

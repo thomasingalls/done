@@ -6,6 +6,7 @@ import {
   LOCAL_RETENTION_QUIET_MS as QUIET,
   LOCAL_RETENTION_COOLDOWN_MS as COOLDOWN,
   LOCAL_RETENTION_RETRY_MS as RETRY,
+  LOCAL_RETENTION_FOLD_STREAK as FOLD_STREAK,
 } from '../src/crdt/automaticLocalRetention';
 import { hasAutomaticLocalRetention } from '../src/crdt/localBaselineMode';
 import { PreparationCapacity } from '../src/crdt/preparationCapacity';
@@ -18,7 +19,10 @@ function fixture() {
   vi.useFakeTimers();
   vi.setSystemTime(0);
   const controller = new AbortController();
-  let state = { ready: true, hint: { revision: 0, records: MIN } };
+  let state: { ready: boolean; hint: { revision: number; records: number; fold?: true } } = {
+    ready: true,
+    hint: { revision: 0, records: MIN },
+  };
   const calls: {
     revision: number;
     resolve: (result: { kind: string; reason?: string }) => void;
@@ -350,4 +354,82 @@ it('readiness refreshes do not mistake routine sync activity for new user input 
   f.run.dispose();
   f.calls[0]!.resolve({ kind: 'removed' });
   await f.tick(0);
+});
+
+it('folds a verified installation at once: no growth threshold or cooldown, every other check kept', async () => {
+  const f = fixture();
+  // Small suffix, no fold reported: nothing runs, however long it waits.
+  f.set({ ready: true, hint: { revision: 3, records: 4 } });
+  f.run.wake();
+  await f.tick(COOLDOWN * 2);
+  expect(f.calls).toHaveLength(0);
+  // The owner reports an installation older builds cannot replay. The installation's own
+  // writing is activity: the fold is due when the quiet window after it has passed.
+  f.set({ ready: true, hint: { revision: 3, records: 5, fold: true } });
+  f.run.wake();
+  await f.tick(QUIET - 1);
+  expect(f.calls).toHaveLength(0);
+  await f.tick(1);
+  expect(f.calls.map((c) => c.revision)).toEqual([3]);
+  // Readiness still gates it: a refused attempt keeps the ordinary retry clock.
+  f.calls[0]!.resolve({ kind: 'skipped', reason: 'ineligible' });
+  await f.tick(0);
+  f.set({ ready: false, hint: { revision: 3, records: 6, fold: true } });
+  f.run.refresh();
+  await f.tick(RETRY * 2);
+  expect(f.calls).toHaveLength(1);
+  f.set({ ready: true, hint: { revision: 3, records: 7, fold: true } });
+  f.run.refresh();
+  await f.tick(RETRY);
+  expect(f.calls).toHaveLength(2);
+  // It completes: the ordinary cooldown starts. The fold report clears with it, so new
+  // ordinary growth waits the whole cooldown as before.
+  f.calls[1]!.resolve({ kind: 'removed' });
+  await f.tick(0);
+  f.set({ ready: true, hint: { revision: 4, records: MIN } });
+  f.run.wake();
+  await f.tick(COOLDOWN - 1);
+  expect(f.calls).toHaveLength(2);
+  await f.tick(1);
+  expect(f.calls).toHaveLength(3);
+  f.run.dispose();
+});
+
+it('a fold report that survives its fold cannot loop: spaced by the retry clock, then capped', async () => {
+  expect(FOLD_STREAK).toBe(3);
+  const f = fixture();
+  f.set({ ready: true, hint: { revision: 0, records: 1, fold: true } });
+  f.run.wake();
+  await f.tick(QUIET);
+  expect(f.calls).toHaveLength(1);
+  // A buggy owner keeps reporting a fold after each completed one.
+  const complete = async (i: number) => {
+    f.calls[i]!.resolve({ kind: 'removed' });
+    await f.tick(0);
+    f.set({ ready: true, hint: { revision: i + 1, records: 1, fold: true } });
+    f.run.refresh();
+  };
+  for (let i = 0; i < FOLD_STREAK - 1; i++) {
+    await complete(i);
+    await f.tick(RETRY - 1);
+    expect(f.calls).toHaveLength(i + 1); // never sooner than the retry clock
+    await f.tick(1);
+    expect(f.calls).toHaveLength(i + 2);
+  }
+  // The streak is spent: only the ordinary cooldown remains.
+  await complete(FOLD_STREAK - 1);
+  await f.tick(COOLDOWN - 1);
+  expect(f.calls).toHaveLength(FOLD_STREAK);
+  await f.tick(1);
+  expect(f.calls).toHaveLength(FOLD_STREAK + 1);
+  // An owner that stops reporting the fold ends the episode; the next report starts afresh.
+  await complete(FOLD_STREAK);
+  f.set({ ready: true, hint: { revision: 9, records: 1 } });
+  f.run.refresh();
+  await f.tick(0);
+  f.set({ ready: true, hint: { revision: 9, records: 2, fold: true } });
+  f.run.refresh();
+  await f.tick(RETRY);
+  expect(f.calls).toHaveLength(FOLD_STREAK + 2);
+  f.run.dispose();
 });

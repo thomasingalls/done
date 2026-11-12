@@ -108,6 +108,12 @@ For each candidate checkpoint cut `(publisher, position, link)`:
 4. Below the retired frontier with no exact evidence, return `history-required`. Neither a newer
    checkpoint sequence, its service/admitter signatures, a larger `observedThrough`, nor snapshot
    inclusion proves that missing chain link.
+   *Amended 2026-11-12 (phase 550):* when the checkpoint moves a receive cursor forward, a read of
+   the publisher's accepted chain from the cut to the retained frontier, verified entry by entry and
+   ending at the frontier link this device kept, is exact evidence; the replay of an installation
+   committed that way relies on the checks made at installation. A checkpoint that moves no cursor is
+   still refused and skipped. See the [decision](./decisions.md) and the
+   [phase 550 record](./development-evidence/2026-11-11-release-repair/550-verified-cut-fold/README.md).
 
 Compare cuts independently per publisher; vectors can be incomparable. Do not sum positions, take
 the largest sequence as coverage, reset a cursor, or silently omit one publisher's cut. Duplicate

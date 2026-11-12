@@ -1,0 +1,34 @@
+{
+ "hooks_checked": 225,
+ "literals_checked": 98,
+ "changed": [
+  {
+   "path": "src/crdt/accountReceive.ts",
+   "kind": "hook",
+   "text": " as const, reason: ",
+   "base": 7,
+   "now": 8
+  },
+  {
+   "path": "src/crdt/accountReceive.ts",
+   "kind": "hook",
+   "text": "history-required",
+   "base": 1,
+   "now": 3
+  },
+  {
+   "path": "src/crdt/accountReceive.ts",
+   "kind": "hook",
+   "text": "} catch (cause) {",
+   "base": 27,
+   "now": 28
+  },
+  {
+   "path": "src/crdt/accountReceive.ts",
+   "kind": "literal",
+   "text": "'history-required'",
+   "base": 1,
+   "now": 3
+  }
+ ]
+}

@@ -1,0 +1,421 @@
+Phase 550 fold probes (copy-only; spec fold-probe.spec.ts.txt, seams fold-probe-seams.diff.txt). Production quiet window (10 s), retry clock (60 s) and cooldown (30 min); the growth threshold lowered at run time only for the first reduction. Built on a 7e6aff636 copy carrying this patch.
+
+===== compat: one fold, then tip and released open, send and receive (final tree) (fold-compat.txt) =====
+
+Running 1 test using 1 worker
+
+20.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+26.2s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+35.9s ids {"A":"6cec92c195f13989e31f766c6078b977","B":"34006d5ca27d9bbbe1933b57b14cbb69","C":"1ce30a6d1df63f18cb57b2cf0713f723"}
+35.9s third holds catalog checks and drops A reads
+36.4s third refusal /account/delivery/read-v2-batch 404 unavailable
+41.4s snapshot 2 admitted
+43.8s snapshot 3 pending
+52.3s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+55.0s snapshot 3 admitted
+56.6s pruned
+66.6s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,null]]
+66.6s third reduced: revision 0 -> 1
+66.7s third back online
+66.8s third history read:catalog
+66.9s third history read:latest
+67.3s install committed? true (0.6 s after online); revision 1
+67.3s B reads after returning: [{"at":67016,"after":2,"limit":2,"phase":"after"}]
+77.5s fold window: 10.181 s (commit to baseline revision 2); panel: "History on this deviceChecking the saved result…"
+83.8s third history read:catalog
+103.4s third history read:catalog
+118.8s third history read:catalog
+135.8s third history read:catalog
+147.5s 70 s later revision 2 (was 2)
+151.0s tip: workspace open; revision 2
+151.3s third history read:catalog
+152.7s tip: sends true, receives true
+156.2s patched: workspace open; revision 2
+156.3s third history read:catalog
+159.6s third history read:catalog
+159.7s released: workspace open; revision 2
+163.9s released: sends true, receives true
+167.3s third history read:catalog
+167.3s patched: workspace open; revision 2
+177.4s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: compat (3.0m)
+
+  1 passed (3.0m)
+exit 0
+
+===== window: tip opened inside the window (fold-window.txt) =====
+
+Running 1 test using 1 worker
+
+19.8s third refusal /account/membership/v2/ceremony 409 authority-changed
+25.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+35.8s ids {"C":"15ca4441702b2aaed577edb6001484e7","B":"5bda3db963bb7b3ed24f17d28ceb63d5","A":"e44ae28ad08904ad3d2aa2f13fb0ce5d"}
+35.8s third holds catalog checks and drops A reads
+36.2s third refusal /account/delivery/read-v2-batch 404 unavailable
+41.8s snapshot 2 admitted
+44.2s snapshot 3 pending
+52.2s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+54.9s snapshot 3 admitted
+56.5s pruned
+66.5s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,null]]
+66.5s third reduced: revision 0 -> 1
+66.5s third back online
+66.7s third history read:catalog
+66.8s third history read:latest
+67.4s install committed? true (0.8 s after online); revision 1
+67.4s B reads after returning: [{"at":66919,"after":2,"limit":2,"phase":"after"}]
+69.0s left 0.0 s after commit; revision 1 (fold pending: true)
+100.1s tip: NOT open: "Worker operation could not finish."; revision 1
+100.1s tip inside the window opens? false
+102.9s patched: workspace open; revision 1
+103.0s third history read:catalog
+113.1s after reopening the new build the fold ran in 11.924 s
+116.5s third history read:catalog
+116.6s tip: workspace open; revision 2
+118.3s tip: sends true, receives true
+121.5s third history read:catalog
+121.7s patched: workspace open; revision 2
+125.0s third history read:catalog
+125.1s released: workspace open; revision 2
+129.3s released: sends true, receives true
+132.5s third history read:catalog
+132.7s patched: workspace open; revision 2
+142.7s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: window (2.4m)
+
+  1 passed (2.4m)
+exit 0
+
+===== midfold: device closed while the fold ran (fold-midfold.txt) =====
+
+Running 1 test using 1 worker
+
+20.1s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+28.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+56.0s ids {"A":"1638d8e9a69ba2c23af078917e46135c","C":"1742b8953eaae26c03057421e7277b68","B":"12558197986032d0fb627e70d5a6fd95"}
+56.0s third holds catalog checks and drops A reads
+56.5s third refusal /account/delivery/read-v2-batch 404 unavailable
+61.5s snapshot 2 admitted
+64.0s snapshot 3 pending
+72.5s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+75.2s snapshot 3 admitted
+76.8s pruned
+86.8s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,null]]
+86.8s third reduced: revision 0 -> 1
+86.9s third back online
+87.0s third history read:catalog
+87.1s third history read:latest
+87.5s install committed? true (0.6 s after online); revision 1
+87.5s B reads after returning: [{"at":87210,"after":2,"limit":2,"phase":"after"}]
+97.5s closed while the fold showed "History on this deviceFinishing saved writing before maintenance…" (seen true); revision after closing 1
+128.4s tip: NOT open: "Worker operation could not finish."; revision 1
+128.4s tip after a closed fold opens? false
+131.2s third history read:catalog
+131.2s patched: workspace open; revision 1
+141.3s reopened on the new build: fold done 11.718 s after opening; revision 2
+144.5s third history read:catalog
+144.6s tip: workspace open; revision 2
+146.3s tip: sends true, receives true
+149.6s third history read:catalog
+149.7s patched: workspace open; revision 2
+153.0s third history read:catalog
+153.1s released: workspace open; revision 2
+156.8s released: sends true, receives true
+160.1s third history read:catalog
+160.2s patched: workspace open; revision 2
+170.2s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: midfold (2.8m)
+
+  1 passed (2.9m)
+exit 0
+
+===== submission round 1: unsent writing before the hold for unsent writing existed (fold-submission-round1.txt) =====
+
+Running 1 test using 1 worker
+
+20.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+28.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+55.1s ids {"B":"c56d633625d185ee20bffbeb864650da","A":"ce3f6ba427fa0dc0d47dae5aef4a6495","C":"d976f3f509bec94829c2c03fb848ca6c"}
+55.1s third holds catalog checks and drops A reads
+55.5s third refusal /account/delivery/read-v2-batch 404 unavailable
+60.6s snapshot 2 admitted
+62.9s third refusal /account/membership/v2/discover 409 unavailable
+63.0s third refusal /account/grant/v1/begin 403 insufficient-scope
+63.0s snapshot 3 pending
+71.5s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+74.2s snapshot 3 admitted
+75.8s pruned
+85.9s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,null]]
+85.9s third reduced: revision 0 -> 1
+85.9s third holds an unsent submission
+85.9s third back online
+86.0s third history read:catalog
+86.1s third history read:latest
+86.5s install committed? true (0.6 s after online); revision 1
+86.5s B reads after returning: [{"at":86229,"after":2,"limit":2,"phase":"after"}]
+93.7s third history read:catalog
+101.7s third history read:catalog
+117.7s third history read:catalog
+126.6s with an unsent submission: revision 1; panel "History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."; notice "Changes on this device are not reaching your other devices.Last accepted upload: 3:35:41 AMReason: send:network-unavailableRetry sending"
+159.3s tip: NOT open: "Worker operation could not finish."; revision 1
+159.3s tip while the fold waits on the submission opens? false
+162.1s third history read:catalog
+162.1s patched: workspace open; revision 1
+162.4s submission accepted 0.3 s after the network allowed it
+172.5s fold 10.315 s after the submission could be sent; panel "History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."
+175.8s third history read:catalog
+175.9s tip: workspace open; revision 2
+177.5s tip: sends true, receives true
+180.8s third history read:catalog
+181.0s patched: workspace open; revision 2
+187.5s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: submission (3.1m)
+
+  1 passed (3.1m)
+exit 0
+
+===== submission final: held while writing is unsent (fold-submission.txt) =====
+
+Running 1 test using 1 worker
+
+22.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+29.6s third refusal /account/membership/v2/ceremony 409 authority-changed
+30.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+54.8s ids {"B":"a1f0cf137c8c46cd3224a2153d7044b8","A":"3b2f3f81555e2e1740bacf3c37ac49b1","C":"1ae0c38a3cb5c3c59d4de003b9d6cde6"}
+54.8s third holds catalog checks and drops A reads
+55.2s third refusal /account/delivery/read-v2-batch 404 unavailable
+60.3s snapshot 2 admitted
+63.8s snapshot 3 pending
+71.8s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+74.5s snapshot 3 admitted
+76.1s pruned
+86.1s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,null]]
+86.1s third reduced: revision 0 -> 1
+86.2s third holds an unsent submission
+86.2s third back online
+86.3s third history read:catalog
+86.4s third history read:latest
+86.9s third refusal /account/delivery/read-v2 409 unavailable
+94.9s third history read:catalog
+95.1s third refusal /account/delivery/read-v2 409 unavailable
+111.2s third history read:catalog
+111.3s third refusal /account/delivery/read-v2 409 unavailable
+131.1s install committed? false (44.9 s after online); revision 1
+131.1s B reads after returning: [{"at":86489,"after":2,"limit":2,"phase":"after"},{"at":86595,"after":4,"limit":1,"phase":"after"},{"at":95010,"after":4,"limit":1,"phase":"after"},{"at":111245,"after":4,"limit":1,"phase":"after"}]
+131.1s notice "Changes on this device are not reaching your other devices.Last accepted upload: 4:10:13 AMReason: send:network-unavailableRetry sendingChanges from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.Last successful receive check: 4:10:50 AMReason: receive:history-waiting"
+131.1s sync details ["Sending: retryingLast accepted upload: 4:10:13 AMAccepted position: 2Reason: send:network-unavailableRetry sendingReceiving: retryingChanges from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.Last successful receive check: 4:10:50 AMReceived positions: 12Reason: receive:history-waiting"]
+141.4s third history read:catalog
+141.6s third refusal /account/delivery/read-v2 409 unavailable
+166.1s with an unsent submission: committed? false; revision 1; notice "Changes on this device are not reaching your other devices.Last accepted upload: 4:10:13 AMReason: send:network-unavailableRetry sendingChanges from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.Last successful receive check: 4:10:50 AMReason: receive:history-waiting"
+169.5s third history read:catalog
+169.5s third history read:latest
+169.5s tip: workspace open; revision 1
+169.7s third refusal /account/delivery/read-v2-batch 409 unavailable
+170.7s third refusal /account/delivery/read-v2-batch 409 unavailable
+172.8s third refusal /account/delivery/read-v2-batch 409 unavailable
+176.9s third history read:catalog
+177.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+185.1s third history read:catalog
+185.1s third refusal /account/delivery/read-v2-batch 409 unavailable
+201.2s third history read:catalog
+201.3s third refusal /account/delivery/read-v2-batch 409 unavailable
+231.4s third history read:catalog
+231.4s third refusal /account/delivery/read-v2-batch 409 unavailable
+261.5s third history read:catalog
+261.6s third refusal /account/delivery/read-v2-batch 409 unavailable
+289.6s tip: sends false, receives false
+293.0s third history read:catalog
+293.1s third history read:latest
+293.1s patched: workspace open; revision 1
+293.3s third refusal /account/delivery/read-v2-batch 409 unavailable
+293.9s submission accepted 0.8 s after the network allowed it
+294.4s third refusal /account/delivery/read-v2-batch 409 unavailable
+296.4s third refusal /account/delivery/read-v2-batch 409 unavailable
+300.5s third history read:catalog
+300.6s third history read:latest
+301.0s installed 7.9 s after the submission could be sent
+311.2s fold 10.199 s after that installation
+314.5s third history read:catalog
+314.7s tip: workspace open; revision 2
+314.7s tip: sends true, receives true
+318.1s third history read:catalog
+318.1s patched: workspace open; revision 2
+324.1s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: submission (5.4m)
+
+  Slow test file: test/packaged-account/fold.spec.ts (5.4m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (5.4m)
+exit 0
+
+===== hidden page: held until visible (fold-hidden.txt) =====
+
+Running 1 test using 1 worker
+
+19.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+26.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.3s ids {"C":"58416b048646a60ef1eb17b21beb9d1a","B":"cbc58e2ba438f801d25ffc3bdb0d8e76","A":"c7ffcd13ff1b1d425be1c9ff1339507e"}
+36.3s third holds catalog checks and drops A reads
+36.7s third refusal /account/delivery/read-v2-batch 404 unavailable
+41.8s snapshot 2 admitted
+44.0s third refusal /account/membership/v2/discover 409 unavailable
+44.1s third refusal /account/grant/v1/begin 403 unavailable
+44.2s snapshot 3 pending
+52.7s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+56.0s snapshot 3 admitted
+57.6s pruned
+62.6s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,null]]
+62.6s third reduced: revision 0 -> 1
+62.6s third page reports hidden
+62.6s third back online
+62.8s third history read:catalog
+62.9s third history read:latest
+63.2s third refusal /account/delivery/read-v2 409 unavailable
+71.3s third history read:catalog
+71.5s third refusal /account/delivery/read-v2 409 unavailable
+87.5s third history read:catalog
+87.7s third refusal /account/delivery/read-v2 409 unavailable
+107.6s install committed? false (45.0 s after online); revision 1
+107.6s B reads after returning: [{"at":62958,"after":2,"limit":2,"phase":"after"},{"at":63056,"after":4,"limit":1,"phase":"after"},{"at":71356,"after":4,"limit":1,"phase":"after"},{"at":87594,"after":4,"limit":1,"phase":"after"}]
+107.6s notice "Changes from your other devices may stop arriving here until history maintenance on this device can run: a history snapshot saved on the service is checked and will install once it can. History on this device, under Data, says what it is waiting for. Your writing on this device is kept.Last successful receive check: 3:39:09 AMReason: receive:history-waiting"
+107.6s sync details ["Sending: idleLast accepted upload: 3:38:48 AMAccepted position: 2Receiving: retryingChanges from your other devices may stop arriving here until history maintenance on this device can run: a history snapshot saved on the service is checked and will install once it can. History on this device, under Data, says what it is waiting for. Your writing on this device is kept.Last successful receive check: 3:39:09 AMReceived positions: 12Reason: receive:history-waiting"]
+117.8s third history read:catalog
+117.9s third refusal /account/delivery/read-v2 409 unavailable
+142.6s hidden: committed? false; revision 1; notice "Changes from your other devices may stop arriving here until history maintenance on this device can run: a history snapshot saved on the service is checked and will install once it can. History on this device, under Data, says what it is waiting for. Your writing on this device is kept.Last successful receive check: 3:39:09 AMReason: receive:history-waiting"
+148.0s third history read:catalog
+148.1s third history read:latest
+148.6s hidden: installed 5.9 s after the block cleared
+158.8s hidden: fold 10.264 s after that installation
+162.2s third history read:catalog
+162.3s tip: workspace open; revision 2
+163.9s tip: sends true, receives true
+167.2s third history read:catalog
+167.3s patched: workspace open; revision 2
+173.8s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: hidden (2.9m)
+
+  1 passed (2.9m)
+exit 0
+
+===== saved account step: held; the release was not exercised (fold-step.txt) =====
+
+Running 1 test using 1 worker
+
+19.8s third refusal /account/membership/v2/ceremony 409 authority-changed
+26.6s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+54.9s ids {"B":"4cad287dabe7f23bc07503405a4f4089","A":"5840f4d9e49124538c88287cfb001be0","C":"4959c8b544138b3f1258a6c44724e5de"}
+55.0s third holds catalog checks and drops A reads
+55.4s third refusal /account/delivery/read-v2-batch 404 unavailable
+60.4s snapshot 2 admitted
+62.9s snapshot 3 pending
+72.0s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+75.2s snapshot 3 admitted
+76.8s pruned
+86.8s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,true,true,null]]
+86.8s third reduced: revision 0 -> 1
+86.9s third back online
+87.8s third saved an unfinished device approval
+89.4s third history read:catalog
+89.5s third history read:latest
+89.9s third refusal /account/delivery/read-v2-batch 409 unavailable
+90.0s third refusal /account/delivery/read-v2 409 unavailable
+92.1s third refusal /account/delivery/read-v2-batch 409 unavailable
+96.1s third history read:catalog
+96.2s third refusal /account/delivery/read-v2-batch 409 unavailable
+104.3s third history read:catalog
+104.4s third refusal /account/delivery/read-v2-batch 409 unavailable
+120.5s third history read:catalog
+120.6s third refusal /account/delivery/read-v2-batch 409 unavailable
+134.5s install committed? false (47.7 s after online); revision 1
+134.5s B reads after returning: [{"at":89658,"after":2,"limit":2,"phase":"after"},{"at":89779,"after":4,"limit":1,"phase":"after"},{"at":89966,"after":4,"limit":1,"phase":"after"},{"at":92053,"after":4,"limit":1,"phase":"after"},{"at":96228,"after":4,"limit":1,"phase":"after"},{"at":104405,"after":4,"limit":1,"phase":"after"},{"at":120572,"after":4,"limit":1,"phase":"after"}]
+134.6s notice "Changes from your other devices may stop arriving here until history maintenance on this device can run: a history snapshot saved on the service is checked and will install once it can. History on this device, under Data, says what it is waiting for. Your writing on this device is kept.Last successful receive check: None since openingReason: receive:history-waiting"
+134.6s sync details ["Sending: idleLast accepted upload: None since openingAccepted position: 2Receiving: retryingChanges from your other devices may stop arriving here until history maintenance on this device can run: a history snapshot saved on the service is checked and will install once it can. History on this device, under Data, says what it is waiting for. Your writing on this device is kept.Last successful receive check: None since openingReceived positions: 12Reason: receive:history-waiting"]
+150.7s third history read:catalog
+150.8s third refusal /account/delivery/read-v2-batch 409 unavailable
+169.6s step: committed? false; revision 1; notice "Changes from your other devices may stop arriving here until history maintenance on this device can run: a history snapshot saved on the service is checked and will install once it can. History on this device, under Data, says what it is waiting for. Your writing on this device is kept.Last successful receive check: None since openingReason: receive:history-waiting"
+172.9s third history read:catalog
+173.0s third history read:latest
+173.0s tip: workspace open; revision 1
+173.1s third refusal /account/delivery/read-v2-batch 409 unavailable
+173.3s third refusal /account/delivery/read-v2 409 unavailable
+175.3s third refusal /account/delivery/read-v2-batch 409 unavailable
+179.4s third history read:catalog
+179.5s third refusal /account/delivery/read-v2-batch 409 unavailable
+187.6s third history read:catalog
+187.6s third refusal /account/delivery/read-v2-batch 409 unavailable
+203.7s third history read:catalog
+203.8s third refusal /account/delivery/read-v2-batch 409 unavailable
+233.9s third history read:catalog
+233.9s tip: sends true, receives false
+234.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+237.6s third history read:catalog
+237.7s patched: workspace open; revision 1
+237.7s third history read:latest
+  ✘  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: step (4.5m)
+
+
+  1) test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: step ─────────────────
+
+    TimeoutError: locator.click: Timeout 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Cancel connection', exact: true })
+
+
+      570 |         const unlockField = Cd.getByLabel('Unlock code', { exact: true });
+      571 |         if (await unlockField.isVisible({ timeout: 5000 }).catch(() => false)) await unlock(Cd, next.code);
+    > 572 |         await Cd.getByRole('button', { name: 'Cancel connection', exact: true }).click({ timeout: 30000 });
+          |                                                                                  ^
+      573 |         note('third cancelled its saved approval');
+      574 |         await Cd.getByRole('link', { name: 'Close and return to accounts' }).click().catch(() => {});
+      575 |         await Cd.goto('/');
+        at <probe copy>/test/packaged-account/fold.spec.ts:572:82
+
+    Error Context: test-results/packaged-account/artifacts/fold-fold-after-a-verified-install-step/error-context.md
+
+  1 failed
+    test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: step ──────────────────
+exit 1
+
+===== capacity on the fold (copy-only seam) (fold-capacity.txt) =====
+
+Running 1 test using 1 worker
+
+20.3s third refusal /account/membership/v2/ceremony 409 unavailable
+26.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.7s ids {"C":"5eaccc7df29582fb74dd9a473b4ab03f","B":"7fcabf9c7d6123b0df065aab428b6ea3","A":"69207e8f3150eed7ed69276e827f7bad"}
+36.7s third holds catalog checks and drops A reads
+37.1s third refusal /account/delivery/read-v2-batch 404 unavailable
+42.2s snapshot 2 admitted
+44.6s snapshot 3 pending
+53.1s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+55.8s snapshot 3 admitted
+57.5s pruned
+67.5s worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: [[null,false,true,true]]
+67.5s third reduced: revision 0 -> 1
+67.5s third back online
+67.7s third history read:catalog
+67.8s third history read:latest
+68.1s install committed? true (0.6 s after online); revision 1
+68.1s B reads after returning: [{"at":67868,"after":2,"limit":2,"phase":"after"},{"at":68070,"after":4,"limit":1,"phase":"after"}]
+85.2s third history read:catalog
+101.4s third history read:catalog
+108.2s capacity: revision 1; panel "History on this deviceThe smaller history snapshot would need 0.0 MiB, and this version saves snapshots of up to 0.0 MiB. Your existing history is still in place. It will check again after new writing or sync changes this device’s history.Check again"; notice ""
+140.8s tip: NOT open: "Worker operation could not finish."; revision 1
+140.8s tip while the fold is parked for capacity opens? false
+143.5s third history read:catalog
+143.7s patched: workspace open; revision 1
+160.2s third history read:catalog
+163.7s capacity after reopening: revision 2
+163.7s capacity: fold 0.003 s after new history once the ceiling lifted
+169.7s convergence: text true, state true
+  ✓  1 test/packaged-account/fold.spec.ts:56:1 › fold after a verified install: capacity (2.8m)
+
+  1 passed (2.8m)
+exit 0

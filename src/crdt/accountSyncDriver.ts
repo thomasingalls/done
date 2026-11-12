@@ -10,6 +10,8 @@ import { CustodyError } from './custodyRecord';
 import { InboundError } from './accountInbound';
 import { createBatchWindow, type BatchTiming } from './batchWindow';
 export type SyncLane = 'send' | 'receive';
+/** A receive condition that stays named while receiving otherwise continues. Not a halt. */
+export type SyncStanding = 'history-unverified' | 'history-waiting';
 export type SyncGate = DriverGate | 'sign-in-required';
 export type SyncHalt =
   | 'closed'
@@ -45,6 +47,7 @@ export interface SyncLaneStatus {
     | 'sign-in-required'
     | 'request-expired'
     | 'network-unavailable'
+    | SyncStanding
     | null;
   readonly issueSince: number | null;
   readonly lastSuccessAt: number | null;
@@ -63,6 +66,7 @@ interface Lane {
   halt?: SyncHalt | undefined;
   haltDetail?: ReceiveHaltDetail | undefined;
   retryReason?: 'request-expired' | 'operation-failed' | 'network-unavailable' | undefined;
+  standing?: SyncStanding | undefined;
   issueSince?: number;
   lastSuccessAt?: number;
   expedite: boolean;
@@ -97,6 +101,9 @@ export function createSyncScheduler(options: {
   publicationBatch?: BatchTiming;
   /** Maintenance may ask routine sync to hold; call wake('hold') when it changes. */
   hold?(): SyncHold | undefined;
+  /** Read after each receive step. Progress from other devices does not clear it; only the
+   * owner reporting it gone does. */
+  standing?(): SyncStanding | undefined;
 }) {
   const clock = options.clock ?? clockDefault;
   const batch = options.publicationBatch
@@ -169,7 +176,8 @@ export function createSyncScheduler(options: {
         : (lane.halt ??
           (gate === 'local-storage' || gate === 'sign-in-required'
             ? gate
-            : (lane.retryReason ?? null))),
+            : // Reads that fail because of it (a pruned stream) do not hide the cause.
+              (lane.standing ?? lane.retryReason ?? null))),
     };
   };
   const snapshot = (): SyncStatus =>
@@ -318,6 +326,14 @@ export function createSyncScheduler(options: {
           (name === 'receive' && (result.kind === 'progress' || result.kind === 'idle'))
         )
           lane.lastSuccessAt = clock.now();
+        if (name === 'receive') {
+          try {
+            lane.standing = options.standing?.();
+          } catch {
+            lane.standing = undefined; // An observer cannot stop synchronization.
+          }
+          if (lane.standing) lane.issueSince ??= clock.now();
+        }
         // An unanswered submit can have committed. Preserve independent read reconciliation,
         // but never override a receiver's failure backoff or diagnostic halt.
         if (
@@ -368,7 +384,7 @@ export function createSyncScheduler(options: {
               : retryable
                 ? 'network-unavailable'
                 : undefined;
-          if (retryable) lane.issueSince ??= clock.now();
+          if (retryable || lane.standing) lane.issueSince ??= clock.now();
           else delete lane.issueSince;
           lane.phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
           lane.failures = retryable ? Math.min(lane.failures + 1, 6) : 0;

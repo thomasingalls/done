@@ -1,0 +1,281 @@
+Phase 550 older-build probes (copy-only; specs older-build-probe.spec.ts.txt and older-build-fold.spec.ts.txt). The same browser profile and service; the app server swapped between builds; script lists checked per load.
+
+===== Unfolded verified install opened by tip 7e6aff636 and released 759890ca0, with store digests (compat-older.txt) =====
+
+Running 1 test using 1 worker
+
+27.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.2s third refusal /account/membership/v2/ceremony 409 authority-changed
+38.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+68.4s ids {"B":"4654b54b072d31597e0b71810a578456","C":"d98e1b98db52991babf74ea265fe9506","A":"13e07c36dc34fb36cfdcf08094874284"}
+68.4s third holds catalog checks and drops A reads
+68.9s third refusal /account/delivery/read-v2-batch 404 unavailable
+75.5s snapshot 2 admitted
+78.5s snapshot 3 pending
+85.5s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+88.8s snapshot 3 admitted
+90.9s pruned
+95.9s third reduced [{"name":"done.cb7e0774df6967776584dad76ab7b3cb","v":5,"revision":1}]
+95.9s third back online with catalog checks and A reads allowed
+96.2s third history read:catalog
+96.3s third history read:latest
+97.0s recovered 1.0 s after returning online
+97.0s verification reads of B: [{"at":96461,"after":2,"limit":2,"phase":"after"}]
+97.0s third sync details: ["Sending: idleLast accepted upload: 2:37:52 AMAccepted position: 2Receiving: idleLast successful receive check: 2:38:44 AMReceived positions: 14"]
+97.8s third receives new B writing
+98.7s third writing reaches A
+98.8s store counter (patched, before) [{"v":5,"next_seq":37,"revision":1}]
+101.5s app server now serves tip
+101.7s tip: page scripts match this build: true (21 scripts)
+132.2s tip: workspace NOT open
+137.3s tip: visible text "done\nToday\nYesterday\nTomorrow\nYour space, at your pace.\nToday\nNEXT\n2 / 3\nMake a little room for the big idea\nDone\nLater\nTake the long way home\nDone\nLater\nDONE\nGot the idea out of my head\nSent the message I was putting off\nMade time for a walk\nWhat got done?\n+\nGoals\nA little space for everything\nIdeas, plans, loose ends.\nThings to come back to.\nMake something of my own\nWrite down the spark\nFind one small place to start\nShare a first draft\nOutside of work\nLearn to make really good bread\nPlan a weekend with no plans\nMore dinners with friends\n\ndone\n\nBack\nConnect this device\n\nConnect devices, approve content access, and open your writing. Existing writing on either device is kept.\n\nUnlock code\nUnlock enrollment\nRemove from this device\n\nWorker operation could not finish.\n\nClose and return to accounts"
+137.3s tip: alerts ["Worker operation could not finish."]; dialogs []; unlock field visible true
+137.3s tip: console ["page warning: Service Worker registration blocked by Playwright"]
+157.3s tip: after 20 s, page text: "\n    doneTodayYesterdayTomorrowYour space, at your pace.TodayNext 2 / 3Make a little room for the big ideaDone LaterTake the long way homeDone LaterDoneGot the idea out of my headSent the message I was putting offMade time for a walkWhat got done? +GoalsA little space for everythingIdeas, plans, loose ends.Things to come back to.Make something of my ownWrite down the sparkFind one small place to startShare a first draftOutside of workLearn to make really good breadPlan a weekend with no plansMor"
+157.3s tip: store change while on the older build: no change
+157.3s tip: counter [{"v":5,"next_seq":37,"revision":1}]
+159.0s app server now serves patched
+159.1s patched: page scripts match this build: true (21 scripts)
+160.7s third history read:catalog
+160.7s patched: workspace open
+170.7s patched again: shows writing missed before the snapshot? true; notice ""
+172.1s third history read:catalog
+172.4s patched again after tip: sends and receives
+175.1s app server now serves released
+175.2s released: page scripts match this build: true (21 scripts)
+206.1s released: workspace NOT open
+211.1s released: visible text "done\nToday\nYesterday\nTomorrow\nYour space, at your pace.\nToday\nNEXT\n2 / 3\nMake a little room for the big idea\nDone\nLater\nTake the long way home\nDone\nLater\nDONE\nGot the idea out of my head\nSent the message I was putting off\nMade time for a walk\nWhat got done?\n+\nGoals\nA little space for everything\nIdeas, plans, loose ends.\nThings to come back to.\nMake something of my own\nWrite down the spark\nFind one small place to start\nShare a first draft\nOutside of work\nLearn to make really good bread\nPlan a weekend with no plans\nMore dinners with friends\n\ndone\n\nBack\nConnect this device\n\nConnect devices, approve content access, and open your writing. Existing writing on either device is kept.\n\nUnlock code\nUnlock enrollment\nRemove from this device\n\nWorker operation could not finish.\n\nClose and return to accounts"
+211.1s released: alerts ["Worker operation could not finish."]; dialogs []; unlock field visible true
+211.1s released: console ["page warning: Service Worker registration blocked by Playwright"]
+231.1s released: after 20 s, page text: "\n    doneTodayYesterdayTomorrowYour space, at your pace.TodayNext 2 / 3Make a little room for the big ideaDone LaterTake the long way homeDone LaterDoneGot the idea out of my headSent the message I was putting offMade time for a walkWhat got done? +GoalsA little space for everythingIdeas, plans, loose ends.Things to come back to.Make something of my ownWrite down the sparkFind one small place to startShare a first draftOutside of workLearn to make really good breadPlan a weekend with no plansMor"
+231.1s released: store change while on the older build: no change
+231.1s released: counter [{"v":5,"next_seq":46,"revision":1}]
+232.8s app server now serves patched
+232.8s patched: page scripts match this build: true (21 scripts)
+234.5s third history read:catalog
+234.5s patched: workspace open
+244.5s patched again: shows writing missed before the snapshot? true; notice ""
+245.8s third history read:catalog
+246.2s patched again after released: sends and receives
+246.2s store change across the whole test: done.cb7e0774/content: +4 -0 ~0; done.cb7e0774/heads: +8 -0 ~0; done.cb7e0774/meta: +0 -0 ~1 changed ["\"counter\""]; done.cb7e0774/outbound: +6 -0 ~0
+252.2s convergence: text true, state true
+  ✓  1 test/packaged-account/compat-older.spec.ts:56:1 › a store holding a verified install, opened by older builds and back (4.2m)
+
+  1 passed (4.3m)
+exit 0
+
+===== timeline (compat-older.timeline) =====
+27.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.2s third refusal /account/membership/v2/ceremony 409 authority-changed
+38.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+68.4s ids {"B":"4654b54b072d31597e0b71810a578456","C":"d98e1b98db52991babf74ea265fe9506","A":"13e07c36dc34fb36cfdcf08094874284"}
+68.4s third holds catalog checks and drops A reads
+68.9s third refusal /account/delivery/read-v2-batch 404 unavailable
+75.5s snapshot 2 admitted
+78.5s snapshot 3 pending
+85.5s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+88.8s snapshot 3 admitted
+90.9s pruned
+95.9s third reduced [{"name":"done.cb7e0774df6967776584dad76ab7b3cb","v":5,"revision":1}]
+95.9s third back online with catalog checks and A reads allowed
+96.2s third history read:catalog
+96.3s third history read:latest
+97.0s recovered 1.0 s after returning online
+97.0s verification reads of B: [{"at":96461,"after":2,"limit":2,"phase":"after"}]
+97.0s third sync details: ["Sending: idleLast accepted upload: 2:37:52 AMAccepted position: 2Receiving: idleLast successful receive check: 2:38:44 AMReceived positions: 14"]
+97.8s third receives new B writing
+98.7s third writing reaches A
+98.8s store counter (patched, before) [{"v":5,"next_seq":37,"revision":1}]
+101.5s app server now serves tip
+101.7s tip: page scripts match this build: true (21 scripts)
+132.2s tip: workspace NOT open
+137.3s tip: visible text "done\nToday\nYesterday\nTomorrow\nYour space, at your pace.\nToday\nNEXT\n2 / 3\nMake a little room for the big idea\nDone\nLater\nTake the long way home\nDone\nLater\nDONE\nGot the idea out of my head\nSent the message I was putting off\nMade time for a walk\nWhat got done?\n+\nGoals\nA little space for everything\nIdeas, plans, loose ends.\nThings to come back to.\nMake something of my own\nWrite down the spark\nFind one small place to start\nShare a first draft\nOutside of work\nLearn to make really good bread\nPlan a weekend with no plans\nMore dinners with friends\n\ndone\n\nBack\nConnect this device\n\nConnect devices, approve content access, and open your writing. Existing writing on either device is kept.\n\nUnlock code\nUnlock enrollment\nRemove from this device\n\nWorker operation could not finish.\n\nClose and return to accounts"
+137.3s tip: alerts ["Worker operation could not finish."]; dialogs []; unlock field visible true
+137.3s tip: console ["page warning: Service Worker registration blocked by Playwright"]
+157.3s tip: after 20 s, page text: "\n    doneTodayYesterdayTomorrowYour space, at your pace.TodayNext 2 / 3Make a little room for the big ideaDone LaterTake the long way homeDone LaterDoneGot the idea out of my headSent the message I was putting offMade time for a walkWhat got done? +GoalsA little space for everythingIdeas, plans, loose ends.Things to come back to.Make something of my ownWrite down the sparkFind one small place to startShare a first draftOutside of workLearn to make really good breadPlan a weekend with no plansMor"
+157.3s tip: store change while on the older build: no change
+157.3s tip: counter [{"v":5,"next_seq":37,"revision":1}]
+159.0s app server now serves patched
+159.1s patched: page scripts match this build: true (21 scripts)
+160.7s third history read:catalog
+160.7s patched: workspace open
+170.7s patched again: shows writing missed before the snapshot? true; notice ""
+172.1s third history read:catalog
+172.4s patched again after tip: sends and receives
+175.1s app server now serves released
+175.2s released: page scripts match this build: true (21 scripts)
+206.1s released: workspace NOT open
+211.1s released: visible text "done\nToday\nYesterday\nTomorrow\nYour space, at your pace.\nToday\nNEXT\n2 / 3\nMake a little room for the big idea\nDone\nLater\nTake the long way home\nDone\nLater\nDONE\nGot the idea out of my head\nSent the message I was putting off\nMade time for a walk\nWhat got done?\n+\nGoals\nA little space for everything\nIdeas, plans, loose ends.\nThings to come back to.\nMake something of my own\nWrite down the spark\nFind one small place to start\nShare a first draft\nOutside of work\nLearn to make really good bread\nPlan a weekend with no plans\nMore dinners with friends\n\ndone\n\nBack\nConnect this device\n\nConnect devices, approve content access, and open your writing. Existing writing on either device is kept.\n\nUnlock code\nUnlock enrollment\nRemove from this device\n\nWorker operation could not finish.\n\nClose and return to accounts"
+211.1s released: alerts ["Worker operation could not finish."]; dialogs []; unlock field visible true
+211.1s released: console ["page warning: Service Worker registration blocked by Playwright"]
+231.1s released: after 20 s, page text: "\n    doneTodayYesterdayTomorrowYour space, at your pace.TodayNext 2 / 3Make a little room for the big ideaDone LaterTake the long way homeDone LaterDoneGot the idea out of my headSent the message I was putting offMade time for a walkWhat got done? +GoalsA little space for everythingIdeas, plans, loose ends.Things to come back to.Make something of my ownWrite down the sparkFind one small place to startShare a first draftOutside of workLearn to make really good breadPlan a weekend with no plansMor"
+231.1s released: store change while on the older build: no change
+231.1s released: counter [{"v":5,"next_seq":46,"revision":1}]
+232.8s app server now serves patched
+232.8s patched: page scripts match this build: true (21 scripts)
+234.5s third history read:catalog
+234.5s patched: workspace open
+244.5s patched again: shows writing missed before the snapshot? true; notice ""
+245.8s third history read:catalog
+246.2s patched again after released: sends and receives
+246.2s store change across the whole test: done.cb7e0774/content: +4 -0 ~0; done.cb7e0774/heads: +8 -0 ~0; done.cb7e0774/meta: +0 -0 ~1 changed ["\"counter\""]; done.cb7e0774/outbound: +6 -0 ~0
+252.2s convergence: text true, state true
+errors: []
+
+===== Control: the same after a reduction folded the install (compat-fold.txt) =====
+
+Running 1 test using 1 worker
+
+20.6s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+29.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+56.6s ids {"B":"2ec423969be1622868732041cac7ef2d","A":"67e36abd6c3121f583f605c403a6f3f9","C":"0cb6dfb329027b9afa212766baadc477"}
+56.7s third holds catalog checks and drops A reads
+57.1s third refusal /account/delivery/read-v2-batch 404 unavailable
+62.1s snapshot 2 admitted
+64.4s third refusal /account/membership/v2/discover 409 unavailable
+64.5s third refusal /account/grant/v1/begin 403 insufficient-scope
+64.6s snapshot 3 pending
+73.0s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+75.8s snapshot 3 admitted
+77.4s pruned
+82.4s third reduced [{"name":"done.2207443b1608ffacf2b793a99ba46e7b","v":5,"revision":1}]
+82.4s third back online with catalog checks and A reads allowed
+82.5s third history read:catalog
+82.6s third history read:latest
+82.9s recovered 0.5 s after returning online
+82.9s verification reads of B: [{"at":82730,"after":2,"limit":2,"phase":"after"}]
+82.9s third sync details: ["Sending: idleLast accepted upload: 2:41:55 AMAccepted position: 2Receiving: workingLast successful receive check: 2:42:45 AMReceived positions: 14"]
+83.8s third receives new B writing
+84.6s third writing reaches A
+102.7s third history read:catalog
+104.6s folded by a patched-build reduction in 20.1 s: [{"v":5,"next_seq":37,"revision":1}] -> [{"v":5,"next_seq":38,"revision":2}]
+104.7s store counter (patched, before) [{"v":5,"next_seq":38,"revision":2}]
+107.4s app server now serves tip
+107.4s tip: page scripts match this build: true (21 scripts)
+109.0s third history read:catalog
+109.1s tip: workspace open
+109.1s tip: shows writing missed before the snapshot? true
+109.9s tip: its writing reaches A? true
+110.8s tip: receives B's new writing? true
+129.5s third history read:catalog
+145.8s tip: notice ""
+145.8s tip: sync details ["Sending: idleLast accepted upload: 2:43:11 AMAccepted position: 4Receiving: idleLast successful receive check: 2:43:31 AMReceived positions: 18"]
+146.4s third history read:catalog
+165.4s third history read:catalog
+175.8s tip: local history panel ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."]
+175.8s tip: counter before/after allowing reduction [{"v":5,"next_seq":47,"revision":2}] -> [{"v":5,"next_seq":48,"revision":3}]
+175.9s tip: store change while on the older build: done.2207443b/meta: +0 -0 ~2 changed ["\"counter\"","[\"local-baseline\",0]"]
+175.9s tip: counter [{"v":5,"next_seq":48,"revision":3}]
+178.5s app server now serves patched
+178.6s patched: page scripts match this build: true (21 scripts)
+180.2s third history read:catalog
+180.2s patched: workspace open
+190.2s patched again: shows writing missed before the snapshot? true; notice ""
+191.5s third history read:catalog
+191.9s patched again after tip: sends and receives
+194.6s app server now serves released
+194.6s released: page scripts match this build: true (21 scripts)
+196.2s third history read:catalog
+196.3s released: workspace open
+196.3s released: shows writing missed before the snapshot? true
+197.1s released: its writing reaches A? true
+197.9s released: receives B's new writing? true
+217.1s third history read:catalog
+232.9s released: notice ""
+233.0s released: sync details ["Sending: idleLast accepted upload: 2:44:39 AMAccepted position: 6Receiving: idleLast successful receive check: 2:44:59 AMReceived positions: 22"]
+235.1s third history read:catalog
+254.4s third history read:catalog
+263.0s released: local history panel ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."]
+263.0s released: counter before/after allowing reduction [{"v":5,"next_seq":66,"revision":3}] -> [{"v":5,"next_seq":67,"revision":4}]
+263.1s released: store change while on the older build: done.2207443b/content: +0 -2 ~0 removed ["48","55"]; done.2207443b/heads: +0 -4 ~0 removed ["50","51","54","56"]; done.2207443b/meta: +0 -0 ~2 changed ["\"counter\"","[\"local-baseline\",0]"]; done.2207443b/outbound: +0 -3 ~0 removed ["49","52","53"]
+263.1s released: counter [{"v":5,"next_seq":67,"revision":4}]
+265.7s app server now serves patched
+265.8s patched: page scripts match this build: true (21 scripts)
+267.4s patched: workspace open
+267.5s third history read:catalog
+277.4s patched again: shows writing missed before the snapshot? true; notice ""
+278.8s third history read:catalog
+279.1s patched again after released: sends and receives
+279.2s store change across the whole test: done.2207443b/content: +2 -0 ~0; done.2207443b/heads: +4 -0 ~0; done.2207443b/meta: +0 -0 ~2 changed ["\"counter\"","[\"local-baseline\",0]"]; done.2207443b/outbound: +3 -0 ~0
+285.1s convergence: text true, state true
+  ✓  1 test/packaged-account/compat-fold.spec.ts:56:1 › a store holding a verified install, opened by older builds and back (4.8m)
+
+  1 passed (4.8m)
+exit 0
+
+===== timeline (compat-fold.timeline) =====
+20.6s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+29.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+56.6s ids {"B":"2ec423969be1622868732041cac7ef2d","A":"67e36abd6c3121f583f605c403a6f3f9","C":"0cb6dfb329027b9afa212766baadc477"}
+56.7s third holds catalog checks and drops A reads
+57.1s third refusal /account/delivery/read-v2-batch 404 unavailable
+62.1s snapshot 2 admitted
+64.4s third refusal /account/membership/v2/discover 409 unavailable
+64.5s third refusal /account/grant/v1/begin 403 insufficient-scope
+64.6s snapshot 3 pending
+73.0s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+75.8s snapshot 3 admitted
+77.4s pruned
+82.4s third reduced [{"name":"done.2207443b1608ffacf2b793a99ba46e7b","v":5,"revision":1}]
+82.4s third back online with catalog checks and A reads allowed
+82.5s third history read:catalog
+82.6s third history read:latest
+82.9s recovered 0.5 s after returning online
+82.9s verification reads of B: [{"at":82730,"after":2,"limit":2,"phase":"after"}]
+82.9s third sync details: ["Sending: idleLast accepted upload: 2:41:55 AMAccepted position: 2Receiving: workingLast successful receive check: 2:42:45 AMReceived positions: 14"]
+83.8s third receives new B writing
+84.6s third writing reaches A
+102.7s third history read:catalog
+104.6s folded by a patched-build reduction in 20.1 s: [{"v":5,"next_seq":37,"revision":1}] -> [{"v":5,"next_seq":38,"revision":2}]
+104.7s store counter (patched, before) [{"v":5,"next_seq":38,"revision":2}]
+107.4s app server now serves tip
+107.4s tip: page scripts match this build: true (21 scripts)
+109.0s third history read:catalog
+109.1s tip: workspace open
+109.1s tip: shows writing missed before the snapshot? true
+109.9s tip: its writing reaches A? true
+110.8s tip: receives B's new writing? true
+129.5s third history read:catalog
+145.8s tip: notice ""
+145.8s tip: sync details ["Sending: idleLast accepted upload: 2:43:11 AMAccepted position: 4Receiving: idleLast successful receive check: 2:43:31 AMReceived positions: 18"]
+146.4s third history read:catalog
+165.4s third history read:catalog
+175.8s tip: local history panel ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."]
+175.8s tip: counter before/after allowing reduction [{"v":5,"next_seq":47,"revision":2}] -> [{"v":5,"next_seq":48,"revision":3}]
+175.9s tip: store change while on the older build: done.2207443b/meta: +0 -0 ~2 changed ["\"counter\"","[\"local-baseline\",0]"]
+175.9s tip: counter [{"v":5,"next_seq":48,"revision":3}]
+178.5s app server now serves patched
+178.6s patched: page scripts match this build: true (21 scripts)
+180.2s third history read:catalog
+180.2s patched: workspace open
+190.2s patched again: shows writing missed before the snapshot? true; notice ""
+191.5s third history read:catalog
+191.9s patched again after tip: sends and receives
+194.6s app server now serves released
+194.6s released: page scripts match this build: true (21 scripts)
+196.2s third history read:catalog
+196.3s released: workspace open
+196.3s released: shows writing missed before the snapshot? true
+197.1s released: its writing reaches A? true
+197.9s released: receives B's new writing? true
+217.1s third history read:catalog
+232.9s released: notice ""
+233.0s released: sync details ["Sending: idleLast accepted upload: 2:44:39 AMAccepted position: 6Receiving: idleLast successful receive check: 2:44:59 AMReceived positions: 22"]
+235.1s third history read:catalog
+254.4s third history read:catalog
+263.0s released: local history panel ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."]
+263.0s released: counter before/after allowing reduction [{"v":5,"next_seq":66,"revision":3}] -> [{"v":5,"next_seq":67,"revision":4}]
+263.1s released: store change while on the older build: done.2207443b/content: +0 -2 ~0 removed ["48","55"]; done.2207443b/heads: +0 -4 ~0 removed ["50","51","54","56"]; done.2207443b/meta: +0 -0 ~2 changed ["\"counter\"","[\"local-baseline\",0]"]; done.2207443b/outbound: +0 -3 ~0 removed ["49","52","53"]
+263.1s released: counter [{"v":5,"next_seq":67,"revision":4}]
+265.7s app server now serves patched
+265.8s patched: page scripts match this build: true (21 scripts)
+267.4s patched: workspace open
+267.5s third history read:catalog
+277.4s patched again: shows writing missed before the snapshot? true; notice ""
+278.8s third history read:catalog
+279.1s patched again after released: sends and receives
+279.2s store change across the whole test: done.2207443b/content: +2 -0 ~0; done.2207443b/heads: +4 -0 ~0; done.2207443b/meta: +0 -0 ~2 changed ["\"counter\"","[\"local-baseline\",0]"]; done.2207443b/outbound: +3 -0 ~0
+285.1s convergence: text true, state true
+errors: []

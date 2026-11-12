@@ -19,8 +19,12 @@ export function syncNeedsAttention(lane: SyncLaneStatus, online: boolean, now: n
 const time = (at: number | null) =>
   at === null ? 'None since opening' : new Date(at).toLocaleTimeString();
 const mib = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)} MiB`;
-/** Named receive halt (phase 544); undefined keeps the general sentence. */
+/** Named receive halt (phase 544) or standing condition; undefined keeps the general sentence. */
 export function receiveHaltMessage(lane: SyncLaneStatus): string | undefined {
+  if (lane.reason === 'history-waiting')
+    return 'Changes from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.';
+  if (lane.reason === 'history-unverified')
+    return 'Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.';
   const d = lane.reason === 'inbound-size' ? lane.detail : undefined;
   if (d?.cause !== 'history-snapshot') return undefined;
   const needed = mib(d.needed) === mib(d.allowed) ? `just over ${mib(d.allowed)}` : mib(d.needed);
@@ -112,11 +116,17 @@ export function SyncNotice({
                 </code>
               </p>
             )}
-            {online && failed && lane.phase !== 'closed' && lane.reason !== 'sign-in-required' && (
-              <button className="menu-button" onClick={() => sync.retry(name)}>
-                Retry {name === 'send' ? 'sending' : 'receiving'}
-              </button>
-            )}
+            {online &&
+              failed &&
+              lane.phase !== 'closed' &&
+              lane.reason !== 'sign-in-required' &&
+              // Resolved by a newer snapshot, not by retrying this device's reads.
+              lane.reason !== 'history-unverified' &&
+              lane.reason !== 'history-waiting' && (
+                <button className="menu-button" onClick={() => sync.retry(name)}>
+                  Retry {name === 'send' ? 'sending' : 'receiving'}
+                </button>
+              )}
           </div>
         );
       })}

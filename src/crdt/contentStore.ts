@@ -1631,8 +1631,9 @@ export const createContentOwner = (
       heads: readonly import('../../account-protocol/historyCheckpoint').HistoryHead[],
       assertCurrent: () => Promise<void>,
       installed?: ReadonlyMap<string, { position: number; link: string }>,
+      verified?: ReadonlyMap<string, import('./retainedHistory').RetiredCut>,
     ) {
-      if (!metadata?.era()) return;
+      if (!metadata?.era()) return undefined;
       const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
       const { decodeLocalBaseline } = await task.wait(() => import('./localBaselineRecord'));
       const { checkRetainedCheckpointCuts } = await task.wait(
@@ -1645,7 +1646,7 @@ export const createContentOwner = (
       let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
       try {
         decoded = decodeLocalBaseline(held.baseline.payload);
-        checkRetainedCheckpointCuts(decoded, heads, installed);
+        return checkRetainedCheckpointCuts(decoded, heads, installed, verified);
       } finally {
         eraseVerified(decoded);
         eraseVerified(held);

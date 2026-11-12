@@ -303,6 +303,10 @@ export interface InboundState {
   conflict: boolean;
   retained: Map<number, NonNullable<InboundContext['retained']>>;
   peers?: Map<string, InboundState>;
+  /** Top level only: an installation after the baseline holds a cut below a retained frontier
+   * that only this build's evidence accepts. Older builds refuse to replay this store until a
+   * reduction carries the installation into the baseline. Derived, never persisted. */
+  foldDue?: true;
 }
 export const emptyInbound = (
   prefix: InboundContext['prefix'] = { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
@@ -364,13 +368,26 @@ export function contextAt(
   const retained = state.retained.get(after + 1);
   return { ...base, prefix: { ...state.prefix }, ...(retained ? { retained } : {}) };
 }
-/** Retain existing receipt evidence; a checkpoint changes only where future reads begin. */
+/** A snapshot this device needs: it moves a receive cursor forward on at least one stream, so
+ * without it the device can stop catching up once that history is pruned. Read before applying. */
+export function historyAdvances(
+  own: InboundState,
+  base: InboundContext,
+  heads: readonly HistoryHead[],
+) {
+  return heads.some((h) => h.position > publisherState(own, base, h.credentialId).prefix.position);
+}
+/** Retain existing receipt evidence; a checkpoint changes only where future reads begin.
+ * `retired`: cuts below a retained frontier already authenticated before installation, by the
+ * retained-baseline gate or a verified read of the accepted chain; `'committed'` replays an
+ * installation that passed that check before it was written. Neither is learned from a reply. */
 export async function applyHistoryReceiveCuts(
   own: InboundState,
   base: InboundContext,
   census: ReturnType<typeof inspectInbound>,
   heads: readonly HistoryHead[],
   beforeSequence = Infinity,
+  retired?: ReadonlyMap<string, { position: number; link: string }> | 'committed',
 ) {
   const route: CaptureRoute = {
     workspace: base.authority.workspace,
@@ -383,12 +400,18 @@ export async function applyHistoryReceiveCuts(
   for (const cut of heads) {
     const state = publisherState(own, base, cut.credentialId);
     if (state.conflict) captureError('History cut crosses a stream conflict');
+    const checked =
+      retired === 'committed' ||
+      (retired?.get(cut.credentialId)?.position === cut.position &&
+        retired.get(cut.credentialId)!.link === cut.link);
     if (cut.credentialId === base.publisher.id && cut.position > 0) {
       const origin = census.delivery.spool.origin;
       if (origin && cut.position < origin.position) {
         const pin = own.checkpointCuts?.get(cut.credentialId);
-        if (!pin || pin.position !== cut.position) throw new RetiredHistoryRequired();
-        if (pin.link !== cut.link) captureError('History cut differs from retained checkpoint');
+        if (pin?.position === cut.position) {
+          if (pin.link !== cut.link) captureError('History cut differs from retained checkpoint');
+        } else if (!checked) throw new RetiredHistoryRequired();
+        // The retired-frontier check below marks the fold for this stream too.
       } else if (origin && cut.position === origin.position) {
         if (cut.link !== origin.link) captureError('History cut differs from retained self stream');
       } else {
@@ -428,8 +451,10 @@ export async function applyHistoryReceiveCuts(
       cut.position > 0 &&
       cut.position <= state.retiredThrough &&
       known === undefined
-    )
-      throw new RetiredHistoryRequired();
+    ) {
+      if (!checked) throw new RetiredHistoryRequired();
+      own.foldDue = true;
+    }
     if (known !== undefined && known !== cut.link)
       captureError('History cut conflicts with received history');
     if (cut.position > (state.startingPoint?.position ?? 0))
@@ -739,7 +764,14 @@ export async function verifyInboundLedger(
           else if (reuse) reuse.coverage.check(records, [result.update]);
           else localCoverage!.check([result.update]);
           if (result.heads)
-            await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
+            await applyHistoryReceiveCuts(
+              own,
+              base,
+              census,
+              result.heads,
+              entry.record.seq,
+              'committed',
+            );
           own.installedHistory = result.installed;
         } finally {
           result.update.fill(0);

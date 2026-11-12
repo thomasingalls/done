@@ -2,7 +2,7 @@
 import type { LocalRetentionHint } from './automaticLocalRetention';
 
 const key = (hint: LocalRetentionHint | undefined) =>
-  hint ? `${hint.revision}:${hint.records}` : '';
+  hint ? `${hint.revision}:${hint.records}${hint.fold ? ':fold' : ''}` : '';
 
 /**
  * Owner-side hints derived from the last adopted ledger view.

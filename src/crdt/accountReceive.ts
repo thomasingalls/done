@@ -26,7 +26,7 @@ import {
   hasAutomaticServiceHistory,
 } from '../account/automaticHistoryMaintenance';
 import { createRetentionReads } from './retentionReads';
-import { RetiredHistoryRequired } from './retainedHistory';
+import { RetiredHistoryRequired, type RetiredCut } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
 import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
@@ -211,6 +211,7 @@ import {
 } from './accountInbound';
 import {
   applyHistoryReceiveCuts,
+  historyAdvances,
   heldInboundContext,
   inspectInbound,
   inspectInboundCooperatively,
@@ -223,11 +224,18 @@ import {
   inboundMemoSlots,
   type InboundReadCursor,
 } from './inboundLedger';
-import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
+import {
+  verifySpoolWitness,
+  verifySpool,
+  extendSpoolWitness,
+  positionSources,
+} from './spoolRecord';
 import { verifyDelivery, emptyDelivery } from './deliveryRecord';
 import {
   captureError,
   capturedSourcePresence,
+  decodeSourceCapsule,
+  eraseCapsule,
   type CaptureRoute,
   type CapturedSourceIdentity,
 } from './sourceCapture';
@@ -384,6 +392,14 @@ async function openAccountReceiveOwner(
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
   let skippedHistory: string | undefined;
+  // Named until a later installation succeeds or is no longer needed. `history-unverified`: a
+  // snapshot this device needs has a cut inside reduced history that could not be checked.
+  // `history-waiting`: it was checked, but is held until a reduction can carry it at once.
+  let historyStanding: 'history-unverified' | 'history-waiting' | undefined;
+  // Set by the composed owner: why a reduction could not follow an installation right now.
+  let foldReadiness: (() => string | undefined) | undefined;
+  // A needed, checked snapshot held back for that reason (catalog key). Rechecked cheaply.
+  let deferredHistory: string | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const authority = createAuthorityAuthentication({
@@ -649,10 +665,17 @@ async function openAccountReceiveOwner(
     },
     async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
       ledgerHints.begin();
-      const retentionHint = (revision: number) =>
-        hasAutomaticLocalRetention() || hasAutomaticServiceHistory()
-          ? { revision, records: records.length }
-          : undefined;
+      const retentionHint = (revision: number) => {
+        if (!(hasAutomaticLocalRetention() || hasAutomaticServiceHistory())) return undefined;
+        // An adopted view with an installation older builds cannot replay asks for its fold.
+        let fold = false;
+        try {
+          fold = verified.read(records, (v) => v.inbound.foldDue === true);
+        } catch {
+          /* No adopted view for these rows: no fold is reported. */
+        }
+        return { revision, records: records.length, ...(fold ? { fold: true as const } : {}) };
+      };
       if (baseline) {
         // The carrier has either fully replayed the authenticated origin or extended its private
         // reduced view under fresh authority. Never send these physical suffix rows to zero-origin replay.
@@ -1781,10 +1804,20 @@ async function openAccountReceiveOwner(
             catalog.latest !== prepared.installed.hash)
         )
           return captureError('History catalog regressed or forked');
-        if (catalog.latest === prepared.installed.hash && prepared.installed.receiveCuts)
+        if (catalog.latest === prepared.installed.hash && prepared.installed.receiveCuts) {
+          historyStanding = deferredHistory = undefined;
           return null;
+        }
       }
-      if (catalog.latest === EMPTY_HISTORY_CHECKPOINT || catalog.latest === inheritedHistoryHash)
+      if (catalog.latest === EMPTY_HISTORY_CHECKPOINT || catalog.latest === inheritedHistoryHash) {
+        historyStanding = deferredHistory = undefined;
+        return null;
+      }
+      // A held snapshot is fetched again only once a reduction could follow its installation.
+      if (
+        deferredHistory === base.authority.head + ':' + catalog.latest &&
+        (await runCaptureTask((task, owner, route) => foldBlocked(task, owner, route)))
+      )
         return null;
       const request = await runCaptureTask(async (task) => {
         stamp.check();
@@ -1821,6 +1854,8 @@ async function openAccountReceiveOwner(
         return captureError('Admitted history changed during reading');
       return {
         check: stamp.check,
+        signal: stamp.signal,
+        key: base.authority.head + ':' + catalog.latest,
         bytes: encodeHistoryInstall({
           version: 2,
           baseline: prepared.baseline,
@@ -1834,10 +1869,135 @@ async function openAccountReceiveOwner(
         }),
       };
     });
+  // Outside the storage tail, like fetchHistory: read each publisher's accepted chain from the
+  // snapshot cut to the retained frontier. A different chain is an integrity refusal; no answer
+  // from the service returns undefined (unverifiable); a failed transport retries.
+  const verifyRetiredHistory = (
+    needs: readonly RetiredCut[],
+    { check, signal, key }: { check(): void; signal: AbortSignal; key: string },
+  ) =>
+    runNetworkTask(async (network) => {
+      if (!access || account.detached || !canReceive())
+        throw new HistoryTransportUnavailable('History check is not available');
+      const { verifyRetiredCuts, RetiredCutUnverifiable } = await network.wait(
+        () => import('./retiredCutVerification'),
+      );
+      const stopped = AbortSignal.any([network.signal, signal]);
+      try {
+        return await verifyRetiredCuts(
+          base,
+          needs,
+          {
+            sign: async (message) =>
+              hex(
+                new Uint8Array(
+                  await network.wait(() => subtleFor(network).sign('Ed25519', signer!, message)),
+                ),
+              ),
+            read: async (request) => {
+              check();
+              let answer: string | undefined;
+              const page = await network.wait(() =>
+                privateDeliveryPost(
+                  options.pin,
+                  access,
+                  'read-v2',
+                  request,
+                  READ_PAGE_LIMIT,
+                  stopped,
+                  (event) => {
+                    if (event.phase === 'response') answer = event.code;
+                    recordPrivateTransportDiagnostic(event);
+                  },
+                ),
+              );
+              check();
+              if (page) return page;
+              if (['unavailable', 'out-of-order', 'ledger-integrity'].includes(answer ?? ''))
+                throw new RetiredCutUnverifiable();
+              throw new HistoryTransportUnavailable('History check read failed');
+            },
+          },
+          lifetime(network),
+        );
+      } catch (cause) {
+        if (cause instanceof RetiredCutUnverifiable) {
+          // Not refetched as a retry; a newer snapshot or authority re-evaluates it.
+          skippedHistory = key;
+          historyStanding = 'history-unverified';
+          return undefined;
+        }
+        if (cause instanceof InboundError && cause.reason === 'expired')
+          throw new HistoryTransportUnavailable('History check read expired', { cause });
+        if (cause instanceof InboundError)
+          throw new AdmissionError(
+            'receive-refused',
+            'History snapshot cut differs from retained history',
+            {
+              cause,
+            },
+          );
+        throw cause;
+      }
+    });
+  /** Why a reduction could not carry an installation right now, if anything (storage task).
+   * An installation older builds cannot replay is committed only when one can follow at once. */
+  const foldBlocked = async (
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    route: CaptureRoute,
+  ): Promise<string | undefined> => {
+    const reason = foldReadiness ? foldReadiness() : 'unavailable';
+    if (reason) return reason;
+    // A reduction takes a settled cut: every allocated position of this device accepted. Writing
+    // captured but not yet allocated becomes such a position at the next send, so it holds too.
+    if (
+      await readState(task, owner, (v) => {
+        const spool = v.census.delivery.spool;
+        if (
+          publicationState(v.delivery) !== 'ready' ||
+          v.delivery.acceptedThrough !== (spool.origin?.position ?? 0) + spool.positions.length
+        )
+          return true;
+        const used = new Set((spool.origin?.consumed ?? []).map((s) => s.id + ':' + s.index));
+        for (const p of spool.positions)
+          for (const s of positionSources(p)) used.add(s.id + ':' + s.index);
+        for (const [id, bytes] of spool.sources) {
+          const capsule = decodeSourceCapsule(bytes, route);
+          try {
+            if (capsule.sources.some((_, i) => !used.has(id + ':' + i))) return true;
+          } finally {
+            eraseCapsule(capsule);
+          }
+        }
+        return false;
+      })
+    )
+      return 'unsent-writing';
+    const { retentionAttemptsSettled } = await task.wait(() => import('./retentionAttempts'));
+    if (
+      account.detached ||
+      !(await retentionAttemptsSettled(
+        task,
+        joined ? 'joined' : 'promotion',
+        options.slotId,
+        options.code,
+        expectedRecord,
+      ))
+    )
+      return 'durable-attempt';
+    await assertCurrent(task);
+    return undefined;
+  };
+  const needsSnapshot = (
+    current: Awaited<ReturnType<typeof state>>,
+    heads: Parameters<typeof historyAdvances>[2] | null | undefined,
+  ) => !heads || historyAdvances(current, base, heads);
   const installHistory = (
     input: Bytes,
     promote: (updates: readonly Bytes[]) => void,
     check: () => void = () => {},
+    retiredEvidence?: ReadonlyMap<string, RetiredCut>,
   ) => {
     const bytes = input.slice();
     invalidateReadScheduling();
@@ -1847,6 +2007,18 @@ async function openAccountReceiveOwner(
       try {
         check();
         const current = await state(task, owner, route);
+        const key = async () => {
+          const { historyCheckpointHash } =
+            await import('../../account-protocol/historyCheckpoint');
+          return (
+            base.authority.head +
+            ':' +
+            (await historyCheckpointHash(decodeHistoryInstall(bytes).checkpoint))
+          );
+        };
+        const foldBefore = current.foldDue === true;
+        // Read before the cuts are applied to `current`, which moves its cursors.
+        let needed: boolean | undefined;
         try {
           const event = decodeHistoryInstall(bytes);
           if (event.epoch !== base.authority.tip || event.head !== base.authority.head)
@@ -1862,22 +2034,32 @@ async function openAccountReceiveOwner(
               hasBaselineVerifier(),
             );
           });
+          needed = needsSnapshot(current, result!.heads);
           if (result!.duplicate) {
             check();
+            historyStanding = deferredHistory = undefined;
             promote([]);
             return { kind: 'already-installed' as const };
           }
           if (result!.heads) {
-            await owner.carrier.checkRetainedCheckpoint(
+            const retired = await owner.carrier.checkRetainedCheckpoint(
               task,
               result!.heads,
               () => assertCurrent(task),
               current.checkpointCuts,
+              retiredEvidence,
             );
             const rows = await owner.carrier.load(task);
             try {
               const census = inspectCensus(rows, route, (c) => c);
-              await applyHistoryReceiveCuts(current, base, census, result!.heads);
+              await applyHistoryReceiveCuts(
+                current,
+                base,
+                census,
+                result!.heads,
+                Infinity,
+                retired,
+              );
               verifySyncState(
                 census.delivery,
                 verified.read(rows, (v) => v.delivery),
@@ -1886,17 +2068,33 @@ async function openAccountReceiveOwner(
             } finally {
               for (const row of rows) row.bytes.fill(0);
             }
+            if (current.foldDue && !foldBefore) {
+              // Older builds cannot replay this installation until a reduction carries it.
+              // Commit it only when needed, and only when that reduction can follow at once.
+              if (!needed) throw new RetiredHistoryRequired();
+              const blocked = await foldBlocked(task, owner, route);
+              if (blocked) {
+                deferredHistory = await key();
+                historyStanding = 'history-waiting';
+                promote([]);
+                return { kind: 'history-deferred' as const, reason: blocked };
+              }
+            }
           }
         } catch (cause) {
           if (cause instanceof RetiredHistoryRequired) {
-            const { historyCheckpointHash } =
-              await import('../../account-protocol/historyCheckpoint');
-            skippedHistory =
-              base.authority.head +
-              ':' +
-              (await historyCheckpointHash(decodeHistoryInstall(bytes).checkpoint));
+            needed ??= true;
+            // A read of the accepted chain may still prove these cuts; it runs outside this tail.
+            if (needed && cause.needs.length) {
+              promote([]);
+              return { kind: 'history-required' as const, needs: cause.needs };
+            }
+            // Not needed: skip quietly, as before. Needed but not provable: name it.
+            skippedHistory = await key();
+            historyStanding = needed ? 'history-unverified' : undefined;
+            if (!needed) deferredHistory = undefined;
             promote([]);
-            return { kind: 'history-required' as const };
+            return { kind: 'history-required' as const, needs: [] as readonly RetiredCut[] };
           }
           throw new AdmissionError('receive-refused', 'History snapshot could not be installed', {
             cause,
@@ -1926,6 +2124,7 @@ async function openAccountReceiveOwner(
         await state(task, owner, route);
         return task.step(() => {
           check();
+          historyStanding = deferredHistory = undefined;
           promote([result!.update]);
           return { kind: 'installed' as const };
         });
@@ -3462,6 +3661,12 @@ async function openAccountReceiveOwner(
     },
     fetchHistory,
     installHistory,
+    verifyRetiredHistory,
+    historyStanding: () => historyStanding,
+    /** The composed owner says why a reduction could not run now (undefined: it could). */
+    setFoldReadiness: (readiness: () => string | undefined) => {
+      foldReadiness = readiness;
+    },
     createOutbound,
     adoptSuccessor: applySuccessor,
     adoptMembership,
@@ -3566,6 +3771,9 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     preparedPromotion,
     fetchHistory,
     installHistory,
+    verifyRetiredHistory,
+    historyStanding,
+    setFoldReadiness,
     createOutbound,
     adoptSuccessor,
     adoptMembership,
@@ -3617,10 +3825,17 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         if (!fetched) return false;
         bytes = fetched.bytes;
         fetched.check();
-        const result = await enqueue(bytes, (evidence, promote) =>
-          installHistory(evidence, promote, fetched.check),
-        );
-        return result.kind === 'installed';
+        let verified: ReadonlyMap<string, RetiredCut> | undefined;
+        for (;;) {
+          const result = await enqueue(bytes, (evidence, promote) =>
+            installHistory(evidence, promote, fetched.check, verified),
+          );
+          if (result.kind !== 'history-required') return result.kind === 'installed';
+          // A second refusal after a verified read is a moved frontier: the next pass rechecks.
+          if (!result.needs.length || verified) return false;
+          verified = await verifyRetiredHistory(result.needs, fetched);
+          if (!verified) return false;
+        }
       } finally {
         bytes?.fill(0);
       }
@@ -3972,6 +4187,17 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         remove: result.removeLocalHistory,
       });
       automaticRetention = maintenance;
+      // A checked installation older builds cannot replay is committed only when its reduction
+      // can follow at once. Saved account steps are read from storage at that moment.
+      setFoldReadiness(() =>
+        maintenance.status.phase === 'halted' || maintenance.status.phase === 'closed'
+          ? 'halted'
+          : maintenance.status.reason === 'capacity'
+            ? 'capacity'
+            : visible()
+              ? undefined
+              : 'hidden',
+      );
       // A validation withdraws the hint while it runs; nothing else announced its return.
       const ledgerChanged = onLedgerHint(maintenance.refresh);
       const changed = workspace.subscribe(maintenance.wake);
@@ -4089,6 +4315,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             : state;
         },
         receiveInterval: () => repairReceiveInterval(idleReceiveInterval(notificationHealthy)),
+        standing: historyStanding,
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
         ...(automaticRetention ? { hold: () => automaticRetention?.hold } : {}),
         send: (beforeNewEnvelope, holdNewEnvelope) =>

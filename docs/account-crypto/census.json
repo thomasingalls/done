@@ -837,7 +837,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "72254df40f6f8f99c4a68fe52f2be3a7736380e7e55d5db991f94b84c850ccb5"
+      "sha256": "446a117ef1710f29149124de39ed2672d352fc3032aa91cea0d72f04e4b93c06"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -849,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountSessionBridge.ts",
-      "sha256": "ecf373a0eb4a0af087d96bc890b8c488c31ae1e53f41a532e30400314034154e"
+      "sha256": "7c3a91489cadfbafbb1da446f1d5f59b668d70d6cf8ed2a2c089d84045207b3a"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -865,7 +865,7 @@
     },
     {
       "path": "src/crdt/accountSyncDriver.ts",
-      "sha256": "7b3ddd86cb68117a899eb914c2af667004492b6ee23681b378df0224ddf71d28"
+      "sha256": "7cf4c558d7b7f0e0b9211bbcc316ad503415990a94a55add2dfc8726fd811a45"
     },
     {
       "path": "src/crdt/accountSyncState.ts",
@@ -957,7 +957,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "29dff4538c12ed62da9f98165d365a5cdfd5a65b293fdcce96d7015ca90bd2fc"
+      "sha256": "e4f511e96196aa3398cda8955405e44fd8252081ffb3956d3975882e915d5156"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1013,7 +1013,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "8ed9a755574d6697063645455db2ca983cb61a1ac0d53cc760c2cd5d7eaf7f63"
+      "sha256": "9e913faeb08f6381ecc0555382dbec1347c42b56758bab85c8fa6a62b1605e18"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1113,7 +1113,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "b909a9b2f3d8e235201c2bd496c42bc6c89667c779b8069774e0750a75a7715b"
+      "sha256": "72974653516667b30ed048ada23244f07f129cfa01bcb95c08ea824027756359"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
@@ -1149,7 +1149,7 @@
     },
     {
       "path": "src/crdt/ledgerHints.ts",
-      "sha256": "6486d648f0a34ebc8d4735f89e88d5158bc4f51c3d264d6b6744ee05a8c88f54"
+      "sha256": "dafa03dc876262fbcfa50f4e98169aad5545b41844fe200ff8bec85243d60f45"
     },
     {
       "path": "src/crdt/legacyCleanup.ts",
@@ -1445,7 +1445,7 @@
     },
     {
       "path": "src/crdt/retainedHistory.ts",
-      "sha256": "aca36538cfe4865d45d29665556f81a9a02bfe49d439d3f960e5d5f5902e73ae"
+      "sha256": "6568b3936005e918ee412771caee06cba849d0136e7d0e428ce8aa76eba5d863"
     },
     {
       "path": "src/crdt/retentionAttempts.ts",
@@ -1453,7 +1453,7 @@
     },
     {
       "path": "src/crdt/retentionCheckpoint.ts",
-      "sha256": "69cbfee6a163711d29103ab35ba6a20c0dd824aec58e15a7c82d8c72821f0b9b"
+      "sha256": "fee4818341e42cd7d015a6e555bce9d83ef406702e959ee040d0bdb581545264"
     },
     {
       "path": "src/crdt/retentionFence.ts",
@@ -1478,6 +1478,10 @@
     {
       "path": "src/crdt/retentionReads.ts",
       "sha256": "1d2cc7b0ab991e836062dbb91d5d28911116be60330cd3182159bb9c1163df8f"
+    },
+    {
+      "path": "src/crdt/retiredCutVerification.ts",
+      "sha256": "9208f3112f8340779c2a39911b3373ba7e557cd3ad4150a6deda1d7b11a9d9e9"
     },
     {
       "path": "src/crdt/rotationCapture.ts",
@@ -1985,7 +1989,7 @@
     },
     {
       "path": "src/ui/SyncNotice.tsx",
-      "sha256": "864d25586d4f0bcd65738a4cb986e030be7871d4335358cb99b8a139710e94d2"
+      "sha256": "bb4a0b195566b48eb61607556a32a97c26688449637ab4fafb862185fb72fa8f"
     },
     {
       "path": "src/ui/UnfiledPanel.tsx",
@@ -2261,7 +2265,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 943
+          "line": 966
         }
       ]
     },
