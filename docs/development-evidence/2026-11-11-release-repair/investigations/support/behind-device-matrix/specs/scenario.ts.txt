@@ -1,0 +1,156 @@
+// COPY-ONLY helpers for the phase 544 follow-up scenarios.
+import { openMenuSection } from '../geometry/openApp';
+import { expect, type Page, type Browser } from '@playwright/test';
+import { pairedEditors, openSaved } from './devices';
+import { pending, compared, unlock } from '../device-enrollment/helpers';
+
+export const compose = (p: Page) =>
+  p.locator('.day-panel[data-active="true"] .collection[data-section="done"] .compose-field');
+/** One card per publication window, so each becomes its own accepted position. */
+export async function writeMany(p: Page, prefix: string, n: number, gap = 350) {
+  for (let i = 0; i < n; i++) {
+    await compose(p).fill(mark(prefix, i));
+    await compose(p).press('Enter');
+    await p.waitForTimeout(gap);
+  }
+  await expect(p.locator('.shell')).toContainText(mark(prefix, n - 1), { timeout: 60000 });
+}
+/** Unique, non-overlapping marker for card `i` of a series. */
+export const mark = (prefix: string, i: number) => `${prefix} #${i}#`;
+export const series = (prefix: string, n: number) => Array.from({ length: n }, (_, i) => mark(prefix, i));
+/** A large card; waits until the compose field has saved it. Returns the milliseconds that took. */
+export async function bigCard(p: Page, label: string, bytes: number) {
+  const started = Date.now();
+  await compose(p).fill(label + ' ' + 'x'.repeat(bytes));
+  await compose(p).press('Enter');
+  await expect(compose(p)).toHaveValue('', { timeout: 600000 });
+  return Date.now() - started;
+}
+export const workers = async (p: Page, fn: () => void) => {
+  for (const w of p.workers()) await w.evaluate(fn).catch(() => {});
+};
+export const panel = (p: Page) =>
+  p.getByRole('region', { name: 'History maintenance', exact: true });
+export async function check(p: Page) {
+  await openMenuSection(p, 'Data');
+  if (!(await panel(p).isVisible().catch(() => false)))
+    await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+  await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+  await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled({
+    timeout: 60000,
+  });
+}
+export async function resumeIfSaved(p: Page) {
+  await check(p);
+  const resume = panel(p).getByRole('button', { name: 'Resume history snapshot', exact: true });
+  if (await resume.isVisible().catch(() => false)) {
+    await resume.click();
+    await expect(panel(p)).toContainText(/Verified snapshot \d+ is saved\./, { timeout: 60000 });
+  }
+}
+export async function snapshot(producer: Page, verifier: Page, n: number) {
+  await resumeIfSaved(producer);
+  await panel(producer).getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+  await expect(panel(producer)).toContainText(
+    /Snapshot saved\. Verify it from another approved device\.|too large/,
+    { timeout: 120000 },
+  );
+  const text = (await panel(producer).textContent()) ?? '';
+  if (text.includes('too large')) return text;
+  await check(verifier);
+  await panel(verifier).getByRole('button', { name: 'Verify history snapshot', exact: true }).click();
+  await expect(panel(verifier)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 120000 });
+  await resumeIfSaved(producer);
+  return 'admitted';
+}
+export async function prune(p: Page) {
+  await check(p);
+  await panel(p).getByRole('button', { name: 'Prune covered history', exact: true }).click();
+  await expect(panel(p)).toContainText('Covered service history removed.', { timeout: 120000 });
+}
+function zipEntries(buf: Buffer) {
+  const out: Record<string, string> = {};
+  let at = 0;
+  while (at + 30 <= buf.length && buf.readUInt32LE(at) === 0x04034b50) {
+    const method = buf.readUInt16LE(at + 8),
+      size = buf.readUInt32LE(at + 18),
+      nameLength = buf.readUInt16LE(at + 26),
+      extra = buf.readUInt16LE(at + 28);
+    const name = buf.subarray(at + 30, at + 30 + nameLength).toString();
+    const start = at + 30 + nameLength + extra;
+    if (method !== 0) throw Error('compressed entry');
+    out[name] = buf.subarray(start, start + size).toString();
+    at = start + size;
+  }
+  return out;
+}
+/** The page's own document: the export's text and the exact Yjs state at that moment. */
+export async function documentOf(p: Page) {
+  await openMenuSection(p, 'Data');
+  const [download] = await Promise.all([
+    p.waitForEvent('download'),
+    p
+      .getByRole('region', { name: 'Data', exact: true })
+      .getByRole('button', { name: 'Export markdown', exact: true })
+      .click(),
+  ]);
+  const path = await download.path();
+  const { readFileSync } = await import('node:fs');
+  const entries = zipEntries(readFileSync(path));
+  const state = await p.evaluate(() => (globalThis as { __doneState?: unknown }).__doneState);
+  return { entries, text: Object.keys(entries).sort().map((k) => entries[k]).join('\n'), state };
+}
+export const count = (text: string, marker: string) => text.split(marker).length - 1;
+
+/** Three devices: A creates, B joins, B invites C (the packaged UI flow). A history snapshot is
+ * admitted along the way (the third device's generation-one handoff needs it). */
+export async function threeDevices(page: Page, browser: Browser, add: (p: Page, t: string) => Promise<void>) {
+  const thirdContext = await browser.newContext(),
+    third = await thirdContext.newPage();
+  third.setDefaultTimeout(30000);
+  const pair = await pairedEditors(page, browser, true);
+  pair.second.setDefaultTimeout(30000);
+  await add(page, 'Original writing before the third connection');
+  await expect(pair.second.locator('.shell')).toContainText(
+    'Original writing before the third connection',
+    { timeout: 30000 },
+  );
+  await page.route('**/account/delivery/submit', (route) => route.abort());
+  await add(page, 'Snapshot-only writing for generation-one third device');
+  for (const p of [page, pair.second]) {
+    await check(p);
+    await panel(p)
+      .getByRole('button', {
+        name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
+      })
+      .click();
+    await expect(panel(p)).toContainText(
+      p === page
+        ? 'Snapshot saved. Verify it from another approved device.'
+        : 'Verified snapshot 1 is saved.',
+      { timeout: 60000 },
+    );
+  }
+  await openMenuSection(pair.second, 'Account');
+  await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+  await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
+  await unlock(pair.second, pair.next.code);
+  const link = await pair.second.getByLabel('Device invitation link').inputValue();
+  const next = await pending(third, link, pair.next.auth);
+  const code = await compared(pair.second, third);
+  await pair.second.getByLabel('Code on the new device').fill(code);
+  await pair.second.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+  await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toBeVisible({
+    timeout: 60000,
+  });
+  await third.getByRole('button', { name: 'Open your writing', exact: true }).click();
+  await expect(third.locator('.shell')).toContainText('Keep the first device writing', {
+    timeout: 60000,
+  });
+  await page.unroute('**/account/delivery/submit');
+  await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
+  await pair.second.goto('/');
+  await openSaved(pair.second, pair.next.code, true);
+  await resumeIfSaved(page);
+  return { pair, third, thirdContext, thirdCode: next.code };
+}

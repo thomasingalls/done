@@ -1,0 +1,88 @@
+Phase 550 cost probe (copy-only, Node, while a browser run shared the host): verifyRetiredCuts over 512 and 4,096 peer positions of the member fixture, one read-v2 page per request.
+
+{
+ "512 positions": {
+  "verifyMs": 358,
+  "requests": 64,
+  "pageBytes": 755155,
+  "fixtureMs": 335
+ },
+ "4096 positions": {
+  "verifyMs": 2821,
+  "requests": 512,
+  "pageBytes": 6067087,
+  "fixtureMs": 1892
+ }
+}
+===== probe source =====
+// @vitest-environment node
+// COPY-ONLY probe, not part of the patch: what a worst-case verification read costs in this
+// process. A reduced device 4,096 peer positions past a snapshot cut (the replay bound).
+import { sign } from 'node:crypto';
+import { writeFileSync } from 'node:fs';
+import { it } from 'vitest';
+import { verifyRetiredCuts } from '../src/crdt/retiredCutVerification';
+// @ts-expect-error Shared real-protocol JavaScript fixture.
+import { memberFixture } from './local-baseline/fixtures.mjs';
+// @ts-expect-error Shared real-protocol JavaScript oracle.
+import { hash } from './account-decisions/oracle.mjs';
+
+const hex = (b: Uint8Array) => Buffer.from(b).toString('hex');
+const json = (v: unknown) => new Uint8Array(Buffer.from(JSON.stringify(v)));
+it('measures the bounded worst case', async () => {
+  const out: Record<string, unknown> = {};
+  for (const n of [512, 4096]) {
+    const f = await memberFixture();
+    const peer: { envelope: Uint8Array; proof: Uint8Array }[] = [];
+    const started = Date.now();
+    for (let i = 0; i < n + 1; i++) peer.push(await f.appendPeer());
+    const built = Date.now() - started;
+    const other: string = f.f.context.candidate.id;
+    const lastLink = JSON.parse(Buffer.from(f.rows.at(-1).bytes).toString())[10];
+    const firstLink = JSON.parse(Buffer.from(f.rows[1].bytes).toString())[10];
+    let requests = 0,
+      bytes = 0;
+    const io = {
+      sign: async (m: Uint8Array) => sign(null, m, f.f.keys.existing).toString('hex'),
+      read: async (request: Uint8Array) => {
+        requests++;
+        const r = JSON.parse(Buffer.from(request).toString());
+        const after: number = r[10],
+          limit: number = r[11];
+        const items = peer.slice(after, after + limit);
+        const body = [
+          'done/private-read-page/v2',
+          2,
+          hash(request),
+          peer.length,
+          after + items.length,
+          items.map((e) => [hex(e.envelope), hex(e.proof)]),
+        ];
+        const page = json([...body, sign(null, json(body), f.f.f.keys.acceptance).toString('hex')]);
+        bytes += page.length;
+        return page;
+      },
+    };
+    const t = Date.now();
+    await verifyRetiredCuts(
+      f.ctx.inbound,
+      [
+        {
+          credentialId: other,
+          cut: { position: 1, link: firstLink },
+          through: { position: n + 1, link: lastLink },
+        },
+      ],
+      io,
+      { assertCurrent() {} },
+    );
+    out[`${n} positions`] = {
+      verifyMs: Date.now() - t,
+      requests,
+      pageBytes: bytes,
+      fixtureMs: built,
+    };
+    f.clear();
+  }
+  writeFileSync(process.env.OUT ?? '/dev/null', JSON.stringify(out, null, 1));
+}, 600000);

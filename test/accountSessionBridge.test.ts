@@ -348,3 +348,140 @@ it('retains the original fractional idle-recheck deadline while counters remain 
     random.mockRestore();
   }
 });
+it('carries a known capacity cause to the page and drops an unknown or misplaced one (phase 543)', () => {
+  const state = (local: unknown) => ({
+    login: 'remembered',
+    sync: null,
+    local,
+    automatic: null,
+    devices: { remove: false, history: false, detached: false },
+  });
+  const detail = { cause: 'snapshot-size', needed: 9437184, allowed: 8388608 };
+  const kept = captureAccountSessionState(
+    state({ phase: 'idle', reason: 'capacity', detail }),
+  ).local!;
+  expect(kept).toEqual({ phase: 'idle', reason: 'capacity', detail });
+  expect(Object.isFrozen(kept.detail)).toBe(true);
+  expect(
+    captureAccountSessionState(
+      state({ phase: 'idle', reason: 'capacity', detail: { cause: 'interrupted' } }),
+    ).local,
+  ).toEqual({ phase: 'idle', reason: 'capacity', detail: { cause: 'interrupted' } });
+  // An older owner sends no detail; the status is unchanged.
+  expect(captureAccountSessionState(state({ phase: 'idle', reason: 'capacity' })).local).toEqual({
+    phase: 'idle',
+    reason: 'capacity',
+  });
+  // Unknown causes, sizes on an interruption, extra keys, bad numbers or a detail beside another
+  // reason are dropped: the page falls back to its general sentence instead of failing.
+  for (const [reason, bad] of [
+    ['capacity', { cause: 'new-limit', needed: 1, allowed: 2 }],
+    ['capacity', { cause: 'interrupted', needed: 1 }],
+    ['capacity', { cause: 'snapshot-size', needed: -1, allowed: 2 }],
+    ['capacity', { cause: 'snapshot-size', needed: 1.5, allowed: 2 }],
+    ['capacity', { cause: 'snapshot-size', needed: 1, allowed: 2, text: 'x' }],
+    ['capacity', 'snapshot-size'],
+    ['ineligible', detail],
+  ] as const)
+    expect(captureAccountSessionState(state({ phase: 'idle', reason, detail: bad })).local).toEqual(
+      { phase: 'idle', reason },
+    );
+  // The closed status itself still refuses unknown top-level fields.
+  expect(() =>
+    captureAccountSessionState(state({ phase: 'idle', reason: 'capacity', cause: 'x' })),
+  ).toThrow();
+});
+it('carries a snapshot too large to install and a named receive size halt, refusing or dropping malformed ones (phase 544)', () => {
+  const state = (sync: unknown, history?: unknown) => ({
+    login: 'remembered',
+    sync,
+    local: null,
+    automatic: history ? { phase: 'idle', reason: 'peer', history } : null,
+    devices: { remove: false, history: true, detached: false },
+  });
+  const tooLarge = { snapshot: 'latest', needed: 4_400_000, allowed: 4_194_304 };
+  const history = { sequence: 2, pending: 'none', canDiscard: false, tooLarge };
+  const kept = captureAccountSessionState(state(null, history)).automatic!.history!;
+  expect(kept).toEqual(history);
+  expect(Object.isFrozen(kept.tooLarge)).toBe(true);
+  // A history status is a command result: unlike a presentation detail, a malformed one refuses.
+  for (const bad of [
+    { ...tooLarge, snapshot: 'other' },
+    { ...tooLarge, needed: -1 },
+    { ...tooLarge, allowed: 1.5 },
+    { ...tooLarge, extra: 1 },
+    { snapshot: 'new', needed: 1 },
+    'latest',
+  ])
+    expect(() => captureAccountSessionState(state(null, { ...history, tooLarge: bad }))).toThrow();
+  const detail = { cause: 'history-snapshot', needed: 4_400_000, allowed: 4_194_304 };
+  const blocked = {
+    ...status(7),
+    receive: {
+      ...lane,
+      phase: 'blocked' as const,
+      reason: 'inbound-size' as const,
+      issueSince: 1,
+      receivedThrough: 7,
+    },
+  };
+  const named = captureAccountSessionState(
+    state({ ...blocked, receive: { ...blocked.receive, detail } }),
+  ).sync!;
+  expect(named.receive).toEqual({ ...blocked.receive, detail });
+  expect(Object.isFrozen(named.receive.detail)).toBe(true);
+  // Status without a detail, as from an older owner, is unchanged.
+  expect(captureAccountSessionState(state(blocked)).sync).toEqual(blocked);
+  // A malformed detail, or one beside another reason or on the send lane, is dropped.
+  for (const sync of [
+    { ...blocked, receive: { ...blocked.receive, detail: { ...detail, cause: 'page' } } },
+    { ...blocked, receive: { ...blocked.receive, detail: { ...detail, needed: -1 } } },
+    { ...blocked, receive: { ...blocked.receive, detail: { ...detail, more: 1 } } },
+    { ...blocked, receive: { ...blocked.receive, reason: 'integrity', detail } },
+    { ...blocked, send: { ...blocked.send, detail } },
+  ]) {
+    const { detail: _r, ...receive } = sync.receive as typeof sync.receive & { detail?: unknown };
+    const { detail: _s, ...send } = sync.send as typeof sync.send & { detail?: unknown };
+    expect(captureAccountSessionState(state(sync)).sync).toEqual({ send, receive });
+  }
+});
+it('carries where a saved snapshot stands, positions since the last one and a replay-bound refusal, refusing malformed ones (phase 547)', () => {
+  const state = (history: unknown) => ({
+    login: 'remembered',
+    sync: null,
+    local: null,
+    automatic: { phase: 'idle', reason: 'peer', history },
+    devices: { remove: false, history: true, detached: false },
+  });
+  const positions = { since: 3073, allowed: 4096 };
+  const replay = { snapshot: 'pending', needed: 4097, allowed: 4096 };
+  const history = {
+    sequence: 1,
+    pending: 'resume',
+    canDiscard: true,
+    saved: 'blocked',
+    positions,
+    replay,
+    raced: true,
+  };
+  const kept = captureAccountSessionState(state(history)).automatic!.history!;
+  expect(kept).toEqual(history);
+  expect(Object.isFrozen(kept.positions)).toBe(true);
+  expect(Object.isFrozen(kept.replay)).toBe(true);
+  for (const saved of ['sendable', 'waiting', 'blocked', 'superseded', 'stale', 'cancelling'])
+    expect(captureAccountSessionState(state({ ...history, saved })).automatic!.history!.saved).toBe(
+      saved,
+    );
+  for (const bad of [
+    { ...history, saved: 'other' },
+    { ...history, raced: false },
+    { ...history, positions: { ...positions, since: -1 } },
+    { ...history, positions: { ...positions, extra: 1 } },
+    { ...history, positions: { since: 1 } },
+    { ...history, replay: { ...replay, snapshot: 'latest' } },
+    { ...history, replay: { ...replay, needed: 1.5 } },
+    { ...history, replay: { ...replay, more: 1 } },
+    { ...history, unknown: 1 },
+  ])
+    expect(() => captureAccountSessionState(state(bad))).toThrow();
+});

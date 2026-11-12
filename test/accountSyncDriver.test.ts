@@ -835,3 +835,95 @@ it('reports a successful upload only after a newly retained acceptance, not loca
     vi.useRealTimers();
   }
 });
+
+it('a named receive size halt keeps the halt, shows its sizes, and a retry clears both (phase 544)', async () => {
+  const detail = { cause: 'history-snapshot' as const, needed: 4_400_000, allowed: 4_194_304 };
+  let calls = 0;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      send: async () => ({ kind: 'idle', acceptedThrough: 0 }),
+      receive: async () =>
+        ++calls === 1
+          ? { kind: 'blocked', reason: 'inbound-size', receivedThrough: 3, detail }
+          : { kind: 'idle', receivedThrough: 3 },
+    }),
+  );
+  f.scheduler.wake('start');
+  await f.tick(0);
+  const blocked = f.scheduler.runtime.status.receive;
+  expect(blocked).toMatchObject({ phase: 'blocked', reason: 'inbound-size', detail });
+  expect(Object.isFrozen(blocked.detail)).toBe(true);
+  // Automatic wakes cannot clear it: the halt reads only its reason, as before.
+  f.scheduler.wake('online');
+  f.scheduler.wake('remote');
+  await f.tick(60000);
+  expect(calls).toBe(1);
+  expect(f.scheduler.runtime.status.receive.detail).toEqual(detail);
+  f.scheduler.runtime.retry('receive');
+  await f.tick(0);
+  expect(calls).toBe(2);
+  expect(f.scheduler.runtime.status.receive.reason).toBeNull();
+  expect('detail' in f.scheduler.runtime.status.receive).toBe(false);
+  await f.scheduler.dispose();
+});
+
+it('keeps an unverified history snapshot named while other devices keep arriving, until it clears', async () => {
+  let standing: 'history-unverified' | undefined,
+    calls = 0,
+    failing = true;
+  const f = fixture((options) =>
+    createSyncScheduler({
+      ...options,
+      send: async () => ({ kind: 'idle', acceptedThrough: 0 }),
+      // Writing from another device keeps arriving on every other pass.
+      receive: async () =>
+        failing
+          ? { kind: 'unknown', receivedThrough: calls }
+          : ++calls % 2
+            ? { kind: 'progress', receivedThrough: calls }
+            : { kind: 'idle', receivedThrough: calls },
+      standing: () => standing,
+    }),
+  );
+  f.scheduler.wake('start');
+  await f.tick(0);
+  // Control, the notice seen vanishing: a retried read is named only until progress arrives.
+  expect(f.scheduler.runtime.status.receive).toMatchObject({
+    reason: 'network-unavailable',
+    issueSince: 0,
+  });
+  failing = false;
+  await f.tick(1000);
+  expect(f.scheduler.runtime.status.receive).toMatchObject({ reason: null, issueSince: null });
+  standing = 'history-unverified';
+  const set = f.now;
+  await f.tick(5000);
+  const receive = () => f.scheduler.runtime.status.receive;
+  // Named from the first pass that reads it.
+  const since = receive().issueSince!;
+  expect(since).toBeGreaterThan(set);
+  expect(receive()).toMatchObject({ reason: 'history-unverified', issueSince: since });
+  expect(receive().phase).not.toBe('blocked');
+  const before = calls;
+  // Reads that fail because of the condition (a pruned stream) keep it named, not hidden behind
+  // a network sentence that progress would clear.
+  failing = true;
+  await f.tick(5000);
+  expect(receive()).toMatchObject({
+    phase: 'retrying',
+    reason: 'history-unverified',
+    issueSince: since,
+  });
+  failing = false;
+  await f.tick(40000);
+  // Still receiving, and still named: progress from other devices does not clear it.
+  expect(calls).toBeGreaterThan(before + 4);
+  expect(receive()).toMatchObject({ reason: 'history-unverified', issueSince: since });
+  expect(receive().lastSuccessAt).toBeGreaterThan(since);
+  // A newer snapshot installs: the owner reports it gone and the next pass clears it.
+  standing = undefined;
+  await f.tick(20000);
+  expect(receive()).toMatchObject({ reason: null, issueSince: null });
+  await f.scheduler.dispose();
+});

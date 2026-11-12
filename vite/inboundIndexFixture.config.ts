@@ -18,8 +18,8 @@ export default defineConfig((environment) => {
   const hooks: [string, string, string][] = [
     [
       ledger,
-      '  return { logicalRows, ownedBytes, eligible: ownedBytes <= INDEX_MAX_BYTES };',
-      `  const usage = { logicalRows, ownedBytes, eligible: ownedBytes <= INDEX_MAX_BYTES };
+      '  return { logicalRows, ownedBytes, eligible: true }; // reported, not a gate: decisions 2026-11-11',
+      `  const usage = { logicalRows, ownedBytes, eligible: true };
   console.info('native-index-observation:' + JSON.stringify({site:'usage',...usage,indexed:!!view.indexes,nativeSeq:records.at(-1)?.seq??0,limit:INDEX_MAX_BYTES}));
   return usage;`,
     ],

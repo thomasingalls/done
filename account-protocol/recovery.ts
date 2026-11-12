@@ -140,3 +140,22 @@ export const draftDigest = async (draft: RecoveryDraft): Promise<string> =>
   );
 export const confirmationBytes = (challenge: string, draftHash: string): Uint8Array<ArrayBuffer> =>
   lp('done/account-recovery-confirm/v1', challenge, draftHash);
+const nibble = (code: number) =>
+  code >= 48 && code <= 57 ? code - 48 : code >= 97 && code <= 102 ? code - 87 : -1;
+/** Non-empty, even-length lowercase hex, checked by character code. WebKit reports no match for
+ * /^(?:[0-9a-f]{2})+$/ on valid input past about 2.78 million characters (phase 542), so long
+ * fields must not depend on a regular expression. Returns undefined, never partial bytes. */
+export const lowerHexBytes = (value: string): Uint8Array<ArrayBuffer> | undefined => {
+  if (!value.length || value.length % 2) return undefined;
+  const bytes = new Uint8Array(value.length / 2);
+  for (let i = 0; i < bytes.length; i++) {
+    const high = nibble(value.charCodeAt(2 * i)),
+      low = nibble(value.charCodeAt(2 * i + 1));
+    if (high < 0 || low < 0) {
+      bytes.fill(0);
+      return undefined;
+    }
+    bytes[i] = (high << 4) | low;
+  }
+  return bytes;
+};

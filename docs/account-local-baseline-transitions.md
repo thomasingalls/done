@@ -56,6 +56,9 @@ must retain the needed evidence or ensure future maintenance uses a sufficiently
 current experiment falls back to intact history; this is **not yet a complete post-deletion policy**.
 The later [retirement evidence decision](./account-local-retention-evidence.md) selects bounded exact
 checkpoint pins and refetch/refusal behavior; its live enforcement remains a separate implementation.
+Since phase 550 a needed checkpoint (one that moves a receive cursor forward) is verified instead,
+by reading the accepted chain from its cut to the retained frontier, and its installation is folded
+into the baseline at once.
 
 An outstanding old read also cannot silently learn its previous link from its response. The reduced
 state marks its retired frontier. A late response at the terminal retained receipt can be authenticated

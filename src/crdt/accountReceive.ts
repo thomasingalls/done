@@ -2,6 +2,7 @@ import { receiveOriginalsFit, type ReceiveOriginalsUsage } from './receiveOrigin
 import { WARM_AUDIT_MS, WARM_AUDIT_ROWS } from './warmContent';
 import { WARM_AUDIT_FORCE_POSITIONS } from './warmAuditStart';
 import { createWorkerContextQueue, type WorkerContextQueue } from './workerContextQueue';
+import { enterRetentionFence } from './retentionFence';
 import type { AccountMirrorContext } from './accountMirrorMaterial';
 import { eraseWorkerMessage } from './workerChannel';
 import { pageRuntimePorts } from './runtimePorts';
@@ -17,14 +18,15 @@ import {
 import {
   createAutomaticLocalRetention,
   localRetentionInterrupted,
-  type LocalRetentionHint,
+  watchLocalRetentionHold,
 } from './automaticLocalRetention';
+import { createLedgerHints } from './ledgerHints';
 import {
   createAutomaticServiceHistory,
   hasAutomaticServiceHistory,
 } from '../account/automaticHistoryMaintenance';
 import { createRetentionReads } from './retentionReads';
-import { RetiredHistoryRequired } from './retainedHistory';
+import { RetiredHistoryRequired, type RetiredCut } from './retainedHistory';
 import type { PreparedReceiveFinish } from './admissionQueue';
 import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
 import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
@@ -209,6 +211,7 @@ import {
 } from './accountInbound';
 import {
   applyHistoryReceiveCuts,
+  historyAdvances,
   heldInboundContext,
   inspectInbound,
   inspectInboundCooperatively,
@@ -221,11 +224,18 @@ import {
   inboundMemoSlots,
   type InboundReadCursor,
 } from './inboundLedger';
-import { verifySpoolWitness, verifySpool, extendSpoolWitness } from './spoolRecord';
+import {
+  verifySpoolWitness,
+  verifySpool,
+  extendSpoolWitness,
+  positionSources,
+} from './spoolRecord';
 import { verifyDelivery, emptyDelivery } from './deliveryRecord';
 import {
   captureError,
   capturedSourcePresence,
+  decodeSourceCapsule,
+  eraseCapsule,
   type CaptureRoute,
   type CapturedSourceIdentity,
 } from './sourceCapture';
@@ -270,7 +280,8 @@ async function openAccountReceiveOwner(
   });
   let baselineReading = false;
   let verifiedCounter: import('./contentRecord').ContentCounter | undefined;
-  let localRetentionHint: LocalRetentionHint | undefined;
+  // Scheduling hints from the last adopted view: retention growth and the full-check path.
+  const ledgerHints = createLedgerHints();
   let baselineShadow: ReturnType<typeof createLocalBaselineShadow> | undefined;
   let sinceAudit = 0,
     sinceAuditPositions = 0,
@@ -381,6 +392,14 @@ async function openAccountReceiveOwner(
   let pendingPromotions = 0;
   let outstandingStamp: ReturnType<typeof retentionReads.capture> | undefined;
   let skippedHistory: string | undefined;
+  // Named until a later installation succeeds or is no longer needed. `history-unverified`: a
+  // snapshot this device needs has a cut inside reduced history that could not be checked.
+  // `history-waiting`: it was checked, but is held until a reduction can carry it at once.
+  let historyStanding: 'history-unverified' | 'history-waiting' | undefined;
+  // Set by the composed owner: why a reduction could not follow an installation right now.
+  let foldReadiness: (() => string | undefined) | undefined;
+  // A needed, checked snapshot held back for that reason (catalog key). Rechecked cheaply.
+  let deferredHistory: string | undefined;
   const subtleFor = (task: SessionTask) => guardedSubtle(() => task.step(() => {}));
   const lifetime = (task: SessionTask) => ({ assertCurrent: () => task.step(() => {}) });
   const authority = createAuthorityAuthentication({
@@ -443,7 +462,7 @@ async function openAccountReceiveOwner(
   let invalidateFinalPermission = () => {};
   let retentionAuthority = {};
   const invalidateAuthority = (checkedTransition = false) => {
-    localRetentionHint = undefined;
+    ledgerHints.withdraw();
     retentionAuthority = {};
     if (checkedTransition) baselineShadow?.authorityChanged();
     else baselineShadow?.invalidate();
@@ -470,7 +489,7 @@ async function openAccountReceiveOwner(
         if (!semanticAuditDue()) return true;
         await assertCurrent(task);
         auditDue = true;
-        owner.carrier.invalidateWarm();
+        owner.carrier.requestReferenceRead();
         const records = await owner.carrier.load(task);
         eraseVerified(records);
         return !auditDue;
@@ -645,7 +664,18 @@ async function openAccountReceiveOwner(
       await owner.carrier.enableSpool(task);
     },
     async validate(task, records, route, counter, view, baseline, localRetentionRevision) {
-      localRetentionHint = undefined;
+      ledgerHints.begin();
+      const retentionHint = (revision: number) => {
+        if (!(hasAutomaticLocalRetention() || hasAutomaticServiceHistory())) return undefined;
+        // An adopted view with an installation older builds cannot replay asks for its fold.
+        let fold = false;
+        try {
+          fold = verified.read(records, (v) => v.inbound.foldDue === true);
+        } catch {
+          /* No adopted view for these rows: no fold is reported. */
+        }
+        return { revision, records: records.length, ...(fold ? { fold: true as const } : {}) };
+      };
       if (baseline) {
         // The carrier has either fully replayed the authenticated origin or extended its private
         // reduced view under fresh authority. Never send these physical suffix rows to zero-origin replay.
@@ -665,14 +695,15 @@ async function openAccountReceiveOwner(
           );
           baselineReading = true;
           verifiedCounter = structuredClone(counter);
-          if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
-            localRetentionHint = { revision: baseline.anchor.revision, records: records.length };
+          // A reduced view never pays the zero-origin reference check on the next change.
+          ledgerHints.settle(retentionHint(baseline.anchor.revision), false);
           resetSemanticAudit();
           auditDue = auditDeferred = false;
           memo.clear();
           coverage.clear();
           return;
         } catch (cause) {
+          ledgerHints.abandon();
           baselineReading = false;
           verifiedCounter = undefined;
           verified.clear();
@@ -682,6 +713,9 @@ async function openAccountReceiveOwner(
         }
       }
       baselineReading = false;
+      // Whether the view this call adopts kept its continuation indexes. Undefined: no ledger
+      // check ran (byte-equal view), or reference mode, where every check is full by choice.
+      let adoptedIndexes: boolean | undefined;
       const checkFull = async (
         records: import('./contentRecord').OpenedRecord[],
         audit = false,
@@ -816,6 +850,8 @@ async function openAccountReceiveOwner(
           }
           syntaxTurn.complete(result);
           if (!audit) resetSemanticAudit();
+          // A refused index (bounds at indexVerifiedLedger) puts every later change on this path.
+          if (incremental && !audit) adoptedIndexes = !!result.indexes;
           return result;
         } finally {
           syntaxTurn.dispose();
@@ -897,6 +933,7 @@ async function openAccountReceiveOwner(
                     import.meta.env?.['VITE_ACCOUNT_LEDGER_AUDIT'] === 'every' ||
                     semanticAuditDue();
                   syntaxTurn.complete(result);
+                  adoptedIndexes = !!result.indexes;
                   return result;
                 } finally {
                   syntaxTurn.dispose();
@@ -945,15 +982,22 @@ async function openAccountReceiveOwner(
           }
         }
       } catch (e) {
-        if (validationComplete && e instanceof MaintenanceInterrupted) throw e;
+        if (validationComplete && e instanceof MaintenanceInterrupted) {
+          // The delta view stays adopted; only its discretionary audit yielded.
+          ledgerHints.abandon(adoptedIndexes === undefined ? undefined : !adoptedIndexes);
+          throw e;
+        }
+        ledgerHints.abandon();
         verified.clear();
         verifiedCounter = undefined;
         memo.clear();
         coverage.clear();
         throw e;
       }
-      if (hasAutomaticLocalRetention() || hasAutomaticServiceHistory())
-        localRetentionHint = { revision: localRetentionRevision ?? 0, records: records.length };
+      ledgerHints.settle(
+        retentionHint(localRetentionRevision ?? 0),
+        adoptedIndexes === undefined ? undefined : !adoptedIndexes,
+      );
     },
     dispose() {
       auditAlive = false;
@@ -972,7 +1016,7 @@ async function openAccountReceiveOwner(
       membershipAnchor = undefined;
       expectedPayload.fill(0);
       verifiedCounter = undefined;
-      localRetentionHint = undefined;
+      ledgerHints.dispose();
       verified.clear();
       memo.clear();
       coverage.clear();
@@ -1109,7 +1153,10 @@ async function openAccountReceiveOwner(
             if (refused) return refused;
             return prepared.persist(task, () => assertCurrent(task), checkJournal);
           });
-        return await (contextQueue ? contextQueue.run(persist) : persist());
+        // A busy Worker handoff slot refuses before anything is saved: an interruption to retry.
+        return await (contextQueue
+          ? enterRetentionFence(() => contextQueue.run(persist))
+          : persist());
       } finally {
         prepared.dispose();
       }
@@ -1757,10 +1804,20 @@ async function openAccountReceiveOwner(
             catalog.latest !== prepared.installed.hash)
         )
           return captureError('History catalog regressed or forked');
-        if (catalog.latest === prepared.installed.hash && prepared.installed.receiveCuts)
+        if (catalog.latest === prepared.installed.hash && prepared.installed.receiveCuts) {
+          historyStanding = deferredHistory = undefined;
           return null;
+        }
       }
-      if (catalog.latest === EMPTY_HISTORY_CHECKPOINT || catalog.latest === inheritedHistoryHash)
+      if (catalog.latest === EMPTY_HISTORY_CHECKPOINT || catalog.latest === inheritedHistoryHash) {
+        historyStanding = deferredHistory = undefined;
+        return null;
+      }
+      // A held snapshot is fetched again only once a reduction could follow its installation.
+      if (
+        deferredHistory === base.authority.head + ':' + catalog.latest &&
+        (await runCaptureTask((task, owner, route) => foldBlocked(task, owner, route)))
+      )
         return null;
       const request = await runCaptureTask(async (task) => {
         stamp.check();
@@ -1797,6 +1854,8 @@ async function openAccountReceiveOwner(
         return captureError('Admitted history changed during reading');
       return {
         check: stamp.check,
+        signal: stamp.signal,
+        key: base.authority.head + ':' + catalog.latest,
         bytes: encodeHistoryInstall({
           version: 2,
           baseline: prepared.baseline,
@@ -1810,10 +1869,135 @@ async function openAccountReceiveOwner(
         }),
       };
     });
+  // Outside the storage tail, like fetchHistory: read each publisher's accepted chain from the
+  // snapshot cut to the retained frontier. A different chain is an integrity refusal; no answer
+  // from the service returns undefined (unverifiable); a failed transport retries.
+  const verifyRetiredHistory = (
+    needs: readonly RetiredCut[],
+    { check, signal, key }: { check(): void; signal: AbortSignal; key: string },
+  ) =>
+    runNetworkTask(async (network) => {
+      if (!access || account.detached || !canReceive())
+        throw new HistoryTransportUnavailable('History check is not available');
+      const { verifyRetiredCuts, RetiredCutUnverifiable } = await network.wait(
+        () => import('./retiredCutVerification'),
+      );
+      const stopped = AbortSignal.any([network.signal, signal]);
+      try {
+        return await verifyRetiredCuts(
+          base,
+          needs,
+          {
+            sign: async (message) =>
+              hex(
+                new Uint8Array(
+                  await network.wait(() => subtleFor(network).sign('Ed25519', signer!, message)),
+                ),
+              ),
+            read: async (request) => {
+              check();
+              let answer: string | undefined;
+              const page = await network.wait(() =>
+                privateDeliveryPost(
+                  options.pin,
+                  access,
+                  'read-v2',
+                  request,
+                  READ_PAGE_LIMIT,
+                  stopped,
+                  (event) => {
+                    if (event.phase === 'response') answer = event.code;
+                    recordPrivateTransportDiagnostic(event);
+                  },
+                ),
+              );
+              check();
+              if (page) return page;
+              if (['unavailable', 'out-of-order', 'ledger-integrity'].includes(answer ?? ''))
+                throw new RetiredCutUnverifiable();
+              throw new HistoryTransportUnavailable('History check read failed');
+            },
+          },
+          lifetime(network),
+        );
+      } catch (cause) {
+        if (cause instanceof RetiredCutUnverifiable) {
+          // Not refetched as a retry; a newer snapshot or authority re-evaluates it.
+          skippedHistory = key;
+          historyStanding = 'history-unverified';
+          return undefined;
+        }
+        if (cause instanceof InboundError && cause.reason === 'expired')
+          throw new HistoryTransportUnavailable('History check read expired', { cause });
+        if (cause instanceof InboundError)
+          throw new AdmissionError(
+            'receive-refused',
+            'History snapshot cut differs from retained history',
+            {
+              cause,
+            },
+          );
+        throw cause;
+      }
+    });
+  /** Why a reduction could not carry an installation right now, if anything (storage task).
+   * An installation older builds cannot replay is committed only when one can follow at once. */
+  const foldBlocked = async (
+    task: SessionTask,
+    owner: ReturnType<typeof prepareAccountCustody>,
+    route: CaptureRoute,
+  ): Promise<string | undefined> => {
+    const reason = foldReadiness ? foldReadiness() : 'unavailable';
+    if (reason) return reason;
+    // A reduction takes a settled cut: every allocated position of this device accepted. Writing
+    // captured but not yet allocated becomes such a position at the next send, so it holds too.
+    if (
+      await readState(task, owner, (v) => {
+        const spool = v.census.delivery.spool;
+        if (
+          publicationState(v.delivery) !== 'ready' ||
+          v.delivery.acceptedThrough !== (spool.origin?.position ?? 0) + spool.positions.length
+        )
+          return true;
+        const used = new Set((spool.origin?.consumed ?? []).map((s) => s.id + ':' + s.index));
+        for (const p of spool.positions)
+          for (const s of positionSources(p)) used.add(s.id + ':' + s.index);
+        for (const [id, bytes] of spool.sources) {
+          const capsule = decodeSourceCapsule(bytes, route);
+          try {
+            if (capsule.sources.some((_, i) => !used.has(id + ':' + i))) return true;
+          } finally {
+            eraseCapsule(capsule);
+          }
+        }
+        return false;
+      })
+    )
+      return 'unsent-writing';
+    const { retentionAttemptsSettled } = await task.wait(() => import('./retentionAttempts'));
+    if (
+      account.detached ||
+      !(await retentionAttemptsSettled(
+        task,
+        joined ? 'joined' : 'promotion',
+        options.slotId,
+        options.code,
+        expectedRecord,
+      ))
+    )
+      return 'durable-attempt';
+    await assertCurrent(task);
+    return undefined;
+  };
+  const needsSnapshot = (
+    current: Awaited<ReturnType<typeof state>>,
+    heads: Parameters<typeof historyAdvances>[2] | null | undefined,
+  ) => !heads || historyAdvances(current, base, heads);
   const installHistory = (
     input: Bytes,
     promote: (updates: readonly Bytes[]) => void,
     check: () => void = () => {},
+    retiredEvidence?: ReadonlyMap<string, RetiredCut>,
   ) => {
     const bytes = input.slice();
     invalidateReadScheduling();
@@ -1823,6 +2007,18 @@ async function openAccountReceiveOwner(
       try {
         check();
         const current = await state(task, owner, route);
+        const key = async () => {
+          const { historyCheckpointHash } =
+            await import('../../account-protocol/historyCheckpoint');
+          return (
+            base.authority.head +
+            ':' +
+            (await historyCheckpointHash(decodeHistoryInstall(bytes).checkpoint))
+          );
+        };
+        const foldBefore = current.foldDue === true;
+        // Read before the cuts are applied to `current`, which moves its cursors.
+        let needed: boolean | undefined;
         try {
           const event = decodeHistoryInstall(bytes);
           if (event.epoch !== base.authority.tip || event.head !== base.authority.head)
@@ -1838,22 +2034,32 @@ async function openAccountReceiveOwner(
               hasBaselineVerifier(),
             );
           });
+          needed = needsSnapshot(current, result!.heads);
           if (result!.duplicate) {
             check();
+            historyStanding = deferredHistory = undefined;
             promote([]);
             return { kind: 'already-installed' as const };
           }
           if (result!.heads) {
-            await owner.carrier.checkRetainedCheckpoint(
+            const retired = await owner.carrier.checkRetainedCheckpoint(
               task,
               result!.heads,
               () => assertCurrent(task),
               current.checkpointCuts,
+              retiredEvidence,
             );
             const rows = await owner.carrier.load(task);
             try {
               const census = inspectCensus(rows, route, (c) => c);
-              await applyHistoryReceiveCuts(current, base, census, result!.heads);
+              await applyHistoryReceiveCuts(
+                current,
+                base,
+                census,
+                result!.heads,
+                Infinity,
+                retired,
+              );
               verifySyncState(
                 census.delivery,
                 verified.read(rows, (v) => v.delivery),
@@ -1862,17 +2068,33 @@ async function openAccountReceiveOwner(
             } finally {
               for (const row of rows) row.bytes.fill(0);
             }
+            if (current.foldDue && !foldBefore) {
+              // Older builds cannot replay this installation until a reduction carries it.
+              // Commit it only when needed, and only when that reduction can follow at once.
+              if (!needed) throw new RetiredHistoryRequired();
+              const blocked = await foldBlocked(task, owner, route);
+              if (blocked) {
+                deferredHistory = await key();
+                historyStanding = 'history-waiting';
+                promote([]);
+                return { kind: 'history-deferred' as const, reason: blocked };
+              }
+            }
           }
         } catch (cause) {
           if (cause instanceof RetiredHistoryRequired) {
-            const { historyCheckpointHash } =
-              await import('../../account-protocol/historyCheckpoint');
-            skippedHistory =
-              base.authority.head +
-              ':' +
-              (await historyCheckpointHash(decodeHistoryInstall(bytes).checkpoint));
+            needed ??= true;
+            // A read of the accepted chain may still prove these cuts; it runs outside this tail.
+            if (needed && cause.needs.length) {
+              promote([]);
+              return { kind: 'history-required' as const, needs: cause.needs };
+            }
+            // Not needed: skip quietly, as before. Needed but not provable: name it.
+            skippedHistory = await key();
+            historyStanding = needed ? 'history-unverified' : undefined;
+            if (!needed) deferredHistory = undefined;
             promote([]);
-            return { kind: 'history-required' as const };
+            return { kind: 'history-required' as const, needs: [] as readonly RetiredCut[] };
           }
           throw new AdmissionError('receive-refused', 'History snapshot could not be installed', {
             cause,
@@ -1902,6 +2124,7 @@ async function openAccountReceiveOwner(
         await state(task, owner, route);
         return task.step(() => {
           check();
+          historyStanding = deferredHistory = undefined;
           promote([result!.update]);
           return { kind: 'installed' as const };
         });
@@ -3362,7 +3585,9 @@ async function openAccountReceiveOwner(
     checkLocalBaseline,
     installLocalBaseline,
     prepareLocalRemoval,
-    localRetentionHint: () => localRetentionHint,
+    localRetentionHint: ledgerHints.hint,
+    ledgerFullCheck: ledgerHints.fullCheck,
+    onLedgerHint: ledgerHints.subscribe,
     prepareGroup,
     receiveGroup,
     preparedPromotion,
@@ -3436,6 +3661,12 @@ async function openAccountReceiveOwner(
     },
     fetchHistory,
     installHistory,
+    verifyRetiredHistory,
+    historyStanding: () => historyStanding,
+    /** The composed owner says why a reduction could not run now (undefined: it could). */
+    setFoldReadiness: (readiness: () => string | undefined) => {
+      foldReadiness = readiness;
+    },
     createOutbound,
     adoptSuccessor: applySuccessor,
     adoptMembership,
@@ -3540,6 +3771,9 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     preparedPromotion,
     fetchHistory,
     installHistory,
+    verifyRetiredHistory,
+    historyStanding,
+    setFoldReadiness,
     createOutbound,
     adoptSuccessor,
     adoptMembership,
@@ -3549,6 +3783,8 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     installLocalBaseline,
     prepareLocalRemoval,
     localRetentionHint,
+    ledgerFullCheck,
+    onLedgerHint,
   } = nativeOwner;
   markAccountOpen('owner');
   operatorToken = access ?? operatorToken;
@@ -3589,10 +3825,17 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         if (!fetched) return false;
         bytes = fetched.bytes;
         fetched.check();
-        const result = await enqueue(bytes, (evidence, promote) =>
-          installHistory(evidence, promote, fetched.check),
-        );
-        return result.kind === 'installed';
+        let verified: ReadonlyMap<string, RetiredCut> | undefined;
+        for (;;) {
+          const result = await enqueue(bytes, (evidence, promote) =>
+            installHistory(evidence, promote, fetched.check, verified),
+          );
+          if (result.kind !== 'history-required') return result.kind === 'installed';
+          // A second refusal after a verified read is a moved frontier: the next pass rechecks.
+          if (!result.needs.length || verified) return false;
+          verified = await verifyRetiredHistory(result.needs, fetched);
+          if (!verified) return false;
+        }
       } finally {
         bytes?.fill(0);
       }
@@ -3833,23 +4076,26 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                             ).finally(() => measureLedgerWork('retentionPreparation', preparing));
                             if (prepared.kind !== 'prepared-removal') return prepared;
                             try {
-                              return await enqueue(new Uint8Array([1]), async (_input, promote) => {
-                                const fenced = ledgerWorkStart();
-                                try {
-                                  const result = await prepared.commit();
-                                  promote([]);
-                                  return result;
-                                } catch (cause) {
-                                  if (!(cause instanceof MaintenanceInterrupted)) throw cause;
-                                  promote([]);
-                                  return {
-                                    kind: 'skipped' as const,
-                                    reason: 'activity-or-journal',
-                                  };
-                                } finally {
-                                  measureLedgerWork('retentionFenced', fenced);
-                                }
-                              });
+                              // A busy slot refuses before the commit starts: yield and retry.
+                              return await enterRetentionFence(() =>
+                                enqueue(new Uint8Array([1]), async (_input, promote) => {
+                                  const fenced = ledgerWorkStart();
+                                  try {
+                                    const result = await prepared.commit();
+                                    promote([]);
+                                    return result;
+                                  } catch (cause) {
+                                    if (!(cause instanceof MaintenanceInterrupted)) throw cause;
+                                    promote([]);
+                                    return {
+                                      kind: 'skipped' as const,
+                                      reason: 'activity-or-journal',
+                                    };
+                                  } finally {
+                                    measureLedgerWork('retentionFenced', fenced);
+                                  }
+                                }),
+                              );
                             } finally {
                               prepared.dispose();
                             }
@@ -3910,11 +4156,17 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
     // decryption, dry run, network call or writing bytes are needed to decide when to try.
     if (hasAutomaticLocalRetention() && result.removeLocalHistory && !account.detached) {
       if (!carrier.beforeRelease) throw Error('Missing automatic retention cleanup ownership');
+      const visible = () => pageRuntimePorts.activity.visibilityState() !== 'hidden';
+      // Stable conditions only: typing and the in-flight check must not toggle a hold.
+      const stable = () =>
+        carrier.state === 'active' &&
+        workspace.status.state === 'active' &&
+        workspace.status.pressure === null &&
+        visible();
       const maintenance = createAutomaticLocalRetention({
         signal: carrier.signal,
         observe: () => ({
           ready:
-            synchronizationQuiet &&
             historyFlights === 0 &&
             automaticHistory?.status.phase !== 'running' &&
             carrier.state === 'active' &&
@@ -3922,12 +4174,32 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             workspace.status.durable &&
             workspace.status.pendingItems === 0 &&
             workspace.status.pressure === null &&
-            pageRuntimePorts.activity.visibilityState() !== 'hidden',
+            visible(),
+          synchronized: synchronizationQuiet,
+          // In the full-check path every ledger change costs a reference check; reduction is
+          // the way out, so a due attempt may park routine sync (bounded by the retention owner).
+          hold: ledgerFullCheck() && stable(),
+          // Any device: a running attempt may skip routine idle receive polls, whose first
+          // storage job would cancel it. Hints still receive at once (bounded by the owner).
+          deferPolls: stable(),
           hint: localRetentionHint(),
         }),
         remove: result.removeLocalHistory,
       });
       automaticRetention = maintenance;
+      // A checked installation older builds cannot replay is committed only when its reduction
+      // can follow at once. Saved account steps are read from storage at that moment.
+      setFoldReadiness(() =>
+        maintenance.status.phase === 'halted' || maintenance.status.phase === 'closed'
+          ? 'halted'
+          : maintenance.status.reason === 'capacity'
+            ? 'capacity'
+            : visible()
+              ? undefined
+              : 'hidden',
+      );
+      // A validation withdraws the hint while it runs; nothing else announced its return.
+      const ledgerChanged = onLedgerHint(maintenance.refresh);
       const changed = workspace.subscribe(maintenance.wake);
       // A durability barrier also publishes status. It is readiness, not new writing;
       // otherwise each saved slice would reset its own ten-second quiet window.
@@ -3943,6 +4215,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
       ];
       carrier.beforeRelease(() => {
         maintenance.dispose();
+        ledgerChanged();
         changed();
         statusChanged();
         for (const stop of stopActivity) stop();
@@ -4042,9 +4315,17 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
             : state;
         },
         receiveInterval: () => repairReceiveInterval(idleReceiveInterval(notificationHealthy)),
+        standing: historyStanding,
         ...(batching.publication ? { publicationBatch: batching.publication } : {}),
-        send: (beforeNewEnvelope) =>
-          driveOutboundStep(outbound, operatorToken ?? '', gate, beforeNewEnvelope),
+        ...(automaticRetention ? { hold: () => automaticRetention?.hold } : {}),
+        send: (beforeNewEnvelope, holdNewEnvelope) =>
+          driveOutboundStep(
+            outbound,
+            operatorToken ?? '',
+            gate,
+            beforeNewEnvelope,
+            holdNewEnvelope,
+          ),
         receive: async (sendDue) => {
           const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
             receiveSweep.reset();
@@ -4071,11 +4352,16 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
               cause instanceof HistoryInstallSizeError ||
               (cause instanceof AdmissionError && cause.cause instanceof HistoryInstallSizeError)
             ) {
+              const size = (
+                cause instanceof HistoryInstallSizeError ? cause : cause.cause
+              ) as HistoryInstallSizeError;
               const state = await api.status();
               return {
                 kind: 'blocked',
                 reason: 'inbound-size',
                 receivedThrough: state.receivedThrough,
+                // Named beside the unchanged reason; sizes only, never snapshot content.
+                detail: { cause: 'history-snapshot', needed: size.needed, allowed: size.allowed },
               };
             }
             if (
@@ -4120,6 +4406,11 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         carrier.beforeRelease!(scheduler.runtime.onStatus(changed));
         changed(scheduler.runtime.status);
       }
+      // The scheduler reads the hold live; this only re-arms lanes when its tier changes.
+      if (automaticRetention)
+        carrier.beforeRelease!(
+          watchLocalRetentionHold(automaticRetention, () => scheduler.wake('hold')),
+        );
       try {
         let previousGate = gate();
         unsubscribeLogin = options.networkLogin?.subscribe(() => {

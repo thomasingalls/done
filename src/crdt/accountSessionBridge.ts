@@ -7,7 +7,9 @@ import type {
 } from '../account/historyMaintenance';
 import type { AutomaticHistoryStatus } from '../account/automaticHistoryMaintenance';
 import type { LocalRetentionStatus } from './automaticLocalRetention';
+import { copyRetentionDetail } from './localRetentionDetail';
 import type { SyncRuntime, SyncStatus, SyncLane } from './accountSyncDriver';
+import type { ReceiveHaltDetail } from './accountReceiveDriver';
 import type { WorkerChannel } from './workerChannel';
 export type NetworkLoginView = Pick<
   NetworkLogin,
@@ -59,17 +61,61 @@ const loginStates = [
   'signed-out',
 ];
 const commands = ['inspect', 'create', 'resume', 'verify', 'discard', 'prune'];
+const savedSnapshots = ['sendable', 'waiting', 'blocked', 'superseded', 'stale', 'cancelling'];
 function history(input: unknown): HistoryMaintenanceStatus {
-  fields(input, ['sequence', 'pending', 'canDiscard'], ['pruned']);
+  fields(
+    input,
+    ['sequence', 'pending', 'canDiscard'],
+    ['pruned', 'tooLarge', 'saved', 'positions', 'replay', 'raced'],
+  );
   const v = input as HistoryMaintenanceStatus;
   if (
     !number(v.sequence) ||
     !['none', 'resume', 'verify', 'waiting', 'stale'].includes(v.pending) ||
     typeof v.canDiscard !== 'boolean' ||
-    (Object.hasOwn(v, 'pruned') && v.pruned !== true)
+    (Object.hasOwn(v, 'pruned') && v.pruned !== true) ||
+    (Object.hasOwn(v, 'raced') && v.raced !== true) ||
+    (Object.hasOwn(v, 'saved') && !savedSnapshots.includes(v.saved!))
   )
     throw fail();
-  return Object.freeze({ ...v });
+  const out: HistoryMaintenanceStatus = { ...v };
+  if (Object.hasOwn(v, 'tooLarge')) {
+    const t = v.tooLarge!;
+    fields(t, ['snapshot', 'needed', 'allowed']);
+    if (
+      !['new', 'saved', 'pending', 'latest'].includes(t.snapshot) ||
+      !number(t.needed) ||
+      !number(t.allowed)
+    )
+      throw fail();
+    out.tooLarge = Object.freeze({ ...t });
+  }
+  // Phase 547: positions since the latest admitted snapshot, and a replay-bound refusal.
+  if (Object.hasOwn(v, 'positions')) {
+    const n = v.positions!;
+    fields(n, ['since', 'allowed']);
+    if (!number(n.since) || !number(n.allowed)) throw fail();
+    out.positions = Object.freeze({ ...n });
+  }
+  if (Object.hasOwn(v, 'replay')) {
+    const r = v.replay!;
+    fields(r, ['snapshot', 'needed', 'allowed']);
+    if (!['new', 'pending'].includes(r.snapshot) || !number(r.needed) || !number(r.allowed))
+      throw fail();
+    out.replay = Object.freeze({ ...r });
+  }
+  return Object.freeze(out);
+}
+function haltDetail(input: unknown): ReceiveHaltDetail | undefined {
+  try {
+    fields(input, ['cause', 'needed', 'allowed']);
+  } catch {
+    return undefined;
+  }
+  const d = input as ReceiveHaltDetail;
+  return d.cause === 'history-snapshot' && number(d.needed) && number(d.allowed)
+    ? Object.freeze({ cause: d.cause, needed: d.needed, allowed: d.allowed })
+    : undefined;
 }
 function sync(input: unknown): SyncStatus {
   fields(input, ['send', 'receive']);
@@ -77,7 +123,11 @@ function sync(input: unknown): SyncStatus {
   for (const name of ['send', 'receive'] as const) {
     const v = (input as SyncStatus)[name],
       pos = name === 'send' ? 'acceptedThrough' : 'receivedThrough';
-    fields(v, ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos]);
+    fields(
+      v,
+      ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos],
+      ['detail'],
+    );
     if (
       !['starting', 'working', 'idle', 'retrying', 'offline', 'blocked', 'closed'].includes(
         v.phase,
@@ -101,16 +151,24 @@ function sync(input: unknown): SyncStatus {
           'sign-in-required',
           'request-expired',
           'network-unavailable',
+          'history-unverified',
+          'history-waiting',
         ].includes(v.reason))
     )
       throw fail();
-    Object.assign(out, { [name]: Object.freeze({ ...v }) });
+    // Presentation only: a malformed or misplaced detail is dropped and the page falls back.
+    const { detail: raw, ...rest } = v;
+    const detail = name === 'receive' && v.reason === 'inbound-size' ? haltDetail(raw) : undefined;
+    Object.assign(out, { [name]: Object.freeze({ ...rest, ...(detail ? { detail } : {}) }) });
   }
   return Object.freeze(out);
 }
 function local(input: unknown): LocalRetentionStatus {
-  fields(input, ['phase', 'reason'], ['progress']);
-  const v = input as LocalRetentionStatus;
+  fields(input, ['phase', 'reason'], ['progress', 'detail']);
+  const { detail: raw, ...rest } = input as LocalRetentionStatus;
+  // Presentation only: an unknown or malformed detail is dropped and the page falls back.
+  const detail = rest.reason === 'capacity' ? copyRetentionDetail(raw) : undefined;
+  const v: LocalRetentionStatus = { ...rest, ...(detail ? { detail } : {}) };
   if (!phases.includes(v.phase) || (v.reason !== undefined && !text(v.reason))) throw fail();
   if (v.progress !== undefined) {
     const p = v.progress;

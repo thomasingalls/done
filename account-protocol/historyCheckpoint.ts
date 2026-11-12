@@ -349,3 +349,43 @@ export async function verifyHistoryCheckpointAdmission(
   await verifySignature(member.sPub, a.signature, await historyCheckpointAdmissionMessage(a));
   return a;
 }
+/** A device installs an admitted checkpoint as one storage batch: the update it derives plus the
+ * install event carrying this checkpoint and its admission. `src/crdt/historyInstall.ts` refuses
+ * above its `MAX_BATCH_BYTES`; `test/historyInstallBound.test.ts` keeps the two equal. */
+export const HISTORY_INSTALL_LIMIT = 4 * 1024 * 1024;
+const id = (bytes: number) => '00'.repeat(bytes);
+// The widest install event any reader can store for this checkpoint. Its admission is fixed by the
+// checkpoint, the reader fields have fixed widths, both install tags have 23 characters and the
+// reader's epoch is taken at its widest. Mirrors `encodeHistoryInstall`, which the test pins.
+const installEventBytes = (c: HistoryCheckpoint) =>
+  json([
+    '-'.repeat(23),
+    2,
+    id(32),
+    id(16),
+    id(32),
+    Number.MAX_SAFE_INTEGER,
+    id(32),
+    id(16),
+    c,
+    parseHistoryCheckpointAdmission({
+      v: 1,
+      kind: 'history-checkpoint-admission',
+      checkpointHash: id(32),
+      derivedSv: c.manifest.sv,
+      derivedDs: c.manifest.ds,
+      headBaselineDigest: id(32),
+      derivation: DERIVATION,
+      admittingCredential: id(16),
+      selfAdmitted: 0,
+      decisionParent: id(32),
+      signature: id(64),
+    }),
+  ]).length;
+/** Bytes any device's installation of this checkpoint needs, compared with HISTORY_INSTALL_LIMIT.
+ * Without `updateBytes` the plaintext under the 16-byte AES-GCM tag stands in for the derived
+ * update; the creator checks the update is never longer, so the ciphertext alone bounds it. */
+export function historyInstallBytes(input: unknown, updateBytes?: number): number {
+  const c = parseHistoryCheckpoint(input);
+  return (updateBytes ?? c.ct.length / 2 - 16) + installEventBytes(c);
+}

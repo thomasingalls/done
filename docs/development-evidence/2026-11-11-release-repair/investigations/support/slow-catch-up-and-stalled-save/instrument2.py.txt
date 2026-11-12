@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+"""COPY-ONLY trace seams (round 2): warm audit outcomes and full baseline replays."""
+import sys, pathlib
+root = pathlib.Path(sys.argv[1])
+p = root / 'src/crdt/contentStore.ts'
+s = p.read_text()
+PUSH = ("const __push = (e: Record<string, unknown>) => { const a = ((globalThis as { __doneTrace?: unknown[] }).__doneTrace ??= []); a.push(e); if (a.length > 40000) a.splice(0, 10000); };")
+def edit(old, new):
+    global s
+    assert s.count(old) == 1, old[:70]
+    s = s.replace(old, new)
+edit("    async auditWarm(task: SessionTask): Promise<boolean> {\n      try {\n",
+     "    async auditWarm(task: SessionTask): Promise<boolean> {\n      // COPY-ONLY TRACE SEAM\n      " + PUSH + "\n"
+     "      const __t = Date.now(), __due = baselineReuse?.due() ?? null, __force = forceFullRead;\n"
+     "      try {\n        const __r = await (async (): Promise<boolean> => {\n")
+edit("        return completed;\n      } catch (cause) {\n        if (!(cause instanceof MaintenanceInterrupted)) clearView();\n        throw cause;\n      }\n    },",
+     "        return completed;\n        })();\n"
+     "        __push({ ev: 'auditWarm', t: __t, ms: Date.now() - __t, due: __due, force: __force, completed: __r, dueAfter: baselineReuse?.due() ?? null });\n"
+     "        return __r;\n"
+     "      } catch (cause) {\n"
+     "        __push({ ev: 'auditWarm', t: __t, ms: Date.now() - __t, due: __due, force: __force, error: String((cause as Error)?.constructor?.name), dueAfter: baselineReuse?.due() ?? null });\n"
+     "        if (!(cause instanceof MaintenanceInterrupted)) clearView();\n        throw cause;\n      }\n    },")
+edit("              held = await openEncryptedBaselineSnapshot(task, owner, snapshot);\n              countLedgerWork('baselineFullReplays');\n",
+     "              held = await openEncryptedBaselineSnapshot(task, owner, snapshot);\n              countLedgerWork('baselineFullReplays');\n"
+     "              // COPY-ONLY TRACE SEAM\n              ((globalThis as { __doneTrace?: unknown[] }).__doneTrace ??= []).push({ ev: 'fullReplay', t: Date.now() });\n")
+p.write_text(s)
+print('instrumented2', root)

@@ -1,0 +1,17 @@
+// Probe-only config. Lives outside the worktree.
+const W = '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1';
+const S =
+  '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/hold546';
+export default {
+  root: W,
+  cacheDir: S + '/.vite-cache',
+  test: {
+    dir: S,
+    include: ['**/*.probe.ts'],
+    environment: 'node',
+    setupFiles: [W + '/test/setup.ts'],
+    maxWorkers: 1,
+    fileParallelism: false,
+    cache: false,
+  },
+};

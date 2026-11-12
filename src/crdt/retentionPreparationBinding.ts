@@ -109,7 +109,12 @@ export async function capturePreparationPrefix(
       seen.add(r.seq);
       if (r.seq >= through) continue;
       bytes += r.ct.length + r.nonce.length + 128;
-      if (bytes > 64 * 1024 * 1024) throw new PreparationCapacity();
+      if (bytes > 64 * 1024 * 1024)
+        throw new PreparationCapacity({
+          cause: 'resume-history',
+          needed: bytes,
+          allowed: 64 * 1024 * 1024,
+        });
       records++;
       encoding.writeVarString(out, row.store);
       encoding.writeVarUint(out, r.seq);

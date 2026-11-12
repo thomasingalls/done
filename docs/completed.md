@@ -20760,3 +20760,39 @@ Built and retained the exact candidate and compatible writer-off ARM64 images fr
 [Record](./development-evidence/2026-11-07-hardened-release/530-signed-arm64-candidate/README.md).
 
 Outcome precedes active-seat update.
+
+
+### Close the verified Worker/receive release slice
+
+**Date:** 2026-11-09 · **Phase:** 534.
+
+Application PR #62 and infrastructure PR #58 merged with merge commits. The 2026-11-08 rollout verification observed production serving tested signed source `759890ca` at the exact published ARM64 index. Reconciliation, runtime/public-byte checks, retained Deployment/PVC/public identity and existing backup health pass. [Live observations and their limits](https://codeberg.org/oxidationlabs/ol-infra/src/commit/b327ba8d5aee291a95415c0dd1dd35e625258f65/docs/evidence/2026-11-08-done-worker-receipts-live/README.md) are recorded once in infrastructure; the application publication packet and Stage 5/6 acceptance remain their existing homes. Actual cached-client adoption is still pending; no physical-phone timing, RAM saving or new aggregate qualification credit is claimed. All RC debts remain. After dense writing or the new client format floor, rollback requires the retained same-source writer-off reader; never clear storage or rewrite receipts for a pre-release build.
+
+This outcome is recorded before removing only this seat's closed release slice from progress.md. The other workstream's text is unchanged; only the obsolete separator and its trailing blank lines are removed. Documentation review/merges do not deploy another image.
+
+
+### Prepend day-card arrivals without sorting stored history
+
+**Phase:** 535 · **Started:** 2026-11-09.
+
+New cards and ordinary moves now land at the top in Next, Scheduled and Done. Explicit reordering, split adjacency, existing arrangements and text edits remain independent of insertion order. No new data or guards. Five new regression cases reproduce the old behavior before the repair; 88 focused cases, typecheck and 17 adapter controls pass after narrow fixture corrections. The first full unit run and its five old ordering assumptions remain recorded; the final full run follows the next phase. All old obligations and unresolved blocks are retained. [Record](./development-evidence/2026-11-09-card-ux/535-prepend-arrivals/README.md).
+
+Outcome precedes advancement of this seat's active phase.
+
+
+### Record partial completion while keeping the task for later
+
+**Phase:** 536 · **Date:** 2026-11-10.
+
+Next now offers Done for now in place of Duplicate. One admitted, undoable operation creates and focuses an independent Done copy and moves the original to the top of Scheduled. No new data or security exceptions. Eight new semantic/durability controls, the full unit suite, desktop/Android-emulated browser focus/reorder/Undo/reopen checks, typecheck, lint and adapter checks pass. Initial fixture and harness failures remain recorded. Physical Android and release/performance qualification are not claimed. [Record](./development-evidence/2026-11-09-card-ux/536-done-for-now/README.md).
+
+Outcome precedes closure of this seat's active slice. Sequential patches are prepared; no commit, push, preview restart or deployment.
+
+
+### Keep card geometry and Done's lock control stable
+
+**Phase:** 537 · **Date:** 2026-11-10.
+
+A permanent right-hand grip gutter aligns text, breadcrumbs and action-label ink. Next no longer offers Remove. Done keeps Unlock/Lock in the same hit target, hides its other actions while locked and retains a disabled grip while editing. Four new regressions fail on the previous build. Final desktop/Android-emulated browser checks pass 62 cases (26 existing skips), alongside 22 focused unit cases, typecheck, lint and 23 adapter controls. The updated 8443 preview passes eight additional smoke cases with the API and public configuration retained. [Record](./development-evidence/2026-11-09-card-ux/537-stable-card-controls/README.md).
+
+Outcome precedes closure of this seat's active slice. Patches 535/536 remain untouched; 537 follows them. No commit, push or production deployment.

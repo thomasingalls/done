@@ -1,7 +1,7 @@
 /** Serial native composition. Source keys, local originals and progress remain slot-owned. */
 import { withNativeHistorySource } from './membershipSource';
 import { withHistoryCustody } from './historyCustody';
-import { readHistorySource } from './historySource';
+import { readHistorySource, historyReplayStart } from './historySource';
 import { createHistoryCheckpoint, admitHistoryCheckpoint } from './historyCheckpoint';
 import { createHistoryTransport } from '../account/historyHttp';
 import { privateDeliveryPost } from '../account/privateDeliveryHttp';
@@ -185,6 +185,18 @@ export async function runNativeHistoryMaintenance(
               accepted.destroy();
             }
           },
+          // The same start the replay above chooses, so the bound is checked before it runs.
+          replayStart: (prior) =>
+            historyReplayStart({
+              previous: prior,
+              keys: source.keys,
+              ...(source.snapshot?.kind === 'recovery-reading'
+                ? { recovery: source.snapshot }
+                : {}),
+              ...(source.snapshot?.kind === 'replacement-checkpoint' && source.installed
+                ? { replacement: { checkpoint: source.snapshot } }
+                : {}),
+            }),
         },
         command,
         { signal: task.signal, load: custody.load, replace: custody.replace, exchange },

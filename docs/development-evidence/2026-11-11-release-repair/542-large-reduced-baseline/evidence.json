@@ -1,0 +1,431 @@
+{
+  "phase": 542,
+  "date": "2026-11-11",
+  "base": "6a8de4bac397149af6699247afa78ea6f1e2bce9",
+  "requested": "coordinating session: let a device whose baseline exceeds the 4 MiB ceiling finish reduction, smallest correct change (2026-11-11)",
+  "amends": "2026-11-05 operator addition to the phase 442 debts: a different ceiling or encoding requires an explicit operator format/limit decision",
+  "operatorApproval": {
+    "date": "2026-11-11",
+    "via": "the coordinating session, in answer to direct questions",
+    "carrier": "approved: done/local-baseline-carrier/draft-4 only above what draft-3 holds; an older build shows 'This workspace needs a compatible app' on such a device until a newer build returns",
+    "ceiling": "approved: write reduced baselines up to 8 MiB encoded, read them up to 32 MiB, so a later raise of the write limit needs no format change"
+  },
+  "sourceSha256": {
+    "src/crdt/localBaselineAnchor.ts": "aa22641e793c89f2adcc18677305d68a0f593184dee85fdde27829a5f4c5fa24",
+    "src/crdt/localBaselineRecord.ts": "b277573d8bf1cabc9508afe3ef3e44a2d0a27a6a17cf630cfac2b5e6c71a1c39",
+    "src/crdt/localBaselineStorage.ts": "6dba54d04eee186126337fcb619b0e64c64a7b9f47e5bd0bbec2740ad999ea37",
+    "src/crdt/localRetentionStorage.ts": "165d9a3b66cbc8037b108666679405d24adc925a4802aabdfa9ddfefc893d646",
+    "test/localBaselineLargeCarrier.test.ts": "c2d97ac5453f25b3f1cfdc3b7b0858f528814d1e3721ba5fb0c9d593bd71ccc4",
+    "test/localBaseline.test.ts": "d57ce3b796ebc50cd12f4fde279b36b3c5cdb681830dfab8ef11af20005e9d78",
+    "test/local-baseline/released-baseline-vector.json": "724383cfe139abd4dd20fbe6894201f735287867cc997ef1df30082828c26040",
+    "vector-probe.ts.txt": "30ee32d9a905855cbe28de8408b918e90f69456574250a559b4bc6d8d896ebd9",
+    "account-protocol/recovery.ts": "9720b3ad3aade3c9e82b0d532e3a1bb85774e6b5e07e0e190c2702781deb8510",
+    "account-protocol/inboundTransport.ts": "1fbdff2d4d2971396fc9f09868048cc36df5b854d2698a36872cffab17b16e80",
+    "account-protocol/deliveryTransport.ts": "977737a40abbb1c0fdca13d38f381c32a31a34c92a8b6bac28b958ae9ab37de2",
+    "src/crdt/spoolRecord.ts": "26150419d06eda8185e43a7b1afa54668b7144cc2e1cde77fa8d0e7cf4597b8d",
+    "src/crdt/deliveryRecord.ts": "dc5218a232321ff33e875b0ef51f11cbca1ade0e17515542f7e972d30533d84d",
+    "src/crdt/sourceCapture.ts": "33e3360ffb45086c585916a3e21f22724b6f6fcef04f12326f4330bf73588cea",
+    "test/hexFieldValidation.test.ts": "fd1f4f0a0d24168bcdc16f4bca1f1d2e7ac030aebf46dfb881a7cd7d8194913e",
+    "hex-engines-probe.cjs.txt": "169b77e4084eb91c826f301dc78cd96d2213c5517bd04131eb9b2d6fc87d9aa6",
+    "hex-engines-output.txt": "b017aa94f6734496b369519155321694bec9fd50aad3129b1f984d10cc60aa1a",
+    "size-measure-probe.ts.txt": "fa1f5098e68c2e37fbb5da03ede24b8c36b9d5bd29447021c51d82e30835132c",
+    "webkit-owner-probe.ts.txt": "0c8fe0549411ddbd501afe4368a3d9b454bd79bcb02924f543e7533b339ce816"
+  },
+  "boundSites": {
+    "record": [
+      "localBaselineRecord.ts encodeLocalBaseline: raw snapshot and encoded length (capacity)",
+      "localBaselineRecord.ts data/bytes: per-field hex bound",
+      "localBaselineRecord.ts decodeLocalBaseline: frame bound before parse (integrity)",
+      "localBaselineRecord.ts baselineAuthenticationPayload: message bound (integrity)"
+    ],
+    "carrier": [
+      "localBaselineAnchor.ts parseBaselineCounter: packed bytes <= BASELINE_MAX_BYTES, chunks <= 17, chunks = ceil(bytes / chunk)",
+      "localBaselineStorage.ts readEncryptedBaselineSnapshot/openEncryptedBaselineSnapshot: chunk ciphertext length before copy",
+      "localBaselineStorage.ts anchorLocalBaseline and localRetentionStorage.ts removePlannedLocalHistory: chunking at write"
+    ],
+    "chunkCountReaders": [
+      "startupClassification.ts contentCensus (more than 18 metadata keys stops as repair-required)",
+      "contentStore.ts read (getAllKeys limit 19)",
+      "warmContent.ts (getAllKeys limit 19)"
+    ],
+    "storageLayerPerRecordBound": "none: parseStoredRecord checks a 12-byte nonce and ct >= 16 only",
+    "capacityMapping": "localRetentionPlan.ts maps LocalBaselineCapacityError raised while building a candidate to skipped/capacity"
+  },
+  "sizing": {
+    "fixture": "member fixture with one own position, one peer position and one installed service history snapshot",
+    "encodedBytes": 11041,
+    "snapshotBytes": 182,
+    "historyRecordBytes": 2483,
+    "checkpointCiphertextHexChars": 320,
+    "receiptBytes": 2167,
+    "sourcesCarried": 0,
+    "ownReceiptDuplicatesOwnStreamReceipt": true,
+    "model": "encoded ~ 2 x (snapshot + history record + receipts + carried sources) + ~1.4 KB; history record ~ 2 x installed snapshot + 4 x (sv + ds) + ~2 KB",
+    "bindsWithoutHistoryRecordAtSnapshotMiB": 2.0,
+    "bindsWithHistoryRecordOfSimilarSnapshotAtMiB": 0.65,
+    "serviceInstallAdmitsSnapshotUpToMiB": 1.33,
+    "measuredOnAffectedAccount": false,
+    "earlierObservations": {
+      "note": "Neither figure is from the affected account; the operator confirmed on 2026-11-11 that its devices are not the ones measured in earlier phases.",
+      "phase120ProductionPixel9aBaselineBytes": 989284,
+      "phase442LabRefusal": {
+        "encoded": 5763419,
+        "snapshot": 2779095
+      }
+    }
+  },
+  "change": {
+    "LOCAL_BASELINE_LIMIT": "unchanged 4 MiB; still the bound for records without a journal era",
+    "LARGE_LOCAL_BASELINE_LIMIT": "33554432: read and format bound (frame parse, per-field bound, authentication message, carrier pointer bytes and chunk count)",
+    "newCarrier": "done/local-baseline-carrier/draft-4",
+    "newCarrierCounterVersion": 5,
+    "LARGE_BASELINE_CHUNK_BYTES": 2097152,
+    "LARGE_BASELINE_MAX_BYTES": 33554464,
+    "maxChunks": 17,
+    "writtenOnlyAbove": "BASELINE_MAX_BYTES (4 MiB + 32 packed)",
+    "unchanged": [
+      "record tags draft-2 and draft-3",
+      "authentication domains draft-2 and draft-3",
+      "counter MAC tag done/content-counter/local-baseline-draft-3",
+      "draft-1 to draft-3 carriers and their 256 KiB chunks",
+      "BASELINE_MAX_CHUNKS"
+    ],
+    "completeHistoryWriter": "refuses a payload over 4 MiB with LocalBaselineCapacityError before reserving",
+    "storedFormatChanged": "new carrier only for baselines that could not be written before",
+    "wireFormatChanged": false,
+    "LARGE_LOCAL_BASELINE_WRITE_LIMIT": 8388608,
+    "writeCeilingAppliesTo": "encodeLocalBaseline on a journal-era candidate: raw snapshot and encoded length, as LocalBaselineCapacityError",
+    "encoderCallers": "one production caller, summarizeBaseline in localBaselineReplay.ts, which always builds a new candidate (from full history or from a stored predecessor plus suffix); decoding never re-encodes through the encoder",
+    "secondReductionFromLargerRecord": "a stored record between 8 and 32 MiB, which only a later build could write, opens, authenticates and replays, but its next reduction parks as capacity because the new candidate is past this build's write ceiling"
+  },
+  "releasedParserObservation": {
+    "tree": "6a8de4bac (unmodified)",
+    "draft4PointerReducedReader": {
+      "error": "StorageCompatibilityError",
+      "message": "Unsupported local baseline carrier.",
+      "startup": "app-update-required / unsupported-storage-format"
+    },
+    "draft4PointerReaderDisabled": {
+      "error": "StorageCompatibilityError",
+      "message": "Reduced local baseline reader required.",
+      "startup": "app-update-required / unsupported-storage-format"
+    },
+    "draft3PointerWithLargerBytes": {
+      "error": "ContentError",
+      "message": "Invalid baseline bound.",
+      "startup": "repair-required"
+    },
+    "startupCensus": {
+      "fourChunkKeys": "accepted",
+      "thirtyThreeChunkKeys": "repair-required / unknown-content-metadata"
+    }
+  },
+  "alternativeNotTaken": "binary record in the released carrier: new codec, tag and authentication domain, about twice the headroom",
+  "remainingCeiling": {
+    "writeEncodedBytes": 8388608,
+    "readEncodedBytes": 33554432,
+    "approxRawSnapshotAtWriteCeilingMiB": 4,
+    "outcome": "a new candidate past 8 MiB: LocalBaselineCapacityError, skipped/capacity, same park and message; persisted bytes past 32 MiB: integrity refusal"
+  },
+  "newUnitCases": {
+    "test/localBaselineLargeCarrier.test.ts": 10,
+    "test/hexFieldValidation.test.ts": 5
+  },
+  "casesFailingOnReleasedCode": 5,
+  "guardCasesPassingOnBoth": 2,
+  "restatedCases": [
+    "test/localBaseline.test.ts: dry run skips unsettled/pending/capacity cuts but refuses damaged evidence before signing (capacity at the 8 MiB write ceiling)",
+    "test/localBaselineLargeCarrier.test.ts: the remaining-ceiling case is restated as the 8 MiB write ceiling, with the 32 MiB read bound still refused at write"
+  ],
+  "relatedFilesRun": {
+    "files": 64,
+    "cases": 787,
+    "passed": 787
+  },
+  "typecheckPassed": true,
+  "formatAndLintOnChangedSources": true,
+  "inventory": {
+    "recorded": true,
+    "obligations": 1110,
+    "unresolved": 552,
+    "newObligations": 2,
+    "caseDenominatorBefore": 2661,
+    "caseDenominator": 2676
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 516,
+    "labelsAdded": ["done/local-baseline-carrier/draft-4"],
+    "domainSitesMoved": [
+      {
+        "label": "done/account-local-baseline-auth/draft-2\u0000",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "from": 271,
+        "to": 280
+      },
+      {
+        "label": "done/account-local-baseline-auth/draft-3\u0000",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "from": 272,
+        "to": 281
+      },
+      {
+        "label": "done/content-counter/local-baseline-draft-1",
+        "path": "src/crdt/localBaselineAnchor.ts",
+        "from": 144,
+        "to": 166
+      },
+      {
+        "label": "done/content-counter/local-baseline-draft-2",
+        "path": "src/crdt/localBaselineAnchor.ts",
+        "from": 143,
+        "to": 165
+      },
+      {
+        "label": "done/content-counter/local-baseline-draft-3",
+        "path": "src/crdt/localBaselineAnchor.ts",
+        "from": 141,
+        "to": 163
+      },
+      {
+        "label": "done/local-baseline-carrier/draft-1",
+        "path": "src/crdt/localBaselineAnchor.ts",
+        "from": 14,
+        "to": 18
+      },
+      {
+        "label": "done/local-baseline-carrier/draft-2",
+        "path": "src/crdt/localBaselineAnchor.ts",
+        "from": 15,
+        "to": 19
+      },
+      {
+        "label": "done/local-baseline-carrier/draft-3",
+        "path": "src/crdt/localBaselineAnchor.ts",
+        "from": 16,
+        "to": 20
+      }
+    ],
+    "constructionRegistryLinesFollowed": 30,
+    "constructionRegistrySitesAdded": 1,
+    "openConstructions": 16,
+    "hexRepairSitesMoved": 20,
+    "hexRepairSources": [
+      "account-protocol/recovery.ts",
+      "account-protocol/inboundTransport.ts",
+      "account-protocol/deliveryTransport.ts",
+      "src/crdt/spoolRecord.ts",
+      "src/crdt/deliveryRecord.ts",
+      "src/crdt/sourceCapture.ts"
+    ],
+    "writeCeilingSitesMoved": [
+      {
+        "label": "done/account-local-baseline-auth/draft-2\u0000",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "from": 280,
+        "to": 285
+      },
+      {
+        "label": "done/account-local-baseline-auth/draft-3\u0000",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "from": 281,
+        "to": 286
+      }
+    ]
+  },
+  "viteAnchorsAffected": 0,
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "notRun": [
+    "native suites",
+    "any real device or account",
+    "browser memory or timing for a whole reduction; the engine probe measures hex checks only",
+    "test/account-parser-conformance/baseline.test.mjs fails before any test: its frozen f0b6acd2 spoolRecord.ts lacks exports current modules import; independent of this change and not in CI",
+    "browser suites by this seat (see browserSuites)"
+  ],
+  "deployed": false,
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "finalTree": {
+      "files": 340,
+      "passed": 3302,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 331.02
+    },
+    "afterHexRepairBeforeWriteCeiling": {
+      "files": 340,
+      "passed": 3299,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 274.27
+    },
+    "beforeHexRepair": {
+      "files": 339,
+      "passed": 3294,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 277.19
+    },
+    "hostLoadAverage": "about 8 on the final run, a Chrome renderer near 100% CPU and an unrelated Lean toolchain process from another worktree near 50%"
+  },
+  "traceCheckPassed": true,
+  "build": {
+    "command": "pnpm build",
+    "passed": true,
+    "initialJsGzippedKb": 308.5,
+    "budgetKb": 350.0
+  },
+  "hexFieldRepair": {
+    "trigger": "coordinator measurement after review, reproduced here: WebKit 26.5 reports no match for /^(?:[0-9a-f]{2})+$/ on valid input past 2,785,276 characters",
+    "measuredWith": "Playwright bundled engines, headless, this Mac; hex-engines-probe.cjs.txt run with node from the repository root",
+    "webkit26_5": {
+      "groupedPattern": "accepts 2,785,276 characters, refuses 2,785,278; false (no throw) at 4, 16, 32 and 64 MiB of characters in 58 to 78 ms",
+      "groupedPatternWithJSC_useJIT_false": "same threshold; the environment variable did not demonstrably disable the JIT (a 2e7 loop took 9 ms)",
+      "flatPattern": "true at 64 MiB of characters, 44 to 45 ms",
+      "characterCodeDecoder": "correct at 64 MiB of characters, 79 to 80 ms; refuses bad start, middle, end, odd length and uppercase"
+    },
+    "chromium151": {
+      "groupedPattern": "true at 64 MiB of characters, 37 ms",
+      "characterCodeDecoder": "141 ms at 64 MiB"
+    },
+    "firefox153": {
+      "groupedPattern": "true at 64 MiB of characters, 35 ms",
+      "characterCodeDecoder": "162 ms at 64 MiB"
+    },
+    "releasedBehaviourOnWebKit": {
+      "fieldRefusedAboveBytes": 1392638,
+      "baseline": "encodeLocalBaseline's self-decode throws plain Error('Invalid inbound frame') (no code) for any field over about 1.39 MB of bytes: snapshot, history record, receipt or carried source capsule. planLocalRetention rethrows it (not LocalBaselineCapacityError, not LocalBaselineError), so automatic maintenance halts as owner-error ('stopped because a storage or verification check failed'), not a capacity park. Planning is a dry run: nothing is reserved, sealed or written, and the storage job runner closes the session only for repair-required or generation-changed codes, so sync continues. Reopening retries and halts again.",
+      "releasedSnapshotWindow": "about 1.39 MB to 2.0 MiB of snapshot halts; larger snapshots park as capacity because the 4 MiB length check runs before the self-decode",
+      "phase542AsReviewed": "every field over about 1.39 MB halts up to the 32 MiB ceiling, so 2 to 16 MiB snapshots that the released code parked would halt instead",
+      "ownerProbe": "webkit-owner-probe.ts.txt: with the grouped pattern emulated, a real owner's removeHistory rejected with Error('Invalid inbound frame') at 1.6 MiB and 2.25 MiB of text; the counter stayed v2 with no chunk keys. Without emulation both reduced.",
+      "otherPathsOnWebKit": "spool and delivery wires (2 MiB bound) and legacy inbound record pages (4 MiB record, 10 MiB page bound) used the same pattern; spool and delivery refusals are repair-required ContentErrors, which close the session. Currently admitted envelopes are at most 512 KiB, so only historical or multi-envelope inputs could reach the threshold."
+    },
+    "sites": {
+      "account-protocol/inboundTransport.ts inboundBytes": "fixed; baseline fields up to 32 MiB, legacy inbound pages, inbound envelopes up to 4 MiB + 2 KiB",
+      "account-protocol/deliveryTransport.ts boundedHex": "fixed; submissions and read-page envelopes up to about 4 MiB",
+      "src/crdt/spoolRecord.ts hexValue": "fixed; envelope wire up to 2 MiB",
+      "src/crdt/deliveryRecord.ts bytes": "fixed; submission wire up to 2 MiB",
+      "src/crdt/sourceCapture.ts": "fixed although its 2 MiB capsule keeps the field under 2,097,152 characters: it is on the baseline path and the WebKit threshold is an engine limit measured on one build"
+    },
+    "helper": "lowerHexBytes in account-protocol/recovery.ts, appended after every registered site: non-empty, even length, [0-9a-f] by character code, one pass, zero-fills and returns undefined on refusal",
+    "acceptSetChanged": false,
+    "errorMessagesChanged": false,
+    "left": {
+      "src/crdt/journalCodec.ts:73 base64 pattern": "quantified group, but journal updates are bounded at 16 KiB and it is not on the baseline or service-snapshot path",
+      "src/crdt/sync.ts:102 LOOPBACK": "host names only",
+      "account-protocol/recovery.ts unhex and other flat /^[0-9a-f]+$/ checks": "no group; measured correct at 64 MiB in all three engines"
+    },
+    "newUnitCases": {
+      "test/hexFieldValidation.test.ts": 5
+    },
+    "casesFailingBeforeRepair": 4,
+    "guardCasePassingOnBoth": 1,
+    "webkitEmulation": "the new cases make the grouped pattern report no match above 2,785,276 characters, reproducing the one measured WebKit behaviour in Node"
+  },
+  "spreadArguments": {
+    "observed": "spread push throws RangeError at 200,000 arguments in Chromium 151 and at 1,000,000 in WebKit 26.5 and Firefox 153",
+    "nearestSites": "contentStore.ts:412 opened.push(...copyRecords(openedView.opened)) and inboundLedger.ts:596 rows.push(...added) spread one argument per stored row; not changed here"
+  },
+  "measurements": {
+    "host": "this Mac, Node 26.13.0, fake-indexeddb, load average about 6; one process per run",
+    "probe": "size-measure-probe.ts.txt (the owner runs predate renaming MODE to PROBE_MODE; vitest sets MODE=test, which selected the owner branch)",
+    "codecOnly": {
+      "note": "synthetic journal-era record; peak RSS includes about 72 MiB of harness",
+      "rows": [
+        {
+          "encodedBytes": 4188597,
+          "hexMs": 52,
+          "encodeWithSelfDecodeMs": 92,
+          "decodeMs": 48,
+          "authenticationPayloadMs": 51,
+          "peakRssMiB": 304
+        },
+        {
+          "encodedBytes": 8399285,
+          "hexMs": 110,
+          "encodeWithSelfDecodeMs": 180,
+          "decodeMs": 168,
+          "authenticationPayloadMs": 100,
+          "peakRssMiB": 482
+        },
+        {
+          "encodedBytes": 16787893,
+          "hexMs": 208,
+          "encodeWithSelfDecodeMs": 372,
+          "decodeMs": 195,
+          "authenticationPayloadMs": 213,
+          "peakRssMiB": 745
+        },
+        {
+          "encodedBytes": 33532341,
+          "hexMs": 411,
+          "encodeWithSelfDecodeMs": 760,
+          "decodeMs": 566,
+          "authenticationPayloadMs": 446,
+          "peakRssMiB": 1067
+        }
+      ]
+    },
+    "ownerPass": {
+      "note": "real Account owner: save, one full reduction (verify, build, encode, seal, write, readback, reload replay), cold reopen; two runs per size; peak RSS includes about 135 MiB of harness and the in-memory fake IndexedDB",
+      "rows": [
+        {
+          "approxEncodedMiB": 4,
+          "reduceMs": [1038, 1076],
+          "coldReopenMs": [268, 258],
+          "peakRssMiB": [521, 511]
+        },
+        {
+          "approxEncodedMiB": 8,
+          "reduceMs": [2188, 2425],
+          "coldReopenMs": [518, 527],
+          "peakRssMiB": [653, 637]
+        },
+        {
+          "approxEncodedMiB": 16,
+          "reduceMs": [4383, 4289],
+          "coldReopenMs": [1195, 1148],
+          "peakRssMiB": [1034, 1101]
+        },
+        {
+          "approxEncodedMiB": 32,
+          "reduceMs": [8125, 8825],
+          "coldReopenMs": [2078, 2272],
+          "peakRssMiB": [1764, 1651]
+        }
+      ]
+    },
+    "hexArray": "hex() preallocates one array slot per byte before joining: 16.7 million slots for a 16 MiB snapshot, built twice per encode (values and the canonical re-encode) and once more per decode",
+    "recommendation": "32 MiB is not defensible to build on a phone; 8 MiB is. The operator set the write ceiling at 8 MiB and kept 32 MiB as the read bound on 2026-11-11."
+  },
+  "relatedNodeTests": {
+    "files": "24 node test files importing the edited modules, plus five parser-conformance files",
+    "tests": 31,
+    "passed": 30,
+    "failed": 1,
+    "failure": "account-parser-conformance/baseline.test.mjs, pre-existing (see notRun)"
+  },
+  "writeCeilingCases": [
+    "a reduction just over the write ceiling parks as capacity and writes nothing",
+    "a reduction just under the write ceiling completes in draft-4 and reads back",
+    "a stored draft-4 baseline between the write ceiling and the read bound opens, but cannot reduce again here"
+  ],
+  "browserSuites": {
+    "runBy": "the coordinating session, not this seat",
+    "storageCompatibility": "pnpm storage:compatibility passed 17 of 17 on the tree before the hex repair; a rerun on the final tree is pending with the coordinator",
+    "localBaseline": "pnpm test:local-baseline fails 5 of 5 with the page-side __baselineOwner hook undefined; four of the five fail identically on clean copies of main e9ec1e697 and of the branch tip 6a8de4bac without this phase, and the fifth needs git history so could not be compared in a copy",
+    "consequence": "the failure predates this phase, and the draft-4 path has no real-browser coverage: its storage behaviour is verified only against the unit suite's simulated IndexedDB"
+  }
+}

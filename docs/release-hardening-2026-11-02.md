@@ -57,6 +57,8 @@ approval, no released build may write the new rows.
 1. **Maintenance.** Capacity mapping first: all five PreparationCapacity sites become
    skipped/capacity through the existing parked path, keep the journal/caps, retry a
    changed authenticated hint behind the retry clock, and park again on reopen.
+   **Amended 2026-11-11 (phase 541):** a cache or journal that cannot take more no longer
+   parks the pass; the rest runs uncached. See [decisions.md](./decisions.md), same date.
    Integrity/storage errors still halt, with content-free error class/code diagnostics.
    S starts its slice clock at the first fresh miss; replayed hits do not consume fresh
    work time. Y uses a typed priority-only interruption and retries in 10 seconds;

@@ -196,6 +196,9 @@ Keep these units distinct:
   page extent and each separately owned copy. Views do not erase their memory
   cost. Fall back to the reference path at the existing bounds. No RAM-saving
   claim follows from a smaller accounting number.
+  **Amended 2026-11-11:** retained ownership is still measured and reported, but it
+  no longer refuses the index. Logical rows, physical rows and raw record bytes are
+  the eligibility gates. See [decisions.md](./decisions.md), same date.
 - Keep 256-physical-row/five-minute due rules and Stage 4's 1,024-physical-row hard
   attempt cap. Also retain the earlier 1,024-logical-position full-audit ceiling.
   Either hard ceiling forces an attempt; neither waives interruptions or comparison.

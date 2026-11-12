@@ -1,7 +1,7 @@
 import { act } from 'react';
 import { createRoot } from 'react-dom/client';
 import { expect, it, vi } from 'vitest';
-import { SyncNotice } from '../src/ui/SyncNotice';
+import { SyncNotice, receiveHaltMessage } from '../src/ui/SyncNotice';
 import type { SyncRuntime, SyncStatus } from '../src/crdt/accountSyncDriver';
 import type { LoginStatus, NetworkLogin } from '../src/account/networkLogin';
 
@@ -174,5 +174,111 @@ it('delays online failure notice, shows lane details, retries only that lane and
     host.remove();
     vi.useRealTimers();
     vi.restoreAllMocks();
+  }
+});
+
+it('names a receive halt caused by a history snapshot too large to install, with sizes (phase 544)', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(30000);
+  (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  const lane = {
+    phase: 'blocked' as const,
+    failures: 0,
+    nextAttemptAt: null,
+    issueSince: 0,
+    lastSuccessAt: null,
+  };
+  const detail = { cause: 'history-snapshot' as const, needed: 4_400_000, allowed: 4_194_304 };
+  const named =
+    'Changes from your other devices are not arriving here, because a history snapshot saved on the service needs 4.2 MiB to install and this version installs snapshots of up to 4.0 MiB. Your writing on this device is kept.';
+  const status: SyncStatus = {
+    send: { ...lane, phase: 'idle', reason: null, issueSince: null, acceptedThrough: 1 },
+    receive: { ...lane, reason: 'inbound-size', detail, receivedThrough: 2 },
+  };
+  expect(receiveHaltMessage(status.receive)).toBe(named);
+  // Sizes that round alike still read as more than the limit.
+  expect(receiveHaltMessage({ ...status.receive, detail: { ...detail, needed: 4_194_400 } })).toBe(
+    named.replace('needs 4.2 MiB', 'needs just over 4.0 MiB'),
+  );
+  // Another size halt, or none named, keeps the general sentence.
+  const { detail: _, ...plain } = status.receive;
+  expect(receiveHaltMessage(plain)).toBeUndefined();
+  expect(receiveHaltMessage({ ...status.receive, reason: 'response-too-large' })).toBeUndefined();
+  const retry = vi.fn();
+  const sync: SyncRuntime = { status, retry, onStatus: () => () => {} };
+  try {
+    await act(async () =>
+      root.render(
+        <>
+          <SyncNotice sync={sync} />
+          <SyncNotice sync={sync} details />
+        </>,
+      ),
+    );
+    expect(host.querySelector('.sync-notice')?.textContent).toContain(named);
+    expect(host.querySelector('.sync-notice')?.textContent).not.toContain(
+      'Changes from your other devices are not arriving here.Last',
+    );
+    expect(host.querySelector('.sync-details')?.textContent).toContain(named);
+    expect(host.textContent).toContain('receive:inbound-size');
+    await act(async () => host.querySelector('button')!.click());
+    expect(retry).toHaveBeenCalledExactlyOnceWith('receive');
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+    vi.useRealTimers();
+  }
+});
+it('names an unverified history snapshot, says what resolves it, and offers no ineffective retry', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(30000);
+  (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  const lane = { failures: 0, nextAttemptAt: 35000, issueSince: 0, lastSuccessAt: 29000 };
+  const named =
+    'Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.';
+  const status: SyncStatus = {
+    send: { ...lane, phase: 'idle', reason: null, issueSince: null, acceptedThrough: 1 },
+    // Receiving otherwise continues: the lane is idle, not blocked.
+    receive: { ...lane, phase: 'idle', reason: 'history-unverified', receivedThrough: 9 },
+  };
+  expect(receiveHaltMessage(status.receive)).toBe(named);
+  const retry = vi.fn();
+  const sync: SyncRuntime = { status, retry, onStatus: () => () => {} };
+  try {
+    await act(async () =>
+      root.render(
+        <>
+          <SyncNotice sync={sync} />
+          <SyncNotice sync={sync} details />
+        </>,
+      ),
+    );
+    expect(host.querySelector('.sync-notice')?.textContent).toContain(named);
+    expect(host.querySelector('.sync-details')?.textContent).toContain(named);
+    expect(host.textContent).toContain('receive:history-unverified');
+    expect(host.querySelector('button')).toBeNull();
+    // Checked but held until a reduction can carry it: its own sentence, still no retry.
+    const waiting: SyncStatus = {
+      ...status,
+      receive: { ...status.receive, reason: 'history-waiting' },
+    };
+    expect(receiveHaltMessage(waiting.receive)).toBe(
+      'Changes from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.',
+    );
+    await act(async () =>
+      root.render(<SyncNotice sync={{ status: waiting, retry, onStatus: () => () => {} }} />),
+    );
+    expect(host.textContent).toContain('receive:history-waiting');
+    expect(host.querySelector('button')).toBeNull();
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+    vi.useRealTimers();
   }
 });

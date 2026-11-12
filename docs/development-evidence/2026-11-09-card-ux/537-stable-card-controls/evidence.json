@@ -1,0 +1,182 @@
+{
+  "phase": 537,
+  "date": "2026-11-10",
+  "predecessorTree": "bcc292acd37d75f0391490d9802cdf4fbc7e2605",
+  "operatorConfirmed": "right-side handle gutter",
+  "browser": {
+    "before": {
+      "startTime": "2026-11-10T00:01:35.917Z",
+      "duration": 19814.417,
+      "expected": 0,
+      "skipped": 0,
+      "unexpected": 4,
+      "flaky": 0
+    },
+    "light": {
+      "startTime": "2026-11-10T00:02:36.475Z",
+      "duration": 104659.678,
+      "expected": 62,
+      "skipped": 26,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "finalDark": {
+      "startTime": "2026-11-10T00:04:55.041Z",
+      "duration": 95175.878,
+      "expected": 62,
+      "skipped": 26,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "livePreview": {
+      "startTime": "2026-11-10T00:08:35.059Z",
+      "duration": 11538.898,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "focusedUnitCasesPassed": 22,
+  "adapterCasesPassed": 23,
+  "typecheckPassed": true,
+  "lintPassed": true,
+  "touchedFormattingPassed": true,
+  "runtimeSchemaChanged": false,
+  "admissionOrFreezeChanged": false,
+  "sourceSha256": {
+    "src/ui/Card.tsx": "af2b97f4eac2dca9a607434c3d2f88499dc9626aebd0862994aae704a6e46397",
+    "src/ui/Collection.tsx": "8fdd5a8c43061b2a2f462a47d77a63cce40564d7797b3b1b602c07effae0dac3",
+    "src/styles/cards.css": "9aceb2f27e5e795cd4856ba0845fdf4351977c3de6c13088a77b2ad124a59a93",
+    "test/geometry/card-controls.spec.ts": "48fe6da6b55598cb69a4806d4c5cd69bbde6f10f6cccbb914745052ac6840e8b",
+    "test/geometry/duplicate-card.spec.ts": "da93044148a84f4010a95faa9e16928012fded873e7367c3eab818102fa9d124"
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-adapter-checks.log",
+      "bytes": 3091,
+      "sha256": "809cc579ebbbb288909f78d14543b4f5bd2e14ae405ece713cd266ad10bc5407"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-after-browser.log",
+      "bytes": 13797,
+      "sha256": "dfec5860c69aa8d49f4460114e021c30249ee001f81325a71a1d80377d9ce62e"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-before-browser.log",
+      "bytes": 7482,
+      "sha256": "55d2808d588b90a3e54963376b05938fd5f670dbcacbf2aa6439e6f314b45568"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-budget-check.log",
+      "bytes": 2282,
+      "sha256": "b569a6a56358e06911d34201437d5198f03db0493079bbe61ee13036fd264e83"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-build.log",
+      "bytes": 11485,
+      "sha256": "cd64522c23bdb5f8a0a9b268e758e937befa5bb33b918ccb48623388e8ca6aec"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-final-browser.log",
+      "bytes": 13805,
+      "sha256": "34fafcb5921d2d720f37b28da7a946c633caf1928ba8dd9b954d6af394675078"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-final-build.log",
+      "bytes": 10063,
+      "sha256": "14051fefd0b1bac6577b4f4b704bbf52c2ab0fdfae66a17cdc127b1752fea2dd"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-focused-unit.log",
+      "bytes": 238,
+      "sha256": "2d3c34f93b21367358dc0953792e6dbeed34b2b1fb4f8a1c5ea6d4484be4b47b"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-format-check.log",
+      "bytes": 182,
+      "sha256": "1d714515d1e95093983828c5cf2610118c2c63e7df2236cc1a6001490dda4fc6"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-format-final.log",
+      "bytes": 47,
+      "sha256": "30347769decada9444e71222f495db622bdd6420977eab0b88c79952fbabbf54"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-format-verified.log",
+      "bytes": 112,
+      "sha256": "e41249fec76ccb222b808c6519bc4c2ee477813eae2903485a741fb42c939138"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-format.log",
+      "bytes": 46,
+      "sha256": "3de541b82371183495a9cce529fa585e7a3c67e9c7e523a5bcfa024321c02748"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-inventory-record.log",
+      "bytes": 324,
+      "sha256": "8a2c9968fd15e480acc01c5fd97c1fb9c9a9c114304231295c8748ce09b9929f"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-lint-final.log",
+      "bytes": 24,
+      "sha256": "4dbbb5d9326c5cf032406db1cc4c28f14315fc922a84998f8001df32db5e6314"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-lint.log",
+      "bytes": 24,
+      "sha256": "4dbbb5d9326c5cf032406db1cc4c28f14315fc922a84998f8001df32db5e6314"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-manifest-record.log",
+      "bytes": 101,
+      "sha256": "38b8825cf59b4b315e3767cb1e14b042ed5240890de5cc4a13e5e060f64d8be2"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-origin-check.log",
+      "bytes": 210,
+      "sha256": "7b8a503cc8e5a680fb0c963e543214586024f3bf2e91b5d0d72bb13560e384e3"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-preview-browser.log",
+      "bytes": 1648,
+      "sha256": "5b2ad4d36a60b51bfe3cd54f1474ed81c4d084c2be230787f854712e582037f9"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-preview-verify.log",
+      "bytes": 553,
+      "sha256": "3b407874e8a04b2aeba9bc9c33d3c80f2c3ccef4b7d0b02a9623a72cd696d441"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-typecheck-final.log",
+      "bytes": 18,
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-typecheck-first.log",
+      "bytes": 18,
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/537-typecheck.log",
+      "bytes": 18,
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535"
+    }
+  ],
+  "priorObligationsRetained": 1104,
+  "obligations": 1105,
+  "unresolved": 552,
+  "newUnresolved": "test:test/geometry/card-controls.spec.ts",
+  "newAggregateCredit": false,
+  "preview": {
+    "origin": "https://mbp.tail0e0d4.ts.net:8443",
+    "version": "e0487970-dirty",
+    "verifiedFiles": 67,
+    "backendRestarted": false,
+    "publicConfigPreserved": true,
+    "localRecord": ".dev/preview-rollouts/2026-11-10-card-controls/verification.json"
+  },
+  "committed": false,
+  "productionDeployed": false,
+  "physicalPhoneTested": false
+}

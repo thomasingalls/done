@@ -1,6 +1,14 @@
-/** A missing retired proof is not permission to trust a cursor or manufacture a response. */
+/** A snapshot cut inside history this device reduced, and the exact retained frontier a read of
+ * the accepted chain must reach from it. Both ends are admitted or retained evidence, never a reply. */
+export interface RetiredCut {
+  readonly credentialId: string;
+  readonly cut: { readonly position: number; readonly link: string };
+  readonly through: { readonly position: number; readonly link: string };
+}
+/** A missing retired proof is not permission to trust a cursor or manufacture a response.
+ * `needs` names snapshot cuts a verified read of the accepted chain could still prove. */
 export class RetiredHistoryRequired extends Error {
-  constructor() {
+  constructor(readonly needs: readonly RetiredCut[] = []) {
     super('Operation requires retired history');
   }
 }

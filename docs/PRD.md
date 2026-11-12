@@ -370,9 +370,9 @@ at most three), membership that moves between them, per-item state, and per-item
 - **Next**, **Scheduled**, **Done**.
 
 A day shows them in the order **Next, Done, Scheduled**: what you are doing, what you did, and the tail of
-intentions that have not come up yet. **Done reads newest-first** — whatever was completed most recently is
-on top, and a record you only ever add to is read from the top. Next and Scheduled are ordered by intent
-rather than by time and keep the order you put them in. All three collections can be reordered on
+intentions that have not come up yet. **New cards and ordinary moves arrive at the top of all three
+collections**, so recent arrivals are easy to find. This changes insertion position, not a timestamp sort:
+existing cards and manual arrangements stay where they are, including after text edits. All three collections can be reordered on
 writable days, using the visible grip on touch or desktop, arrow keys on the grip, or a touch/pen
 hold followed by a drag. The grip remains available on mobile.
 
@@ -424,11 +424,16 @@ purpose.
 | Done → Next / Scheduled           | Deliberate                   | Unlock the card, then use Next or Later. Next remains disabled at the three-item cap.                    |
 | Any collection → reordered        | Deliberate                   | Drag the visible grip with touch/mouse, use its arrow keys, or hold then drag on touch/pen. Writable days only. |
 
-**Duplicate** on a live card in Next, Done or Scheduled creates a new Scheduled card on the
+**Done for now** on a Next card records one independent copy in Done and moves the original to the
+top of Scheduled, in a single admitted, undoable action. The Done copy opens for editing at the end,
+so the person can describe what got done. Multiline writing and Goals heading context are copied;
+the original retains its identity and fields. The usual Done action still moves the whole card to Done.
+
+**Duplicate** on a live card in Done or Scheduled creates a new Scheduled card on the
 same writable day, preserving the complete multiline Markdown and leaving the source unchanged.
-It is one undoable action with a new card identity and the source ID as item provenance. A locked
-Done card can be duplicated without unlocking because its writing and membership are unchanged.
-Creation still passes storage admission and frozen-day checks.
+It is one undoable action with a new card identity and the source ID as item provenance.
+On Done, unlock the card to reveal Duplicate and the other actions. Creation still passes storage
+admission and frozen-day checks. Next offers Done, Later and Done for now, with no Remove button.
 
 The master list is **not** expected to stay 1:1 with what appears in daily views. Copying out of it does not
 remove from it. Clearing completed items from the master list is **manual only** — no auto-archive.
@@ -456,8 +461,14 @@ card renders as static text and does not become editable by tapping it; unlockin
 field is always live at the foot of the list, so recording something new is a single uninterrupted keystroke
 path.
 
-While unlocked, a Done card also offers Next and Later to correct its placement. Focus can move from the
-editor to those controls without relocking; leaving the card locks it again.
+A locked Done card shows Unlock as its only action, alongside the reorder grip when available.
+Unlock becomes Lock in the same fixed-width position; Next, Later, Duplicate and Remove appear to
+its right. The grip stays visible but disabled while editing. Lock closes the editor; leaving the card
+also locks it again. Focus can move from the editor to its own controls without relocking.
+
+Cards reserve a narrow right-hand gutter for the grip even when it is unavailable. Text, Goals
+breadcrumbs and action labels share their left inset; invisible button padding does not determine
+that alignment. Coarse-pointer controls and the empty grip slot retain the same larger touch space.
 
 **TRD.** TRD §4.4 (cards render static until focused), TRD §8.4 (gestures).
 

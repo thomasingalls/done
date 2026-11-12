@@ -1,0 +1,24 @@
+Phase 548 mutation controls. Each piece removed alone from a copy of the final tree, the named tests run with node node_modules/vitest/vitest.mjs run, and the file restored. Script: mutation-controls.py.txt.
+
+M1 no refusal of an oversized command | src/crdt/admittedWorkspace.ts | tests: test/oversizedActions.test.ts -t duplicate just over | exit 1 | 26 s | Test Files  1 failed (1) / Tests  6 failed | 277 skipped (283) /  Failed Tests 6  | load 4.55
+M2 compose never splits | src/crdt/workspaceCommands.ts | tests: test/oversizedActions.test.ts -t compose just over | exit 1 | 2 s | Test Files  1 failed (1) / Tests  6 failed | 277 skipped (283) /  Failed Tests 6  | load 4.83
+M3 a split compose closes its undo step | src/crdt/workspaceCommands.ts | tests: test/oversizedActions.test.ts -t compose 64 KiB | exit 1 | 3 s | Test Files  1 failed (1) / Tests  6 failed | 277 skipped (283) /  Failed Tests 6  | load 4.83
+M4 later slices replace the compose result | src/crdt/admittedWorkspace.ts | tests: test/oversizedActions.test.ts -t compose 200 KiB | exit 1 | 11 s | Test Files  1 failed (1) / Tests  6 failed | 277 skipped (283) /  Failed Tests 6  | load 4.47
+M5 no ceiling before queueing | src/crdt/admittedWorkspace.ts | tests: test/oversizedActions.test.ts -t one action ceiling | exit 1 | 2 s | Test Files  1 failed (1) / Tests  3 failed | 280 skipped (283) /  Failed Tests 3  | load 4.51
+M6 direct text path without its size guard | src/crdt/admittedWorkspace.ts | tests: test/oversizedActions.test.ts | exit 0 | 30 s | Test Files  1 passed (1) / Tests  283 passed (283) | load 6.27
+M7 the scope owns the history before the command runs | src/crdt/admittedWorkspace.ts | tests: test/oversizedActions.test.ts -t local-snapshots preparation | exit 1 | 249 s | Test Files  1 failed (1) / Tests  60 failed | 28 passed | 195 skipped (283) /  Failed Tests 60  | load 5.63
+M8 execute ignores the refusal result | src/ui/workspaceUi.tsx | tests: test/oversizedActionsUi.test.tsx | exit 1 | 2 s | Test Files  1 failed (1) / Tests  1 failed | 2 passed (3) /  Failed Tests 1  | load 5.58
+M9 execute reports the ceiling as a storage failure | src/ui/workspaceUi.tsx | tests: test/oversizedActionsUi.test.tsx | exit 1 | 1 s | Test Files  1 failed (1) / Tests  1 failed | 2 passed (3) /  Failed Tests 1  | load 5.58
+M10 the editor ignores the refusal result | src/editor/admittedEditor.ts | tests: test/oversizedActionsUi.test.tsx | exit 1 | 1 s | Test Files  1 failed (1) / Tests  1 failed | 2 passed (3) /  Failed Tests 1  | load 5.58
+MUTATIONS DONE
+
+M6 again, with the fragmented deletion test added after the first run:
+     × deleting a heavily edited Goals text in one action is refused alone, on every text path 4354ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+Error: Ticket did not settle
+      Tests  1 failed | 2 passed | 283 skipped (286)
+
+M11 the Goals line removal ignores the refusal result (src/ui/workspaceUi.tsx), test/oversizedActionsUi.test.tsx:
+   × removing Goals lines refused for too much text says so instead of nothing removed 5ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 3 passed (4)

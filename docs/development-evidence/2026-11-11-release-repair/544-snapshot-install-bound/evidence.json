@@ -1,0 +1,202 @@
+{
+  "phase": 544,
+  "date": "2026-11-11",
+  "base": "9882e30cd",
+  "requested": "coordinating session: no device may publish a history snapshot that devices running this build cannot install; guard the service; name the already-blocked outcomes (2026-11-11)",
+  "sourceSha256": {
+    "account-protocol/historyCheckpoint.ts": "3caf7e63b1a4abf2b4c58facc5c083995d68660bd5f7724daf54ac88897c9eb0",
+    "account-service/historyCheckpoint.ts": "c708f50d44a6031562103b735dc12fd267f4d6ce5380b50e08d1cadd04d610f7",
+    "scripts/release-validation/general-tests.json": "5de0bf78acc4249e6ef7631a254a8b1f633eb4f6c2212a8bf1927c44d0675e37",
+    "src/account/historyMaintenance.ts": "c58e9e7de21bd1fc9367a08d15bb5db303d57c5cff0e2c9ca5578e1e0d012dc6",
+    "src/crdt/accountReceive.ts": "870442e191e74ace2e3a700c61c0021084f266f34de9aeff3267376326fed6e3",
+    "src/crdt/accountReceiveDriver.ts": "98598a612fc4ddafd59ff05c8c5a4bd10e5a1832bc088e421430708ec3e32fe6",
+    "src/crdt/accountSessionBridge.ts": "3c6b24b2f3d6bcc7cc87fa9c4582a3a604d73bca02634140c5f71fe44b738a48",
+    "src/crdt/accountSyncDriver.ts": "7b3ddd86cb68117a899eb914c2af667004492b6ee23681b378df0224ddf71d28",
+    "src/crdt/historyCheckpoint.ts": "aa898ec8fcd3ec93d1c4258575e48f0270318fc13d78eb256890b623a836f398",
+    "src/crdt/historyInstall.ts": "12ebc3aae160e256469e690d9d77628660f5a30ab56c0059cbcbf8863b73ca22",
+    "src/crdt/localRetentionDetail.ts": "897bb07c82433c08b95d9f5093348960286bba6d8a2c380e038d46ae58deaf60",
+    "src/crdt/localRetentionPlan.ts": "412cef06a988feec6503f39389c21a0369695c07bc52e81e4b73d7a43a2f6cb2",
+    "src/ui/AccountHistory.tsx": "687b0d8a26317130f5703d3ea5a7627435919303a423ef4f74d66c23ce8e6fc7",
+    "src/ui/LocalHistoryMaintenance.tsx": "0b8964a96d6e062583a41a81458fbb21dee894210b578cc0c51d8ca4685972a2",
+    "src/ui/SyncNotice.tsx": "864d25586d4f0bcd65738a4cb986e030be7871d4335358cb99b8a139710e94d2",
+    "test/account-history/client.test.mjs": "f5567851047fc7c63eccef1faa2f1a2750c29839ccd7de88947ba7d9fc000700",
+    "test/account-history/pruning.test.mjs": "5572b5b97c2625ff7835ba874dc512149cad194421942e94a78858d58836af78",
+    "test/account-history/service-fixture.mjs": "e664c446224ca1ec98ed230290a6cee94de3997753cd5ee4e98041352dffd20c",
+    "test/account-history/service.test.mjs": "25afe01c0c9cc2790690cd5989cde92351334b1d34639ec0da204e68dea53b60",
+    "test/accountHistory.test.tsx": "2b0b217cd2027993fb4d301cae4c451bc5498674e095b47e80dbd94594568378",
+    "test/accountSessionBridge.test.ts": "15b328e983f53dc091ec4e44ce6d4032b60a22478daf8ff1cd1b04f54e64f4af",
+    "test/accountSyncDriver.test.ts": "39db5583057bcdbf723feef57c0a10bbf1687c4fd1ee1ce2e4386e481182d851",
+    "test/historyInstallBound.test.ts": "ec16857e746a3a0fa5f8aa107feffcfe30b0e249964897194716a1cd6dff6eb2",
+    "test/localHistoryMaintenance.test.tsx": "87b0c7399eae2f5d88f732b514c3f48d2c7bf5e3be7cb42ba5ffe3d5d1b842a1",
+    "test/release-validation/campaign-wrappers.test.mjs": "7884ced7b4af1b393531d7259b8278bdc7b9067964fa5c449a708481fff7507d",
+    "test/release-validation/general-tests.test.mjs": "c1a900151f87241e178f4df494dcb41b0db67d0c8fcdc7a720878545e4b0c186",
+    "test/release-validation/generated-tests.test.mjs": "f4ffb50f20eb47433e56a7cafef45da082e0b6a88e9ec028e14d707047cd6355",
+    "test/syncNotice.test.tsx": "842d20f6b39fb40a67b7111e286822481d3f17193f85192c1f7c11a87135a31a",
+    "bound-probe.ts.txt": "fd1a8aedb146d35e792ca002f701d6fef07abed88b0b30f271f04824f9fcb1c0",
+    "bound-probe-output.txt": "cf947b629f27748788261444eeae413a9af86b2252b75a877e52a708dde24a4c",
+    "base-tree-runs.txt": "94faab094e7e5aa99fa415eafce992eb2f2b19aae37b0e8467c70e7775ba23cb"
+  },
+  "installBound": {
+    "rule": "verifyHistoryInstall refuses when the re-derived update plus the install event exceeds MAX_BATCH_BYTES (4194304); appendInbound's copyBatch refuses the same two records above the same bound",
+    "guard": "historyInstallBytes(checkpoint) = plaintext length from the ciphertext (ct bytes - 16) + the exact install event encodeHistoryInstall builds for the widest reader epoch (16 digits); HISTORY_INSTALL_LIMIT = 4194304",
+    "readerEpochSlackBytes": "at most 15 (16 - digits of the reader's epoch)",
+    "updateEqualsPlaintext": "measured equal in every case (single text, 2,000 edits with deletions from two writers, boundary sizes); createHistoryCheckpoint now refuses if the re-derived update were longer",
+    "largestInstallablePlaintextBytes": {
+      "singleWriterFixture": 1397416,
+      "formula": "floor((4194304 - 32 - remainder) / 3); remainder about 2,000 bytes plus 4 x (sv + ds bytes), about 140 per further publisher, about 180 per source reference"
+    },
+    "previousCreationBound": "GENESIS_LIMIT 16 MiB of plaintext; parse bounds 72 MiB JSON, 16 MiB + 16 ciphertext"
+  },
+  "beforeThisPhase": {
+    "verifiedByTestOnBaseTree": [
+      "base client created, published and (single member) admitted a snapshot 2 bytes over the install bound",
+      "base client resumed and published a saved oversized proposal",
+      "base service accepted publication and admission of an oversized snapshot",
+      "base service and client pruned with an oversized latest snapshot",
+      "the installer refuses such a snapshot (HistoryInstallSizeError)"
+    ],
+    "readInCodeNotRun": [
+      "each device that fetches history (epoch past 3, generation past 1, installed or inherited history, membership continuation) tries to install the latest snapshot at the start of every receive pass and halts receive as blocked: inbound-size before reading any stream",
+      "shown after 30 s: 'Changes from your other devices are not arriving here.', 'Reason: receive:inbound-size', 'Retry receiving'; retry and reopening repeat it; sending continues",
+      "a device that never fetches history is unaffected by the snapshot itself",
+      "after a prune, reads below the previous snapshot's cuts return unavailable; a behind device that fetches history stays halted; one that does not retries as network-unavailable indefinitely (inferred)",
+      "no in-account recovery: a later snapshot cannot be smaller and an admitted one cannot be discarded"
+    ]
+  },
+  "guards": {
+    "client": "runHistoryMaintenance: create refuses before saving or sending; resume refuses to publish an own saved oversized proposal; verify refuses to admit an oversized pending snapshot; prune refuses while the latest is oversized; inspect reports an oversized pending or latest snapshot; each returns status.tooLarge {snapshot, needed, allowed}",
+    "service": "exchangeHistoryCheckpoint refuses 'checkpoint-too-large' to keep a new proposal, to admit a pending one, and to prune while the latest is oversized; still serves and lets the producer discard an existing one",
+    "sentences": {
+      "new": "This workspace is too large for a history snapshot. Installing one on your other devices would take 4.6 MiB, and this version installs snapshots of up to 4.0 MiB. Nothing was saved or sent. Your writing is unchanged.",
+      "saved": "The saved snapshot is too large for your other devices to install (4.6 MiB; this version installs snapshots of up to 4.0 MiB), so it was not sent. Discard it. Your writing is unchanged.",
+      "pending": "The snapshot waiting for verification is too large for devices to install (4.6 MiB; this version installs snapshots of up to 4.0 MiB), so it was not verified. Discard it. | It can be discarded from the device that made it. Your writing is unchanged.",
+      "latest": "The latest verified snapshot is too large for devices to install (4.6 MiB; this version installs snapshots of up to 4.0 MiB). Covered service history cannot be removed while it is the latest snapshot. Your writing is unchanged.",
+      "receiveHalt": "Changes from your other devices are not arriving here, because a history snapshot saved on the service needs 4.2 MiB to install and this version installs snapshots of up to 4.0 MiB. Your writing on this device is kept.",
+      "installedSnapshotPark": "A service history snapshot installed on this device needs 4.1 MiB to check, and this version checks snapshots of up to 4.0 MiB. Your existing history is still in place. It will check again after new writing or sync changes this device’s history."
+    }
+  },
+  "namedOutcomes": {
+    "receive": "blocked reason unchanged ('inbound-size'); detail {cause: 'history-snapshot', needed, allowed} beside it, kept by the scheduler with the halt and cleared on retry; the bridge drops a malformed or misplaced detail",
+    "reduction": "planLocalRetention maps HistoryInstallSizeError (raised only after the record authenticated) to skipped capacity with phase 543 cause 'installed-snapshot'; any other error of the same check still rejects",
+    "haltUnchanged": true,
+    "skippingNotImplemented": "operator decision"
+  },
+  "rollout": {
+    "serviceFirst": "older clients' oversized publication, admission and prune are refused (409, shown as the general could-not-finish message); an older client keeps an unsendable saved attempt until it updates; the account is unaffected",
+    "clientFirst": "updated devices never publish, admit or prune past an oversized snapshot; a not-yet-updated device can through the old service",
+    "both": "no new oversized snapshot can become pending, admitted or latest; an oversized latest admitted earlier still halts receive on devices that fetch history and blocks pruning permanently"
+  },
+  "remainingLimit": {
+    "noServiceSnapshotAbove": "about 1.33 MiB of document state (encoded Yjs update, deleted content included) less 4/3 of coverage vectors",
+    "baselineRelation": "a device with an installed snapshot of P carries about 4P + 2D in each baseline under the 8 MiB write ceiling; at P = 1.33 MiB reduction parks once D exceeds about 1.33 MiB; without one, near D = 4 MiB",
+    "toRaise": [
+      "larger install batch only: keeps the event shape, but the 4P baseline cost then parks reduction right after install",
+      "install event without ciphertext (new event version): keep the exact plaintext, re-seal on replay to rebuild the ciphertext and verify signatures; install bound near 4 MiB, baseline cost about 2P; stored format and replay proof change",
+      "chunked install across transactions: needs a resumable install journal that cold replay understands"
+    ]
+  },
+  "newUnitCases": {
+    "test/historyInstallBound.test.ts": 3,
+    "test/accountHistory.test.tsx": 2,
+    "test/accountSessionBridge.test.ts": 1,
+    "test/accountSyncDriver.test.ts": 1,
+    "test/syncNotice.test.tsx": 1,
+    "test/localHistoryMaintenance.test.tsx": 1
+  },
+  "newNodeCases": {
+    "test/account-history/client.test.mjs": 4,
+    "test/account-history/service.test.mjs": 2,
+    "test/account-history/pruning.test.mjs": 1
+  },
+  "newTestFiles": ["test/historyInstallBound.test.ts", "test/accountHistory.test.tsx"],
+  "failedOnBase": {
+    "vitest": "6 new cases failed; test/historyInstallBound.test.ts does not load (new exports absent); 40 existing cases in those files passed",
+    "node": "7 new cases failed with behavioural differences on the base tree plus only historyInstallBytes; the other 31 passed",
+    "record": "base-tree-runs.txt"
+  },
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": true,
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "files": 342,
+    "passed": 3316,
+    "skipped": 1,
+    "failed": 0,
+    "seconds": 307.94,
+    "hostLoadAverage": "about 7 to 8.5: a Chrome renderer near 100% CPU, WindowServer, a terminal and two idle codex processes; no other test run"
+  },
+  "nodeRuns": {
+    "test/account-history/*.test.mjs": {
+      "tests": 70,
+      "passed": 70
+    },
+    "ciEnrollmentStep": {
+      "command": "node --test --test-concurrency=1 --test-timeout=30000 test/account-sessions/inbound-batch.test.mjs test/account-sessions/inbound-authority-reuse.test.mjs test/account-sessions/request-budget-work.test.mjs test/account-sessions/inbound-batch-budget.test.mjs test/account-sessions/scoped-http.test.mjs test/account-history/source.test.mjs test/account-history/multi-page-source.test.mjs test/account-membership/handoff.test.mjs",
+      "tests": 69,
+      "passed": 69
+    }
+  },
+  "build": {
+    "command": "pnpm build",
+    "passed": true,
+    "initialJsGzippedKb": 308.9,
+    "budgetKb": 350.0
+  },
+  "inventory": {
+    "recorded": true,
+    "obligations": 1112,
+    "unresolved": 552,
+    "caseDenominatorBefore": 2677,
+    "caseDenominator": 2683,
+    "vitestReviewedFiles": 107,
+    "syncWrapperCasesBefore": 84,
+    "syncWrapperCases": 85
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 517,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/history-install/v1",
+        "path": "src/crdt/historyInstall.ts",
+        "from": 30,
+        "to": 31
+      },
+      {
+        "label": "done/history-install/v2",
+        "path": "src/crdt/historyInstall.ts",
+        "from": 31,
+        "to": 32
+      }
+    ],
+    "constructionRegistryLinesFollowed": 2,
+    "openConstructions": 16
+  },
+  "anchors": {
+    "checked": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the edited receive, retention, sync, bridge, history and content-store sources occurs the same number of times now",
+    "clearAccountTransition": 1
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "notRun": [
+    "browser suites (ports 53221 and 53222 left to another session) and native suites",
+    "any real device or account",
+    "a receive pass driven end to end into the size halt; the catch site is verified by reading and type checking",
+    "re-enrollment of a device on an account holding an oversized snapshot"
+  ],
+  "deployed": false,
+  "traceCheckPassed": true,
+  "knownLoadTimeoutsFailed": []
+}

@@ -1,0 +1,248 @@
+{
+ "phase": 550,
+ "date": "2026-11-12",
+ "base": "422ff6c36",
+ "patchBuiltOn": "7e6aff636 (scratch copy); applied without conflict at 422ff6c36",
+ "requested": "coordinating session, 2026-11-12: apply verify-the-cut with fold at once as phase 550; product change and unit tests only; the kept browser spec as .txt evidence only",
+ "approval": "operator, 2026-11-12, 'Verify the cut', then 'Fold at once'",
+ "amends": {
+  "2026-10-13 rule 4": "a verified chain read from the snapshot cut to the retained frontier, ending at the frontier link this device kept, counts as exact evidence; used only when the snapshot moves a receive cursor forward; replay of a committed installation relies on the checks made at installation",
+  "2026-10-13 availability limit": "wording selected: history-unverified and history-waiting",
+  "2026-10-26 phases 73 and 75": "a due fold has no growth threshold and no cooldown; at most three in a row skip the cooldown, each after the 60 s retry clock"
+ },
+ "notAmended": [
+  "the rest of rule 4: no expected link from a reply, no refetch of the same incompatible checkpoint as a retry, cuts compared per publisher",
+  "the 10 s quiet window, readiness, sync quiet, holds, parking and retry clocks",
+  "every eligibility, commit and readback check of reduction",
+  "phase 546 saved account step rule",
+  "phase 549 oracle recording window",
+  "2026-10-15 separation of optional discovery from required history",
+  "install and replay bounds of phases 544 and 547",
+  "no stored format, wire message, service route or limit"
+ ],
+ "sourceSha256": {
+  "src/crdt/accountReceive.ts": "446a117ef1710f29149124de39ed2672d352fc3032aa91cea0d72f04e4b93c06",
+  "src/crdt/accountSessionBridge.ts": "7c3a91489cadfbafbb1da446f1d5f59b668d70d6cf8ed2a2c089d84045207b3a",
+  "src/crdt/accountSyncDriver.ts": "7cf4c558d7b7f0e0b9211bbcc316ad503415990a94a55add2dfc8726fd811a45",
+  "src/crdt/automaticLocalRetention.ts": "e4f511e96196aa3398cda8955405e44fd8252081ffb3956d3975882e915d5156",
+  "src/crdt/contentStore.ts": "9e913faeb08f6381ecc0555382dbec1347c42b56758bab85c8fa6a62b1605e18",
+  "src/crdt/inboundLedger.ts": "72974653516667b30ed048ada23244f07f129cfa01bcb95c08ea824027756359",
+  "src/crdt/ledgerHints.ts": "dafa03dc876262fbcfa50f4e98169aad5545b41844fe200ff8bec85243d60f45",
+  "src/crdt/retainedHistory.ts": "6568b3936005e918ee412771caee06cba849d0136e7d0e428ce8aa76eba5d863",
+  "src/crdt/retentionCheckpoint.ts": "fee4818341e42cd7d015a6e555bce9d83ef406702e959ee040d0bdb581545264",
+  "src/crdt/retiredCutVerification.ts": "9208f3112f8340779c2a39911b3373ba7e557cd3ad4150a6deda1d7b11a9d9e9",
+  "src/ui/SyncNotice.tsx": "bb4a0b195566b48eb61607556a32a97c26688449637ab4fafb862185fb72fa8f",
+  "test/retiredCutVerification.test.ts": "a29319f2d4c8bfc5cef3a330e1d9a0ca5d0e4769ac2b609d317e59a841afe699",
+  "test/historyFoldOracle.test.ts": "4dd84d04e162471b6fb04aa3c986ea0a1b9539c5b8f17521526f3807a6fa3f52",
+  "test/automaticLocalRetention.test.ts": "75aeac0ebfd03ff17cb959bfcf4e1c8c961fc7b87efc7e52518675cbd606233e",
+  "test/accountSyncDriver.test.ts": "3da92da3590a4933440d5d3befc4d68919979573d0590f1795235fa31cb23b76",
+  "test/syncNotice.test.tsx": "9a658b258baf80ef5258236b2701b8ba88cb81403309f6365ba1ec24ed8e5edb",
+  "test/local-baseline/fixtures.mjs": "5019793de63462b4dff19fc823cbdd58de81702e8011511f61c40b250df655e5"
+ },
+ "size": {
+  "src": "+521 -50 (12 files, one new)",
+  "tests": "two new files of 566 and 262 lines; +194 -2 in three changed test files and the fixture"
+ },
+ "tests": {
+  "new": [
+   {
+    "file": "test/retiredCutVerification.test.ts",
+    "cases": 7
+   },
+   {
+    "file": "test/historyFoldOracle.test.ts",
+    "cases": 3
+   },
+   {
+    "file": "test/automaticLocalRetention.test.ts",
+    "cases": 2
+   },
+   {
+    "file": "test/accountSyncDriver.test.ts",
+    "cases": 1
+   },
+   {
+    "file": "test/syncNotice.test.tsx",
+    "cases": 1
+   }
+  ],
+  "baseTree": {
+   "tree": "422ff6c36 with base-shim.py.txt",
+   "newCasesFailed": 14,
+   "newCases": 14,
+   "existingCasesInChangedFilesPassed": 45
+  },
+  "tamperOutcomes": {
+   "altered envelope": "integrity:record",
+   "altered acceptance proof": "integrity:unverified",
+   "reordered": "integrity:scope",
+   "stream ends before the frontier": "integrity:prefix",
+   "last entry dropped but its position claimed": "integrity:record",
+   "from another publisher": "integrity:scope",
+   "page signed by another key": "integrity:unverified"
+  }
+ },
+ "mutationControls": {
+  "tree": "copy of the rebased tree",
+  "applied": 15,
+  "caught": 15,
+  "file": "mutation-controls.txt"
+ },
+ "window": {
+  "commitToFoldSeconds": [
+   10.181,
+   10.253,
+   10.264,
+   10.285,
+   10.315
+  ],
+  "reopenToFoldSeconds": [
+   11.718,
+   11.924
+  ],
+  "bounds": "10 s quiet window after the last input or workspace change, idle sync lanes, the reduction's own time; an interrupted attempt retries after 10 s or 60 s"
+ },
+ "olderBuilds": {
+  "builds": {
+   "tip": "7e6aff636",
+   "released": "759890ca0"
+  },
+  "unfolded": "unlock screen 'Worker operation could not finish.'; workspace not opened; IndexedDB digest unchanged; returning to the new build restores everything",
+  "folded": "both open, write, send, receive and reduce",
+  "lockedOutResiduals": [
+   "capacity first met by the fold",
+   "device closed during the window or mid-fold",
+   "writing entered after the commit while sending fails"
+  ]
+ },
+ "heldCases": {
+  "unsentWriting": {
+   "held": true,
+   "olderBuildOpens": true,
+   "installedAfterAcceptedSeconds": 7.9,
+   "foldSeconds": 10.2
+  },
+  "hiddenPage": {
+   "held": true,
+   "installedAfterVisibleSeconds": 5.9,
+   "foldSeconds": 10.3
+  },
+  "savedAccountStep": {
+   "held": true,
+   "olderBuildOpens": true,
+   "releaseExercised": false
+  }
+ },
+ "verificationRead": {
+  "reproduction": "three devices; tip strands until a fourth snapshot; with the patch A's writing arrives 1.0 s after C returns online, one read of B (after 2, limit 2); convergence in text and Yjs state",
+  "unverifiable": "named notice shown, kept while other writing arrives, cleared by a newer snapshot",
+  "costNode": [
+   {
+    "positions": 512,
+    "ms": 358,
+    "requests": 64,
+    "pageBytes": 755155
+   },
+   {
+    "positions": 4096,
+    "ms": 2821,
+    "requests": 512,
+    "pageBytes": 6067087
+   }
+  ],
+  "bounds": "4,096 positions, 64 MiB of pages plus one page; no time in the storage queue"
+ },
+ "retentionAutoOff": "VITE_ACCOUNT_RETENTION_AUTO=0: a needed verified installation is never committed; the device names history-waiting (wording examples do not fit); read from code, not run",
+ "runsThisSeat": {
+  "typecheck": "pass",
+  "oxfmt": "pass per file through stdin (the CLI's ignore rules exclude every file at this worktree's location)",
+  "oxlint": "17 files, 0 diagnostics",
+  "unitRelevant": {
+   "files": 20,
+   "cases": 217,
+   "passed": 217,
+   "list": [
+    "retiredCutVerification",
+    "historyFoldOracle",
+    "automaticLocalRetention",
+    "accountSyncDriver",
+    "syncNotice",
+    "ledgerHints",
+    "accountSessionBridge",
+    "retentionFences",
+    "localBaseline",
+    "historyReceiveFence",
+    "oracleReplayWindow",
+    "accountWorkerReceive",
+    "accountReceiveLedger",
+    "historyRetirement",
+    "historyInstallBound",
+    "historyReadRetry",
+    "localRetentionStatus",
+    "retentionReductionHold",
+    "accountHistory",
+    "historyReplayBound"
+   ]
+  },
+  "accountHistoryNode": {
+   "files": "test/account-history/*.test.mjs",
+   "cases": 87,
+   "passed": 87
+  },
+  "adapters": "178/178",
+  "validationInventory": "10/10 and the inventory check after the final record",
+  "plan": {
+   "obligations": 1125,
+   "unresolved": 555
+  },
+  "accountCryptoPrep": "6/6; census matched after record"
+ },
+ "bookkeeping": {
+  "caseDenominator": [
+   3020,
+   3031
+  ],
+  "reviewedVitestFiles": [
+   115,
+   117
+  ],
+  "generalStages": [
+   300,
+   302
+  ],
+  "reviewedVitestStages": [
+   134,
+   136
+  ],
+  "syncWrapperCases": [
+   85,
+   86
+  ],
+  "planningInventory": {
+   "obligations": [
+    1123,
+    1125
+   ],
+   "unresolved": 555
+  },
+  "census": "new source src/crdt/retiredCutVerification.ts and new hashes; no new domain label; the new read signs with the existing reader key",
+  "constructionRegistry": "done/account-ledger-reference-mismatch moves from line 943 to 966 of src/crdt/accountReceive.ts",
+  "sourceTextAnchors": "225 fixture strings and 98 literals checked; four generic counts changed in accountReceive.ts, none used as an anchor; liveness anchors unchanged"
+ },
+ "notApplied": "kept-spec.patch.txt (test hooks compiled into production code; HIST-TEST-HOOKS undecided)",
+ "notRun": [
+  "releasing a held installation after a saved account step completes",
+  "a real capacity ceiling",
+  "VITE_ACCOUNT_RETENTION_AUTO=0 in a browser",
+  "any device",
+  "browser probes on the 422ff6c36 tree (run on a 7e6aff636 copy carrying this patch)",
+  "a key rotation inside the range the verification read covers (the device keeps earlier generation keys; read from the code, not exercised)"
+ ],
+ "outsideTask": [
+  "test/account-liveness/instrument.test.mjs fails identically on 422ff6c36 and here (an anchor missing from accountReceive.ts; the AST walker refuses a function form); not in CI"
+ ],
+ "review": {
+  "fullSuite": "pnpm test --maxWorkers=1 on the final tree: 352 files, 3,674 passed and 1 existing skip, 370.56 s",
+  "checks": "pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check, node --test test/account-history/*.test.mjs, and the CI session and history step"
+ }
+}

@@ -6,6 +6,235 @@ implementation plan. The [PRD](./PRD.md) and [TRD](./TRD.md) remain the requirem
 get a bounded scope and evidence before implementation. General release qualification remains
 [paused](./private-release-validation-prep.md).
 
+## Held from the release repair — recorded 2026-11-12
+
+The release-repair slice (phases 538 onward, records under
+[development-evidence/2026-11-11-release-repair](development-evidence/2026-11-11-release-repair/))
+turned up more than it fixed. The operator asked on 2026-11-12 that everything held back be recorded
+here for a future release. Nothing below is scheduled. Items marked *decision* would amend a recorded
+decision and need the operator before any work; items marked *unmeasured* rest on reading the code.
+The agents' reports behind these items are kept in
+[investigations](development-evidence/2026-11-11-release-repair/investigations/README.md).
+
+### History snapshots and pruning
+
+- **HIST-INSTALL-LIMIT — a workspace above about 1.33 MiB of document state cannot have a service
+  snapshot.** *decision.* A device installs a snapshot as one 4 MiB batch that holds the derived
+  update and an install event carrying the same snapshot again as hex ciphertext (phase 544;
+  1,397,416 bytes on the single-writer fixture, less four thirds of the coverage vectors). Past it,
+  service history can never be pruned, and a device that installed a snapshot near that size parks
+  reduction at about the same document size under phase 542's 8 MiB baseline ceiling. Candidate: an
+  install event without the ciphertext, re-sealed on replay, which lifts the bound to nearly 4 MiB
+  and halves the baseline cost; it changes a stored format and the replay proof. Alternatives: a
+  larger batch for installation only, or a chunked install with a resumable journal.
+- **HIST-SKIP-UNINSTALLABLE — a device that meets an uninstallable latest snapshot halts receive for
+  good.** *decision.* The halt has been deliberate since 2026-10-09. Phase 544 stops new ones being
+  published, admitted or pruned past; an account that already holds one stays halted. Skipping it,
+  as the code already does for a snapshot needing retired history, would restore receive.
+- **HIST-REPLAY-BOUND — no snapshot can be created or verified past 4,096 positions since the last
+  admitted one** (`HISTORY_REPLAY_EVENTS`, `src/crdt/historySource.ts`; verified at node level,
+  4,096 replays and 4,097 is refused). Phase 547 warns before the bound. Removing it needs a larger
+  bound with memory and time evidence, or a chunked replay.
+- **HIST-GATE-FLAG — a two-device account fetches history only because the production service
+  advertises membership continuation.** *decision.* A three-device run against the production entry
+  showed both outcomes: with the flag a returning device catches up; without it a two-device reader
+  at epoch 3 never reads the catalog and strands. Fetching regardless (treat a 404 from the history
+  route as "no history here") amends the 2026-10-15 decision "Keep optional receiver discovery
+  separate from required authenticated history" and breaks
+  `receiver-compatibility.spec.ts` › "…without requesting unsupported history".
+- **HIST-PRUNE-READERS — a prune cannot know who is behind.** The service stores no record of how far
+  each device has read and the pruning device sees only the roster. A hard refusal would let one
+  lost phone block pruning for ever; a warning is the only sensible use of such a record, and a
+  service-kept reader mark would be a new data class.
+- **HIST-CANNOT-CATCH-UP — a named "this device cannot catch up" state with a guided re-sync that
+  carries unsent writing.** Proposed in place of any limit on how far behind a device may fall.
+  Catching up costs one snapshot install however long the device was away, and unsent writing
+  survives in either order (tested with three devices, two prune cycles and conflicting edits). The
+  cases that cannot catch up are an uninstallable snapshot, a cut that cannot be verified against
+  reduced history, and possibly a missed key rotation. Not designed.
+- **HIST-FOLD-RESIDUAL — an older build still cannot open a store holding an unfolded verified
+  installation.** *decision.* Phase 550 commits a snapshot installation verified against reduced
+  history only when a reduction can follow at once, and that reduction carries it into the baseline
+  older builds read (10.2 to 10.3 s after the commit, measured). Three cases leave it unfolded for
+  longer: capacity first met by the fold (later installations are then held), a device closed during
+  the ten-second window or mid-fold (the next open of a newer build folds it), and writing entered
+  after the commit while sending fails (folded once it is accepted). An older build then shows
+  "Worker operation could not finish." on the unlock screen and writes nothing. Candidates: commit
+  the installation and the new baseline atomically (not chosen on 2026-11-12), or a named message in
+  a future build for a store it cannot replay.
+- **HIST-UNTESTED — two conditions were asked for and not reached.** A prune landing while a device
+  is mid-receive: four attempts all converged, but the device had installed the newer snapshot
+  first, so the condition was never created. A key rotation while a device is offline across a
+  prune: read only; the survivor adopts authority before installing and rotation records survive
+  pruning, so it should work.
+- **HIST-TEST-HOOKS — the lost-phone and history-gate browser tests live only in scratch copies.**
+  They need designed test hooks before they can be added: holding a device's history fetch and
+  receive, allowing reduction with small thresholds, exporting document state, and a service
+  configuration that serves history without advertising it.
+- **HIST-OTHER — smaller observations.** Snapshots with equal heads are allowed, so one covering no
+  new positions is possible (unmeasured). A single-device snapshot replays its history twice. A
+  custody-refresh failure after any history command closes the whole account session. The
+  `test/account-history` client, service and pruning node tests and
+  `test/packaged-account/automatic-history.spec.ts` are not in CI. A device joined by handoff may
+  be shown an account-wide position count larger than its own replay, so Create can be hidden for
+  it when it could still make the snapshot (phase 547). A discard whose reply is lost, followed by
+  another device publishing, leaves the client resending a cancellation the service refuses (found
+  in phase 547; intended for the refusal-messages work).
+
+### Automatic service-history pruning
+
+The operator wants it: "the current flow where you have to click a lot of buttons and do a lot of
+waiting just doesn't cut it." It exists behind the build flag `VITE_ACCOUNT_HISTORY_AUTO`, off in
+production. Pruning the log does not shrink the document; see compaction below.
+
+- **AUTO-HIST-STAGES — a staged path.** Stage 0, refusal messages and one status line. Stage 1,
+  manual-flow correctness (phases 546 and 547, the scoped service cache wipe). Stage 2, automatic
+  create and verify triggered by positions accepted since the latest snapshot, provisionally 1,024,
+  not by local records and an hourly clock. Stage 3, automatic prune once per snapshot by the
+  admitting device. Stage 4, on by default.
+- **AUTO-HIST-DECISIONS — what the operator would rule on.** *decision.* Keep second-device
+  admission (recommended; automation removes the clicks, not the wait for another device). Let
+  automation discard its own stale, oversized or definitely refused proposals, which amends the
+  phase 126 rule of no automatic discard. Change the trigger metric. Phones verify but never create
+  when another device can. A service-side switch for automatic clients.
+- **AUTO-HIST-GAPS — known gaps beyond the stages.** Create and verify run inside the storage queue
+  for 6 to 14 s per 1,024 positions at 0 to 50 ms round trip (phase 332), probably delaying edits
+  typed meanwhile (unmeasured). Every device prunes once per owner lifetime, re-downloading
+  snapshots each open. The automatic status reaches the page but nothing shows it. No metered,
+  battery or session-length guard on phones.
+
+### Document growth
+
+- **DOC-COMPACTION — the document never discards deleted content.** Every limit above is reached by
+  document state, not by visible text: a 142 KB export was already heading for the 1.33 MiB
+  snapshot limit. Compacting the document would break the rule that each snapshot covers the one
+  before it, so it needs its own baseline type and a decision (TRD §10.4). A device offline across a
+  compaction cannot merge structurally; the shapes discussed were a grace window in which the
+  service keeps the pre-compaction snapshot, the returning device re-expressing its unsent edits on
+  the compacted document, and rescuing older edits as plain text for the person to place.
+
+### Long text in one action
+
+Phase 548 made a long card save in slices and made every other oversized action a refusal instead of
+a stall. What it left:
+
+- **TEXT-CEILING — lower the one-action text ceiling from 1,048,576 characters to 256 KiB.** The
+  operator decided this on 2026-11-12, for after the next release. One compose or paste may carry
+  1,048,576 UTF-16 units today, and saving near that takes minutes (below). A 256 KiB bound caps the
+  wait near 15 s in a browser. It is a new limit on pastes that work today, only slowly, so it needs
+  its own sentence and a decision entry when built.
+- **TEXT-SAVE-COST — saving sliced text costs the square of its length.** Each 1,000-unit slice
+  forks the workspace history and re-encodes the whole remaining text (read from the code; the
+  split between the two is unmeasured). Measured in phase 548:
+  200,000 characters took 14.5 s in headless Chromium; 1,048,576 single-byte characters took 114 s
+  in Node; 696,000 three-byte characters had not finished after 23 minutes. Pastes always had this
+  cost. Nothing shows progress while it runs.
+- **TEXT-REDO — Redo of a card or paste over 16 KiB is refused.** Undo removes a long card in one
+  step and Redo cannot bring it back, because Redo restores stored history as one change. Before
+  phase 548 that Redo stalled the device. Fixing it needs a sliced Redo or a larger update limit.
+- **TEXT-GOALS-COPY — copying or moving many short Goals lines whose total is over 16 KiB is
+  refused**, although it could be split per card. Duplicate, Done for now, merge, split and Next to
+  Goals over 16 KiB are refused because a crash between slices would leave a broken state; a
+  two-phase form could lift that.
+- **TEXT-STUCK-UPDATE — a page already stuck on an older build cannot update itself.** "Reload to
+  update" fails while that build's queue is blocked. The person has to press Discard pending input
+  (the draft stays in the field) or close every window. The stuck input lives only in memory.
+- **TEXT-OTHER — smaller observations.** Slices never end inside a surrogate pair, but a combining
+  accent or a joined emoji can be divided, so another device may briefly show a broken glyph while
+  slices arrive. A crash between slices keeps the slices saved and loses the rest, as for a paste.
+  Filing a long unfiled card to Goals takes the same refusal path and is untested. In reference mode
+  a refused action still emits an empty two-byte update.
+
+### Returning to the app and start-up
+
+- **WARM-BYTE-COMPARE — compare stored bytes on return in place of a full baseline replay.**
+  *decision.* On a reduced device the first load after a return decrypts and replays the whole
+  baseline. The threat the invalidation answers is stored bytes changed in place by something
+  outside the app while timers were stopped; a byte comparison with already-verified memory answers
+  that, and the unreduced path already works this way. Amends the wording of the 2026-10-12
+  decision. After phase 545 the remaining cost was 0.4 to 2.2 s per return in Node at 2 to 8 MiB;
+  decide after measuring on a device.
+- **WARM-REAL-SUSPENSION — invalidate only after a real suspension.** *decision.* A freeze or resume
+  event, a heartbeat gap, or hidden longer than the audit interval, so a quick tab switch on desktop
+  skips the re-read.
+- **START-JOINED — the second slice of the start-up fix.** A joined device's pre-verification
+  (`src/crdt/joinedAccount.ts`) has the same shape as the original device's and needs its own change.
+  Also deferred: streaming one encoded state to the page in place of paged records, and marking the
+  semantic audit due at open.
+- **CATCH-UP-REDUCED — a reduced device still catches up more slowly than an unreduced one.**
+  After phase 549 kept the completed background replay, a returning reduced device at a 300 ms round
+  trip took 135.5 s where an unreduced one took 90.1 s with a similar amount of its own writing; a
+  run that sent 1 position of its own instead of 22 took 65.5 s. The remaining gap is not the
+  background replay; per-position cost on a reduced device is the likely cause (unmeasured). The
+  device's own card-membership repair sends change catch-up time about twofold.
+- **CATCH-UP-NO-VIEW — input or suspension that interrupts the background replay's index pass leaves
+  no warm view**, so the next load, possibly a foreground one, replays in full. Queued work no
+  longer causes this after phase 549; input and suspension still can.
+- **CATCH-UP-LAB-RTT — the lab runs with no round-trip time**, so its catch-up figures understate a
+  phone's. The 150 s catch-up of investigation 16 did not recur at phase 548 without a delay (24 to
+  28 s) and never finished in 180 s with 300 ms; the phase 549 record has both.
+
+### Sending
+
+- **SEND-FURTHER — steps that amend recorded decisions or are large.** *decision.* Only if the
+  queued send-path fixes miss their target (a sent position at 3,000 positions within 1.2 times the
+  cost at 300, and under about 250 ms). A delivery-scoped speculative check in place of a whole-view
+  clone (phase 143). Skipping the unchanged-load byte comparison or giving the plaintext one owner
+  (phases 142 and 409). Limiting the adoption erase to dropped buffers (phase 142). Structural
+  sharing in the ledger extension (large). A semantic-oracle trigger proportional to history, with
+  no full re-read on every interruption (phases 416 and 417). A shape check once per storage task
+  (2026-10-12).
+- **SEND-ROW-BOUND — the 32,768-row index bound is still a cliff after phase 538.** Estimated at
+  2,000 to 4,000 positions per device (unmeasured). Past it every ledger change runs the full check
+  until the device reduces.
+
+### Local history reduction
+
+- **REDUCE-FURTHER — steps beyond the queued slice-budget change.** *decision.* Shrinking the fenced
+  save from history-plus-saved-work to history-plus-slice, which amends the exact authenticated
+  readback decisions (phase 127). Counting only input jobs for "Input is waiting to be saved.", or
+  moving progress saves off the page's input queue as before the 2026-11-08 release, which amends
+  phase 187. A continuous pass with background saves.
+- **REDUCE-HOLD-RESIDUAL — a held window can still recur once per history change** when every window
+  is cut short (phase 546, by design). Also noted: a device on the full check holds sync while
+  offline, and other fenced callers (history install, authority adoption, the "Check history" dry
+  run, manual install and replace) still meet the busy-handoff refusal.
+
+### Account service
+
+- **SVC-ERROR-CLEARS — scope the error-path cache wipes** in `account-service/delivery.ts`,
+  `discovery.ts` and `successor.ts` to the failing publisher. Held to be shown to the operator
+  separately from the approved history-route scoping.
+- **SVC-PRUNE-COMMIT — make a prune's commit proportional to changed rows.** Today it captures and
+  re-encodes every blob and checkpoint inside one synchronous transaction, so every request waits.
+  Medium, and it needs security review because it is the destructive operation.
+- **SVC-WORKER-TIPS — verification in a worker.** Only if measurement still shows saturation after
+  the two items above.
+- **SVC-OPS — deployment values in the infrastructure repository.** The API container requests 100m
+  CPU with no limit; the WebCrypto thread pool is at its default of four.
+- **SVC-NO-LOGS — the operator declined request and cache-wipe logging on the service**
+  (2026-11-11). Evidence for service behaviour comes from counters in tests and what a device shows.
+- **SVC-SIGN-IN — the desktop sign-in failure during the phone's maintenance is unexplained.** The
+  text recalled, "Account verification could not finish", exists only in a file nothing imports.
+  Likely a census-bound step gone cold after the phone's cache wipes, or the device's own
+  four-request budget (unmeasured). The pod's restart count for 2026-11-08 would show whether it was
+  killed.
+
+### Tests and tooling
+
+- **TEST-BROWSER-BASELINE — `pnpm test:local-baseline` is required by the release policy, is not in
+  CI, and failed on main** since the owner moved into a Worker. A repair exists uncommitted on
+  another branch. Until it lands, phase 542's larger carrier has no real-browser coverage.
+- **TEST-MOCK-CYCLE — an import cycle through `src/crdt/inboundLedger.ts` can leave a test's mock of
+  it silently unapplied** (found in phase 545). Tests that mock it should assert the mock ran.
+- **TEST-NODE-VERSION — local Node is 26; CI pins 24.22.1.**
+
+### The affected account
+
+- **ACCOUNT-UNCONFIRMED — none of phases 538 onward is confirmed on the account that prompted them.**
+  Its devices are not the ones measured in earlier phases, and its row counts, document state size
+  and snapshot history were never observed.
+
 ## Current position — 2026-10-28
 
 Production now serves **b6f0160a**. The [signed release packet](development-evidence/2026-10-28-resumable-sync-release/README.md)

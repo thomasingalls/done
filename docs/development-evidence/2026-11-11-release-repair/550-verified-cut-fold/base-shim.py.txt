@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""Base-tree shim for running phase 550's new and changed tests on 422ff6c36. It adds only the new
+interface, with the base behaviour: no verification read exists, no snapshot counts as needed, the
+scheduler has no fold, and the tests' shared fixture returns the own envelope it already builds.
+Usage: base-shim.py <copy root> <worktree>"""
+import sys, pathlib, shutil
+root, work = pathlib.Path(sys.argv[1]), pathlib.Path(sys.argv[2])
+(root / 'src/crdt/retiredCutVerification.ts').write_text('''// BASE SHIM (phase 550 base-tree run): there is no verification read in this source.
+export class RetiredCutUnverifiable extends Error {}
+export interface RetiredCutReader {
+  sign(message: Uint8Array): Promise<string>;
+  read(request: Uint8Array): Promise<Uint8Array>;
+}
+export async function verifyRetiredCuts(): Promise<never> {
+  throw Error('No verification read in this source');
+}
+''')
+p = root / 'src/crdt/inboundLedger.ts'; s = p.read_text()
+s += '''
+// BASE SHIM (phase 550 base-tree run): no snapshot is needed; every retired cut is skipped.
+export function historyAdvances(..._args: unknown[]): boolean {
+  return false;
+}
+'''
+p.write_text(s)
+p = root / 'src/crdt/automaticLocalRetention.ts'; s = p.read_text()
+old = 'export const LOCAL_RETENTION_RETRY_MS = 60000;\n'
+assert s.count(old) == 1
+s = s.replace(old, old + '// BASE SHIM (phase 550 base-tree run): the constant only; this source has no fold.\nexport const LOCAL_RETENTION_FOLD_STREAK = 3;\n')
+p.write_text(s)
+# The new and changed test files, and the fixture change they rely on (return the own envelope).
+for f in ['test/retiredCutVerification.test.ts', 'test/historyFoldOracle.test.ts',
+          'test/automaticLocalRetention.test.ts', 'test/accountSyncDriver.test.ts',
+          'test/syncNotice.test.tsx', 'test/local-baseline/fixtures.mjs']:
+    shutil.copy(work / f, root / f)
+print('shimmed', root)

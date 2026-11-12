@@ -141,6 +141,10 @@
   /* ---- One card --------------------------------------------------------- */
 
   .card {
+    --card-control-size: 1.75rem;
+    --card-inset: var(--space-3);
+    --card-grip-gap: var(--space-2);
+    --card-end-inset: calc(var(--card-inset) + var(--card-control-size) + var(--card-grip-gap));
     border: 1px solid var(--color-border);
     border-radius: var(--radius-2);
     background: var(--color-bg);
@@ -180,7 +184,7 @@
    * and nowhere else (TRD §4.4).
    */
   .card-surface {
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-2) var(--card-end-inset) var(--space-2) var(--card-inset);
     font-family: var(--font-sans);
     font-size: var(--font-size);
     line-height: var(--line-height);
@@ -196,7 +200,7 @@
 
   .card-goals-context {
     margin: 0;
-    padding: 0 var(--space-3) var(--space-2);
+    padding: 0 var(--card-end-inset) var(--space-2) var(--card-inset);
     color: var(--color-text-faint);
     font-size: 0.75rem;
     line-height: 1.45;
@@ -219,13 +223,32 @@
   }
 
   .card-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--card-control-size);
+    column-gap: var(--card-grip-gap);
+    align-items: start;
+    padding: 0 var(--card-inset) var(--space-2);
+  }
+
+  .card-action-buttons {
+    grid-column: 1;
+    grid-row: 1;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-1);
-    padding: 0 var(--space-2) var(--space-2);
+    /* Align label ink with the writing, rather than the invisible button border. */
+    margin-inline-start: calc(-1 * (var(--space-2) + 1px));
+  }
+
+  .card-reorder-slot {
+    grid-column: 2;
+    grid-row: 1;
+    inline-size: var(--card-control-size);
+    min-block-size: var(--card-control-size);
   }
 
   .card-action {
+    min-block-size: var(--card-control-size);
     font-size: 0.6875rem;
     letter-spacing: 0.02em;
     padding: 0.15rem var(--space-2);
@@ -245,7 +268,16 @@
     cursor: default;
   }
 
+  .card-lock-toggle {
+    /* Keep the same hit target under the pointer when Unlock becomes Lock. */
+    min-inline-size: calc(6ch + 2 * var(--space-2) + 2px);
+    text-align: start;
+  }
+
   .card-reorder-handle {
+    inline-size: var(--card-control-size);
+    block-size: var(--card-control-size);
+    padding: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -253,15 +285,19 @@
     touch-action: none;
   }
 
-  .card-reorder-handle:active,
+  .card-reorder-handle:active:not(:disabled),
   .card[data-reordering='true'] .card-reorder-handle {
     cursor: grabbing;
   }
 
+  .card-reorder-handle:disabled {
+    cursor: default;
+    touch-action: auto;
+  }
+
   @media (pointer: coarse) {
-    .card-reorder-handle {
-      min-inline-size: 2.75rem;
-      min-block-size: 2.75rem;
+    .card {
+      --card-control-size: 2.75rem;
     }
   }
 

@@ -5,7 +5,9 @@ import { sameBytes } from './verifiedRecords';
 import type { Bytes } from './custodyCrypto';
 
 export const PREPARATION_VALUE_BYTES = 32 * 1024 * 1024;
-const LIMIT = 131072;
+/** Most values (nodes) one encoded preparation value may contain. */
+export const PREPARATION_VALUE_NODES = 131072;
+const LIMIT = PREPARATION_VALUE_NODES;
 const bad = (): never => {
   throw Error('Invalid preparation result encoding');
 };

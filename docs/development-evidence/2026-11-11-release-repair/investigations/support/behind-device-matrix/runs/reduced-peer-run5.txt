@@ -1,0 +1,49 @@
+
+Running 1 test using 1 worker
+
+First two editors open
+Joined Devices open
+Joined invitation unlock route
+Joined invitation unlock submitted
+23.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+30.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+31.8s third refusal /account/membership/v2/ceremony 409 authority-changed
+57.2s ids {"C":"36ec5008aac95221e93c7e5db56a73a9","A":"c7ee784a4eab746ee2ba0380a696f303","B":"8f7e3885cba3572d385ade2698b78c5b"}
+57.2s third holds catalog checks and drops A reads
+57.7s third refusal /account/delivery/read-v2-batch 404 unavailable
+64.5s snapshot 2 admitted
+67.8s snapshot 3 pending
+74.3s third received B past snapshot 3 cut, still behind on A
+77.6s snapshot 3 admitted
+79.2s pruned
+79.2s third baseline before [{"name":"done.74b672afc816be8bb4f5d587ba4ea0c1","v":2,"revision":0}]
+79.2s third workers ["http://localhost:53431/assets/enrollmentOwner.worker-D6jtApCQ.js"]
+79.2s worker global true
+84.3s third local history: ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."] reduced=true
+84.3s third reduced [{"name":"done.74b672afc816be8bb4f5d587ba4ea0c1","v":5,"revision":1}]
+84.3s third back online with catalog checks and A reads allowed
+84.8s third refusal /account/delivery/read-v2 409 unavailable
+93.1s third refusal /account/delivery/read-v2 409 unavailable
+109.4s third refusal /account/delivery/read-v2 409 unavailable
+129.3s after 45 s: shows A writing? false
+129.3s third notice: []
+129.3s B wrote again (tomorrow list)
+139.9s third refusal /account/delivery/read-v2 409 unavailable
+140.2s third receives new B writing? true
+141.2s third refusal /account/delivery/read-v2 409 unavailable
+141.6s third writing reaches A? true
+141.6s no retry button visible
+143.4s third refusal /account/delivery/read-v2-batch 409 unavailable
+143.6s third refusal /account/delivery/read-v2 409 unavailable
+145.7s third refusal /account/delivery/read-v2-batch 409 unavailable
+149.8s third refusal /account/delivery/read-v2-batch 409 unavailable
+158.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+173.0s after reopen: shows A writing? false
+173.0s third notice after reopen: []
+174.3s third refusal /account/delivery/read-v2-batch 409 unavailable
+179.5s snapshot 4 admitted
+204.9s after snapshot 4: third shows A writing? true
+204.9s A reads dropped while blocked: 7
+  ✓  1 test/packaged-account/reduced-peer.spec.ts:47:1 › three devices: ahead on a reduced peer, behind on a pruned one (3.4m)
+
+  1 passed (3.4m)

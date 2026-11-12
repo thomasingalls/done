@@ -11,6 +11,7 @@ import type { PreparationStorageOwner } from '../src/crdt/retentionPreparationSt
 import {
   capacityFaultModule,
   capacitySites,
+  uncachedSites,
   type CapacityFaultSite,
 } from './retention-hardening/capacity-fault-module';
 
@@ -91,71 +92,135 @@ async function checkReceipt(
     () => {},
   );
 }
+/** The three guards that still refuse: saved-journal format bounds and the prefix capture. */
 async function action(site: CapacityFaultSite) {
   const a = built.api,
     context = '01'.repeat(32),
     current = () => {};
-  if (site === 'journal-check') {
-    const j = a.createPreparationJournal({ context, current });
-    try {
-      await checkReceipt(j);
-    } finally {
-      j.dispose();
-    }
-  } else if (site === 'journal-import') {
-    const key = await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256' }, false, [
-      'sign',
-      'verify',
-    ]);
-    const auth = {
-      sign: async (b: Bytes) => new Uint8Array(await crypto.subtle.sign('HMAC', key, b)),
-      verify: (b: Bytes, mac: Bytes) => crypto.subtle.verify('HMAC', key, mac, b),
-    };
-    const j = a.createPreparationJournal({ context, current }),
-      next = a.createPreparationJournal({ context, current });
-    try {
-      await checkReceipt(j);
-      const d = await j.delta(auth);
-      try {
-        const proof = await a.authenticatePreparationReceipts(
-          context,
-          d.payload,
-          d.mac,
-          auth,
-          current,
-        );
-        try {
-          next.import(proof);
-        } finally {
-          a.disposePreparationReceipts(proof);
-        }
-      } finally {
-        d.payload.fill(0);
-        d.mac.fill(0);
-      }
-    } finally {
-      j.dispose();
-      next.dispose();
-    }
-  } else {
-    const f = await storage(),
-      source = await f.capture();
-    if (site === 'physical-prefix') {
-      await a.capturePreparationPrefix(source.inventory, source.counter);
-      return;
-    }
-    const loaded = await a.loadPreparationCheckpoint(task, f.owner, source),
-      j = a.createPreparationJournal({ context, current });
-    try {
-      await checkReceipt(j);
-      await a.savePreparationCheckpoint(task, f.owner, loaded.checkpoint, j);
-    } finally {
-      a.disposePreparationCheckpoint(loaded.checkpoint);
-      j.dispose();
-    }
+  const f = await storage(),
+    source = await f.capture();
+  if (site === 'physical-prefix') {
+    await a.capturePreparationPrefix(source.inventory, source.counter);
+    return;
+  }
+  const loaded = await a.loadPreparationCheckpoint(task, f.owner, source),
+    j = a.createPreparationJournal({ context, current });
+  try {
+    await checkReceipt(j);
+    await a.savePreparationCheckpoint(task, f.owner, loaded.checkpoint, j);
+  } finally {
+    a.disposePreparationCheckpoint(loaded.checkpoint);
+    j.dispose();
   }
 }
-for (const [, site] of capacitySites)
+async function auth() {
+  const key = await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256' }, false, [
+    'sign',
+    'verify',
+  ]);
+  return {
+    sign: async (b: Bytes) => new Uint8Array(await crypto.subtle.sign('HMAC', key, b)),
+    verify: (b: Bytes, mac: Bytes) => crypto.subtle.verify('HMAC', key, mac, b),
+  };
+}
+/** One pass at a cache guard, armed or not: what it returned, reused, kept, and whether a later
+ * miss past the slice clock still pauses. */
+async function cacheGuard(site: CapacityFaultSite, armed: boolean) {
+  const a = built.api,
+    context = '01'.repeat(32),
+    current = () => {};
+  let clock = 0;
+  const j = a.createPreparationJournal({ context, current, now: () => clock });
+  try {
+    if (site === 'journal-import') {
+      const key = await auth(),
+        seed = a.createPreparationJournal({ context, current });
+      try {
+        await checkReceipt(seed);
+        const d = await seed.delta(key);
+        try {
+          const proof = await a.authenticatePreparationReceipts(
+            context,
+            d.payload,
+            d.mac,
+            key,
+            current,
+          );
+          try {
+            if (armed) a.fault(site);
+            j.import(proof);
+          } finally {
+            a.disposePreparationReceipts(proof);
+          }
+        } finally {
+          d.payload.fill(0);
+          d.mac.fill(0);
+        }
+      } finally {
+        seed.dispose();
+      }
+    } else if (armed) a.fault(site);
+    const verifier = vi.fn(async () => new Uint8Array([7]));
+    const first = await j.memo.check(
+      'opened:1',
+      'physical-row',
+      [new Uint8Array([1])],
+      verifier,
+      current,
+    );
+    const reached = a.reached();
+    a.fault();
+    clock = a.PREPARATION_SLICE_MS + 1;
+    let paused = false,
+      second: unknown;
+    try {
+      second = await checkReceipt(j, 'opened:2');
+    } catch (cause) {
+      if (!(cause instanceof a.PreparationPause)) throw cause;
+      paused = true;
+    }
+    return {
+      reached,
+      first,
+      verified: verifier.mock.calls.length,
+      paused,
+      second,
+      ...j.statistics,
+    };
+  } finally {
+    a.fault();
+    j.dispose();
+  }
+}
+for (const site of uncachedSites)
+  it(`real ${site} overflow returns fresh results uncached and stops slicing instead of refusing`, async () => {
+    // Positive control first: below the guard the receipt is kept (or reused) as before.
+    const control = await cacheGuard(site, false);
+    expect(control).toMatchObject(
+      site === 'journal-check'
+        ? { reached: undefined, verified: 1, entries: 1, pending: 1, full: false, paused: true }
+        : { reached: undefined, verified: 0, hits: 1, full: false, paused: false },
+    );
+    const o = await cacheGuard(site, true);
+    expect(o.reached).toBe(site);
+    expect(o.first).toEqual(new Uint8Array([7]));
+    // Nothing is reused or kept past the guard: the verifier ran and the journal stays empty.
+    expect(o).toMatchObject({ verified: 1, entries: 0, pending: 0, hits: 0, full: true });
+    // Past the slice clock a later miss neither pauses nor refuses; it is returned uncached.
+    expect(o.paused).toBe(false);
+    expect(o.second).toEqual(new Uint8Array([7]));
+  });
+const siteDetail: Record<string, unknown> = {
+  // The injected fault takes the slice-count branch, which has no byte size to report.
+  'storage-delta': { cause: 'resume-progress' },
+  'storage-head': { cause: 'resume-index', needed: expect.any(Number), allowed: 256 * 1024 - 16 },
+  'physical-prefix': {
+    cause: 'resume-history',
+    needed: expect.any(Number),
+    allowed: 64 * 1024 * 1024,
+  },
+};
+for (const [, site] of capacitySites.filter(([, s]) => !uncachedSites.includes(s)))
   it(`real ${site} refusal reaches the narrow automatic parked path`, async () => {
     const a = built.api;
     // Positive control first: same valid path without the injected refusal succeeds.
@@ -185,7 +250,9 @@ for (const [, site] of capacitySites)
     });
     run.wake();
     await vi.advanceTimersByTimeAsync(a.LOCAL_RETENTION_QUIET_MS);
-    expect(run.status).toEqual({ phase: 'idle', reason: 'capacity' });
+    // Each refusing site names its own cause (phase 543); the injected fault forces the guard,
+    // so a size, where the site has one, is the real value at that moment.
+    expect(run.status).toEqual({ phase: 'idle', reason: 'capacity', detail: siteDetail[site] });
     run.refresh();
     await vi.advanceTimersByTimeAsync(a.LOCAL_RETENTION_RETRY_MS * 3);
     expect(remove).toHaveBeenCalledTimes(1);
@@ -274,7 +341,11 @@ it('reopens an authenticated saved journal, parks at the same real delta ceiling
       await delay(5);
       await vi.advanceTimersByTimeAsync(1);
     }
-    expect(run.status).toEqual({ phase: 'idle', reason: 'capacity' });
+    expect(run.status).toEqual({
+      phase: 'idle',
+      reason: 'capacity',
+      detail: siteDetail['storage-delta'],
+    });
     expect(run.diagnostics?.ownerError).toBeUndefined();
   };
   const first = openPolicy();

@@ -1,0 +1,50 @@
+32.6s three devices ready
+32.6s production /config {"v":2,"pin":{"v":1,"serviceId":"d9a1214d2ae992453a3874a762fe7b33","origin":"https://localhost:53441","rpId":"localhost","authRoot":"f87efa536484306e7bca450906eefee19e314094fd8f9f52c57a98d402646d17"},"networkSessions":true,"membershipContinuation":true}
+34.7s C offline (it takes no part from here)
+34.9s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+45.7s C large card 0: 39 ms
+45.7s C large card 1: 37 ms
+45.8s C large card 2: 39 ms
+45.8s C holds its unsent writing
+81.8s snapshot 2 admitted
+97.0s A received C accepted writing after cutting
+127.5s snapshot 3 admitted
+129.7s prune 1 (floor: snapshot 2)
+217.1s A wrote 200 large cards of 5000 bytes (16591 ms saving)
+267.3s snapshot 4 admitted
+321.1s snapshot 5 admitted
+329.4s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+489.6s history written
+489.6s C online
+504.6s C after 15s first-phase-done=false: notice=[]
+519.6s C after 30s first-phase-done=false: notice=[]
+534.7s C after 45s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+549.7s C after 60s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+564.7s C after 75s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+579.7s C after 90s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+594.8s C after 105s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+609.8s C after 120s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+624.8s C after 135s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+639.8s C after 150s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+654.9s C after 165s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+669.9s C after 180s first-phase-done=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:10:50 AMReason: send:network-unavailableRetry sendingChanges from your other devices are not arriving here.Last successful receive check: 12:10:51 AMReason: receive:network-unavailableRetry receiving"]
+669.9s install-first first phase done=false
+685.0s C after second phase 15s both=false: notice=[]
+700.0s C after second phase 30s both=false: notice=[]
+715.1s C after second phase 45s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+730.1s C after second phase 60s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+745.1s C after second phase 75s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+760.2s C after second phase 90s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+775.2s C after second phase 105s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+790.3s C after second phase 120s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+805.4s C after second phase 135s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+820.4s C after second phase 150s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+835.4s C after second phase 165s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+850.4s C after second phase 180s both=false: notice=["Changes from your other devices are not arriving here.Last successful receive check: 12:21:31 AMReason: receive:network-unavailableRetry receiving"]
+850.4s both directions arrived=false C catalog reads=0 C read requests=27 C read epochs=[5]
+850.5s C sync: ["Sending: idleLast accepted upload: 12:21:32 AMAccepted position: 10Receiving: retryingLast successful receive check: 12:21:31 AMReceived positions: 26Reason: receive:network-unavailableRetry receiving"]
+861.9s converged=false markers=916 missing=[0,0,759] duplicated=[0,0,0] text bytes=1037421,1037421,18005
+861.9s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,0,1,1,1,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (install-first, history held, large) (14.4m)
+  1 passed (14.4m)
+exit 0

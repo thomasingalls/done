@@ -1,0 +1,131 @@
+// Phase 544 probe: installed update length against sealed plaintext, the bound against the encoder,
+// and the largest installable single-text snapshot. Run with a Vitest config whose root is the
+// repository and whose include names this file (environment node). Output: bound-probe-output.txt.
+// @vitest-environment node
+import { it } from 'vitest';
+import {
+  createHistoryCheckpoint,
+  admitHistoryCheckpoint,
+} from './src/crdt/historyCheckpoint';
+import {
+  encodeHistoryInstall,
+  verifyHistoryInstall,
+} from './src/crdt/historyInstall';
+import { historyInstallBytes } from './account-protocol/historyCheckpoint';
+import { verifyEarlyHistory, historyMembership } from './account-protocol/admissionHistory';
+import { membershipState } from './account-protocol/membership';
+import { Y } from './src/crdt/yjs';
+// @ts-expect-error js fixture
+import { fixture, signed } from './test/account-membership/fixtures.mjs';
+
+it('probe', async () => {
+  const f = fixture();
+  const history = await verifyEarlyHistory(f.f.base);
+  const authority = historyMembership(history);
+  const p = membershipState(authority);
+  const key = new Uint8Array(32).fill(47);
+  const producer = f.context.existing.id;
+  const sign = async (b: Uint8Array) => signed(f.keys.existing, b);
+  const base: any = {
+    baseline: { kind: 'promotion-genesis', id: 'ab'.repeat(32) },
+    authority: history.current,
+    checkpointAnchor: authority,
+    reader: { id: producer, publicKey: history.signingKey, active: true },
+    publisher: { id: producer },
+    generation: 1,
+    generationKey: key,
+  };
+  const mk = (fill: (doc: any) => void) => {
+    const doc = new Y.Doc({ gc: false });
+    doc.getMap('meta').set('schemaVersion', 4);
+    doc.getMap('meta').set('actor:' + p.principalId, { kind: 'human', name: 'Writer', color: 'blue' });
+    fill(doc);
+    return doc;
+  };
+  const measure = async (label: string, doc: any) => {
+    const t0 = performance.now();
+    const cp = await createHistoryCheckpoint(doc, doc, key, authority, producer, p.heads, null, sign);
+    const t1 = performance.now();
+    const P = cp.ct.length / 2 - 16;
+    const reopened = new Y.Doc({ gc: false });
+    // emulate open
+    const { openHistoryCheckpoint } = await import(
+      './src/crdt/historyCheckpoint'
+    );
+    const opened = await openHistoryCheckpoint(cp, key, authority);
+    const U = Y.encodeStateAsUpdate(opened).length;
+    opened.destroy();
+    reopened.destroy();
+    const admission = await admitHistoryCheckpoint(cp, key, authority, producer, doc, sign);
+    const event = {
+      version: 2 as const,
+      baseline: base.baseline.id,
+      workspace: p.workspaceId,
+      lineage: p.lineageId,
+      epoch: p.epoch,
+      head: p.head,
+      reader: producer,
+      checkpoint: cp,
+      admission,
+    };
+    let real = -1,
+      wide = -1,
+      verified = 'n/a';
+    try {
+      real = encodeHistoryInstall(event).length;
+      wide = encodeHistoryInstall({ ...event, epoch: Number.MAX_SAFE_INTEGER }).length;
+      const r = await verifyHistoryInstall(base, encodeHistoryInstall(event), undefined, {
+        assertCurrent() {},
+      });
+      verified = 'ok ' + r.update.length;
+    } catch (e) {
+      verified = String(e);
+    }
+    const bound = historyInstallBytes(cp);
+    console.log(
+      JSON.stringify({ label, P, U, real, wide, boundEvent: bound - P, bound, verified, ms: Math.round(t1 - t0), sv: cp.manifest.sv.length / 2, ds: cp.manifest.ds.length / 2 }),
+    );
+    return { P, U, bound };
+  };
+  await measure('small', mk((d) => d.getText('master').insert(0, 'hello')));
+  // many edits with deletions, two clients
+  const edits = mk((d) => {
+    const t = d.getText('master');
+    for (let i = 0; i < 2000; i++) {
+      t.insert(Math.floor(Math.random() * (t.length + 1)), 'abc' + i);
+      if (i % 3 === 0 && t.length > 5) t.delete(Math.floor(Math.random() * (t.length - 3)), 2);
+    }
+  });
+  const other = new Y.Doc({ gc: false });
+  Y.applyUpdate(other, Y.encodeStateAsUpdate(edits));
+  for (let i = 0; i < 500; i++) {
+    const t = other.getText('master');
+    t.insert(Math.floor(Math.random() * (t.length + 1)), 'xyz');
+    if (i % 2 === 0) t.delete(Math.floor(Math.random() * (t.length - 2)), 1);
+  }
+  Y.applyUpdate(edits, Y.encodeStateAsUpdate(other));
+  const em = edits.getMap('notes');
+  for (let i = 0; i < 300; i++) {
+    const m = new Y.Map();
+    em.set('c' + i, m);
+  }
+  for (let i = 0; i < 100; i++) em.delete('c' + i);
+  await measure('edits', edits);
+  // boundary search for single insert
+  const sizeFor = async (n: number) => {
+    const d = mk((doc) => doc.getText('master').insert(0, 'x'.repeat(n)));
+    try {
+      return await measure('n=' + n, d);
+    } finally {
+      d.destroy();
+    }
+  };
+  const a = await sizeFor(1_000_000);
+  const b = await sizeFor(1_000_100);
+  const slope = (b.bound - a.bound) / 100;
+  const c0 = a.bound - slope * 1_000_000;
+  const nStar = Math.floor((4 * 1024 * 1024 - c0) / slope);
+  console.log(JSON.stringify({ slope, c0, nStar }));
+  await sizeFor(nStar);
+  await sizeFor(nStar + 1);
+}, 600000);

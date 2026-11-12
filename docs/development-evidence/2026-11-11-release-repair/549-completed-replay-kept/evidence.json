@@ -1,0 +1,408 @@
+{
+ "phase": 549,
+ "date": "2026-11-12",
+ "base": "d1a4a653e",
+ "requested": "coordinating session, 2026-11-12: the operator chose 'Finish uninterrupted' (shape 1) — from the point a reduced device's oracle replay has completed until the semantic oracle is recorded done, queued work does not interrupt the pass; built as the narrow construction of the preparation report, with the browser measurement of the post-replay steps",
+ "approval": "operator, 2026-11-12, 'Finish uninterrupted'",
+ "amends": {
+  "phase469": "'arbitrate maintenance arrival instead of relaxing priority interruption' — for the window only",
+  "phase416": "'retain all comparison/interruption/native guards' — the queue-priority interruption, for the window only",
+  "phase417": "'interruption still wins' — for the window only, reduced oracle only"
+ },
+ "notAmended": [
+  "queued work before the replay, or seen by the replay’s own checks, still interrupts it",
+  "suspension, new local input and the owner closing interrupt anywhere, the window included",
+  "both authority checks after the replay",
+  "phase 545 rules for return-to-app and maintenance reference reads (no window for either)",
+  "phase 469 FIFO, priority token and refusing guard; every audit due and forced rule",
+  "2026-10-27 opt-in-only proof reuse (nothing is retained across jobs)",
+  "the unreduced oracle"
+ ],
+ "window": {
+  "opens": "auditWarm oracle load: the full replay (verifyCompleteLocalBaseline) returns",
+  "closes": "createBaselineReuse has recorded the oracle, before the read’s final step; also on every refusal or interruption",
+  "ignores": "queuePriority only"
+ },
+ "sourceSha256": {
+  "src/crdt/contentStore.ts": "8ed9a755574d6697063645455db2ca983cb61a1ac0d53cc760c2cd5d7eaf7f63",
+  "src/crdt/contentMaintenance.ts": "ed4cab9b920df28bd6c1bdeb8a6ecd665c6b7378af5ff9effabff7193d729599",
+  "src/crdt/accountCapture.ts": "81ee1e7bf277dccd7ebebd1a6c2acd3754f268b42ef62f77549941ef9c89bb74",
+  "test/oracleReplayWindow.test.ts": "30ffb459f2614e10c4d7857793e18bca58f56c78e4365e17e2b6d1394683f35d"
+ },
+ "tests": {
+  "file": "test/oracleReplayWindow.test.ts",
+  "cases": 19,
+  "baseTree": {
+   "failed": 10,
+   "passed": 9,
+   "passedAreControls": true
+  },
+  "fixture": {
+   "baselineChars": 1000000,
+   "ownCapsulesAfterReduction": 20,
+   "peerReceiptsAfterReduction": 120,
+   "openedRecords": 381
+  }
+ },
+ "mutationControls": [
+  {
+   "mutation": "M1 the window never opens after the oracle replay",
+   "result": "Tests  9 failed"
+  },
+  {
+   "mutation": "M2 the window stays open past the recording",
+   "result": "Tests  4 failed"
+  },
+  {
+   "mutation": "M3 a refused or interrupted window is not closed",
+   "result": "Tests  6 failed"
+  },
+  {
+   "mutation": "M4 any completed full replay opens the window",
+   "result": "Tests  4 failed"
+  },
+  {
+   "mutation": "M5 an oracle load that ends early leaves its mark",
+   "result": "Tests  1 failed"
+  },
+  {
+   "mutation": "M6 the mark is not consumed by the first completed replay",
+   "result": "Tests  1 failed"
+  },
+  {
+   "mutation": "M7 the audit guard ignores the window",
+   "result": "Tests  10 failed"
+  },
+  {
+   "mutation": "M8 the oracle load is not marked",
+   "result": "Tests  9 failed"
+  }
+ ],
+ "node": [
+  {
+   "tree": "base",
+   "baselineChars": 1000000,
+   "openedRecords": 381,
+   "replayMsMedian": 233.4,
+   "windowMsMedian": null,
+   "windowMsRange": null,
+   "queuedWaitMsMedian": 0.4,
+   "replaysPerFiveAttempts": [
+    5,
+    5,
+    5
+   ],
+   "oracleDueAfterFirstAttempt": [
+    true,
+    true,
+    true
+   ],
+   "yieldsInsideReplay": 2,
+   "checksInsideReplay": 6831
+  },
+  {
+   "tree": "final",
+   "baselineChars": 1000000,
+   "openedRecords": 381,
+   "replayMsMedian": 228.1,
+   "windowMsMedian": 26.1,
+   "windowMsRange": [
+    24.7,
+    31.3
+   ],
+   "queuedWaitMsMedian": 26.6,
+   "replaysPerFiveAttempts": [
+    1,
+    1,
+    1
+   ],
+   "oracleDueAfterFirstAttempt": [
+    false,
+    false,
+    false
+   ],
+   "yieldsInsideReplay": 2,
+   "checksInsideReplay": 6831
+  },
+  {
+   "tree": "base",
+   "baselineChars": 3000000,
+   "openedRecords": 1551,
+   "replayMsMedian": 1005.3,
+   "windowMsMedian": null,
+   "windowMsRange": null,
+   "queuedWaitMsMedian": 1.3,
+   "replaysPerFiveAttempts": [
+    5,
+    5,
+    5
+   ],
+   "oracleDueAfterFirstAttempt": [
+    true,
+    true,
+    true
+   ],
+   "yieldsInsideReplay": 2,
+   "checksInsideReplay": 31971
+  },
+  {
+   "tree": "final",
+   "baselineChars": 3000000,
+   "openedRecords": 1551,
+   "replayMsMedian": 976.8,
+   "windowMsMedian": 125.1,
+   "windowMsRange": [
+    123.7,
+    139.2
+   ],
+   "queuedWaitMsMedian": 126.6,
+   "replaysPerFiveAttempts": [
+    1,
+    1,
+    1
+   ],
+   "oracleDueAfterFirstAttempt": [
+    false,
+    false,
+    false
+   ],
+   "yieldsInsideReplay": 2,
+   "checksInsideReplay": 31971
+  },
+  {
+   "tree": "base",
+   "baselineChars": 3000000,
+   "openedRecords": 4401,
+   "replayMsMedian": 2235.2,
+   "windowMsMedian": null,
+   "windowMsRange": null,
+   "queuedWaitMsMedian": 3.1,
+   "replaysPerFiveAttempts": [
+    5,
+    5,
+    5
+   ],
+   "oracleDueAfterFirstAttempt": [
+    true,
+    true,
+    true
+   ],
+   "yieldsInsideReplay": 2,
+   "checksInsideReplay": 82671
+  },
+  {
+   "tree": "final",
+   "baselineChars": 3000000,
+   "openedRecords": 4401,
+   "replayMsMedian": 2195.5,
+   "windowMsMedian": 341.5,
+   "windowMsRange": [
+    330.9,
+    848.3
+   ],
+   "queuedWaitMsMedian": 345.7,
+   "replaysPerFiveAttempts": [
+    1,
+    1,
+    1
+   ],
+   "oracleDueAfterFirstAttempt": [
+    false,
+    false,
+    false
+   ],
+   "yieldsInsideReplay": 2,
+   "checksInsideReplay": 82671
+  }
+ ],
+ "browser": {
+  "spec": "investigation 16 lost-phone, send-first, large; C reduced while offline unless noted; production service in copies; builds with VITE_ACCOUNT_RETENTION_AUTO=1 VITE_ACCOUNT_LEDGER_PROFILE=1; catch-up phase gives up at 180 s",
+  "runs": [
+   {
+    "run": "b1",
+    "build": "base",
+    "rttMs": 0,
+    "reduced": true,
+    "cSent": 1,
+    "catchUpS": 24.1,
+    "receivedThrough": 619,
+    "oracleReplaysDiscarded": 1,
+    "oracleReplaysRecorded": 0,
+    "workerBlockedS": 8.8
+   },
+   {
+    "run": "b2",
+    "build": "base",
+    "rttMs": 0,
+    "reduced": true,
+    "cSent": 1,
+    "catchUpS": 27.6,
+    "receivedThrough": 610,
+    "oracleReplaysDiscarded": 1,
+    "oracleReplaysRecorded": 0,
+    "workerBlockedS": 7.7
+   },
+   {
+    "run": "f1",
+    "build": "final",
+    "rttMs": 0,
+    "reduced": true,
+    "cSent": 1,
+    "catchUpS": 24.2,
+    "receivedThrough": 618,
+    "oracleReplaysDiscarded": 0,
+    "oracleReplaysRecorded": 1,
+    "workerBlockedS": 4.3,
+    "windowMs": [
+     95
+    ],
+    "queuedBehindWindowMs": [
+     89
+    ]
+   },
+   {
+    "run": "b3",
+    "build": "base",
+    "rttMs": 300,
+    "reduced": true,
+    "cSent": 9,
+    "catchUpS": null,
+    "notCaughtUpAt180s": true,
+    "receivedThrough": 522,
+    "markersMissingOnC": 199,
+    "oracleReplaysDiscarded": 20,
+    "oracleReplaysRecorded": 0,
+    "workerBlockedS": 118.3
+   },
+   {
+    "run": "b4",
+    "build": "base",
+    "rttMs": 300,
+    "reduced": true,
+    "cSent": 1,
+    "catchUpS": null,
+    "notCaughtUpAt180s": true,
+    "receivedThrough": 557,
+    "markersMissingOnC": 110,
+    "oracleReplaysDiscarded": 46,
+    "oracleReplaysRecorded": 0,
+    "workerBlockedS": 106.3
+   },
+   {
+    "run": "f2",
+    "build": "final",
+    "rttMs": 300,
+    "reduced": true,
+    "cSent": 1,
+    "catchUpS": 65.5,
+    "receivedThrough": 620,
+    "oracleReplaysDiscarded": 0,
+    "oracleReplaysRecorded": 2,
+    "workerBlockedS": 8.5,
+    "windowMs": [
+     69,
+     93
+    ],
+    "queuedBehindWindowMs": [
+     69,
+     92
+    ]
+   },
+   {
+    "run": "f3",
+    "build": "final",
+    "rttMs": 300,
+    "reduced": true,
+    "cSent": 22,
+    "catchUpS": 135.5,
+    "receivedThrough": 663,
+    "oracleReplaysDiscarded": 0,
+    "oracleReplaysRecorded": 2,
+    "workerBlockedS": 16.3,
+    "windowMs": [
+     74,
+     88
+    ],
+    "queuedBehindWindowMs": [
+     71,
+     84
+    ]
+   },
+   {
+    "run": "u1",
+    "build": "base",
+    "rttMs": 300,
+    "reduced": false,
+    "cSent": 18,
+    "catchUpS": 90.1,
+    "receivedThrough": 642,
+    "oracleReplaysDiscarded": null,
+    "oracleReplaysRecorded": null,
+    "workerBlockedS": 0
+   }
+  ],
+  "baseDiscardStopAfterReturnMs": [
+   2,
+   42
+  ],
+  "baseDiscardsDuringReplay": 0,
+  "postReplayStepsWithoutWindowMs": [
+   14,
+   55
+  ],
+  "hostLoad": [
+   5.2,
+   10.8
+  ]
+ },
+ "neighbours": {
+  "files": 36,
+  "cases": 455,
+  "passed": 455,
+  "seconds": 42
+ },
+ "checks": {
+  "typecheck": "pass",
+  "oxfmt": "pass (per file)",
+  "oxlint": "pass (per file)",
+  "adapters": "178/178",
+  "validationInventory": "10/10",
+  "accountCryptoPrep": "6/6"
+ },
+ "bookkeeping": {
+  "caseDenominator": [
+   3001,
+   3020
+  ],
+  "reviewedVitestFiles": [
+   114,
+   115
+  ],
+  "generalStages": [
+   299,
+   300
+  ],
+  "reviewedVitestStages": [
+   133,
+   134
+  ],
+  "planningInventory": {
+   "obligations": 1123,
+   "unresolved": 555
+  },
+  "census": "three new source hashes; no label or crypto-call change; construction registry unchanged",
+  "anchors": {
+   "hooksChecked": 65,
+   "literalsChecked": 27,
+   "changed": 0
+  }
+ },
+ "notRun": [
+  "native browser fixtures for accountCapture (test/account-sync/warm-audit.native.mjs, test/unreduced-audit/)",
+  "any device"
+ ],
+ "review": {
+  "fullSuite": "pnpm test --maxWorkers=1 on the final tree: 350 files, 3,660 passed and 1 existing skip",
+  "checks": "pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check"
+ }
+}

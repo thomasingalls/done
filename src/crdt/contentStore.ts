@@ -1,4 +1,5 @@
 import {
+  PreparationCapacity,
   PreparationPause,
   createPreparationJournal,
   type PreparationJournal,
@@ -8,6 +9,7 @@ import {
   loadPreparationCheckpoint,
   importPreparationCheckpoint,
   disposePreparationCheckpoint,
+  preparationCheckpointRoom,
   savePreparationDelta,
   removePreparationCache,
   type PreparationCheckpoint,
@@ -27,6 +29,7 @@ import { createBaselineMetadata } from './localBaselineMetadata';
 import { createWarmContent, WARM_AUDIT_MS } from './warmContent';
 import {
   MaintenanceInterrupted,
+  isPriorityOnlyMaintenanceInterruption,
   reportRetentionProgress,
   type RetentionProgressSink,
 } from './contentMaintenance';
@@ -187,6 +190,14 @@ export const createContentOwner = (
   let warm: ReturnType<typeof createWarmContent> | undefined;
   let baselineReuse: Awaited<ReturnType<typeof createBaselineReuse>> | undefined;
   let forceFullRead = false;
+  // A return to the app needs one completed full read before warm reuse (decision 2026-10-12).
+  // Unlike a maintenance reference request, an interrupted attempt leaves it due.
+  let resumeFullRead = false;
+  // Phase 549: auditWarm's semantic oracle marks its load. From the moment its full replay
+  // completes until the new reuse view records it, the warm audit does not yield to queued
+  // foreground work (warmAuditInterruptible); every other interruption still applies.
+  let oracleLoad = false,
+    recordingOracle = false;
   const canSelect = !!(
     crypt.selectiveLoads &&
     crypt.warmLoads &&
@@ -496,6 +507,10 @@ export const createContentOwner = (
                 crypt.readBaseline === true,
                 held.counter.v === 5,
               );
+              if (oracleLoad) {
+                oracleLoad = false;
+                recordingOracle = true;
+              }
               baselineContext = await crypt.baseline!(task, { ...scope }, counter);
               // One-shot rotation/custody readers reconstruct equivalent evidence per call.
               // Only live warm owners promise stable verifier-owned capability identities.
@@ -555,8 +570,10 @@ export const createContentOwner = (
             metadataKeys: metadata.metadataKeys,
           });
         }
+        recordingOracle = false; // The oracle is recorded; queued work interrupts again.
         return task.step(() => opened.sort((a, b) => a.seq - b.seq));
       } finally {
+        recordingOracle = false;
         eraseVerified(logical);
         eraseVerified(chunks);
       }
@@ -667,6 +684,8 @@ export const createContentOwner = (
       measureLedgerWork('physicalRead', at);
       countLedgerWork('loadedRows', snapshot.rows.length);
       const result = await openSnapshot(task, snapshot, allowExactBaselineReuse);
+      // This full read completed. It settles a return to the app unless another arrived meanwhile.
+      if (!forceFullRead) resumeFullRead = false;
       if (ledgerProfiling)
         countLedgerWork(
           'loadedBytes',
@@ -689,6 +708,8 @@ export const createContentOwner = (
       // Reference loads compare every sealed row; exclusive warm loads use the authenticated
       // counter/shape guard and bounded rolling audit.
       if (!(cause instanceof MaintenanceInterrupted)) clearView();
+      // An unfinished read, even an interrupted maintenance one, leaves a return-to-app read due.
+      if (resumeFullRead) forceFullRead = true;
       throw cause;
     } finally {
       measureLedgerWork('loadElapsed', began);
@@ -891,6 +912,9 @@ export const createContentOwner = (
     let delivered = false;
     let preparation: { journal: PreparationJournal; checkpoint: PreparationCheckpoint } | undefined;
     let transferred = false;
+    // Set when this pass runs past what its resumable cache can hold, so nothing carries over.
+    let unbound = false;
+    const uncached = () => unbound || preparation?.journal.statistics.full === true;
     const implementation = preparationVerifierIdentity();
     try {
       const raw = inventory.metadata.find((m) => m.key === 'counter')?.value;
@@ -945,17 +969,26 @@ export const createContentOwner = (
                 async () => assertCurrent(),
                 checkCommit,
               );
-              const read = await loadPreparationCheckpoint(task, storage, {
-                context: bound,
-                inventory,
-                counter,
-              });
+              let read: Awaited<ReturnType<typeof loadPreparationCheckpoint>>;
+              try {
+                read = await loadPreparationCheckpoint(task, storage, {
+                  context: bound,
+                  inventory,
+                  counter,
+                });
+              } catch (cause) {
+                // Too large to bind any saved journal: this pass runs without one, uncached.
+                if (!(cause instanceof PreparationCapacity)) throw cause;
+                unbound = true;
+                return undefined;
+              }
               const journal = createPreparationJournal({
                 context: bound,
                 current: () => {
                   task.step(checkCommit);
                   context.assertCurrent();
                 },
+                room: preparationCheckpointRoom(read.checkpoint),
               });
               preparation = { journal, checkpoint: read.checkpoint };
               if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
@@ -1074,6 +1107,16 @@ export const createContentOwner = (
         check: checkRetained,
       });
     } catch (cause) {
+      // An uncached pass leaves nothing for the next attempt to resume. If routine queued work
+      // cut it short, retrying the same history would only repeat it, so it parks as capacity;
+      // a changed history, manual retry or reopen tries again. Foreground activity still yields.
+      if (uncached() && isPriorityOnlyMaintenanceInterruption(cause))
+        return {
+          kind: 'skipped' as const,
+          reason: 'capacity' as const,
+          // Not a size limit: presentation says the pass was interrupted (phase 543).
+          detail: { cause: 'interrupted' as const },
+        };
       if (!(cause instanceof PreparationPause) || !preparation || !implementation) throw cause;
       // Only a still-live read task can authenticate the delta. No expired task callback escapes.
       const delta = await preparation.journal.delta(baselineAuth(task));
@@ -1588,8 +1631,9 @@ export const createContentOwner = (
       heads: readonly import('../../account-protocol/historyCheckpoint').HistoryHead[],
       assertCurrent: () => Promise<void>,
       installed?: ReadonlyMap<string, { position: number; link: string }>,
+      verified?: ReadonlyMap<string, import('./retainedHistory').RetiredCut>,
     ) {
-      if (!metadata?.era()) return;
+      if (!metadata?.era()) return undefined;
       const { readEncryptedBaseline } = await task.wait(() => import('./localBaselineStorage'));
       const { decodeLocalBaseline } = await task.wait(() => import('./localBaselineRecord'));
       const { checkRetainedCheckpointCuts } = await task.wait(
@@ -1602,7 +1646,7 @@ export const createContentOwner = (
       let decoded: ReturnType<typeof decodeLocalBaseline> | undefined;
       try {
         decoded = decodeLocalBaseline(held.baseline.payload);
-        checkRetainedCheckpointCuts(decoded, heads, installed);
+        return checkRetainedCheckpointCuts(decoded, heads, installed, verified);
       } finally {
         eraseVerified(decoded);
         eraseVerified(held);
@@ -1610,10 +1654,20 @@ export const createContentOwner = (
     },
     canSelect,
     select: <T>(task: SessionTask, select: (lease: ContentSelection) => T) => load(task, select),
+    /** Return to the app (visibility, resume, pageshow): every later load, foreground or audit,
+     * reads in full until one such read completes. */
     invalidateWarm() {
+      forceFullRead = true;
+      resumeFullRead = true;
+    },
+    /** Maintenance reference check only: the next load replays in full. An interrupted attempt
+     * does not move onto foreground loads; the audit that asked stays due and retries. */
+    requestReferenceRead() {
       forceFullRead = true;
     },
     hasReducedHistory: () => metadata?.reduced() === true,
+    /** True only between a completed oracle replay and its recording (phase 549). */
+    recordingOracle: () => recordingOracle,
     warmAuditDue: () => Boolean(warm?.due() || baselineReuse?.due()),
     // Rolling ciphertext slices may finish while the full semantic oracle remains due.
     // Either cache's physical suffix pressure must still force an audit attempt.
@@ -1652,9 +1706,15 @@ export const createContentOwner = (
         }
         if (completed && baselineReuse?.due()) {
           // Full semantic oracle stays in interruptible maintenance, never moved to a typing task.
+          // Once its replay completes, queued work waits for it to be recorded (phase 549).
           forceFullRead = true;
-          const rows = await load(task);
-          eraseVerified(rows);
+          oracleLoad = true;
+          try {
+            const rows = await load(task);
+            eraseVerified(rows);
+          } finally {
+            oracleLoad = false;
+          }
         }
         return completed;
       } catch (cause) {

@@ -1,0 +1,48 @@
+# Each mutation removes one part of the fix; the named tests must fail under it.
+import subprocess, sys, os
+T = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'rebased')
+M = {
+ 'M1 replay of a committed install re-requires the chain': ('src/crdt/inboundLedger.ts',
+   "              entry.record.seq,\n              'committed',\n", "              entry.record.seq,\n", 'test/retiredCutVerification.test.ts'),
+ 'M2 gate ignores verified evidence': ('src/crdt/retentionCheckpoint.ts',
+   "      const v = verified?.get(cut.credentialId);", "      const v = (undefined as typeof verified)?.get(cut.credentialId);", 'test/retiredCutVerification.test.ts'),
+ 'M3 read never compares the end link to the retained frontier': ('src/crdt/retiredCutVerification.ts',
+   "verifyHistoryPage(context, request, page, need.through, lifetime)", "verifyHistoryPage(context, request, page, { ...need.through, position: need.through.position + 1e9 }, lifetime)", 'test/retiredCutVerification.test.ts'),
+ 'M4 skip: unknown retired cuts accepted online (the rejected draft)': ('src/crdt/inboundLedger.ts',
+   "    const checked =\n      retired === 'committed' ||", "    const checked =\n      true ||", 'test/retiredCutVerification.test.ts'),
+ 'M5 served-page failures not normalized to integrity': ('src/crdt/retiredCutVerification.ts',
+   "            throw Object.assign(new InboundError('record'), { cause });", "            throw cause;", 'test/retiredCutVerification.test.ts'),
+ 'M6 driver does not read the standing condition': ('src/crdt/accountSyncDriver.ts',
+   "            lane.standing = options.standing?.();", "            lane.standing = undefined;", 'test/accountSyncDriver.test.ts'),
+ 'M7 notice has no sentence for it': ('src/ui/SyncNotice.tsx',
+   "  if (lane.reason === 'history-unverified')\n", "  if (lane.reason === ('x' as string))\n", 'test/syncNotice.test.tsx'),
+ 'M9 a retried read hides the standing condition (the masked browser run)': ('src/crdt/accountSyncDriver.ts',
+   "(lane.standing ?? lane.retryReason ?? null)", "(lane.retryReason ?? lane.standing ?? null)", 'test/accountSyncDriver.test.ts'),
+ 'M10 a committed installation never asks for a fold': ('src/crdt/inboundLedger.ts',
+   "      if (!checked) throw new RetiredHistoryRequired();\n      own.foldDue = true;", "      if (!checked) throw new RetiredHistoryRequired();", 'test/retiredCutVerification.test.ts'),
+ 'M11 the scheduler ignores a due fold (growth threshold applies)': ('src/crdt/automaticLocalRetention.ts',
+   "(hint.records >= LOCAL_RETENTION_MIN_RECORDS || fold)", "(hint.records >= LOCAL_RETENTION_MIN_RECORDS)", 'test/automaticLocalRetention.test.ts'),
+ 'M12 no streak cap on cooldown-skipping folds': ('src/crdt/automaticLocalRetention.ts',
+   "fold && foldStreak < LOCAL_RETENTION_FOLD_STREAK", "fold", 'test/automaticLocalRetention.test.ts'),
+ 'M13 a fold may skip the retry clock too': ('src/crdt/automaticLocalRetention.ts',
+   "? Math.max(notBefore, foldNotBefore)", "? 0", 'test/automaticLocalRetention.test.ts'),
+ 'M14 every snapshot counts as needed': ('src/crdt/inboundLedger.ts',
+   "return heads.some((h) => h.position > publisherState(own, base, h.credentialId).prefix.position);", "return heads.length >= 0;", 'test/retiredCutVerification.test.ts'),
+ 'M15 the waiting state has no sentence': ('src/ui/SyncNotice.tsx',
+   "  if (lane.reason === 'history-waiting')\n", "  if (lane.reason === ('y' as string))\n", 'test/syncNotice.test.tsx'),
+ 'M8 replay bound not applied': ('src/crdt/retiredCutVerification.ts',
+   "> HISTORY_REPLAY_EVENTS\n", "> Infinity\n", 'test/retiredCutVerification.test.ts'),
+}
+for name, (f, a, b, test) in M.items():
+    p = os.path.join(T, f); s = open(p).read()
+    assert s.count(a) == 1, (name, a)
+    open(p, 'w').write(s.replace(a, b))
+    try:
+        r = subprocess.run(['node', 'node_modules/vitest/vitest.mjs', 'run', test], cwd=T, capture_output=True, text=True, timeout=600)
+        out = r.stdout + r.stderr
+        failed = [l.strip() for l in out.splitlines() if l.strip().startswith('×')]
+        summary = [l.strip() for l in out.splitlines() if l.strip().startswith('Tests ')]
+        print(f'{name}: exit {r.returncode}; {summary[-1] if summary else "?"}')
+        for l in failed: print('   ', l[:150])
+    finally:
+        open(p, 'w').write(s)

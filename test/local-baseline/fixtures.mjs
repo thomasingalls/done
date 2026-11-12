@@ -238,7 +238,7 @@ export async function memberFixture() {
       encodeDeliveryEntry({ type: 'response', position: own, wire: proof }, route, base.authority),
     );
     if (kind === 'accepted') ownPrevious = decodePositionResponse(proof).head.link;
-    return { update, proof };
+    return { update, proof, envelope };
   };
   const appendHistory = async () => {
     const doc = new Y.Doc({ gc: false });

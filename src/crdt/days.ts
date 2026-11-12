@@ -484,8 +484,10 @@ export const cardMembershipIssues = (doc: YDoc): MembershipIssue[] => {
  * position is recomputed from something every replica agrees on, and what that
  * should be is the section's own ordering rule (PRD §3).
  *
- * Next and Scheduled are ordered by intent, and intent is not stored anywhere —
- * an arrival appends, and so does a return.
+ * Next and Scheduled retain the existing repair fallback: append returning
+ * cards because their lost manual positions and last-arrival times cannot be
+ * recovered. This is separate from ordinary arrivals, which prepend. Repair
+ * does not sort or rewrite the surviving user order.
  *
  * Done is ordered by time, so its order *can* be restored: the card goes back
  * above everything completed before it, which puts a run of returning cards

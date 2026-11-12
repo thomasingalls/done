@@ -1,0 +1,617 @@
+// COPY-ONLY probe (verify-the-cut): a device ahead on a peer stream it has reduced and behind on a
+// pruned stream. MODE=strand (tip without the fix: stays stranded until a newer snapshot),
+// MODE=recover (fix: the cut is verified by reading the peer's chain, the snapshot installs and the
+// device catches up at once), MODE=unverifiable (fix, with the peer's chain reads answered 409
+// `unavailable`: a named notice appears, stays while writing keeps arriving, and clears when a
+// newer snapshot installs). Copy-only seams in the build: `__holdHistory`, `__allowReduction`,
+// retention thresholds 1 / 3 s / 1 s / 2 s, and the export-state hook used for convergence.
+import { openMenuSection } from '../geometry/openApp';
+import { test, expect, type Page } from '@playwright/test';
+import { pairedEditors, openSaved, add } from './devices';
+import { pending, compared, unlock } from '../device-enrollment/helpers';
+import { startService, stopService, startApplication, stopProcess } from './server';
+import { documentOf } from './scenario';
+import { writeFileSync } from 'node:fs';
+import { resolve as resolvePath } from 'node:path';
+
+const MODE: string = 'recover';
+const NAMED = 'could not be checked against the history this device kept';
+const reads = (body: string) =>
+  [
+    ...body.matchAll(
+      /\["done\/private-read\/v2",2,"[^"]*","[^"]*","[0-9a-f]+","([0-9a-f]{32})","([0-9a-f]{32})","[0-9a-f]+","[0-9a-f]+",\d+,(\d+),(\d+)/g,
+    ),
+  ].map((m) => ({ reader: m[1]!, publisher: m[2]!, after: Number(m[3]), limit: Number(m[4]) }));
+const workers = async (p: Page, fn: () => void) => {
+  for (const w of p.workers()) await w.evaluate(fn).catch(() => {});
+};
+async function baseline(p: Page) {
+  return p.evaluate(async () => {
+    const out: { name: string; v: number; revision: number }[] = [];
+    for (const { name } of await indexedDB.databases()) {
+      if (!name) continue;
+      const db = await new Promise<IDBDatabase>((yes, no) => {
+        const r = indexedDB.open(name);
+        r.onsuccess = () => yes(r.result);
+        r.onerror = () => no(r.error);
+      });
+      try {
+        if (!db.objectStoreNames.contains('meta')) continue;
+        const c = await new Promise<any>((yes, no) => {
+          const tx = db.transaction('meta');
+          const g = tx.objectStore('meta').get('counter');
+          tx.oncomplete = () => yes(g.result);
+          tx.onabort = () => no(tx.error);
+        });
+        if (c && typeof c.v === 'number')
+          out.push({ name, v: c.v, revision: c.baseline?.revision ?? 0 });
+      } finally {
+        db.close();
+      }
+    }
+    return out;
+  });
+}
+
+test('a store holding a verified install, opened by older builds and back', async ({ page, browser }, info) => {
+  test.setTimeout(1200000);
+  page.setDefaultTimeout(30000);
+  const service = await startService(
+    info.outputPath('service'),
+    process.env.DIST ? resolvePath(process.env.DIST) : undefined,
+    true,
+    true,
+  );
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  // No service worker: each load serves the build the app server currently holds.
+  const thirdContext = await browser.newContext({ acceptDownloads: true, serviceWorkers: 'block' }),
+    third = await thirdContext.newPage();
+  third.setDefaultTimeout(30000);
+  const errors: string[] = [];
+  const log: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  const observe = (p: typeof page) => {
+    p.on('pageerror', (e) => errors.push(e.message));
+    p.on('response', async (r) => {
+      const path = new URL(r.url()).pathname;
+      if (r.status() < 400 || (!path.startsWith('/account/') && !path.startsWith('/__account-setup/')))
+        return;
+      const body = await r.json().catch(() => ({}));
+      if (p === third)
+        note(`third refusal ${path} ${r.status()} ${body.refusal ?? body.reason ?? 'unavailable'}`);
+    });
+  };
+  observe(page);
+  observe(third);
+  try {
+    pair = await pairedEditors(page, browser, true);
+    pair.second.setDefaultTimeout(30000);
+    observe(pair.second);
+    await add(page, 'Original writing before the third connection');
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Original writing before the third connection',
+      { timeout: 30000 },
+    );
+    await page.route('**/account/delivery/submit', (route) => route.abort());
+    await add(page, 'Snapshot-only writing for generation-one third device');
+    const panel = (p: typeof page) =>
+      p.getByRole('region', { name: 'History maintenance', exact: true });
+    for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Data');
+      await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
+      await panel(p)
+        .getByRole('button', {
+          name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
+        })
+        .click();
+      await expect(panel(p)).toContainText(
+        p === page
+          ? 'Snapshot saved. Verify it from another approved device.'
+          : 'Verified snapshot 1 is saved.',
+        { timeout: 30000 },
+      );
+    }
+    await openMenuSection(pair.second, 'Account');
+    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+    await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
+    await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    await unlock(pair.second, pair.next.code);
+    const link = await pair.second.getByLabel('Device invitation link').inputValue();
+    const next = await pending(third, link, pair.next.auth);
+    const code = await compared(pair.second, third);
+    await third.reload();
+    await unlock(third, next.code);
+    await expect(third.getByLabel('Comparison code')).toHaveText(code, { timeout: 30000 });
+    await pair.second.getByLabel('Code on the new device').fill(code);
+    await pair.second.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+    await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toBeVisible({
+      timeout: 60000,
+    });
+    await third.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(third.locator('.shell')).toContainText(
+      'Snapshot-only writing for generation-one third device',
+      { timeout: 30000 },
+    );
+    await page.unroute('**/account/delivery/submit');
+    await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await pair.second.goto('/');
+    await openSaved(pair.second, pair.next.code, true);
+    await add(third, 'Third device writing reaches both existing devices');
+    for (const p of [page, pair.second])
+      await expect(p.locator('.shell')).toContainText(
+        'Third device writing reaches both existing devices',
+        { timeout: 30000 },
+      );
+    await add(pair.second, 'Joined device writing after approving the third');
+    for (const p of [page, third])
+      await expect(p.locator('.shell')).toContainText(
+        'Joined device writing after approving the third',
+        { timeout: 30000 },
+      );
+
+    const B = pair.second,
+      A = page,
+      Cd = third;
+    async function check(p: Page) {
+      await openMenuSection(p, 'Data');
+      if (!(await panel(p).isVisible().catch(() => false)))
+        await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled(
+        { timeout: 60000 },
+      );
+    }
+    async function snapshot(n: number, verify = true) {
+      await check(A);
+      const resume = panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true });
+      if (await resume.isVisible().catch(() => false)) {
+        await resume.click();
+        await expect(panel(A)).toContainText(`Verified snapshot ${n - 1} is saved.`, {
+          timeout: 60000,
+        });
+      }
+      await panel(A).getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(
+        'Snapshot saved. Verify it from another approved device.',
+        { timeout: 60000 },
+      );
+      if (verify) await admit(n);
+    }
+    async function admit(n: number) {
+      await check(B);
+      await panel(B).getByRole('button', { name: 'Verify history snapshot', exact: true }).click();
+      await expect(panel(B)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
+      await check(A);
+      await panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
+    }
+    const ids = new Map<string, string>();
+    for (const [name, p] of [
+      ['A', A],
+      ['B', B],
+      ['C', Cd],
+    ] as const)
+      p.on('request', (r) => {
+        if (!r.url().includes('/account/delivery/read-v2')) return;
+        for (const id of reads(r.postDataBuffer()?.toString('latin1') ?? '')) ids.set(name, id.reader);
+      });
+    await expect.poll(() => ids.size, { timeout: 90000 }).toBe(3);
+    note('ids ' + JSON.stringify(Object.fromEntries(ids)));
+    // Every B read the third device makes: before reduction (its frontier) and after (any check).
+    const bReads: { at: number; after: number; limit: number; phase: string }[] = [];
+    let phase = 'before';
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/delivery/read-v2')) return;
+      for (const x of reads(r.postDataBuffer()?.toString('latin1') ?? ''))
+        if (x.publisher === ids.get('B'))
+          bReads.push({ at: Date.now() - t0, after: x.after, limit: x.limit, phase });
+    });
+    let blockA = true;
+    await Cd.route('**/account/delivery/read-v2-batch', (route) =>
+      blockA ? route.fulfill({ status: 404, body: '{}' }) : route.continue(),
+    );
+    await Cd.route('**/account/delivery/read-v2', (route) => {
+      const read = reads(route.request().postDataBuffer()?.toString('latin1') ?? '');
+      if (blockA && read.some((r) => r.publisher === ids.get('A'))) return route.abort();
+      return route.continue();
+    });
+    await workers(Cd, () => {
+      (globalThis as any).__holdHistory = true;
+    });
+    note('third holds catalog checks and drops A reads');
+    await add(A, 'A writing the third device misses 1');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 1', {
+      timeout: 30000,
+    });
+    await snapshot(2);
+    note('snapshot 2 admitted');
+    await add(A, 'A writing the third device misses 2');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 2', {
+      timeout: 30000,
+    });
+    await snapshot(3, false);
+    note('snapshot 3 pending');
+    await B.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await add(B, 'B writing after snapshot 3 was prepared');
+    await add(B, 'B second writing after snapshot 3 was prepared');
+    await Cd.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await expect(Cd.locator('.shell')).toContainText(
+      'B second writing after snapshot 3 was prepared',
+      { timeout: 30000 },
+    );
+    await expect(Cd.locator('.shell')).not.toContainText('A writing the third device misses 1');
+    const frontierB = Math.max(...bReads.map((r) => r.after));
+    note('third received B past snapshot 3 cut, still behind on A; its B read cursor ' + frontierB);
+    await admit(3);
+    note('snapshot 3 admitted');
+    await check(A);
+    await panel(A).getByRole('button', { name: 'Prune covered history', exact: true }).click();
+    await expect(panel(A)).toContainText('Covered service history removed.', { timeout: 60000 });
+    note('pruned');
+    const before = await baseline(Cd);
+    await workers(Cd, () => {
+      (globalThis as any).__allowReduction = true;
+    });
+    await thirdContext.setOffline(true);
+    let reduced = false;
+    for (let i = 0; i < 36 && !reduced; i++) {
+      await Cd.waitForTimeout(5000);
+      reduced = (await baseline(Cd)).some(
+        (b) => b.v === 5 && b.revision > (before.find((x) => x.name === b.name)?.revision ?? 0),
+      );
+    }
+    expect(reduced).toBe(true);
+    note('third reduced ' + JSON.stringify(await baseline(Cd)));
+    await workers(Cd, () => {
+      (globalThis as any).__allowReduction = false;
+      (globalThis as any).__holdHistory = false;
+    });
+    blockA = false;
+    const refused: number[] = [];
+    if (MODE === 'unverifiable')
+      // The service answers the chain check as if it held no such history; ordinary reads continue.
+      await Cd.route('**/account/delivery/read-v2', (route) => {
+        const read = reads(route.request().postDataBuffer()?.toString('latin1') ?? '');
+        if (read.some((r) => r.publisher === ids.get('B') && r.after < frontierB)) {
+          refused.push(Date.now() - t0);
+          return route.fulfill({
+            status: 409,
+            contentType: 'application/json',
+            body: JSON.stringify({ v: 1, kind: 'unknown', reason: 'unavailable' }),
+          });
+        }
+        return route.fallback();
+      });
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/history/v1/checkpoint')) return;
+      try {
+        const b = JSON.parse(r.postData() ?? '{}');
+        note(`third history ${b.action}:${typeof b.payload === 'string' ? b.payload : 'object'}`);
+      } catch {}
+    });
+    phase = 'after';
+    const online = Date.now();
+    await thirdContext.setOffline(false);
+    note('third back online with catalog checks and A reads allowed');
+    const sawA = () =>
+      Cd.locator('.shell')
+        .textContent()
+        .then((t) => t!.includes('A writing the third device misses 1'));
+    const notice = () => Cd.locator('.sync-notice').allTextContents().then((t) => t.join(' | '));
+    const verification = () => bReads.filter((r) => r.phase === 'after' && r.after < frontierB);
+    if (MODE === 'recover') {
+      await expect.poll(sawA, { timeout: 60000, intervals: [500] }).toBe(true);
+      note(`recovered ${((Date.now() - online) / 1000).toFixed(1)} s after returning online`);
+      note('verification reads of B: ' + JSON.stringify(verification()));
+      expect(verification().length).toBeGreaterThan(0);
+    } else {
+      await Cd.waitForTimeout(45000);
+      note('after 45 s: shows A writing? ' + (await sawA()));
+      expect(await sawA()).toBe(false);
+      note('notice: ' + (await notice()));
+      note('verification reads of B: ' + JSON.stringify(verification()));
+      if (MODE === 'unverifiable') {
+        await expect.poll(notice, { timeout: 60000, intervals: [1000] }).toContain(NAMED);
+        note('named notice shown');
+      } else expect(verification()).toHaveLength(0);
+    }
+    await openMenuSection(Cd, 'Account');
+    note('third sync details: ' + JSON.stringify(await Cd.locator('.sync-details').allTextContents()));
+    await add(B, 'B writing after the third returned');
+    await expect(Cd.locator('.shell')).toContainText('B writing after the third returned', {
+      timeout: 60000,
+    });
+    note('third receives new B writing');
+    if (MODE === 'unverifiable') {
+      // Writing from another device arrived; the condition is unchanged, so the notice stays.
+      await Cd.waitForTimeout(10000);
+      note('notice after B writing arrived: ' + (await notice()));
+      expect(await notice()).toContain(NAMED);
+    }
+    await add(Cd, 'Third writing after returning');
+    await expect(A.locator('.shell')).toContainText('Third writing after returning', {
+      timeout: 60000,
+    });
+    note('third writing reaches A');
+
+    // ---- The store now holds a verified installation below its retired frontier. ----
+    const digest = () =>
+      Cd.evaluate(async () => {
+        const hex = (b: Uint8Array) => Array.from(b, (x) => x.toString(16).padStart(2, '0')).join('');
+        const ser = (v: any): string =>
+          v === null || typeof v !== 'object'
+            ? JSON.stringify(v)
+            : v instanceof ArrayBuffer
+              ? 'ab:' + hex(new Uint8Array(v))
+              : ArrayBuffer.isView(v)
+                ? 'u8:' + hex(new Uint8Array(v.buffer, v.byteOffset, v.byteLength))
+                : typeof CryptoKey !== 'undefined' && v instanceof CryptoKey
+                  ? 'key:' + v.type
+                  : Array.isArray(v)
+                    ? '[' + v.map(ser).join(',') + ']'
+                    : '{' + Object.keys(v).sort().map((k) => JSON.stringify(k) + ':' + ser(v[k])).join(',') + '}';
+        const sha = async (s: string) =>
+          hex(new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))).slice(0, 16);
+        const out: Record<string, Record<string, Record<string, string>>> = {};
+        for (const { name } of await indexedDB.databases()) {
+          if (!name) continue;
+          const db = await new Promise<IDBDatabase>((yes, no) => {
+            const r = indexedDB.open(name);
+            r.onsuccess = () => yes(r.result);
+            r.onerror = () => no(r.error);
+          });
+          try {
+            out[name] = {};
+            for (const store of Array.from(db.objectStoreNames)) {
+              const rows: [string, string][] = await new Promise((yes, no) => {
+                const got: [string, string][] = [];
+                const tx = db.transaction(store);
+                const c = tx.objectStore(store).openCursor();
+                c.onsuccess = () => {
+                  const cur = c.result;
+                  if (!cur) return;
+                  got.push([ser(cur.key), ser(cur.value)]);
+                  cur.continue();
+                };
+                tx.oncomplete = () => yes(got);
+                tx.onabort = () => no(tx.error);
+              });
+              out[name][store] = {};
+              for (const [k, v] of rows) out[name][store][k.slice(0, 80)] = await sha(v);
+            }
+          } finally {
+            db.close();
+          }
+        }
+        return out;
+      });
+    type Digest = Awaited<ReturnType<typeof digest>>;
+    const diff = (a: Digest, b: Digest) => {
+      const lines: string[] = [];
+      for (const db of new Set([...Object.keys(a), ...Object.keys(b)]))
+        for (const st of new Set([...Object.keys(a[db] ?? {}), ...Object.keys(b[db] ?? {})])) {
+          const x = a[db]?.[st] ?? {},
+            y = b[db]?.[st] ?? {};
+          const added = Object.keys(y).filter((k) => !(k in x)),
+            removed = Object.keys(x).filter((k) => !(k in y)),
+            changed = Object.keys(y).filter((k) => k in x && x[k] !== y[k]);
+          if (added.length || removed.length || changed.length)
+            lines.push(
+              `${db.slice(0, 13)}/${st}: +${added.length} -${removed.length} ~${changed.length}` +
+                (changed.length ? ' changed ' + JSON.stringify(changed.slice(0, 6)) : '') +
+                (removed.length ? ' removed ' + JSON.stringify(removed.slice(0, 6)) : ''),
+            );
+        }
+      return lines.length ? lines.join('; ') : 'no change';
+    };
+    const counter = () =>
+      Cd.evaluate(async () => {
+        const out: unknown[] = [];
+        for (const { name } of await indexedDB.databases()) {
+          if (!name) continue;
+          const db = await new Promise<IDBDatabase>((yes, no) => {
+            const r = indexedDB.open(name);
+            r.onsuccess = () => yes(r.result);
+            r.onerror = () => no(r.error);
+          });
+          try {
+            if (!db.objectStoreNames.contains('meta')) continue;
+            const c = await new Promise<any>((yes, no) => {
+              const tx = db.transaction('meta');
+              const g = tx.objectStore('meta').get('counter');
+              tx.oncomplete = () => yes(g.result);
+              tx.onabort = () => no(tx.error);
+            });
+            if (c) out.push({ v: c.v, next_seq: c.next_seq, revision: c.baseline?.revision ?? 0 });
+          } finally {
+            db.close();
+          }
+        }
+        return out;
+      });
+    const builds: Record<string, string> = {
+      patched: resolvePath('dist'),
+      tip: resolvePath(process.env.TIP_DIST!),
+      released: resolvePath(process.env.REL_DIST!),
+    };
+    const scripts = async (build: string) =>
+      [
+        ...(await import('node:fs'))
+          .readFileSync(build + '/index.html', 'utf8')
+          .matchAll(/src="\/(assets\/[^"]+\.js)"/g),
+      ]
+        .map((m) => m[1]!)
+        .sort();
+    async function leave() {
+      if (await Cd.locator('.shell').isVisible().catch(() => false)) {
+        await openMenuSection(Cd, 'Account');
+        await Cd.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+        await Cd.waitForTimeout(1000);
+      }
+      // A static file of the same origin: the app is unloaded and the store stays readable.
+      await Cd.goto('/manifest.webmanifest');
+      await Cd.waitForTimeout(1500);
+    }
+    async function serve(name: string) {
+      await stopProcess(service.app);
+      service.app = await startApplication(builds[name]);
+      note(`app server now serves ${name}`);
+    }
+    const consoleLines: string[] = [];
+    Cd.on('console', (m) => {
+      if (m.type() === 'error' || m.type() === 'warning') consoleLines.push(`page ${m.type()}: ${m.text()}`);
+    });
+    Cd.on('worker', (w) =>
+      w.on('console', (m) => {
+        if (m.type() === 'error' || m.type() === 'warning') consoleLines.push(`worker ${m.type()}: ${m.text()}`);
+      }),
+    );
+    Cd.on('pageerror', (e) => consoleLines.push('pageerror: ' + e.message));
+    async function open(name: string) {
+      consoleLines.length = 0;
+      await Cd.goto('/');
+      const loaded = (
+        await Cd.evaluate(() => Array.from(document.scripts, (x) => new URL(x.src || location.href).pathname.slice(1)))
+      )
+        .filter((n) => n.startsWith('assets/'))
+        .sort();
+      const expected = await scripts(builds[name]);
+      note(`${name}: page scripts match this build: ${JSON.stringify(loaded) === JSON.stringify(expected)} (${loaded.length} scripts)`);
+      expect(loaded).toEqual(expected);
+      // The joined device's own unlock flow, as `openSaved(Cd, code, true)` drives it.
+      const codeEntry = Cd.getByLabel('Unlock code', { exact: true });
+      const saved = Cd.getByRole('button', { name: /Resume device connection/ });
+      await expect
+        .poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible()), { timeout: 30000 })
+        .toBe(true);
+      if (!(await codeEntry.isVisible())) await saved.click();
+      await expect(codeEntry).toBeVisible();
+      await codeEntry.fill(next.code);
+      await Cd.getByRole('button', {
+        name: /^(Unlock enrollment|Unlock and get invitation|Confirm code and unlock with passkey)$/,
+      }).click();
+      const outcome = await expect(Cd.locator('.shell'))
+        .toBeVisible({ timeout: 30000 })
+        .then(() => 'workspace open', () => 'workspace NOT open');
+      note(`${name}: ${outcome}`);
+      if (outcome !== 'workspace open') {
+        await Cd.waitForTimeout(5000);
+        await Cd.screenshot({ path: info.outputPath(`${name}-not-open.png`), fullPage: true });
+        const text = (await Cd.locator('body').innerText()) ?? '';
+        note(`${name}: visible text ${JSON.stringify(text.slice(0, 1500))}`);
+        note(`${name}: alerts ${JSON.stringify(await Cd.getByRole('alert').allTextContents())}; dialogs ${JSON.stringify(await Cd.getByRole('dialog').allTextContents())}; unlock field visible ${await codeEntry.isVisible()}`);
+        note(`${name}: console ${JSON.stringify(consoleLines.slice(0, 20))}`);
+      }
+      return outcome === 'workspace open';
+    }
+    if (process.env.FOLD === '1') {
+      // Mitigation probe: a reduction on the patched build folds the verified installation into
+      // a new baseline, so no older build has to replay it as a suffix event.
+      const r0 = await counter();
+      await workers(Cd, () => {
+        (globalThis as any).__allowReduction = true;
+      });
+      const revision = async () => ((await counter()) as { revision: number }[])[0]?.revision ?? 0;
+      const start = Date.now();
+      await expect
+        .poll(revision, { timeout: 180000, intervals: [2000] })
+        .toBeGreaterThan((r0 as { revision: number }[])[0]!.revision);
+      await workers(Cd, () => {
+        (globalThis as any).__allowReduction = false;
+      });
+      note(`folded by a patched-build reduction in ${((Date.now() - start) / 1000).toFixed(1)} s: ${JSON.stringify(r0)} -> ${JSON.stringify(await counter())}`);
+    }
+    const storeBefore = await digest();
+    note('store counter (patched, before) ' + JSON.stringify(await counter()));
+    for (const older of ['tip', 'released']) {
+      await leave();
+      const atLeave = await digest();
+      await serve(older);
+      const opened = await open(older);
+      if (opened) {
+        note(`${older}: shows writing missed before the snapshot? ${await sawA()}`);
+        await add(Cd, `Writing on the ${older} build`);
+        const sent = await expect(A.locator('.shell'))
+          .toContainText(`Writing on the ${older} build`, { timeout: 60000 })
+          .then(() => true, () => false);
+        note(`${older}: its writing reaches A? ${sent}`);
+        await add(B, `B writing while the third runs ${older}`);
+        const received = await expect(Cd.locator('.shell'))
+          .toContainText(`B writing while the third runs ${older}`, { timeout: 60000 })
+          .then(() => true, () => false);
+        note(`${older}: receives B's new writing? ${received}`);
+        await Cd.waitForTimeout(35000);
+        note(`${older}: notice ${JSON.stringify(await notice())}`);
+        await openMenuSection(Cd, 'Account');
+        note(`${older}: sync details ${JSON.stringify(await Cd.locator('.sync-details').allTextContents())}`);
+        // Can the older build repair it itself? Let its automatic reduction run.
+        const c0 = await counter();
+        await workers(Cd, () => {
+          (globalThis as any).__allowReduction = true;
+        });
+        await Cd.waitForTimeout(30000);
+        await openMenuSection(Cd, 'Data');
+        note(`${older}: local history panel ${JSON.stringify(await Cd.getByRole('region', { name: 'History on this device' }).allTextContents().catch(() => []))}`);
+        note(`${older}: counter before/after allowing reduction ${JSON.stringify(c0)} -> ${JSON.stringify(await counter())}`);
+        await workers(Cd, () => {
+          (globalThis as any).__allowReduction = false;
+        });
+      } else {
+        await Cd.waitForTimeout(20000);
+        note(`${older}: after 20 s, page text: ${JSON.stringify(((await Cd.locator('body').textContent()) ?? '').slice(0, 500))}`);
+      }
+      note(`${older}: store change while on the older build: ${diff(atLeave, await digest())}`);
+      note(`${older}: counter ${JSON.stringify(await counter())}`);
+      await leave();
+      await serve('patched');
+      const back = await open('patched');
+      expect(back).toBe(true);
+      await Cd.waitForTimeout(10000);
+      note(`patched again: shows writing missed before the snapshot? ${await sawA()}; notice ${JSON.stringify(await notice())}`);
+      if (opened) {
+        await expect(Cd.locator('.shell')).toContainText(`Writing on the ${older} build`);
+        await expect(Cd.locator('.shell')).toContainText(`B writing while the third runs ${older}`);
+      }
+      await add(Cd, `Patched writing after ${older}`);
+      await expect(A.locator('.shell')).toContainText(`Patched writing after ${older}`, { timeout: 60000 });
+      await add(B, `B writing after ${older} returned`);
+      await expect(Cd.locator('.shell')).toContainText(`B writing after ${older} returned`, { timeout: 60000 });
+      note(`patched again after ${older}: sends and receives`);
+    }
+    note('store change across the whole test: ' + diff(storeBefore, await digest()));
+    // Convergence: every device's text and exact Yjs state.
+    await add(A, 'Final writing from A');
+    for (const p of [B, Cd])
+      await expect(p.locator('.shell')).toContainText('Final writing from A', { timeout: 60000 });
+    await Cd.waitForTimeout(5000);
+    const docs = [];
+    for (const p of [A, B, Cd]) docs.push(await documentOf(p));
+    note(
+      'convergence: text ' +
+        (docs[0]!.text === docs[1]!.text && docs[1]!.text === docs[2]!.text) +
+        ', state ' +
+        (JSON.stringify(docs[0]!.state) === JSON.stringify(docs[1]!.state) &&
+          JSON.stringify(docs[1]!.state) === JSON.stringify(docs[2]!.state)),
+    );
+    expect(docs[2]!.text).toBe(docs[0]!.text);
+    expect(docs[2]!.state).toEqual(docs[0]!.state);
+  } finally {
+    writeFileSync(
+      info.outputPath('timeline.txt'),
+      log.join('\n') + '\n' + 'errors: ' + JSON.stringify(errors) + '\n',
+    );
+    try {
+      await thirdContext.close().catch(() => {});
+      await pair?.other.close().catch(() => {});
+    } finally {
+      await stopService(service);
+    }
+  }
+});

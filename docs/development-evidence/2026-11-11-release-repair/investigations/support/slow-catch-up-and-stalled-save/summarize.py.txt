@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""Summarize one lost-phone run: phases, receive progress, replays, audits, request failures."""
+import json, sys, glob, re
+run = sys.argv[1]
+art = glob.glob(run + '/artifacts/*/')[0]
+tl = open(art + 'timeline.txt').read().splitlines()
+def at(pat):
+    for l in tl:
+        if re.search(pat, l): return float(l.split('s ')[0])
+online, second = at('C online'), at('second phase starts')
+both = at('both directions arrived=true')
+samples = [json.loads(l) for l in open(art + 'c-samples.jsonl')]
+final = max((s.get('sync') or {}).get('receive', {}).get('receivedThrough', 0) for s in samples)
+reach = next((s['t'] for s in samples if (s.get('sync') or {}).get('receive', {}).get('receivedThrough', 0) >= final), None)
+def m(s, *path):
+    v = s.get('metrics') or {}
+    for p in path: v = (v or {}).get(p, {}) if p != path[-1] else (v or {}).get(p, 0)
+    return v or 0
+s0 = next(s for s in samples if s['t'] >= second)
+s1 = samples[-1]
+def d(*path): return m(s1, *path) - m(s0, *path)
+blocked = [s for s in samples if s['t'] >= second and s['evalMs'] > 1000]
+loads = [s['load'] for s in samples if s['t'] >= second]
+print(f"C online {online}s, second phase starts {second}s, both observed {both}s (5 s poll), receive reached final {final} at {reach}s -> {None if reach is None else round(reach-second,1)} s after second phase start")
+print(f"second phase: full baseline replays {d('work','baselineFullReplays')}, coverageRebuild calls {d('timings','coverageRebuild','calls')} ({round(d('timings','coverageRebuild','totalMs')/1000,1)} s), coverageCheck calls {d('timings','coverageCheck','calls')} ({round(d('timings','coverageCheck','totalMs')/1000,1)} s), loads {d('work','loads')}, warmLoads {d('work','warmLoads')}, storageQueueWait {round(d('costs','storageQueueWait','totalMs')/1000,1)} s over {d('costs','storageQueueWait','calls')} jobs")
+print(f"worker blocked >1 s at {len(blocked)} samples, total {round(sum(s['evalMs'] for s in blocked)/1000,1)} s; load range {loads[0] if loads else ''} .. {loads[-1] if loads else ''}")
+trace = [json.loads(l) for l in open(art + 'c-trace.jsonl') if l.strip()]
+inst = [r for r in trace if r.get('ev') == 'history' and r.get('result') == 'installed']
+aw = [r for r in trace if r.get('ev') == 'auditWarm']
+big = [r for r in aw if r['ms'] > 1000]
+print(f"trace: auditWarm calls {len(aw)}, of which >1 s: {len(big)} (interrupted {sum(1 for r in big if r.get('interrupted'))}, completed {sum(1 for r in big if r.get('completed'))}), wasted ms in interrupted >1 s audits {sum(r['ms'] for r in big if r.get('interrupted'))}; fullReplay events {sum(1 for r in trace if r.get('ev')=='fullReplay')}; history installs {[(r['ms'], r.get('size')) for r in inst]}")
+lanes = [r for r in trace if r.get('ev') == 'lane' and r['lane'] == 'receive']
+print('receive passes: kinds', {k: sum(1 for r in lanes if r.get('kind') == k) for k in set(r.get('kind') for r in lanes)}, 'errors', sum(1 for r in lanes if 'error' in r), 'longest', max((r['ms'] for r in lanes), default=0))
+net = [json.loads(l) for l in open(art + 'c-net.jsonl')]
+after = [r for r in net if r['t'] >= second]
+fails = [r for r in after if r['status'] != 200]
+print(f"requests after second phase start: {len(after)}, non-200: {len(fails)}: " + ', '.join(f"{r['path'].split('/account/')[-1]}{('/'+r['payload']) if r.get('payload') else ''} {r['status'] or r.get('failure')} {r['ms']}ms" for r in fails[:12]))

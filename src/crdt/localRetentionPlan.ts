@@ -32,7 +32,7 @@ import { compareBaselineReplay } from './localBaselineShadow';
 import { createCpuBudget } from './cpuBudget';
 import { reportRetentionProgress, type RetentionProgressSink } from './contentMaintenance';
 import { createInboundCoverage } from './inboundLedger';
-import { isHistoryInstallTag } from './historyInstall';
+import { HistoryInstallSizeError, isHistoryInstallTag } from './historyInstall';
 import { eraseVerified, sameBytes } from './verifiedRecords';
 import { hex, type Bytes } from './custodyCrypto';
 import type { SessionTask } from './writeSession';
@@ -254,9 +254,15 @@ export async function planLocalRetention(
   // expiring preparation task. Context/task checks still govern every preparation effect.
   retainCurrent: () => void = () => context.assertCurrent(),
   progress?: RetentionProgressSink,
-  preparation?: (counter: ContentCounter) => Promise<PreparationVerification>,
+  // Resolves without a journal when none can be bound; the pass then runs uncached.
+  preparation?: (counter: ContentCounter) => Promise<PreparationVerification | undefined>,
 ): Promise<
-  LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
+  | LocalRetentionPlan
+  | {
+      kind: 'skipped';
+      reason: 'capacity' | 'ineligible' | 'history-required';
+      detail?: import('./localRetentionDetail').LocalRetentionDetail;
+    }
 > {
   const inventory = clone(input),
     scope = { ...context.identity };
@@ -446,7 +452,11 @@ export async function planLocalRetention(
       // from that boundary as failures even though the builder now returns both results together.
       if (!buildingCandidate) throw error;
       if (error instanceof LocalBaselineCapacityError)
-        return { kind: 'skipped', reason: 'capacity' };
+        return {
+          kind: 'skipped',
+          reason: 'capacity',
+          ...(error.detail ? { detail: error.detail } : {}),
+        };
       if (
         error instanceof LocalBaselineError &&
         (error.reason === 'ineligible' || error.reason === 'history-required')
@@ -561,6 +571,16 @@ export async function planLocalRetention(
     });
     delivered = true;
     return plan;
+  } catch (error) {
+    // Raised only after the installed record authenticated (`verifyHistoryInstall`): a size
+    // condition, not an integrity failure. Retrying the same history cannot change it.
+    if (error instanceof HistoryInstallSizeError)
+      return {
+        kind: 'skipped',
+        reason: 'capacity',
+        detail: { cause: 'installed-snapshot', needed: error.needed, allowed: error.allowed },
+      };
+    throw error;
   } finally {
     coverage.clear();
     eraseVerified(records);

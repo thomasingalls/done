@@ -1,0 +1,133 @@
+// Copy-only probe for the phase 544 follow-up: a device offline across snapshot, admission and
+// pruning, holding unsent local writing, returns. Two orders: install first, or send first.
+import { openMenuSection } from '../geometry/openApp';
+import { test, expect, type Page } from '@playwright/test';
+import { pairedEditors, openSaved, add } from './devices';
+import { startService, stopService } from './server';
+
+const panel = (p: Page) => p.getByRole('region', { name: 'History maintenance', exact: true });
+async function inspect(p: Page) {
+  await openMenuSection(p, 'Data');
+  await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+  await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+  await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
+}
+const count = (db: { prepare(s: string): { get(): unknown } }, table: string) =>
+  Number(
+    (db.prepare(`SELECT count(*) AS n FROM ${table} WHERE kind='accepted'`).get() as { n: number })
+      .n,
+  );
+// The first device's stream, and every later publisher's (the second device's included).
+const accepted = (db: { prepare(s: string): { get(): unknown } }) => count(db, 'delivery_decisions');
+const acceptedFromPeers = (db: { prepare(s: string): { get(): unknown } }) =>
+  count(db, 'publisher_decisions');
+
+for (const order of ['install-first', 'send-first'] as const)
+  test(`a device offline across pruning returns, keeps and sends its unsent writing (${order})`, async ({
+    page,
+    browser,
+  }, info) => {
+    const { DatabaseSync } = await import('node:sqlite');
+    const service = await startService(info.outputPath('service'), undefined, true, true);
+    let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+    try {
+      pair = await pairedEditors(page, browser, true);
+      const second = pair.second;
+      // The second device stops receiving (its catalog read gates every receive pass) and sending.
+      await second.route('**/account/history/v1/checkpoint', (route) =>
+        route.request().postDataJSON().payload === 'catalog' ? route.abort() : route.continue(),
+      );
+      await second.route('**/account/delivery/submit', (route) => route.abort());
+      const db = new DatabaseSync(info.outputPath('service/account.sqlite'), { readOnly: true });
+      try {
+        for (let i = 1; i <= 2; i++) {
+          const before = accepted(db);
+          await add(page, 'Covered remote writing ' + i);
+          await expect.poll(() => accepted(db), { timeout: 15000 }).toBeGreaterThan(before);
+          if (i === 1) await inspect(page);
+          await panel(page)
+            .getByRole('button', { name: 'Create history snapshot', exact: true })
+            .click();
+          await expect(panel(page)).toContainText(
+            'Snapshot saved. Verify it from another approved device.',
+            { timeout: 15000 },
+          );
+          if (i === 1) await inspect(second);
+          else {
+            await panel(second).getByRole('button', { name: 'Check history', exact: true }).click();
+            await expect(
+              panel(second).getByRole('button', { name: 'Check history', exact: true }),
+            ).toBeEnabled();
+          }
+          await panel(second)
+            .getByRole('button', { name: 'Verify history snapshot', exact: true })
+            .click();
+          await expect(panel(second)).toContainText(`Verified snapshot ${i} is saved.`, {
+            timeout: 15000,
+          });
+          await panel(page).getByRole('button', { name: 'Check history', exact: true }).click();
+          await panel(page)
+            .getByRole('button', { name: 'Resume history snapshot', exact: true })
+            .click();
+          await expect(panel(page)).toContainText(`Verified snapshot ${i} is saved.`, {
+            timeout: 15000,
+          });
+        }
+        await expect(second.locator('.shell')).not.toContainText('Covered remote writing 2');
+        await add(second, 'Unsent local writing survives server pruning');
+        await openMenuSection(second, 'Account');
+        await second.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+        await panel(page)
+          .getByRole('button', { name: 'Prune covered history', exact: true })
+          .click();
+        await expect(panel(page)).toContainText('Covered service history removed.', {
+          timeout: 15000,
+        });
+        const beforeReturn = acceptedFromPeers(db);
+        if (order === 'install-first') {
+          await second.unroute('**/account/history/v1/checkpoint');
+          await second.goto('/');
+          await openSaved(second, pair.next.code, true);
+          for (const text of [
+            'Covered remote writing 2',
+            'Unsent local writing survives server pruning',
+          ])
+            await expect(second.locator('.shell')).toContainText(text, { timeout: 30000 });
+          expect(acceptedFromPeers(db)).toBe(beforeReturn);
+          await second.unroute('**/account/delivery/submit');
+        } else {
+          await second.unroute('**/account/delivery/submit');
+          await second.goto('/');
+          await openSaved(second, pair.next.code, true);
+          await expect(second.locator('.shell')).toContainText(
+            'Unsent local writing survives server pruning',
+          );
+        }
+        // Sent and accepted after the prune, and delivered to the other device.
+        await expect
+          .poll(() => acceptedFromPeers(db), { timeout: 60000 })
+          .toBeGreaterThan(beforeReturn);
+        await expect(page.locator('.shell')).toContainText(
+          'Unsent local writing survives server pruning',
+          { timeout: 30000 },
+        );
+        if (order === 'send-first') {
+          // Sent before the snapshot was installed; receiving still waits on it.
+          await expect(second.locator('.shell')).not.toContainText('Covered remote writing 2');
+          await second.unroute('**/account/history/v1/checkpoint');
+          await expect(second.locator('.shell')).toContainText('Covered remote writing 2', {
+            timeout: 45000,
+          });
+        }
+        await add(page, 'New accepted suffix after pruning');
+        await expect(second.locator('.shell')).toContainText('New accepted suffix after pruning', {
+          timeout: 30000,
+        });
+      } finally {
+        db.close();
+      }
+    } finally {
+      await pair?.other.close();
+      await stopService(service);
+    }
+  });

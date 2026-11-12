@@ -1,0 +1,138 @@
+{
+  "phase": 541,
+  "date": "2026-11-11",
+  "base": "9874d601004acc79babeb84c2eece2e6068dc9ea",
+  "operatorDirected": "include the cache overflow fix in this push, drafted by a delegated agent (2026-11-11)",
+  "operatorObservation": "desktop Check again stopped at \"Reading saved history\u2026\" then showed the size-limit message; Markdown export about 142 KB",
+  "amends": "release-hardening plan item 1: all five PreparationCapacity sites become skipped/capacity",
+  "sourceSha256": {
+    "src/crdt/automaticLocalRetention.ts": "88993784421bc2c2dc0dbb37beff18c2e9368e5470cc222f56372f825f0c5405",
+    "src/crdt/contentStore.ts": "759909ee8697010d3f665fe550081eed7c7c52fc32dcc4fc40a1d1185c49984f",
+    "src/crdt/localBaselineReplay.ts": "9c058fa15ee7ec22734c763c70d660432a2c383fa8311f6cdca467dace6c4b7c",
+    "src/crdt/localRetentionPlan.ts": "91b9130e5af8eb29dd47573b66545c2d11f1f4a24973c8ab90756762e888f243",
+    "src/crdt/preparationValue.ts": "4f1f80c4af0934ff5605206358830014e34896a0679938124417e99f9b4df5ff",
+    "src/crdt/retentionPreparation.ts": "963127ae42466814929c6bc9a8f44c1b9f04ade91946412455f8b4d8a740f1b9",
+    "src/crdt/retentionPreparationStorage.ts": "5a8362b43b85fd34bf5535fd65381d6755091c72c654e12be0acfd26a23394f5",
+    "test/preparationCapacitySites.test.ts": "e89a2f40744513d3898e2f3f0fe992b9f77c3a743a7f53d181780b0589e14fc9",
+    "test/preparationReceiptJournal.test.ts": "198f3dd992a4db0cdd5c192ac6df11908002f951b277d6474dde7223f15afcbb",
+    "test/retention-hardening/capacity-fault-module.ts": "971dffdffbd9e953812f94508ef1b8d40df88c71816083672a115b4fa88e7f2d",
+    "test/retentionPreparationOwner.test.ts": "f949045397eeb2d397028fcd463274fe4c8ab6fb65ee4a178b8baeda6fe6a8e7",
+    "test/retentionPreparationReplay.test.ts": "909ae25cea3321e3765545a75dcc6eecca9a0c3ba73673335dac8da9a5b76379",
+    "test/retentionPreparationStorage.test.ts": "9786344d7e7227064c8ce18926b889dbb17a1e64688c9bcf6eebf84a2fe24f73",
+    "test/retentionReductionHold.test.ts": "4175a4a8558c72b158b645f03998c8f144324c229388e099f0358566c2021d99"
+  },
+  "limitValuesChanged": 0,
+  "storedFormatChanged": false,
+  "wireFormatChanged": false,
+  "newPrivateConstants": {
+    "ROW_FRAME": 19,
+    "SLICE_FRAME": 256,
+    "SLICE_ROWS": 32767
+  },
+  "exportedExistingLimit": {
+    "PREPARATION_VALUE_NODES": 131072
+  },
+  "sites": {
+    "journal-check": "degrades to uncached",
+    "journal-import": "degrades to uncached",
+    "storage-delta": "no longer reached by the owner; still refuses",
+    "storage-head": "still refuses",
+    "physical-prefix": "at load the pass runs with no journal; at save still refuses"
+  },
+  "newUnitCases": {
+    "test/preparationReceiptJournal.test.ts": 3,
+    "test/retentionPreparationReplay.test.ts": 2,
+    "test/retentionPreparationStorage.test.ts": 1,
+    "test/retentionPreparationOwner.test.ts": 3,
+    "test/retentionReductionHold.test.ts": 1
+  },
+  "restatedCases": [
+    "test/preparationReceiptJournal.test.ts: a full cache keeps its saved receipts and returns a page uncached, and so does a reopened owner",
+    "test/preparationCapacitySites.test.ts: real journal-check and journal-import overflow returns fresh results uncached and stops slicing instead of refusing"
+  ],
+  "reviewerRepair": {
+    "defect": "a capacity refusal arriving after the hold budget lapsed did not spend the hold, so each changed hint could engage another five-minute hold",
+    "casesFailingBefore": 1,
+    "file": "test/retentionReductionHold.test.ts"
+  },
+  "reviewerRerun": {
+    "files": 9,
+    "cases": 106,
+    "passed": 106,
+    "typecheckPassed": true,
+    "accountSyncSourceAnchorControlsPassed": 5
+  },
+  "inventory": {
+    "recorded": true,
+    "obligations": 1108,
+    "unresolved": 552,
+    "newObligations": 0,
+    "caseDenominatorBefore": 2660,
+    "caseDenominator": 2661
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 516,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/account-delivery/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 505,
+        "to": 506
+      },
+      {
+        "label": "done/account-spool/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 504,
+        "to": 505
+      },
+      {
+        "label": "done/source-capture/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 498,
+        "to": 499
+      }
+    ],
+    "constructionRegistryLinesFollowed": 3,
+    "registryFailures": 0,
+    "openConstructions": 16
+  },
+  "notRun": [
+    "browser suites",
+    "native suites",
+    "any timing",
+    "any real device or account"
+  ],
+  "deployed": false,
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "finalTree": {
+      "files": 338,
+      "passed": 3287,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 272.44
+    },
+    "draftingAgentRunBeforeReviewRepair": {
+      "files": 338,
+      "passed": 3286,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 270.74
+    }
+  }
+}

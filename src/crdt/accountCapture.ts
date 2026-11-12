@@ -5,7 +5,11 @@ import type { AccountBaselineRead } from './localBaselineShadow';
 import type { ContentCrypto } from './contentStore';
 import { createFinalApplyGate, type ImmediateReceiveAttempt } from './finalApplyGate';
 import { budgetedTask } from './cpuBudget';
-import { maintenanceTask, MaintenanceInterrupted } from './contentMaintenance';
+import {
+  maintenanceTask,
+  MaintenanceInterrupted,
+  warmAuditInterruptible,
+} from './contentMaintenance';
 import { createWarmAuditScheduler, type WarmAuditOutcome } from './warmAuditScheduler';
 import { createMaintenanceTurns } from './maintenanceTurns';
 import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
@@ -398,30 +402,11 @@ export async function openAccountCaptureOwner(
               // Reduced baselines also have a full semantic oracle. Input still journals
               // synchronously, invalidating this discretionary pass before its next effect.
               const activity = shadowActivity;
-              const check = () => {
-                const foreground = auditScheduler?.foregroundPending() ?? false;
-                if (suspended || activity !== shadowActivity || foreground)
-                  throw new MaintenanceInterrupted([
-                    {
-                      suspended,
-                      shadowActivity: activity !== shadowActivity,
-                      queuePriority: foreground,
-                    },
-                  ]);
-              };
-              const interruptible: SessionTask = {
-                signal: parent.signal,
-                step: (effect) =>
-                  parent.step(() => {
-                    check();
-                    return effect();
-                  }),
-                wait: (start) =>
-                  parent.wait(() => {
-                    check();
-                    return start();
-                  }),
-              };
+              const interruptible = warmAuditInterruptible(parent, owner!.carrier, {
+                suspended: () => suspended,
+                inputSince: () => activity !== shadowActivity,
+                foregroundPending: () => auditScheduler?.foregroundPending() ?? false,
+              });
               const auditTask = maintenanceTask(
                 import.meta.env?.['VITE_ACCOUNT_CPU_YIELD'] !== '0'
                   ? budgetedTask(interruptible)

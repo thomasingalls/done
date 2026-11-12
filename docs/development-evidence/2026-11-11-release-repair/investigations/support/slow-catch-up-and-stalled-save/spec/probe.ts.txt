@@ -1,0 +1,120 @@
+// COPY-ONLY probes for the oddities investigation: network log, worker sampling, trace dump.
+import type { Page, Request } from '@playwright/test';
+import { appendFileSync, writeFileSync } from 'node:fs';
+import { loadavg } from 'node:os';
+
+export const load = () => loadavg().map((x) => x.toFixed(2)).join(' ');
+
+/** Every /account/ request of a page (workers included): start, end, status or failure, bytes. */
+export function netLog(page: Page, file: string, t0: number) {
+  const started = new Map<Request, number>();
+  writeFileSync(file, '');
+  const path = (r: Request) => new URL(r.url()).pathname;
+  const payload = (r: Request) => {
+    const p = path(r);
+    if (p.includes('/history/')) {
+      try {
+        return String(r.postDataJSON()?.payload ?? '');
+      } catch {
+        return '';
+      }
+    }
+    return '';
+  };
+  page.on('request', (r) => {
+    if (!r.url().includes('/account/')) return;
+    started.set(r, Date.now());
+  });
+  const end = async (r: Request, failure?: string) => {
+    const s = started.get(r);
+    if (s === undefined) return;
+    started.delete(r);
+    let status = 0,
+      bytes = -1;
+    if (!failure) {
+      const res = await r.response().catch(() => null);
+      status = res?.status() ?? 0;
+      const sizes = await r.sizes().catch(() => null);
+      bytes = sizes?.responseBodySize ?? -1;
+    }
+    appendFileSync(
+      file,
+      JSON.stringify({
+        t: +((s - t0) / 1000).toFixed(3),
+        ms: Date.now() - s,
+        path: path(r),
+        payload: payload(r) || undefined,
+        reqBytes: r.postDataBuffer()?.length ?? 0,
+        status,
+        bytes,
+        failure,
+      }) + '\n',
+    );
+  };
+  page.on('requestfinished', (r) => void end(r));
+  page.on('requestfailed', (r) => void end(r, r.failure()?.errorText ?? 'failed'));
+}
+
+/** Read the owner Worker's sync status, ledger metrics and trace length. */
+export async function workerState(page: Page) {
+  for (const w of page.workers()) {
+    const v = await w
+      .evaluate(() => {
+        const g = globalThis as {
+          __doneSync?: { status: unknown };
+          __doneLedgerMetrics?: () => unknown;
+          __doneTrace?: unknown[];
+        };
+        if (!g.__doneSync && !g.__doneLedgerMetrics) return null;
+        return {
+          sync: g.__doneSync?.status,
+          metrics: g.__doneLedgerMetrics?.(),
+          traceLength: g.__doneTrace?.length ?? 0,
+        };
+      })
+      .catch(() => null);
+    if (v) return v;
+  }
+  return null;
+}
+
+export async function dumpTrace(page: Page, file: string) {
+  for (const w of page.workers()) {
+    const v = await w
+      .evaluate(() => (globalThis as { __doneTrace?: unknown[] }).__doneTrace ?? null)
+      .catch(() => null);
+    if (v) {
+      writeFileSync(file, v.map((e) => JSON.stringify(e)).join('\n') + '\n');
+      return v.length;
+    }
+  }
+  return 0;
+}
+
+/** Samples every `everyMs` until stopped: worker state (with its evaluate latency), notice, load. */
+export function sampler(page: Page, file: string, t0: number, everyMs = 1000) {
+  let running = true;
+  writeFileSync(file, '');
+  const done = (async () => {
+    while (running) {
+      const at = Date.now();
+      const state = await workerState(page);
+      const evalMs = Date.now() - at;
+      const notice = await page
+        .locator('.sync-notice')
+        .allTextContents()
+        .catch(() => []);
+      appendFileSync(
+        file,
+        JSON.stringify({ t: +((at - t0) / 1000).toFixed(3), evalMs, load: load(), notice, ...state }) +
+          '\n',
+      );
+      const wait = everyMs - (Date.now() - at);
+      if (wait > 0) await new Promise((y) => setTimeout(y, wait));
+    }
+  })();
+  return async () => {
+    running = false;
+    await done;
+  };
+}

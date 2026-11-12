@@ -1,0 +1,326 @@
+fatal: not a git repository (or any of the parent directories): .git
+
+ RUN  v4.1.10 <base copy>
+
+ × test/retiredCutVerification.test.ts > verifies both cuts against the chain read up to the retained frontiers, then installs 121ms
+   → Cannot read properties of undefined (reading 'map')
+ × test/retiredCutVerification.test.ts > full replay, the live verified install and a cold reopen reach the same state 95ms
+   → No verification read in this source
+ × test/historyFoldOracle.test.ts > the oracle replays a suffix holding the unfolded installation, and the fold carries it after 233ms
+   → Local baseline refused: history-required
+ × test/retiredCutVerification.test.ts > refuses an inconsistent cut as integrity, where skipping the cut would have merged it 71ms
+   → Cannot read properties of undefined (reading 'find')
+ × test/retiredCutVerification.test.ts > refuses tampered entries in the verification read; short honest pages still verify 73ms
+   → Cannot read properties of undefined (reading 'filter')
+ × test/historyFoldOracle.test.ts > the fold queued as the oracle replay returns waits for it to be recorded, then folds 135ms
+   → Local baseline refused: history-required
+ × test/historyFoldOracle.test.ts > a fold that reaches the queue before the oracle replay satisfies the oracle with its new baseline 129ms
+   → Local baseline refused: history-required
+ × test/retiredCutVerification.test.ts > reports unverifiable when the service holds no answer or the range exceeds the replay bound 66ms
+   → expected 'other:Error: No verification read in …' to be 'unverifiable' // Object.is equality
+ × test/retiredCutVerification.test.ts > only a committed installation older builds cannot replay asks for a fold, and a fold clears it 103ms
+   → Local baseline refused: history-required
+ × test/retiredCutVerification.test.ts > a snapshot is needed only when it moves a receive cursor forward 73ms
+   → expected false to be true // Object.is equality
+ ✓ test/accountSyncDriver.test.ts > reports a passkey gate without network retries, then resumes without clearing another lane halt 3ms
+ ✓ test/accountSyncDriver.test.ts > timestamps an initial sign-in gate, keeps offline distinct and resumes queued local work 0ms
+ ✓ test/accountSyncDriver.test.ts > alternates ready lanes, keeps independent idle deadlines and wakes an idle sender 0ms
+ ✓ test/accountSyncDriver.test.ts > retains local wakes during send, but cannot accelerate unknown backoff or clear a halt 1ms
+ ✓ test/accountSyncDriver.test.ts > a restored route can retain 30-second send backoff until online explicitly wakes it 5ms
+ ✓ test/accountSyncDriver.test.ts > observer pause before dispatch retains the startup deadline; observer close drains without dispatch 0ms
+ ✓ test/accountSyncDriver.test.ts > close waits for active work and cannot start the due opposite lane 0ms
+ ✓ test/accountSyncDriver.test.ts > outbound progress comes only from durable decisions and pending exact submissions bypass all sealing 0ms
+ ✓ test/accountSyncDriver.test.ts > 400 generated deferred histories agree with an independent two-lane event model 493ms
+ ✓ test/accountSyncDriver.test.ts > durable send progress preserves the receive deadline; unknown submission expedites reconciliation 0ms
+ ✓ test/accountSyncDriver.test.ts > publishes the verified aggregate including peers without treating an own receipt as a remote hint 0ms
+ ✓ test/accountSyncDriver.test.ts > unknown send preserves a receiver unknown backoff or halt 0ms
+ ✓ test/accountSyncDriver.test.ts > unknown send preserves a receiver blocked backoff or halt 0ms
+ ✓ test/accountSyncDriver.test.ts > generated receive expiry streaks stay retryable across gates and local wakes, then recover without user action 84ms
+ ✓ test/accountSyncDriver.test.ts > outbound size errors remain terminal observations across automatic wakes 1ms
+ ✓ test/accountSyncDriver.test.ts > remote hints coalesce during catch-up and retain backoff, evidence halts and storage gates 1ms
+ ✓ test/accountSyncDriver.test.ts > verified authority adoption rechecks a closed sender without clearing conflict or finalization 0ms
+ ✓ test/accountSyncDriver.test.ts > retries unexpected errors with capped backoff, but integrity errors require a lane-specific retry 1ms
+ ✓ test/accountSyncDriver.test.ts > yields after every receive page and gives a due sender the next turn 0ms
+ ✓ test/accountSyncDriver.test.ts > does not classify temporary admission capacity/storage failures as corrupt evidence 1ms
+ ✓ test/accountSyncDriver.test.ts > reports a successful upload only after a newly retained acceptance, not local retry preparation 0ms
+ ✓ test/accountSyncDriver.test.ts > a named receive size halt keeps the halt, shows its sizes, and a retry clears both (phase 544) 0ms
+ × test/accountSyncDriver.test.ts > keeps an unverified history snapshot named while other devices keep arriving, until it clears 4ms
+   → actual value must be number or bigint, received "object"
+ ✓ test/automaticLocalRetention.test.ts > requires the separate policy opt-in and all existing reader/writer gates 2ms
+ ✓ test/automaticLocalRetention.test.ts > schedules nothing below the threshold or while admission/visibility is blocked 5ms
+ ✓ test/automaticLocalRetention.test.ts > waits for quiet, resets on input and passes only the latest revision to the owner 5ms
+ ✓ test/automaticLocalRetention.test.ts > rechecks readiness and growth when the timer fires, without polling 1ms
+ ✓ test/automaticLocalRetention.test.ts > keeps one flight through repeated wakes and applies the success cooldown to new growth 2ms
+ ✓ test/automaticLocalRetention.test.ts > does not scan after success when the new suffix is small 1ms
+ ✓ test/automaticLocalRetention.test.ts > parks an unchanged capacity refusal until a different ledger hint 2ms
+ ✓ test/automaticLocalRetention.test.ts > parks an unchanged history-required refusal until a different ledger hint 4ms
+ ✓ test/automaticLocalRetention.test.ts > parks an unchanged ineligible refusal until a different ledger hint 1ms
+ ✓ test/automaticLocalRetention.test.ts > names the cause beside capacity without changing how long it parks (phase 543) 4ms
+ ✓ test/automaticLocalRetention.test.ts > names a preparation refusal by its site and keeps the plain one general (phase 543) 2ms
+ ✓ test/automaticLocalRetention.test.ts > paces a transient refusal only after another event, even if the hint is unchanged 1ms
+ ✓ test/automaticLocalRetention.test.ts > a saved account attempt parks until history changes or a manual check (phase 546) 1ms
+ ✓ test/automaticLocalRetention.test.ts > remembers activity arriving during preparation without spinning on interruption 0ms
+ ✓ test/automaticLocalRetention.test.ts > halts unexpected owner failure rather than retrying an uncertain mutation 0ms
+ ✓ test/automaticLocalRetention.test.ts > aborts queued work and ignores both late settlement and later wakes 1ms
+ ✓ test/automaticLocalRetention.test.ts > takes a fresh revision at execution even without another event 0ms
+ ✓ test/automaticLocalRetention.test.ts > halts an unexpected result without retrying after more writing 0ms
+ ✓ test/automaticLocalRetention.test.ts > does not inspect an owner whose signal was already aborted 1ms
+ ✓ test/automaticLocalRetention.test.ts > readiness refreshes do not mistake routine sync activity for new user input or starve the quiet window 1ms
+ × test/automaticLocalRetention.test.ts > folds a verified installation at once: no growth threshold or cooldown, every other check kept 11ms
+   → expected [] to deeply equal [ 3 ]
+ × test/automaticLocalRetention.test.ts > a fold report that survives its fold cannot loop: spaced by the retry clock, then capped 2ms
+   → expected [] to have a length of 1 but got +0
+ ✓ test/syncNotice.test.tsx > offers a passkey reconnect instead of ineffective lane retries, without hiding another halt 30ms
+ ✓ test/syncNotice.test.tsx > delays online failure notice, shows lane details, retries only that lane and clears on success 54ms
+ ✓ test/syncNotice.test.tsx > names a receive halt caused by a history snapshot too large to install, with sizes (phase 544) 5ms
+ × test/syncNotice.test.tsx > names an unverified history snapshot, says what resolves it, and offers no ineffective retry 4ms
+   → expected undefined to be 'Changes from your other devices may s…' // Object.is equality
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 14 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/accountSyncDriver.test.ts > keeps an unverified history snapshot named while other devices keep arriving, until it clears
+TypeError: actual value must be number or bigint, received "object"
+ ❯ test/accountSyncDriver.test.ts:905:17
+    903|   // Named from the first pass that reads it.
+    904|   const since = receive().issueSince!;
+    905|   expect(since).toBeGreaterThan(set);
+       |                 ^
+    906|   expect(receive()).toMatchObject({ reason: 'history-unverified', issu…
+    907|   expect(receive().phase).not.toBe('blocked');
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/14]⎯
+
+ FAIL  test/automaticLocalRetention.test.ts > folds a verified installation at once: no growth threshold or cooldown, every other check kept
+AssertionError: expected [] to deeply equal [ 3 ]
+
+- Expected
++ Received
+
+- [
+-   3,
+- ]
++ []
+
+ ❯ test/automaticLocalRetention.test.ts:373:42
+    371|   expect(f.calls).toHaveLength(0);
+    372|   await f.tick(1);
+    373|   expect(f.calls.map((c) => c.revision)).toEqual([3]);
+       |                                          ^
+    374|   // Readiness still gates it: a refused attempt keeps the ordinary re…
+    375|   f.calls[0]!.resolve({ kind: 'skipped', reason: 'ineligible' });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/14]⎯
+
+ FAIL  test/automaticLocalRetention.test.ts > a fold report that survives its fold cannot loop: spaced by the retry clock, then capped
+AssertionError: expected [] to have a length of 1 but got +0
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ test/automaticLocalRetention.test.ts:404:19
+    402|   f.run.wake();
+    403|   await f.tick(QUIET);
+    404|   expect(f.calls).toHaveLength(1);
+       |                   ^
+    405|   // A buggy owner keeps reporting a fold after each completed one.
+    406|   const complete = async (i: number) => {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/14]⎯
+
+ FAIL  test/historyFoldOracle.test.ts > the oracle replays a suffix holding the unfolded installation, and the fold carries it after
+LocalBaselineError: Local baseline refused: history-required
+ ❯ refuse src/crdt/localBaselineReplay.ts:96:9
+     94| }
+     95| function refuse(reason: LocalBaselineError['reason']): never {
+     96|   throw new LocalBaselineError(reason);
+       |         ^
+     97| }
+     98| const hash = async (bytes: Bytes) =>
+ ❯ replayLocalBaseline src/crdt/localBaselineReplay.ts:845:46
+ ❯ Module.verifyCompleteLocalBaseline src/crdt/localBaselineShadow.ts:96:14
+ ❯ verifyCompleteLocalBaseline test/historyFoldOracle.test.ts:34:22
+ ❯ openSnapshot src/crdt/contentStore.ts:502:25
+ ❯ load src/crdt/contentStore.ts:686:22
+ ❯ load src/crdt/contentStore.ts:637:60
+ ❯ Object.loadAccount src/crdt/contentStore.ts:1292:23
+ ❯ deviceAwaitingFold test/historyFoldOracle.test.ts:154:19
+ ❯ test/historyFoldOracle.test.ts:205:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { reason: 'history-required' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/14]⎯
+
+ FAIL  test/historyFoldOracle.test.ts > the fold queued as the oracle replay returns waits for it to be recorded, then folds
+LocalBaselineError: Local baseline refused: history-required
+ ❯ refuse src/crdt/localBaselineReplay.ts:96:9
+     94| }
+     95| function refuse(reason: LocalBaselineError['reason']): never {
+     96|   throw new LocalBaselineError(reason);
+       |         ^
+     97| }
+     98| const hash = async (bytes: Bytes) =>
+ ❯ replayLocalBaseline src/crdt/localBaselineReplay.ts:845:46
+ ❯ Module.verifyCompleteLocalBaseline src/crdt/localBaselineShadow.ts:96:14
+ ❯ verifyCompleteLocalBaseline test/historyFoldOracle.test.ts:34:22
+ ❯ openSnapshot src/crdt/contentStore.ts:502:25
+ ❯ load src/crdt/contentStore.ts:686:22
+ ❯ load src/crdt/contentStore.ts:637:60
+ ❯ Object.loadAccount src/crdt/contentStore.ts:1292:23
+ ❯ deviceAwaitingFold test/historyFoldOracle.test.ts:154:19
+ ❯ test/historyFoldOracle.test.ts:224:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { reason: 'history-required' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/14]⎯
+
+ FAIL  test/historyFoldOracle.test.ts > a fold that reaches the queue before the oracle replay satisfies the oracle with its new baseline
+LocalBaselineError: Local baseline refused: history-required
+ ❯ refuse src/crdt/localBaselineReplay.ts:96:9
+     94| }
+     95| function refuse(reason: LocalBaselineError['reason']): never {
+     96|   throw new LocalBaselineError(reason);
+       |         ^
+     97| }
+     98| const hash = async (bytes: Bytes) =>
+ ❯ replayLocalBaseline src/crdt/localBaselineReplay.ts:845:46
+ ❯ Module.verifyCompleteLocalBaseline src/crdt/localBaselineShadow.ts:96:14
+ ❯ verifyCompleteLocalBaseline test/historyFoldOracle.test.ts:34:22
+ ❯ openSnapshot src/crdt/contentStore.ts:502:25
+ ❯ load src/crdt/contentStore.ts:686:22
+ ❯ load src/crdt/contentStore.ts:637:60
+ ❯ Object.loadAccount src/crdt/contentStore.ts:1292:23
+ ❯ deviceAwaitingFold test/historyFoldOracle.test.ts:154:19
+ ❯ test/historyFoldOracle.test.ts:251:13
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { reason: 'history-required' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > verifies both cuts against the chain read up to the retained frontiers, then installs
+TypeError: Cannot read properties of undefined (reading 'map')
+ ❯ test/retiredCutVerification.test.ts:191:18
+    189|     const needs = needsOf(x);
+    190|     // Both cuts are below what this device kept, with no retained lin…
+    191|     expect(needs.map((n) => [n.credentialId, n.cut.position, n.through…
+       |                  ^
+    192|       [
+    193|         [x.self, 1, 2],
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > full replay, the live verified install and a cold reopen reach the same state
+Error: No verification read in this source
+ ❯ verifyRetiredCuts src/crdt/retiredCutVerification.ts:8:9
+      6| }
+      7| export async function verifyRetiredCuts(): Promise<never> {
+      8|   throw Error('No verification read in this source');
+       |         ^
+      9| }
+     10|
+ ❯ test/retiredCutVerification.test.ts:252:28
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > refuses an inconsistent cut as integrity, where skipping the cut would have merged it
+TypeError: Cannot read properties of undefined (reading 'find')
+ ❯ test/retiredCutVerification.test.ts:315:20
+    313|       );
+    314|       const needs = needsOf(x, forked);
+    315|       expect(needs.find((n) => n.credentialId === id)!.cut.link).toBe(…
+       |                    ^
+    316|       // Control: applied without evidence, as a skip would, nothing o…
+    317|       const skipped = structuredClone(pre.inbound);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > refuses tampered entries in the verification read; short honest pages still verify
+TypeError: Cannot read properties of undefined (reading 'filter')
+ ❯ test/retiredCutVerification.test.ts:347:29
+    345|   const x = await reducedPastSnapshot();
+    346|   try {
+    347|     const needs = needsOf(x).filter((n) => n.credentialId === x.other);
+       |                             ^
+    348|     const flip = (b: Uint8Array, at: number) => {
+    349|       const copy = b.slice();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > reports unverifiable when the service holds no answer or the range exceeds the replay bound
+AssertionError: expected 'other:Error: No verification read in …' to be 'unverifiable' // Object.is equality
+
+Expected: "unverifiable"
+Received: "other:Error: No verification read in this source"
+
+ ❯ test/retiredCutVerification.test.ts:426:87
+    424|       throw new RetiredCutUnverifiable(); // the owner maps a 409 `una…
+    425|     };
+    426|     expect(await refusal(verifyRetiredCuts(x.c.inbound, needs, pruned.…
+       |                                                                                       ^
+    427|       'unverifiable',
+    428|     );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > only a committed installation older builds cannot replay asks for a fold, and a fold clears it
+LocalBaselineError: Local baseline refused: history-required
+ ❯ refuse src/crdt/localBaselineReplay.ts:96:9
+     94| }
+     95| function refuse(reason: LocalBaselineError['reason']): never {
+     96|   throw new LocalBaselineError(reason);
+       |         ^
+     97| }
+     98| const hash = async (bytes: Bytes) =>
+ ❯ replayLocalBaseline src/crdt/localBaselineReplay.ts:845:46
+ ❯ test/retiredCutVerification.test.ts:462:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+Serialized Error: { reason: 'history-required' }
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/14]⎯
+
+ FAIL  test/retiredCutVerification.test.ts > a snapshot is needed only when it moves a receive cursor forward
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ test/retiredCutVerification.test.ts:556:7
+    554|         { credentialId: x.other, position: peer.position + 1, link: 'a…
+    555|       ]),
+    556|     ).toBe(true);
+       |       ^
+    557|     // At the frontier exactly: not needed.
+    558|     expect(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/14]⎯
+
+ FAIL  test/syncNotice.test.tsx > names an unverified history snapshot, says what resolves it, and offers no ineffective retry
+AssertionError: expected undefined to be 'Changes from your other devices may s…' // Object.is equality
+
+- Expected:
+"Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept."
+
++ Received:
+undefined
+
+ ❯ test/syncNotice.test.tsx:250:46
+    248|     receive: { ...lane, phase: 'idle', reason: 'history-unverified', r…
+    249|   };
+    250|   expect(receiveHaltMessage(status.receive)).toBe(named);
+       |                                              ^
+    251|   const retry = vi.fn();
+    252|   const sync: SyncRuntime = { status, retry, onStatus: () => () => {} …
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/14]⎯
+
+
+ Test Files  5 failed (5)
+      Tests  14 failed | 45 passed (59)
+   Start at  11:58:22
+   Duration  3.08s (transform 1.64s, setup 180ms, import 2.31s, tests 1.84s, environment 771ms)
+
