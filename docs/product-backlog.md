@@ -209,11 +209,23 @@ a stall. What it left:
 
 ### Local history reduction
 
-- **REDUCE-FURTHER — steps beyond the queued slice-budget change.** *decision.* Shrinking the fenced
-  save from history-plus-saved-work to history-plus-slice, which amends the exact authenticated
-  readback decisions (phase 127). Counting only input jobs for "Input is waiting to be saved.", or
-  moving progress saves off the page's input queue as before the 2026-11-08 release, which amends
-  phase 187. A continuous pass with background saves.
+- **REDUCE-FURTHER — steps beyond the slice-budget change (phase 556 built A and D).** *decision.*
+  Shrinking the fenced save from history-plus-saved-work to history-plus-slice, which amends the
+  exact authenticated readback decisions (phase 127). Counting only input jobs for "Input is
+  waiting to be saved.", or moving progress saves off the page's input queue as before the
+  2026-11-08 release, which amends phase 187. A continuous pass with background saves. Measured
+  remainder after phase 556 (Node probe, own-plus-peer pairs): saves are constant (0 or 1) and full
+  inventory reads 8 at every size, but a reduction needing more than one slice still pays one extra
+  attempt's setup, one fenced save and the journal's per-check bookkeeping. At 1,024 pairs that is
+  15.8 s against 10.9 s uncached (1.44 times by wall clock, 1.88 by CPU); at 2,048 pairs 1.22 to
+  1.24 times by wall and 1.47 to 1.51 by CPU, against the stop condition of 1.5 times at every
+  size. Separately, the uncached pass is itself quadratic: the plan's coverage stage forks the whole
+  candidate document for every update row not stored verbatim, 0.15 s at 128 pairs and 24.7 s at
+  2,048 (70% of the pass); changing how that check is proved needs its own equivalence argument.
+  Also from phase 556's review: a device whose grown slices are all cut advances only by its
+  two-second slices and loses a grown slice between each pair, so it is slower than before that
+  phase (not measured; a cut could instead require more saved plain slices before growing again);
+  and a first slice capped by the window has no margin for its save.
 - **REDUCE-HOLD-RESIDUAL — a held window can still recur once per history change** when every window
   is cut short (phase 546, by design). Also noted: a device on the full check holds sync while
   offline, and other fenced callers (history install, authority adoption, the "Check history" dry

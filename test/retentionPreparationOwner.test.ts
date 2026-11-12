@@ -34,8 +34,12 @@ vi.mock('../src/crdt/retentionPreparation', async (importOriginal) => {
     ...actual,
     createPreparationJournal(options: Parameters<typeof actual.createPreparationJournal>[0]) {
       forced.rooms.push(options.room);
+      // These cases force a pause with a clock that charges 2.1 s per read. Since phase 556 the
+      // slice budget grows with the setup measured on that same clock, so keep the plain slice
+      // target here; test/retentionSliceBudget.test.ts covers the grown budget.
+      const { setupSince: _setup, carriedMs: _carried, deadline: _deadline, ...plain } = options;
       return actual.createPreparationJournal(
-        forced.room === undefined ? options : { ...options, room: forced.room },
+        forced.room === undefined ? plain : { ...plain, room: forced.room },
       );
     },
   };
@@ -114,9 +118,10 @@ it('a paused read task returns only a sealed handoff; fresh task persists withou
   );
   secondClock.mockRestore();
   if (resumed.kind !== 'preparation-checkpoint') throw Error(resumed.kind);
-  // First captured row was already authenticated and opened before the first durable checkpoint.
-  // Auxiliary head/chunk decryption is still fresh, as is opening the next original row.
-  expect(opened.mock.calls.some(([, row]) => row.seq === 1)).toBe(false);
+  // Phase 556: every attempt opens every saved row itself, including the first captured row,
+  // rather than reusing a decrypted copy from the journal. Auxiliary head/chunk decryption is
+  // still fresh too.
+  expect(opened.mock.calls.some(([, row]) => row.seq === 1)).toBe(true);
   expect(opened.mock.calls.length).toBeGreaterThan(0);
   resumed.dispose();
   opened.mockRestore();

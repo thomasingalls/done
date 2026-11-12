@@ -123,7 +123,12 @@ const ownerErrorCode = (cause: unknown): string => {
 export function createAutomaticLocalRetention(options: {
   signal: AbortSignal;
   observe(): LocalRetentionObservation;
-  remove(revision: number, report: RetentionProgressSink): Promise<Outcome>;
+  /** `protectedUntil` (wall clock): when routine sync may resume and interrupt this attempt. */
+  remove(
+    revision: number,
+    report: RetentionProgressSink,
+    protectedUntil?: number,
+  ): Promise<Outcome>;
 }) {
   let timer: ReturnType<typeof setTimeout> | undefined;
   let closed = false,
@@ -156,6 +161,8 @@ export function createAutomaticLocalRetention(options: {
     holdYieldUntil = 0,
     holdSpent = false,
     publishedHold = 0;
+  // When the settled hold's budget lapses and routine sync resumes (phase 556).
+  let holdEndsAt: number | undefined;
   // Holding sync is for progress (a saved slice or a completed removal). A held window that ends,
   // by its budget or by an outcome, with neither marks the history it was engaged on: no further
   // hold on that history until progress, a manual check or reopening. A saved account attempt
@@ -225,6 +232,7 @@ export function createAutomaticLocalRetention(options: {
     if (spend) holdSpent = true;
     if (holdTimer !== undefined) clearTimeout(holdTimer);
     holdTimer = undefined;
+    holdEndsAt = undefined;
     holdSince = undefined;
     holdSettled = false;
   };
@@ -241,8 +249,10 @@ export function createAutomaticLocalRetention(options: {
     holdBlocked = false;
   };
   const startHoldBudget = () => {
-    if (holdSince !== undefined && holdTimer === undefined)
+    if (holdSince !== undefined && holdTimer === undefined) {
       holdTimer = setTimeout(() => expireHold(), LOCAL_RETENTION_HOLD_MS);
+      holdEndsAt = Date.now() + LOCAL_RETENTION_HOLD_MS;
+    }
   };
   const observation = () => {
     const { ready, hint, synchronized, hold, deferPolls } = options.observe();
@@ -409,7 +419,16 @@ export function createAutomaticLocalRetention(options: {
     try {
       let result: Outcome;
       try {
-        result = await options.remove(hint.revision, report);
+        // When routine sync resumes and its next job interrupts (phase 556): the settled hold's
+        // budget, or the idle-poll deferral counted from the run's first slice. Neither (a yield):
+        // now, so the slice keeps the plain target. Hints and input still interrupt at any time.
+        const protectedUntil =
+          holdSince !== undefined && holdSettled
+            ? (holdEndsAt ?? now)
+            : pollSince !== undefined
+              ? pollSince + LOCAL_RETENTION_POLL_HOLD_MS
+              : now;
+        result = await options.remove(hint.revision, report, protectedUntil);
       } catch (cause) {
         // All preparation ceilings share this closed class. Saved receipts remain intact;
         // the existing skipped path parks this exact hint behind the retry clock.

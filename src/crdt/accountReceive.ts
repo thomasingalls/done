@@ -1122,6 +1122,7 @@ async function openAccountReceiveOwner(
   const prepareLocalRemoval = async (
     expectedRevision: number,
     progress?: RetentionProgressSink,
+    protectedUntil?: number,
   ) => {
     await carrier.flushJournal();
     const prepared = await runBaselineShadow(
@@ -1148,6 +1149,7 @@ async function openAccountReceiveOwner(
           expectedRevision,
           checkRetained,
           progress,
+          protectedUntil,
         );
       },
       true, // Read-only preparation yields to queued storage; final exchange below remains exclusive.
@@ -4092,6 +4094,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                         removeLocalHistory: async (
                           expectedRevision: number,
                           progress?: RetentionProgressSink,
+                          protectedUntil?: number,
                         ) => {
                           if (removingLocalHistory)
                             return { kind: 'skipped' as const, reason: 'already-preparing' };
@@ -4105,6 +4108,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                             const prepared = await prepareLocalRemoval(
                               expectedRevision,
                               progress,
+                              protectedUntil,
                             ).finally(() => measureLedgerWork('retentionPreparation', preparing));
                             if (prepared.kind !== 'prepared-removal') return prepared;
                             try {

@@ -1,0 +1,56 @@
+# Phase 556 tests on the phase 555 source (2d42b9ca5): the five changed sources restored to HEAD (), tests in place. 2026-11-12T23:11:09Z
+$ pnpm exec vitest run test/retentionSliceBudget.test.ts test/retentionPreparationOwner.test.ts --maxWorkers=1
+   × fenced saves and full reads stay nearly flat while history grows fourfold 69650ms
+   × a slice pays for the last fenced save as well as its own setup 34853ms
+   × every attempt opens every saved row itself; no decrypted row comes from the journal 74496ms
+   × a journal in progress across an update restarts cleanly and finishes 76263ms
+   × an interrupted long slice loses at most the ratio times its setup, and the next attempt progresses 82679ms
+   × a device interrupted in every long slice still finishes, with long slices again after it saves 5863ms
+   × queued input stops a long slice at its next guarded step, as it stops a short one 1490ms
+   × a slice never plans past the window that keeps routine sync off it 906ms
+   × the scheduler tells each attempt when routine sync resumes 6ms
+   × a paused read task returns only a sealed handoff; fresh task persists without changing logical rows and cold owner completes 144ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/retentionPreparationOwner.test.ts > a paused read task returns only a sealed handoff; fresh task persists without changing logical rows and cold owner completes
+AssertionError: expected false to be true // Object.is equality
+ FAIL  test/retentionSliceBudget.test.ts > fenced saves and full reads stay nearly flat while history grows fourfold
+AssertionError: expected 156 to be less than or equal to 41
+ FAIL  test/retentionSliceBudget.test.ts > a slice pays for the last fenced save as well as its own setup
+Error: [vitest] No "PREPARATION_SETUP_RATIO" export is defined on the "../src/crdt/retentionPreparation" mock. Did you forget to return it from "vi.mock"?
+ FAIL  test/retentionSliceBudget.test.ts > every attempt opens every saved row itself; no decrypted row comes from the journal
+AssertionError: expected 19 to be greater than or equal to 864
+ FAIL  test/retentionSliceBudget.test.ts > a journal in progress across an update restarts cleanly and finishes
+AssertionError: expected 110890 to be +0 // Object.is equality
+ FAIL  test/retentionSliceBudget.test.ts > an interrupted long slice loses at most the ratio times its setup, and the next attempt progresses
+AssertionError: expected false to be true // Object.is equality
+ FAIL  test/retentionSliceBudget.test.ts > a device interrupted in every long slice still finishes, with long slices again after it saves
+AssertionError: expected false to be true // Object.is equality
+ FAIL  test/retentionSliceBudget.test.ts > queued input stops a long slice at its next guarded step, as it stops a short one
+AssertionError: expected false to be true // Object.is equality
+ FAIL  test/retentionSliceBudget.test.ts > a slice never plans past the window that keeps routine sync off it
+Error: [vitest] No "PREPARATION_SETUP_RATIO" export is defined on the "../src/crdt/retentionPreparation" mock. Did you forget to return it from "vi.mock"?
+ FAIL  test/retentionSliceBudget.test.ts > the scheduler tells each attempt when routine sync resumes
+AssertionError: expected [ undefined ] to deeply equal [ 310000 ]
+ Test Files  2 failed (2)
+      Tests  10 failed | 6 passed (16)
+
+# Earlier run of the same cases on the same source, before the tests read PREPARATION_SETUP_RATIO
+# (they used the literal 2, which that constant equals). It is kept because two cases above fail on
+# the constant's absence from the phase 555 source; here those two fail on their assertions.
+# Phase 556 tests on the phase 555 source (2d42b9ca5): src/ restored to HEAD, tests in place. 2026-11-12T21:48:28Z
+$ pnpm exec vitest run test/retentionSliceBudget.test.ts test/retentionPreparationOwner.test.ts --maxWorkers=1
+   × fenced saves and full reads stay nearly flat while history grows fourfold 67759ms
+   × a slice pays for the last fenced save as well as its own setup 33518ms
+   × every attempt opens every saved row itself; no decrypted row comes from the journal 73583ms
+   × a journal in progress across an update restarts cleanly and finishes 81715ms
+   × an interrupted long slice loses at most twice its setup, and the next attempt progresses 83986ms
+   × a device interrupted in every long slice still finishes, with long slices again after it saves 5883ms
+   × queued input stops a long slice at its next guarded step, as it stops a short one 901ms
+   × a slice never plans past the window that keeps routine sync off it 1016ms
+   × the scheduler tells each attempt when routine sync resumes 7ms
+   × a paused read task returns only a sealed handoff; fresh task persists without changing logical rows and cold owner completes 123ms
+ FAIL  test/retentionSliceBudget.test.ts > a slice pays for the last fenced save as well as its own setup
+AssertionError: expected 202.2470703125 to be greater than or equal to 47103.37890625
+ FAIL  test/retentionSliceBudget.test.ts > a slice never plans past the window that keeps routine sync off it
+AssertionError: expected 10728.169921875 to be greater than 12000
+      Tests  10 failed | 6 passed (16)

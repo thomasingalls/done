@@ -16,6 +16,10 @@ export { PreparationCapacity } from './preparationCapacity';
 
 const DOMAIN = 'done/local-preparation/draft-1';
 export const PREPARATION_SLICE_MS = 2000;
+/** Phase 556: a slice may spend this multiple of what its attempt already paid to reach its first
+ * fresh check (setup plus the last fenced save), so that repeated setup stays a bounded fraction
+ * of the whole reduction. `PREPARATION_SLICE_MS` stays the floor. */
+export const PREPARATION_SETUP_RATIO = 2;
 export const PREPARATION_ENTRIES = 131072;
 // A saved slice is one encoded value of [slot, digest, result] rows inside a signed frame. Each
 // row costs its accounted bytes plus ROW_FRAME in the encoder's count and four values; the
@@ -354,6 +358,15 @@ export function createPreparationJournal(options: {
   sliceMs?: number;
   /** Encoded bytes the saved checkpoint can still take in one more slice. */
   room?: number;
+  /** When this attempt began, on `now`'s clock. Omitted: every slice keeps the plain target. */
+  setupSince?: number;
+  /** How long the last fenced save took; the next save costs about as much again. */
+  carriedMs?: number;
+  /** When routine sync may resume and interrupt, on `now`'s clock: a slice plans to pause, with
+   * time for its save, before then. Omitted: no window is known and none limits the budget. */
+  deadline?: number;
+  /** Fresh-work budget as a multiple of the setup; `PREPARATION_SETUP_RATIO` by default. */
+  ratio?: number;
 }) {
   if (!hashString(options.context)) invalid();
   const room = Math.min(options.room ?? PREPARATION_VALUE_BYTES, PREPARATION_VALUE_BYTES);
@@ -381,6 +394,31 @@ export function createPreparationJournal(options: {
   const now = options.now ?? performance.now.bind(performance);
   const slice = options.sliceMs ?? PREPARATION_SLICE_MS;
   if (!Number.isFinite(slice) || slice <= 0) invalid();
+  const ratio = options.ratio ?? PREPARATION_SETUP_RATIO,
+    carried = options.carriedMs ?? 0;
+  if (
+    !Number.isFinite(ratio) ||
+    ratio <= 0 ||
+    !Number.isFinite(carried) ||
+    carried < 0 ||
+    (options.setupSince !== undefined && !Number.isFinite(options.setupSince)) ||
+    (options.deadline !== undefined && !Number.isFinite(options.deadline))
+  )
+    invalid();
+  // Fixed at the first fresh check (phase 556). Re-reading and re-hashing saved work is the
+  // attempt's setup; giving each slice at least `ratio` times that keeps the repeated setup under
+  // 1/ratio of the fresh work, so the whole reduction stays proportional to history instead of
+  // its square. Never below the plain target, and never planned past a known window.
+  let limit: number | undefined;
+  const budget = (freshAt: number) => {
+    if (options.setupSince === undefined) return slice;
+    const grown = ratio * (freshAt - options.setupSince + carried);
+    const windowed =
+      options.deadline === undefined
+        ? grown
+        : Math.min(grown, options.deadline - freshAt - carried);
+    return Math.max(slice, windowed);
+  };
   const check = async <T>(
     slot: string,
     context: string,
@@ -426,7 +464,8 @@ export function createPreparationJournal(options: {
       }
       const freshAt = now();
       began ??= freshAt;
-      if (!full && pending.size && (freshAt - began >= slice || pending.size >= SLICE_ROWS))
+      limit ??= budget(freshAt);
+      if (!full && pending.size && (freshAt - began >= limit || pending.size >= SLICE_ROWS))
         throw new PreparationPause();
       const value = await verify();
       let result: Bytes | undefined;

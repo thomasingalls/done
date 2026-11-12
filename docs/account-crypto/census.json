@@ -849,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "9a286abd3d53a3654b807ae2c7ea427878d5f5536219f1f80426c88eec915a51"
+      "sha256": "501f9ec0a46dbdba51ba903388c5cbc8a9a5cc9d913f2edaab4ab21dcbb9a5a4"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -969,7 +969,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "e4f511e96196aa3398cda8955405e44fd8252081ffb3956d3975882e915d5156"
+      "sha256": "c9d62590027227b95194c4b83b512a86ef49bccf77100d324204762305530328"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1025,7 +1025,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "9e913faeb08f6381ecc0555382dbec1347c42b56758bab85c8fa6a62b1605e18"
+      "sha256": "3fd24f0fba6452576ff78b92eb290cf90733babf3fb22d430a0db55ba9b66501"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1301,7 +1301,7 @@
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "412cef06a988feec6503f39389c21a0369695c07bc52e81e4b73d7a43a2f6cb2"
+      "sha256": "84081c4435ccc8ac0ebe55d6c7102642a01c016f3a14266c60ce5ec839baecdc"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -1473,7 +1473,7 @@
     },
     {
       "path": "src/crdt/retentionPreparation.ts",
-      "sha256": "963127ae42466814929c6bc9a8f44c1b9f04ade91946412455f8b4d8a740f1b9"
+      "sha256": "87bb31c2fac3e23ce498162092485075daa23964bac4ac82ba643f55fd56a522"
     },
     {
       "path": "src/crdt/retentionPreparationBinding.ts",
@@ -2219,7 +2219,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 515
+          "line": 511
         }
       ]
     },
@@ -2431,7 +2431,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 514
+          "line": 510
         },
         {
           "path": "src/crdt/spoolRecord.ts",
@@ -4253,7 +4253,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 508
+          "line": 504
         },
         {
           "path": "src/crdt/sourceCapture.ts",

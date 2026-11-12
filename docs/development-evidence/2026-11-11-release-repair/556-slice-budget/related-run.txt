@@ -1,0 +1,27 @@
+
+ RUN  v4.1.10 /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+
+
+DUTY durable-attempt unchanged-history held=0ms fraction=0.0000 attempts=1 status=durable-attempt
+
+DUTY pending-promotion unchanged-history held=300000ms fraction=0.0139 attempts=360 status=pending-promotion
+
+DUTY activity-or-journal unchanged-history held=300000ms fraction=0.0139 attempts=360 status=activity-or-journal
+
+DUTY already-preparing unchanged-history held=0ms fraction=0.0000 attempts=360 status=already-preparing
+
+DUTY ineligible unchanged-history held=0ms fraction=0.0000 attempts=1 status=ineligible
+
+DUTY capacity unchanged-history held=0ms fraction=0.0000 attempts=1 status=capacity
+
+DUTY history-required unchanged-history held=0ms fraction=0.0000 attempts=1 status=history-required
+
+DUTY a-later-reason unchanged-history held=0ms fraction=0.0000 attempts=360 status=a-later-reason
+
+DUTY durable-attempt changing-history held=0ms fraction=0.0000 attempts=36
+
+ Test Files  36 passed (36)
+      Tests  381 passed (381)
+   Start at  00:18:06
+   Duration  85.41s (transform 1.57s, setup 511ms, import 4.66s, tests 75.51s, environment 595ms)
+

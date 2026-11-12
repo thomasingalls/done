@@ -357,15 +357,11 @@ export async function planLocalRetention(
       )
         corrupt('Retention row placement differs.');
       seen.add(r.seq);
-      const bytes = reuse
-        ? await reuse.memo.check(
-            'opened:' + r.seq,
-            JSON.stringify([r.v, r.kind, r.gen, r.seq]),
-            [r.nonce, r.ct],
-            () => crypt.open(r),
-            context.assertCurrent,
-          )
-        : await crypt.open(r);
+      // Every attempt opens every row itself (phase 556). A saved `opened:` receipt cost a hash
+      // of the same ciphertext to reuse, about what authenticated decryption costs, plus its share
+      // of every save, load and readback of the journal; it saved nothing. Old receipts of that
+      // kind may still be imported from a journal and are never consulted.
+      const bytes = await crypt.open(r);
       records.push({ seq: r.seq, kind: r.kind, gen: r.gen, bytes });
       if (records.length % 32 === 0 || records.length === inventory.rows.length)
         reportRetentionProgress(progress, {

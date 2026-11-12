@@ -154,6 +154,9 @@ export const createContentOwner = (
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   const pendingPreparations = new Set<() => void>();
+  // Phase 556: what the last fenced preparation save cost, and whether a slice was cut short since.
+  let preparationSaveMs = 0,
+    preparationInterrupted = false;
   let disposed = false;
   let witness!: ContentWitness;
   const allowReduced = crypt.readBaseline === true;
@@ -886,7 +889,14 @@ export const createContentOwner = (
     expectedRevision: number,
     checkRetained: () => void,
     progress?: RetentionProgressSink,
+    // Wall-clock moment routine sync may resume and interrupt this attempt (phase 556); the
+    // automatic scheduler passes it. Omitted: no known window limits the slice.
+    protectedUntil?: number,
   ) => {
+    // The slice budget counts everything this attempt pays before its first fresh check.
+    const setupSince = performance.now();
+    const deadline =
+      protectedUntil === undefined ? undefined : setupSince + (protectedUntil - Date.now());
     if (
       !hasRetentionWriter() ||
       !allowReduced ||
@@ -989,6 +999,15 @@ export const createContentOwner = (
                   context.assertCurrent();
                 },
                 room: preparationCheckpointRoom(read.checkpoint),
+                // After an interrupted slice the next keeps the plain target until one saves, so
+                // a device interrupted at a steady rhythm still makes progress (phase 556).
+                ...(preparationInterrupted
+                  ? {}
+                  : {
+                      setupSince,
+                      carriedMs: preparationSaveMs,
+                      ...(deadline === undefined ? {} : { deadline }),
+                    }),
               });
               preparation = { journal, checkpoint: read.checkpoint };
               if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
@@ -1107,6 +1126,8 @@ export const createContentOwner = (
         check: checkRetained,
       });
     } catch (cause) {
+      // A slice cut short saved nothing; keep the next one to the plain target (phase 556).
+      if (cause instanceof MaintenanceInterrupted && preparation) preparationInterrupted = true;
       // An uncached pass leaves nothing for the next attempt to resume. If routine queued work
       // cut it short, retrying the same history would only repeat it, so it parks as capacity;
       // a changed history, manual retry or reopen tries again. Foreground activity still yields.
@@ -1141,13 +1162,21 @@ export const createContentOwner = (
         ) {
           if (used || disposed) throw new MaintenanceInterrupted();
           used = true;
+          const began = performance.now();
           try {
-            return await savePreparationDelta(
+            const saved = await savePreparationDelta(
               currentTask,
               preparationStorage(implementation, fresh, checkJournal),
               checkpoint,
               delta,
             );
+            // The next slice pays this again, so its budget counts it (phase 556).
+            preparationSaveMs = performance.now() - began;
+            preparationInterrupted = false;
+            return saved;
+          } catch (cause) {
+            if (cause instanceof MaintenanceInterrupted) preparationInterrupted = true;
+            throw cause;
           } finally {
             dispose();
           }
