@@ -184,10 +184,19 @@ a stall. What it left:
   (phases 142 and 409). Limiting the adoption erase to dropped buffers (phase 142). Structural
   sharing in the ledger extension (large). A semantic-oracle trigger proportional to history, with
   no full re-read on every interruption (phases 416 and 417). A shape check once per storage task
-  (2026-10-12).
+  (2026-10-12). Measured at phase 554 on a device that has not reduced, after F1 and F1b, the slope
+  from 300 to 3,000 positions is 1,299 ms per sent position; by timers that partly nest, the shape
+  checks are 265 ms, the speculative check 280, the compares 342 (unchanged-load 228, prefix 114),
+  the adoption erase 144, selection clones 123, the expected-position chain 73 and source selection
+  58. F2 and F3 reach at most about 250 ms of it, so the target needs these steps too.
 - **SEND-ROW-BOUND — the 32,768-row index bound is still a cliff after phase 538.** Estimated at
   2,000 to 4,000 positions per device (unmeasured). Past it every ledger change runs the full check
-  until the device reduces.
+  until the device reduces. Phase 554's fixture writes one source per position, the fewest rows a
+  position can have, and holds 7.2 physical rows per own position (21,602 at 3,000), so on that
+  shape the bound sits near 4,500 own positions; positions with more sources reach it sooner.
+- **SEND-REDUCED-300 — a reduced device's 300-position seed costs 266 ms per sent position**, against
+  190 ms at 1,000 and 3,000, because its shape check takes 84 ms per send instead of 15 (phase 554,
+  both builds). Not investigated; it is the one size where the reduced device misses 250 ms.
 
 ### Local history reduction
 

@@ -2,7 +2,7 @@
 
 A delegated agent's report from 2026-11-11, filed as delivered. Read-only at `ff8578cd0` to `9882e30cd`; no timing. Paths under `/private/tmp` were session scratch space and no longer exist; the supporting files that mattered are under [support](./support/).
 
-**What happened next.** Its first fixes are queued; the later steps are SEND-FURTHER in the product backlog.
+**What happened next.** Phase 554 built its step 0, F1 and F1b and measured the send path for the first time ([record](../554-send-path-walks/README.md)). The walks F1 and F1b remove took 0.35 s per sent position at 3,000 positions, not the "about 1 s or more" estimated below, and the whole send path cost 1.84 s there before and 1.51 s after on a device that has not reduced. F2 and F3 are queued; the later steps are SEND-FURTHER in the product backlog.
 
 ---
 

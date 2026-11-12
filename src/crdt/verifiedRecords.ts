@@ -1,5 +1,10 @@
 import type { CpuCheckpoint } from './cpuBudget';
-import { countLedgerWork, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
+import {
+  countGraphWalk,
+  countLedgerWork,
+  ledgerWorkStart,
+  measureLedgerWork,
+} from './accountLedgerMetrics';
 import { eraseUnretained } from './verificationOwnership';
 import { selectionIdentity, type ContentSelection } from './contentSelection';
 /** Owner-local verification reuse. Identity includes every opened record, never only ledger events. */
@@ -115,7 +120,9 @@ export function createVerifiedRecords<T>(
     select<R>(lease: ContentSelection, project: (value: Readonly<T>) => R): R {
       if (!retained || identity !== selectionIdentity(lease))
         throw Error('No verified view for this selection');
+      const at = ledgerWorkStart();
       const result = structuredClone(project(value!));
+      measureLedgerWork('selectProjection', at);
       selectionIdentity(lease);
       return result;
     },
@@ -168,9 +175,12 @@ export function createVerifiedRecords<T>(
         }
         const initialRevision = revision;
         if (retained && identity === token) {
+          const compared = ledgerWorkStart();
           const equal = checkpoint
             ? await sameRecordsCooperatively(retained, records, checkpoint)
             : sameRecords(retained, records);
+          countLedgerWork('verifyCompares');
+          measureLedgerWork('verifyCompare', compared);
           current();
           if (initialRevision !== revision) throw Error('Verification view was invalidated');
           if (equal) return;
@@ -181,6 +191,7 @@ export function createVerifiedRecords<T>(
         // A failed or late candidate never publishes, and reads still return detached projections.
         const at = ++revision;
         let prefix = 0;
+        const prefixed = ledgerWorkStart();
         if (ownResults && before)
           while (prefix < Math.min(before.length, records.length)) {
             const a = before[prefix]!,
@@ -196,6 +207,10 @@ export function createVerifiedRecords<T>(
               break;
             prefix++;
           }
+        if (ownResults && before) {
+          countLedgerWork('verifyPrefixes');
+          measureLedgerWork('verifyPrefix', prefixed);
+        }
         current();
         if (at !== revision) throw Error('Verification view was invalidated');
         const candidate = ownResults
@@ -214,7 +229,10 @@ export function createVerifiedRecords<T>(
           // Results may reference candidate or predecessor buffers. Public projections remain copies.
           const atClone = ledgerWorkStart();
           if (ownResults) {
-            eraseUnretained([value, retained], [result, candidate]);
+            eraseUnretained([value, retained], [result, candidate], (kept, dropped) => {
+              countGraphWalk('adoptionEraseWalks', kept);
+              countGraphWalk('adoptionEraseWalks', dropped);
+            });
             value = result;
             retained = candidate;
             adopted = true;

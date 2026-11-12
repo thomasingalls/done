@@ -1,0 +1,50 @@
+"""Phase 554: summarise send-cost results. Usage: summarise.py <results dir> [<results dir> ...]
+Local cost per sent position = Worker send-step wall time minus its HTTP submit wait, from the
+owner's acceptedSends samples. Timers and counters are per sent position over the K measured sends
+(during peer typing they include the receive lane's work in the same window)."""
+import json, sys, glob, os, statistics as st
+TIMERS = ['verifyCompare','verifyPrefix','selectProjection','indexUsage','receiptTurnWalk','extendLedger',
+          'installOwned','readProjection','proposalCheck','expectedChain','envelopeSelection','warmShapeCheck',
+          'copyRecords','loadElapsed','storageQueueWait','storageOperation','sendNetwork',
+          'opDeliveryStatus','opSpoolStatus','opPrepareEnvelope','opPrepareSubmission','opSubmit','sendStep']
+WORK = ['loads','selectedLoads','indexUsageWalks','receiptTurnWalks','adoptionEraseWalks','graphWalkObjects',
+        'verifyCompares','verifyPrefixes','recordCopyBytes','sourceParses','deliveryPrefixLinks','authorityChecks']
+def pct(xs, p):
+    xs = sorted(xs); k = (len(xs) - 1) * p; f = int(k); c = min(f + 1, len(xs) - 1)
+    return xs[f] + (xs[c] - xs[f]) * (k - f)
+def cost(m, t): return m['costs'].get(t, {}).get('totalMs', 0)
+def summary(d):
+    groups = {}
+    for f in sorted(glob.glob(os.path.join(d, '*.json'))):
+        r = json.load(open(f)); key = (r['device'], r['size'], r['peer'])
+        groups.setdefault(key, []).append(r)
+    out = []
+    for key, runs in sorted(groups.items(), key=lambda kv: (kv[0][0], kv[0][1], kv[0][2])):
+        local = [s['stepMs'] - s['networkMs'] for r in runs for s in r['samples']]
+        net = [s['networkMs'] for r in runs for s in r['samples']]
+        k = sum(len(r['samples']) for r in runs)
+        sends = sum(len(r['editToAccepted']) for r in runs)
+        per = lambda fn: sum(fn(r) for r in runs) / sends
+        timers = {t: round(per(lambda r: cost(r['after'], t) - cost(r['before'], t)), 2) for t in TIMERS}
+        work = {w: round(per(lambda r: r['after']['work'].get(w, 0) - r['before']['work'].get(w, 0)), 2) for w in WORK}
+        ext = round(per(lambda r: r['after']['timings']['incremental']['calls'] - r['before']['timings']['incremental']['calls']), 2)
+        full = round(per(lambda r: r['after']['timings']['full']['calls'] - r['before']['timings']['full']['calls']), 2)
+        walks = work['indexUsageWalks'] + work['receiptTurnWalks'] + work['adoptionEraseWalks']
+        out.append({
+            'device': key[0], 'size': key[1], 'peer': key[2], 'runs': len(runs), 'samples': k, 'sends': sends,
+            'localMedianMs': round(st.median(local), 1), 'localP95Ms': round(pct(local, 0.95), 1),
+            'repMedians': [round(st.median([s['stepMs'] - s['networkMs'] for s in r['samples']]), 1) for r in runs],
+            'networkMedianMs': round(st.median(net), 1),
+            'editToAcceptedMedianMs': round(st.median([x for r in runs for x in r['editToAccepted']]), 1),
+            'adoptedExtensionsPerSend': ext, 'fullChecksPerSend': full,
+            'walksPerSend': round(walks, 2), 'objectsPerWalk': round(work['graphWalkObjects'] / walks) if walks else 0,
+            'timersPerSendMs': timers, 'workPerSend': work,
+            'openingMs': [r['opening']['a'] for r in runs], 'acceptedAtEnd': [r['accepted'] for r in runs],
+            # A local reduction (automatic or not) inside the measured window would change the path.
+            'reductionDuringRun': any(r['after']['costs'].get('retentionPreparation', {}).get('calls', 0)
+                                      != r['before']['costs'].get('retentionPreparation', {}).get('calls', 0)
+                                      for r in runs),
+        })
+    return out
+for d in sys.argv[1:]:
+    print(json.dumps({'results': d, 'groups': summary(d)}, indent=1))

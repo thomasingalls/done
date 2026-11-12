@@ -1,0 +1,15 @@
+#!/bin/sh
+# Phase 554 step-0 run: the new tests against step 0 alone (42f9e88b7 plus the recorded step-0
+# patch, without F1 and F1b). Candidate files are put back byte for byte (checked by sha256).
+set -u
+cd "$1"; PATCH="$2"; shift 2
+SAVE=$(mktemp -d)
+FILES=$(git diff --name-only 42f9e88b7 -- src)
+for f in $FILES; do mkdir -p "$SAVE/$(dirname $f)"; cp "$f" "$SAVE/$f"; git show 42f9e88b7:"$f" > "$f"; done
+git apply "$PATCH" && echo "step-0 patch applied" && shasum -a 256 "$PATCH"
+timeout 900 pnpm exec vitest run "$@" --maxWorkers=1 2>&1
+status=$?
+for f in $FILES; do cp "$SAVE/$f" "$f"; done
+( cd "$SAVE" && shasum -a 256 $FILES ) > "$SAVE/.saved"; shasum -a 256 $FILES | diff - "$SAVE/.saved" && echo "candidate restored"
+rm -rf "$SAVE"
+exit $status

@@ -1,0 +1,10 @@
+# Phase 554: does the profile flag reach the Account owner Worker bundle?
+# Same source and release flags; 'step0' built with VITE_ACCOUNT_LEDGER_PROFILE=1, 'plain' without.
+== step0 accountOwner.worker-CCXaZtT0.js sha256=30043916418ee544
+env literal has VITE_ACCOUNT_LEDGER_PROFILE:`1`: 3
+profile test sites (VITE_ACCOUNT_LEDGER_PROFILE===`1`): 2
+== plain accountOwner.worker-CcrP-8hQ.js sha256=829b0d06bdbc6aed
+env literal has VITE_ACCOUNT_LEDGER_PROFILE:`1`: 0
+profile test sites (VITE_ACCOUNT_LEDGER_PROFILE===`1`): 2
+Reading: the flag is compiled into the Worker's import.meta.env literal only in the profiled build; the unprofiled build carries the same (inert) code with the key absent, so ledgerProfiling is false there.
+Runtime: the harness reads __doneLedgerMetrics from the Worker realm (page.workers()) of the profiled build; it throws on an unprofiled build.

@@ -145,7 +145,7 @@ import { createVerificationMemo } from './verificationMemo';
 import {
   extendAccountLedger,
   indexVerifiedLedger,
-  accountLedgerIndexUsage,
+  accountLedgerIndexBounds,
   sameAccountLedger,
   type AccountLedgerView,
 } from './incrementalAccountLedger';
@@ -926,7 +926,7 @@ async function openAccountReceiveOwner(
                   // Recheck the fresh retained graph after replay adds originals/proofs. Dropping
                   // indexes preserves the verified state and selects the full reference next turn.
                   if (
-                    !accountLedgerIndexUsage(result, records, memo.ownedBytes(), recordOwnership)
+                    !accountLedgerIndexBounds(result, records, memo.ownedBytes(), recordOwnership)
                       .eligible
                   )
                     delete result.indexes;

@@ -32,7 +32,7 @@ What was built from them is in the phase records beside this folder. What was he
 | [06](./06-start-up-double-verification.md) | Does start-up need to verify saved history twice? | No; four replays today. Fix queued behind a measurement |
 | [07](./07-foreground-invalidation.md) | What does returning to the app cost, and what does it protect? | One part built in phase 545; two options held |
 | [08](./08-foreground-replay-probe.md) | Does a reduced device rebuild its document per saved batch? | Yes, measured; fixed in phase 545 |
-| [09](./09-send-path.md) | What does one sent position cost, and did the release change it? | First fixes queued |
+| [09](./09-send-path.md) | What does one sent position cost, and did the release change it? | Measured and first walks removed in phase 554; F2 and F3 queued |
 | [10](./10-reduction-slicing.md) | Why does a first reduction cost the square of history? | Slice-budget change queued |
 | [11](./11-reduction-handoff-collision.md) | Can a receive collide with reduction's final step? | Yes, rarely; fixed in phase 546 |
 | [12](./12-service-concurrency.md) | Is the service starved by running on one thread? | No; a global cache wipe is the problem. History-route scoping built in phase 553 |

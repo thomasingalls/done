@@ -1,0 +1,42 @@
+F1-a DETECTED — continuation gates on the reporting call again
+    × with the profile flag, every send-path timer and walk counter records 507ms
+    × stop condition (a): send-only continuations on a 1,024-position history walk no whole graph 1513ms
+    × a send-only continuation on a 1,024-position history walks no retained graph (F1) 1713ms
+F1-b DETECTED — complete-check index build gates on the reporting call again
+    × a complete check builds its indexes without walking the retained graph (F1) 316ms
+F1-c DETECTED — the owner recheck walks again
+    × the live owner gates its continuation on row bounds, not on a retained-graph walk (F1) 4ms
+F1-d DETECTED — the bounds gate reports ownership by walking
+    × a send-only continuation on a 1,024-position history walks no retained graph (F1) 1263ms
+    × a complete check builds its indexes without walking the retained graph (F1) 313ms
+F1b-a DETECTED — complete walks an empty turn again
+    × a turn that captured nothing completes and disposes without walking a 1,024-position result (F1b) 1120ms
+    × a receipt turn walks and erases exactly when it captured something (F1b) 364ms
+    × with the profile flag, every send-path timer and walk counter records 426ms
+    × stop condition (a): send-only continuations on a 1,024-position history walk no whole graph 1235ms
+F1b-b DETECTED — dispose walks an empty turn again
+    × a turn that captured nothing completes and disposes without walking a 1,024-position result (F1b) 1129ms
+    × a receipt turn walks and erases exactly when it captured something (F1b) 357ms
+    × with the profile flag, every send-path timer and walk counter records 439ms
+    × stop condition (a): send-only continuations on a 1,024-position history walk no whole graph 1393ms
+F1b-c DETECTED — complete skips when there is no output, though a row and parsers were captured
+    × a receipt turn walks and erases exactly when it captured something (F1b) 1704ms
+F1b-d DETECTED — dispose skips when there is no output, though a row and parsers were captured
+    × a receipt turn walks and erases exactly when it captured something (F1b) 1550ms
+F1b-e DETECTED — complete always skips
+    × a receipt turn walks and erases exactly when it captured something (F1b) 772ms
+F1b-f DETECTED — dispose always skips
+    × a receipt turn walks and erases exactly when it captured something (F1b) 717ms
+S0-a DETECTED — the unchanged-load compare reads the clock unprofiled
+    × without the profile flag, the send-path observation reads no clock and counts nothing 1439ms
+S0-b DETECTED — the submit wait reads the clock unprofiled
+    × without the profile flag, the send-path observation reads no clock and counts nothing 1488ms
+S0-c DETECTED — walk counts are kept unprofiled
+    × without the profile flag, the send-path observation reads no clock and counts nothing 1503ms
+S0-d DETECTED — the driver takes an accepted-send sample unprofiled
+    × without the profile flag, the send-path observation reads no clock and counts nothing 1497ms
+S0-e DETECTED — driver op timers run unprofiled
+    × without the profile flag, the send-path observation reads no clock and counts nothing 1393ms
+S0-f DETECTED — the expected-chain timer is dropped
+    × with the profile flag, every send-path timer and walk counter records 475ms
+16 of 16 detected; every file restored by sha256

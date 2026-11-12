@@ -60,6 +60,7 @@ import { RECEIVE_GROUP_LIMIT } from './receiveLimits';
 import { guardedSubtle, utf8 } from './custodyCrypto';
 import { sameBytes, eraseVerified } from './verifiedRecords';
 import { eraseUnretained } from './verificationOwnership';
+import { countGraphWalk, ledgerWorkStart, measureLedgerWork } from './accountLedgerMetrics';
 import { StorageCompatibilityError } from './storageCompatibility';
 import type { VerificationMemo } from './verificationMemo';
 import { Y } from './yjs';
@@ -872,14 +873,27 @@ export function createInboundReceiptTurn(): InboundReceiptTurn {
   const active = () => {
     if (state !== 'open') fail('record');
   };
+  // Phase 554: a turn that captured nothing owns no parser and no output, so neither the escape
+  // check nor the erasure has anything to find. A send-only continuation is always such a turn.
+  const captured = () => rows.size > 0 || parsers.size > 0 || outputs.length > 0;
   const dispose = () => {
     if (state === 'closed') return;
     state = 'closed';
+    if (!captured()) {
+      inputRows.clear();
+      retained = undefined;
+      return;
+    }
     // Map keys/input stamps are borrowed caller records and never enter the erasure graph.
+    const at = ledgerWorkStart();
     eraseUnretained(
       [[...rows.values()].map((r) => [r.syntax, r.view, r.logical]), outputs],
       retained,
+      (kept) => {
+        if (retained !== undefined) countGraphWalk('receiptTurnWalks', kept);
+      },
     );
+    measureLedgerWork('receiptTurnWalk', at);
     rows.clear();
     inputRows.clear();
     outputs.length = 0;
@@ -1007,11 +1021,20 @@ export function createInboundReceiptTurn(): InboundReceiptTurn {
     complete(value: unknown) {
       try {
         active();
+        if (!captured()) {
+          retained = value;
+          state = 'complete';
+          return;
+        }
         for (const row of rows.values()) {
           current(row);
           if (!row.verified) fail('record');
         }
-        noParserEscape(value);
+        const at = ledgerWorkStart(),
+          seen = new Set<object>();
+        noParserEscape(value, seen);
+        countGraphWalk('receiptTurnWalks', seen.size);
+        measureLedgerWork('receiptTurnWalk', at);
         retained = value;
         state = 'complete';
       } catch (cause) {

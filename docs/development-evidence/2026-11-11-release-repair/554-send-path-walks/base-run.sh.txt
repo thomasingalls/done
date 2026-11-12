@@ -1,0 +1,16 @@
+#!/bin/sh
+# Phase 554 base run: the new tests against the phase 553 source (42f9e88b7).
+# Every changed source file is replaced by its 42f9e88b7 copy, the named tests run, and the
+# candidate files are put back byte for byte (checked by sha256).
+set -u
+cd "$1"; shift
+SAVE=$(mktemp -d)
+FILES=$(git diff --name-only 42f9e88b7 -- src)
+for f in $FILES; do mkdir -p "$SAVE/$(dirname $f)"; cp "$f" "$SAVE/$f"; git show 42f9e88b7:"$f" > "$f"; done
+shasum -a 256 $FILES
+timeout 900 pnpm exec vitest run "$@" --maxWorkers=1 2>&1
+status=$?
+for f in $FILES; do cp "$SAVE/$f" "$f"; done
+( cd "$SAVE" && shasum -a 256 $FILES ) > "$SAVE/.saved"; shasum -a 256 $FILES | diff - "$SAVE/.saved" && echo "candidate restored"
+rm -rf "$SAVE"
+exit $status

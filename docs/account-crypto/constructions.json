@@ -2461,13 +2461,13 @@
       "sourceSites": [
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 353,
+          "line": 384,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 397,
+          "line": 428,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
@@ -2562,19 +2562,19 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 224,
+          "line": 247,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 267,
+          "line": 290,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 353,
+          "line": 384,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
@@ -2695,19 +2695,19 @@
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 268,
+          "line": 291,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 353,
+          "line": 384,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 433,
+          "line": 464,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },

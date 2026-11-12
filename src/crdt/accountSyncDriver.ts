@@ -9,6 +9,13 @@ import { ContentError } from './contentRecord';
 import { CustodyError } from './custodyRecord';
 import { InboundError } from './accountInbound';
 import { createBatchWindow, type BatchTiming } from './batchWindow';
+import {
+  ledgerCostTotal,
+  ledgerProfiling,
+  ledgerWorkStart,
+  measureLedgerWork,
+  recordAcceptedSend,
+} from './accountLedgerMetrics';
 import type { SyncRefusal } from '../account/syncRefusal';
 export type SyncLane = 'send' | 'receive';
 /** A receive condition that stays named while receiving otherwise continues. Not a halt. */
@@ -607,7 +614,15 @@ export async function driveOutboundStep(
     acceptedThrough: s.acceptedThrough,
     ...(s.receivedThrough !== undefined ? { receivedThrough: s.receivedThrough } : {}),
   });
-  let status = await ops.deliveryStatus();
+  // Profiling only (phase 554): op timers include queue waits; an accepted step is one sample.
+  const stepAt = ledgerWorkStart(),
+    networkBefore = ledgerCostTotal('sendNetwork');
+  const timed = <T>(name: Parameters<typeof measureLedgerWork>[0], run: () => Promise<T>) => {
+    if (!ledgerProfiling) return run();
+    const at = ledgerWorkStart();
+    return run().finally(() => measureLedgerWork(name, at));
+  };
+  let status = await timed('opDeliveryStatus', () => ops.deliveryStatus());
   if (status.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.()))
     status = await ops.deliveryStatus();
   const pause = (): OutboundStep | null => {
@@ -620,7 +635,7 @@ export async function driveOutboundStep(
   if (paused) return paused;
   const position = status.acceptedThrough + 1;
   if (!status.submissions.includes(position)) {
-    const spool = await ops.spoolStatus();
+    const spool = await timed('opSpoolStatus', () => ops.spoolStatus());
     paused = pause();
     if (paused) return paused;
     if (!spool.positions.some((p) => p.position === position && p.persisted)) {
@@ -629,14 +644,14 @@ export async function driveOutboundStep(
       if (holdNewEnvelope?.()) return { kind: 'held', ...progress(status) };
       const due = beforeNewEnvelope?.();
       if (due !== undefined) return { kind: 'batching', due, ...progress(status) };
-      const prepared = await ops.prepareNextEnvelope();
+      const prepared = await timed('opPrepareEnvelope', () => ops.prepareNextEnvelope());
       if (!prepared) return pause() ?? { kind: 'idle', ...progress(status) };
       prepared.bytes.fill(0);
       if (prepared.position !== position) throw Error('Unexpected delivery position');
     }
     paused = pause();
     if (paused) return paused;
-    const submission = await ops.prepareSubmission(position);
+    const submission = await timed('opPrepareSubmission', () => ops.prepareSubmission(position));
     if ('bytes' in submission && submission.bytes instanceof Uint8Array) submission.bytes.fill(0);
     if (submission.kind !== 'ready') {
       status = await ops.deliveryStatus();
@@ -645,8 +660,8 @@ export async function driveOutboundStep(
   }
   paused = pause();
   if (paused) return paused;
-  await ops.submitPending(token);
-  let next = await ops.deliveryStatus();
+  await timed('opSubmit', () => ops.submitPending(token));
+  let next = await timed('opDeliveryStatus', () => ops.deliveryStatus());
   let retried = false;
   if (next.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.())) {
     retried = true;
@@ -655,6 +670,10 @@ export async function driveOutboundStep(
   if (next.acceptedThrough < status.acceptedThrough)
     throw Error('Durable delivery prefix regressed');
   if (next.state !== 'ready') return { kind: 'blocked', ...progress(next), reason: next.state };
+  if (ledgerProfiling && next.acceptedThrough > status.acceptedThrough) {
+    measureLedgerWork('sendStep', stepAt);
+    recordAcceptedSend(performance.now() - stepAt, ledgerCostTotal('sendNetwork') - networkBefore);
+  }
   return {
     kind:
       retried || next.acceptedThrough > status.acceptedThrough
