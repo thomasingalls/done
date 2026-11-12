@@ -74,6 +74,7 @@ import { accountLedgerMode } from './accountLedgerMode';
 import { accountBatchPolicy } from './accountBatchPolicy';
 import { originalMembershipBoundaries } from './accountSuccessor';
 import { createHistoryTransport, HistoryTransportUnavailable } from '../account/historyHttp';
+import { historyCommandFailure } from '../account/historyFailure';
 import {
   historyExchangeMessage,
   HISTORY_EXCHANGE_REQUEST_LIFETIME_MS,
@@ -4034,9 +4035,14 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
         },
         ...(devices.history
           ? {
+              // The page's own commands end with a coded failure that chooses its sentence
+              // (phase 551); automatic maintenance calls runHistory and keeps the original error.
               history: (
                 command: import('../account/historyMaintenance').HistoryMaintenanceCommand,
-              ) => runHistory(command),
+              ) =>
+                runHistory(command).catch((cause: unknown) => {
+                  throw historyCommandFailure(cause);
+                }),
             }
           : {}),
       }),

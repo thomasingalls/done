@@ -485,3 +485,34 @@ it('carries where a saved snapshot stands, positions since the last one and a re
   ])
     expect(() => captureAccountSessionState(state(bad))).toThrow();
 });
+it('carries why the last sign-in attempt failed to the page, and refuses an unknown reason (phase 551)', async () => {
+  const state = (extra: object) => ({
+    login: 'disconnected',
+    sync: null,
+    local: null,
+    automatic: null,
+    devices: { remove: false, history: false, detached: false },
+    ...extra,
+  });
+  for (const problem of ['unreachable', 'busy', 'unavailable', 'outdated', 'refused'])
+    expect(captureAccountSessionState(state({ loginProblem: problem })).loginProblem).toBe(problem);
+  expect('loginProblem' in captureAccountSessionState(state({}))).toBe(false);
+  for (const bad of ['', 'connection', 7, null, { problem: 'busy' }])
+    expect(() => captureAccountSessionState(state({ loginProblem: bad }))).toThrow();
+  const f = fixture(),
+    failed = vi.fn();
+  let problem: string | undefined = 'busy';
+  (f.source.login as { getProblem?: () => unknown }).getProblem = () => problem;
+  const window = createWindowAccountSession({ request: vi.fn() as any }, f.stop.signal, failed);
+  const p = publishAccountSession(f.source, f.stop.signal, async (h) => window.update(h), failed);
+  await p.ready;
+  const login = window.ports.networkLogin;
+  expect(login.getProblem!()).toBe('busy');
+  problem = undefined;
+  for (const fn of f.listeners) fn();
+  await tick();
+  expect(login.getProblem!()).toBeUndefined();
+  f.stop.abort();
+  expect(login.getProblem!()).toBeUndefined();
+  expect(failed).not.toHaveBeenCalled();
+});

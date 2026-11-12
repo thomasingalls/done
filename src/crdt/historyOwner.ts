@@ -4,7 +4,10 @@ import { withHistoryCustody } from './historyCustody';
 import { readHistorySource, historyReplayStart } from './historySource';
 import { createHistoryCheckpoint, admitHistoryCheckpoint } from './historyCheckpoint';
 import { createHistoryTransport } from '../account/historyHttp';
-import { privateDeliveryPost } from '../account/privateDeliveryHttp';
+import {
+  privateDeliveryPost,
+  recordPrivateTransportDiagnostic,
+} from '../account/privateDeliveryHttp';
 import { READ_PAGE_LIMIT } from '../../account-protocol/deliveryTransport';
 import { verifyCheckpointTimeline } from '../../account-protocol/checkpointTimeline';
 import { historyMembership } from '../../account-protocol/admissionHistory';
@@ -27,6 +30,36 @@ import {
 } from '../account/historyMaintenance';
 import { hex, random } from './custodyCrypto';
 import type { ScopedAccess } from '../account/scopedTransport';
+import { HistoryRefusal, type HistoryFailureCode } from '../account/historyFailure';
+import type { Diagnostic } from '../../account-protocol/diagnostics';
+
+/** Why a read of accepted writing returned nothing, from the transport's own closed diagnostic
+ * vocabulary (phase 551). A named service hint is unsigned and only chooses the sentence. */
+function readFailure(code: Diagnostic['code'] | undefined): HistoryFailureCode {
+  switch (code) {
+    case 'timeout':
+      return 'history-timeout';
+    case 'aborted':
+      return 'history-stopped';
+    case 'ledger-integrity':
+      return 'history-ledger-integrity';
+    case 'storage-unavailable':
+      return 'history-storage-unavailable';
+    case 'invalid-request':
+    case 'envelope-size':
+      return 'history-malformed';
+    case 'unavailable':
+    case 'state-changed':
+    case 'unsupported-epoch':
+    case 'out-of-order':
+    case 'parent-required':
+    case 'unissued-parent':
+    case 'removal-pending':
+      return 'history-refused';
+    default:
+      return 'history-unreachable';
+  }
+}
 
 export async function runNativeHistoryMaintenance(
   input: Parameters<typeof withNativeHistorySource>[0],
@@ -44,15 +77,19 @@ export async function runNativeHistoryMaintenance(
       p = membershipState(authority),
       guard = () => task.step(() => {});
     if (!same(timeline.history.current, source.history.current))
-      throw Error('History source authority changed');
+      throw new HistoryRefusal('history-authority-changed', 'History source authority changed');
     const authorityAt = async (epoch: number, head: string) => {
       const state = timeline.states.get(epoch);
       if (!state || state.current.head !== head)
-        throw Error('Unknown history checkpoint authority');
+        throw new HistoryRefusal(
+          'history-authority-changed',
+          'Unknown history checkpoint authority',
+        );
       return historyMembership(state);
     };
     const exchange = createHistoryTransport(authority, access, task.signal);
     const read = async (request: Uint8Array<ArrayBuffer>) => {
+      let seen: Diagnostic['code'] | undefined;
       const page = await privateDeliveryPost(
         p.pin,
         access,
@@ -60,12 +97,18 @@ export async function runNativeHistoryMaintenance(
         request,
         READ_PAGE_LIMIT,
         task.signal,
-        undefined,
+        (d) => {
+          seen = d.code;
+          recordPrivateTransportDiagnostic(d);
+        },
         true,
       );
       guard();
       if (!page)
-        throw Error('Accepted writing is unavailable. Retry history maintenance when connected.');
+        throw new HistoryRefusal(
+          readFailure(seen),
+          'Accepted writing is unavailable. Retry history maintenance when connected.',
+        );
       return page;
     };
     // A proposal alone never establishes the baseline: independently retrieve its admission.
@@ -97,9 +140,13 @@ export async function runNativeHistoryMaintenance(
         page.catalog.latest !== hash ||
         (page.checkpoint === null) !== (hash === EMPTY_HISTORY_CHECKPOINT)
       )
-        throw Error('History advanced during preparation. Retry against its new baseline.');
+        throw new HistoryRefusal(
+          'history-advanced',
+          'History advanced during preparation. Retry against its new baseline.',
+        );
       if (!page.checkpoint) return null;
-      if (!page.admission) throw Error('History baseline has no admission');
+      if (!page.admission)
+        throw new HistoryRefusal('history-reply-unverified', 'History baseline has no admission');
       const cp = page.checkpoint;
       await verifyHistoryCheckpointAdmission(
         page.admission,
@@ -134,7 +181,7 @@ export async function runNativeHistoryMaintenance(
       });
     return withHistoryCustody(task, kind, slotId, code, async (custody) => {
       if (custody.credentialId !== source.producer || !same(membershipState(custody.authority), p))
-        throw Error('History custody and source differ');
+        throw new HistoryRefusal('history-authority-changed', 'History custody and source differ');
       return runHistoryMaintenance(
         {
           authority,

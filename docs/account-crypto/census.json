@@ -604,12 +604,16 @@
       "sha256": "3a8f9896fe4f30f3758637d6838ba8b9c03fa4a24487216cf091ba48030dc1f3"
     },
     {
+      "path": "src/account/historyFailure.ts",
+      "sha256": "be7db70a42cbac91d309a33507ed44ab4b39cc80b36a825176800fb85f6991f0"
+    },
+    {
       "path": "src/account/historyHttp.ts",
-      "sha256": "db4511ce5bc9a1fc4baf6706d40727ac58baba1f7e57cafe9fa9ae8c9f0cd358"
+      "sha256": "01be0ecbf3f70cadd795ee8b20ee130e120ce90574a540649402d240fb70fe3e"
     },
     {
       "path": "src/account/historyMaintenance.ts",
-      "sha256": "0f04f9f870d6d4da5f86600f485936d8086c3e2054c1b3966eec8928fed4dfb9"
+      "sha256": "03dc6c4502de2f36884807dfe04a00e57aaf4567cb221014d45891e8c15b3a5a"
     },
     {
       "path": "src/account/historyReadRetry.ts",
@@ -665,7 +669,7 @@
     },
     {
       "path": "src/account/networkLogin.ts",
-      "sha256": "7d92ea3af6f9ac28f4e389a6f8b37419fdb33cf2225cc4d76f9afdf4fe2aa0aa"
+      "sha256": "2809f80f54d1115b982b998c8978768961dfd6a98a9ed8aaaed457b06e52200b"
     },
     {
       "path": "src/account/notifications.ts",
@@ -725,7 +729,7 @@
     },
     {
       "path": "src/account/scopedTransport.ts",
-      "sha256": "799902a91a6c6001d4f58914a43ff192bd2ef16ccaf561629c6582bcbdb538e7"
+      "sha256": "befcdae6a3b08035462b73b1b79d8bed7f2991d0f50485f75b2c34b822641c16"
     },
     {
       "path": "src/account/sessionVault.ts",
@@ -837,7 +841,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "446a117ef1710f29149124de39ed2672d352fc3032aa91cea0d72f04e4b93c06"
+      "sha256": "3753f464acf1b4d9123491a676a47a0ab67b09771374bd0b9bce2dd67d28b45f"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -849,7 +853,7 @@
     },
     {
       "path": "src/crdt/accountSessionBridge.ts",
-      "sha256": "7c3a91489cadfbafbb1da446f1d5f59b668d70d6cf8ed2a2c089d84045207b3a"
+      "sha256": "ba815a3ec413eecb198b4fa41f9ce4e9abd86da8fb745a3884b3b4820deebf84"
     },
     {
       "path": "src/crdt/accountSpool.ts",
@@ -1101,7 +1105,7 @@
     },
     {
       "path": "src/crdt/historyOwner.ts",
-      "sha256": "c871305a3fdf09a77e8528f8821b2500b2e8d71f3e820522a4fa82f7b9d88730"
+      "sha256": "f8ca53802e5aa8ba2266a00ee0d2a346262f063f0b457afd0e9b998aa8163339"
     },
     {
       "path": "src/crdt/historyReceiveFence.ts",
@@ -1869,7 +1873,7 @@
     },
     {
       "path": "src/ui/AccountHistory.tsx",
-      "sha256": "0b1c4c2d6c3a3129499d759d2d8e50a730d6e0b60ba432308420e99fbb03a6dd"
+      "sha256": "4edf30820edf49dba3fc61ef62196c4e2010a1ea06cdd2867a58b245e78119e8"
     },
     {
       "path": "src/ui/AccountIdentity.tsx",
@@ -1973,7 +1977,7 @@
     },
     {
       "path": "src/ui/NetworkLoginNotice.tsx",
-      "sha256": "d2fb09a7014caeef475439abbb37350d186b78a2c297767086b9672ecc21d820"
+      "sha256": "038aa6f4f38b9a5c7c9fa6e8743dbedfba6e8199518ea906a998613c13e20778"
     },
     {
       "path": "src/ui/PrivateMigrationApp.tsx",
@@ -1989,7 +1993,7 @@
     },
     {
       "path": "src/ui/SyncNotice.tsx",
-      "sha256": "bb4a0b195566b48eb61607556a32a97c26688449637ab4fafb862185fb72fa8f"
+      "sha256": "0888daddd3cf8e1d5e476212d3f467222b4b76f369205b6e845611ad4f84be48"
     },
     {
       "path": "src/ui/UnfiledPanel.tsx",
@@ -2026,6 +2030,10 @@
     {
       "path": "src/ui/firstDeviceSetupWorker.ts",
       "sha256": "894ae5d73d5f7ddd22fc9e2f5116c132eae2be90b1568ef0421672fa43b00211"
+    },
+    {
+      "path": "src/ui/historyFailureMessages.ts",
+      "sha256": "83ee74ed7e48d57efbdccf3367208b6a6912485056a008a9d999ceeda59cc4de"
     },
     {
       "path": "src/ui/localStartup.ts",
@@ -2265,7 +2273,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 966
+          "line": 967
         }
       ]
     },

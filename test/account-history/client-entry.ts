@@ -11,7 +11,18 @@ export { Y, sameDocState, hasPendingUpdates, genesisCoverageParts } from '../../
 
 export * from '../../src/account/historyMaintenance';
 export { historySourcesDigest } from '../../account-protocol/historySources';
-export { createHistoryTransport, HistoryTransportUnavailable } from '../../src/account/historyHttp';
+export {
+  createHistoryTransport,
+  HistoryTransportUnavailable,
+  HistoryReplyRefused,
+} from '../../src/account/historyHttp';
+// Phase 551: refusal codes, their sentences, and the page's own scoped transport.
+export * from '../../src/account/historyFailure';
+export {
+  HISTORY_FAILURE_MESSAGES,
+  historyFailureMessage,
+} from '../../src/ui/historyFailureMessages';
+export { ScopedTransport } from '../../src/account/scopedTransport';
 export { readHistorySource, historyReplayStart } from '../../src/crdt/historySource';
 export * from '../../src/account/historyReplayBound';
 export { createContentCheckpoint } from '../../src/crdt/contentCheckpoint';

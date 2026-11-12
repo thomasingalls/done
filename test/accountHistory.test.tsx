@@ -14,6 +14,9 @@ import type {
   HistoryMaintenanceCommand,
   HistoryMaintenanceStatus,
 } from '../src/account/historyMaintenance';
+import { HISTORY_FAILURES, type HistoryFailureCode } from '../src/account/historyFailure';
+import { HISTORY_FAILURE_MESSAGES } from '../src/ui/historyFailureMessages';
+import { WorkerChannelError } from '../src/crdt/workerChannel';
 
 const allowed = 4 * 1024 * 1024;
 it('says which snapshot is too large to install, with sizes, for each role', () => {
@@ -267,6 +270,135 @@ it('offers Discard for every saved snapshot of this device that is not admitted,
     await show({ sequence: 1, pending: 'resume', canDiscard: true, saved: 'cancelling' });
     await press('Finish discarding');
     expect(run.mock.calls.at(-1)![0]).toBe('discard');
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+  }
+});
+
+// Phase 551: what each failure of a history command says, word for word. The Worker gives the
+// failure a code; the code chooses the sentence and nothing else.
+const SHIPPED: Record<HistoryFailureCode, string> = {
+  'history-unreachable':
+    'History maintenance could not reach the account service. Your writing and saved progress are kept. Check your connection, then check history or resume.',
+  'history-timeout':
+    'The account service did not answer in time. Your writing and saved progress are kept. Check your connection, then check history or resume.',
+  'history-stopped':
+    'History maintenance stopped on this device before it finished. Your writing and saved progress are kept. Check history to see where it stands.',
+  'history-checkpoint-busy':
+    'Another device’s snapshot is waiting for verification, so this one was not sent. Your writing and saved progress are kept. Check history to verify that snapshot first.',
+  'history-checkpoint-cancelled':
+    'This snapshot was discarded earlier, so the service will not take it. Check history, discard it here too, then create a new one. Your writing is unchanged.',
+  'history-sources-changed':
+    'Your account’s devices changed while this snapshot was made or verified, so the service did not accept it. Your writing and saved progress are kept. Check history to see what to discard or make next.',
+  'history-checkpoint-required':
+    'The snapshot you were verifying is no longer waiting. Your writing and saved progress are kept. Check history to see where things stand.',
+  'history-admission-conflict':
+    'Another device verified this snapshot first. Your writing and saved progress are kept. Check history.',
+  'history-checkpoint-conflict':
+    'A different snapshot is waiting now. Your writing and saved progress are kept. Check history before trying again.',
+  'history-retention-boundary-changed':
+    'A newer snapshot was verified since you checked, so nothing was removed. Check history, then prune covered history again.',
+  'history-source-unavailable':
+    'History from a recently added or recovered device is not on the service yet. Your writing and saved progress are kept. Try again after your devices have synced.',
+  'history-state-changed':
+    'The account changed while history maintenance ran. Your writing and saved progress are kept. Check history, then try again.',
+  'history-checkpoint-too-large':
+    'The service refused a snapshot too large for your devices to install. Check history to see which one. Your writing is unchanged.',
+  'history-ledger-integrity':
+    'The account service found a problem with its stored history and has paused changes until it is checked. This is not a problem with your connection. Nothing you do on this device will fix it. Your writing on this device is kept.',
+  'history-unavailable':
+    'The account service could not finish history maintenance. This is not a problem with your connection. Your writing and saved progress are kept. Try again later.',
+  'history-invalid-proof':
+    'The account service did not accept this device’s part in history maintenance. This is not a problem with your connection. Nothing you do on this device will fix it. Your writing and saved progress are kept.',
+  'history-malformed':
+    'The account service could not use this request from this version of the app. Updating the app may fix it. Your writing and saved progress are kept.',
+  'history-not-found':
+    'This account service does not offer history maintenance. Nothing you do on this device will fix it. Your writing and saved progress are kept.',
+  'history-sign-in-required':
+    'Sync needs an account passkey check before history maintenance can continue. Choose Reconnect sync under Account in this menu, then try again. Your writing and saved progress are kept.',
+  'history-sync-disconnected':
+    'Sync is not connected, so history maintenance could not start. Your writing and saved progress are kept. Check Account in this menu, reconnect sync if it is offered, then try again.',
+  'history-authority-changed':
+    'Your account’s devices changed while history maintenance ran. Your writing and saved progress are kept. Check history again in a moment.',
+  'history-capacity':
+    'The account service is busy. This is not a problem with your connection. Your writing and saved progress are kept. Try again in a minute.',
+  'history-storage-unavailable':
+    'The account service cannot save changes right now. This is not a problem with your connection. Your writing and saved progress are kept. Try again later.',
+  'history-access-refused':
+    'The account service did not accept this device’s sign-in. Your writing and saved progress are kept. Lock and reopen this workspace, then try again.',
+  'history-refused':
+    'The account service did not accept this request. This is not a problem with your connection. Your writing and saved progress are kept. Check history, then try again.',
+  'history-reply-unverified':
+    'The account service’s answer could not be checked, so nothing from it was used. This is not a problem with your connection. Your writing and saved progress are kept. Check history to try again; if this keeps happening, nothing you do on this device will fix it.',
+  'history-advanced':
+    'Another snapshot was saved while this one was being read. Your writing and saved progress are kept. Check history, then try again.',
+  'history-finish-saved':
+    'This device has a saved snapshot to finish or discard first. Your writing and saved progress are kept. Check history to see it.',
+  'history-prune-unchanged':
+    'Covered history can be removed once two snapshots are verified and unchanged. Check history to see where things stand.',
+  'history-not-producer':
+    'Only the device that made this snapshot can discard it. Verify it here, or discard it on that device.',
+  'history-receive-pending':
+    'Sync is finishing on this device. Your writing and saved progress are kept. Try again in a moment.',
+  'history-local-progress':
+    'This device could not save its history progress. Your writing is kept. Lock and reopen this workspace, then check history.',
+  'history-failed':
+    'History maintenance could not finish. Your writing and saved progress are kept. Check history, then try again.',
+};
+
+it('says what each failure is and what to do; only no answer says to check the connection (phase 551)', async () => {
+  expect(Object.keys(HISTORY_FAILURE_MESSAGES).sort()).toEqual([...HISTORY_FAILURES].sort());
+  // Each code fits what the Worker channel passes to the page.
+  for (const code of HISTORY_FAILURES) expect(code).toMatch(/^[a-z-]{1,64}$/);
+  expect({ ...HISTORY_FAILURE_MESSAGES }).toEqual(SHIPPED);
+  for (const code of HISTORY_FAILURES)
+    expect(HISTORY_FAILURE_MESSAGES[code].includes('connection'), code).toBe(
+      code === 'history-unreachable' ||
+        code === 'history-timeout' ||
+        HISTORY_FAILURE_MESSAGES[code].includes('This is not a problem with your connection.'),
+    );
+  (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  let failure: unknown = null;
+  const run = vi.fn(async (_command: HistoryMaintenanceCommand) => {
+    if (failure) throw failure;
+    return { sequence: 1, pending: 'none', canDiscard: false } as HistoryMaintenanceStatus;
+  });
+  const check = async () =>
+    act(async () =>
+      [...host.querySelectorAll('button')].find((b) => b.textContent === 'Check history')!.click(),
+    );
+  const alert = () => host.querySelector('[role="alert"]')?.textContent;
+  try {
+    await act(async () => root.render(<AccountHistory run={run} />));
+    await act(async () => host.querySelector('button')!.click());
+    await check();
+    const status = host.querySelector('[role="status"]')!.textContent;
+    // Through the Worker channel, as the page receives it.
+    for (const code of HISTORY_FAILURES) {
+      failure = new WorkerChannelError(code);
+      await check();
+      expect(alert(), code).toBe(SHIPPED[code]);
+      // A failure chooses a sentence only: the last status stays as it was.
+      expect(host.querySelector('[role="status"]')!.textContent).toBe(status);
+    }
+    // A code this version does not know, a channel failure and an error with no code.
+    for (const other of [
+      new WorkerChannelError('history-something-new'),
+      new WorkerChannelError('operation-refused'),
+      new WorkerChannelError('closed'),
+      Error('plain'),
+    ]) {
+      failure = other;
+      await check();
+      expect(alert()).toBe(SHIPPED['history-failed']);
+    }
+    failure = null;
+    await check();
+    expect(alert()).toBeUndefined();
   } finally {
     await act(async () => root.unmount());
     host.remove();

@@ -3,7 +3,12 @@ import { createRoot } from 'react-dom/client';
 import { expect, it, vi } from 'vitest';
 import { SyncNotice, receiveHaltMessage } from '../src/ui/SyncNotice';
 import type { SyncRuntime, SyncStatus } from '../src/crdt/accountSyncDriver';
-import type { LoginStatus, NetworkLogin } from '../src/account/networkLogin';
+import type { LoginProblem, LoginStatus, NetworkLogin } from '../src/account/networkLogin';
+import {
+  LOGIN_PROBLEM_MESSAGES,
+  NetworkLoginNotice,
+  loginMessage,
+} from '../src/ui/NetworkLoginNotice';
 
 it('offers a passkey reconnect instead of ineffective lane retries, without hiding another halt', async () => {
   vi.useFakeTimers();
@@ -269,13 +274,112 @@ it('names an unverified history snapshot, says what resolves it, and offers no i
       receive: { ...status.receive, reason: 'history-waiting' },
     };
     expect(receiveHaltMessage(waiting.receive)).toBe(
-      'Changes from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.',
+      'Changes from your other devices may stop arriving here until this device can finish history maintenance. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.',
     );
     await act(async () =>
       root.render(<SyncNotice sync={{ status: waiting, retry, onStatus: () => () => {} }} />),
     );
     expect(host.textContent).toContain('receive:history-waiting');
     expect(host.querySelector('button')).toBeNull();
+  } finally {
+    await act(async () => root.unmount());
+    host.remove();
+    vi.useRealTimers();
+  }
+});
+
+// Phase 551: why the last sign-in attempt failed, in the sync notice and the account menu's
+// login notice. Only a service that gave no usable answer says to check the connection.
+it('says why a reconnect did not finish, and only no answer says to check the connection', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(30000);
+  (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+  const host = document.createElement('div');
+  document.body.append(host);
+  const root = createRoot(host);
+  const common = {
+    phase: 'blocked' as const,
+    failures: 0,
+    nextAttemptAt: null,
+    issueSince: 0,
+    lastSuccessAt: null,
+  };
+  const status: SyncStatus = {
+    send: { ...common, reason: 'sign-in-required', acceptedThrough: 1 },
+    receive: { ...common, reason: 'sign-in-required', receivedThrough: 1 },
+  };
+  let loginStatus: LoginStatus = 'reconnect',
+    problem: LoginProblem | undefined;
+  const listeners = new Set<() => void>();
+  const subscribe = (f: () => void) => {
+    listeners.add(f);
+    return () => {
+      listeners.delete(f);
+    };
+  };
+  const sync: SyncRuntime = { status, retry: vi.fn(), onStatus: (f) => subscribe(() => f(status)) };
+  const login = {
+    subscribe,
+    getSnapshot: () => loginStatus,
+    getProblem: () => problem,
+    connect: vi.fn(async () => {}),
+    signOut: vi.fn(async () => {}),
+  } as unknown as NetworkLogin;
+  const show = async (next: LoginStatus, why: LoginProblem | undefined) => {
+    loginStatus = next;
+    problem = why;
+    await act(async () => {
+      for (const f of listeners) f();
+    });
+  };
+  try {
+    await act(async () =>
+      root.render(
+        <>
+          <SyncNotice sync={sync} login={login} />
+          <NetworkLoginNotice login={login} close={() => {}} />
+        </>,
+      ),
+    );
+    const sentences = (): string[] => [...host.querySelectorAll('p')].map((p) => p.textContent!);
+    expect(sentences()).toContain(
+      'Reconnect sync with your account’s passkey. Your writing is available offline.',
+    );
+    for (const [why, sentence] of Object.entries(LOGIN_PROBLEM_MESSAGES) as [
+      LoginProblem,
+      string,
+    ][]) {
+      await show('reconnect', why);
+      expect(sentences(), why).toContain(sentence);
+      expect(sentences(), why).toContain(`${sentence} Your writing remains available offline.`);
+      expect(sentence.includes('Check your connection'), why).toBe(why === 'unreachable');
+      expect(sentence.includes('This is not a problem with your connection.'), why).toBe(
+        why === 'busy' || why === 'unavailable' || why === 'refused',
+      );
+    }
+    expect(LOGIN_PROBLEM_MESSAGES).toEqual({
+      unreachable:
+        'Sync could not reach the account service. Check your connection, then reconnect sync.',
+      busy: 'The account service is busy, so sync could not connect. This is not a problem with your connection. Try Reconnect sync again in a minute.',
+      unavailable:
+        'The account service cannot save sign-ins right now, so sync could not connect. This is not a problem with your connection. Try again later.',
+      outdated:
+        'The account service could not use the sign-in request from this version of the app. Updating the app may fix it.',
+      refused:
+        'The account service did not accept this sign-in. This is not a problem with your connection. Try again later.',
+    });
+    // A disconnected login with no known reason names the action, not the connection.
+    await show('disconnected', undefined);
+    expect(sentences()).toContain(
+      'Sync is not connected. Reconnect sync to try again. Your writing remains available offline.',
+    );
+    expect(loginMessage('disconnected', 'busy')).toBe(
+      `${LOGIN_PROBLEM_MESSAGES.busy} Your writing remains available offline.`,
+    );
+    // A reason never replaces a status that is not offering to connect.
+    expect(loginMessage('remembered', 'busy')).toBe('Account login remembered on this device.');
+    await show('reconnect', undefined);
+    expect(sentences().some((s) => Object.values(LOGIN_PROBLEM_MESSAGES).includes(s))).toBe(false);
   } finally {
     await act(async () => root.unmount());
     host.remove();

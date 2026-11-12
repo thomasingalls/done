@@ -1,0 +1,104 @@
+{
+ "hooks_checked": 256,
+ "literals_checked": 122,
+ "changed": [
+  {
+   "path": "src/account/historyHttp.ts",
+   "kind": "hook",
+   "text": "addEventListener",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/account/historyHttp.ts",
+   "kind": "hook",
+   "text": "application/json",
+   "base": 2,
+   "now": 3
+  },
+  {
+   "path": "src/account/historyHttp.ts",
+   "kind": "hook",
+   "text": "removeEventListener",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/account/historyHttp.ts",
+   "kind": "literal",
+   "text": "'application/json'",
+   "base": 2,
+   "now": 3
+  },
+  {
+   "path": "src/account/historyMaintenance.ts",
+   "kind": "hook",
+   "text": "history-checkpoint",
+   "base": 1,
+   "now": 3
+  },
+  {
+   "path": "src/account/historyMaintenance.ts",
+   "kind": "hook",
+   "text": "} catch (cause) {",
+   "base": 2,
+   "now": 4
+  },
+  {
+   "path": "src/account/networkLogin.ts",
+   "kind": "hook",
+   "text": "sign-in-required",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/account/networkLogin.ts",
+   "kind": "hook",
+   "text": "storage-unavailable",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/account/networkLogin.ts",
+   "kind": "literal",
+   "text": "'storage-unavailable'",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/account/networkLogin.ts",
+   "kind": "literal",
+   "text": "'sign-in-required'",
+   "base": 1,
+   "now": 2
+  },
+  {
+   "path": "src/crdt/historyOwner.ts",
+   "kind": "hook",
+   "text": "'../../account-protocol/",
+   "base": 7,
+   "now": 8
+  },
+  {
+   "path": "src/crdt/historyOwner.ts",
+   "kind": "hook",
+   "text": "account-protocol",
+   "base": 7,
+   "now": 8
+  },
+  {
+   "path": "src/crdt/historyOwner.ts",
+   "kind": "hook",
+   "text": "account-protocol/",
+   "base": 7,
+   "now": 8
+  },
+  {
+   "path": "src/ui/AccountHistory.tsx",
+   "kind": "hook",
+   "text": "History maintenance",
+   "base": 3,
+   "now": 2
+  }
+ ]
+}

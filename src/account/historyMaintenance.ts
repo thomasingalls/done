@@ -36,6 +36,7 @@ import {
   HistoryReplayLimit,
   historyReplayPositions,
 } from './historyReplayBound';
+import { HistoryRefusal, namedHistoryFailure } from './historyFailure';
 
 export interface HistoryMaintenanceProgress {
   v: 1;
@@ -230,7 +231,8 @@ export async function runHistoryMaintenance(
       discard: null,
     };
   const durable = async () => {
-    if (!same(await read(), retained)) throw Error('History progress changed');
+    if (!same(await read(), retained))
+      throw new HistoryRefusal('history-local-progress', 'History progress changed');
     guard();
   };
   const save = async (next: HistoryMaintenanceProgress) => {
@@ -238,7 +240,8 @@ export async function runHistoryMaintenance(
     await durable();
     await io.replace(structuredClone(retained), structuredClone(captured));
     const cold = await read();
-    if (!same(cold, captured)) throw Error('History progress did not persist');
+    if (!same(cold, captured))
+      throw new HistoryRefusal('history-local-progress', 'History progress did not persist');
     retained = cold;
   };
   const verify = async (
@@ -248,7 +251,7 @@ export async function runHistoryMaintenance(
     const at = await owner.authorityAt(checkpoint.manifest.epoch, checkpoint.manifest.epochHead);
     const c = await verifyHistoryCheckpoint(checkpoint, at);
     if (c.manifest.workspaceId !== p.workspaceId || c.manifest.lineageId !== p.lineageId)
-      throw Error('History checkpoint account changed');
+      throw new HistoryRefusal('history-reply-unverified', 'History checkpoint account changed');
     if (admission) await verifyHistoryCheckpointAdmission(admission, c, at);
     guard();
   };
@@ -264,6 +267,19 @@ export async function runHistoryMaintenance(
     )
       throw Error('Retained history attempt belongs to another actor');
   }
+  /** A reply that does not verify is named as such, unless a more particular code was given. */
+  const unverified = async <T>(check: () => Promise<T>): Promise<T> => {
+    try {
+      return await check();
+    } catch (cause) {
+      if (namedHistoryFailure(cause) || io.signal.aborted) throw cause;
+      throw new HistoryRefusal(
+        'history-reply-unverified',
+        cause instanceof Error ? cause.message : 'History reply did not verify',
+        { cause },
+      );
+    }
+  };
   const acceptCatalog = async (catalog: HistoryCatalog) => {
     const held = retained?.catalog;
     if (
@@ -272,7 +288,7 @@ export async function runHistoryMaintenance(
         (catalog.sequence === held.sequence &&
           (catalog.latest !== held.latest || catalog.previous !== held.previous)))
     )
-      throw Error('History catalog regressed or forked');
+      throw new HistoryRefusal('history-reply-unverified', 'History catalog regressed or forked');
     if (!same(held, catalog)) await save({ ...current(), catalog });
   };
   const exchange = async (action: HistoryExchange['action'], payload: unknown) => {
@@ -292,19 +308,22 @@ export async function runHistoryMaintenance(
     await durable();
     const raw = await io.exchange(structuredClone(request));
     guard();
-    const page = await verifyHistoryCheckpointPage(raw, request, p.pin);
-    verifyHistoryHeads(page.heads, authority);
-    if (page.checkpoint) await verify(page.checkpoint, page.admission);
-    else if (page.admission) {
-      const attempt = retained?.attempt;
-      if (
-        action !== 'admit' ||
-        !attempt ||
-        (await historyCheckpointHash(attempt.checkpoint)) !== page.admission.checkpointHash
-      )
-        throw Error('Unexpected history completion receipt');
-      await verify(attempt.checkpoint, page.admission);
-    }
+    const page = await unverified(async () => {
+      const page = await verifyHistoryCheckpointPage(raw, request, p.pin);
+      verifyHistoryHeads(page.heads, authority);
+      if (page.checkpoint) await verify(page.checkpoint, page.admission);
+      else if (page.admission) {
+        const attempt = retained?.attempt;
+        if (
+          action !== 'admit' ||
+          !attempt ||
+          (await historyCheckpointHash(attempt.checkpoint)) !== page.admission.checkpointHash
+        )
+          throw Error('Unexpected history completion receipt');
+        await verify(attempt.checkpoint, page.admission);
+      }
+      return page;
+    });
     if (
       action === 'read' &&
       page.checkpoint &&
@@ -315,7 +334,7 @@ export async function runHistoryMaintenance(
           (page.checkpoint.manifest.sequence !== page.catalog.sequence + 1 ||
             page.checkpoint.manifest.parent !== page.catalog.latest)))
     )
-      throw Error('History catalog sequence changed');
+      throw new HistoryRefusal('history-advanced', 'History catalog sequence changed');
     await acceptCatalog(page.catalog);
     return page;
   };
@@ -352,6 +371,13 @@ export async function runHistoryMaintenance(
       (cp && historySnapshotTooLarge('pending', cp)) ||
       (latest && historySnapshotTooLarge('latest', latest));
     const saved = await savedState(page);
+    // The saved attempt is the proposal this device is cancelling, kept while another device's
+    // snapshot waits: it can never be sent, so it does not make the state "resume" (phase 551).
+    const mine = own();
+    const moot =
+      !!mine &&
+      deferred(page) &&
+      (await historyCheckpointHash(mine.checkpoint)) === retained?.discard;
     return {
       ...(tooLarge ? { tooLarge } : {}),
       ...(saved ? { saved } : {}),
@@ -370,7 +396,7 @@ export async function runHistoryMaintenance(
           : 'none'
         : cp.manifest.epochHead !== p.head || !same(cp.sources, page.sources)
           ? 'stale'
-          : retained?.attempt
+          : retained?.attempt && !moot
             ? 'resume'
             : cp.manifest.producer !== credentialId || p.certificate.members.length === 1
               ? 'verify'
@@ -449,7 +475,18 @@ export async function runHistoryMaintenance(
     // saved catalog says when one was. Then confirm on a fresh catalog before keeping it.
     const known = retained.catalog;
     if (!known || !deferred({ catalog: known }) || !deferred(await exchange('read', 'catalog')))
-      return cancel(retained.discard);
+      try {
+        return await cancel(retained.discard);
+      } catch (cause) {
+        // A cancellation recorded while its reply was lost leaves the saved catalog showing the
+        // cancelled snapshot pending, and another device may have published since. The refusal
+        // is unsigned, so it only prompts a fresh authenticated catalog, which decides (phase 551).
+        if (
+          namedHistoryFailure(cause) !== 'history-checkpoint-conflict' ||
+          !deferred(await exchange('read', 'catalog'))
+        )
+          throw cause;
+      }
     // Kept until that snapshot is admitted or discarded; it never blocks verifying it. A saved
     // attempt of the proposal being cancelled cannot be published meanwhile (phase 547).
     const mine = own();
@@ -476,13 +513,19 @@ export async function runHistoryMaintenance(
     pending.catalog.latest !== latest.catalog.latest ||
     pending.catalog.sequence !== latest.catalog.sequence
   )
-    throw Error('History advanced while reading; retry against its new baseline');
+    throw new HistoryRefusal(
+      'history-advanced',
+      'History advanced while reading; retry against its new baseline',
+    );
   if (pending.checkpoint)
-    await verifyHistoryCheckpointParent(pending.checkpoint, latest.checkpoint);
+    await unverified(() => verifyHistoryCheckpointParent(pending.checkpoint!, latest.checkpoint));
   if (command === 'inspect') return describe(pending, latest.checkpoint);
   if (command === 'prune') {
     if (retained?.attempt || retained?.discard)
-      throw Error('Finish saved history maintenance before pruning');
+      throw new HistoryRefusal(
+        'history-finish-saved',
+        'Finish saved history maintenance before pruning',
+      );
     const latest = await exchange('read', 'latest'),
       previous = await exchange('read', 'previous');
     if (
@@ -493,8 +536,11 @@ export async function runHistoryMaintenance(
       latest.catalog.latest !== previous.catalog.latest ||
       latest.catalog.previous !== previous.catalog.previous
     )
-      throw Error('Pruning requires two unchanged admitted snapshots');
-    await verifyHistoryCheckpointParent(latest.checkpoint, previous.checkpoint);
+      throw new HistoryRefusal(
+        'history-prune-unchanged',
+        'Pruning requires two unchanged admitted snapshots',
+      );
+    await unverified(() => verifyHistoryCheckpointParent(latest.checkpoint!, previous.checkpoint!));
     // A device behind the pruned floor can only continue by installing the latest snapshot.
     const tooLarge = historySnapshotTooLarge('latest', latest.checkpoint);
     if (tooLarge)
@@ -524,13 +570,21 @@ export async function runHistoryMaintenance(
       }
       return describe(pending, latest.checkpoint);
     }
+    // This device's discard is already kept for later: nothing else here is its own to discard.
+    if (retained?.discard && deferred(pending)) return describe(pending, latest.checkpoint);
     if (pending.checkpoint) {
       const cp = pending.checkpoint;
       if (cp.manifest.epochHead === p.head && cp.manifest.producer !== credentialId)
-        throw Error('Only the producer can cancel this checkpoint');
+        throw new HistoryRefusal(
+          'history-not-producer',
+          'Only the producer can cancel this checkpoint',
+        );
       const held = retained?.attempt;
       if (held && (await historyCheckpointHash(held.checkpoint)) !== pending.catalog.pending)
-        throw Error('A different checkpoint is pending; retained progress was not cleared');
+        throw new HistoryRefusal(
+          'history-checkpoint-conflict',
+          'A different checkpoint is pending; retained progress was not cleared',
+        );
       return cancel(pending.catalog.pending);
     } else if (retained?.attempt?.admission) {
       // A lost admission reply could already have committed. Reconcile it instead of forgetting it.
@@ -539,7 +593,11 @@ export async function runHistoryMaintenance(
     if (retained?.attempt) return cancel(await historyCheckpointHash(retained.attempt.checkpoint));
     return { sequence: current().catalog!.sequence, pending: 'none', canDiscard: false };
   }
-  if (retained?.attempt) throw Error('Resume or cancel the retained checkpoint first');
+  if (retained?.attempt)
+    throw new HistoryRefusal(
+      'history-finish-saved',
+      'Resume or cancel the retained checkpoint first',
+    );
   if (pending.checkpoint) {
     if (command === 'create') return describe(pending);
     return finish(pending, latest.checkpoint);

@@ -1,0 +1,57 @@
+M1 route refusals are not named (every 409 reads as no answer): exit 1; ℹ pass 5; ℹ fail 8
+    ✖ a discard whose reply was lost, then another device publishing: discard keeps the cancellation and offers verifying (HIST-OTHER) (840.80725ms)
+    ✖ a forged conflict on a kept cancellation only prompts a fresh catalog; the cancellation is sent next time (578.354666ms)
+    ✖ boundary changed: pruning after a newer snapshot was verified is refused by name and removes nothing (1913.216417ms)
+    ✖ busy: a snapshot sent while another device’s waits is refused by name, and resending changes nothing (782.456333ms)
+    ✖ cancelled: progress from before a discard is refused by name when resent; discarding it here ends it (690.989042ms)
+    ✖ conflict: discarding a snapshot another device verified meanwhile is refused by name, then ends cleanly (999.266708ms)
+    ✖ controls: a forged or unknown refusal body chooses only a sentence; saved state and classification are unchanged (540.617416ms)
+    ✖ too large: a snapshot an earlier build sends past the install bound is refused by name and not kept (2358.766667ms)
+M2 any JSON object counts as a refusal envelope: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ controls: no reply, a timeout and a non-JSON reply still say check your connection; nothing changes (625.284458ms)
+M3 an unknown reason reads as no answer: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ controls: a forged or unknown refusal body chooses only a sentence; saved state and classification are unchanged (716.048917ms)
+M4 a timeout reads as no reply: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ controls: no reply, a timeout and a non-JSON reply still say check your connection; nothing changes (541.997ms)
+M5 sign-in and authorization refusals are not named: exit 1; ℹ pass 10; ℹ fail 3
+    ✖ a login with no access says why: not connected, or the service’s own reason (36.61425ms)
+    ✖ capacity: a busy service is named after the transport’s own retries, and nothing changes (3440.477334ms)
+    ✖ sign-in required: a session ended on the service is named, and nothing changes until it is renewed (471.250958ms)
+M6 an unverifiable answer has no code: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ controls: a forged or unknown refusal body chooses only a sentence; saved state and classification are unchanged (1006.802542ms)
+M7 the login gives no reason for having no access: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ a login with no access says why: not connected, or the service’s own reason (38.080333ms)
+M8 the classifier ignores a login with no access: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ a login with no access says why: not connected, or the service’s own reason (34.358792ms)
+M9 HIST-OTHER: a refused resend of a kept cancellation is not checked on a fresh catalog: exit 1; ℹ pass 11; ℹ fail 2
+    ✖ a discard whose reply was lost, then another device publishing: discard keeps the cancellation and offers verifying (HIST-OTHER) (765.201208ms)
+    ✖ a forged conflict on a kept cancellation only prompts a fresh catalog; the cancellation is sent next time (560.26ms)
+M10 HIST-OTHER: the refusal decides instead of the fresh catalog: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ a forged conflict on a kept cancellation only prompts a fresh catalog; the cancellation is sent next time (689.775375ms)
+M11 HIST-OTHER: the attempt being cancelled still shows as resume: exit 1; ℹ pass 11; ℹ fail 2
+    ✖ a discard whose reply was lost, then another device publishing: inspect keeps the cancellation and offers verifying (HIST-OTHER) (930.659125ms)
+    ✖ conflict: discarding a snapshot another device verified meanwhile is refused by name, then ends cleanly (1161.01825ms)
+M12 HIST-OTHER: discard with a kept cancellation tries the other device’s snapshot: exit 1; ℹ pass 12; ℹ fail 1
+    ✖ a discard whose reply was lost, then another device publishing: discard keeps the cancellation and offers verifying (HIST-OTHER) (900.709167ms)
+M13 the login keeps no reason for a renewal refusal: exit 1; ℹ pass 19; ℹ fail 2
+    ✖ a busy service, storage that cannot save and an outdated request are named; each clears on success (52.774584ms)
+    ✖ no reply, a gateway page and a timeout say unreachable; a forged reason is only a reason (27.47025ms)
+M14 the login keeps no reason for a finish refusal: exit 1; ℹ pass 20; ℹ fail 1
+    ✖ a busy service, storage that cannot save and an outdated request are named; each clears on success (54.056708ms)
+M15 no reply is not told apart from other failures: exit 1; ℹ pass 20; ℹ fail 1
+    ✖ no reply, a gateway page and a timeout say unreachable; a forged reason is only a reason (12.253417ms)
+M16 a reconnect forgets why its challenge failed: exit 1; ℹ pass 20; ℹ fail 1
+    ✖ a reconnect the service cannot start says why, and a later reconnect clears it (15.029041ms)
+M17 the login notice ignores the reason: exit 1; Tests  1 failed | 4 passed (5)
+    × says why a reconnect did not finish, and only no answer says to check the connection 6ms
+M18 the sync notice ignores the reason: exit 1; Tests  1 failed | 4 passed (5)
+    × says why a reconnect did not finish, and only no answer says to check the connection 5ms
+M19 the bridge drops the reason: exit 1; Tests  1 failed | 13 passed (14)
+    × carries why the last sign-in attempt failed to the page, and refuses an unknown reason (phase 551) 3ms
+M20 the history view ignores the code: exit 1; Tests  1 failed | 6 passed (7)
+    × says what each failure is and what to do; only no answer says to check the connection (phase 551) 8ms
+M21 no reply stops saying check your connection: exit 1; Tests  1 failed | 6 passed (7)
+    × says what each failure is and what to do; only no answer says to check the connection (phase 551) 5ms
+M22 the waiting sentence keeps examples that do not fit every build: exit 1; Tests  1 failed | 4 passed (5)
+    × names an unverified history snapshot, says what resolves it, and offers no ineffective retry 6ms
+exit 0

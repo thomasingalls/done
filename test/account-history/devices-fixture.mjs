@@ -27,6 +27,7 @@ import {
 } from '../../account-protocol/membershipDelivery.ts';
 import { historyExchangeMessage } from '../../account-protocol/historyExchange.ts';
 import { client as c } from './client.mjs';
+import { historyHttp } from './http-fixture.mjs';
 
 /** Two certified devices at epoch 3: `existing` (the original) and `new` (enrolled). */
 async function approvedAccount(t) {
@@ -363,6 +364,8 @@ class Refused extends Error {
   constructor(refusal) {
     super(refusal);
     this.refusal = refusal;
+    // The code the HTTP transport gives this refusal (phase 551).
+    this.code = 'history-' + refusal;
   }
 }
 
@@ -370,8 +373,10 @@ class Refused extends Error {
  * One account with `count` certified devices (2 or 3). Each device has its own saved progress
  * and runs the real `runHistoryMaintenance` against the real in-process service. A refusal is
  * thrown, as the HTTP route answers it with 409 and the transport throws for any non-200.
+ * With `{ http: true }` every request goes through the real transports and HTTP route instead
+ * (phase 551); the caller mocks Date.now to 1000.
  */
-export async function devices(t, count = 2) {
+export async function devices(t, count = 2, { http = false } = {}) {
   const x = await approvedAccount(t);
   const third = count === 3 ? await thirdDevice(x) : null;
   const { history } = third
@@ -409,6 +414,7 @@ export async function devices(t, count = 2) {
     ...(third ? [{ name: 'C', id: third.id, key: third.key }] : []),
   ];
   const positions = new Map(roles.map((r) => [r.id, 0]));
+  const network = http ? await historyHttp(t, x) : null;
   /** Accepted positions by device A, n at a time. */
   const upload = async (n, role = roles[0]) => {
     for (let i = 0; i < n; i++) {
@@ -435,7 +441,8 @@ export async function devices(t, count = 2) {
       admitFault = null;
     const sent = [],
       refusals = [],
-      signer = async (bytes) => signed(role.key, bytes);
+      signer = async (bytes) => signed(role.key, bytes),
+      remote = network?.connect(membership, role.id, signer);
     const owner = {
       authority: membership,
       credentialId: role.id,
@@ -478,6 +485,17 @@ export async function devices(t, count = 2) {
       async exchange(request) {
         sent.push(request.action + ':' + (request.action === 'read' ? request.payload : ''));
         await before?.(request);
+        if (remote) {
+          let page;
+          try {
+            page = await remote(request);
+          } catch (cause) {
+            refusals.push(request.action + ':' + cause.code);
+            throw cause;
+          }
+          await after?.(request, { ok: true, page });
+          return page;
+        }
         const reply = await x.authority.owner.exchangeHistoryCheckpoint(x.f.core, request);
         await after?.(request, reply);
         if (!reply.ok) {
@@ -556,6 +574,7 @@ export async function devices(t, count = 2) {
     x,
     p,
     membership,
+    network,
     upload,
     rows,
     catalog: () => {

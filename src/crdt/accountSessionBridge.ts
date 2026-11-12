@@ -1,5 +1,5 @@
 /** Public presentation and explicit actions only. No credential, proof, journal or arbitrary RPC. */
-import type { NetworkLogin, LoginStatus } from '../account/networkLogin';
+import type { NetworkLogin, LoginStatus, LoginProblem } from '../account/networkLogin';
 import type { DeviceRoster, DeviceRosterSnapshot } from '../account/deviceRoster';
 import type {
   HistoryMaintenanceCommand,
@@ -14,7 +14,8 @@ import type { WorkerChannel } from './workerChannel';
 export type NetworkLoginView = Pick<
   NetworkLogin,
   'getSnapshot' | 'subscribe' | 'connect' | 'signOut'
->;
+> &
+  Partial<Pick<NetworkLogin, 'getProblem'>>;
 export interface AccountSessionSource {
   login: NetworkLoginView;
   sync?: SyncRuntime | undefined;
@@ -22,6 +23,8 @@ export interface AccountSessionSource {
 }
 interface SessionState {
   login: LoginStatus;
+  /** Phase 551: why the last sign-in attempt failed, when the status alone does not say. */
+  loginProblem?: LoginProblem;
   sync: SyncStatus | null;
   local: LocalRetentionStatus | null;
   automatic: AutomaticHistoryStatus | null;
@@ -60,6 +63,7 @@ const loginStates = [
   'sign-out-pending',
   'signed-out',
 ];
+const loginProblems = ['unreachable', 'busy', 'unavailable', 'outdated', 'refused'];
 const commands = ['inspect', 'create', 'resume', 'verify', 'discard', 'prune'];
 const savedSnapshots = ['sendable', 'waiting', 'blocked', 'superseded', 'stale', 'cancelling'];
 function history(input: unknown): HistoryMaintenanceStatus {
@@ -207,18 +211,20 @@ function automatic(input: unknown): AutomaticHistoryStatus {
   return Object.freeze({ ...v, ...(v.history ? { history: history(v.history) } : {}) });
 }
 export function captureAccountSessionState(input: unknown): Readonly<SessionState> {
-  fields(input, ['login', 'sync', 'local', 'automatic', 'devices']);
+  fields(input, ['login', 'sync', 'local', 'automatic', 'devices'], ['loginProblem']);
   const v = input as SessionState,
     d = v.devices;
   fields(d, ['remove', 'history', 'detached'], ['transition']);
   if (
     !loginStates.includes(v.login) ||
+    (Object.hasOwn(v, 'loginProblem') && !loginProblems.includes(v.loginProblem!)) ||
     ['remove', 'history', 'detached'].some((k) => typeof d[k as 'remove'] !== 'boolean') ||
     (d.transition !== undefined && !text(d.transition))
   )
     throw fail();
   return Object.freeze({
     login: v.login,
+    ...(v.loginProblem ? { loginProblem: v.loginProblem } : {}),
     sync: v.sync === null ? null : sync(v.sync),
     local: v.local === null ? null : local(v.local),
     automatic: v.automatic === null ? null : automatic(v.automatic),
@@ -226,8 +232,10 @@ export function captureAccountSessionState(input: unknown): Readonly<SessionStat
   });
 }
 function snapshot(source: AccountSessionSource) {
+  const problem = source.login.getProblem?.();
   return captureAccountSessionState({
     login: source.login.getSnapshot(),
+    ...(problem ? { loginProblem: problem } : {}),
     sync: source.sync?.status ?? null,
     local: source.devices.localHistory?.status ?? null,
     automatic: source.devices.automaticHistory?.status ?? null,
@@ -469,6 +477,7 @@ export function createWindowAccountSession(
   };
   const login: NetworkLoginView = Object.freeze({
     getSnapshot: () => (closed ? 'closed' : read().login),
+    getProblem: () => (closed ? undefined : read().loginProblem),
     subscribe,
     connect: async () => {
       await request({ kind: 'connect' });

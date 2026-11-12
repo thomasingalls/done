@@ -43,7 +43,7 @@ What was built from them is in the phase records beside this folder. What was he
 | Report | Question | Outcome |
 |---|---|---|
 | [13](./13-automatic-history-pruning.md) | What stands between the switched-off automatic history and shipping it? | Staged plan; phases 546 and 547 fix what it found in today's flow |
-| [14](./14-behind-devices-and-refusal-messages.md) | What happens to a device behind a prune, and what do service refusals show? | First part superseded by 15; the refusal inventory stands |
+| [14](./14-behind-devices-and-refusal-messages.md) | What happens to a device behind a prune, and what do service refusals show? | First part superseded by 15; the refusal inventory stands: history and sign-in in phase 551, sync lanes queued |
 | [15](./15-behind-device-test-matrix.md) | The same, with tests built to trip the failure | A lost phone recovers; the reduced-peer strand is real |
 
 ## Supporting files

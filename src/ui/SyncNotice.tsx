@@ -1,6 +1,7 @@
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import type { SyncLane, SyncLaneStatus, SyncRuntime } from '../crdt/accountSyncDriver';
 import type { NetworkLoginView } from '../crdt/accountSessionBridge';
+import { LOGIN_PROBLEM_MESSAGES } from './NetworkLoginNotice';
 
 const noLoginSubscription = () => () => {};
 const noLoginSnapshot = () => undefined;
@@ -22,7 +23,7 @@ const mib = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)} MiB`;
 /** Named receive halt (phase 544) or standing condition; undefined keeps the general sentence. */
 export function receiveHaltMessage(lane: SyncLaneStatus): string | undefined {
   if (lane.reason === 'history-waiting')
-    return 'Changes from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.';
+    return 'Changes from your other devices may stop arriving here until this device can finish history maintenance. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept.';
   if (lane.reason === 'history-unverified')
     return 'Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.';
   const d = lane.reason === 'inbound-size' ? lane.detail : undefined;
@@ -45,6 +46,11 @@ export function SyncNotice({
   const loginStatus = useSyncExternalStore(
     login?.subscribe ?? noLoginSubscription,
     login?.getSnapshot ?? noLoginSnapshot,
+  );
+  // Phase 551: why the last reconnect did not finish, when the service said or gave no answer.
+  const loginProblem = useSyncExternalStore(
+    login?.getProblem ? login.subscribe : noLoginSubscription,
+    login?.getProblem ?? noLoginSnapshot,
   );
   const [connecting, setConnecting] = useState(false);
   const [connectionError, setConnectionError] = useState(false);
@@ -134,6 +140,9 @@ export function SyncNotice({
         <p className="menu-note">
           Sync needs an account passkey check. Your writing remains available offline.
         </p>
+      )}
+      {signInRequired && loginProblem && (
+        <p className="menu-note">{LOGIN_PROBLEM_MESSAGES[loginProblem]}</p>
       )}
       {signInRequired && online && login && !details && (
         <button

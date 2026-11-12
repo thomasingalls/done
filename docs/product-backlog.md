@@ -77,9 +77,9 @@ The agents' reports behind these items are kept in
   `test/account-history` client, service and pruning node tests and
   `test/packaged-account/automatic-history.spec.ts` are not in CI. A device joined by handoff may
   be shown an account-wide position count larger than its own replay, so Create can be hidden for
-  it when it could still make the snapshot (phase 547). A discard whose reply is lost, followed by
-  another device publishing, leaves the client resending a cancellation the service refuses (found
-  in phase 547; intended for the refusal-messages work).
+  it when it could still make the snapshot (phase 547). (A discard whose reply is lost, followed by
+  another device publishing, no longer leaves the client resending a refused cancellation: phase
+  551.)
 
 ### Automatic service-history pruning
 
@@ -87,7 +87,8 @@ The operator wants it: "the current flow where you have to click a lot of button
 waiting just doesn't cut it." It exists behind the build flag `VITE_ACCOUNT_HISTORY_AUTO`, off in
 production. Pruning the log does not shrink the document; see compaction below.
 
-- **AUTO-HIST-STAGES — a staged path.** Stage 0, refusal messages and one status line. Stage 1,
+- **AUTO-HIST-STAGES — a staged path.** Stage 0, refusal messages (history maintenance and
+  sign-in done in phase 551; sync lanes next) and one status line. Stage 1,
   manual-flow correctness (phases 546 and 547, the scoped service cache wipe). Stage 2, automatic
   create and verify triggered by positions accepted since the latest snapshot, provisionally 1,024,
   not by local records and an hourly clock. Stage 3, automatic prune once per snapshot by the

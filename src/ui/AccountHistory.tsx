@@ -7,6 +7,7 @@ import type {
   HistoryReplayRefused,
   HistorySnapshotTooLarge,
 } from '../account/historyMaintenance';
+import { historyFailureMessage } from './historyFailureMessages';
 
 const mib = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)} MiB`;
 const count = (n: number) => n.toLocaleString('en-US');
@@ -120,10 +121,8 @@ export function AccountHistory({ run }: { run: NonNullable<DeviceRoster['history
     setError('');
     try {
       setStatus(await run(command));
-    } catch {
-      setError(
-        'History maintenance could not finish. Your writing and saved progress are kept. Check your connection, then check history or resume.',
-      );
+    } catch (cause) {
+      setError(historyFailureMessage(cause));
     } finally {
       flight.current = false;
       setBusy(false);

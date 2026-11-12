@@ -2,7 +2,7 @@
 
 A delegated agent's report from 2026-11-11, filed as delivered. Run in a copy of `2277ef5db`, two devices. Paths under `/private/tmp` were session scratch space and no longer exist; the supporting files that mattered are under [support](./support/).
 
-**What happened next.** The operator judged its browser test too weak to settle the question: two devices, a returning device that had verified both snapshots, tiny histories and no failing control. Treat part A as superseded by report 15. Part B, the refusal inventory and proposed sentences, stands and is queued.
+**What happened next.** The operator judged its browser test too weak to settle the question: two devices, a returning device that had verified both snapshots, tiny histories and no failing control. Treat part A as superseded by report 15. Part B, the refusal inventory and proposed sentences, stands: its history-route and sign-in parts were built in [phase 551](../551-refusal-messages/README.md), with sentences revised there, and its sync-lane part is queued.
 
 ---
 
