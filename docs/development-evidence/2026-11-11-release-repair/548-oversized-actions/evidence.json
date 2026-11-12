@@ -1,0 +1,208 @@
+{
+ "phase": 548,
+ "date": "2026-11-12",
+ "base": "ccd0baca0",
+ "requested": "coordinating session, 2026-11-12, for the operator's approval 'split where it reasonably can and refuse cleanly otherwise': an action whose update is over the 16 KiB journal limit saves if the command can be split the way text edits already are; otherwise that one input is refused, the queue stays active, sync is not halted and the person is told the truth; the limit and journal format do not change",
+ "amends": "no recorded decision; brings the workspace adapter in line with the 2026-09-08 editor-admission decision ('unsupported large command output refuses visibly') and keeps the 2026-09-08 ordered-admission queue guard; retires interim lines in docs/workspace-admission.md ('block visibly') and docs/editor-admission.md ('block with pressure')",
+ "sourceSha256": {
+  "src/crdt/actionSize.ts": "3222e75dac52dc344f55e63f960bd91399e7b28809da9ecbd719da4748f98e2a",
+  "src/crdt/admittedWorkspace.ts": "4728c211014c93f79a6bf6d8263693037443f633059365d15afd03344171c6eb",
+  "src/crdt/moves.ts": "a6c3ea56daff2f43d2ca427e295a6c65d08771fd5874b302da3de5fd15a6c811",
+  "src/crdt/workspaceCommands.ts": "177ffe9be07618ae0fc02c44123f2742e0111228091ee272ae82514c1ca41269",
+  "src/editor/admittedEditor.ts": "d24c7c453c61d5967ce9178b1d3b38b59853cdf51a3abf3e5248e3b4730acc35",
+  "src/ui/workspaceUi.tsx": "a6eb1fe2fc79c70b88956aae86d08aad2c6788e6bdc3fe312187f9fd8348e296",
+  "src/ui/Goals.tsx": "112d9045f43ceb4da4a249b9a2ce8870ed58a6fa359f20adde9652670f26e859",
+  "test/oversizedActions.test.ts": "4d2600003bdf42b6a314785612338f738c69bd4014b014f03e2f6cda3b290e8b",
+  "test/oversizedActionsUi.test.tsx": "d356f02e7257eb97852e5a0ff7ca2b05b9858c790a34a87c1edc5cb3178163c6"
+ },
+ "limits": {
+  "maxJournalUpdateBytes": 16384,
+  "composeWholeBytes": 14336,
+  "textSliceUnits": 1000,
+  "maxActionTextUnits": 1048576,
+  "maxEncodedIntentBytes": 2088960,
+  "queueReservationBytes": 4194304
+ },
+ "split": {
+  "compose": {
+   "rule": "over 14 KiB of UTF-8: card from the first text slice, remainder as text-insert slices into it, same group, continuation keeps the {id} result",
+   "crashBetweenSlices": "card kept with its written slices; the remainder, held only in the page, is lost",
+   "undo": "one Undo removes the whole card; Redo over 16 KiB is refused",
+   "otherDevice": "receives each slice as its own update; sees the card grow from its first slice to whole and identical",
+   "protects": "UTF-16 surrogate pairs; not grapheme clusters"
+  }
+ },
+ "refused": [
+  "duplicate",
+  "done-for-now",
+  "merge",
+  "split",
+  "copy from Goals",
+  "move from Goals",
+  "Next to Goals",
+  "file to Goals (not tested)",
+  "undo",
+  "redo",
+  "formatting many lines (indent tested)",
+  "deleting a fragmented range"
+ ],
+ "sentence": "That text is too long for one action. Split it into smaller cards, or paste it into a card in parts.",
+ "stuckDevice": {
+  "pendingInputSurvivesReload": false,
+  "evidence": [
+   "unit: queue rebuilt in the stuck state, closed: nothing written to disk or journal; updated build opens active and saves the same 20 KiB text",
+   "browser on ccd0baca0: 200,000-character compose stuck, page reloaded and unlocked: no card, empty field, no status; small card saves and arrives"
+  ],
+  "updateFlow": "on the old build 'Reload to update' waits for durability, which refuses while blocked (admissionQueue.ts:1219-1223); the person discards pending input (draft kept, tested in the browser) or closes every window"
+ },
+ "unchangedQueueTest": "test/admissionQueue.test.ts:350 'enforces prepared-update size before sealing, preserving a resumable pending input' unchanged: it pins the queue guard for an adapter that breaks the contract",
+ "newTests": {
+  "test/oversizedActions.test.ts": 286,
+  "test/oversizedActionsUi.test.tsx": 4
+ },
+ "failedOnBase": {
+  "cases": 290,
+  "failed": 224,
+  "passed": 66,
+  "passedAre": "the 'just under' sizes (60 refusal-group, 6 compose at 15,000 bytes that fitted in one update before)",
+  "file": "base-tree-runs.txt"
+ },
+ "mutationControls": {
+  "file": "mutation-controls.txt",
+  "detected": 11,
+  "of": 11,
+  "note": "the direct-path guard was undetected until the fragmented deletion case was added"
+ },
+ "browser": {
+  "file": "browser-runs.txt",
+  "before": {
+   "saved": [
+    "5,000",
+    "15,000"
+   ],
+   "stalled90s": [
+    "17,000",
+    "5,500 three-byte",
+    "200,000",
+    "70,000 three-byte"
+   ],
+   "discardKeepsDraft": true,
+   "reloadWhileStuck": "no card, empty field, active"
+  },
+  "after": {
+   "savedMs": {
+    "5,000": 24,
+    "15,000": 248,
+    "17,000": 370,
+    "5,500 three-byte": 141,
+    "200,000": 14542,
+    "70,000 three-byte": 3742
+   },
+   "receivedOnBMs": {
+    "5,000": 841,
+    "15,000": 1051,
+    "17,000": 1187,
+    "5,500 three-byte": 965,
+    "200,000": 14876,
+    "70,000 three-byte": 5695
+   },
+   "exportsEqualBytes": 312711
+  },
+  "hostLoad": "4.3 to 6.8; another session's Playwright run active"
+ },
+ "ceilingNode": {
+  "file": "ceiling-probe.txt",
+  "1048576 single-byte ms": 113790,
+  "slices": 1049,
+  "largestUpdateBytes": 1396,
+  "696000 three-byte": "not finished after about 23 minutes; stopped by the command timeout",
+  "note": "each slice prepares against a fork of the whole document and re-encodes the remaining intent; cost grows with the square of the length; a lower one-action bound is left for an operator decision"
+ },
+ "runs": {
+  "neighbourFiles": [
+   "test/oversizedActions.test.ts",
+   "test/oversizedActionsUi.test.tsx",
+   "test/workspaceAdmission.test.ts",
+   "test/admissionQueue.test.ts",
+   "test/workspacePreparation.test.ts",
+   "test/doneForNow.test.ts",
+   "test/cardGoalsContextAdmission.test.ts",
+   "test/membershipEligibility.test.ts",
+   "test/pendingProjection.test.ts",
+   "test/sourceCapture.test.ts",
+   "test/workspaceBridge.test.ts",
+   "test/localAppStartup.test.ts",
+   "test/selectionHistory.test.ts",
+   "test/selectionSnapshots.test.ts",
+   "test/workspaceUiStatus.test.tsx",
+   "test/unfiledPanel.test.tsx",
+   "test/goals.test.ts",
+   "test/compose.test.tsx",
+   "test/admittedEditorProjection.test.ts",
+   "test/admittedClipboard.test.ts",
+   "test/admittedText.test.ts",
+   "test/moves.test.ts",
+   "test/cap.test.ts",
+   "test/cardArrival.test.ts",
+   "test/cardGoalsContext.test.ts",
+   "test/sections.test.ts",
+   "test/freeze.test.ts",
+   "test/attribution.test.ts",
+   "test/convergence.test.ts",
+   "test/multiDevice.test.ts"
+  ],
+  "neighbourResult": "30 files, 842 passed and 1 existing skip, 36.37 s",
+  "typecheck": "pass",
+  "formatAndLintChangedFiles": "pass",
+  "adapters": "nine CI adapter files, 178 of 178",
+  "validationInventory": "10 of 10",
+  "accountCryptoPrep": "6 of 6",
+  "fullSuite": "run at review on the final tree: pnpm test --maxWorkers=1, 349 files, 3,641 passed and 1 existing skip, 320.91 s",
+  "review": "run at review on the final tree: pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check"
+ },
+ "inventory": {
+  "recorded": true,
+  "obligationsBefore": 1120,
+  "obligations": 1122,
+  "unresolvedBefore": 555,
+  "unresolved": 555,
+  "caseDenominatorBefore": 2711,
+  "caseDenominator": 3001,
+  "vitestReviewedFilesBefore": 112,
+  "vitestReviewedFiles": 114,
+  "generalStagesBefore": 297,
+  "generalStages": 299,
+  "vitestReviewedStagesBefore": 131,
+  "vitestReviewedStages": 133
+ },
+ "runtimeCensus": {
+  "recorded": true,
+  "sources": 520,
+  "newSources": [
+   "src/crdt/actionSize.ts"
+  ],
+  "changedHashes": [
+   "src/crdt/admittedWorkspace.ts",
+   "src/crdt/moves.ts",
+   "src/crdt/workspaceCommands.ts",
+   "src/editor/admittedEditor.ts",
+   "src/ui/workspaceUi.tsx",
+   "src/ui/Goals.tsx"
+  ],
+  "domainLabelsOrCryptoCallsInChangedLines": 0,
+  "domainSitesMoved": [],
+  "constructionRegistryLinesFollowed": 0
+ },
+ "anchors": {
+  "checked": 31,
+  "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the six edited sources occurs the same number of times now",
+  "changed": [],
+  "removedMessage": "'Split the input source before admission.' (no file under vite/, test/ or scripts/ referenced it)"
+ },
+ "notRun": [
+  "native suites",
+  "browser suites other than the before-and-after run recorded here",
+  "any real device or account"
+ ],
+ "deployed": false
+}

@@ -1,0 +1,146 @@
+// COPY-ONLY (phase 548 evidence). Two paired devices against the service started the production
+// way. Device A composes cards of growing size; for each, the time until the compose field clears,
+// whether "Waiting to save…" stays, what the page says, and when device B shows the card. A card
+// that has not saved after STALL_MS is a stall: the spec checks Discard keeps the draft, and once,
+// that a reload of a stuck page keeps nothing and comes back active. Ends with both devices'
+// exports compared.
+import { test, expect, type Page } from '@playwright/test';
+import { writeFileSync, appendFileSync } from 'node:fs';
+import { pairedEditors, openSaved } from './devices';
+import { startPublic } from './public-server';
+import { compose, documentOf } from './scenario';
+import { load } from './probe';
+
+const STALL_MS = Number(process.env.STALL_MS ?? 30000);
+const cases: [label: string, chars: number, unit: string][] = [
+  ['5,000 single-byte', 5000, 'x'],
+  ['15,000 single-byte', 15000, 'x'],
+  ['17,000 single-byte', 17000, 'x'],
+  ['5,500 three-byte', 5500, '語'],
+  ['200,000 single-byte', 200000, 'x'],
+  ['70,000 three-byte', 70000, '語'],
+];
+const status = (p: Page) =>
+  p
+    .locator('.workspace-status')
+    .allTextContents()
+    .then((t) => t.join(' | '))
+    .catch(() => '');
+
+test('large cards save, or are refused, without stalling', async ({ page, browser }, info) => {
+  test.setTimeout(3600000);
+  page.setDefaultTimeout(30000);
+  const svc = await startPublic(info.outputPath('public'));
+  const rows = info.outputPath('cards.jsonl');
+  writeFileSync(rows, '');
+  const t0 = Date.now();
+  const log: string[] = [];
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s [${load()}] ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  let reloaded = false;
+  try {
+    pair = await pairedEditors(page, browser, true);
+    const A = page,
+      B = pair.second;
+    note('paired');
+    for (let k = 0; k < cases.length; k++) {
+      const [label, chars, unit] = cases[k]!;
+      // Plain markers: live preview hides Markdown brackets from the rendered text.
+      const start = `begin548n${k}x`,
+        end = `end548n${k}x`;
+      const text = start + unit.repeat(chars) + end;
+      await compose(A).fill(text);
+      const began = Date.now();
+      await compose(A).press('Enter');
+      let saved = false,
+        waitingSeen = false;
+      while (Date.now() - began < STALL_MS) {
+        if (await A.getByText('Waiting to save…').isVisible().catch(() => false)) waitingSeen = true;
+        if ((await compose(A).inputValue()) === '') {
+          saved = true;
+          break;
+        }
+        // A refusal returns the field to editable with its text and a message.
+        const said = await status(A);
+        if (said && !(await compose(A).getAttribute('readonly').catch(() => null)) && !said.includes('waiting')) break;
+        await A.waitForTimeout(100);
+      }
+      const ms = Date.now() - began;
+      const said = await status(A);
+      const row: Record<string, unknown> = {
+        k,
+        label,
+        chars,
+        utf8: Buffer.byteLength(text),
+        saved,
+        ms,
+        waitingSeen,
+        stillWaiting: await A.getByText('Waiting to save…').isVisible().catch(() => false),
+        said,
+        load: load(),
+      };
+      if (saved) {
+        const shown = Date.now();
+        // A long card's editor renders only part of a very long line; its start marker is visible.
+        await expect(B.locator('.shell')).toContainText(start, { timeout: 120000 });
+        row.receivedMs = Date.now() - began;
+        row.receivedAfterSaveMs = Date.now() - shown;
+      } else {
+        row.draftKept = (await compose(A).inputValue()) === text;
+        await A.screenshot({ path: info.outputPath(`case-${k}.png`) });
+        if (said.includes('Input is waiting for storage')) {
+          if (!reloaded && chars >= 200000) {
+            // A stuck page reloads (as an update would, after closing every window).
+            reloaded = true;
+            await A.reload();
+            await openSaved(A, pair.first.code);
+            row.afterReload = {
+              cardPresent: ((await A.locator('.shell').textContent()) ?? '').includes(start),
+              status: await status(A),
+              field: await compose(A).inputValue(),
+            };
+          } else {
+            await A.locator('.workspace-status')
+              .getByRole('button', { name: 'Discard pending input' })
+              .click();
+            row.afterDiscard = {
+              draftKept: (await compose(A).inputValue()) === text,
+              editable: !(await compose(A).getAttribute('readonly')),
+              status: await status(A),
+            };
+            await compose(A).fill('');
+          }
+        } else await compose(A).fill('');
+        // The queue carries on: a small card saves and arrives.
+        const small = `after548n${k}x`;
+        await compose(A).fill(small);
+        await compose(A).press('Enter');
+        await expect(compose(A)).toHaveValue('', { timeout: 60000 });
+        await expect(B.locator('.shell')).toContainText(small, { timeout: 60000 });
+        row.queueCarriesOn = true;
+      }
+      appendFileSync(rows, JSON.stringify(row) + '\n');
+      note(JSON.stringify(row));
+    }
+    // B can still be receiving the last card's slices: export again until it has every card A has.
+    const a = await documentOf(A);
+    let b = await documentOf(B);
+    for (let i = 0; i < 12 && b.text !== a.text; i++) {
+      await B.waitForTimeout(10000);
+      b = await documentOf(B);
+    }
+    note(`exports equal: ${a.text === b.text}, bytes ${a.text.length} / ${b.text.length}`);
+    for (let k = 0; k < cases.length; k++)
+      note(
+        `case ${k}: in A export ${a.text.includes(`end548n${k}x`)}, in B export ${b.text.includes(`end548n${k}x`)}`,
+      );
+  } finally {
+    writeFileSync(info.outputPath('timeline.txt'), log.join('\n') + '\n');
+    await pair?.other.close().catch(() => {});
+    await svc.stop();
+  }
+});

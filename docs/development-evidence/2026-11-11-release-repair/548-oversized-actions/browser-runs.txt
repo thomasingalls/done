@@ -1,0 +1,62 @@
+Phase 548 browser runs. Two paired devices, the service started the production way (scripts/public-account.mjs initialize, api and app behind TLS), headless Chromium, in copies: before = ccd0baca0, after = this phase's tree. Spec: browser-spec.ts.txt (STALL_MS=90000).
+Note: the 'after' build predates the Goals line-removal message change; the compose path is identical.
+
+== base
+host:  4:09  up 153 days,  5:46, 67 users, load averages: 4.62 4.95 5.28
+host:  4:16  up 153 days,  5:53, 67 users, load averages: 5.37 5.54 5.51
+15.1s [4.87 5.00 5.29] paired
+16.0s [6.16 5.27 5.38] {"k":0,"label":"5,000 single-byte","chars":5000,"utf8":5020,"saved":true,"ms":21,"waitingSeen":false,"stillWaiting":false,"said":"","load":"4.87 5.00 5.29","receivedMs":835,"receivedAfterSaveMs":801}
+16.9s [6.16 5.27 5.38] {"k":1,"label":"15,000 single-byte","chars":15000,"utf8":15020,"saved":true,"ms":146,"waitingSeen":true,"stillWaiting":false,"said":"","load":"6.16 5.27 5.38","receivedMs":950,"receivedAfterSaveMs":799}
+107.9s [5.70 5.48 5.46] {"k":2,"label":"17,000 single-byte","chars":17000,"utf8":17020,"saved":false,"ms":90032,"waitingSeen":true,"stillWaiting":true,"said":"Input is waiting for storage.Retry storageDiscard pending input","load":"5.70 5.48 5.46","draftKept":true,"afterDiscard":{"draftKept":true,"editable":true,"status":"That action was not saved. Check storage and try again.Dismiss"},"queueCarriesOn":true}
+198.9s [5.42 5.56 5.50] {"k":3,"label":"5,500 three-byte","chars":5500,"utf8":16520,"saved":false,"ms":90034,"waitingSeen":true,"stillWaiting":true,"said":"Input is waiting for storage.Retry storageDiscard pending input","load":"5.42 5.56 5.50","draftKept":true,"afterDiscard":{"draftKept":true,"editable":true,"status":"That action was not saved. Check storage and try again.Dismiss"},"queueCarriesOn":true}
+291.7s [5.27 5.62 5.53] {"k":4,"label":"200,000 single-byte","chars":200000,"utf8":200020,"saved":false,"ms":90082,"waitingSeen":true,"stillWaiting":true,"said":"Input is waiting for storage.Retry storageDiscard pending input","load":"5.56 5.68 5.55","draftKept":true,"afterReload":{"cardPresent":false,"status":"","field":""},"queueCarriesOn":true}
+382.8s [5.37 5.54 5.51] {"k":5,"label":"70,000 three-byte","chars":70000,"utf8":210020,"saved":false,"ms":90093,"waitingSeen":true,"stillWaiting":true,"said":"Input is waiting for storage.Retry storageDiscard pending input","load":"5.37 5.54 5.51","draftKept":true,"afterDiscard":{"draftKept":true,"editable":true,"status":"That action was not saved. Check storage and try again.Dismiss"},"queueCarriesOn":true}
+383.0s [5.37 5.54 5.51] exports equal: true, bytes 20175 / 20175
+383.0s [5.37 5.54 5.51] case 0: in A export true, in B export true
+383.0s [5.37 5.54 5.51] case 1: in A export true, in B export true
+383.0s [5.37 5.54 5.51] case 2: in A export false, in B export false
+383.0s [5.37 5.54 5.51] case 3: in A export false, in B export false
+383.0s [5.37 5.54 5.51] case 4: in A export false, in B export false
+383.0s [5.37 5.54 5.51] case 5: in A export false, in B export false
+  ✓  1 test/packaged-account/save548.public.spec.ts:30:1 › large cards save, or are refused, without stalling (6.4m)
+exit 0
+
+== final-run1 (after; its export comparison ran while B was still receiving the last card's slices: B's export was 260,691 bytes against A's 312,711 and lacked only case 5. The spec now exports again until B matches; the rerun below)
+host:  4:16  up 153 days,  5:53, 67 users, load averages: 5.37 5.54 5.51
+host:  4:16  up 153 days,  5:53, 67 users, load averages: 5.37 5.50 5.49
+13.8s [4.63 5.37 5.45] paired
+14.6s [4.63 5.37 5.45] {"k":0,"label":"5,000 single-byte","chars":5000,"utf8":5020,"saved":true,"ms":22,"waitingSeen":false,"stillWaiting":false,"said":"","load":"4.63 5.37 5.45","receivedMs":842,"receivedAfterSaveMs":804}
+15.8s [5.06 5.45 5.47] {"k":1,"label":"15,000 single-byte","chars":15000,"utf8":15020,"saved":true,"ms":377,"waitingSeen":true,"stillWaiting":false,"said":"","load":"4.63 5.37 5.45","receivedMs":1187,"receivedAfterSaveMs":803}
+17.0s [5.06 5.45 5.47] {"k":2,"label":"17,000 single-byte","chars":17000,"utf8":17020,"saved":true,"ms":377,"waitingSeen":true,"stillWaiting":false,"said":"","load":"5.06 5.45 5.47","receivedMs":1192,"receivedAfterSaveMs":811}
+18.0s [5.06 5.45 5.47] {"k":3,"label":"5,500 three-byte","chars":5500,"utf8":16520,"saved":true,"ms":146,"waitingSeen":true,"stillWaiting":false,"said":"","load":"5.06 5.45 5.47","receivedMs":969,"receivedAfterSaveMs":818}
+32.7s [5.41 5.51 5.49] {"k":4,"label":"200,000 single-byte","chars":200000,"utf8":200020,"saved":true,"ms":14273,"waitingSeen":true,"stillWaiting":false,"said":"","load":"5.41 5.51 5.49","receivedMs":14603,"receivedAfterSaveMs":320}
+37.9s [5.37 5.50 5.49] {"k":5,"label":"70,000 three-byte","chars":70000,"utf8":210020,"saved":true,"ms":3711,"waitingSeen":true,"stillWaiting":false,"said":"","load":"5.37 5.50 5.49","receivedMs":5192,"receivedAfterSaveMs":1467}
+38.0s [5.37 5.50 5.49] exports equal: false, bytes 312711 / 260691
+38.0s [5.37 5.50 5.49] case 0: in A export true, in B export true
+38.0s [5.37 5.50 5.49] case 1: in A export true, in B export true
+38.0s [5.37 5.50 5.49] case 2: in A export true, in B export true
+38.0s [5.37 5.50 5.49] case 3: in A export true, in B export true
+38.0s [5.37 5.50 5.49] case 4: in A export true, in B export true
+38.0s [5.37 5.50 5.49] case 5: in A export true, in B export false
+  ✓  1 test/packaged-account/save548.public.spec.ts:30:1 › large cards save, or are refused, without stalling (39.2s)
+exit 0
+
+== final
+host:  4:17  up 153 days,  5:53, 67 users, load averages: 4.77 5.36 5.44
+host:  4:18  up 153 days,  5:54, 67 users, load averages: 6.64 5.74 5.57
+14.4s [4.33 5.22 5.39] paired
+15.2s [4.33 5.22 5.39] {"k":0,"label":"5,000 single-byte","chars":5000,"utf8":5020,"saved":true,"ms":24,"waitingSeen":false,"stillWaiting":false,"said":"","load":"4.33 5.22 5.39","receivedMs":841,"receivedAfterSaveMs":804}
+16.3s [4.33 5.22 5.39] {"k":1,"label":"15,000 single-byte","chars":15000,"utf8":15020,"saved":true,"ms":248,"waitingSeen":true,"stillWaiting":false,"said":"","load":"4.33 5.22 5.39","receivedMs":1051,"receivedAfterSaveMs":798}
+17.5s [4.33 5.22 5.39] {"k":2,"label":"17,000 single-byte","chars":17000,"utf8":17020,"saved":true,"ms":370,"waitingSeen":true,"stillWaiting":false,"said":"","load":"4.33 5.22 5.39","receivedMs":1187,"receivedAfterSaveMs":812}
+18.4s [4.33 5.22 5.39] {"k":3,"label":"5,500 three-byte","chars":5500,"utf8":16520,"saved":true,"ms":141,"waitingSeen":true,"stillWaiting":false,"said":"","load":"4.33 5.22 5.39","receivedMs":965,"receivedAfterSaveMs":820}
+33.4s [6.24 5.60 5.52] {"k":4,"label":"200,000 single-byte","chars":200000,"utf8":200020,"saved":true,"ms":14542,"waitingSeen":true,"stillWaiting":false,"said":"","load":"6.24 5.60 5.52","receivedMs":14876,"receivedAfterSaveMs":324}
+39.1s [6.82 5.74 5.57] {"k":5,"label":"70,000 three-byte","chars":70000,"utf8":210020,"saved":true,"ms":3742,"waitingSeen":true,"stillWaiting":false,"said":"","load":"6.54 5.67 5.55","receivedMs":5695,"receivedAfterSaveMs":1941}
+49.3s [6.64 5.74 5.57] exports equal: true, bytes 312711 / 312711
+49.3s [6.64 5.74 5.57] case 0: in A export true, in B export true
+49.3s [6.64 5.74 5.57] case 1: in A export true, in B export true
+49.3s [6.64 5.74 5.57] case 2: in A export true, in B export true
+49.3s [6.64 5.74 5.57] case 3: in A export true, in B export true
+49.3s [6.64 5.74 5.57] case 4: in A export true, in B export true
+49.3s [6.64 5.74 5.57] case 5: in A export true, in B export true
+  ✓  1 test/packaged-account/save548.public.spec.ts:30:1 › large cards save, or are refused, without stalling (50.4s)
+exit 0

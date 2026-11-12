@@ -93,10 +93,11 @@ export interface Workspace {
  * A structural change: its own transaction, and its own undo step on each side.
  * Every operation below that moves, creates or destroys a card goes through it.
  */
-const discrete = <T>(workspace: Workspace, fn: () => T): T => {
+const discrete = <T>(workspace: Workspace, fn: () => T, open = false): T => {
   workspace.undo?.stopCapturing();
   const result = transact(workspace.doc, workspace.origin, fn);
-  workspace.undo?.stopCapturing();
+  // An open step stays capturing so the same command's later text slices join it.
+  if (!open) workspace.undo?.stopCapturing();
   return result;
 };
 
@@ -163,7 +164,7 @@ export const compose = (
   workspace: Workspace,
   ref: Ref,
   text: string,
-  options: { origin?: string | null; goalsContext?: GoalsContext | null } = {},
+  options: { origin?: string | null; goalsContext?: GoalsContext | null; open?: boolean } = {},
 ): boolean => {
   if (!canAccept(workspace, ref)) return false;
 
@@ -176,11 +177,15 @@ export const compose = (
     origin: options.origin ?? null,
     goalsContext: options.goalsContext ?? null,
   });
-  return discrete(workspace, () => {
-    registerCard(workspace.doc, id, card, ref);
-    target.insert(ARRIVAL_INDEX, [id]);
-    return true;
-  });
+  return discrete(
+    workspace,
+    () => {
+      registerCard(workspace.doc, id, card, ref);
+      target.insert(ARRIVAL_INDEX, [id]);
+      return true;
+    },
+    options.open === true,
+  );
 };
 
 /* -------------------------------------------------------------------------- */

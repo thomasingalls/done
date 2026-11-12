@@ -68,6 +68,8 @@
     "test/moves.test.ts",
     "test/multiDevice.test.ts",
     "test/outboundSpool.test.ts",
+    "test/oversizedActions.test.ts",
+    "test/oversizedActionsUi.test.tsx",
     "test/ownedReceiveQueue.test.ts",
     "test/passkeyResponse.test.ts",
     "test/pendingProjection.test.ts",

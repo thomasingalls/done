@@ -928,6 +928,10 @@
       "sha256": "19566444ee9310b6e3e191a5b590f7d129df80ad3102229b11c1916bbcddcb86"
     },
     {
+      "path": "src/crdt/actionSize.ts",
+      "sha256": "3222e75dac52dc344f55e63f960bd91399e7b28809da9ecbd719da4748f98e2a"
+    },
+    {
       "path": "src/crdt/actors.ts",
       "sha256": "d06a8f9b6ddb72b6ce7e117733286479906a1e770e1ce299cde7415d5d082e98"
     },
@@ -945,7 +949,7 @@
     },
     {
       "path": "src/crdt/admittedWorkspace.ts",
-      "sha256": "8c7e4e28a7a1c33d22930beccc4377c9b163c1482e0f785ee31362dce77d07e5"
+      "sha256": "4728c211014c93f79a6bf6d8263693037443f633059365d15afd03344171c6eb"
     },
     {
       "path": "src/crdt/archiveProjection.ts",
@@ -1325,7 +1329,7 @@
     },
     {
       "path": "src/crdt/moves.ts",
-      "sha256": "d05f87945e5129fe58bf42163b937e6ec15ac5295f113795dbcdd8ac2812e1ba"
+      "sha256": "a6c3ea56daff2f43d2ca427e295a6c65d08771fd5874b302da3de5fd15a6c811"
     },
     {
       "path": "src/crdt/nativeCoordination.ts",
@@ -1713,7 +1717,7 @@
     },
     {
       "path": "src/crdt/workspaceCommands.ts",
-      "sha256": "5b3039653bed275d507c1c260504f21846e06e49a03d2c9813a4c63f5d28e0e9"
+      "sha256": "177ffe9be07618ae0fc02c44123f2742e0111228091ee272ae82514c1ca41269"
     },
     {
       "path": "src/crdt/workspacePreparation.ts",
@@ -1733,7 +1737,7 @@
     },
     {
       "path": "src/editor/admittedEditor.ts",
-      "sha256": "683e53d05713cd94e3d9dca86e6691dd6f5d98b92b26e285546ccc3bdcdef3ae"
+      "sha256": "d24c7c453c61d5967ce9178b1d3b38b59853cdf51a3abf3e5248e3b4730acc35"
     },
     {
       "path": "src/editor/admittedText.ts",
@@ -1921,7 +1925,7 @@
     },
     {
       "path": "src/ui/Goals.tsx",
-      "sha256": "471833ca51870dda85d81031b9fe50de45fcb18571756df31478c66839de9123"
+      "sha256": "112d9045f43ceb4da4a249b9a2ce8870ed58a6fa359f20adde9652670f26e859"
     },
     {
       "path": "src/ui/GoalsActionsMenu.tsx",
@@ -2089,7 +2093,7 @@
     },
     {
       "path": "src/ui/workspaceUi.tsx",
-      "sha256": "efd72297b73378554b7e25a2f1bf867f84be63e10266cf1f6cc9ff460f3171ba"
+      "sha256": "a6eb1fe2fc79c70b88956aae86d08aad2c6788e6bdc3fe312187f9fd8348e296"
     }
   ],
   "domains": [
