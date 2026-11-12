@@ -1,0 +1,63 @@
+"""Phase 555: summarise open-cost results by case (medians and ranges)."""
+import json, glob, sys, statistics, os
+root = sys.argv[1]; label = sys.argv[2]
+rows = {}
+for f in sorted(glob.glob(os.path.join(root, label, '*.json'))):
+    d = json.load(open(f))
+    key = f"{d['role']}-{d['snapshot']}-{d['network']}"
+    m = d['milestones']
+    at = lambda n: m[n]['atPage'] if n in m else None
+    def delta(a, b, path):
+        x = m[a]['metrics']; y = m[b]['metrics']
+        for p in path: x = x.get(p, {}) if isinstance(x, dict) else 0; y = y.get(p, {}) if isinstance(y, dict) else 0
+        return (y or 0) - (x or 0)
+    def cost(a, b, name, field='totalMs', group='costs'):
+        x = m[a]['metrics'][group].get(name, {}).get(field, 0); y = m[b]['metrics'][group].get(name, {}).get(field, 0)
+        return y - x
+    r = {
+        'formAfterNav': d['formReadyAfterNavigationMs'],
+        'clickToAuthorized': at('authorized'),
+        'passA': at('classified') - at('authorized'),
+        'passB': at('owner') - at('classified'),
+        'ownerToEditor': at('editor') - at('owner'),
+        'editorToFrame': d['clickToFrameMs'] - at('editor'),
+        'clickToFrame': d['clickToFrameMs'],
+        'startedToAuthorized': (at('authorized') - at('started')) if at('started') is not None else None,
+        'clickToStarted': at('started'),
+        # work inside pass A / pass B from milestone metric snapshots
+        'A_loads': delta('authorized', 'classified', ['work', 'loads']),
+        'A_loadedRows': delta('authorized', 'classified', ['work', 'loadedRows']),
+        'A_startupValidations': delta('authorized', 'classified', ['work', 'startupValidations']),
+        'A_inboundVerifications': delta('authorized', 'classified', ['work', 'inboundVerifications']),
+        'A_baselineFullReplays': delta('authorized', 'classified', ['work', 'baselineFullReplays']),
+        'A_baselineExactReuses': delta('authorized', 'classified', ['work', 'baselineExactReuses']),
+        'A_physicalReadMs': cost('authorized', 'classified', 'physicalRead'),
+        'A_physicalReads': cost('authorized', 'classified', 'physicalRead', 'calls'),
+        'A_custodyAndLedgerMs': cost('authorized', 'classified', 'startupCustodyAndLedger'),
+        'A_coverageRebuildMs': cost('authorized', 'classified', 'coverageRebuild', group='timings'),
+        'A_coverageCheckMs': cost('authorized', 'classified', 'coverageCheck', group='timings'),
+        'B_loads': delta('classified', 'owner', ['work', 'loads']),
+        'B_loadedRows': delta('classified', 'owner', ['work', 'loadedRows']),
+        'B_full': delta('classified', 'owner', ['timings', 'full', 'calls']),
+        'B_fullMs': cost('classified', 'owner', 'full', group='timings'),
+        'B_baselineFullReplays': delta('classified', 'owner', ['work', 'baselineFullReplays']),
+        'B_physicalReadMs': cost('classified', 'owner', 'physicalRead'),
+        'B_physicalReads': cost('classified', 'owner', 'physicalRead', 'calls'),
+        'B_coverageRebuildMs': cost('classified', 'owner', 'coverageRebuild', group='timings'),
+        'B_coverageCheckMs': cost('classified', 'owner', 'coverageCheck', group='timings'),
+        'E_loads': delta('owner', 'editor', ['work', 'loads']),
+        'E_warmLoads': delta('owner', 'editor', ['work', 'warmLoads']),
+        'errors': len(d['errors']),
+    }
+    rows.setdefault(key, []).append(r)
+out = {}
+for key, rs in rows.items():
+    s = {'n': len(rs)}
+    for k in rs[0]:
+        vals = [r[k] for r in rs if r[k] is not None]
+        if not vals: continue
+        s[k] = {'median': round(statistics.median(vals), 1), 'min': round(min(vals), 1), 'max': round(max(vals), 1)}
+    pa = [r['passA'] / r['clickToFrame'] for r in rs]
+    s['passAShare'] = {'median': round(statistics.median(pa), 3), 'min': round(min(pa), 3), 'max': round(max(pa), 3)}
+    out[key] = s
+print(json.dumps(out, indent=1))

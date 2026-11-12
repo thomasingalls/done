@@ -1420,6 +1420,8 @@
     {"path":"scripts/owned-startup/scenarios.mjs","sha256":"0f2450099a9fd24993ed9745b6aba9375dd3d71e77f9310b0e3fb8350ffdec7d"},
     {"path":"scripts/owned-startup/worker.mjs","sha256":"3b70c709df81c351f2244525ef46124657b019f1e5b2c2c16040c9ee7316f656"},
     {"path":"scripts/pending-projection/run.mjs","sha256":"b9aa3a78942278dd579bc43fd0e198dd8406440a3bf8d9513164567c026ca025"},
+    {"path":"scripts/performance/open-cost/harness.ts","sha256":"352c2a1001e1cda9fa161b56af2f828e62b28c52923e8b96fd716c48c3dbff98"},
+    {"path":"scripts/performance/open-cost/playwright.config.ts","sha256":"d71f36c8c5a9618a2bdd3a83e133faee7a5e6d527962fadd883a5465dc620e07"},
     {"path":"scripts/performance/send-cost/driver.ts","sha256":"a20d0963232f818e53348a55ae3c981ac100638c27ddadcd3f09fe50c6042161"},
     {"path":"scripts/performance/send-cost/harness.ts","sha256":"843f99180ed0874526977e2275ea5b421c0a04ebf1d947ea56b483411e330a76"},
     {"path":"scripts/performance/send-cost/playwright.config.ts","sha256":"c3f7dfc4c6abefb1686513ec8a376328254a5a05d035a6f60af858d587fe8c1f"},

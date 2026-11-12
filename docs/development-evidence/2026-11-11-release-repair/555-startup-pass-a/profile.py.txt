@@ -1,0 +1,43 @@
+"""Phase 555: attribute Worker CPU samples to pass windows (authorized..classified, classified..owner).
+Self time by leaf function, and inclusive time for named functions on the synchronous stack."""
+import json, sys, collections
+d = json.load(open(sys.argv[1]))
+p = d['profile']; ms = d['milestones']
+nodes = {n['id']: n for n in p['nodes']}
+parent = {}
+for n in p['nodes']:
+    for c in n.get('children', []): parent[c] = n['id']
+# Clock: profile microseconds vs Worker performance.now() at Profiler.start.
+start_now = (d['startedWorkerNow']['before'] + d['startedWorkerNow']['after']) / 2
+base = p['startTime'] / 1000 - start_now
+t = p['startTime']
+windows = {'passA': (ms['authorized'], ms['classified']), 'passB': (ms['classified'], ms['owner']),
+           'ownerToEditor': (ms['owner'], ms['editor'])}
+self_ms = {w: collections.Counter() for w in windows}
+incl_ms = {w: collections.Counter() for w in windows}
+total = {w: 0.0 for w in windows}
+def name(n):
+    cf = n['callFrame']; f = cf['functionName'] or '(anonymous)'
+    url = cf['url'].rsplit('/', 1)[-1].split('?')[0]
+    return f"{f} [{url}:{cf['lineNumber']+1}]" if url else f
+for sid, dt in zip(p['samples'], p['timeDeltas']):
+    t += dt
+    now = t / 1000 - base
+    for w, (a, b) in windows.items():
+        if a <= now < b:
+            step = dt / 1000
+            total[w] += step
+            leaf = nodes[sid]
+            self_ms[w][name(leaf)] += step
+            seen = set(); cur = sid
+            while cur is not None:
+                nm = nodes[cur]['callFrame']['functionName']
+                if nm and nm not in seen:
+                    incl_ms[w][nm] += step; seen.add(nm)
+                cur = parent.get(cur)
+out = {}
+for w in windows:
+    out[w] = {'windowMs': round(windows[w][1] - windows[w][0], 1), 'sampledMs': round(total[w], 1),
+              'self': [(k, round(v, 1)) for k, v in self_ms[w].most_common(25)],
+              'inclusive': [(k, round(v, 1)) for k, v in incl_ms[w].most_common(400)]}
+print(json.dumps(out, indent=1))

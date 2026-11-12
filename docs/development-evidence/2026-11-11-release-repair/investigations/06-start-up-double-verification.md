@@ -2,7 +2,7 @@
 
 A delegated agent's report from 2026-11-11, filed as delivered. Read-only at `ff8578cd0`. Paths under `/private/tmp` were session scratch space and no longer exist; the supporting files that mattered are under [support](./support/).
 
-**What happened next.** The fix (one owner on a normal open) is queued behind a measurement and was not built when this was filed.
+**What happened next.** Phase 555 measured the pass this report calls pass A at 5.48 s of an 11.08 s open on a 3,000-position original device ([record](../555-startup-pass-a/README.md)). The fix was not built, because this report is wrong on one point: for inbound coverage the two passes do not call the same code. Pass A runs verifyInboundLedger's fallback coverage branch, the only run of it on a normal open, and a required release-validation control asserts it refuses at open. The control is missing from the "Guarantees kept" list below. START-ONE-OWNER in the product backlog holds the choice.
 
 ---
 

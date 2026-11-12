@@ -1,0 +1,14 @@
+#!/bin/sh
+# Phase 555 open-cost run: label build cases reps [auditWaitMs]
+set -u
+SCR="$1"; REPO="$2"; LABEL="$3"; BUILD="$4"; CASES="$5"; REPS="$6"; AUDIT="${7:-0}"
+cd "$REPO"
+LOG="$SCR/555/open-$LABEL.log"
+echo "$(date '+%H:%M:%S') start $LABEL" >> "$LOG"
+( while true; do o=$(pgrep -fl "vitest|playwright test" | grep -v open-cost | cut -c1-100); [ -n "$o" ] && echo "$(date '+%H:%M:%S') overlap: $o" >> "$LOG"; sleep 30; done ) &
+WATCH=$!
+OPEN_COST_ROOT="$SCR/sc" OPEN_COST_BUILD="$SCR/555/builds/$BUILD" OPEN_COST_OUT="$SCR/555/open" \
+OPEN_COST_LABEL="$LABEL" OPEN_COST_CASES="$CASES" OPEN_COST_REPS="$REPS" OPEN_COST_AUDIT_WAIT_MS="$AUDIT" OPEN_COST_QUIET="${OPEN_COST_QUIET:-1}" OPEN_COST_PROFILE="${OPEN_COST_PROFILE:-0}" \
+  caffeinate -d timeout 7000 pnpm exec playwright test --config scripts/performance/open-cost/playwright.config.ts >> "$LOG" 2>&1
+echo "$(date '+%H:%M:%S') end $LABEL exit=$?" >> "$LOG"
+kill $WATCH 2>/dev/null

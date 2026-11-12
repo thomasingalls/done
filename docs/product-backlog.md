@@ -158,6 +158,15 @@ a stall. What it left:
 - **WARM-REAL-SUSPENSION — invalidate only after a real suspension.** *decision.* A freeze or resume
   event, a heartbeat gap, or hidden longer than the audit interval, so a quick tab switch on desktop
   skips the re-read.
+- **START-ONE-OWNER — verify saved history once on a normal open.** *decision.* Phase 555 measured
+  the temporary custody owner's pass at 5.48 s of an 11.08 s open (49.5%) on the 3,000-position
+  original device that has not reduced, and 4.64 of 8.66 s on its joined device. The one-owner path
+  was not built: on a device that has not reduced, that pass is the only place the fallback
+  inbound-coverage branch runs at open, and the required control "cold replay refuses missing or
+  changed content" (Q-01, 2026-09-12) asserts both coverage branches refuse there. Choose: amend
+  that control, or build one owner and keep the fallback coverage check once at open on the live
+  verified census (estimated a few hundred ms, unmeasured), or keep the pass
+  ([record](development-evidence/2026-11-11-release-repair/555-startup-pass-a/README.md)).
 - **START-JOINED — the second slice of the start-up fix.** A joined device's pre-verification
   (`src/crdt/joinedAccount.ts`) has the same shape as the original device's and needs its own change.
   Also deferred: streaming one encoded state to the page in place of paged records, and marking the
