@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { expect, it } from 'vitest';
+import assert from 'node:assert/strict';
 import * as core from '../src/crdt/inboundRecord';
 import type { InboundRecord, InboundReceipt } from '../src/crdt/inboundRecord';
 import { StorageCompatibilityError } from '../src/crdt/storageCompatibility';
@@ -71,8 +72,8 @@ it('all72 admitted extents expose exact positions, predecessor links and origina
             link: expected.link,
             entry: first + offset,
           });
-          expect(view.event.request).toEqual(record.request);
-          expect(view.event.page).toEqual(record.page);
+          assert.deepStrictEqual(view.event.request, record.request);
+          assert.deepStrictEqual(view.event.page, record.page);
           expect(view.event.request).toBe(source.receipt.record.request);
           expect(view.event.page).toBe(source.receipt.record.page);
         }

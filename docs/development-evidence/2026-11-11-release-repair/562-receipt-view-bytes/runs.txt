@@ -1,0 +1,19 @@
+## base: test/inboundReceiptViews.test.ts, node_modules/.bin/vitest run <file> --maxWorkers=1 --reporter=json (repository config)
+run 1: all72 passed 2906.8 ms; other 7 cases 98.7 ms; 8 of 8 cases passed; file 3005.000244140625 ms
+run 2: all72 passed 3009.7 ms; other 7 cases 109.8 ms; 8 of 8 cases passed; file 3119.79150390625 ms
+run 3: all72 passed 2935.8 ms; other 7 cases 101.1 ms; 8 of 8 cases passed; file 3036.397216796875 ms
+run 4: all72 passed 2868.8 ms; other 7 cases 100.1 ms; 8 of 8 cases passed; file 2968.669677734375 ms
+run 5: all72 passed 2925.0 ms; other 7 cases 98.4 ms; 8 of 8 cases passed; file 3023.4462890625 ms
+run 6: all72 passed 3025.7 ms; other 7 cases 105.6 ms; 8 of 8 cases passed; file 3130.811279296875 ms
+all72: min 2868.8, median 2930.4, max 3025.7 ms
+
+## final: test/inboundReceiptViews.test.ts, node_modules/.bin/vitest run <file> --maxWorkers=1 --reporter=json (repository config)
+run 1: all72 passed 52.4 ms; other 7 cases 102.3 ms; 8 of 8 cases passed; file 155.468505859375 ms
+run 2: all72 passed 52.3 ms; other 7 cases 103.3 ms; 8 of 8 cases passed; file 155.308837890625 ms
+run 3: all72 passed 51.8 ms; other 7 cases 102.8 ms; 8 of 8 cases passed; file 154.892822265625 ms
+run 4: all72 passed 52.4 ms; other 7 cases 108.0 ms; 8 of 8 cases passed; file 161.5234375 ms
+run 5: all72 passed 50.9 ms; other 7 cases 102.8 ms; 8 of 8 cases passed; file 154.705810546875 ms
+run 6: all72 passed 51.9 ms; other 7 cases 104.9 ms; 8 of 8 cases passed; file 156.4111328125 ms
+all72: min 50.9, median 52.1, max 52.4 ms
+
+ratio of medians: 56.3; slowest final against fastest base: 54.7

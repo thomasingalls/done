@@ -328,25 +328,49 @@ a stall. What it left:
 ### Continuous integration
 
 CI has not passed since 2026-10-16. Phase 561's investigation and CI history are in its
-[record](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/README.md).
+[record](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/README.md); phase
+562 repaired the unit case that timed out.
 
-- **CI-UNIT-BUDGET — one unit case has kept CI red since 2026-11-07.**
-  `test/inboundReceiptViews.test.ts` › "all72 admitted extents expose exact positions, predecessor
-  links and original bytes for two publishers" takes 3.1 to 3.3 s on fast hosted runners and 5.5 to
-  5.8 s on slow ones, so it times out at Vitest's five-second default on about half of hosted runs.
-  It did not get slower: it was added near the limit (phase 389, 2026-11-05) and failed on the first
-  slow runner it met. About 98% of its time is two `toEqual` byte comparisons per entry view
-  (`event.page`, about 12 KB, and `event.request`, over 240 views); the investigation measured the
-  case at 2.8 to 2.9 s here, and at 56 to 60 ms with `assert.deepStrictEqual`, where a flipped byte
-  still fails (not re-measured in phase 561). The precedent is the 2026-10-16 decision "Keep unit
-  deadlines and exact bytes while bounding hosted contention": strict deep equality in place of the
-  general matcher, keeping the five-second default, every case's workload and the 20-minute job
-  limit. The next cases nearest the limit, by worst share of five seconds in the 11-07 to 11-12 CI
-  logs: `inboundStaleTurnControl.test.ts:4` (85%), `inboundPageCodec.test.ts:26` (76%, the same
-  72-extent `toEqual` loop), `inboundMixedReplay.test.ts` seed407 (73%), `workspaceAdmission.test.ts:1256`
-  (68%), seed406 and `inboundMixedReaders.test.ts:124` (63% each), seed408 (58%) and
-  `preparationReceiptJournal.test.ts` all72 (55%); whether they share the `toEqual` cost was not
-  measured. A repair on the precedent is queued as the next phase; phase 561 did not build it.
+- **CI-UNIT-BUDGET — one unit case kept CI red from 2026-11-07; the cases next to it are held.**
+  *decision.* `test/inboundReceiptViews.test.ts` › "all72 admitted extents expose exact positions,
+  predecessor links and original bytes for two publishers" took 3.1 to 3.3 s on fast hosted runners
+  and 5.5 to 5.8 s on slow ones, so it timed out at Vitest's five-second default on about half of
+  hosted runs. It did not get slower: it was added near the limit (phase 389, 2026-11-05) and failed
+  on the first slow runner it met. Phase 562
+  ([record](development-evidence/2026-11-11-release-repair/562-receipt-view-bytes/README.md))
+  repaired it on the 2026-10-16 decision "Keep unit deadlines and exact bytes while bounding hosted
+  contention": 97.4% of its time here was two `toEqual` comparisons per entry view (`event.page`,
+  11,483 bytes, 93%, and `event.request`, 536 bytes, 4%, over 240 views), which now use
+  `assert.deepStrictEqual`. Here it went from 2,869 to 3,026 ms to 50.9 to 52.4 ms; changed-byte and
+  wrong-type controls fail. Still open: no hosted run has confirmed it (CI runs Node 24.22.1; the
+  controls ran on Node 26 only), and CI cannot pass while CI-JOB-LIMIT stands.
+
+  The decision held here is whether to widen the replacement to cases that have not timed out; the
+  precedent covers timed-out cases only. Phase 562 measured the cases next nearest the limit (worst
+  share of five seconds in the 11-07 to 11-12 CI logs in brackets) on this Mac, five runs each with one
+  worker, and timed their equality matchers in three more:
+
+  | Case | Here, ms | CI worst, ms | Share in `toEqual` on byte data |
+  |---|---|---|---|
+  | `inboundStaleTurnControl.test.ts:4` (85%) | 1,799 to 2,029 | 4,263 | none |
+  | `inboundPageCodec.test.ts:26` (76%) | 1,806 to 1,829 | 3,818 | 49% on byte arrays up to 12,258 B, and 48% on the decoded record holding the 11,483 B page |
+  | `inboundMixedReplay.test.ts` seed407 (73%) | 1,378 to 1,399 | 3,653 | 22%, on arrays of at most 389 B (964 calls) |
+  | `workspaceAdmission.test.ts:1256` (68%; slowest of five parametrizations) | 1,026 to 1,051 | 3,385 | none (other `toEqual`, 3%) |
+  | seed406 (63%) | 1,233 to 1,252 | 3,138 | 22%, small arrays |
+  | `inboundMixedReaders.test.ts:124` (63%) | 1,402 to 1,430 | 3,149 | 68% on byte arrays up to 24,591 B |
+  | seed408 (58%) | 1,157 to 1,238 | 2,900 | 23%, small arrays |
+  | `preparationReceiptJournal.test.ts` all72 (55%) | 1,269 to 1,362 | 2,736 | 66% on byte arrays of 12,258 B |
+
+  The same replacement would move `inboundMixedReaders.test.ts:124`, `preparationReceiptJournal.test.ts`
+  all72 and the byte line of `inboundPageCodec.test.ts:26`, and about a fifth of each replay seed. The
+  codec case's record line compares an object, where Node's strict equality also checks
+  `undefined`-valued keys and constructors, so it is a stricter assertion, not the precedent's shape.
+  It would not move the stale-turn case (whose helper builds a module with Vite twice; not profiled)
+  or the admission case. Those two and the replay seeds also have the largest CI-to-here ratios (2.3
+  to 3.3, against 2.1 to 2.2 for the byte cases and 2.0 for all72), so they look likeliest to trip
+  next; the ratios mix runner speed, Node versions and code changes since CI's commits. Other options
+  for them: profile and shorten each case's own work; a per-case deadline, which the recorded rules
+  allow only with the operator; or a faster runner, which costs money.
 - **CI-JOB-LIMIT — the 20-minute job limit now cuts the packaged browser step.** *decision.* Fixing
   CI-UNIT-BUDGET alone will not make CI green. Since the last green run (2026-10-16) the
   onboarding, account compatibility and device-removal browser step has grown from 35 tests

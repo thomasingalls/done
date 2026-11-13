@@ -1,0 +1,35 @@
+#!/bin/zsh
+# usage: timeit.sh <label> <runs> <test file> [vitest -t pattern]
+# Runs the file N times with --maxWorkers=1 and the JSON reporter, logs a ps snapshot
+# before each run to overlap.log, and prints each case's duration.
+set -u
+S=/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/562
+R=/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+label=$1; runs=$2; file=$3; pat=${4:-}
+mkdir -p $S/runs
+cd $R
+for i in $(seq 1 $runs); do
+  {
+    echo "=== $(date -u +%FT%TZ) $label run $i ($file)"
+    ps -axo pid,etime,%cpu,command | grep -E 'vitest|node --test|playwright' | grep -v grep | grep -v timeit.sh | cut -c1-220 || true
+    echo "-- top cpu"
+    ps -axo pid,%cpu,command -r | sed -n '2,4p' | cut -c1-160
+    echo "-- load $(sysctl -n vm.loadavg)"
+  } >> $S/overlap.log
+  out=$S/runs/$label-$i.json
+  if [[ -n $pat ]]; then
+    timeout 300 node_modules/.bin/vitest run $file --maxWorkers=1 -t "$pat" --reporter=json --outputFile=$out > $S/runs/$label-$i.log 2>&1
+  else
+    timeout 300 node_modules/.bin/vitest run $file --maxWorkers=1 --reporter=json --outputFile=$out > $S/runs/$label-$i.log 2>&1
+  fi
+  rc=$?
+  python3 -I -c '
+import json,sys
+d=json.load(open(sys.argv[1]))
+for f in d["testResults"]:
+  for a in f["assertionResults"]:
+    if a["status"]!="skipped":
+      print(sys.argv[2], sys.argv[3], a["status"], round(a.get("duration") or 0,1), a["fullName"][:110])
+' $out $label $i
+  echo "$label $i exit=$rc"
+done

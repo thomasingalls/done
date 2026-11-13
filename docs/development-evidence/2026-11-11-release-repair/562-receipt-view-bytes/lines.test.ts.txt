@@ -1,0 +1,42 @@
+// Probe (scratch only): the base all72 case with a timer around each step, per line.
+import { expect, it } from 'vitest';
+import assert from 'node:assert/strict';
+import { appendFileSync } from 'node:fs';
+import * as core from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/src/crdt/inboundRecord';
+import { A, B } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/account-inbound/fixtures';
+import { pageFixture, referenceBytes } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/inbound-page/fixtures';
+const t: Record<string, number> = {};
+const time = <T>(k: string, f: () => T): T => {
+  const s = performance.now();
+  try { return f(); } finally { t[k] = (t[k] ?? 0) + performance.now() - s; }
+};
+it('all72 timed per line', () => {
+  const whole = performance.now();
+  let views = 0, reqLen = new Set<number>(), pageLen = new Set<number>(), offs = new Set<string>();
+  for (const publisher of [A, B]) {
+    const f = time('pageFixture (43)', () => pageFixture(publisher));
+    for (let first = 0; first < 8; first++)
+      for (let count = 1; first + count <= 8; count++) {
+        const record = { ...f.record, firstEntry: first, entryCount: count, firstPosition: first + 1,
+          previous: f.entries[first]!.previous, lastLink: f.entries[first + count - 1]!.link };
+        const source = time('referenceBytes + inspect (54)', () => (core as any).inspectInboundReceipt(referenceBytes(record))),
+          entries = time('entries (55)', () => [...source.entries()]);
+        time('count/epoch/length (56-58)', () => { expect(source.count).toBe(count); expect(source.epoch).toBe(1); expect(entries).toHaveLength(count); });
+        for (const [offset, view] of entries.entries()) {
+          views++;
+          const expected = f.entries[first + offset]!;
+          time('entryIndex toBe (61)', () => expect(view.entryIndex).toBe(first + offset));
+          time('toMatchObject (62-73)', () => expect(view.event).toMatchObject({ baseline: record.baseline, lineage: record.lineage, head: record.head, reader: record.reader, publisher, kind: 'received', position: expected.position, previous: expected.previous, link: expected.link, entry: first + offset }));
+          time('toEqual request (74)', () => expect(view.event.request).toEqual(record.request));
+          time('toEqual page (75)', () => expect(view.event.page).toEqual(record.page));
+          time('toBe identities (76-77)', () => { expect(view.event.request).toBe(source.receipt.record.request); expect(view.event.page).toBe(source.receipt.record.page); });
+          time('alt: deepStrictEqual request', () => assert.deepStrictEqual(view.event.request, record.request));
+          time('alt: deepStrictEqual page', () => assert.deepStrictEqual(view.event.page, record.page));
+          reqLen.add(view.event.request.length); pageLen.add(view.event.page.length);
+          offs.add(view.event.request.byteOffset + '/' + view.event.page.byteOffset + ' buf ' + view.event.request.buffer.byteLength + ' ctor ' + view.event.request.constructor.name + '/' + record.request.constructor.name + ' expOff ' + record.request.byteOffset);
+        }
+      }
+  }
+  t['whole loop'] = performance.now() - whole;
+  appendFileSync('/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/562/lines-timing.jsonl', JSON.stringify({ views, reqLen: [...reqLen], pageLen: [...pageLen], offs: [...offs], ms: Object.fromEntries(Object.entries(t).map(([k, v]) => [k, Math.round(v * 10) / 10])) }) + '\n');
+});

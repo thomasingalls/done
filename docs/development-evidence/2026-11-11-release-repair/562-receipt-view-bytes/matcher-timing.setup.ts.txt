@@ -1,0 +1,50 @@
+// Scratch-only setup file: times every toEqual / toStrictEqual / toMatchObject call per case and
+// classifies it by whether either side is, or directly contains, binary data. Classification
+// runs outside the timed region. Results are appended to $MATCHER_TIMING_OUT as JSON lines.
+import { afterAll, chai, expect } from 'vitest';
+import { appendFileSync } from 'node:fs';
+const out = process.env['MATCHER_TIMING_OUT']!;
+type Bucket = { calls: number; ms: number; maxBytes: number };
+const perCase = new Map<string, Record<string, Bucket>>();
+const binarySize = (v: unknown, depth = 0, seen = new Set<unknown>()): number => {
+  if (ArrayBuffer.isView(v)) return v.byteLength;
+  if (v instanceof ArrayBuffer) return v.byteLength;
+  if (depth >= 4 || v === null || typeof v !== 'object' || seen.has(v)) return 0;
+  seen.add(v);
+  let max = 0;
+  const items = Array.isArray(v) ? v.slice(0, 2000) : Object.values(v as object).slice(0, 200);
+  for (const x of items) max = Math.max(max, binarySize(x, depth + 1, seen));
+  return max;
+};
+const classify = (a: unknown, b: unknown) => {
+  const direct = ArrayBuffer.isView(a) || ArrayBuffer.isView(b) || a instanceof ArrayBuffer || b instanceof ArrayBuffer;
+  const size = Math.max(binarySize(a), binarySize(b));
+  if (size === 0) return { kind: 'no binary', size };
+  return { kind: (direct ? 'direct ' : 'nested ') + (size >= 1024 ? 'binary >= 1 KiB' : 'binary < 1 KiB'), size };
+};
+for (const name of ['toEqual', 'toStrictEqual', 'toMatchObject']) {
+  chai.util.overwriteMethod(chai.Assertion.prototype, name, (original: Function) =>
+    function (this: object, ...args: unknown[]) {
+      const actual = chai.util.flag(this, 'object');
+      const t0 = performance.now();
+      try {
+        return original.apply(this, args);
+      } finally {
+        const ms = performance.now() - t0;
+        const { kind, size } = classify(actual, args[0]);
+        const test = expect.getState().currentTestName ?? '(outside a case)';
+        const buckets = perCase.get(test) ?? {};
+        const key = `${name}: ${kind}`;
+        const b = (buckets[key] ??= { calls: 0, ms: 0, maxBytes: 0 });
+        b.calls++;
+        b.ms += ms;
+        b.maxBytes = Math.max(b.maxBytes, size);
+        perCase.set(test, buckets);
+      }
+    },
+  );
+}
+afterAll(() => {
+  const file = expect.getState().testPath;
+  for (const [test, buckets] of perCase) appendFileSync(out, JSON.stringify({ file, test, buckets }) + '\n');
+});

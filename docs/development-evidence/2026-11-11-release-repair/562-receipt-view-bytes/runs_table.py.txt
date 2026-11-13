@@ -1,0 +1,22 @@
+import json, os, statistics, sys
+S = sys.argv[1]
+out = []
+summary = {}
+for label in ('base', 'final'):
+    xs = []
+    out.append(f'## {label}: test/inboundReceiptViews.test.ts, node_modules/.bin/vitest run <file> --maxWorkers=1 --reporter=json (repository config)')
+    for i in range(1, 7):
+        d = json.load(open(os.path.join(S, 'runs', f'{label}-{i}.json')))
+        f = d['testResults'][0]
+        cases = {a['title']: (a['status'], a.get('duration') or 0) for a in f['assertionResults']}
+        all72 = next(v for k, v in cases.items() if k.startswith('all72'))
+        xs.append(all72[1])
+        others = sum(v[1] for k, v in cases.items() if not k.startswith('all72'))
+        out.append(f'run {i}: all72 {all72[0]} {all72[1]:.1f} ms; other 7 cases {others:.1f} ms; '
+                   f'{sum(1 for v in cases.values() if v[0] == "passed")} of {len(cases)} cases passed; file {f["endTime"] - f["startTime"]} ms')
+    out.append(f'all72: min {min(xs):.1f}, median {statistics.median(xs):.1f}, max {max(xs):.1f} ms')
+    out.append('')
+    summary[label] = xs
+b, f = summary['base'], summary['final']
+out.append(f'ratio of medians: {statistics.median(b) / statistics.median(f):.1f}; slowest final against fastest base: {min(b) / max(f):.1f}')
+print('\n'.join(out))

@@ -1,0 +1,7 @@
+// Scratch-only: the repository's own vite.config.ts with one extra setup file that times
+// equality matchers (survey of phase 562). Nothing else changes.
+import base from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/vite.config.ts';
+export default async (env) => {
+  const c = typeof base === 'function' ? await base(env) : base;
+  return { ...c, test: { ...c.test, setupFiles: [...c.test.setupFiles, '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/562/matcher-timing.setup.ts'] } };
+};

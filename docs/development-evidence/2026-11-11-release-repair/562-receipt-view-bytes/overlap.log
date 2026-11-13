@@ -1,0 +1,355 @@
+=== 2026-11-13T09:23:58Z base run 1 (test/inboundReceiptViews.test.ts)
+-- top cpu
+15618 100.0 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-codec-audit-65toxnv_/Audit.lean
+10452 100.0 lean Tests/Registry/Alpha.lean
+ 8550  34.5 /System/Library/PrivateFrameworks/XprotectFramework.framework/Versions/A/XPCServices/XprotectService.xpc/Contents/MacOS/XprotectService
+-- load { 7.46 6.35 5.74 }
+=== 2026-11-13T09:24:02Z base run 2 (test/inboundReceiptViews.test.ts)
+-- top cpu
+10452 100.0 lean Tests/Registry/Alpha.lean
+15799  98.0 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-extension-audit-bylwd08x/Audit.lean
+  423  27.0 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 7.10 6.30 5.72 }
+=== 2026-11-13T09:24:06Z base run 3 (test/inboundReceiptViews.test.ts)
+-- top cpu
+10452  94.1 lean Tests/Registry/Alpha.lean
+15799  93.5 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-extension-audit-bylwd08x/Audit.lean
+15971  73.7 opencode serve --hostname=127.0.0.1 --port=56077
+-- load { 6.77 6.24 5.71 }
+=== 2026-11-13T09:24:10Z base run 4 (test/inboundReceiptViews.test.ts)
+-- top cpu
+10452  99.6 lean Tests/Registry/Alpha.lean
+  423  26.7 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 1204  25.7 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.47 6.19 5.69 }
+=== 2026-11-13T09:24:14Z base run 5 (test/inboundReceiptViews.test.ts)
+-- top cpu
+10452 100.0 lean Tests/Registry/Alpha.lean
+16346  99.0 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-persistence-audit-ygznadg5/Audit.lean
+  423  25.6 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 6.47 6.19 5.69 }
+=== 2026-11-13T09:24:18Z base run 6 (test/inboundReceiptViews.test.ts)
+-- top cpu
+10452 100.0 lean Tests/Registry/Alpha.lean
+16346  99.6 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-persistence-audit-ygznadg5/Audit.lean
+ 1204  28.5 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.35 6.17 5.69 }
+=== 2026-11-13T09:31:39Z final run 1 (test/inboundReceiptViews.test.ts)
+-- top cpu
+22898  99.0 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-fallback-contract-e__j1s34/StatementMutant.lean
+20745  98.6 lean Tests/Registry/Alpha.lean
+ 1204  29.7 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 4.38 5.32 5.46 }
+=== 2026-11-13T09:31:40Z final run 2 (test/inboundReceiptViews.test.ts)
+-- top cpu
+20745  99.1 lean Tests/Registry/Alpha.lean
+22898  99.0 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-fallback-contract-e__j1s34/StatementMutant.lean
+  423  27.6 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 4.38 5.32 5.46 }
+=== 2026-11-13T09:31:40Z final run 3 (test/inboundReceiptViews.test.ts)
+-- top cpu
+20745 100.0 lean Tests/Registry/Alpha.lean
+22898  99.1 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-fallback-contract-e__j1s34/StatementMutant.lean
+ 1204  27.8 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 4.51 5.33 5.46 }
+=== 2026-11-13T09:31:41Z final run 4 (test/inboundReceiptViews.test.ts)
+-- top cpu
+20745 100.0 lean Tests/Registry/Alpha.lean
+22898  99.9 lean /var/folders/fj/yj32lxfd3076kt98xnzxkgyh0000gp/T/certo-fallback-contract-e__j1s34/StatementMutant.lean
+ 1204  28.0 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 4.51 5.33 5.46 }
+=== 2026-11-13T09:31:42Z final run 5 (test/inboundReceiptViews.test.ts)
+-- top cpu
+20745 100.0 lean Tests/Registry/Alpha.lean
+23083  71.5 /Users/thomasingalls/Library/Caches/Certo/toolchains/lean-4.34.0-darwin_aarch64/bin/lake --dir /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/
+  423  30.8 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 4.51 5.33 5.46 }
+=== 2026-11-13T09:31:43Z final run 6 (test/inboundReceiptViews.test.ts)
+-- top cpu
+20745  99.6 lean Tests/Registry/Alpha.lean
+23112  62.5 lean /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/P130/audit/Current-83de413c274e11e05c6afa5ab26a1d37d6be53a40f746656c8bfa8b01a970ce1.
+ 1204  29.4 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 4.51 5.33 5.46 }
+=== 2026-11-13T09:32:45Z controls start
+=== 2026-11-13T09:34:44Z survey-probe-inboundStaleTurnControl run 1 (test/inboundStaleTurnControl.test.ts)
+25431        00:27   0.0 pnpm --filter @certo/web exec playwright test
+25439        00:27   0.0 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm --filter @certo/web exec p
+25459        00:27   0.0 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwright/test/cli.js test
+25502        00:26   3.9 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/process.js
+25503        00:26   7.5 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-wi
+25533        00:21   4.3 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/MacOS/Google Chrome Helper (A
+25534        00:21   0.6 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25535        00:21   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25710        00:03   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25711        00:03   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25712        00:03  40.6 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+-- top cpu
+25788  73.4 rustc --crate-name num_bigint --edition=2021 /Users/thomasingalls/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.8/src/lib.rs -
+14268  53.4 /System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget -LaunchArguments eyJzZXJ2aWNlTmFtZSI6ImNvbS5hcHBs
+25712  40.6 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif 
+-- load { 4.68 4.99 5.29 }
+=== 2026-11-13T09:34:46Z survey-probe-inboundPageCodec run 1 (test/inboundPageCodec.test.ts)
+25431        00:30   0.0 pnpm --filter @certo/web exec playwright test
+25439        00:30   0.0 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm --filter @certo/web exec p
+25459        00:30   0.0 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwright/test/cli.js test
+25502        00:29   1.5 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/process.js
+25503        00:29   2.8 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-wi
+25533        00:24   1.4 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/MacOS/Google Chrome Helper (A
+25534        00:24   0.1 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25535        00:24   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25710        00:06   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25711        00:06   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25712        00:06   9.9 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+-- top cpu
+25872  94.1 /Users/thomasingalls/.t3/worktrees/certo/t3-9521d432/.work/build/rust/debug/deps/checkpoint-f382ef2223f1658f
+25887  31.4 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/lean/bin/certo check --input - --format json
+ 1204  28.3 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 4.62 4.98 5.29 }
+=== 2026-11-13T09:34:49Z survey-probe-inboundMixedReplay run 1 (test/inboundMixedReplay.test.ts)
+25431        00:32   0.0 pnpm --filter @certo/web exec playwright test
+25439        00:32   0.0 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm --filter @certo/web exec p
+25459        00:32   0.0 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwright/test/cli.js test
+25502        00:31   3.9 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/process.js
+25503        00:31   6.7 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-wi
+25533        00:26   6.8 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/MacOS/Google Chrome Helper (A
+25534        00:26   0.1 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25535        00:26   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25710        00:08   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25711        00:08   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25712        00:08  30.6 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+-- top cpu
+25709  93.7 lean Tests/Registry/Checkpoint.lean
+25939  40.0 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/lean/bin/certo check --input - --format json
+  423  28.7 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 4.62 4.98 5.29 }
+=== 2026-11-13T09:34:55Z survey-probe-workspaceAdmission run 1 (test/workspaceAdmission.test.ts)
+25431        00:38   0.0 pnpm --filter @certo/web exec playwright test
+25439        00:38   0.0 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm --filter @certo/web exec p
+25459        00:38   0.0 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwright/test/cli.js test
+25502        00:37   0.1 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/process.js
+25503        00:37   0.1 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-wi
+25533        00:32   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/MacOS/Google Chrome Helper (A
+25534        00:32   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25535        00:32   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25710        00:14   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25711        00:14   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+25712        00:14   1.6 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+-- top cpu
+  464 222.4 /usr/libexec/syspolicyd
+25709  87.7 lean Tests/Registry/Checkpoint.lean
+51664  77.1 /Applications/T3 Code (Beta).app/Contents/MacOS/T3 Code (Beta) --require /Applications/T3 Code (Beta).app/Contents/Resources/app.asar/apps/desktop/d
+-- load { 5.29 5.11 5.33 }
+=== 2026-11-13T09:35:11Z survey-probe-inboundMixedReaders run 1 (test/inboundMixedReaders.test.ts)
+25431        00:54   0.0 pnpm --filter @certo/web exec playwright test
+25439        00:54   0.0 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm --filter @certo/web exec p
+25459        00:54   0.0 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwright/test/cli.js test
+25502        00:53   1.1 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/process.js
+25503        00:53   2.6 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-wi
+25533        00:48   2.4 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/MacOS/Google Chrome Helper (A
+25534        00:48   0.2 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25535        00:48   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+26789        00:05   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+26790        00:05   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+26791        00:05  10.1 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+  423  27.7 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+ 1204  26.8 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.00 5.28 5.39 }
+=== 2026-11-13T09:35:15Z survey-probe-preparationReceiptJournal run 1 (test/preparationReceiptJournal.test.ts)
+25431        00:58   0.0 pnpm --filter @certo/web exec playwright test
+25439        00:58   0.0 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm --filter @certo/web exec p
+25459        00:58   0.1 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwright/test/cli.js test
+25502        00:57  14.3 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/process.js
+25503        00:57  11.3 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-wi
+25533        00:52   6.7 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/MacOS/Google Chrome Helper (A
+25534        00:52   1.6 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+25535        00:52   0.3 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/Google Chrome Helper (Aperi
+26907        00:04   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+26908        00:04   0.0 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+26909        00:04  73.3 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Contents/MacOS/Google Chrome Help
+-- top cpu
+26810  97.9 lean Tests/Registry/Alpha.lean
+26909  91.4 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif 
+  423  33.6 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 6.16 5.33 5.40 }
+=== 2026-11-13T09:35:38Z survey-inboundStaleTurnControl run 1 (test/inboundStaleTurnControl.test.ts)
+-- top cpu
+28032  99.9 rustc --crate-name certo_app_server --edition=2024 src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-
+26810  98.6 lean Tests/Registry/Alpha.lean
+  423  33.8 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.94 5.33 5.40 }
+=== 2026-11-13T09:35:41Z survey-inboundStaleTurnControl run 2 (test/inboundStaleTurnControl.test.ts)
+-- top cpu
+26810  99.6 lean Tests/Registry/Alpha.lean
+ 1204  29.1 /Applications/Ghostty.app/Contents/MacOS/ghostty
+  423  26.3 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.94 5.33 5.40 }
+=== 2026-11-13T09:35:44Z survey-inboundStaleTurnControl run 3 (test/inboundStaleTurnControl.test.ts)
+-- top cpu
+26810  99.2 lean Tests/Registry/Alpha.lean
+14268  87.8 /System/Applications/Weather.app/Contents/PlugIns/WeatherWidget.appex/Contents/MacOS/WeatherWidget -LaunchArguments eyJzZXJ2aWNlTmFtZSI6ImNvbS5hcHBs
+  423  28.0 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.78 5.31 5.39 }
+=== 2026-11-13T09:35:46Z survey-inboundStaleTurnControl run 4 (test/inboundStaleTurnControl.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28170  96.9 /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python scripts/check_alpha_sou
+  423  28.7 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.64 5.29 5.39 }
+=== 2026-11-13T09:35:49Z survey-inboundStaleTurnControl run 5 (test/inboundStaleTurnControl.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28170  99.9 /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python scripts/check_alpha_sou
+ 1204  27.8 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 5.64 5.29 5.39 }
+=== 2026-11-13T09:35:51Z survey-inboundPageCodec run 1 (test/inboundPageCodec.test.ts)
+-- top cpu
+26810  99.1 lean Tests/Registry/Alpha.lean
+88698  80.3 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+28170  65.0 /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python scripts/check_alpha_sou
+-- load { 5.43 5.25 5.37 }
+=== 2026-11-13T09:35:54Z survey-inboundPageCodec run 2 (test/inboundPageCodec.test.ts)
+-- top cpu
+26810  99.5 lean Tests/Registry/Alpha.lean
+28170  96.8 /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python scripts/check_alpha_sou
+  423  29.3 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.43 5.25 5.37 }
+=== 2026-11-13T09:35:57Z survey-inboundPageCodec run 3 (test/inboundPageCodec.test.ts)
+-- top cpu
+28328  99.0 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/rust/debug/examples/alpha-source /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a3
+26810  98.9 lean Tests/Registry/Alpha.lean
+88698  34.7 /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/FSEvents.framework/Versions/A/Support/fseventsd
+-- load { 5.47 5.26 5.38 }
+=== 2026-11-13T09:36:00Z survey-inboundPageCodec run 4 (test/inboundPageCodec.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28328 100.0 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/rust/debug/examples/alpha-source /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a3
+  423  33.8 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.47 5.26 5.38 }
+=== 2026-11-13T09:36:02Z survey-inboundPageCodec run 5 (test/inboundPageCodec.test.ts)
+-- top cpu
+28328  99.6 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/rust/debug/examples/alpha-source /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a3
+26810  99.6 lean Tests/Registry/Alpha.lean
+  423  28.2 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.91 5.36 5.41 }
+=== 2026-11-13T09:36:05Z survey-inboundMixedReplay run 1 (test/inboundMixedReplay.test.ts)
+-- top cpu
+28328 100.0 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/rust/debug/examples/alpha-source /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a3
+26810  98.4 lean Tests/Registry/Alpha.lean
+  423  30.3 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 5.91 5.36 5.41 }
+=== 2026-11-13T09:36:10Z survey-inboundMixedReplay run 2 (test/inboundMixedReplay.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28328  99.4 /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/build/rust/debug/examples/alpha-source /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a3
+  464  32.9 /usr/libexec/syspolicyd
+-- load { 7.12 5.62 5.50 }
+=== 2026-11-13T09:36:16Z survey-inboundMixedReplay run 3 (test/inboundMixedReplay.test.ts)
+-- top cpu
+28603 100.0 lean Tests/Source/Alpha.lean
+26810 100.0 lean Tests/Registry/Alpha.lean
+ 1204  32.8 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 7.03 5.62 5.50 }
+=== 2026-11-13T09:36:21Z survey-inboundMixedReplay run 4 (test/inboundMixedReplay.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28603  99.7 lean Tests/Source/Alpha.lean
+ 1204  28.3 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.71 5.58 5.49 }
+=== 2026-11-13T09:36:26Z survey-inboundMixedReplay run 5 (test/inboundMixedReplay.test.ts)
+-- top cpu
+28603 100.0 lean Tests/Source/Alpha.lean
+26810  99.7 lean Tests/Registry/Alpha.lean
+ 1204  30.4 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.75 5.63 5.50 }
+=== 2026-11-13T09:36:31Z survey-workspaceAdmission run 1 (test/workspaceAdmission.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28603 100.0 lean Tests/Source/Alpha.lean
+ 1204  28.8 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.53 5.60 5.49 }
+=== 2026-11-13T09:36:46Z survey-workspaceAdmission run 2 (test/workspaceAdmission.test.ts)
+-- top cpu
+28603  99.5 lean Tests/Source/Alpha.lean
+26810  98.5 lean Tests/Registry/Alpha.lean
+ 1204  30.9 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.60 5.64 5.51 }
+=== 2026-11-13T09:37:00Z survey-workspaceAdmission run 3 (test/workspaceAdmission.test.ts)
+-- top cpu
+28603 100.0 lean Tests/Source/Alpha.lean
+26810  99.9 lean Tests/Registry/Alpha.lean
+  423  32.1 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 6.69 5.71 5.54 }
+=== 2026-11-13T09:37:15Z survey-workspaceAdmission run 4 (test/workspaceAdmission.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28603  99.6 lean Tests/Source/Alpha.lean
+ 1204  29.3 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 7.15 5.87 5.60 }
+=== 2026-11-13T09:37:29Z survey-workspaceAdmission run 5 (test/workspaceAdmission.test.ts)
+-- top cpu
+26810  99.4 lean Tests/Registry/Alpha.lean
+28603  99.0 lean Tests/Source/Alpha.lean
+  423  25.9 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 6.59 5.81 5.58 }
+=== 2026-11-13T09:37:44Z survey-inboundMixedReaders run 1 (test/inboundMixedReaders.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28603  99.3 lean Tests/Source/Alpha.lean
+  423  26.0 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 6.07 5.73 5.56 }
+=== 2026-11-13T09:37:47Z survey-inboundMixedReaders run 2 (test/inboundMixedReaders.test.ts)
+-- top cpu
+26810  99.6 lean Tests/Registry/Alpha.lean
+28603  99.5 lean Tests/Source/Alpha.lean
+ 1204  29.7 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 6.06 5.74 5.56 }
+=== 2026-11-13T09:37:51Z survey-inboundMixedReaders run 3 (test/inboundMixedReaders.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28603  99.1 lean Tests/Source/Alpha.lean
+ 1204  28.5 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 7.58 6.06 5.67 }
+=== 2026-11-13T09:37:55Z survey-inboundMixedReaders run 4 (test/inboundMixedReaders.test.ts)
+-- top cpu
+28603  99.8 lean Tests/Source/Alpha.lean
+26810  99.0 lean Tests/Registry/Alpha.lean
+  423  25.0 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 7.58 6.06 5.67 }
+=== 2026-11-13T09:37:59Z survey-inboundMixedReaders run 5 (test/inboundMixedReaders.test.ts)
+-- top cpu
+26810 100.0 lean Tests/Registry/Alpha.lean
+28603 100.0 lean Tests/Source/Alpha.lean
+  423  27.6 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 7.37 6.04 5.67 }
+=== 2026-11-13T09:38:02Z survey-preparationReceiptJournal run 1 (test/preparationReceiptJournal.test.ts)
+-- top cpu
+26810  99.9 lean Tests/Registry/Alpha.lean
+28603  99.0 lean Tests/Source/Alpha.lean
+ 1204  30.9 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 7.02 5.99 5.65 }
+=== 2026-11-13T09:38:06Z survey-preparationReceiptJournal run 2 (test/preparationReceiptJournal.test.ts)
+-- top cpu
+28603 100.0 lean Tests/Source/Alpha.lean
+26810 100.0 lean Tests/Registry/Alpha.lean
+ 1204  31.7 /Applications/Ghostty.app/Contents/MacOS/ghostty
+-- load { 7.02 5.99 5.65 }
+=== 2026-11-13T09:38:10Z survey-preparationReceiptJournal run 3 (test/preparationReceiptJournal.test.ts)
+-- top cpu
+  464 119.3 /usr/libexec/syspolicyd
+28603  96.1 lean Tests/Source/Alpha.lean
+26810  94.5 lean Tests/Registry/Alpha.lean
+-- load { 7.34 6.07 5.68 }
+=== 2026-11-13T09:38:13Z survey-preparationReceiptJournal run 4 (test/preparationReceiptJournal.test.ts)
+-- top cpu
+28603  99.7 lean Tests/Source/Alpha.lean
+26810  99.0 lean Tests/Registry/Alpha.lean
+  423  26.3 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 7.15 6.05 5.68 }
+=== 2026-11-13T09:38:17Z survey-preparationReceiptJournal run 5 (test/preparationReceiptJournal.test.ts)
+-- top cpu
+28603 100.0 lean Tests/Source/Alpha.lean
+ 1204  29.3 /Applications/Ghostty.app/Contents/MacOS/ghostty
+  423  27.2 /System/Library/PrivateFrameworks/SkyLight.framework/Resources/WindowServer -daemon
+-- load { 6.90 6.02 5.67 }
