@@ -1,0 +1,50 @@
+# Phase 561 base-text runs, 2026-11-13, Node 26.13.1, Playwright 1.62.0 Chromium, macOS.
+# setup.spec.ts: the base text (tree 619798eacad4be6fb68731fa93b6e436cbe38d62) copied to scratch with absolute imports,
+# run with a scratch copy of playwright.account-setup.config.ts (same server, port, timeout and viewport), filtered to the five cases.
+# welcome.spec.ts: the base text, the 'base-text' control in controls.txt.
+
+## setup.spec.ts, five cases, one run (08:23Z)
+1) ctl-setup-base.spec.ts:210:1 › password-manager app switching preserves code-saving and confirmation steps 
+Error: locator.click: Test timeout of 90000ms exceeded.
+- waiting for getByRole('button', { name: 'Use another account', exact: true })
+> 254 |   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+2) ctl-setup-base.spec.ts:284:1 › homepage opens the app, account choice stays explicit, and a first account reopens through either entry 
+Error: locator.click: Test timeout of 90000ms exceeded.
+- waiting for getByRole('button', { name: 'Use another account', exact: true })
+> 289 |   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+3) ctl-setup-base.spec.ts:486:1 › existing writing survives recovery reload, wrong code, lost admission reply, and offline Account reopen 
+Error: expect(locator).toBeVisible() failed
+Expected: visible
+Received: hidden
+- waiting for getByText('Account connected. Approved devices can sync writing.')
+14 × locator resolved to <p class="menu-note">Account connected. Approved devices can sync writ…</p>
+> 558 |   ).toBeVisible();
+4) ctl-setup-base.spec.ts:962:1 › browser Back redisplays recovery only within its unfinished ceremony and warns before retiring it 
+Error: locator.click: Test timeout of 90000ms exceeded.
+- waiting for getByRole('button', { name: 'Use another account', exact: true })
+> 967 |   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+5) ctl-setup-base.spec.ts:1031:1 › Back during registration drains the owner and resumes the saved passkey proof after a lost reply 
+Error: locator.click: Test timeout of 90000ms exceeded.
+- waiting for getByRole('button', { name: 'Use another account', exact: true })
+> 1036 |   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
+5 failed
+
+## page snapshot at the base :284 timeout (error-context, abridged): the menu is rendered and all four sections are closed
+  - complementary "Menu" [ref=e5]:
+    - group [ref=e17]:
+      - heading "Account" [level=2] [ref=e19] [cursor=pointer]
+    - group [ref=e20]:
+      - heading "Sync" [level=2] [ref=e22] [cursor=pointer]
+    - group [ref=e23]:
+      - heading "Data" [level=2] [ref=e25] [cursor=pointer]
+    - group [ref=e26]:
+      - heading "Install" [level=2] [ref=e28] [cursor=pointer]
+
+## welcome.spec.ts :252, base text, one run (08:20Z)
+1) ctl-base-text.spec.ts:252:1 › an interrupted protection transition resumes after reload with the saved code 
+Error: expect(locator).toBeVisible() failed
+Locator: getByRole('heading', { name: 'Finish enabling protection' })
+Expected: visible
+Error: element(s) not found
+> 279 |     await expect(page.getByRole('heading', { name: 'Finish enabling protection' })).toBeVisible();
+1 failed

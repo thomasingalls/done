@@ -249,41 +249,64 @@ test('protection retires another live tab and copies its acknowledged writing', 
   }
 });
 
-test('an interrupted protection transition resumes after reload with the saved code', async ({
-  page,
-}, info) => {
-  const service = await startService(info.outputPath('service'), undefined, true, true);
-  try {
-    await openApp(page);
-    await add(page, 'Keep through a refused deletion');
-    await page.evaluate(() => {
-      const native = indexedDB.deleteDatabase.bind(indexedDB);
-      let refused = false;
-      indexedDB.deleteDatabase = (name) => {
-        if (/^done\.[a-f0-9]{32}$/.test(name) && !refused) {
-          refused = true;
-          const request = {} as IDBOpenDBRequest;
-          queueMicrotask(() => request.onerror?.call(request, new Event('error')));
-          return request;
-        }
-        return native(name);
-      };
-    });
-    await openMenuSection(page, 'Account');
-    await page.getByRole('button', { name: 'Add an unlock code' }).click();
-    await page.getByRole('button', { name: 'Continue', exact: true }).click();
-    const code = (await page.getByLabel('Generated unlock code').textContent())!;
-    await page.getByRole('button', { name: 'I saved my unlock code' }).click();
-    await page.getByLabel('Unlock code', { exact: true }).fill(code);
-    await page.getByRole('button', { name: 'Confirm and protect' }).click();
-    await expect(page.getByRole('heading', { name: 'Finish enabling protection' })).toBeVisible();
-    await page.reload();
-    await expect(page.getByRole('heading', { name: 'Finish enabling protection' })).toBeVisible();
-    await page.getByLabel('Unlock code', { exact: true }).fill(code);
-    await page.getByRole('button', { name: 'Unlock', exact: true }).click();
-    await expect(page.locator('.shell')).toContainText('Keep through a refused deletion');
-    await expect(page.locator('.menu')).toContainText('Unlock code enabled.');
-  } finally {
-    await stopService(service);
-  }
+// Refuse the first deletion of a Local content database once, in the realm that deletes it.
+function refuseOneDeletion() {
+  const native = indexedDB.deleteDatabase.bind(indexedDB);
+  let refused = false;
+  indexedDB.deleteDatabase = (name) => {
+    if (/^done\.[a-f0-9]{32}$/.test(name) && !refused) {
+      refused = true;
+      const request = {} as IDBOpenDBRequest;
+      queueMicrotask(() => request.onerror?.call(request, new Event('error')));
+      return request;
+    }
+    return native(name);
+  };
+}
+test.describe(() => {
+  // Since phase 226 protection deletes the source database in the localStartup Worker, not the
+  // page. The refusal is prepended to that Worker's script, so it is installed before any of its
+  // code runs. Without a service worker every Worker script request reaches this route; an
+  // installed precache worker would answer it from its own cache instead.
+  test.use({ serviceWorkers: 'block' });
+  test('an interrupted protection transition resumes after reload with the saved code', async ({
+    page,
+  }, info) => {
+    const service = await startService(info.outputPath('service'), undefined, true, true);
+    try {
+      await openApp(page);
+      await add(page, 'Keep through a refused deletion');
+      // Only the first localStartup Worker started from here, the one protection opens, refuses.
+      let armed = true;
+      await page.route(/\/localStartup\.worker-[^/]*\.js$/, async (route) => {
+        if (!armed) return route.continue();
+        armed = false;
+        const response = await route.fetch();
+        const headers = response.headers();
+        delete headers['content-length'];
+        delete headers['content-encoding'];
+        await route.fulfill({
+          status: response.status(),
+          headers,
+          body: `(${refuseOneDeletion})();\n${await response.text()}`,
+        });
+      });
+      await openMenuSection(page, 'Account');
+      await page.getByRole('button', { name: 'Add an unlock code' }).click();
+      await page.getByRole('button', { name: 'Continue', exact: true }).click();
+      const code = (await page.getByLabel('Generated unlock code').textContent())!;
+      await page.getByRole('button', { name: 'I saved my unlock code' }).click();
+      await page.getByLabel('Unlock code', { exact: true }).fill(code);
+      await page.getByRole('button', { name: 'Confirm and protect' }).click();
+      await expect(page.getByRole('heading', { name: 'Finish enabling protection' })).toBeVisible();
+      await page.reload();
+      await expect(page.getByRole('heading', { name: 'Finish enabling protection' })).toBeVisible();
+      await page.getByLabel('Unlock code', { exact: true }).fill(code);
+      await page.getByRole('button', { name: 'Unlock', exact: true }).click();
+      await expect(page.locator('.shell')).toContainText('Keep through a refused deletion');
+      await expect(page.locator('.menu')).toContainText('Unlock code enabled.');
+    } finally {
+      await stopService(service);
+    }
+  });
 });

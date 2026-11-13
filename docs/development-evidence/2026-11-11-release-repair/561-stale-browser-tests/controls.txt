@@ -1,0 +1,59 @@
+# Phase 561 controls: test/packaged-account/welcome.spec.ts › "an interrupted protection transition resumes after reload with the saved code"
+# Copies written by make_controls.py.txt (python3 -I make_controls.py), 2026-11-13, Node 26.13.1, Playwright 1.62.0 Chromium, macOS.
+# Each copy is the repaired file with absolute imports and one change, run alone against the same dist/ with a scratch copy of
+# playwright.packaged-account.config.ts (same port, viewport and 120 s timeout): playwright test <copy> -g "interrupted protection".
+# The repository is not modified. "first heading" = the first `Finish enabling protection` expectation; "writing check" =
+# `.shell` toContainText('Keep through a refused deletion') after the saved code is entered.
+# Runs 08:20Z to 08:22Z, one each; no-injection and one-shot-every-worker were run a second time at 08:44Z to capture the page, with the same outcome.
+
+final-copy: 1 passed
+  expected: passes
+base-text: 1 failed at the first heading (line 279 of the base text)
+  expected: fails at the first heading: the page-realm patch never fires and protection completes
+no-injection: 1 failed at the first heading (both runs)
+  expected: fails at the first heading
+  page at the failure: heading "Protection is enabled", "Your list and notes have been kept. Future visits require your saved unlock code.", buttons Back to Today, Lock now
+page-only-sw-blocked: 1 failed at the first heading
+  expected: fails at the first heading: blocking the service worker alone does not make the old injection reach the Worker
+sw-allowed-ready: 1 failed at the first heading
+  expected: fails at the first heading: an active service worker answers the Worker script from its cache, so the route never patches it
+sw-allowed-race: 1 passed
+  expected: either outcome; passes only while the service worker is still installing when protection starts its Worker
+permanent: 1 failed at the writing check, after both "Finish enabling protection" expectations passed
+  page at the failure: heading "Could not open your workspace", "Browser storage is unavailable or setup did not finish. Try again when it is available.", buttons Check again, Remove from this device, Use another account
+one-shot-every-worker: 1 failed at the writing check (both runs)
+  expected: fails after the reload: the resume deletes again in a new Worker, which also refuses once
+  page at the failure: the same "Could not open your workspace" screen as the permanent refusal
+permanent-in-first-worker: 1 passed
+  expected: passes: the reload discards the refusing Worker and the resume runs in a new, unpatched one
+
+# Instrumented copies (probes, not controls): each localStartup Worker, where its script came from, and whether it carried the refusal.
+
+final-instrumented (the repaired case): passed
+  +473ms worker start localStartup.worker   (after "Confirm and protect")
+  +598ms script fromSW=false patched=true
+  +929ms worker close                        (the reload)
+  +934ms navigated /
+  +1001ms worker start localStartup.worker
+  +1081ms script fromSW=false patched=false
+  +1250ms worker close
+  +1254ms worker start localOwner.worker
+sw-allowed-ready-instrumented: failed at the first heading
+  +422ms worker start localStartup.worker
+  +543ms script fromSW=true patched=false     (served by the precache worker; the route never saw it)
+  +615ms worker close
+  +618ms worker start localOwner.worker       (protection completed)
+sw-allowed-race-instrumented: passed
+  +476ms worker start localStartup.worker
+  +596ms script fromSW=false patched=true     (the service worker was still installing)
+  +927ms worker close; +932ms navigated /
+  +982ms worker start localStartup.worker
+  +1061ms script fromSW=true patched=false    (after the reload the service worker answers)
+permanent-instrumented: failed at the writing check
+  +503ms worker start localStartup.worker; +626ms script fromSW=false patched=true
+  +942ms worker close; +949ms navigated /
+  +1026ms worker start localStartup.worker; +1104ms script fromSW=false patched=true (refuses the resume's deletion too)
+
+# First probe of the base flow with the route installed and the service worker allowed (route.continue, no patch), 08:14Z:
+#   +477ms service worker installing, page not controlled; +641ms protect-time localStartup script routed, fromSW=false;
+#   +800ms the next Worker's script (localOwner) fromSW=true. Protection completed ("Protection is enabled").

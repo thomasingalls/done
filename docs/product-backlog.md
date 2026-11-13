@@ -325,6 +325,42 @@ a stall. What it left:
   29 modules and the lockfile at run time, but the adapter's pins do not cover them, as
   development.md already notes for rebuilt historical fixtures.
 
+### Continuous integration
+
+CI has not passed since 2026-10-16. Phase 561's investigation and CI history are in its
+[record](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/README.md).
+
+- **CI-UNIT-BUDGET — one unit case has kept CI red since 2026-11-07.**
+  `test/inboundReceiptViews.test.ts` › "all72 admitted extents expose exact positions, predecessor
+  links and original bytes for two publishers" takes 3.1 to 3.3 s on fast hosted runners and 5.5 to
+  5.8 s on slow ones, so it times out at Vitest's five-second default on about half of hosted runs.
+  It did not get slower: it was added near the limit (phase 389, 2026-11-05) and failed on the first
+  slow runner it met. About 98% of its time is two `toEqual` byte comparisons per entry view
+  (`event.page`, about 12 KB, and `event.request`, over 240 views); the investigation measured the
+  case at 2.8 to 2.9 s here, and at 56 to 60 ms with `assert.deepStrictEqual`, where a flipped byte
+  still fails (not re-measured in phase 561). The precedent is the 2026-10-16 decision "Keep unit
+  deadlines and exact bytes while bounding hosted contention": strict deep equality in place of the
+  general matcher, keeping the five-second default, every case's workload and the 20-minute job
+  limit. The next cases nearest the limit, by worst share of five seconds in the 11-07 to 11-12 CI
+  logs: `inboundStaleTurnControl.test.ts:4` (85%), `inboundPageCodec.test.ts:26` (76%, the same
+  72-extent `toEqual` loop), `inboundMixedReplay.test.ts` seed407 (73%), `workspaceAdmission.test.ts:1256`
+  (68%), seed406 and `inboundMixedReaders.test.ts:124` (63% each), seed408 (58%) and
+  `preparationReceiptJournal.test.ts` all72 (55%); whether they share the `toEqual` cost was not
+  measured. A repair on the precedent is queued as the next phase; phase 561 did not build it.
+- **CI-JOB-LIMIT — the 20-minute job limit now cuts the packaged browser step.** *decision.* Fixing
+  CI-UNIT-BUDGET alone will not make CI green. Since the last green run (2026-10-16) the
+  onboarding, account compatibility and device-removal browser step has grown from 35 tests
+  (2.8 min) to 54, of which the 13 `enrollment-*` cases take about 430 s, and "Check native sync
+  authority" (2026-10-23) added 2.2 to 4.4 min before it. Of the runs since then that passed the unit
+  step, 16 ended at `timeout-minutes: 20`, 11 of them inside that browser step, and one was
+  superseded. The fastest, 43072060806 on 2026-11-11, had passed 41 of 54 browser tests at the cut;
+  finishing would take about 25 minutes. No run since 2026-10-16 has reached that step's last
+  specs (`removal-regressions` and `welcome`) or "Check development onboarding and service
+  shutdown" (`pnpm test:account-setup`), which is how phase 561's stale tests went unseen.
+  Options: run the browser suites in a job of their own, shard them, or raise `timeout-minutes`;
+  the last amends the limit the 2026-10-16 decision keeps. A step added to this job, such as
+  TEST-PARSER-CI's, would also land after the cut.
+
 ### Worker and page boundaries
 
 - **WORKER-PAGE-SURVEY — measure what still crosses between the page and the Workers.**
@@ -342,6 +378,31 @@ a stall. What it left:
   stay on the page. First step: profile-only counters of every crossing per user action (key
   press, card move, open, send, receive, one reduction slice) with payload sizes, in the style of
   phase 554's timers, before any structure is proposed.
+- **SETUP-CLOSING-STUCK — removing local data in another tab leaves a sync setup on its closing
+  screen.** *decision.* A person starts Set up sync and reaches "Create your passkey", then in a
+  second tab goes to Remove local data and confirms. The setup tab shows "Locking and finishing
+  storage operations…" and "Your writing stays in this workspace." with only Back, and stays there
+  (the investigation watched it for 90 s with its Worker alive); only Back or a reload ends it. The second sentence is
+  wrong, since the writing was just removed. Nothing is lost or recreated: the saved setup attempt
+  stays empty before and after a reload, a reload shows "This workspace was removed" (or "Add
+  protection before sync" after Start fresh), and Back goes to "Choose an account". It has happened
+  since phase 226 (`98de7c303`, 2026-10-29), which moved setup's coordinator into the
+  `firstDeviceOwner` Worker. The coordinator hears the retirement notice in its own realm, closes
+  itself and publishes that closing screen (`src/account/firstDeviceSetup.ts`), but nothing tells the
+  page's owner (`src/ui/windowCeremonyUi.ts`) to finish: the Worker stays alive, no `setupClosed`
+  arrives and the Worker-lifetime watch does not fire. Phase 230 (`baa252694`) noted this
+  "forever-closing presentation" for recovery and fixed only the path where the page does drain.
+  Device enrollment and recovery use the same `windowCeremonyUi` and were not tried. A repair would
+  tell the page when the Worker's coordinator has closed itself and show a terminal "removed" or
+  "retired" alert; the failure text "The passkey step could not finish… Your saved setup and writing
+  have been kept" would be wrong after a removal too. Likely files: `src/crdt/workerCeremonyUi.ts`,
+  `src/account/firstDeviceSetup.ts`, `src/ui/windowCeremonyUi.ts`, `src/ui/firstDeviceSetupWorker.ts`
+  and the test. `test/packaged-account/removal-regressions.spec.ts` › "a delayed registration reply
+  cannot recreate removed setup" fails on it in both variants and is left failing. Its simulation of
+  a coordinator that misses the cooperative notice suppresses `BroadcastChannel('done/slot-lifecycle')`
+  in the page only, while the coordinator now listens in the Worker, so the simulation has to be
+  redefined, which changes what the test proves. From phase 561's
+  [investigation](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/investigation.md).
 
 ### The affected account
 
