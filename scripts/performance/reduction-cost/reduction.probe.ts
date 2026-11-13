@@ -10,6 +10,7 @@
  * starts from a byte-identical copy of that store. */
 import { it, vi } from 'vitest';
 import { writeFileSync } from 'node:fs';
+import { Session } from 'node:inspector';
 import { IDBFactory, IDBKeyRange, IDBObjectStore } from 'fake-indexeddb';
 
 const c = vi.hoisted(() => {
@@ -36,6 +37,14 @@ const c = vi.hoisted(() => {
     firstMissAt: undefined as number | undefined,
     pauseAt: undefined as number | undefined,
     journals: 0,
+    // Phase 557: whole-document forks and state comparisons (src/crdt/yjs.ts), and the coverage
+    // view's own entry points, counted and timed at the module boundary.
+    forks: 0,
+    forkMs: 0,
+    compares: 0,
+    compareMs: 0,
+    preparedBaselines: 0,
+    directProofs: 0,
   });
   return {
     zero,
@@ -87,6 +96,38 @@ vi.mock('../../../src/crdt/retentionPreparation', async (importOriginal) => {
       wrap('check');
       wrap('checkReceipt');
       return journal;
+    },
+  };
+});
+vi.mock('../../../src/crdt/yjs', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../../src/crdt/yjs')>();
+  return {
+    ...actual,
+    forkDoc(...args: Parameters<typeof actual.forkDoc>) {
+      const t = performance.now();
+      try {
+        return actual.forkDoc(...args);
+      } finally {
+        c.now.forks++;
+        c.now.forkMs += performance.now() - t;
+      }
+    },
+    sameDocState(...args: Parameters<typeof actual.sameDocState>) {
+      const t = performance.now();
+      try {
+        return actual.sameDocState(...args);
+      } finally {
+        c.now.compares++;
+        c.now.compareMs += performance.now() - t;
+      }
+    },
+    prepareDocCoverage(...args: Parameters<typeof actual.prepareDocCoverage>) {
+      c.now.preparedBaselines++;
+      return actual.prepareDocCoverage(...args);
+    },
+    provesIntegratedCoverage(...args: Parameters<typeof actual.provesIntegratedCoverage>) {
+      c.now.directProofs++;
+      return actual.provesIntegratedCoverage(...args);
     },
   };
 });
@@ -224,7 +265,42 @@ const TOTALS = [
   'hmacVerifyBytes',
   'signatureVerifyCalls',
   'deltaBytes',
+  'forks',
+  'forkMs',
+  'compares',
+  'compareMs',
+  'preparedBaselines',
+  'directProofs',
 ];
+// PROFILE=1: a CPU profile of each attempt's verifying stage and of its coverage loop, written to
+// OUTDIR as .cpuprofile (phase 557). The inspector session is this process's own; nothing leaves it.
+const profile = (() => {
+  if (process.env['PROFILE'] !== '1' || !process.env['OUTDIR'])
+    return { start() {}, stop(_name: string) {} };
+  const session = new Session();
+  session.connect();
+  let running = false;
+  return {
+    start() {
+      if (running) return;
+      running = true;
+      session.post('Profiler.enable');
+      session.post('Profiler.setSamplingInterval', { interval: 500 });
+      session.post('Profiler.start');
+    },
+    stop(name: string) {
+      if (!running) return;
+      running = false;
+      session.post('Profiler.stop', (error, result) => {
+        if (error) throw error;
+        writeFileSync(
+          `${process.env['OUTDIR']}/${process.env['LABEL'] ?? 'run'}-${name}.cpuprofile`,
+          JSON.stringify(result.profile),
+        );
+      });
+    },
+  };
+})();
 
 it('reduction cost', async () => {
   vi.stubGlobal('IDBKeyRange', IDBKeyRange);
@@ -236,6 +312,7 @@ it('reduction cost', async () => {
     vi.stubEnv(n, '1');
   const { createContentOwner } = await import(W + '/src/crdt/contentStore');
   const { preparationVerifierIdentity } = await import(W + '/src/crdt/localBaselineMode');
+  const { accountLedgerMetrics } = await import(W + '/src/crdt/accountLedgerMetrics');
   const { extendSpoolWitness } = await import(W + '/src/crdt/spoolRecord');
   const { cryptFor, keys } = await import(W + '/test/local-baseline/anchor-fixture');
   // @ts-expect-error JavaScript fixture.
@@ -367,9 +444,47 @@ it('reduction cost', async () => {
         c.now = c.zero();
         const start = performance.now();
         // Stage boundaries from the owner's own progress reports (first report of each stage).
+        // 'coverage-loop' is the plan's bare coverage report after its per-row loop, so the stage
+        // splits into the row checks and the final replay and comparison (phase 557). Counters are
+        // copied at each boundary so every stage's forks and compares can be told apart.
         const stages: Record<string, number> = {};
-        const progress = (value: { stage: string }) => {
-          stages[value.stage] ??= performance.now() - start;
+        const stageCounts: Record<string, Record<string, number>> = {};
+        const ledgerAt = () => {
+          const t = accountLedgerMetrics().timings;
+          return {
+            coverageChecks: t.coverageCheck.calls,
+            coverageCheckMs: t.coverageCheck.totalMs,
+            coverageRebuilds: t.coverageRebuild.calls,
+            coverageRebuildMs: t.coverageRebuild.totalMs,
+          };
+        };
+        const ledgerStart = ledgerAt();
+        const mark = (name: string) => {
+          if (stages[name] !== undefined) return;
+          stages[name] = performance.now() - start;
+          const l = ledgerAt();
+          stageCounts[name] = {
+            forks: c.now.forks,
+            forkMs: c.now.forkMs,
+            compares: c.now.compares,
+            compareMs: c.now.compareMs,
+            coverageChecks: l.coverageChecks - ledgerStart.coverageChecks,
+            coverageCheckMs: l.coverageCheckMs - ledgerStart.coverageCheckMs,
+            coverageRebuilds: l.coverageRebuilds - ledgerStart.coverageRebuilds,
+            coverageRebuildMs: l.coverageRebuildMs - ledgerStart.coverageRebuildMs,
+          };
+        };
+        const progress = (value: { stage: string; completed?: number }) => {
+          if (value.stage === 'coverage' && value.completed === undefined) {
+            mark('coverage-loop');
+            profile.stop(`${PAIRS}-${sliced ? 'sliced' : 'uncached'}-${rep}-${n}-coverage`);
+          }
+          if (stages[value.stage] === undefined) {
+            if (value.stage === 'building')
+              profile.stop(`${PAIRS}-${sliced ? 'sliced' : 'uncached'}-${rep}-${n}-verifying`);
+            if (value.stage === 'verifying' || value.stage === 'coverage') profile.start();
+          }
+          mark(value.stage);
         };
         const prepared = await owner.prepareHistoryRemoval(
           task,
@@ -421,7 +536,15 @@ it('reduction cost', async () => {
           commitMs = performance.now() - t;
         } else outcome = (prepared as { kind: string; reason?: string }).reason ?? prepared.kind;
         const { firstMissAt: _a, pauseAt: _b, ...counts } = c.now;
-        attempts.push({ ...record, saveMs, commitMs, durableBytes: durable, stages, ...counts });
+        attempts.push({
+          ...record,
+          saveMs,
+          commitMs,
+          durableBytes: durable,
+          stages,
+          stageCounts,
+          ...counts,
+        });
         if (prepared.kind !== 'preparation-checkpoint') break;
       }
       const totalMs = performance.now() - began,

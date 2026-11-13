@@ -14,7 +14,7 @@ import sys
 d, label = sys.argv[1], sys.argv[2]
 arms = sys.argv[3:] or ['sliced']
 MiB = 1024 * 1024
-SIZES = [128, 256, 512, 1024, 2048]
+SIZES = [128, 256, 512, 1024, 2048, 4096]
 
 
 def reps(pairs, arm):
@@ -89,3 +89,47 @@ if os.environ.get('STAGES'):
         o, v, b, c = st['opening'], st['verifying'], st['building'], st['coverage']
         cur = st.get('current', a['prepareMs'])
         print(f"| {pairs} | {m['rows']} | {v - o:.0f} | {b - v:.0f} | {c - b:.0f} | {cur - c:.0f} | {a['commitMs']:.0f} | {m['totalMs']:.0f} |")
+
+if os.environ.get('COVERAGE'):
+    # Phase 557: every stage's median over runs, the coverage stage split at the plan's bare
+    # coverage report into its row loop and the final replay and comparison, and the loop's
+    # whole-document forks and comparisons (counts from the median run). Growth is per doubling.
+    def stage_ms(run, x, y):
+        a = run['perAttempt'][0]
+        st = a['stages']
+        end = st.get(y, a['prepareMs']) if y == 'current' else st[y]
+        return end - st[x]
+
+    def loop_counts(run):
+        sc = run['perAttempt'][0]['stageCounts']
+        return {k: sc['coverage-loop'][k] - sc['coverage'][k] for k in sc['coverage-loop']}
+
+    print(f'\nUncached pass by stage, {label} (medians over runs; ms):\n')
+    print('| Pairs | Rows | Runs | Opening | Verifying | Building | Coverage | (row loop) | (final replay) | Commit | Total | Loop forks | Loop compares | Fork ms | Compare ms | Coverage growth |')
+    print('|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|')
+    prev = None
+    for pairs in SIZES:
+        u = reps(pairs, 'uncached')
+        if not u:
+            continue
+        m = median_run(u)
+        cov = statistics.median(stage_ms(r, 'coverage', 'current') for r in u)
+        loop = statistics.median(stage_ms(r, 'coverage', 'coverage-loop') for r in u)
+        tail = statistics.median(stage_ms(r, 'coverage-loop', 'current') for r in u)
+        opening = statistics.median(stage_ms(r, 'opening', 'verifying') for r in u)
+        verifying = statistics.median(stage_ms(r, 'verifying', 'building') for r in u)
+        building = statistics.median(stage_ms(r, 'building', 'coverage') for r in u)
+        commit = statistics.median(r['perAttempt'][0]['commitMs'] for r in u)
+        lc = loop_counts(m)
+        growth = f'{cov / prev:.2f}' if prev else ''
+        prev = cov
+        print(
+            f"| {pairs} | {m['rows']} | {len(u)} | {opening:.0f} | {verifying:.0f} | {building:.0f} | {cov:.0f} | {loop:.0f} | {tail:.0f} | {commit:.0f} | "
+            f"{med(u, 'totalMs'):.0f} | {lc['forks']} | {lc['compares']} | {lc['forkMs']:.0f} | {lc['compareMs']:.0f} | {growth} |"
+        )
+    print('\nRun-to-run spread of the coverage stage (min–max ms):\n')
+    for pairs in SIZES:
+        u = reps(pairs, 'uncached')
+        if u:
+            vals = sorted(stage_ms(r, 'coverage', 'current') for r in u)
+            print(f'- {pairs} pairs: ' + ', '.join(f'{v:.0f}' for v in vals))

@@ -22,6 +22,9 @@ The deletion planner likewise binds its independently verified candidate snapsho
 every covered content row and preserves the original source/spool/delivery/receive/history
 classification. A sequence map replaces repeated searches only after the existing placement and
 uniqueness checks. The exact enumerated deletion set and closed metadata inventory remain required.
+Since phase 557 it checks those rows a batch at a time: one fork of the candidate with the batch's
+rows applied in turn and one comparison, and every row checked alone again whenever a batch is not
+proven (see the 2026-11-13 decision).
 
 The existing 8 ms CPU budget yields between source checks and classifications, before replay crypto,
 and while opening the raw inventory. A yield checks owner lifetime before and after suspension;

@@ -31,7 +31,7 @@ import {
 import { compareBaselineReplay } from './localBaselineShadow';
 import { createCpuBudget } from './cpuBudget';
 import { reportRetentionProgress, type RetentionProgressSink } from './contentMaintenance';
-import { createInboundCoverage } from './inboundLedger';
+import { checkInBatches, createInboundCoverage } from './inboundLedger';
 import { HistoryInstallSizeError, isHistoryInstallTag } from './historyInstall';
 import { eraseVerified, sameBytes } from './verifiedRecords';
 import { hex, type Bytes } from './custodyCrypto';
@@ -472,9 +472,17 @@ export async function planLocalRetention(
       gen: decoded.generation,
       bytes: decoded.snapshot,
     };
-    // The candidate snapshot is private and immutable throughout this exact plan.
+    // The candidate snapshot is private and immutable throughout this exact plan. Content rows
+    // are checked a batch at a time with the same verdict for each (phase 557); a batch closes
+    // once its rows hold as many bytes as the snapshot, so a pass makes about a constant number
+    // of whole-document forks and comparisons however long the history is.
     const content = [state],
-      checking = coverage.bind(content);
+      checking = checkInBatches(
+        coverage.bind(content),
+        content,
+        Math.max(1, state.bytes.length),
+        checkpoint,
+      );
     const bySequence = new Map(records.map((r) => [r.seq, r]));
     const deleteRows: DeleteRow[] = [];
     const dispositions: RetentionPlanReport['dispositions'] = {};
@@ -483,6 +491,7 @@ export async function planLocalRetention(
       completed: 0,
       total: inventory.rows.length,
     });
+    let unsettled = false;
     for (const row of inventory.rows) {
       const pause = checkpoint();
       if (pause) await pause;
@@ -490,9 +499,17 @@ export async function planLocalRetention(
         opened = bySequence.get(value.seq)!;
       let disposition: RetentionDisposition;
       if (value.kind === 'update' || value.kind === 'state') {
-        checking.check(content, [opened.bytes]);
+        const settling = checking.add(opened.bytes);
+        if (settling) await settling;
+        unsettled = true;
         disposition = 'content-covered';
       } else {
+        // Content rows sort first. Settle them before classifying any other row, so refusals
+        // come in the order that checking each content row alone gives.
+        if (unsettled) {
+          unsettled = false;
+          await checking.finish();
+        }
         const tag: unknown =
           opened.bytes[0] === 91
             ? JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(opened.bytes))[0]
@@ -522,6 +539,7 @@ export async function planLocalRetention(
         });
       dispositions[disposition] = (dispositions[disposition] ?? 0) + 1;
     }
+    await checking.finish();
     // Execute the exact list only on detached arrays; never use a numeric range or a live store.
     const selected = new Set(deleteRows.map((r) => r.store + ':' + r.key));
     const survivors = inventory.rows.filter((r) => !selected.has(r.store + ':' + String(r.key)));

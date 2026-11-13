@@ -1125,7 +1125,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "72974653516667b30ed048ada23244f07f129cfa01bcb95c08ea824027756359"
+      "sha256": "29ece88f08bfaae372f4947697382ce08635ccda2473cf9d27ee6ea04cc961b1"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
@@ -1301,7 +1301,7 @@
     },
     {
       "path": "src/crdt/localRetentionPlan.ts",
-      "sha256": "84081c4435ccc8ac0ebe55d6c7102642a01c016f3a14266c60ce5ec839baecdc"
+      "sha256": "890cafb6abf44a01e2eb35a00622b1e31bdfafaedadd20536a937c1148a86997"
     },
     {
       "path": "src/crdt/localRetentionStorage.ts",
@@ -2219,7 +2219,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 511
+          "line": 528
         }
       ]
     },
@@ -2431,7 +2431,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 510
+          "line": 527
         },
         {
           "path": "src/crdt/spoolRecord.ts",
@@ -4253,7 +4253,7 @@
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 504
+          "line": 521
         },
         {
           "path": "src/crdt/sourceCapture.ts",

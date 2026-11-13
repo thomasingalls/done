@@ -219,9 +219,19 @@ a stall. What it left:
   attempt's setup, one fenced save and the journal's per-check bookkeeping. At 1,024 pairs that is
   15.8 s against 10.9 s uncached (1.44 times by wall clock, 1.88 by CPU); at 2,048 pairs 1.22 to
   1.24 times by wall and 1.47 to 1.51 by CPU, against the stop condition of 1.5 times at every
-  size. Separately, the uncached pass is itself quadratic: the plan's coverage stage forks the whole
-  candidate document for every update row not stored verbatim, 0.15 s at 128 pairs and 24.7 s at
-  2,048 (70% of the pass); changing how that check is proved needs its own equivalence argument.
+  size. The uncached pass's coverage stage was quadratic (one whole-document fork and comparison per
+  content row); phase 557 checks rows a batch at a time with the same verdict per row, and that
+  stage is now 94, 194 and 458 ms at 512, 1,024 and 2,048 pairs (the pass 9.6 s at 2,048, from
+  33.5 s). What remains of the uncached pass is its verifying stage (7.3 s at 2,048, 76% of the
+  pass), mostly linear crypto-bound work plus a quadratic term from one Yjs transaction per content
+  row while building its receipt-coverage document (about 1.6 s at 2,048 in the probe's fixture,
+  which has one Yjs client per own position), and a building stage that grows about four times per
+  doubling (0.7 s at 2,048, 3.2 s at 4,096 on the phase 556 source; not profiled). The ratios above
+  were measured against the phase 556 uncached pass. Re-measured once at phase 557's review, a
+  sliced reduction takes 7.0 s at 1,024 pairs and 15.8 s at 2,048 (from 15.8 s and 43.3 s), which
+  is 1.81 and 1.71 times the new uncached pass by wall clock and 2.08 and 2.16 by CPU: the extra
+  attempt's setup and its save cost about the same seconds as before (3.1 s and 6.6 s) on a
+  lower floor, so the 1.5 times stop condition is no longer met at either size.
   Also from phase 556's review: a device whose grown slices are all cut advances only by its
   two-second slices and loses a grown slice between each pair, so it is slower than before that
   phase (not measured; a cut could instead require more saved plain slices before growing again);
@@ -266,6 +276,24 @@ a stall. What it left:
 - **TEST-MOCK-CYCLE — an import cycle through `src/crdt/inboundLedger.ts` can leave a test's mock of
   it silently unapplied** (found in phase 545). Tests that mock it should assert the mock ran.
 - **TEST-NODE-VERSION — local Node is 26; CI pins 24.22.1.**
+
+### Worker and page boundaries
+
+- **WORKER-PAGE-SURVEY — measure what still crosses between the page and the Workers.**
+  *unmeasured.* The operator asked on 2026-11-13, for after the release, whether the code has been
+  adequately disentangled from when everything ran on the page: much now runs in Workers, and some
+  of the remaining traffic with the page may be unneeded or a poor choice now. No survey has been
+  made. What the release repair already shows: send and receive run inside the Account Worker, and
+  at open the stream to the page plus the page's own replay and comparison is 0.21 s of an 11 s
+  open at 3,000 positions (phase 555). Candidates read from the phases, none measured as a boundary
+  cost: the page keeps a full replica of the document and re-checks what the Worker streams;
+  reduction's progress saves travel through the page's input queue (REDUCE-FURTHER); one handoff
+  slot between page and Worker that background work can find busy (phase 546,
+  REDUCE-HOLD-RESIDUAL); a setup Worker and the live owner each verify saved history at start-up
+  (START-ONE-OWNER); whole-view copies on the send path (SEND-FURTHER). Passkey prompts have to
+  stay on the page. First step: profile-only counters of every crossing per user action (key
+  press, card move, open, send, receive, one reduction slice) with payload sizes, in the style of
+  phase 554's timers, before any structure is proposed.
 
 ### The affected account
 

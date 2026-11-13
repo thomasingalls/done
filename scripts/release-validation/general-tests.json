@@ -26,6 +26,7 @@
     "test/configDiscoveryCompatibility.test.ts",
     "test/contentCompaction.test.ts",
     "test/convergence.test.ts",
+    "test/coverageBatches.test.ts",
     "test/custodyRecord.test.ts",
     "test/dates.test.ts",
     "test/debtManifest.test.ts",

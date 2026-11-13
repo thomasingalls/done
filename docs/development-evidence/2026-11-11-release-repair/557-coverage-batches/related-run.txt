@@ -1,0 +1,62 @@
+# Phase 557 related files on the final tree, 2026-11-13T01:00:53Z
+$ pnpm exec vitest run <48 test/*.test.ts files matching retention|preparation|baseline|coverage|reduction> test/historyInstallBound.test.ts test/inboundPageLedger.test.ts test/incrementalLedger.test.ts test/accountReceiveLedger.test.ts test/inboundTurnLedger.test.ts test/multiEntryInboundReaders.test.ts test/inboundMixedReplay.test.ts --maxWorkers=4
+Test Files  55 passed (55)
+Tests  572 passed (572)
+Duration  34.54s (transform 3.10s, setup 866ms, import 9.59s, tests 109.33s, environment 571ms)
+
+Files:
+test/automaticLocalRetention.test.ts
+test/baselineProjectionInterruption.test.ts
+test/baselineReplayBuilds.test.ts
+test/baselineReplayCoverage.test.ts
+test/boundedInboundPreparation.test.ts
+test/coverageBatches.test.ts
+test/devicePreparation.test.ts
+test/envelopePreparationProjection.test.ts
+test/hostedRetention.test.ts
+test/inboundDensePreparation.test.ts
+test/localBaseline.test.ts
+test/localBaselineAnchor.test.ts
+test/localBaselineExactReuse.test.ts
+test/localBaselineLargeCarrier.test.ts
+test/localBaselineLifecycle.test.ts
+test/localBaselineReuse.test.ts
+test/localBaselineWarm.test.ts
+test/localRetentionProgress.test.ts
+test/localRetentionRevisionHint.test.ts
+test/localRetentionSharedProof.test.ts
+test/localRetentionStatus.test.ts
+test/localRetentionStorage.test.ts
+test/preparationBinding.test.ts
+test/preparationCapacityPolicy.test.ts
+test/preparationCapacitySites.test.ts
+test/preparationJournalObservation.test.ts
+test/preparationReceiptJournal.test.ts
+test/preparationRemoval.test.ts
+test/preparedCoverage.test.ts
+test/reductionHoldDutyCycle.test.ts
+test/reductionSyncHold.test.ts
+test/retentionFenceCollision.test.ts
+test/retentionFences.test.ts
+test/retentionPreparation.test.ts
+test/retentionPreparationFreshSlice.test.ts
+test/retentionPreparationOwner.test.ts
+test/retentionPreparationOwnership.test.ts
+test/retentionPreparationReplay.test.ts
+test/retentionPreparationScheduling.test.ts
+test/retentionPreparationStorage.test.ts
+test/retentionPriorityRetry.test.ts
+test/retentionReductionHold.test.ts
+test/retentionSliceBudget.test.ts
+test/runtimeForkPreparation.test.ts
+test/unreducedBaselineExactReuse.test.ts
+test/workerBaselineRecoveryRegression.test.ts
+test/workerLocalBaseline.test.ts
+test/workspacePreparation.test.ts
+test/historyInstallBound.test.ts
+test/inboundPageLedger.test.ts
+test/incrementalLedger.test.ts
+test/accountReceiveLedger.test.ts
+test/inboundTurnLedger.test.ts
+test/multiEntryInboundReaders.test.ts
+test/inboundMixedReplay.test.ts
