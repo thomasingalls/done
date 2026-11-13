@@ -1,0 +1,5 @@
+node v26.13.1
+N=256: push(...items) 0.001 ms, for-of push 0.002 ms, copyRecords-shaped map 0.013 ms
+N=1000: push(...items) 0.001 ms, for-of push 0.005 ms, copyRecords-shaped map 0.052 ms
+N=21602: push(...items) 0.165 ms, for-of push 0.059 ms, copyRecords-shaped map 1.119 ms
+N=100000: push(...items) 0.748 ms, for-of push 0.677 ms, copyRecords-shaped map 11.447 ms

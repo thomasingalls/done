@@ -1,0 +1,21 @@
+// Phase 558: what a for-of push loop costs against push(...items), below the limit where both work.
+// Each figure is the median of 41 runs appending N row-shaped objects to an empty array.
+const rows = (n) => Array.from({ length: n }, (_, i) => ({ kind: 'update', gen: 1, seq: i, bytes: new Uint8Array(4) }));
+const median = (xs) => xs.sort((a, b) => a - b)[xs.length >> 1];
+const time = (f) => {
+  const t = process.hrtime.bigint();
+  f();
+  return Number(process.hrtime.bigint() - t) / 1e6;
+};
+console.log(`node ${process.version}`);
+for (const n of [256, 1_000, 21_602, 100_000]) {
+  const items = rows(n);
+  const spread = [], loop = [], copy = [];
+  for (let k = 0; k < 41; k++) {
+    spread.push(time(() => { const out = []; out.push(...items); return out; }));
+    loop.push(time(() => { const out = []; for (const r of items) out.push(r); return out; }));
+    // For scale: what copyRecords pays on the same rows (one object and one byte copy per row).
+    copy.push(time(() => items.map((r) => ({ ...r, bytes: r.bytes.slice() }))));
+  }
+  console.log(`N=${n}: push(...items) ${median(spread).toFixed(3)} ms, for-of push ${median(loop).toFixed(3)} ms, copyRecords-shaped map ${median(copy).toFixed(3)} ms`);
+}

@@ -311,9 +311,11 @@ class GentleContext {
           }
           let next = Decoration.none;
           if (measurement.visible) {
-            const through = Math.max(
+            // A fold, not Math.max(...ranges): printing makes every range of the document
+            // visible, and an argument spread throws past the engine's limit.
+            const through = measured.visibleRanges.reduce(
+              (max, range) => Math.max(max, range.to),
               measured.state.selection.main.head,
-              ...measured.visibleRanges.map((range) => range.to),
             );
             const plan = this.context.get(measured.state, through);
             if (plan) {

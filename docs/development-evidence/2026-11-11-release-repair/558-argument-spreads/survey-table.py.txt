@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""Phase 558: renders the argument-spread survey (survey.json from survey.mjs, run on the phase 557
+text) as the record's table, with the bound found for each site. Usage:
+python3 -I survey-table.py <survey.json> > survey.md"""
+import json
+import sys
+
+RANDOM32 = 'fixed 32 bytes: the literal `32` at the site'
+FORWARD = 'forwards its own rest parameters, which TypeScript types as `{}`\'s fixed parameter list'
+SUBTLE = ('forwards the arguments of one SubtleCrypto call made through the proxy, unchanged: a SubtleCrypto '
+          'method\'s fixed parameters, at most seven (unwrapKey)')
+B = {
+    'account-protocol/activation.ts:113': 'fixed 32 bytes: `unhex(hash, 32)` checks the length (account-protocol/recovery.ts:24)',
+    'account-protocol/contentDelivery.ts:114': 'exactly 2 members, 6 arguments: account-protocol/contentDelivery.ts:96',
+    'account-protocol/enrollment.ts:241': 'fixed 32 bytes: `unhex(hash, 32)` (account-protocol/recovery.ts:24)',
+    'account-protocol/envelope.ts:80': '6 header fields: `headerFields` returns a fixed list (account-protocol/envelope.ts:68-78)',
+    'account-protocol/envelope.ts:87': '6 header fields (account-protocol/envelope.ts:68-78)',
+    'account-protocol/envelope.ts:89': '6 header fields (account-protocol/envelope.ts:68-78)',
+    'account-protocol/envelope.ts:109': 'at most 2 x 256 + 2 arguments: `ENVELOPE_UPDATE_LIMIT` = 256 (account-protocol/envelope.ts:9), checked at :96',
+    'account-protocol/lostDeviceRecovery.ts:137': 'fixed 32 bytes: `unhex(..., 32)` (account-protocol/recovery.ts:24)',
+    'account-protocol/replacementCheckpoint.ts:181': '0 or 1 (a conditional one-element array)',
+    'account-service/ceremony.ts:147': '1 or 2 SQL parameters (account-service/ceremony.ts:140-141)',
+    'account-service/ceremony.ts:150': '1 or 2 SQL parameters (account-service/ceremony.ts:140-141)',
+    'account-service/ceremony.ts:393': '8 values: the fixed 9-column row at account-service/ceremony.ts:373, less its first',
+    'account-service/ceremony.ts:397': '9 values (account-service/ceremony.ts:373)',
+    'account-service/delivery.ts:327': '0 or 1 (a conditional one-element array)',
+    'account-service/delivery.ts:345': '0 or 1 (a conditional one-element array)',
+    'account-service/delivery.ts:1268': '8 values: the fixed row at account-service/delivery.ts:1255',
+    'account-service/delivery.ts:1274': '8 values (account-service/delivery.ts:1255)',
+    'account-service/enrollment.ts:337': '0 or 1 SQL parameter: both callers pass literals (account-service/enrollment.ts:339-342)',
+    'account-service/recoveryHistory.ts:45': '2 SQL parameters: `[workspace, hash]` (account-service/recoveryHistory.ts:40)',
+    'account-service/recoveryHistory.ts:52': '2 SQL parameters (account-service/recoveryHistory.ts:40)',
+    'src/account/accountSignIn.ts:23': RANDOM32,
+    'src/account/deviceEnrollment.ts:154': RANDOM32,
+    'src/account/membershipPreparation.ts:42': RANDOM32,
+    'src/account/networkLogin.ts:36': ('callers pass 32 random bytes (:293, :686), a 32-byte digest (:481) or the '
+                                       'local authenticator\'s WebAuthn assertion fields (:171-174, a few hundred bytes); '
+                                       'no constant, but not sized by history, a peer or the service'),
+    'src/account/setupProgress.ts:204': RANDOM32,
+    'src/crdt/accountCapture.ts:518': ('at most 64: a capsule holds at most `MAX_CAPTURE_SOURCES` = 64 '
+                                       '(src/crdt/sourceCapture.ts:34, checked at :133), and the batch is refused past '
+                                       '`MAX_BATCH_RECORDS` = 256 at src/crdt/accountCapture.ts:515'),
+    'src/crdt/accountCapture.ts:531': 'one batch\'s sequences, at most `MAX_BATCH_RECORDS` = 256 (src/crdt/accountCapture.ts:509, :515)',
+    'src/crdt/accountInbound.ts:696': FORWARD.format('authenticateInboundWire'),
+    'src/crdt/accountInbound.ts:1171': FORWARD.format('authenticateInboundWire'),
+    'src/crdt/accountInbound.ts:1423': 'one envelope\'s updates, at most `ENVELOPE_UPDATE_LIMIT` = 256 (decodeEnvelopeBody, account-protocol/envelope.ts:173)',
+    'src/crdt/accountReceive.ts:2500': ('one page\'s results, at most `RECEIVE_GROUP_LIMIT` = 8 (src/crdt/receiveLimits.ts:2; '
+                                        'src/crdt/accountInbound.ts:645, :689) or 1'),
+    'src/crdt/accountReceive.ts:2517': 'at most `RECEIVE_GROUP_LIMIT` = 8 (as above)',
+    'src/crdt/accountReceive.ts:2521': '`receiveGroupFits` keeps the group within `MAX_BATCH_RECORDS` = 256 (src/crdt/accountReceive.ts:2512, src/crdt/receiveGroup.ts:43)',
+    'src/crdt/accountReceive.ts:2522': 'a subset of the writes above: at most 256 (src/crdt/accountReceive.ts:2512)',
+    'src/crdt/accountReceive.ts:2562': 'at most 256: `receiveGroupFits` at src/crdt/accountReceive.ts:2545',
+    'src/crdt/accountReceive.ts:2566': 'at most 256: `receiveGroupFits` at src/crdt/accountReceive.ts:2545',
+    'src/crdt/accountSyncDriver.ts:266': 'at most 2 lanes (src/crdt/accountSyncDriver.ts:102)',
+    'src/crdt/accountSyncState.ts:120': FORWARD.format('selfReceiveSteps'),
+    'src/crdt/contentStore.ts:423': ('every opened row of the content generation: no bound below `CONTENT_LIMIT` = 2^32 '
+                                     '(src/crdt/contentRecord.ts:71). Runs on a complete read that reuses the opened view, '
+                                     'for example after a return to the app'),
+    'src/crdt/contentStore.ts:806': ('one append batch. Every current caller caps it at `MAX_BATCH_RECORDS` = 256 '
+                                     '(copyBatch, src/crdt/contentRecord.ts:149; journal flush slices, '
+                                     'src/crdt/journalStore.ts:353; capture, src/crdt/accountCapture.ts:509-516), '
+                                     'but `append` and `appendRecords` do not check it themselves'),
+    'src/crdt/contentStore.ts:808': 'the same append batch as :806',
+    'src/crdt/custodyCrypto.ts:46': ('one part per `fields` argument: fixed literal lists everywhere, and the four spread '
+                                     'callers below are bounded (legacyCleanupEncoding.ts:10, localBaselineAnchor.ts:192 '
+                                     'and :207, retentionPreparation.ts:601)'),
+    'src/crdt/custodyCrypto.ts:380': SUBTLE,
+    'src/crdt/deliveryRecord.ts:152': FORWARD.format('inspectDeliverySteps'),
+    'src/crdt/inboundLedger.ts:269': FORWARD.format('inspectInboundSteps'),
+    'src/crdt/inboundLedger.ts:704': ('the content rows added since the coverage view was last prepared: no bound (a view '
+                                      'prepared with few rows and then a long history appends all of it)'),
+    'src/crdt/incrementalAccountLedger.ts:314': FORWARD.format('extendLedgerContinuation'),
+    'src/crdt/incrementalAccountLedger.ts:316': FORWARD.format('extendLedgerContinuation'),
+    'src/crdt/joinedAccount.ts:758': 'one record per retained event, at most 4096 (src/crdt/joinedAccount.ts:254)',
+    'src/crdt/legacyCleanupEncoding.ts:10': '2 values: both callers pass literal lists (src/crdt/legacyCleanupRecord.ts:114, src/crdt/localGenesisRecord.ts:192)',
+    'src/crdt/localBaselineAnchor.ts:192': '0 or 1 (a conditional one-element array)',
+    'src/crdt/localBaselineAnchor.ts:207': '0 or 3 (a conditional three-element array)',
+    'src/crdt/localBaselineReplay.ts:218': SUBTLE,
+    'src/crdt/localBaselineReplay.ts:219': SUBTLE,
+    'src/crdt/localBaselineReplay.ts:728': ('fewer than the capsule\'s sources (src/crdt/localBaselineReplay.ts:723), at most '
+                                            '`MAX_CAPTURE_SOURCES` = 64 (src/crdt/sourceCapture.ts:133)'),
+    'src/crdt/membershipReading.ts:313': ('one record per stream event; all streams together hold at most '
+                                          '`MEMBERSHIP_READING_EVENTS` = 4096 (src/crdt/membershipReading.ts:64, checked at :140)'),
+    'src/crdt/membershipReading.ts:328': 'one received result\'s updates, at most `ENVELOPE_UPDATE_LIMIT` = 256 (account-protocol/envelope.ts:173)',
+    'src/crdt/persistence.ts:242': ('every local update since the last committed flush, including a recovered crash '
+                                    'journal: no bound (it grows by one per edit while IndexedDB keeps failing)'),
+    'src/crdt/retentionPreparation.ts:601': '1 part: every caller passes one literal (retentionPreparationBinding.ts:40, retentionPreparationStorage.ts:84, :308, :460, :487)',
+    'src/crdt/rotationCapture.ts:41': 'at most 64 + 1 rows of one capsule (src/crdt/sourceCapture.ts:133)',
+    'src/crdt/serialize.ts:99': 'one line per line of a card body: no bound (document content, which a peer can write)',
+    'src/crdt/spoolRecord.ts:237': FORWARD.format('inspectSpoolSteps'),
+    'src/crdt/workspaceCommands.ts:179': FORWARD.format('CommandRunner') + ', plus one boolean',
+    'src/crdt/workspaceCommands.ts:200': FORWARD.format('CommandRunner') + ', plus one boolean',
+    'src/editor/gentleContext.ts:316': ('CodeMirror\'s visible ranges: the viewport while on screen, but the whole document while '
+                                        'printing (@codemirror/view 6.43.7 measures `fullPixelRange` then), one range per span '
+                                        'between hidden spans of 20+ characters; no bound then'),
+    'src/ui/StaleBanner.tsx:35': ('the unfrozen days before today: at most 2 (`FREEZE_DAYS` = 3, src/crdt/freeze.ts:26; '
+                                  'filter at src/ui/StaleBanner.tsx:28)'),
+    'src/ui/SyncNotice.tsx:74': 'at most 2 lanes (src/ui/SyncNotice.tsx:10)',
+}
+CHANGED = {
+    'src/crdt/contentStore.ts:423': 'changed (now :424)',
+    'src/crdt/contentStore.ts:806': 'changed (now :808)',
+    'src/crdt/contentStore.ts:808': 'changed (now :809-815)',
+    'src/crdt/inboundLedger.ts:704': 'changed (now :705)',
+    'src/crdt/serialize.ts:99': 'changed (now :100)',
+    'src/crdt/persistence.ts:242': 'changed (now :244-246)',
+    'src/editor/gentleContext.ts:316': 'changed (now :316-319)',
+}
+survey = json.load(open(sys.argv[1]))
+rows = survey['sites']
+missing = [f"{s['file']}:{s['line']}" for s in rows if f"{s['file']}:{s['line']}" not in B]
+extra = [k for k in B if k not in {f"{s['file']}:{s['line']}" for s in rows}]
+assert not missing and not extra, (missing, extra)
+print(f'Survey of {len(rows)} argument spreads in {survey["files"]} source files under src, account-service and '
+      'account-protocol (test files excluded), on the phase 557 text; line numbers are that text\'s. '
+      'Generated by survey.mjs (Babel AST: every call or `new` with a spread argument, and every '
+      '`.apply(thisArg, args)`), and survey-table.py.\n')
+print('| # | Site | Call | Operand | What bounds it | Outcome |')
+print('|---|---|---|---|---|---|')
+for i, s in enumerate(rows, 1):
+    key = f"{s['file']}:{s['line']}"
+    callee = ' '.join(s['callee'].split()).replace('`', "'")  # keep the code span intact
+    if len(callee) > 48:
+        callee = callee[:45] + '...'
+    operand = s['operand'].replace('`', "'")
+    operand = operand if len(operand) <= 60 else operand[:57] + '...'
+    kind = 'Reflect.apply' if s['kind'] == 'apply' else callee
+    cell = lambda t: t.replace('|', '\\|')  # a pipe would end the table cell
+    print(f"| {i} | `{key}` | `{cell(kind)}` | `{cell(operand)}` | {cell(B[key])} | {CHANGED.get(key, 'left')} |")
+print()
+print(f'{len(CHANGED)} changed, {len(rows) - len(CHANGED)} left. Not counted: `f.apply()` '
+      '(src/crdt/windowWorkspaceQueues.ts:101) and `receiving.apply()` (src/crdt/accountWorkerClient.ts:371) '
+      'are methods named `apply` called with no arguments; array-literal and object spreads are not argument spreads.')

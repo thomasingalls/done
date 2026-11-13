@@ -420,7 +420,8 @@ export const createContentOwner = (
         sealed.length === openedView.sealed.length &&
         sealed.every((r, i) => equalStoredRecord(r, openedView!.sealed[i]!));
       const reusedView = reuse ? openedView : undefined;
-      if (reuse) opened.push(...copyRecords(openedView!.opened));
+      // One push per row: spreading every row as call arguments throws past the engine's limit.
+      if (reuse) for (const row of copyRecords(openedView!.opened)) opened.push(row);
       else {
         const prior = new Map(
           crypt.reuseOpened ? openedView?.sealed.map((r, i) => [r.seq, i]) : [],
@@ -803,15 +804,15 @@ export const createContentOwner = (
             task.step(() => {
               const added = structuredClone(records);
               warm!.appended(added);
-              openedView!.sealed.push(...added);
-              openedView!.opened.push(
-                ...records.map((r, i) => ({
-                  kind: r.kind,
-                  gen: r.gen,
-                  seq: r.seq,
-                  bytes: plaintexts[i]!.slice(),
-                })),
-              );
+              // One push per row: a batch spread as call arguments throws past the engine's limit.
+              for (const row of added) openedView!.sealed.push(row);
+              const openedRows = records.map((r, i) => ({
+                kind: r.kind,
+                gen: r.gen,
+                seq: r.seq,
+                bytes: plaintexts[i]!.slice(),
+              }));
+              for (const row of openedRows) openedView!.opened.push(row);
               openedView!.counter = structuredClone(next ?? current);
               openedView!.id = {};
             });

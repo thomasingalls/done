@@ -1025,7 +1025,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "3fd24f0fba6452576ff78b92eb290cf90733babf3fb22d430a0db55ba9b66501"
+      "sha256": "994b869381cc40e597ff9e65cfe6dd688a6409580d76f84660b4661356866865"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1125,7 +1125,7 @@
     },
     {
       "path": "src/crdt/inboundLedger.ts",
-      "sha256": "29ece88f08bfaae372f4947697382ce08635ccda2473cf9d27ee6ea04cc961b1"
+      "sha256": "5c9e9ba7d14675e25e937e71177089ce39df681145cdee25f3a5675a083beacf"
     },
     {
       "path": "src/crdt/inboundReceiptVersion.ts",
@@ -1357,7 +1357,7 @@
     },
     {
       "path": "src/crdt/persistence.ts",
-      "sha256": "00a6aa0128231f8d8d6bd633bb1093f0638f3038c32d3091b90b76e6d5f3d8af"
+      "sha256": "d1a161821e48b5ee617481f9502bd7246e6788554cda5ed8d9ca5377153b924f"
     },
     {
       "path": "src/crdt/preparationCapacity.ts",
@@ -1517,7 +1517,7 @@
     },
     {
       "path": "src/crdt/serialize.ts",
-      "sha256": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2"
+      "sha256": "5c8b0c160a02cccb4c63203a8e1043bb84523be0debe440db25c6118e613ce33"
     },
     {
       "path": "src/crdt/setupActorBridge.ts",
@@ -1781,7 +1781,7 @@
     },
     {
       "path": "src/editor/gentleContext.ts",
-      "sha256": "0f1b05068a6ef127240a59402232eeb1d345b97fdf6f55d1daf2c650c1470116"
+      "sha256": "27eb2f6b0abfce71f0ab8fa1ff316dc669b149f6d558aac3165aa030a16debdc"
     },
     {
       "path": "src/editor/headingNavigation.ts",

@@ -1,0 +1,8 @@
+Phase 558: processes found before each heavy or timed run (ps -axo pid,etime,command, filtered for node,
+vitest, Playwright browsers and run.py). No vitest, node --test or Playwright process of this or any other
+worktree was running before any run here. Two unrelated long-lived processes were present throughout:
+  a vite dev server of another project, running 43 days (node .../ol-rht/.../vite.js)
+  at 03:0x, a Python run.py of another project running lean (seen once, before the first survey)
+Runs here: the Node and browser limit probes, the new test file (final, base and 14 mutations),
+76 related test files, the release adapter tests and the contract checks; each ended before the next began,
+and no browser or test process was left running (checked with ps after the browser probe).

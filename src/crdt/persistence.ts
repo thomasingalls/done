@@ -239,7 +239,11 @@ export const openLocalStore = (
         }
       })
       .catch((cause: unknown) => {
-        pending.unshift(...batch);
+        // Put the batch back in front, as unshift(...batch) did, without spreading it as call
+        // arguments: a batch holds every update since the last flush and can pass the limit.
+        const later = pending.splice(0);
+        for (const entry of batch) pending.push(entry);
+        for (const entry of later) pending.push(entry);
         const error =
           cause instanceof Error ? cause : errorWithCause('IndexedDB persistence failed.', cause);
         reportPersistenceError(error);

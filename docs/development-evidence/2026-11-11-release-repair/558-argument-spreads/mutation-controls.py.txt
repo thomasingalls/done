@@ -1,0 +1,189 @@
+#!/usr/bin/env python3
+"""Phase 558 mutation controls. Each mutation edits one changed site of the final tree, runs the
+case(s) of test/argumentSpreads.test.ts that guard it, and restores the file byte for byte.
+Usage: python3 -I mutation-controls.py <repo root>  (prints one block per mutation)"""
+import hashlib
+import subprocess
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+TEST = 'test/argumentSpreads.test.ts'
+
+STORE = 'src/crdt/contentStore.ts'
+LEDGER = 'src/crdt/inboundLedger.ts'
+SERIAL = 'src/crdt/serialize.ts'
+PERSIST = 'src/crdt/persistence.ts'
+GENTLE = 'src/editor/gentleContext.ts'
+
+OPEN_CASE = 'contentStore openSnapshot'
+APPEND_CASE = 'contentStore appendRecords'
+LEDGER_CASE = 'inboundLedger prepare'
+SERIAL_CASE = 'serialize collectionLines'
+PERSIST_CASE = 'persistence startFlush'
+GENTLE_CASE = 'gentleContext write'
+GUARD_CASE = 'fixed parameter list'
+
+MUTATIONS = [
+    # The old argument spreads, one site at a time.
+    ('423: old spread of the reused rows', STORE,
+     'if (reuse) for (const row of copyRecords(openedView!.opened)) opened.push(row);',
+     'if (reuse) opened.push(...copyRecords(openedView!.opened));', [OPEN_CASE, GUARD_CASE]),
+    ('806: old spread of the sealed batch', STORE,
+     'for (const row of added) openedView!.sealed.push(row);',
+     'openedView!.sealed.push(...added);', [APPEND_CASE, GUARD_CASE]),
+    ('808: old spread of the opened batch', STORE,
+     'for (const row of openedRows) openedView!.opened.push(row);',
+     'openedView!.opened.push(...openedRows);', [APPEND_CASE, GUARD_CASE]),
+    ('704: old spread of the appended content rows', LEDGER,
+     'for (const row of added) rows.push(row);', 'rows.push(...added);', [LEDGER_CASE, GUARD_CASE]),
+    ('99: old spread of a card\'s lines', SERIAL,
+     'for (const line of encodeCard(body)) out.push(line);', 'out.push(...encodeCard(body));',
+     [SERIAL_CASE, GUARD_CASE]),
+    ('242: old unshift spread of the failed batch', PERSIST,
+     'const later = pending.splice(0);\n        for (const entry of batch) pending.push(entry);\n'
+     '        for (const entry of later) pending.push(entry);',
+     'pending.unshift(...batch);', [PERSIST_CASE, GUARD_CASE]),
+    ('316: old Math.max spread of the visible ranges', GENTLE,
+     'const through = measured.visibleRanges.reduce(\n'
+     '              (max, range) => Math.max(max, range.to),\n'
+     '              measured.state.selection.main.head,\n            );',
+     'const through = Math.max(\n              measured.state.selection.main.head,\n'
+     '              ...measured.visibleRanges.map((range) => range.to),\n            );',
+     [GENTLE_CASE, GUARD_CASE]),
+    # Loops without the spread but with a different result: the cases check the result too.
+    ('423: reused rows aliased, not copied', STORE,
+     'if (reuse) for (const row of copyRecords(openedView!.opened)) opened.push(row);',
+     'if (reuse) for (const row of openedView!.opened) opened.push(row);', [OPEN_CASE]),
+    ('806: first sealed row of the batch dropped', STORE,
+     'for (const row of added) openedView!.sealed.push(row);',
+     'for (const row of added.slice(1)) openedView!.sealed.push(row);', [APPEND_CASE]),
+    ('808: opened batch pushed in reverse', STORE,
+     'for (const row of openedRows) openedView!.opened.push(row);',
+     'for (const row of openedRows.reverse()) openedView!.opened.push(row);', [APPEND_CASE]),
+    ('704: appended content rows pushed in reverse', LEDGER,
+     'for (const row of added) rows.push(row);',
+     'for (const row of [...added].reverse()) rows.push(row);', [LEDGER_CASE]),
+    ('99: a card\'s lines pushed in reverse', SERIAL,
+     'for (const line of encodeCard(body)) out.push(line);',
+     'for (const line of encodeCard(body).reverse()) out.push(line);', [SERIAL_CASE]),
+    ('242: first two entries of the failed batch swapped', PERSIST,
+     'for (const entry of batch) pending.push(entry);',
+     'for (const entry of [batch[1]!, batch[0]!, ...batch.slice(2)]) pending.push(entry);',
+     [PERSIST_CASE]),
+    ('316: fold takes the smallest end, not the largest', GENTLE,
+     '(max, range) => Math.max(max, range.to),', '(max, range) => Math.min(max, range.to),',
+     [GENTLE_CASE]),
+    # The coordinator's two controls at review (2026-11-13).
+    ('242: entries that arrived meanwhile put back before the failed batch (review)', PERSIST,
+     'for (const entry of batch) pending.push(entry);\n        for (const entry of later) pending.push(entry);',
+     'for (const entry of later) pending.push(entry);\n        for (const entry of batch) pending.push(entry);',
+     [PERSIST_CASE]),
+    ('316: the caret dropped from the fold, 0 as its first value (review)', GENTLE,
+     '(max, range) => Math.max(max, range.to),\n              measured.state.selection.main.head,\n',
+     '(max, range) => Math.max(max, range.to),\n              0,\n', [GENTLE_CASE]),
+    # Further properties of the replaced expressions, one control each.
+    ('423: first reused row dropped', STORE,
+     'if (reuse) for (const row of copyRecords(openedView!.opened)) opened.push(row);',
+     'if (reuse) for (const row of copyRecords(openedView!.opened).slice(1)) opened.push(row);',
+     [OPEN_CASE]),
+    ('806: sealed batch put in front of the rows the view already held', STORE,
+     'for (const row of added) openedView!.sealed.push(row);',
+     '{ const held = openedView!.sealed.splice(0); for (const row of added) openedView!.sealed.push(row); '
+     'for (const row of held) openedView!.sealed.push(row); }', [APPEND_CASE]),
+    ('808: opened batch put in front of the rows the view already held', STORE,
+     'for (const row of openedRows) openedView!.opened.push(row);',
+     '{ const held = openedView!.opened.splice(0); for (const row of openedRows) openedView!.opened.push(row); '
+     'for (const row of held) openedView!.opened.push(row); }', [APPEND_CASE]),
+    ('808: opened rows alias the plaintexts the append erases, not copies', STORE,
+     'bytes: plaintexts[i]!.slice(),', 'bytes: plaintexts[i]!,', [APPEND_CASE]),
+    ('704: cached rows alias the caller\'s rows, not the copies', LEDGER,
+     'for (const row of added) rows.push(row);',
+     'for (const row of content.slice(rows.length)) rows.push(row);', [LEDGER_CASE]),
+    ('704: appended rows put in front of the rows already cached', LEDGER,
+     'for (const row of added) rows.push(row);',
+     '{ const held = rows.splice(0); for (const row of added) rows.push(row); for (const row of held) rows.push(row); }',
+     [LEDGER_CASE]),
+    ('99: a card\'s lines put before the earlier cards', SERIAL,
+     'for (const line of encodeCard(body)) out.push(line);',
+     '{ const held = out.splice(0); for (const line of encodeCard(body)) out.push(line); for (const line of held) out.push(line); }',
+     [SERIAL_CASE]),
+    ('242: whole failed batch put back in reverse', PERSIST,
+     'for (const entry of batch) pending.push(entry);',
+     'for (const entry of [...batch].reverse()) pending.push(entry);', [PERSIST_CASE]),
+    ('242: entries that arrived meanwhile put back in reverse', PERSIST,
+     'for (const entry of later) pending.push(entry);',
+     'for (const entry of [...later].reverse()) pending.push(entry);', [PERSIST_CASE]),
+    ('316: fold over where each range starts, not where it ends', GENTLE,
+     '(max, range) => Math.max(max, range.to),', '(max, range) => Math.max(max, range.from),',
+     [GENTLE_CASE]),
+    ('423: reused rows pushed in reverse', STORE,
+     'if (reuse) for (const row of copyRecords(openedView!.opened)) opened.push(row);',
+     'if (reuse) for (const row of copyRecords(openedView!.opened).reverse()) opened.push(row);',
+     [OPEN_CASE]),
+    ('806: sealed batch pushed in reverse', STORE,
+     'for (const row of added) openedView!.sealed.push(row);',
+     'for (const row of [...added].reverse()) openedView!.sealed.push(row);', [APPEND_CASE]),
+    ('808: first opened row of the batch dropped', STORE,
+     'for (const row of openedRows) openedView!.opened.push(row);',
+     'for (const row of openedRows.slice(1)) openedView!.opened.push(row);', [APPEND_CASE]),
+    ('704: first appended content row dropped', LEDGER,
+     'for (const row of added) rows.push(row);',
+     'for (const row of added.slice(1)) rows.push(row);', [LEDGER_CASE]),
+    ('99: first line of each card dropped', SERIAL,
+     'for (const line of encodeCard(body)) out.push(line);',
+     'for (const line of encodeCard(body).slice(1)) out.push(line);', [SERIAL_CASE]),
+    ('242: failed batch dropped', PERSIST,
+     'for (const entry of batch) pending.push(entry);\n',
+     '\n', [PERSIST_CASE]),
+    ('242: entries that arrived meanwhile dropped', PERSIST,
+     'for (const entry of later) pending.push(entry);\n',
+     '\n', [PERSIST_CASE]),
+]
+
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+results = []
+for name, rel, old, new, cases in MUTATIONS:
+    path = root / rel
+    original = path.read_bytes()
+    text = original.decode()
+    if text.count(old) != 1:
+        print(f'== {name}: anchor found {text.count(old)} times; not run')
+        results.append((name, 'not run'))
+        continue
+    before = sha(path)
+    try:
+        path.write_text(text.replace(old, new))
+        pattern = '|'.join(c.replace('(', r'\(').replace(')', r'\)') for c in cases)
+        run = subprocess.run(
+            ['timeout', '300', 'node_modules/.bin/vitest', 'run', TEST, '--reporter=verbose',
+             '-t', pattern],
+            cwd=root, capture_output=True, text=True)
+        out = run.stdout + run.stderr
+        failed = [l.strip() for l in out.splitlines() if l.strip().startswith('×')]
+        passed = [l.strip() for l in out.splitlines() if l.strip().startswith('✓')]
+        reasons = []
+        for l in out.splitlines():
+            s = l.strip()
+            if (s.startswith(('RangeError', 'AssertionError', 'Error:', '→'))
+                    and s not in reasons):
+                reasons.append(s[:160])
+        print(f'== {name} ({rel}); cases: {", ".join(cases)}; vitest exit {run.returncode}')
+        for l in failed:
+            print('  FAILED ' + l[2:].split(' > ')[-1])
+        for l in passed:
+            print('  passed ' + l[2:].split(' > ')[-1])
+        for r in reasons[:4]:
+            print('    ' + r)
+        results.append((name, 'tripped' if failed else 'NOT TRIPPED'))
+    finally:
+        path.write_bytes(original)
+        assert sha(path) == before, f'{rel} not restored'
+print('== summary')
+for name, outcome in results:
+    print(f'  {outcome}: {name}')
+print('all sources restored byte for byte')

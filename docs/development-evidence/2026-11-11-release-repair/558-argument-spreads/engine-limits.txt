@@ -1,0 +1,37 @@
+Phase 558: the smallest array length at which an argument spread throws, measured 2026-11-13 on one Mac.
+Node: limit-node.mjs.txt (bisection, main thread and a worker_threads Worker). Browsers: limit-browsers.cjs.txt
+(Playwright's bundled Chromium and WebKit, a bare page served by page.route with no application or server,
+and a dedicated Worker started from that page; each browser bounded at 60 s and closed after).
+
+node v26.13.1 arm64 darwin
+== main thread
+  push(...a): passes at 124277, throws at 124278 (Maximum call stack size exceeded)
+  unshift(...a): passes at 124279, throws at 124280 (Maximum call stack size exceeded)
+  Math.max(...a): passes at 124285, throws at 124286 (Maximum call stack size exceeded)
+  String.fromCharCode(...u8): passes at 124281, throws at 124282 (Maximum call stack size exceeded)
+  f.apply(null, a): passes at 124277, throws at 124278 (Maximum call stack size exceeded)
+  push(...a) under 200 extra frames: passes at 122253, throws at 122254
+== worker_threads Worker (default resourceLimits)
+  push(...a): passes at 494377, throws at 494378 (Maximum call stack size exceeded)
+  unshift(...a): passes at 494379, throws at 494380 (Maximum call stack size exceeded)
+  Math.max(...a): passes at 494385, throws at 494386 (Maximum call stack size exceeded)
+  String.fromCharCode(...u8): passes at 494381, throws at 494382 (Maximum call stack size exceeded)
+  f.apply(null, a): passes at 494377, throws at 494378 (Maximum call stack size exceeded)
+  push(...a) under 200 extra frames: passes at 492050, throws at 492051
+
+== chromium 151.0.7922.34, page main thread
+  push(...a): passes at 123579, throws at 123580 (Maximum call stack size exceeded)
+  Math.min(...a): passes at 123587, throws at 123588 (Maximum call stack size exceeded)
+  String.fromCharCode(...u8): passes at 123583, throws at 123584 (Maximum call stack size exceeded)
+== chromium 151.0.7922.34, dedicated Worker
+  push(...a): passes at 63511, throws at 63512 (Maximum call stack size exceeded)
+  Math.min(...a): passes at 63519, throws at 63520 (Maximum call stack size exceeded)
+  String.fromCharCode(...u8): passes at 63515, throws at 63516 (Maximum call stack size exceeded)
+== webkit 26.5, page main thread
+  push(...a): passes at 638676, throws at 638677 (Maximum call stack size exceeded.)
+  Math.min(...a): passes at 638676, throws at 638677 (Maximum call stack size exceeded.)
+  String.fromCharCode(...u8): passes at 638676, throws at 638677 (Maximum call stack size exceeded.)
+== webkit 26.5, dedicated Worker
+  push(...a): passes at 50290, throws at 50291 (Maximum call stack size exceeded.)
+  Math.min(...a): passes at 50290, throws at 50291 (Maximum call stack size exceeded.)
+  String.fromCharCode(...u8): passes at 50290, throws at 50291 (Maximum call stack size exceeded.)

@@ -1,0 +1,63 @@
+// Phase 558: the smallest array length at which `[].push(...a)` throws, in Playwright's bundled
+// Chromium and WebKit, on a bare page and in a dedicated Worker. No application, no server: the
+// page and the worker script are served by page.route on a name that never leaves the process.
+// Run from the repository root: node <this file>. Each browser has a 60 s bound.
+const { createRequire } = require('node:module');
+const pw = createRequire(process.cwd() + '/')('@playwright/test');
+
+const probeSource = `
+  const throws = (f) => { try { f(); return false; } catch (e) { if (e instanceof RangeError) return String(e.message).slice(0, 60); throw e; } };
+  const bisect = (make) => {
+    let lo = 1000, hi = 1 << 24, message = '';
+    if (throws(make(lo))) return 'throws at ' + lo + ' already';
+    if (!throws(make(hi))) return 'no throw at ' + hi;
+    while (hi - lo > 1) { const mid = (lo + hi) >>> 1; const m = throws(make(mid)); if (m) { hi = mid; message = m; } else lo = mid; }
+    return 'passes at ' + lo + ', throws at ' + hi + ' (' + message + ')';
+  };
+  const forms = {
+    'push(...a)': (n) => { const a = new Array(n).fill(0); return () => [].push(...a); },
+    'Math.min(...a)': (n) => { const a = new Array(n).fill(1); return () => Math.min(...a); },
+    'String.fromCharCode(...u8)': (n) => { const a = new Uint8Array(n).fill(65); return () => String.fromCharCode(...a); },
+  };
+  const runProbe = () => Object.entries(forms).map(([k, make]) => k + ': ' + bisect(make));
+`;
+
+const page = `<!doctype html><meta charset="utf-8"><script>${probeSource}
+  window.mainRows = runProbe();
+  window.workerRows = new Promise((resolve) => {
+    const w = new Worker('/worker.js');
+    w.onmessage = (e) => resolve(e.data);
+    w.onerror = (e) => resolve(['worker error: ' + e.message]);
+  });
+</script>`;
+const worker = `${probeSource}\npostMessage(runProbe());`;
+
+const withTimeout = (p, ms, what) =>
+  Promise.race([p, new Promise((_, reject) => setTimeout(() => reject(new Error(what + ' timed out')), ms))]);
+
+(async () => {
+  for (const name of ['chromium', 'webkit']) {
+    let browser;
+    try {
+      browser = await withTimeout(pw[name].launch({ headless: true }), 30000, 'launch');
+      const p = await browser.newPage();
+      await p.route('http://probe.test/**', (route) => {
+        const url = new URL(route.request().url());
+        if (url.pathname === '/worker.js')
+          return route.fulfill({ contentType: 'text/javascript', body: worker });
+        return route.fulfill({ contentType: 'text/html', body: page });
+      });
+      await withTimeout(p.goto('http://probe.test/'), 30000, 'goto');
+      const main = await withTimeout(p.evaluate(() => window.mainRows), 30000, 'main');
+      const inWorker = await withTimeout(p.evaluate(() => window.workerRows), 60000, 'worker');
+      console.log(`== ${name} ${browser.version()}, page main thread`);
+      main.forEach((r) => console.log('  ' + r));
+      console.log(`== ${name} ${browser.version()}, dedicated Worker`);
+      inWorker.forEach((r) => console.log('  ' + r));
+    } catch (e) {
+      console.log(`== ${name}: could not run: ${String(e.message).split('\n')[0]}`);
+    } finally {
+      await browser?.close().catch(() => {});
+    }
+  }
+})();

@@ -1,0 +1,89 @@
+// Phase 558: the smallest array length at which an argument spread throws, in this Node.
+// Run: node limit-node.mjs   (prints one line per expression and realm)
+import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
+
+const probe = () => {
+  const throws = (f) => {
+    try {
+      f();
+      return false;
+    } catch (e) {
+      if (e instanceof RangeError) return e.message;
+      throw e;
+    }
+  };
+  const forms = {
+    'push(...a)': (n) => {
+      const a = new Array(n).fill(0);
+      return () => [].push(...a);
+    },
+    'unshift(...a)': (n) => {
+      const a = new Array(n).fill(0);
+      return () => [].unshift(...a);
+    },
+    'Math.max(...a)': (n) => {
+      const a = new Array(n).fill(1);
+      return () => Math.max(...a);
+    },
+    'String.fromCharCode(...u8)': (n) => {
+      const a = new Uint8Array(n).fill(65);
+      return () => String.fromCharCode(...a);
+    },
+    'f.apply(null, a)': (n) => {
+      const a = new Array(n).fill(0);
+      return () => Array.prototype.push.apply([], a);
+    },
+  };
+  const rows = [];
+  for (const [name, make] of Object.entries(forms)) {
+    let lo = 1000,
+      hi = 1 << 24,
+      message = '';
+    if (throws(make(lo))) {
+      rows.push(`${name}: throws at ${lo} already`);
+      continue;
+    }
+    if (!throws(make(hi))) {
+      rows.push(`${name}: no throw at ${hi}`);
+      continue;
+    }
+    while (hi - lo > 1) {
+      const mid = (lo + hi) >>> 1;
+      const m = throws(make(mid));
+      if (m) {
+        hi = mid;
+        message = m;
+      } else lo = mid;
+    }
+    rows.push(`${name}: passes at ${lo}, throws at ${hi} (${message || 'RangeError'})`);
+  }
+  // The same push at 200 frames of extra stack depth, which a real caller has.
+  const deep = (d, f) => (d ? deep(d - 1, f) + 0 : f());
+  let lo = 1000,
+    hi = 1 << 20;
+  while (hi - lo > 1) {
+    const mid = (lo + hi) >>> 1;
+    const a = new Array(mid).fill(0);
+    if (throws(() => deep(200, () => [].push(...a)))) hi = mid;
+    else lo = mid;
+  }
+  rows.push(`push(...a) under 200 extra frames: passes at ${lo}, throws at ${hi}`);
+  return rows;
+};
+
+if (isMainThread) {
+  console.log(`node ${process.version} ${process.arch} ${process.platform}`);
+  console.log('== main thread');
+  for (const r of probe()) console.log('  ' + r);
+  await new Promise((resolve, reject) => {
+    const w = new Worker(new URL(import.meta.url), { workerData: 'worker' });
+    w.on('message', (rows) => {
+      console.log('== worker_threads Worker (default resourceLimits)');
+      for (const r of rows) console.log('  ' + r);
+    });
+    w.on('error', reject);
+    w.on('exit', resolve);
+  });
+} else if (workerData === 'worker') {
+  parentPort.postMessage(probe());
+}

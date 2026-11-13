@@ -701,7 +701,8 @@ export function createInboundCoverage(options: { incremental?: boolean; direct?:
         sameRecords(rows, content.slice(0, rows.length))
       ) {
         const added = copyRecords(content.slice(rows.length));
-        rows.push(...added);
+        // One push per row: a spread of `added` as call arguments throws past the engine's limit.
+        for (const row of added) rows.push(row);
         coverage!.append(added);
         return 'append';
       }
