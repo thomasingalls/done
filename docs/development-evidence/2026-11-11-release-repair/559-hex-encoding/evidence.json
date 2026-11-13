@@ -1,0 +1,709 @@
+{
+  "phase": 559,
+  "date": "2026-11-13",
+  "base": {
+    "description": "phases 557 and 558, uncommitted",
+    "tree": "4ef09a61b8da0101e356e1c9dd5e69f29dfbd476",
+    "onCommit": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935"
+  },
+  "requested": "coordinating session, 2026-11-13: survey and measure every bytes-to-hex and hex-to-bytes routine in src, account-protocol and account-service; build a replacement only if it at least halves the routine's time or peak memory at 8 MiB and above on a call site that large input reaches; measure the phase 542 codec with and without it",
+  "built": true,
+  "builtRoutines": [
+    "src/crdt/custodyCrypto.ts hex: base join below HEX_SLOTS_FROM = 64 bytes, 16-bit slots and one TextDecoder call from 64",
+    "account-protocol/recovery.ts hex: the same, same threshold",
+    "src/crdt/legacySource.ts: its own per-byte toString helper replaced by the shared hex"
+  ],
+  "notBuilt": {
+    "lowerHexBytes": "chunked encodeInto plus pair table halves its time without extra memory (22.7 against 51.4 ms at 8 MiB, 86.9 against 202.5 ms at 32 MiB, first call), so it meets the routine bar; held as HEX-DECODE because it is a parser of peer- and service-supplied input and saves about 15 ms per decode at the 8 MiB write ceiling",
+    "unhex": "same cost as lowerHexBytes (53.9 ms at 8 MiB); large callers are checkpoint ciphertexts and coverage vectors; no option measured for it"
+  },
+  "amends": [],
+  "storedFormatsWireLimitsChanged": [],
+  "checksNarrowed": [],
+  "checksRunLessOftenOrDifferently": [],
+  "sourceSha256": {
+    "src/crdt/custodyCrypto.ts": "3df523b1538b297901b039ce7df6f8fb8ffd17c739dc654d9b55ac055ad1fb9d",
+    "account-protocol/recovery.ts": "66f256ef3855ade6e04e33fcc466ff51adf891d48920e5f7c0ded59ba0a2e07b",
+    "src/crdt/legacySource.ts": "e8e494e6d8fa1c2c79729892c50be1950c2a065118c594ea8be956732766cf61"
+  },
+  "baseSourceSha256": {
+    "src/crdt/custodyCrypto.ts": "64863f2836e51a9e5b7a46d19efb1e847a404ddb4cd1d3afd8f6242ec8834212",
+    "account-protocol/recovery.ts": "9720b3ad3aade3c9e82b0d532e3a1bb85774e6b5e07e0e190c2702781deb8510",
+    "src/crdt/legacySource.ts": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61"
+  },
+  "probeSha256": {
+    "scripts/performance/hex-cost/routines.mjs": "43a755d3dbd27bf5fc6f240744f8e08ebd827abad7337b835c608df3d25082b9",
+    "scripts/performance/hex-cost/codec.probe.ts": "dc7eac643e0d663ade4a4119d0980d391b4bf7924466bfa690df38eb0b30af93",
+    "scripts/performance/hex-cost/vitest.config.ts": "4e018d023b541e53e3ac75cb646f2f6cf5f7d3f272579e7e1a119396a96dbfd5",
+    "scripts/performance/hex-cost/run.sh": "7581059e3872654ee2ecb0c0388c2f73422cdc6c2b7a2afa7b92518129b0c913",
+    "scripts/performance/hex-cost/summarise.py": "7e9a53d8f6fb2487b09308204e2033246a0f8644d41a8c40d29a03f1efa3597b"
+  },
+  "survey": {
+    "record": "survey.md",
+    "routines": {
+      "custodyCrypto hex": {
+        "calls": 297,
+        "files": 79
+      },
+      "recovery hex": {
+        "calls": 83,
+        "files": 23
+      },
+      "unhex": {
+        "calls": "about 215"
+      },
+      "lowerHexBytes": {
+        "calls": 5,
+        "wrappers": [
+          "inboundBytes",
+          "deliveryTransport boundedHex",
+          "spoolRecord hexValue",
+          "deliveryRecord hexValue",
+          "sourceCapture"
+        ]
+      },
+      "localHelpers": "storeName, legacySource, legacyExport, slotUnlock, lib/id, pendingDeviceWorker, accountWorkerCohort, localStartupClient; fixed size except legacySource",
+      "accountServiceBuffer": "native Buffer hex on fixed or small values"
+    },
+    "largestGrowingInputs": [
+      "promotion payload re-encoded before every submission (accountSpool.ts:51); no bound on the total",
+      "local baseline fields (localBaselineRecord.ts:98, :102); snapshot about 4 MiB on write, about 16 MiB on read",
+      "fresh checkpoint ciphertexts; plaintext up to GENESIS_LIMIT 16 MiB",
+      "legacy rows (legacyCleanupStorage.ts:38 through the shared hex; legacySource.ts:179 through its own helper until this phase); 16 MiB total",
+      "joined-account comparisons; MAX_BATCH_BYTES 4 MiB",
+      "service snapshotBytes over every ledger row (account-service/delivery.ts:354); no bound on the total"
+    ],
+    "surveyedBy": "a read-only subagent read the call sites; the seat spot-checked the promotion payload, baseline, history install and service snapshot rows"
+  },
+  "measurements": {
+    "host": "this Mac, Node 26.13.1 (V8 14.6); one routine or codec cell per process, three processes per cell; overlap.log shows no vitest, node --test or Playwright process; load average 2.6 to 6; an unrelated Lean build (one core) ran during the Node final-routine and codec runs after the browser review",
+    "routines": {
+      "record": "tables.md",
+      "raw": "raw-routines.jsonl",
+      "medianRepMs": {
+        "baseHex": {
+          "16B": 0.000248,
+          "32B": 0.000404,
+          "1KiB": 0.0117,
+          "64KiB": 0.812,
+          "1MiB": 16.3,
+          "8MiB": 151.6,
+          "32MiB": 567.7
+        },
+        "custodyHexNow": {
+          "16B": 0.000242,
+          "32B": 0.000268,
+          "1KiB": 0.0018,
+          "64KiB": 0.09,
+          "1MiB": 1.5,
+          "8MiB": 13.3,
+          "32MiB": 48.3
+        },
+        "recoveryHexNow": {
+          "16B": 0.000252,
+          "32B": 0.000281,
+          "1KiB": 0.0016,
+          "64KiB": 0.085,
+          "1MiB": 1.5,
+          "8MiB": 13.3,
+          "32MiB": 49.3
+        },
+        "lowerHexBytes": {
+          "8MiB": 53.7,
+          "32MiB": 214.3
+        },
+        "unhex": {
+          "8MiB": 53.9,
+          "32MiB": 208.8
+        }
+      },
+      "medianFirstCallMs": {
+        "baseHex": {
+          "8MiB": 210.6,
+          "32MiB": 584.6
+        },
+        "custodyHexNow": {
+          "8MiB": 13.1,
+          "32MiB": 49.9
+        },
+        "recoveryHexNow": {
+          "8MiB": 13.5,
+          "32MiB": 49.1
+        }
+      },
+      "medianPeakRiseMiB": {
+        "baseHex": {
+          "1MiB": 25.6,
+          "8MiB": 182.5,
+          "32MiB": 642.2
+        },
+        "hexNow": {
+          "1MiB": 4.6,
+          "8MiB": 32.6,
+          "32MiB": 128.9
+        },
+        "lowerHexBytes": {
+          "8MiB": 8.7,
+          "32MiB": 32.7
+        }
+      },
+      "optionsNotTaken": {
+        "twoByteTablesOneDecode": {
+          "8MiB": 18.2,
+          "32MiB": 68.9
+        },
+        "chunkedFromCharCode4096": {
+          "8MiB": 81.8,
+          "32MiB": 324.1,
+          "peakRiseMiB8": 61.0,
+          "peakRiseMiB32": 184.3
+        },
+        "floorToHex": {
+          "8MiB": 0.8,
+          "32MiB": 7.0
+        },
+        "lowerEncodeIntoNibble": {
+          "8MiB": 41.1,
+          "32MiB": 163.0,
+          "peakRiseMiB8": 24.7,
+          "peakRiseMiB32": 96.8
+        },
+        "floorFromHex": {
+          "8MiB": 2.3,
+          "32MiB": 8.6
+        }
+      },
+      "lowerHexBytesScratchOptions": {
+        "record": "lower-options.mjs.txt and lower-options.jsonl",
+        "medianFirstCallMs": {
+          "current": {
+            "8MiB": 51.4,
+            "32MiB": 202.5
+          },
+          "pairTableCharCodeAt": {
+            "8MiB": 42.2,
+            "32MiB": 166.1
+          },
+          "pairTableWholeEncodeInto": {
+            "8MiB": 24.5,
+            "32MiB": 94.7,
+            "peakRiseMiB8": 24.7,
+            "peakRiseMiB32": 97.0
+          },
+          "pairTableChunkedEncodeInto": {
+            "8MiB": 22.7,
+            "32MiB": 86.9,
+            "peakRiseMiB8": 9.2,
+            "peakRiseMiB32": 33.5
+          }
+        }
+      }
+    },
+    "codec": {
+      "probe": "scripts/performance/hex-cost/codec.probe.ts",
+      "raw": "raw-codec.jsonl",
+      "arms": "reference = base hex in both files; current = sources as they are; floor = engine toHex and fromHex for hex and lowerHexBytes",
+      "medians": [
+        {
+          "op": "encode",
+          "encodedBytes": 8388607,
+          "firstMs": [
+            177.3,
+            54.5,
+            17.8
+          ],
+          "repMs": [
+            163.3,
+            44.4,
+            16.6
+          ],
+          "peakRiseMiB": [
+            182.0,
+            45.3,
+            37.0
+          ],
+          "processPeakMiB": [
+            576.4,
+            248.4,
+            239.5
+          ]
+        },
+        {
+          "op": "decode",
+          "encodedBytes": 8388607,
+          "firstMs": [
+            133.4,
+            42.0,
+            15.4
+          ],
+          "repMs": [
+            94.1,
+            37.5,
+            12.5
+          ],
+          "peakRiseMiB": [
+            112.5,
+            29.4,
+            36.2
+          ],
+          "processPeakMiB": [
+            394.8,
+            216.5,
+            172.5
+          ]
+        },
+        {
+          "op": "auth",
+          "encodedBytes": 8388607,
+          "firstMs": [
+            130.3,
+            49.8,
+            16.4
+          ],
+          "repMs": [
+            95.7,
+            38.1,
+            14.4
+          ],
+          "peakRiseMiB": [
+            120.4,
+            37.5,
+            44.3
+          ],
+          "processPeakMiB": [
+            406.9,
+            228.7,
+            204.2
+          ]
+        },
+        {
+          "op": "decode",
+          "encodedBytes": 33554431,
+          "firstMs": [
+            429.4,
+            184.9,
+            62.8
+          ],
+          "repMs": [
+            399.3,
+            161.6,
+            60.2
+          ],
+          "peakRiseMiB": [
+            377.4,
+            82.8,
+            82.9
+          ],
+          "processPeakMiB": [
+            994.9,
+            458.0,
+            410.3
+          ]
+        },
+        {
+          "op": "auth",
+          "encodedBytes": 33554431,
+          "firstMs": [
+            430.1,
+            187.1,
+            65.7
+          ],
+          "repMs": [
+            396.7,
+            156.6,
+            58.8
+          ],
+          "peakRiseMiB": [
+            409.5,
+            83.0,
+            146.8
+          ],
+          "processPeakMiB": [
+            734.1,
+            426.0,
+            426.0
+          ]
+        }
+      ],
+      "medianOrder": "each array is [reference, current, floor]",
+      "hexShareOfCodec": "final routines: 60 to 70% of first-call time, 60 to 72% of repeated-call time, 69 to 80% of peak rise at 8 and 32 MiB; first build: 56 to 73% and 69 to 80%",
+      "encodeAt32MiB": "not measured: this build writes at most LARGE_LOCAL_BASELINE_WRITE_LIMIT, 8 MiB",
+      "wholeReduction": "not measured",
+      "rawFinal": "raw-codec-final.jsonl",
+      "mediansFinal": [
+        {
+          "op": "encode",
+          "encodedBytes": 8388607,
+          "firstMs": [
+            186.2,
+            55.0,
+            19.3
+          ],
+          "repMs": [
+            163.3,
+            46.0,
+            18.8
+          ],
+          "peakRiseMiB": [
+            190.8,
+            53.3,
+            37.3
+          ],
+          "processPeakMiB": [
+            602.4,
+            248.5,
+            228.5
+          ]
+        },
+        {
+          "op": "decode",
+          "encodedBytes": 8388607,
+          "firstMs": [
+            136.4,
+            47.2,
+            16.7
+          ],
+          "repMs": [
+            97.9,
+            39.3,
+            13.8
+          ],
+          "peakRiseMiB": [
+            112.4,
+            29.2,
+            36.2
+          ]
+        },
+        {
+          "op": "auth",
+          "encodedBytes": 8388607,
+          "firstMs": [
+            138.3,
+            49.1,
+            17.5
+          ],
+          "repMs": [
+            99.5,
+            40.0,
+            14.9
+          ],
+          "peakRiseMiB": [
+            120.5,
+            37.3,
+            44.2
+          ]
+        },
+        {
+          "op": "decode",
+          "encodedBytes": 33554431,
+          "firstMs": [
+            471.0,
+            186.1,
+            71.7
+          ],
+          "repMs": [
+            408.4,
+            164.9,
+            64.4
+          ],
+          "peakRiseMiB": [
+            381.6,
+            83.0,
+            114.6
+          ]
+        },
+        {
+          "op": "auth",
+          "encodedBytes": 33554431,
+          "firstMs": [
+            471.3,
+            190.0,
+            76.5
+          ],
+          "repMs": [
+            412.1,
+            165.5,
+            66.8
+          ],
+          "peakRiseMiB": [
+            409.5,
+            83.0,
+            82.9
+          ]
+        }
+      ],
+      "discardedRun": "one codec set after the review was discarded because the arm self-check could not tell the final routine (which joins below 64 bytes) from the base; the probe now looks for the decode first"
+    },
+    "legacySourceHelper": {
+      "raw": "raw-legacy.jsonl",
+      "note": "second set of runs, legacy helper beside the current hex, three processes per cell, sizes to its 16 MiB bound; an earlier timing taken while a node --test suite ran was discarded",
+      "medianRepMs": {
+        "legacyHelper": {
+          "16B": 0.00094,
+          "32B": 0.00165,
+          "1KiB": 0.0458,
+          "64KiB": 3.26,
+          "1MiB": 89.4,
+          "8MiB": 722.5,
+          "16MiB": 1439.3
+        },
+        "sharedHexNow": {
+          "16B": 0.00028,
+          "32B": 0.00032,
+          "1KiB": 0.0017,
+          "64KiB": 0.144,
+          "1MiB": 1.57,
+          "8MiB": 13.96,
+          "16MiB": 26.3
+        }
+      },
+      "medianFirstCallMs": {
+        "legacyHelper": {
+          "8MiB": 746.0,
+          "16MiB": 1494.2
+        },
+        "sharedHexNow": {
+          "8MiB": 14.1,
+          "16MiB": 28.5
+        }
+      },
+      "medianPeakRiseMiB": {
+        "legacyHelper": {
+          "1MiB": 98.6,
+          "8MiB": 489.5,
+          "16MiB": 1040.9
+        },
+        "sharedHexNow": {
+          "1MiB": 4.6,
+          "8MiB": 32.7,
+          "16MiB": 65.0
+        }
+      }
+    },
+    "finalRoutinesNode": {
+      "raw": "raw-final.jsonl",
+      "medianRepNs": {
+        "base": {
+          "1B": 30,
+          "8B": 130,
+          "16B": 250,
+          "32B": 420,
+          "48B": 590,
+          "63B": 770,
+          "64B": 790,
+          "128B": 1530,
+          "1KiB": 11900,
+          "1MiB": 17700000.0,
+          "8MiB": 157100000.0,
+          "32MiB": 601400000.0
+        },
+        "custodyCrypto": {
+          "1B": 30,
+          "8B": 120,
+          "16B": 230,
+          "32B": 410,
+          "48B": 600,
+          "63B": 770,
+          "64B": 350,
+          "128B": 430,
+          "1KiB": 1800,
+          "1MiB": 1500000.0,
+          "8MiB": 13600000.0,
+          "32MiB": 50900000.0
+        },
+        "recovery": {
+          "1B": 30,
+          "8B": 120,
+          "16B": 230,
+          "32B": 420,
+          "48B": 590,
+          "63B": 770,
+          "64B": 320,
+          "128B": 420,
+          "1KiB": 1600,
+          "1MiB": 1500000.0,
+          "8MiB": 13500000.0,
+          "32MiB": 52400000.0
+        }
+      },
+      "peakRiseMiB8MiB": {
+        "base": 182.4,
+        "final": 32.6
+      }
+    }
+  },
+  "newTestFiles": [
+    "test/hexEncoding.test.ts"
+  ],
+  "newUnitCases": 25,
+  "controlCases": 20,
+  "failedOnBase": {
+    "record": "base-tree-run.txt",
+    "cases": [
+      "custodyCrypto at 8388609 bytes (fails on the base source)",
+      "recovery at 8388609 bytes (fails on the base source)",
+      "custodyCrypto joins below 64 bytes and not from 64 (fails on the base source)",
+      "recovery joins below 64 bytes and not from 64 (fails on the base source)",
+      "joins no array with one element per row byte (fails on the base source)"
+    ],
+    "controlsPassedOnBase": 20
+  },
+  "costEvidence": "unit test: deterministic counts of joins of an array at least as long as the input: none at 8 MiB + 1 and none from 64 bytes, exactly one at 63 bytes (the base code kept below the threshold), none per legacy row; time and memory: the Node probe and the browser probe, recorded here",
+  "mutationControls": {
+    "record": "mutation-controls.txt",
+    "script": "mutation-controls.py.txt",
+    "run": 27,
+    "tripped": 25,
+    "survivingByDesign": [
+      "little-endian-only pair table (equivalent on this little-endian host)",
+      "Node Buffer in place of TextDecoder (equivalent in Node; would not load in a browser)"
+    ],
+    "perPath": "join path for every length, slot path for every length, comparison inverted, threshold off by one each way, wrong digit or upper case in the string table only, wrong digit or upper case in the pair table only, view ignored and length errors on each path, guard removed, legacy helper restored"
+  },
+  "relatedFilesPassed": {
+    "files": 55,
+    "passed": 644,
+    "record": "related-run.txt"
+  },
+  "nodeSuites": {
+    "record": "node-runs.txt",
+    "suites": [
+      "account:recovery",
+      "account:recovery-contract",
+      "account:authority",
+      "account:service-delivery",
+      "account:crypto-prep",
+      "test/account-ceremony/content-transfer.test.mjs"
+    ],
+    "afterLegacyChange": [
+      "account:crypto-prep",
+      "test/release-validation general, generated and inventory (27 passed)"
+    ],
+    "afterBrowserReview": [
+      "account:crypto-prep (6 passed)",
+      "account:recovery (25 passed)",
+      "account:recovery-contract (all stages passed)",
+      "test/release-validation general, generated and inventory (27 passed)"
+    ]
+  },
+  "changedExistingCases": [],
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": "oxfmt and oxlint pass on the three sources, the new test, the probe and the registration files; JSON records and Markdown follow the repository's existing unformatted convention (.prettierignore excludes Markdown)",
+  "fullUnit": "not run by this seat; the coordinating session runs it once before the commit",
+  "inventory": {
+    "caseDenominator": [
+      3066,
+      3091
+    ],
+    "reviewedVitestFiles": [
+      121,
+      122
+    ],
+    "generalStages": [
+      306,
+      307
+    ],
+    "reviewedVitestStages": [
+      140,
+      141
+    ],
+    "obligations": [
+      1135,
+      1136
+    ],
+    "unresolved": [
+      561,
+      561
+    ],
+    "drift": "new test file; general-tests.json, general-tests.test.mjs, generated-tests.test.mjs; constructions.json; scripts/performance/hex-cost codec.probe.ts, routines.mjs and vitest.config.ts as new inputs; recorded three times as the test, the legacy arm and the eleventh registry line moved; recorded a fourth time after the browser review (test, codec probe, ten registry lines, denominators)"
+  },
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 526,
+    "sourceHashesChanged": 3,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      "src/crdt/custodyCrypto.ts 104->128, 120->144 (done/devicelock/v1), 167->191 (done/keyenv/v1), 223->247 (done/custody-credential/v2), 343->367 (done/custody-key-check/v2)",
+      "account-protocol/recovery.ts 79->102 (done/pkg-root/v1), 112->135 (done/recovery-envelope/v1), 121->144 (done/recovery-state/v1), 132->155 (done/account-recovery-draft/v1), 142->165 (done/account-recovery-confirm/v1)",
+      "src/crdt/legacySource.ts 177->175 (done/legacy-source-observation/v1)"
+    ],
+    "constructionRegistryLinesFollowed": 11,
+    "registryCheck": "checkConstructionRegistry: no failures, 16 open (unchanged); with the base registry lines, 6 constructions report changed source sites"
+  },
+  "anchors": {
+    "record": "anchors.txt",
+    "literals": 28349,
+    "occurrencesInBaseText": 57,
+    "changed": 0
+  },
+  "notRun": [
+    "full unit suite",
+    "pnpm build",
+    "trace:check",
+    "account:crypto-audit (its registry step was run alone)",
+    "browser and native suites, among them storage:legacy-source",
+    "phase 542 whole-reduction probe"
+  ],
+  "notVerified": [
+    "any phone or Safari build: the routine was timed in Node and in Playwright's desktop Chromium and WebKit on one Mac, page and Worker",
+    "memory, the codec and the legacy helper in browsers (Node only)",
+    "Chromium's pointer compression halves the base array, so the memory saving there is smaller",
+    "whether a browser TextDecoder copies its input",
+    "big-endian hosts"
+  ],
+  "backlogAdded": [
+    "HEX-DECODE",
+    "SEND-PROMOTION-HEX",
+    "SVC-SNAPSHOT-HEX"
+  ],
+  "deployed": false,
+  "browserReview": {
+    "requestedBy": "coordinating session, 2026-11-13: phase 559 as first written was 1.6 to 1.8 times slower than the base at 16 bytes in WebKit 26.5; rule: no slower than the base at any size in Chromium or WebKit, page or Worker, beyond run-to-run noise, keeping the large-input gain",
+    "probe": "hex-browsers.cjs.txt (routines taken from the sources: base tree via git show, working tree from disk, TypeScript stripped by Node)",
+    "engines": [
+      "Playwright Chromium 151.0.7922.34",
+      "Playwright WebKit 26.5"
+    ],
+    "realms": [
+      "page",
+      "dedicated Worker"
+    ],
+    "identity": {
+      "finalRun": "1836 comparisons per realm, 0 differing",
+      "selectionRun": "2295 comparisons per realm, 0 differing",
+      "inputs": "every byte value alone and together, every length 0 to 130, offset views either side of 32 and 64, the first four inputs of each timed pool, one 8 MiB + 1 input"
+    },
+    "threshold": 64,
+    "thresholdReason": "slot path with no threshold, ratio to base: WebKit 10.5/9.4 at 1 B, 1.7 at 16 B, level at 32 B, 0.84-0.88 at 40 B, 0.76-0.79 at 48 B, 0.61-0.64 at 64 B; Chromium 3.2-3.4 at 1 B, faster from 12 B. One TextDecoder call costs about 200 ns in WebKit and 100 ns in Chromium. 64 is the smallest power of two at which the slots are at least 31% faster in all four realms, leaving margin for devices not measured",
+    "selectionOutput": "hex-browsers-select.out",
+    "finalOutput": "hex-browsers-final.out",
+    "tables": "browser-tables.md",
+    "finalAgainstBase": {
+      "below64": "custodyCrypto 0.94-1.05, recovery 0.97-1.01 (spreads overlap; the 1.05 cells are 1 ns at 1 byte in WebKit, where the untouched base copy in recovery.ts also measured 1.05)",
+      "at64": "0.57-0.64",
+      "at1KiB": "0.16-0.25",
+      "at8MiB": "0.11-0.19"
+    },
+    "runEnd": "the final run reached its 590 s bound while WebKit was closing, after every result had printed; no Playwright process remained"
+  },
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-13",
+    "read": "the three source diffs and the test",
+    "fullUnit": {
+      "files": 359,
+      "passed": 3746,
+      "skipped": 1,
+      "failed": 0
+    },
+    "independentControl": "slot path in account-protocol/recovery.ts drops each byte's high bit: 7 of 25 cases fail; source restored byte for byte",
+    "browserRun": {
+      "script": "a separate review script carrying copies of the old routine and the final one",
+      "identical": "Chromium 151 and WebKit 26.5, page and dedicated Worker",
+      "ratioToOldBelow64Bytes": "0.99 to 1.02 at 8, 16, 32 and 63 bytes in all four realms",
+      "ratioToOldAt64Bytes": "0.58 to 0.83",
+      "ratioToOldFrom1KiBTo8MiB": "0.10 to 0.43",
+      "note": "the WebKit page was the slowest realm in this run (0.83 at 64 bytes, 0.33 to 0.43 above 1 KiB); the recorded tables have it at 0.63 and 0.19 to 0.25"
+    },
+    "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, and the CI session, authority and quarantine steps"
+  }
+}

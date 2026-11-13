@@ -44,6 +44,7 @@
     "test/gestureTargets.test.ts",
     "test/gestures.test.ts",
     "test/goals.test.ts",
+    "test/hexEncoding.test.ts",
     "test/hexFieldValidation.test.ts",
     "test/historyFoldOracle.test.ts",
     "test/historyInstallBound.test.ts",

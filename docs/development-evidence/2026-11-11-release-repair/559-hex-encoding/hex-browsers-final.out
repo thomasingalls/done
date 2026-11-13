@@ -1,0 +1,74 @@
+hex browser probe, mode final; routines: base, custodyNow, protocolBase, protocolNow; ratios are to base; median of 7 rounds of about 200 ms, [min-max] over rounds
+== chromium 151.0.7922.34, page: 1836 comparisons with base, 0 differing
+         1 B  base 33 ns [32 ns-33 ns]  custodyNow 31 ns [31 ns-34 ns] x0.94  protocolBase 33 ns [33 ns-35 ns] x1.00  protocolNow 33 ns [33 ns-33 ns] x1.00
+         8 B  base 116 ns [116 ns-120 ns]  custodyNow 115 ns [114 ns-120 ns] x0.99  protocolBase 116 ns [116 ns-117 ns] x1.00  protocolNow 116 ns [115 ns-117 ns] x1.00
+        12 B  base 164 ns [160 ns-165 ns]  custodyNow 163 ns [159 ns-164 ns] x0.99  protocolBase 165 ns [164 ns-169 ns] x1.01  protocolNow 164 ns [163 ns-166 ns] x1.00
+        16 B  base 208 ns [208 ns-211 ns]  custodyNow 206 ns [206 ns-209 ns] x0.99  protocolBase 210 ns [208 ns-212 ns] x1.01  protocolNow 208 ns [206 ns-211 ns] x1.00
+        20 B  base 253 ns [252 ns-254 ns]  custodyNow 252 ns [251 ns-254 ns] x1.00  protocolBase 254 ns [254 ns-255 ns] x1.00  protocolNow 253 ns [252 ns-255 ns] x1.00
+        24 B  base 297 ns [297 ns-302 ns]  custodyNow 296 ns [295 ns-301 ns] x1.00  protocolBase 298 ns [297 ns-304 ns] x1.00  protocolNow 298 ns [297 ns-303 ns] x1.00
+        32 B  base 380 ns [379 ns-382 ns]  custodyNow 379 ns [376 ns-380 ns] x1.00  protocolBase 380 ns [379 ns-384 ns] x1.00  protocolNow 380 ns [379 ns-381 ns] x1.00
+        40 B  base 473 ns [472 ns-478 ns]  custodyNow 472 ns [471 ns-480 ns] x1.00  protocolBase 476 ns [475 ns-481 ns] x1.01  protocolNow 474 ns [473 ns-478 ns] x1.00
+        48 B  base 555 ns [545 ns-563 ns]  custodyNow 554 ns [544 ns-561 ns] x1.00  protocolBase 556 ns [547 ns-560 ns] x1.00  protocolNow 553 ns [546 ns-556 ns] x1.00
+        56 B  base 635 ns [632 ns-638 ns]  custodyNow 633 ns [631 ns-638 ns] x1.00  protocolBase 637 ns [634 ns-643 ns] x1.00  protocolNow 634 ns [632 ns-638 ns] x1.00
+        63 B  base 714 ns [699 ns-735 ns]  custodyNow 716 ns [699 ns-727 ns] x1.00  protocolBase 718 ns [701 ns-730 ns] x1.01  protocolNow 710 ns [695 ns-718 ns] x0.99
+        64 B  base 729 ns [725 ns-737 ns]  custodyNow 442 ns [411 ns-502 ns] x0.61  protocolBase 732 ns [724 ns-738 ns] x1.00  protocolNow 428 ns [416 ns-458 ns] x0.59
+        65 B  base 740 ns [736 ns-749 ns]  custodyNow 487 ns [432 ns-584 ns] x0.66  protocolBase 743 ns [738 ns-746 ns] x1.00  protocolNow 479 ns [454 ns-533 ns] x0.65
+       128 B  base 1422 ns [1406 ns-1444 ns]  custodyNow 535 ns [515 ns-610 ns] x0.38  protocolBase 1415 ns [1406 ns-1425 ns] x1.00  protocolNow 549 ns [519 ns-608 ns] x0.39
+      1024 B  base 10.8 us [10.8 us-10.8 us]  custodyNow 1787 ns [1755 ns-1807 ns] x0.17  protocolBase 10.8 us [10.8 us-10.8 us] x1.00  protocolNow 1783 ns [1759 ns-1934 ns] x0.17
+   1048576 B  base 11.54 ms [11.43 ms-11.61 ms]  custodyNow 1.55 ms [1.54 ms-1.59 ms] x0.13  protocolBase 11.47 ms [11.29 ms-12.29 ms] x0.99  protocolNow 1.55 ms [1.54 ms-1.57 ms] x0.13
+   8388608 B  base 119.75 ms [112.60 ms-138.55 ms]  custodyNow 12.67 ms [12.36 ms-13.21 ms] x0.11  protocolBase 113.15 ms [111.05 ms-120.15 ms] x0.94  protocolNow 12.69 ms [12.39 ms-13.26 ms] x0.11
+== chromium 151.0.7922.34, dedicated Worker: 1836 comparisons with base, 0 differing
+         1 B  base 33 ns [32 ns-34 ns]  custodyNow 32 ns [31 ns-33 ns] x0.97  protocolBase 34 ns [33 ns-35 ns] x1.03  protocolNow 33 ns [33 ns-34 ns] x1.00
+         8 B  base 117 ns [117 ns-118 ns]  custodyNow 116 ns [116 ns-122 ns] x0.99  protocolBase 118 ns [118 ns-118 ns] x1.01  protocolNow 117 ns [117 ns-118 ns] x1.00
+        12 B  base 166 ns [162 ns-167 ns]  custodyNow 163 ns [160 ns-164 ns] x0.98  protocolBase 166 ns [166 ns-167 ns] x1.00  protocolNow 165 ns [164 ns-166 ns] x0.99
+        16 B  base 210 ns [210 ns-212 ns]  custodyNow 209 ns [208 ns-210 ns] x1.00  protocolBase 211 ns [210 ns-212 ns] x1.00  protocolNow 210 ns [209 ns-212 ns] x1.00
+        20 B  base 253 ns [253 ns-254 ns]  custodyNow 253 ns [253 ns-254 ns] x1.00  protocolBase 255 ns [254 ns-256 ns] x1.01  protocolNow 254 ns [253 ns-254 ns] x1.00
+        24 B  base 298 ns [298 ns-299 ns]  custodyNow 298 ns [297 ns-299 ns] x1.00  protocolBase 300 ns [299 ns-302 ns] x1.01  protocolNow 299 ns [298 ns-300 ns] x1.00
+        32 B  base 378 ns [377 ns-379 ns]  custodyNow 377 ns [376 ns-382 ns] x1.00  protocolBase 379 ns [378 ns-385 ns] x1.00  protocolNow 378 ns [376 ns-378 ns] x1.00
+        40 B  base 472 ns [469 ns-475 ns]  custodyNow 471 ns [469 ns-473 ns] x1.00  protocolBase 474 ns [473 ns-479 ns] x1.00  protocolNow 472 ns [472 ns-475 ns] x1.00
+        48 B  base 552 ns [549 ns-553 ns]  custodyNow 551 ns [548 ns-552 ns] x1.00  protocolBase 554 ns [553 ns-555 ns] x1.00  protocolNow 551 ns [548 ns-552 ns] x1.00
+        56 B  base 640 ns [639 ns-642 ns]  custodyNow 639 ns [639 ns-641 ns] x1.00  protocolBase 642 ns [640 ns-644 ns] x1.00  protocolNow 639 ns [637 ns-640 ns] x1.00
+        63 B  base 709 ns [707 ns-716 ns]  custodyNow 707 ns [706 ns-708 ns] x1.00  protocolBase 711 ns [709 ns-713 ns] x1.00  protocolNow 710 ns [708 ns-711 ns] x1.00
+        64 B  base 721 ns [717 ns-723 ns]  custodyNow 421 ns [410 ns-480 ns] x0.58  protocolBase 723 ns [720 ns-726 ns] x1.00  protocolNow 414 ns [404 ns-470 ns] x0.57
+        65 B  base 733 ns [731 ns-746 ns]  custodyNow 440 ns [420 ns-453 ns] x0.60  protocolBase 733 ns [728 ns-738 ns] x1.00  protocolNow 431 ns [415 ns-482 ns] x0.59
+       128 B  base 1406 ns [1399 ns-1412 ns]  custodyNow 508 ns [496 ns-609 ns] x0.36  protocolBase 1408 ns [1399 ns-1411 ns] x1.00  protocolNow 503 ns [495 ns-597 ns] x0.36
+      1024 B  base 10.8 us [10.7 us-10.8 us]  custodyNow 1753 ns [1741 ns-1800 ns] x0.16  protocolBase 10.8 us [10.7 us-10.8 us] x1.00  protocolNow 1747 ns [1741 ns-1853 ns] x0.16
+   1048576 B  base 11.52 ms [11.42 ms-11.58 ms]  custodyNow 1.55 ms [1.54 ms-1.59 ms] x0.13  protocolBase 11.48 ms [11.41 ms-12.29 ms] x1.00  protocolNow 1.55 ms [1.55 ms-1.57 ms] x0.13
+   8388608 B  base 122.50 ms [111.65 ms-147.65 ms]  custodyNow 13.19 ms [13.00 ms-13.68 ms] x0.11  protocolBase 117.20 ms [113.80 ms-125.30 ms] x0.96  protocolNow 13.27 ms [12.93 ms-13.54 ms] x0.11
+== webkit 26.5, page: 1836 comparisons with base, 0 differing
+         1 B  base 21 ns [21 ns-21 ns]  custodyNow 22 ns [20 ns-22 ns] x1.05  protocolBase 21 ns [18 ns-21 ns] x1.00  protocolNow 21 ns [19 ns-21 ns] x1.00
+         8 B  base 81 ns [79 ns-84 ns]  custodyNow 81 ns [79 ns-82 ns] x1.00  protocolBase 82 ns [81 ns-83 ns] x1.01  protocolNow 82 ns [82 ns-84 ns] x1.01
+        12 B  base 113 ns [106 ns-114 ns]  custodyNow 114 ns [108 ns-115 ns] x1.01  protocolBase 115 ns [106 ns-116 ns] x1.02  protocolNow 114 ns [106 ns-115 ns] x1.01
+        16 B  base 148 ns [147 ns-155 ns]  custodyNow 148 ns [147 ns-153 ns] x1.00  protocolBase 148 ns [147 ns-151 ns] x1.00  protocolNow 146 ns [146 ns-147 ns] x0.99
+        20 B  base 174 ns [173 ns-176 ns]  custodyNow 174 ns [173 ns-174 ns] x1.00  protocolBase 174 ns [174 ns-175 ns] x1.00  protocolNow 173 ns [172 ns-174 ns] x0.99
+        24 B  base 200 ns [199 ns-200 ns]  custodyNow 199 ns [198 ns-201 ns] x0.99  protocolBase 199 ns [198 ns-200 ns] x0.99  protocolNow 199 ns [198 ns-200 ns] x0.99
+        32 B  base 256 ns [254 ns-265 ns]  custodyNow 258 ns [256 ns-262 ns] x1.01  protocolBase 256 ns [255 ns-260 ns] x1.00  protocolNow 255 ns [254 ns-256 ns] x1.00
+        40 B  base 312 ns [308 ns-313 ns]  custodyNow 312 ns [311 ns-314 ns] x1.00  protocolBase 312 ns [310 ns-314 ns] x1.00  protocolNow 312 ns [311 ns-313 ns] x1.00
+        48 B  base 369 ns [366 ns-382 ns]  custodyNow 368 ns [366 ns-383 ns] x1.00  protocolBase 369 ns [368 ns-377 ns] x1.00  protocolNow 369 ns [366 ns-372 ns] x1.00
+        56 B  base 426 ns [424 ns-427 ns]  custodyNow 424 ns [424 ns-427 ns] x1.00  protocolBase 424 ns [422 ns-426 ns] x1.00  protocolNow 426 ns [424 ns-427 ns] x1.00
+        63 B  base 488 ns [485 ns-498 ns]  custodyNow 493 ns [488 ns-498 ns] x1.01  protocolBase 490 ns [488 ns-500 ns] x1.00  protocolNow 490 ns [488 ns-503 ns] x1.00
+        64 B  base 498 ns [490 ns-513 ns]  custodyNow 313 ns [300 ns-331 ns] x0.63  protocolBase 505 ns [503 ns-541 ns] x1.01  protocolNow 309 ns [298 ns-318 ns] x0.62
+        65 B  base 526 ns [508 ns-532 ns]  custodyNow 315 ns [310 ns-331 ns] x0.60  protocolBase 529 ns [505 ns-541 ns] x1.01  protocolNow 313 ns [309 ns-331 ns] x0.60
+       128 B  base 980 ns [962 ns-1064 ns]  custodyNow 408 ns [402 ns-437 ns] x0.42  protocolBase 980 ns [966 ns-1031 ns] x1.00  protocolNow 415 ns [403 ns-436 ns] x0.42
+      1024 B  base 7357 ns [7321 ns-8500 ns]  custodyNow 1836 ns [1818 ns-2000 ns] x0.25  protocolBase 7393 ns [7357 ns-7692 ns] x1.00  protocolNow 1827 ns [1818 ns-1870 ns] x0.25
+   1048576 B  base 7.36 ms [7.18 ms-10.85 ms]  custodyNow 1.39 ms [1.38 ms-1.44 ms] x0.19  protocolBase 7.18 ms [7.18 ms-10.08 ms] x0.98  protocolNow 1.40 ms [1.40 ms-1.43 ms] x0.19
+   8388608 B  base 61.50 ms [59.25 ms-158.00 ms]  custodyNow 11.39 ms [11.05 ms-12.35 ms] x0.19  protocolBase 61.00 ms [57.00 ms-175.25 ms] x0.99  protocolNow 11.22 ms [11.11 ms-11.94 ms] x0.18
+== webkit 26.5, dedicated Worker: 1836 comparisons with base, 0 differing
+         1 B  base 20 ns [19 ns-21 ns]  custodyNow 21 ns [19 ns-21 ns] x1.05  protocolBase 21 ns [18 ns-22 ns] x1.05  protocolNow 21 ns [19 ns-24 ns] x1.05
+         8 B  base 80 ns [77 ns-80 ns]  custodyNow 81 ns [78 ns-81 ns] x1.01  protocolBase 81 ns [80 ns-81 ns] x1.01  protocolNow 81 ns [81 ns-82 ns] x1.01
+        12 B  base 112 ns [104 ns-112 ns]  custodyNow 113 ns [104 ns-113 ns] x1.01  protocolBase 114 ns [105 ns-114 ns] x1.02  protocolNow 114 ns [105 ns-114 ns] x1.02
+        16 B  base 146 ns [146 ns-153 ns]  custodyNow 146 ns [146 ns-151 ns] x1.00  protocolBase 147 ns [147 ns-148 ns] x1.01  protocolNow 148 ns [147 ns-150 ns] x1.01
+        20 B  base 172 ns [172 ns-173 ns]  custodyNow 174 ns [173 ns-176 ns] x1.01  protocolBase 174 ns [173 ns-178 ns] x1.01  protocolNow 173 ns [172 ns-182 ns] x1.01
+        24 B  base 197 ns [196 ns-198 ns]  custodyNow 196 ns [196 ns-197 ns] x0.99  protocolBase 198 ns [198 ns-199 ns] x1.01  protocolNow 199 ns [198 ns-200 ns] x1.01
+        32 B  base 252 ns [251 ns-262 ns]  custodyNow 254 ns [253 ns-260 ns] x1.01  protocolBase 254 ns [254 ns-255 ns] x1.01  protocolNow 254 ns [253 ns-256 ns] x1.01
+        40 B  base 307 ns [307 ns-309 ns]  custodyNow 308 ns [307 ns-309 ns] x1.00  protocolBase 309 ns [308 ns-310 ns] x1.01  protocolNow 310 ns [310 ns-312 ns] x1.01
+        48 B  base 365 ns [362 ns-376 ns]  custodyNow 365 ns [364 ns-368 ns] x1.00  protocolBase 368 ns [365 ns-370 ns] x1.01  protocolNow 368 ns [366 ns-369 ns] x1.01
+        56 B  base 422 ns [418 ns-424 ns]  custodyNow 418 ns [417 ns-422 ns] x0.99  protocolBase 420 ns [420 ns-426 ns] x1.00  protocolNow 422 ns [420 ns-424 ns] x1.00
+        63 B  base 483 ns [481 ns-546 ns]  custodyNow 483 ns [483 ns-488 ns] x1.00  protocolBase 483 ns [481 ns-485 ns] x1.00  protocolNow 488 ns [483 ns-495 ns] x1.01
+        64 B  base 493 ns [490 ns-500 ns]  custodyNow 315 ns [308 ns-321 ns] x0.64  protocolBase 498 ns [490 ns-505 ns] x1.01  protocolNow 313 ns [304 ns-315 ns] x0.63
+        65 B  base 500 ns [498 ns-503 ns]  custodyNow 319 ns [315 ns-322 ns] x0.64  protocolBase 503 ns [500 ns-505 ns] x1.01  protocolNow 319 ns [317 ns-322 ns] x0.64
+       128 B  base 971 ns [966 ns-985 ns]  custodyNow 407 ns [405 ns-412 ns] x0.42  protocolBase 971 ns [962 ns-976 ns] x1.00  protocolNow 408 ns [405 ns-413 ns] x0.42
+      1024 B  base 7357 ns [7321 ns-7464 ns]  custodyNow 1827 ns [1818 ns-1861 ns] x0.25  protocolBase 7286 ns [7250 ns-7429 ns] x0.99  protocolNow 1836 ns [1818 ns-1852 ns] x0.25
+   1048576 B  base 10.25 ms [7.32 ms-25.00 ms]  custodyNow 1.42 ms [1.40 ms-1.48 ms] x0.14  protocolBase 10.81 ms [7.25 ms-19.33 ms] x1.05  protocolNow 1.41 ms [1.40 ms-1.42 ms] x0.14
+   8388608 B  base 62.25 ms [57.25 ms-66.25 ms]  custodyNow 11.50 ms [11.17 ms-12.06 ms] x0.18  protocolBase 61.75 ms [57.00 ms-206.33 ms] x0.99  protocolNow 11.33 ms [11.22 ms-11.67 ms] x0.18
+exit: stopped by its 590 s bound (timeout status 124) while WebKit was closing, after every result above had printed (all four realms were printed by 06:09:42); ps then showed no Playwright browser process.

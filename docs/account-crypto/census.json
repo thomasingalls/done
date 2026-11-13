@@ -137,7 +137,7 @@
     },
     {
       "path": "account-protocol/recovery.ts",
-      "sha256": "9720b3ad3aade3c9e82b0d532e3a1bb85774e6b5e07e0e190c2702781deb8510"
+      "sha256": "66f256ef3855ade6e04e33fcc466ff51adf891d48920e5f7c0ded59ba0a2e07b"
     },
     {
       "path": "account-protocol/recoveryBootstrap.ts",
@@ -1045,7 +1045,7 @@
     },
     {
       "path": "src/crdt/custodyCrypto.ts",
-      "sha256": "64863f2836e51a9e5b7a46d19efb1e847a404ddb4cd1d3afd8f6242ec8834212"
+      "sha256": "3df523b1538b297901b039ce7df6f8fb8ffd17c739dc654d9b55ac055ad1fb9d"
     },
     {
       "path": "src/crdt/custodyRecord.ts",
@@ -1213,7 +1213,7 @@
     },
     {
       "path": "src/crdt/legacySource.ts",
-      "sha256": "04ce8f6a8e78340e332148f662dace3f4c2f528a5b445f2859655f37e7eb6d61"
+      "sha256": "e8e494e6d8fa1c2c79729892c50be1950c2a065118c594ea8be956732766cf61"
     },
     {
       "path": "src/crdt/localBaselineAnchor.ts",
@@ -2345,7 +2345,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 142
+          "line": 165
         }
       ]
     },
@@ -2355,7 +2355,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 132
+          "line": 155
         }
       ]
     },
@@ -2773,7 +2773,7 @@
       "sites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 223
+          "line": 247
         }
       ]
     },
@@ -2783,7 +2783,7 @@
       "sites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 343
+          "line": 367
         }
       ]
     },
@@ -2857,11 +2857,11 @@
       "sites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 104
+          "line": 128
         },
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 120
+          "line": 144
         }
       ]
     },
@@ -3325,7 +3325,7 @@
       "sites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 167
+          "line": 191
         }
       ]
     },
@@ -3375,7 +3375,7 @@
       "sites": [
         {
           "path": "src/crdt/legacySource.ts",
-          "line": 177
+          "line": 175
         }
       ]
     },
@@ -3719,7 +3719,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 79
+          "line": 102
         }
       ]
     },
@@ -3947,7 +3947,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 112
+          "line": 135
         }
       ]
     },
@@ -3967,7 +3967,7 @@
       "sites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 121
+          "line": 144
         }
       ]
     },

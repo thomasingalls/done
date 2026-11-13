@@ -1,0 +1,3 @@
+literals of 16+ characters in vite/, test/, scripts/: 28349
+occurrences in the base text of the three edited sources: 57
+every one occurs the same number of times now

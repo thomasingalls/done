@@ -206,6 +206,13 @@ a stall. What it left:
 - **SEND-REDUCED-300 — a reduced device's 300-position seed costs 266 ms per sent position**, against
   190 ms at 1,000 and 3,000, because its shape check takes 84 ms per send instead of 15 (phase 554,
   both builds). Not investigated; it is the one size where the reduced device misses 250 ms.
+- **SEND-PROMOTION-HEX — every send re-serializes the promotion marker and hex-encodes it to compare.**
+  *unmeasured.* `assertCurrent` in `src/crdt/accountSpool.ts` runs before every submission and in
+  publication checks. It builds the promotion payload, which carries the genesis and catch-up
+  checkpoint ciphertexts as hex, re-parses the genesis and unhexes the catch-up ciphertext, then
+  hex-encodes the whole payload (about four characters per ciphertext byte, no bound on the total)
+  only to compare it with the copy taken at open. Phase 559 made the encoding about eleven times
+  cheaper; comparing the bytes, or a digest kept at open, would drop it and the re-parse.
 
 ### Local history reduction
 
@@ -240,6 +247,19 @@ a stall. What it left:
   is cut short (phase 546, by design). Also noted: a device on the full check holds sync while
   offline, and other fenced callers (history install, authority adoption, the "Check history" dry
   run, manual install and replace) still meet the busy-handoff refusal.
+- **HEX-DECODE — `lowerHexBytes` and `unhex` cost about 6.4 ns per byte** (53.7 ms at 8 MiB,
+  214 ms at 32 MiB in Node). After phase 559 that is most of what remains of a large baseline
+  decode: about 100 of 185 ms at the 32 MiB read bound, about 15 ms per decode at the 8 MiB write
+  ceiling, twice per baseline load. Held because `lowerHexBytes` parses peer- and service-supplied
+  input, so a replacement needs its acceptance set proven exhaustively (every pair of characters,
+  chunk boundaries, non-ASCII), and the saving on this build's path is small. `unhex` has the same
+  loop plus a regular expression; its large callers are checkpoint ciphertexts, which a create
+  re-parses four to five times. Options measured at phase 559:
+  - the string through `TextEncoder.encodeInto` in 32,768-pair chunks, then a 65,536-entry pair
+    table: 22.7 against 51.4 ms at 8 MiB with no extra memory, which meets that phase's build bar;
+  - the same without chunks: as fast, but triple the peak;
+  - a nibble table on `encodeInto`: 1.3 times faster;
+  - `Uint8Array.fromHex`: 25 times faster, but not in the es2022 target, and it accepts upper case.
 
 ### Account service
 
@@ -267,6 +287,11 @@ a stall. What it left:
   four-request budget (unmeasured). Phase 553 removes the history route's wipes; the error-path
   wipes (SVC-ERROR-CLEARS) remain. The pod's restart count for 2026-11-08 would show whether it was
   killed.
+- **SVC-SNAPSHOT-HEX — the service's ledger snapshot hex-encodes every row on every comparison.**
+  *unmeasured.* `snapshotBytes` in `account-service/delivery.ts` turns each row's submission and
+  response into hex, and `unchanged()` builds it twice for about 15 routes. Each submission is at
+  most 512 KiB, but the total grows with rows since the last prune and has no bound. Phase 559 made
+  the per-row encoding about eleven times cheaper; the walk over every row remains.
 
 ### Tests and tooling
 

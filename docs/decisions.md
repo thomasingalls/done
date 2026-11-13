@@ -8632,3 +8632,27 @@ A syntax-tree survey found 67 argument spreads in 526 source files. Seven are no
 The other 60 are left, each bounded by a named constant or check, a fixed list, or a wrapper's fixed parameters; the phase record lists them. The loop costs no more than the spread at these sizes (0.06 ms against 0.17 ms for 21,602 rows in Node).
 
 Below the limit nothing changes. Above it, those paths now complete instead of throwing. No check is weakened, narrowed or run on less input, and no stored format, wire message, limit or recorded decision changes. A new test drives each of the seven sites through its real code at 150,000 rows, with a control that the old expressions throw at that size in the test's realm and a syntax-tree guard on the five files. Each case fails on the phase 557 source, and 33 mutation controls trip, two of them the coordinating session's at review. [Evidence](development-evidence/2026-11-11-release-repair/558-argument-spreads/README.md).
+
+
+### 2026-11-13 — Encode bytes as hex without an array of one string per byte (phase 559)
+
+The coordinating session asked on 2026-11-13 for the bytes-to-hex and hex-to-bytes routines to be surveyed and measured before anything was built. A replacement was allowed only where it at least halved the routine's time or peak memory at 8 MiB and above, on a call site that large input reaches. Both `hex` routines, in `src/crdt/custodyCrypto.ts` and `account-protocol/recovery.ts`, filled an array with one two-character string per byte and joined it. In Node that cost 151.6 ms and 182.5 MiB of peak at 8 MiB, and 567.7 ms and 642.2 MiB at 32 MiB. Large input reaches them through:
+- the local-baseline codec;
+- the promotion payload re-encoded before every submission;
+- freshly encrypted checkpoints;
+- joined-account and legacy row comparisons;
+- the service's ledger snapshot.
+
+`src/crdt/legacySource.ts` had its own helper, `toString(16)` per byte, over up to 16 MiB of legacy rows: 1,494 ms and 1,041 MiB of peak at that bound.
+
+From 64 bytes both now write one 16-bit slot of two ASCII digits per byte and decode it once with a `TextDecoder`: 13.6 ms and 32.6 MiB at 8 MiB, about 51 ms and 128.8 MiB at 32 MiB. Below 64 bytes each runs its base code unchanged. The coordinating session's review measured the slots alone 1.6 to 1.8 times slower than the base at 16 bytes in WebKit, which phones run, and the rule for this routine is no slower than the base at any size. Measured in Playwright's Chromium 151 and WebKit 26.5, page and dedicated Worker:
+- one `TextDecoder` call costs about 200 ns in WebKit, about what the base join spends on 32 bytes;
+- from 64 bytes the slots were at least 31% faster in all four realms, which sets the threshold;
+- the final routines are 0.94 to 1.05 of the base below 64 bytes, with overlapping spreads, 0.57 to 0.64 at 64, and 0.11 to 0.19 at 8 MiB;
+- the strings were identical in every realm.
+
+The legacy observation now uses the shared `hex`, which takes 28.5 ms and 65.0 MiB at 16 MiB, and hashes the same JSON to the same digest. Measured with the base routine and with the final one, `hex` was 60 to 72% of the phase 542 codec's time and 69 to 80% of its peak rise at 8 and 32 MiB. An 8 MiB encode with its self-decode went from 186 ms to 55 ms, and its process peak from 602 to 249 MiB.
+
+The output is the same string for every `Uint8Array`, the empty-view guard that refuses detached buffers is unchanged, and nothing is chunked or spread, so phase 558's argument limit does not apply. `lowerHexBytes` and `unhex` were measured and not changed. `lowerHexBytes` is now most of what remains of a large decode, and a chunked option halves it without more memory; it is held, with the reasons, as HEX-DECODE.
+
+No stored format, wire message, limit or recorded decision changes. No check is weakened, narrowed or run on less input. A new test compares both routines with their base text on both paths, at 63, 64 and 65 bytes, over every byte value, lengths to 1 MiB, views and an 8 MiB + 1 input, and checks every refusal at the guard before both paths. It also checks the real legacy observation's digest over 8.5 MB of rows against Node's encoder. Those cases are controls. Five cases fail on the base source: per routine, one finds no per-byte join at 8 MiB + 1, and one finds the join at 63 bytes and none at 64; the fifth is for the legacy observation. Twenty-five mutation controls trip, among them each path broken alone, the threshold inverted or off by one, and either path used for every length. Two survive by design, because they are equivalent on this little-endian Node host. [Evidence](development-evidence/2026-11-11-release-repair/559-hex-encoding/README.md).

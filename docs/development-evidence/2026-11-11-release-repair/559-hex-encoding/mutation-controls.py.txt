@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+"""Phase 559 mutation controls. Each mutation edits one site of the final source text (the two hex
+routines and the legacy source observation), runs the
+whole of test/hexEncoding.test.ts, lists the cases that failed, and restores the file byte for byte.
+Usage: python3 -I mutation-controls.py <repo root>  (prints one block per mutation)"""
+import hashlib
+import subprocess
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+TEST = 'test/hexEncoding.test.ts'
+CUSTODY = 'src/crdt/custodyCrypto.ts'
+PROTOCOL = 'account-protocol/recovery.ts'
+LEGACY = 'src/crdt/legacySource.ts'
+
+MUTATIONS = [
+    # Each path, and the choice between them.
+    ('custodyCrypto: the join path for every length (the base routine)', CUSTODY,
+     'if (b.length < HEX_SLOTS_FROM) {', 'if (b.length > 0) {'),
+    ('recovery: the join path for every length (the base routine)', PROTOCOL,
+     'if (value.length < HEX_SLOTS_FROM) {', 'if (value.length >= 0) {'),
+    ('custodyCrypto: the slot path for every length (phase 559 as first written)', CUSTODY,
+     'const HEX_SLOTS_FROM = 64;', 'const HEX_SLOTS_FROM = 0;'),
+    ('recovery: the slot path for every length (phase 559 as first written)', PROTOCOL,
+     'const HEX_SLOTS_FROM = 64;', 'const HEX_SLOTS_FROM = 0;'),
+    ('custodyCrypto: the threshold comparison inverted', CUSTODY,
+     'if (b.length < HEX_SLOTS_FROM) {', 'if (b.length >= HEX_SLOTS_FROM) {'),
+    ('recovery: the threshold comparison inverted', PROTOCOL,
+     'if (value.length < HEX_SLOTS_FROM) {', 'if (value.length >= HEX_SLOTS_FROM) {'),
+    ('custodyCrypto: the threshold one byte late (<=)', CUSTODY,
+     'if (b.length < HEX_SLOTS_FROM) {', 'if (b.length <= HEX_SLOTS_FROM) {'),
+    ('recovery: the threshold one byte early (< 63)', PROTOCOL,
+     'if (value.length < HEX_SLOTS_FROM) {', 'if (value.length < HEX_SLOTS_FROM - 1) {'),
+    # The join path's string table only.
+    ('custodyCrypto: a wrong digit for byte 0xab in the string table only', CUSTODY,
+     "const hexByte = Array.from({ length: 256 }, (_, n) => n.toString(16).padStart(2, '0'));",
+     "const hexByte = Array.from({ length: 256 }, (_, n) => (n === 171 ? 172 : n).toString(16).padStart(2, '0'));"),
+    ('recovery: upper-case digits in the string table only', PROTOCOL,
+     "const HEX_BYTES = Array.from({ length: 256 }, (_, byte) => byte.toString(16).padStart(2, '0'));",
+     "const HEX_BYTES = Array.from({ length: 256 }, (_, byte) => byte.toString(16).toUpperCase().padStart(2, '0'));"),
+    ('custodyCrypto: the join path reads the whole buffer, not the view', CUSTODY,
+     'parts[i] = hexByte[b[i]!]!;', 'parts[i] = hexByte[new Uint8Array(b.buffer)[i]!]!;'),
+    ('recovery: the join path drops its last byte', PROTOCOL,
+     'return parts.join(\'\');', 'return parts.slice(0, -1).join(\'\');'),
+    # The slot path's pair table only.
+    ('custodyCrypto: a wrong digit for byte 0xab in the pair table only', CUSTODY,
+     "ascii[2 * n + 1] = '0123456789abcdef'.charCodeAt(n & 15);",
+     "ascii[2 * n + 1] = '0123456789abcdef'.charCodeAt((n === 171 ? 172 : n) & 15);"),
+    ('recovery: a wrong digit for byte 0xab in the pair table only', PROTOCOL,
+     "ascii[2 * byte + 1] = '0123456789abcdef'.charCodeAt(byte & 15);",
+     "ascii[2 * byte + 1] = '0123456789abcdef'.charCodeAt((byte === 171 ? 172 : byte) & 15);"),
+    ('custodyCrypto: the two digits of a pair swapped', CUSTODY,
+     "ascii[2 * n] = '0123456789abcdef'.charCodeAt(n >> 4);\n    ascii[2 * n + 1] = '0123456789abcdef'.charCodeAt(n & 15);",
+     "ascii[2 * n] = '0123456789abcdef'.charCodeAt(n & 15);\n    ascii[2 * n + 1] = '0123456789abcdef'.charCodeAt(n >> 4);"),
+    ('recovery: upper-case digits in the pair table only', PROTOCOL,
+     "ascii[2 * byte + 1] = '0123456789abcdef'.charCodeAt(byte & 15);",
+     "ascii[2 * byte + 1] = '0123456789ABCDEF'.charCodeAt(byte & 15);"),
+    ('custodyCrypto: the slot path drops its last byte', CUSTODY,
+     'return asciiText.decode(ascii);', 'return asciiText.decode(ascii.subarray(0, b.length - 1));'),
+    ('recovery: the slot path has one slot too many', PROTOCOL,
+     'const ascii = new Uint16Array(value.length);', 'const ascii = new Uint16Array(value.length + 1);'),
+    ('custodyCrypto: the slot path reads the whole buffer, not the view', CUSTODY,
+     'ascii[i] = hexPairs[b[i]!]!;', 'ascii[i] = hexPairs[new Uint8Array(b.buffer)[i]!]!;'),
+    ('recovery: the slot path reads the whole buffer, not the view', PROTOCOL,
+     'ascii[i] = HEX_PAIRS[value[i]!]!;', 'ascii[i] = HEX_PAIRS[new Uint8Array(value.buffer)[i]!]!;'),
+    # The guard before both paths.
+    ('custodyCrypto: no detached-buffer refusal for empty views', CUSTODY,
+     '  if (!b.length) {\n    b.subarray(0, 0);\n    return \'\';\n  }',
+     '  if (!b.length) {\n    return \'\';\n  }'),
+    ('recovery: no detached-buffer refusal for empty views', PROTOCOL,
+     '  if (!value.length) value.subarray(0, 0);', '  if (!value.length) return \'\';'),
+    ('custodyCrypto: missing input returns empty instead of refusing', CUSTODY,
+     '  if (!b.length) {', '  if (!b?.length) {\n    if (!b) return \'\';'),
+    # The legacy source observation.
+    ('legacySource: its base per-byte toString helper restored', LEGACY,
+     "import { hex } from './custodyCrypto';\n",
+     "const hex = (bytes: Uint8Array): string =>\n  Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');\n"),
+    ('legacySource: rows hashed without their first byte', LEGACY,
+     '(disk ?? []).map((r) => [r.key, hex(r.bytes)]),',
+     '(disk ?? []).map((r) => [r.key, hex(r.bytes.subarray(1))]),'),
+    # Expected survivors, listed as limits of a Node-only test.
+    ('custodyCrypto: little-endian-only pair table (survives on this little-endian host)', CUSTODY,
+     "ascii[2 * n] = '0123456789abcdef'.charCodeAt(n >> 4);\n    ascii[2 * n + 1] = '0123456789abcdef'.charCodeAt(n & 15);",
+     "pairs[n] = '0123456789abcdef'.charCodeAt(n >> 4) | ('0123456789abcdef'.charCodeAt(n & 15) << 8);"),
+    ('custodyCrypto: Node Buffer in place of TextDecoder (survives in Node)', CUSTODY,
+     'return asciiText.decode(ascii);',
+     "return Buffer.from(ascii.buffer, 0, ascii.byteLength).toString('latin1');"),
+]
+
+def sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+results = []
+for name, rel, old, new in MUTATIONS:
+    path = root / rel
+    original = path.read_bytes()
+    text = original.decode()
+    if text.count(old) != 1:
+        print(f'== {name}: anchor found {text.count(old)} times; not run')
+        results.append((name, 'not run'))
+        continue
+    before = sha(path)
+    try:
+        path.write_text(text.replace(old, new))
+        run = subprocess.run(
+            ['timeout', '300', 'node_modules/.bin/vitest', 'run', TEST, '--reporter=verbose'],
+            cwd=root, capture_output=True, text=True)
+        out = run.stdout + run.stderr
+        failed = [l.strip() for l in out.splitlines() if l.strip().startswith('×')]
+        passed = [l.strip() for l in out.splitlines() if l.strip().startswith('✓')]
+        print(f'== {name} ({rel}); vitest exit {run.returncode}; {len(failed)} failed, {len(passed)} passed')
+        for l in failed:
+            print('  FAILED ' + ' > '.join(l[2:].split(' > ')[-2:]))
+        results.append((name, f'tripped ({len(failed)} cases)' if failed else 'NOT TRIPPED'))
+    finally:
+        path.write_bytes(original)
+        assert sha(path) == before, f'{rel} not restored'
+print('== summary')
+for name, outcome in results:
+    print(f'  {outcome}: {name}')
+print('all sources restored byte for byte')

@@ -3515,13 +3515,13 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 104,
+          "line": 128,
           "label": "done/devicelock/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 120,
+          "line": 144,
           "label": "done/devicelock/v1",
           "kind": "literal"
         }
@@ -3600,7 +3600,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 167,
+          "line": 191,
           "label": "done/keyenv/v1",
           "kind": "literal"
         }
@@ -3661,7 +3661,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 223,
+          "line": 247,
           "label": "done/custody-credential/v2",
           "kind": "literal"
         }
@@ -3728,7 +3728,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 343,
+          "line": 367,
           "label": "done/custody-key-check/v2",
           "kind": "literal"
         }
@@ -4364,7 +4364,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/legacySource.ts",
-          "line": 177,
+          "line": 175,
           "label": "done/legacy-source-observation/v1",
           "kind": "literal"
         }
@@ -4646,7 +4646,7 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 142,
+          "line": 165,
           "label": "done/account-recovery-confirm/v1",
           "kind": "literal"
         }
@@ -4702,25 +4702,25 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 132,
+          "line": 155,
           "label": "done/account-recovery-draft/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 79,
+          "line": 102,
           "label": "done/pkg-root/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 112,
+          "line": 135,
           "label": "done/recovery-envelope/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 121,
+          "line": 144,
           "label": "done/recovery-state/v1",
           "kind": "literal"
         }
