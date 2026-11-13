@@ -1,0 +1,51 @@
+// Bisect helper, read-only: builds test/account-parser-conformance/runtime.ts as the old loader did
+// (every module from commit C, the four repaired files replaced by f0b6acd2), entirely from git
+// objects, and reports whether the build succeeds and how many modules the graph has.
+// Usage: node overlay-at.mjs <commit> [--list]
+import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
+import { posix, resolve } from 'node:path';
+const { build } = await import(pathToFileURL(createRequire(process.cwd() + '/package.json').resolve('vite')).href);
+const [commit, flag] = process.argv.slice(2);
+const baseline = 'f0b6acd2e624d89034c88706d4053a830ab50cc6';
+const repaired = ['src/crdt/promotionRecord.ts', 'src/crdt/spoolRecord.ts', 'src/crdt/startupClassification.ts', 'account-protocol/genesis.ts'];
+const tree = new Map();
+for (const e of execFileSync('git', ['ls-tree', '-r', '-z', '--full-tree', commit], { encoding: 'utf8', maxBuffer: 64 << 20 }).split('\0')) {
+  const m = /^\d{6} blob ([0-9a-f]{40})\t(.+)$/s.exec(e); if (m) tree.set(m[2], m[1]);
+}
+const root = resolve('.overlay-' + commit);
+const entryPath = 'test/account-parser-conformance/runtime.ts';
+const anchor = resolve(entryPath);
+const ids = [];
+let swapped = 0;
+try {
+  await build({
+    configFile: false, logLevel: 'silent',
+    plugins: [{
+      name: 'git-tree', enforce: 'pre',
+      async resolveId(source, importer) {
+        if (!importer) return root + '/' + entryPath;
+        if (!importer.startsWith(root + '/')) return null;
+        if (!source.startsWith('.')) return this.resolve(source, anchor, { skipSelf: true });
+        const t = posix.normalize(posix.join(posix.dirname(importer.slice(root.length + 1)), source));
+        const p = [t, t + '.ts', t + '.tsx', t + '.js', t + '.mjs', t + '/index.ts'].find((p) => tree.has(p));
+        if (!p) throw Error('no module ' + source + ' from ' + importer);
+        return root + '/' + p;
+      },
+      load(id) {
+        if (!id.startsWith(root + '/')) return null;
+        const p = id.slice(root.length + 1);
+        ids.push(p);
+        if (repaired.includes(p)) { swapped++; return execFileSync('git', ['show', baseline + ':' + p], { encoding: 'utf8' }); }
+        return execFileSync('git', ['cat-file', 'blob', tree.get(p)], { encoding: 'utf8', maxBuffer: 64 << 20 });
+      },
+    }],
+    build: { write: false, minify: false, rollupOptions: { external: ['yjs'], output: { globals: { yjs: 'ParserYjs' } } },
+      lib: { entry: anchor, name: 'Parsers', formats: ['iife'] } },
+  });
+  console.log(JSON.stringify({ commit, ok: true, modules: ids.length, swapped, ...(flag === '--list' ? { ids: ids.sort() } : {}) }));
+} catch (e) {
+  const errs = (e.errors ?? [e]).map((x) => String(x.message ?? x).replace(/\x1b\[[0-9;]*m/g, '').split('\n')[0]);
+  console.log(JSON.stringify({ commit, ok: false, modules: ids.length, swapped, errors: [...new Set(errs)] }));
+}

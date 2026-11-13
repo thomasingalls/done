@@ -1,0 +1,41 @@
+# Other tests that swap files from a pinned commit into the current tree (phase 560 survey)
+# swap-probe.mjs.txt builds each fixture's entry with Vite from the working tree, swapping each named
+# ref:path in as the fixture's own plugin does, and reports whether the bundle builds. Build only: no test
+# body ran, so a build that succeeds says nothing about whether the old file still behaves as it did.
+# Base tree 3daa3e4d plus this phase's test-only changes; 2026-11-13.
+
+{"entry":"test/account-genesis/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-admission/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-editing/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-handoff/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-spool/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-capture/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-delivery/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-handoff/browser.ts","swaps":["beed8cf:src/account/slotUnlock.ts"],"ok":false,"hits":1,"errors":["[MISSING_EXPORT] \"verifySessionSlotUnlock\" is not exported by \"src/account/slotUnlock.ts\".","[MISSING_EXPORT] \"verifyRecoverySlotUnlock\" is not exported by \"src/account/slotUnlock.ts\"."],"errorCount":2}
+{"entry":"test/account-ledger-contract/browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/account-ledger-contract/browser.ts","swaps":["4bcac41928dae58a1795d4adb126595b898a56ca:src/crdt/spoolRecord.ts"],"ok":false,"hits":1,"errors":["[MISSING_EXPORT] \"inspectSpoolSteps\" is not exported by \"src/crdt/spoolRecord.ts\".","[MISSING_EXPORT] \"nextSpoolPosition\" is not exported by \"src/crdt/spoolRecord.ts\"."],"errorCount":4}
+{"entry":"src/crdt/spoolRecord.ts","swaps":["284a97a27dc3344fcb7c55a8757a2a41c74fe0b9:src/crdt/spoolRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/local-baseline/anchor-browser.ts","swaps":[],"ok":true,"hits":0}
+{"entry":"test/local-baseline/anchor-browser.ts","swaps":["43fe12aa:src/crdt/contentRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-genesis/browser.ts","swaps":["a4e1c15:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-admission/browser.ts","swaps":["280f616:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-editing/browser.ts","swaps":["649925f:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-handoff/browser.ts","swaps":["beed8cf:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-spool/browser.ts","swaps":["7210b7d:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-capture/browser.ts","swaps":["18ceb40:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+{"entry":"test/account-delivery/browser.ts","swaps":["81a4655:src/crdt/promotionRecord.ts"],"ok":true,"hits":1}
+
+## run of the affected registered file
+test/account-ledger-contract/source-census.test.mjs (loads the repeatedSourceReader overlay at module top):
+  1 [MISSING_EXPORT] "inspectSpoolSteps" is not exported by "src/crdt/spoolRecord.ts".
+  3 [MISSING_EXPORT] "nextSpoolPosition" is not exported by "src/crdt/spoolRecord.ts".
+  1 ℹ fail 1
+  1 ℹ pass 0
+  1 ℹ tests 1
+  manifest row: blocked ('Review the exact runtime case denominator and fixture/process ownership adapter.')
+
+## not probed
+test/local-baseline/reader-rollout.ts (nine e2e5337a files swapped into a full app build), test/account-admission-bounds/protocol.test.mjs and
+test/account-service-delivery/controls.test.mjs, test/account-transport/historical.mjs, test/account-service-inbound/core.test.mjs (old service files
+written next to current modules and imported by Node), the activation reproduction. test/account-receive, test/account-sync and
+test/account-admission-bounds fixtures already use scripts/lib/historical-bundle.mjs, which builds the whole graph at the pinned commit.

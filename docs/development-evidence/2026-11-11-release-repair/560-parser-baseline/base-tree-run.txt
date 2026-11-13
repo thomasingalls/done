@@ -1,0 +1,30 @@
+# baseline.test.mjs on the base text (phases 557-559, tree 3daa3e4d2e07135206df1c50645a721009c01a2d), before any phase 560 change
+# node --test --test-concurrency=1 --test-reporter=spec test/account-parser-conformance/baseline.test.mjs; 2026-11-13, Node 26.13.1
+# ANSI colour and the rolldown stack frames removed; the twelve errors listed from the same build with their importers.
+
+✗ Build failed in 132ms
+Build failed with 12 errors:
+✖ test/account-parser-conformance/baseline.test.mjs (407.174ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 411.629209
+✖ test/account-parser-conformance/baseline.test.mjs (407.174ms)
+
+## the twelve missing exports, importer:line
+[MISSING_EXPORT] "inspectSpoolSteps" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/deliveryRecord.ts:8:10
+[MISSING_EXPORT] "positionSources" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/accountSyncState.ts:5:10
+[MISSING_EXPORT] "nextSpoolPosition" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/localBaselineShadow.ts:5:10
+[MISSING_EXPORT] "positionSources" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/localBaselineShadow.ts:5:29
+[MISSING_EXPORT] "positionSources" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/localBaselineReplay.ts:23:10
+[MISSING_EXPORT] "positionSources" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/accountEnvelopePreparation.ts:5:78
+[MISSING_EXPORT] "nextSpoolPosition" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/accountEnvelopePreparation.ts:5:95
+[MISSING_EXPORT] "MAX_POSITION_SOURCES" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/accountEnvelopePreparation.ts:5:114
+[MISSING_EXPORT] "MAX_POSITION_BYTES" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/accountEnvelopePreparation.ts:5:136
+[MISSING_EXPORT] "positionSources" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/incrementalAccountLedger.ts:5:61
+[MISSING_EXPORT] "MAX_POSITION_BYTES" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/incrementalAccountLedger.ts:5:78
+[MISSING_EXPORT] "nextSpoolPosition" is not exported by "src/crdt/spoolRecord.ts".  <- src/crdt/incrementalAccountLedger.ts:5:114

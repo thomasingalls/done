@@ -1,0 +1,46 @@
+# When the old overlay loader stopped building (phase 560)
+# overlay-at.mjs.txt builds test/account-parser-conformance/runtime.ts as the old loader did: every module from commit C,
+# the four repaired files replaced by f0b6acd2, all from git objects (nothing checked out). ok = the bundle builds;
+# modules = repository modules in the graph, entry included. 2026-11-13, Node 26.13.1, Vite 8.1.5 / Rolldown 1.1.5.
+
+## ends
+{"commit":"77b0bb6239f7b7a48c4a52c74d3e3f39e39994a3","ok":true,"modules":34,"swapped":4}
+{"commit": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935", "ok": false, "modules": 177, "swapped": 4, "errors": ["[MISSING_EXPORT] \"MAX_POSITION_BYTES\" is not exported by \"src/crdt/spoolRecord.ts\".", "[MISSING_EXPORT] \"MAX_POSITION_SOURCES\" is not exported by \"src/crdt/spoolRecord.ts\".", "[MISSING_EXPORT] \"inspectSpoolSteps\" is not exported by \"src/crdt/spoolRecord.ts\".", "[MISSING_EXPORT] \"nextSpoolPosition\" is not exported by \"src/crdt/spoolRecord.ts\".", "[MISSING_EXPORT] \"positionSources\" is not exported by \"src/crdt/spoolRecord.ts\"."]}
+
+## first-parent bisection over 42 merges 77b0bb623..bfb512c70 (index: result)
+20 {"commit":"6eb2fead15d7ac04f88ae114cc32700fa0ce938a","ok":false,"modules":177,"swapped":4,"errors":["[MISSING_EXPORT] \"inspectSpoolSteps\" is not exported by \
+10 {"commit":"89eac0e846fb05f3f80a273a5e2be5cca02a12b2","ok":false,"modules":150,"swapped":4,"errors":["[MISSING_EXPORT] \"inspectSpoolSteps\" is not exported by \
+5 {"commit":"e948c52af392268083f603012c57c220815395c3","ok":true,"modules":59,"swapped":4}
+8 {"commit":"0196c03e0450c7b1b6446f3d194f0e754fda1808","ok":true,"modules":62,"swapped":4}
+9 {"commit":"0780fee7e731f9f6832e7ab38505d9cdfd86e9c9","ok":false,"modules":62,"swapped":4,"errors":["[MISSING_EXPORT] \"inspectSpoolSteps\" is not exported by \"
+
+## the 24 commits of the first failing merge, 0780fee7e (PR #54, codex/warm-ledger-loads, merged 2026-10-14)
+c50e37411 2026-10-13 Define authenticated local baseline format and replay => "ok":true,"modules":62
+962329a36 2026-10-13 Compare local baseline replay under the Account storage owner => "ok":true,"modules":62
+43fe12aa0 2026-10-13 Verify local baseline authority and checkpoint transitions => "ok":true,"modules":62
+13b265a3f 2026-10-13 Anchor encrypted local baselines with authenticated compatibility fences => "ok":true,"modules":62
+bb9c7e822 2026-10-13 Connect non-deleting local baselines to Account ownership and cold opening => "ok":true,"modules":62
+cf16e61a4 2026-10-13 Preserve local baselines through rotation, replacement and lifecycle readers => "ok":true,"modules":62
+8c694d558 2026-10-13 Define retained evidence and journal pairing before local history retirement => "ok":true,"modules":62
+bcca1aa14 2026-10-13 Fence private local retention with journal eras and checkpoint evidence => "ok":true,"modules":62
+bce612c3a 2026-10-13 Map retained baseline readers and specify exact local history retirement => "ok":true,"modules":62
+3ba73cb3f 2026-10-13 Connect private baseline-plus-suffix reads to Account owners => "ok":true,"modules":62
+af5f0d874 2026-10-13 Adapt retained lifecycle readers and rebase local baselines => "ok":true,"modules":62
+7a48b86b5 2026-10-13 Prove exact local retention plans without deleting history => "ok":true,"modules":62
+72d1b8bf4 2026-10-13 Remove covered local history atomically behind private format fence => "ok":true,"modules":62
+354c9c596 2026-10-13 Reuse authenticated local baselines across warm Account loads => "ok":true,"modules":62
+77e54ada3 2026-10-13 Measure retained Account history depth and initial conversion cost => "ok":true,"modules":62
+75a3e94bb 2026-10-13 Reuse bound coverage and yield during initial retention preparation => "ok":true,"modules":62
+f89ee3f9d 2026-10-13 Prepare private history retention outside the input queue => "ok":false,"modules":62
+eb2a33748 2026-10-13 Group fully verified history removal inside the atomic exchange => "ok":false,"modules":62
+127fcf2a8 2026-10-13 Reuse private retention evidence without duplicate history copies => "ok":false,"modules":62
+f75a19e76 2026-10-13 Budget private retention preparation without weakening verification => "ok":false,"modules":62
+e2e5337a2 2026-10-13 Order history maintenance after prepared receive handoffs => "ok":false,"modules":62
+47466b847 2026-10-13 Enable local retention readers without enabling conversion => "ok":false,"modules":62
+890fc6770 2026-10-14 Keep rapid session reopens within a bounded access window => "ok":false,"modules":62
+1022e8723 2026-10-14 Record reader-only image and compatible rollback handoff => "ok":false,"modules":62
+
+## the first failing commit
+{"commit":"f89ee3f9d505f29fdfc29aad2260a19c053f312f","ok":false,"modules":62,"swapped":4,"errors":["[MISSING_EXPORT] \"inspectSpoolSteps\" is not exported by \"src/crdt/spoolRecord.ts\"."]}
+f89ee3f9d505f29fdfc29aad2260a19c053f312f 2026-10-13 21:42:15 +0200 Prepare private history retention outside the input queue
+src/crdt/deliveryRecord.ts at f89ee3f9d imports inspectSpoolSteps from ./spoolRecord (was inspectSpool); f0b6acd2's spoolRecord.ts does not export it.

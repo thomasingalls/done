@@ -301,6 +301,29 @@ a stall. What it left:
 - **TEST-MOCK-CYCLE — an import cycle through `src/crdt/inboundLedger.ts` can leave a test's mock of
   it silently unapplied** (found in phase 545). Tests that mock it should assert the mock ran.
 - **TEST-NODE-VERSION — local Node is 26; CI pins 24.22.1.**
+- **TEST-PARSER-CI — `pnpm account:parser-conformance` is required by the release policy and its six
+  files are in the release inventory, but nothing in CI runs them** (phase 560). The baseline
+  differential failed from 2026-10-13 until phase 560 without anyone seeing it. CI's adapter test only
+  checks the files' registration. Adding it would take one step in the build job after Chromium is
+  installed: `node --test --test-concurrency=1` over the five Node files (`objects`, `wires`,
+  `submission`, `controls`, `baseline`; about 6 s here) and `native.test.mjs` (one Chromium case, about
+  1.5 s). The checkout already fetches full history (`fetch-depth: 0`), which the baseline needs for
+  `f0b6acd2`. The campaign's other stages either run in CI already (typecheck, the vector chain) or
+  belong to other suites.
+- **TEST-FROZEN-OVERLAYS — tests that swap an old file into the current module graph break, or drift,
+  as current modules change** (phase 560 survey, build-only). Two no longer build:
+  - `test/account-ledger-contract/source-census.test.mjs`, which is blocked in the inventory: the
+    `4bcac419` `spoolRecord.ts` lacks `inspectSpoolSteps` and `nextSpoolPosition`;
+  - the handoff fixture's `HANDOFF_SLOT_BASELINE=1` path: the `beed8cf` `slotUnlock.ts` lacks
+    `verifySessionSlotUnlock` and `verifyRecoverySlotUnlock`.
+
+  Seven old-reader overlays of `promotionRecord.ts` (genesis, admission, editing, handoff, spool, capture
+  and delivery native fixtures) still build, but each runs one old file among current modules. The
+  repair is phase 560's loader (the whole graph at the commit, byte-checked) or
+  `scripts/lib/historical-bundle.mjs`, one fixture at a time, each with a control. The release
+  inventory pins only the four parser files the baseline names. The test itself now checks the other
+  29 modules and the lockfile at run time, but the adapter's pins do not cover them, as
+  development.md already notes for rebuilt historical fixtures.
 
 ### Worker and page boundaries
 

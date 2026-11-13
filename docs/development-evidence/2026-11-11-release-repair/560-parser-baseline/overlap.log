@@ -1,0 +1,4 @@
+# vitest, node --test and Playwright processes seen before the heavier runs (ps -Ao pid,command), 2026-11-13
+before the first baseline run: none
+before the campaign (06:05:36Z): none; load average 5.00 3.78 3.90
+before the ledger source-census run: none

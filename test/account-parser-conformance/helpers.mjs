@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { build } from 'vite';
-import { resolve, join } from 'node:path';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { resolve, join, posix } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import * as Y from 'yjs';
 import fc from 'fast-check';
 import { fixture, record, stages } from '../account-promotion-contract/oracle.mjs';
@@ -61,24 +62,99 @@ export const repairedFiles = [
   'src/crdt/startupClassification.ts',
   'account-protocol/genesis.ts',
 ];
-export async function bundle(control, browser = false, baseline = false) {
+const runtimeDir = 'test/account-parser-conformance';
+const runtime = resolve(runtimeDir, 'runtime.ts');
+// The baseline is the whole parser graph at baselineRef, not four old files among current
+// modules: every repository module the bundle reaches is read from that commit. Ids only; the
+// frozen root is never written to disk. Git replacement objects are ignored: the baseline is the
+// objects the commit id names.
+const frozenRoot = resolve('.parser-baseline-' + baselineRef);
+const git = (args, encoding) =>
+  execFileSync('git', ['--no-replace-objects', ...args], { encoding, maxBuffer: 64 * 1024 * 1024 });
+export const gitBlobId = (bytes) =>
+  createHash('sha1')
+    .update('blob ' + bytes.length + '\0')
+    .update(bytes)
+    .digest('hex');
+const literal = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
+const patches = (lock) => /^patchedDependencies:\n(?: {2}.*\n)*/m.exec(lock)?.[0];
+// Resolves relative imports inside the frozen tree and refuses any file whose loaded text is not
+// byte-identical to its blob at baselineRef, any module from outside that tree, and any npm
+// package (yjs included) not locked at baselineRef. `mutate` exists only for the identity
+// control: it changes the bytes after they are read and before the check.
+function frozenBaseline(loaded, mutate) {
+  const tree = new Map();
+  for (const entry of git(['ls-tree', '-r', '-z', '--full-tree', baselineRef], 'utf8').split(
+    '\0',
+  )) {
+    const match = /^\d{6} blob ([0-9a-f]{40})\t(.+)$/s.exec(entry);
+    if (match) tree.set(match[2], match[1]);
+  }
+  const candidates = (p) => [p, p + '.ts', p + '.tsx', p + '.js', p + '.mjs', p + '/index.ts'];
+  return {
+    name: 'frozen-parser-baseline',
+    enforce: 'pre',
+    resolveId(source, importer) {
+      const frozen = importer?.startsWith(frozenRoot + '/');
+      if (!frozen && importer !== runtime) return null;
+      if (!source.startsWith('.')) {
+        assert.ok(!source.startsWith('/'), 'absolute import in frozen baseline: ' + source);
+        return this.resolve(source, runtime, { skipSelf: true });
+      }
+      const from = frozen ? posix.dirname(importer.slice(frozenRoot.length + 1)) : runtimeDir;
+      const target = posix.normalize(posix.join(from, source));
+      const path = candidates(target).find((p) => tree.has(p));
+      assert.ok(path, `${baselineRef} has no module for ${source} imported by ${importer}`);
+      return frozenRoot + '/' + path;
+    },
+    load(id) {
+      if (!id.startsWith(frozenRoot + '/')) return null;
+      const path = id.slice(frozenRoot.length + 1);
+      let bytes = git(['cat-file', 'blob', tree.get(path)]);
+      if (mutate) bytes = mutate(path, bytes);
+      const code = bytes.toString('utf8');
+      const actual = gitBlobId(Buffer.from(code, 'utf8'));
+      if (actual !== tree.get(path))
+        throw Error(`Frozen baseline file ${path} differs from ${baselineRef}: blob ${actual}`);
+      loaded.set(path, actual);
+      return code;
+    },
+    buildEnd(error) {
+      if (error) return;
+      const packages = new Set([resolve('node_modules/yjs')]);
+      for (const id of this.getModuleIds()) {
+        const at = id.lastIndexOf('/node_modules/');
+        if (at >= 0) {
+          const root = id.slice(0, at + '/node_modules/'.length);
+          const [scope, name] = id.slice(root.length).split('/');
+          packages.add(root + (scope.startsWith('@') ? scope + '/' + name : scope));
+        } else if (id !== runtime && id !== 'yjs')
+          assert.ok(
+            id.startsWith(frozenRoot + '/') && loaded.has(id.slice(frozenRoot.length + 1)),
+            'baseline bundle reached a module outside ' + baselineRef + ': ' + id,
+          );
+      }
+      const lock = git(['show', baselineRef + ':pnpm-lock.yaml'], 'utf8');
+      assert.equal(patches(readFileSync('pnpm-lock.yaml', 'utf8')), patches(lock), 'yjs patch');
+      for (const dir of packages) {
+        const { name, version } = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
+        assert.match(
+          lock,
+          new RegExp(`^ {2}'?${literal(name)}@${literal(version)}'?:`, 'm'),
+          `${name}@${version} is not locked at ${baselineRef}`,
+        );
+      }
+    },
+  };
+}
+export async function bundle(control, browser = false, baseline = false, mutate) {
   let hits = 0;
+  const loaded = new Map();
   const result = await build({
     configFile: false,
     logLevel: 'error',
     plugins: baseline
-      ? [
-          {
-            name: 'frozen-parser-baseline',
-            enforce: 'pre',
-            transform(_code, id) {
-              const path = repairedFiles.find((path) => id.endsWith('/' + path));
-              if (!path) return;
-              hits++;
-              return execFileSync('git', ['show', baselineRef + ':' + path], { encoding: 'utf8' });
-            },
-          },
-        ]
+      ? [frozenBaseline(loaded, mutate)]
       : control
         ? [
             {
@@ -108,7 +184,7 @@ export async function bundle(control, browser = false, baseline = false) {
     },
   });
   if (control) assert.equal(hits, 1);
-  if (baseline) assert.equal(hits, repairedFiles.length);
+  if (baseline) for (const path of repairedFiles) assert.ok(loaded.has(path), 'frozen ' + path);
   const code = (Array.isArray(result) ? result[0] : result).output.find(
     (f) => f.type === 'chunk',
   ).code;
@@ -116,8 +192,8 @@ export async function bundle(control, browser = false, baseline = false) {
 }
 export const load = async (control) =>
   Function('ParserYjs', (await bundle(control)) + ';return Parsers;')(Y);
-export const loadBaseline = async () =>
-  Function('ParserYjs', (await bundle(undefined, false, true)) + ';return Parsers;')(Y);
+export const loadBaseline = async (mutate) =>
+  Function('ParserYjs', (await bundle(undefined, false, true, mutate)) + ';return Parsers;')(Y);
 export const decode = (h, d, b) =>
   d.family === 'source'
     ? h.decodeSourceCapsule(b, l.route)

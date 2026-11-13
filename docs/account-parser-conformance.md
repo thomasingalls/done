@@ -51,6 +51,12 @@ comparison and is not silently counted as another reproduced defect.
 
 `baseline.test.mjs` runs the same generated failing properties against the four original source files
 from signed `f0b6acd2e624d89034c88706d4053a830ab50cc6`, substituted only inside an in-memory test bundle.
+Since phase 560 (2026-11-13) that bundle is the whole parser graph at that commit, the four files
+together with the 29 unchanged modules they shipped with, read from Git objects: each loaded file must
+be byte-identical to its blob there, the graph may not reach the current checkout, and every npm
+package it reaches must be at a version that commit's lockfile names. Swapping four old files among
+current modules stopped building on 2026-10-13 (see the
+[phase 560 record](./development-evidence/2026-11-11-release-repair/560-parser-baseline/README.md)).
 Both shrink to one-element arrays; the current parser refuses them. It also confirms the original
 sparse/index defects against that frozen baseline. Separate omission controls reverse each repaired
 predicate/map, plus the admission version, source route, delivery position and submission consumption

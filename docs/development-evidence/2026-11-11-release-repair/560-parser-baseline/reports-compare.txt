@@ -1,0 +1,39 @@
+# The repaired baseline's fast-check reports against the records the test wrote when it was added (2026-09-12)
+# ACCOUNT_REPORT_DIR=<scratch> node --test --test-concurrency=1 test/account-parser-conformance/baseline.test.mjs (4 passed), then
+# diff of each report with docs/account-conformance-runs/2026-09-12-account-parser-conformance/parser/<name>.json at HEAD
+baseline-promotion.json: byte-identical (6a63c032aa84a5fe179d1ac77544371758064b9f0630b0bee53fdde8cf4028de)
+baseline-spool.json: byte-identical (99bb64cb0c88e87f5820f949fdfec4edab062d35193c0ef486cdb2ffdcb80a22)
+baseline-shapes.json: byte-identical (1550c133a1d5d7067bbaae0f79d3d666f65d64af9db6a741ebcbe32f9bd7a8e6)
+
+## baseline-promotion.json as reproduced
+{
+  "baselineRef": "f0b6acd2e624d89034c88706d4053a830ab50cc6",
+  "failed": true,
+  "interrupted": false,
+  "numRuns": 1,
+  "numSkips": 0,
+  "numShrinks": 1,
+  "seed": 112101,
+  "counterexample": [
+    1
+  ],
+  "counterexamplePath": "0:0",
+  "errorInstance": "AssertionError [ERR_ASSERTION]: Missing expected exception.",
+  "failures": [],
+  "executionSummary": [],
+  "verbose": 0,
+  "runConfiguration": {
+    "seed": 112101,
+    "numRuns": 250,
+    "maxSkipsPerRun": 100,
+    "markInterruptAsFailure": false,
+    "skipEqualValues": false,
+    "ignoreEqualValues": false,
+    "path": "",
+    "unbiased": false,
+    "verbose": 0,
+    "examples": [],
+    "endOnFailure": false,
+    "includeErrorInReport": false
+  }
+}

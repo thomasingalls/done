@@ -1,0 +1,60 @@
+# Phase 560 controls: test/account-parser-conformance/baseline.test.mjs
+# Produced by controls.py.txt (python3 -I controls.py <repo> <scratch> 3daa3e4d2e07135206df1c50645a721009c01a2d), 2026-11-13, Node 26.13.1.
+# Each control runs a copy of the test (and of helpers.mjs where stated) with one change; the repository is not modified.
+# Case order: promotion, spool, shapes, one-byte. P = pass, F = fail. A whole-file failure (top-level load refused) has one entry.
+
+base-tree: exit 1; file=F
+  expected: file fails: the overlay bundle does not build
+  assertion: test failed
+  refusal: MISSING_EXPORT] "inspectSpoolSteps" is not exported by "src/crdt/spoolRecord.ts"
+  refusal: MISSING_EXPORT] "nextSpoolPosition" is not exported by "src/crdt/spoolRecord.ts"
+  refusal: MISSING_EXPORT] "positionSources" is not exported by "src/crdt/spoolRecord.ts"
+final-copy: exit 0; promotion=P spool=P shapes=P one-byte=P
+  expected: all four cases pass
+current-is-frozen: exit 1; promotion=F spool=F shapes=F one-byte=P
+  expected: promotion, spool and shapes cases fail at the current-side refusal
+  assertion: Missing expected exception.
+frozen-is-current: exit 1; promotion=F spool=F shapes=F one-byte=P
+  expected: promotion, spool and shapes cases fail: the old side refuses
+  assertion: Malformed preparation
+omit-promotion: exit 1; promotion=F spool=P shapes=P one-byte=P
+  expected: promotion case fails
+  assertion: Missing expected exception.
+omit-spool: exit 1; promotion=P spool=F shapes=P one-byte=P
+  expected: spool case fails
+  assertion: Missing expected exception.
+omit-credentials: exit 1; promotion=P spool=P shapes=F one-byte=P
+  expected: shapes case fails at credentials
+  assertion: Missing expected exception: current parser accepted credentials
+omit-actors: exit 1; promotion=P spool=P shapes=F one-byte=P
+  expected: shapes case fails at actors
+  assertion: Missing expected exception: current parser accepted actors
+omit-wraps: exit 1; promotion=P spool=P shapes=F one-byte=P
+  expected: shapes case fails at wraps
+  assertion: Missing expected exception: current parser accepted wraps
+omit-promotionId: exit 1; promotion=P spool=P shapes=F one-byte=P
+  expected: shapes case fails at promotionId
+  assertion: Missing expected exception: current parser accepted promotionId
+omit-requestDigest: exit 1; promotion=P spool=P shapes=F one-byte=P
+  expected: shapes case fails at requestDigest
+  assertion: Missing expected exception: current parser accepted requestDigest
+omit-epochHead: exit 1; promotion=P spool=P shapes=F one-byte=P
+  expected: shapes case fails at epochHead
+  assertion: Missing expected exception: current parser accepted epochHead
+identity-check-removed: exit 1; promotion=P spool=P shapes=P one-byte=F
+  expected: the one-byte case fails; the others pass
+  assertion: Missing expected rejection.
+graph-escape: exit 1; file=F
+  expected: file fails: baseline bundle reached a module outside f0b6acd2
+  assertion: test failed
+  refusal: baseline bundle reached a module outside f0b6acd2e624d89034c88706d4053a830ab50cc6: <repo>/src/crdt/storeName.ts
+dependency-not-locked: exit 1; file=F
+  expected: file fails: y-protocols@1.0.7 is not locked at f0b6acd2
+  assertion: test failed
+  refusal: y-protocols@1.0.7 is not locked at f0b6acd2e624d89034c88706d4053a830ab50cc6
+yjs-patch-differs: exit 1; file=F
+  expected: file fails: yjs patch
+  assertion: test failed
+
+yjs-patch-differs: the run's output has 'AssertionError [ERR_ASSERTION]: yjs patch' (the patchedDependencies blocks differ).
+frozen-is-current: promotion and spool fail at assert.equal(result.failed, true) ('false !== true'): with the current parser on the old side the property never fails.

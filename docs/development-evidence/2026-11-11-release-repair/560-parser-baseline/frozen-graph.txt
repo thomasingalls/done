@@ -1,0 +1,41 @@
+# The 33 repository modules the repaired baseline bundle loads from f0b6acd2e624d89034c88706d4053a830ab50cc6
+# (listed by calling bundle(undefined, false, true, mutate) from helpers.mjs with a mutate that records each path and returns the bytes unchanged)
+# columns: path, blob at f0b6acd2, same blob at 77b0bb623 (the commit that wrote the test), same blob in the base tree 3daa3e4d
+account-protocol/activation.ts ba2996f43b5181a509bb9fe022d3cc3e15ae49a9 same same
+account-protocol/admission.ts c42f5c791f7d2dd14ddb9eab2901de90dc42ab68 same differs
+account-protocol/authority.ts c28203a769734c831cf239f690a21e7cb3b87e0c same same
+account-protocol/envelope.ts b01e851aeea50ccb4329bbe67105b10010fc7026 same differs
+account-protocol/genesis.ts b0913b837f547478c2af67c110d140e2534aeedb differs differs
+account-protocol/positionDecision.ts bcab02c91de8f47c5088439782ca00cddf6b082b same same
+account-protocol/preparation.ts 7e2c740a7e2b2882334d4aafa6e3044e57cc2ccd same same
+account-protocol/recovery.ts 384bb83c6b839e6449de8b9a21a2464f8ae679b4 same differs
+account-protocol/slot.ts 9352470eb57a1d127b3b13af77a878db90cae123 same same
+account-protocol/submission.ts 19dd9be5c2360a90339af671e33f9c9d8c51f47b same same
+src/crdt/contentCompaction.ts ec995f029095d1556522a7e3a3d6b9a40c3b7203 same differs
+src/crdt/contentDatabase.ts 4a3c7a7ceaccb6c3250f391bafe46c60e89f53c6 same same
+src/crdt/contentRecord.ts 337c8b08774e7edd64a855fd45235a8eded1fcde same differs
+src/crdt/custodyCrypto.ts dd13e9306aef60da0dd2343e511744bc880e116c same differs
+src/crdt/custodyRecord.ts 3559b7d5e13c321945bbf35931448c5676370fe2 same differs
+src/crdt/deliveryRecord.ts d526b72508cfb228680f35498dd98f089c64321c same differs
+src/crdt/handoffRecord.ts 52912a359076a2cace35961b3365d093b5de5e34 same same
+src/crdt/journalCodec.ts c7b8b457e1c174e21b3fd2a2751e7a3f1684dccd same same
+src/crdt/legacyCleanupEncoding.ts 47317821f28e376a79cf149d12b69a3e10a1bc1d same same
+src/crdt/legacyCleanupRecord.ts 189bcdcebe0782ce080066e2747fa39bce5ca6cf same same
+src/crdt/legacyImportState.ts e3c88d2572cc3be1b28e21a68fedf55bf2882df8 same same
+src/crdt/localClearState.ts fb2b9ee99bf095d2f68ffcef5a6a2b77417e2737 same differs
+src/crdt/localGenesisRecord.ts ff9899d90f9079b385b15ebeaeb61dad917cb750 same differs
+src/crdt/promotionRecord.ts f151b80e252166bff45e77e0b48c937c806a193e differs differs
+src/crdt/sourceCapture.ts 6bf83950b3b6e5cbf11929ac96cd80b302b0780c same differs
+src/crdt/spoolRecord.ts a2a17f3d369de8e97b0f51f0715e575eddf3c870 differs differs
+src/crdt/startupClassification.ts aa0fcea39506fee2a4ad072d272b07d1c03bdf23 differs differs
+src/crdt/startupState.ts 688ec6c3004f7f222da3265097561a1a717b01f0 same same
+src/crdt/startupStorage.ts 972c4af1fc6df748c18447a558139487466ec8d8 same differs
+src/crdt/storageCompatibility.ts 6fc09b472c339b39f696dc01ee62dcc88fdb0c95 same same
+src/crdt/storeName.ts 5f0e9e9a5d7b82355da316b8e3ef82b586bb4468 same same
+src/crdt/yjs.ts eb371d3e19b4c1d20b62b7ada9cac0f3b6d44aea same differs
+wasm/journal-seal/seal.generated.ts c9cb6b9487614dceee45ff380544505dd70fc51f same same
+
+# 29 of 33 have the same blob at 77b0bb623; the four that differ are exactly the repaired files:
+#   account-protocol/genesis.ts src/crdt/promotionRecord.ts src/crdt/spoolRecord.ts src/crdt/startupClassification.ts
+# so when the test was written, the old overlay (current tree + four frozen files) and this loader build the same graph.
+# 17 of 33 differ in the base tree: the old overlay had been running four 2026-09-12 files among later modules.

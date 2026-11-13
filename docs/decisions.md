@@ -8656,3 +8656,27 @@ The legacy observation now uses the shared `hex`, which takes 28.5 ms and 65.0 M
 The output is the same string for every `Uint8Array`, the empty-view guard that refuses detached buffers is unchanged, and nothing is chunked or spread, so phase 558's argument limit does not apply. `lowerHexBytes` and `unhex` were measured and not changed. `lowerHexBytes` is now most of what remains of a large decode, and a chunked option halves it without more memory; it is held, with the reasons, as HEX-DECODE.
 
 No stored format, wire message, limit or recorded decision changes. No check is weakened, narrowed or run on less input. A new test compares both routines with their base text on both paths, at 63, 64 and 65 bytes, over every byte value, lengths to 1 MiB, views and an 8 MiB + 1 input, and checks every refusal at the guard before both paths. It also checks the real legacy observation's digest over 8.5 MB of rows against Node's encoder. Those cases are controls. Five cases fail on the base source: per routine, one finds no per-byte join at 8 MiB + 1, and one finds the join at 63 bytes and none at 64; the fifth is for the legacy observation. Twenty-five mutation controls trip, among them each path broken alone, the threshold inverted or off by one, and either path used for every length. Two survive by design, because they are equivalent on this little-endian Node host. [Evidence](development-evidence/2026-11-11-release-repair/559-hex-encoding/README.md).
+
+
+### 2026-11-13 — Run the parser baseline as the whole graph at its signed commit (phase 560)
+
+The coordinating session asked on 2026-11-13 for `test/account-parser-conformance/baseline.test.mjs` to be diagnosed and repaired without changing what it proves. The test is a differential: it shows that the parsers at the signed commit `f0b6acd2` accepted the malformed inputs F-21.1 found, so the original generated failures still fail and shrink against them, and that the current parsers refuse the same inputs.
+
+Its loader built the current parser graph and replaced four files with their `f0b6acd2` text. On 2026-09-12, when the test was written, only those four files differed, so that was the old code. Every later change to a module in the graph moved the "old" side further from it. By the base of this phase 17 of the 33 modules the old parsers use had changed. The build broke at `f89ee3f9d` (2026-10-13, merged 2026-10-14 in PR #54), when `deliveryRecord.ts` began importing `inspectSpoolSteps`, which the old `spoolRecord.ts` does not export. By the base it failed with twelve missing exports from six current modules. The suite is required by the release policy and its files are in the release inventory, but nothing in CI runs it, so the failure went unseen for a month.
+
+The loader now reads every repository module the bundle reaches from `f0b6acd2` itself: the four parser files and the 29 unchanged modules they shipped with. It does this from Git objects, in memory. It refuses:
+- any loaded file whose bytes differ from its blob at that commit;
+- any module from the current checkout;
+- any npm package at a version that commit's lockfile does not name, and a changed yjs patch.
+
+Replacement objects are ignored. The current side, the inputs, the seeds and every existing assertion are unchanged. One case is added: it changes one byte of a frozen file as it is loaded and requires the loader to refuse it. The repaired test reproduces the three reports it wrote on 2026-09-12 byte for byte.
+
+Controls, each on a copy of the test:
+- with the current side pointed at the frozen graph, the three differential cases fail;
+- with each of the eight current-side guards the file covers removed (helpers.mjs `controls`), the case for that guard fails and the others pass;
+- with the identity check removed, the new case fails;
+- with a graph escape, a lockfile without one reached version, or a different yjs patch, the file is refused.
+
+The whole `pnpm account:parser-conformance` campaign passes. The general-test case denominator moves from 3,091 to 3,092; obligations stay at 1,136 and unresolved at 561. No product code, stored format, wire message, limit or recorded decision changes. No check is weakened, narrowed or run on less input. The old side runs on the complete graph at its commit instead of four files among current modules.
+
+Two other overlays that swap old files into current modules no longer build: `test/account-ledger-contract/source-census.test.mjs` (blocked in the inventory) and the handoff fixture's `HANDOFF_SLOT_BASELINE=1` path. Seven old-reader overlays of `promotionRecord.ts` still build but have the same weakness. These, and adding the suite to CI, are held as TEST-FROZEN-OVERLAYS and TEST-PARSER-CI. [Evidence](development-evidence/2026-11-11-release-repair/560-parser-baseline/README.md).
