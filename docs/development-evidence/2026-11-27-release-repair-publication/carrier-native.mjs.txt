@@ -1,0 +1,34 @@
+import { build } from '/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/vite/dist/node/index.js';
+import { chromium, webkit } from '/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/@playwright/test/index.mjs';
+import { createServer } from 'node:http';
+import { readFileSync,writeFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const root='/private/tmp/done-release-913b58642';
+const output=await build({configFile:false,logLevel:'error',define:{'import.meta.env.VITE_ACCOUNT_RETENTION':'"1"','import.meta.env.VITE_ACCOUNT_BASELINE_READ':'"1"','import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL':'"1"'},build:{write:false,minify:false,lib:{entry:root+'/carrier-worker.ts',formats:['iife'],name:'CarrierProbe'},rollupOptions:{output:{codeSplitting:false}}}});
+const code=(Array.isArray(output)?output[0]:output).output.find(x=>x.type==='chunk').code;writeFileSync(root+'/carrier-worker.js',code);
+const oldOutput=await build({configFile:false,logLevel:'error',define:{'import.meta.env.VITE_ACCOUNT_RETENTION':'\"1\"','import.meta.env.VITE_ACCOUNT_BASELINE_READ':'\"1\"','import.meta.env.VITE_ACCOUNT_BASELINE_INSTALL':'\"1\"'},build:{write:false,minify:false,lib:{entry:root+'/carrier-old-worker.ts',formats:['iife'],name:'CarrierProbe'},rollupOptions:{output:{codeSplitting:false}}}});
+const oldCode=(Array.isArray(oldOutput)?oldOutput[0]:oldOutput).output.find(x=>x.type==='chunk').code;writeFileSync(root+'/carrier-old-worker.js',oldCode);
+const server=createServer((q,r)=>{if(q.url==='/old-worker.js'){r.setHeader('Content-Type','text/javascript');r.end(oldCode)}else if(q.url==='/worker.js'){r.setHeader('Content-Type','text/javascript');r.end(code)}else if(q.url==='/fixture.json'){r.setHeader('Content-Type','application/json');r.end(readFileSync(root+'/fixture.json'))}else{r.setHeader('Content-Type','text/html');r.end('<title>Disposable carrier probe</title>')}});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const observations=[];
+try{
+ for(const [name,type] of [['chromium',chromium],['webkit',webkit]]){
+  const browser=await type.launch({headless:true});
+  try{
+   const context=await browser.newContext();let page=await context.newPage();await page.goto('http://127.0.0.1:'+server.address().port);
+   const invoke=async(input)=>page.evaluate(input=>new Promise((yes,no)=>{const w=new Worker(input.old?'/old-worker.js':'/worker.js');const timer=setTimeout(()=>{w.terminate();no(Error('Native probe timed out'))},60000);w.onerror=e=>{clearTimeout(timer);w.terminate();no(Error(e.message))};w.onmessage=e=>{clearTimeout(timer);w.terminate();e.data.ok?yes(e.data.value):no(Error(e.data.error+'\n'+e.data.stack))};w.postMessage(input)}),input);
+   const chars=2359296;
+   const seed=await invoke({action:'seed',chars});assert.equal(seed.chars,chars);assert.equal(seed.disk.counter.v,2);
+   const abort=await invoke({action:'abort'});assert.equal(abort.result.kind,'aborted');assert.equal(abort.disk.counter.v,2);assert.equal(abort.textHash,seed.textHash);assert.deepEqual(abort.disk.counts,seed.disk.counts);
+   const reduced=await invoke({action:'reduce'});assert.equal(reduced.result.kind,'removed');assert.equal(reduced.disk.counter.baseline.format,'done/local-baseline-carrier/draft-4');assert(reduced.disk.counter.baseline.bytes>4*1024*1024);assert(reduced.disk.counter.baseline.bytes<=8*1024*1024);assert.equal(reduced.textHash,seed.textHash);
+   await page.close();page=await context.newPage();await page.goto('http://127.0.0.1:'+server.address().port);
+   const cold=await invoke({action:'read'});assert.equal(cold.view,'baseline-plus-suffix');assert.equal(cold.textHash,seed.textHash);assert.equal(cold.disk.digest,reduced.disk.digest);
+   await assert.rejects(invoke({action:'read',old:true}),/StorageCompatibilityError/);
+   const afterRefusal=await invoke({action:'read'});assert.equal(afterRefusal.disk.digest,reduced.disk.digest);assert.equal(afterRefusal.textHash,seed.textHash);
+   const repeat=await invoke({action:'reduce',revision:1});assert.equal(repeat.result.kind,'removed');assert.equal(repeat.disk.counter.baseline.revision,2);assert.equal(repeat.textHash,seed.textHash);
+   observations.push({browser:name,version:browser.version(),seed,abort,reduced,cold,oldReaderRefusedWithoutMutation:true,afterRefusal,repeat});
+   writeFileSync(root+'/carrier-native.json',JSON.stringify(observations,null,2)+'\n');console.log(name,'native Worker draft-4 create, abort, reduce, cold read, predecessor refusal without mutation, repeat: PASS');
+   await context.close();
+  }finally{await browser.close()}
+ }
+}finally{await new Promise(r=>server.close(r))}

@@ -20796,3 +20796,14 @@ Outcome precedes closure of this seat's active slice. Sequential patches are pre
 A permanent right-hand grip gutter aligns text, breadcrumbs and action-label ink. Next no longer offers Remove. Done keeps Unlock/Lock in the same hit target, hides its other actions while locked and retains a disabled grip while editing. Four new regressions fail on the previous build. Final desktop/Android-emulated browser checks pass 62 cases (26 existing skips), alongside 22 focused unit cases, typecheck, lint and 23 adapter controls. The updated 8443 preview passes eight additional smoke cases with the API and public configuration retained. [Record](./development-evidence/2026-11-09-card-ux/537-stable-card-controls/README.md).
 
 Outcome precedes closure of this seat's active slice. Patches 535/536 remain untouched; 537 follows them. No commit, push or production deployment.
+
+
+### Prepare the signed release-repair candidate and compatible reader
+
+**Date:** 2026-11-27 · **Source:** `913b586423eb6fa8e1a42525381aea471ea0730d` · **PR:** #65.
+
+Prepared exact ARM64 artifacts from the 31 signed commits above main `e9ec1e697`, without changing application or test sources. Both images pass 38 build-stage cases and eight final-container smoke checks. Exact candidate assets pass the text/Undo/offline journey and eight card-control checks; the same-source dense-writer-off reader rehearsal passes. Native Chromium/WebKit Worker probes cover draft-4 reduction, abort, cold reopening, predecessor refusal without mutation and another reduction. All 51 focused Node 24 service-history cases pass. Hosted CI passes 3,746 unit cases but is cancelled during browser checks. Two known removal-screen failures and the stale page-global baseline test remain failures, with their limits recorded. No affected-account or physical-phone result is claimed.
+
+The [publication handoff](./account-release-repair-publication.md) and [evidence packet](./development-evidence/2026-11-27-release-repair-publication/README.md) bind the retained images, build inputs, checks and compatibility boundary. The reader image preserves phases 542/550 and automatic folding; it is not a rollback of the repair. No image publication, PR merge, infrastructure change or resumed qualification. Preparation is complete; release disposition, signed documentation and the operator's merge handoff remain.
+
+Outcome precedes the publication seat update. The implementation seat is unchanged.

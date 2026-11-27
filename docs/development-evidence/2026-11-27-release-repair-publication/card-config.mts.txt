@@ -1,0 +1,12 @@
+import original from '/private/tmp/done-release-913b58642/source/playwright.config.ts';
+export default {
+ ...original,
+ testDir:'/private/tmp/done-release-913b58642/source/test/geometry',
+ testMatch:'card-controls.spec.ts',
+ workers:1,
+ retries:0,
+ outputDir:'/private/tmp/done-release-913b58642/card-artifacts',
+ reporter:[['list'],['json',{outputFile:'/private/tmp/done-release-913b58642/card-results.json'}]],
+ use:{...original.use,baseURL:'http://localhost:53225'},
+ webServer:{command:'/private/tmp/done-release-20261107/node-v24.22.1-darwin-arm64/bin/node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 53225 --strictPort',cwd:'/private/tmp/done-release-913b58642/source',url:'http://localhost:53225',reuseExistingServer:false,timeout:120000}
+};
