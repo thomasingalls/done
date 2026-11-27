@@ -185,21 +185,16 @@ updated: 2026-11-27
 
 ---
 
-## Active slice: release-repair publication
+## Active slice: post-release repair publication
 
 ```yaml
 gate: public-release-handoff
 seat: /Users/thomasingalls/.codex/worktrees/c030/done
-branch: codex/release-repair-publication
+branch: codex/post-release-publication
 status: in flight
-scope: prepare and publish the exact signed PR 65 candidate, preserving new local-format readers
-blocks_on: known-failure release disposition, signed documentation and operator merge handoff
-release_validation: paused until explicit operator resumption
+scope: prepare signed phases 563–565 for the application merge and image handoff
+release_validation: paused
 updated: 2026-11-27
 ```
 
-The candidate remains `913b58642` over main `e9ec1e697`; the implementation branch and PR are unchanged. Local artifact preparation is complete and recorded in [completed.md](./completed.md). See the [publication handoff](./account-release-repair-publication.md) for exact image identities, compatibility/rollback limits, check results and the remaining publication sequence.
-
-Both images are retained locally. Native large-carrier checks and focused exact-asset journeys pass; two known removal-screen failures and the stale baseline browser test remain explicit. Hosted CI's unit step now passes, but its browser step still hits the job limit. These new observations supplement the implementation seat's historical results without rewriting that seat. The compatible reader preserves the new draft-4 and unfolded-installation readers; it does not undo the repairs.
-
-Next: review the known-failure disposition and signed documentation, then retain the operator's application/infra merge handoffs and publish the tested artifacts without rebuilding. No publication, real-account access or deployment has occurred in this preparation.
+[Application PR #66](https://github.com/thomasingalls/done/pull/66) carries the setup removal notice, adaptive reduction windows and History panel progress. The runtime source is `dc6003f2d`. The [publication packet](./development-evidence/2026-11-27-post-release-publication/README.md) records artifact identities, compatibility and test results. Operator review covers the removal notice and the remaining reduction bounds. After the application merge, verify the build inputs, publish the retained compatible reader and candidate, then propose the infrastructure pin.

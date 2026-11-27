@@ -20829,3 +20829,6 @@ The seat's last text is kept below unchanged, because the publication handoff re
 
 Outcome precedes the rewrite of the implementation seat's document.
 
+### Production checkpoint for PR #65
+
+The rollout of build `913b5864` completed. The operator unlocked the desktop, followed the guided passkey sign-in, confirmed the phone’s build and observed edits arriving in both directions. The cluster fetched the signed documentation checkpoint after Codeberg service recovered. [Production rollout and device evidence](https://codeberg.org/oxidationlabs/ol-infra/pulls/76)

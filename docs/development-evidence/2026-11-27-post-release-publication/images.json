@@ -1,0 +1,20 @@
+[
+  {
+    "role": "candidate",
+    "index": "sha256:b1643edb173bf2219cd56543725b7d0a95237ffa8cba246fbc42cbd0ec2ae255",
+    "arm64Manifest": "sha256:442c925174aae8ca7c2a47589aae623d48867a45782ae271f00c482268567f62",
+    "config": "sha256:0e60f5d65f22f33663ea71193f5f54ef0c6925f0f16045e9c0e44c77efe74792",
+    "archive": "test-results/release-repair-publication/dc6003f2d/candidate.tar",
+    "archiveSha256": "6e3bc00a411deef7a6f5727e2e127846268bd727441c5740e16134ff7b058e95",
+    "verifiedBlobs": 38
+  },
+  {
+    "role": "reader",
+    "index": "sha256:0b037dd1ae4200b0873548493716c22876c2ae96adf2c72ed585692af54bbd75",
+    "arm64Manifest": "sha256:4e7f8bf5bc40bad439d7679bdfca6aaabbf974e439b890a9a8e275a073bbef1a",
+    "config": "sha256:5649ed538ef90ee9ee99ea791c4b43e9f8ddc27276ccfd15f5c4cbcfad0359f9",
+    "archive": "test-results/release-repair-publication/dc6003f2d/reader.tar",
+    "archiveSha256": "36c88f07667aa8d5b21b63651b2273a93bd12eb8594314b43fb6bb40bb0a042d",
+    "verifiedBlobs": 38
+  }
+]
