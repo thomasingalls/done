@@ -2,6 +2,7 @@ import {
   PreparationCapacity,
   PreparationPause,
   createPreparationJournal,
+  type PreparationCounts,
   type PreparationJournal,
 } from './retentionPreparation';
 import { preparationContext } from './retentionPreparationBinding';
@@ -928,6 +929,19 @@ export const createContentOwner = (
     let transferred = false;
     // Set when this pass runs past what its resumable cache can hold, so nothing carries over.
     let unbound = false;
+    // Phase 565: the journal reports only every 32 fresh results, so when checking gives way to
+    // the next stage, or the pass ends early, its exact counts reach the History panel once.
+    let finalCounts = false;
+    const reportFinalCounts = () => {
+      try {
+        const counts = !finalCounts && progress && preparation?.journal.counts();
+        if (!counts) return;
+        finalCounts = true;
+        reportRetentionProgress(progress, { stage: 'verifying', ...counts });
+      } catch {
+        /* Presentation cannot change how a pass ends. */
+      }
+    };
     const uncached = () => unbound || preparation?.journal.statistics.full === true;
     const implementation = preparationVerifierIdentity();
     try {
@@ -969,7 +983,11 @@ export const createContentOwner = (
         },
         binding,
         checkRetained,
-        progress,
+        progress &&
+          ((value) => {
+            if (value.stage !== 'verifying') reportFinalCounts();
+            progress(value);
+          }),
         implementation
           ? async (counter) => {
               const bound = await preparationContext(
@@ -1015,6 +1033,13 @@ export const createContentOwner = (
                 // Measured on every attempt, also one kept to the plain target after a cut.
                 ...(measure
                   ? { onFirstFresh: (at: number) => measure('setup', at - setupSince) }
+                  : {}),
+                // Phase 565: the pass's verification counts reach the History panel.
+                ...(progress
+                  ? {
+                      report: (counts: PreparationCounts) =>
+                        reportRetentionProgress(progress, { stage: 'verifying', ...counts }),
+                    }
                   : {}),
               });
               preparation = { journal, checkpoint: read.checkpoint };
@@ -1134,6 +1159,7 @@ export const createContentOwner = (
         check: checkRetained,
       });
     } catch (cause) {
+      reportFinalCounts();
       // A slice cut short saved nothing; keep the next one to the plain target (phase 556).
       if (cause instanceof MaintenanceInterrupted && preparation) preparationInterrupted = true;
       // An uncached pass leaves nothing for the next attempt to resume. If routine queued work

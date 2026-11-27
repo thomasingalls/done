@@ -271,10 +271,28 @@ a stall. What it left:
   slice), amends the exact authenticated readback decisions); checking saved receipts lazily at use
   instead of re-hashing all of them; keeping the opened rows of a run across its saved slices
   (crosses phase 187's rule that read evidence expires with its task).
-- **REDUCE-PROGRESS-LINE — the History panel cannot tell progress from a loop.** It shows only the
-  stage name and, while reading, the record count; a cycle that saved and one that lost its work
-  look the same. The journal's statistics already count saved receipts; a "verified N of M" line
-  (display only) would show progress. Phase 565 (progress display) is scheduled to take this up.
+- **REDUCE-PROGRESS-LINE — reduced by phase 565 to what remains.** The History panel now names the
+  step of three, the share of checking done across passes (saved results plus the active pass's
+  fresh ones, never re-reads) and the pass, about how long the step and the whole reduction have
+  left (from this run's measurements, "estimating" until there are some), what is saved while
+  paused, any fall as checking to be redone, and when it finished. What remains: *measured, phase
+  565.* The census total behind the percentage was exact to one result on the unit fixture and
+  about 10% high on the lab seed, and can be low when a source capsule holds several updates; it is
+  not checked on the live devices. Estimates are optimistic while a cheap family of checks runs
+  ahead of a slower one (replay r06: about five times early on), and the pass after a cut is sized
+  with the last budget though the owner keeps it to the plain target. A reduction whose counter is
+  already v5 verifies without the journal and shows no percentage. Not run online, at phone speed
+  or past 32,768 rows.
+- **LONG-OPERATION-PROGRESS — the same kind of progress on other long operations.** *not started.*
+  Phase 565's display (which step, saved progress, about how long the step and the whole have left,
+  only from what the device measured, never zero, falls shown) covers local history reduction
+  only. Candidates, by the coordinating session's reading (the operator asked for this on
+  multi-step operations in general and has not named these): creating and verifying a service
+  history snapshot (History snapshots and pruning), catching up after time away (Returning to the
+  app and start-up; catch-up), and opening. Each needs its owner to report counts and a total it
+  can stand behind; the additional device replay's progress (decision of the phase recorded at
+  transport commits `e31b5eaf` to `465c5e07`) shows stage counts with no time or overall
+  percentage, by decision, and would be amended.
 - **BANNER-NOT-INPUT — "Input is waiting to be saved." shows with nobody typing.** It shows whenever
   the page's admission queue holds a non-flush job (`admissionQueue.ts`, `pendingItems`): each
   reduction progress save and commit (through the page's input queue), and for about 0.1 s at every

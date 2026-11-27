@@ -10,6 +10,12 @@ import { PreparationCapacity } from './preparationCapacity';
 import { LocalBaselineError } from './localBaselineError';
 import { copyRetentionDetail, type LocalRetentionDetail } from './localRetentionDetail';
 import { PREPARATION_SETUP_RATIO } from './retentionPreparation';
+import {
+  beginReductionPass,
+  endReductionPass,
+  recordReductionProgress,
+  type LocalReductionFacts,
+} from './reductionProgress';
 export type { LocalRetentionCause, LocalRetentionDetail } from './localRetentionDetail';
 export interface LocalRetentionHint {
   readonly revision: number;
@@ -58,6 +64,10 @@ export interface LocalRetentionStatus {
   readonly progress?: RetentionProgress & { readonly attempt: number; readonly elapsedMs: number };
   /** Present only with reason `capacity`, when the owner knows which cause fired. */
   readonly detail?: LocalRetentionDetail;
+  /** Phase 565, presentation only: what the reduction in progress (or the one that just
+   * finished) has done and measured during this open, from the first pass that reported progress.
+   * Kept in memory; cleared when a new reduction begins after one finished. */
+  readonly reduction?: LocalReductionFacts;
 }
 /** Presentation/retry port: never exposes evidence, counters or a mutation capability. */
 export interface LocalRetentionView {
@@ -172,6 +182,8 @@ export function createAutomaticLocalRetention(options: {
     interruptions = 0,
     completions = 0;
   let progress: LocalRetentionStatus['progress'];
+  // Phase 565: this open's facts about the reduction in progress, for the History panel only.
+  let reduction: LocalReductionFacts | undefined;
   let attemptEvents: LocalRetentionStatus['progress'][] = [];
   let currentAttempt: object | undefined;
   let ownerError: string | undefined;
@@ -257,6 +269,7 @@ export function createAutomaticLocalRetention(options: {
       status.reason === reason &&
       status.progress === progress &&
       status.detail === shown &&
+      status.reduction === reduction &&
       publishedHold === hold
     )
       return;
@@ -266,6 +279,7 @@ export function createAutomaticLocalRetention(options: {
       reason,
       ...(progress ? { progress } : {}),
       ...(shown ? { detail: shown } : {}),
+      ...(reduction ? { reduction } : {}),
     });
     for (const listener of [...listeners]) {
       try {
@@ -483,22 +497,39 @@ export function createAutomaticLocalRetention(options: {
     let reportedAt = -Infinity;
     progress = undefined;
     attemptEvents = [];
+    // Phase 565: the pass joins this reduction's facts at its first report; how it ended is
+    // folded in when the attempt settles. Presentation only: nothing below reads the facts.
+    const online = routineSync;
+    let passBegun = false,
+      passEnd: 'saved' | 'removed' | 'cut' = 'cut';
     const report: RetentionProgressSink = (value) => {
       if (closed || !running || currentAttempt !== stamp) return;
       const next = copyRetentionProgress(value);
       if (!next) return;
       if (next.stage === 'complete' && !removalComplete) return;
+      const at = Date.now();
+      if (!passBegun) {
+        passBegun = true;
+        reduction = beginReductionPass(reduction, began, online);
+      }
+      // Every report is folded in; only publishing is coalesced.
+      const counted = reduction;
+      reduction = recordReductionProgress(reduction!, next, at);
       const sameStage = progress?.stage === next.stage;
-      if (sameStage && progress?.completed === next.completed && progress?.total === next.total)
-        return;
-      if (sameStage && next.completed !== next.total && Date.now() - reportedAt < 250) return;
-      progress = Object.freeze({
-        ...next,
-        attempt: attempts,
-        elapsedMs: Math.max(progress?.elapsedMs ?? 0, Date.now() - began),
-      });
+      const sameCounts =
+        sameStage && progress?.completed === next.completed && progress?.total === next.total;
+      if (sameCounts && reduction === counted) return;
+      const final = next.completed !== undefined && next.completed === next.total;
+      if (sameStage && !final && at - reportedAt < 250) return;
+      if (!sameCounts)
+        progress = Object.freeze({
+          stage: next.stage,
+          ...(next.completed === undefined ? {} : { completed: next.completed, total: next.total }),
+          attempt: attempts,
+          elapsedMs: Math.max(progress?.elapsedMs ?? 0, at - began),
+        });
       if (!sameStage && attemptEvents.length < 16) attemptEvents.push(progress);
-      reportedAt = Date.now();
+      reportedAt = at;
       publish();
     };
     publish();
@@ -530,6 +561,7 @@ export function createAutomaticLocalRetention(options: {
         completions++;
         removalComplete = true;
         if (progress) report({ stage: 'complete' });
+        passEnd = 'removed';
         reason = undefined;
         detail = undefined;
         notBefore = 0;
@@ -546,6 +578,7 @@ export function createAutomaticLocalRetention(options: {
       } else if (result.kind === 'preparation-saved') {
         // Useful bounded work is durable. Yield before another slice; input/readiness still wins.
         reason = 'preparation-saved';
+        passEnd = 'saved';
         detail = undefined;
         notBefore = 0;
         progressed();
@@ -607,6 +640,8 @@ export function createAutomaticLocalRetention(options: {
         ownerError = ownerErrorCode(cause);
       }
     } finally {
+      if (passBegun && reduction && !closed)
+        reduction = endReductionPass(reduction, passEnd, Date.now());
       if (currentAttempt === stamp) currentAttempt = undefined;
       running = false;
       if (again) schedule();

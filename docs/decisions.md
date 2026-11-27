@@ -8790,3 +8790,24 @@ Still exposed, in the backlog:
 
 The record lists every fixed bound on the reduction path for the operator. [Evidence](development-evidence/2026-11-27-post-release-repair/564-reduction-slice-windows/README.md).
 
+
+### 2026-11-27 — The History panel says where reduction is, how long it has left and what is saved (phase 565)
+
+The operator watched the "History on this device" panel for a day on two real devices. It showed a stage name and a per-pass record count that restarts on every pass, so a pass that saved its work and one that lost it looked the same. The operator's request, verbatim: "it would be extremely useful to give the user an indication of the amount of time any one of these particular steps is left. and if it's a multi-step thing, it'd be really nice to be able to give an estimate of the whole thing in addition to an estimate for the active phase, and an indicator of progress through phases". The operator confirmed three steps: check saved history (durability, reading, opening, verifying; repeats in passes), build the smaller history (building, coverage, current), save it (installing, readback).
+
+**Decision.** While a reduction runs, the panel names the step of three, and for step 1 the share of checking done across passes and the pass; it gives about how long the active step and the whole reduction have left. Paused, it says why in the existing words or "Maintenance saved its progress…", how much of the checking is saved, and about how much quiet work is left, without a countdown. Finished, it says when, for this open of the app. The per-pass record count stays as a detail line.
+
+**Wording, at review.** As delivered, a paused reduction said "{p}% is saved and will not be redone." Saved checks that cannot be reused (REDUCE-COMPACTION-STALE) are checked again, so the application could break that promise. Asked "Shorten 'is saved and will not be redone' to 'of checking is saved'?", the operator answered "Yes, shorten". The panel says "{p}% of checking is saved."
+
+**Honesty rules, each tested against a deliberately wrong variant:**
+- Every estimate comes from what this device measured in this reduction: the read, the re-check of saved results, the fresh-check rate, the slice, the save and the shortest wait between passes. Until there is a measurement the panel says it is estimating.
+- Figures read "about", seconds in tens from ten under a minute, then minutes, then hours from two hours; none is zero while work continues. A part that outlasts its estimate is called longer than expected and re-estimated as half the time it has taken so far.
+- The percentage counts saved results and the active pass's fresh ones, never re-read rows or re-checked results. A cut pass or an unusable saved checkpoint shows the fall and says that part is being redone. It stays below 100% until a full check completed, since its total is estimated from the census until then.
+- Steps 2 and 3, seen only in the final pass, are each allowed one measured full read until seen.
+- The whole-reduction figure assumes the device stays quiet and says whether it counts the pauses that let sync run (counted once one is measured online).
+
+**Amended, phase 124's "definite counts only for the record-reading subphase … an indeterminate indicator for work with no honest total"**: an overall checked percentage against the census estimate (exact once a full check completed), capped below 100% until then, and time estimates from measurements. "Without adding polling" holds: a display clock re-renders the running estimate each second and reads nothing from the Worker. The facts stay volatile, in memory per open.
+
+**Unchanged:** every refusal and capacity sentence (also while a reduction is in progress); when and whether reduction runs; no stored format, wire format, service message or limit. The status that crosses from the Worker gains one optional field, `reduction`, admitted only when well formed.
+
+Tests: a new pure-function file of 23 cases, including replays of lab runs r06 and r07 from phase 564 with a stated convergence tolerance; a real-owner case through the real scheduler across a saved slice and a cut; 15 rendered panel states. 31 recorded mutations each fail at least one new case. The packaged application on the 2,000-position seed, offline, left alone and with a card added mid-check, gives the transcript the operator can read. The full unit suite was not run for this phase. [Evidence and the full list of new product strings](development-evidence/2026-11-27-post-release-repair/565-reduction-progress-display/README.md).

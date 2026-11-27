@@ -16,14 +16,34 @@ export interface RetentionProgress {
   readonly stage: (typeof RETENTION_STAGES)[number];
   readonly completed?: number;
   readonly total?: number;
+  /** Phase 565, verifying only: the preparation journal's counts of verified results. `saved`
+   * were imported from saved progress when the pass began; `held` are held now (saved plus this
+   * pass's fresh results, which are saved only when the pass saves); `fresh` were checked in this
+   * pass; `budget` is the pass's fresh-work budget in milliseconds, reported at its first fresh
+   * check; `planned` is about how many results a full check makes, estimated from the census. */
+  readonly saved?: number;
+  readonly held?: number;
+  readonly fresh?: number;
+  readonly budget?: number;
+  readonly planned?: number;
 }
 export type RetentionProgressSink = (progress: RetentionProgress) => void;
+const journalCounts = ['saved', 'held', 'fresh', 'budget', 'planned'] as const;
 /** Presentation only: copy fixed labels/numbers, never retain arbitrary observer payloads. */
 export function copyRetentionProgress(value: RetentionProgress): RetentionProgress | undefined {
   try {
     if (!value || typeof value !== 'object') return;
-    const { stage, completed, total } = value;
+    const { stage, completed, total, saved, held, fresh, budget, planned } = value;
     if (!RETENTION_STAGES.includes(stage)) return;
+    const counts = { saved, held, fresh, budget, planned };
+    const present = journalCounts.filter((k) => counts[k] !== undefined);
+    if (
+      present.length &&
+      (stage !== 'verifying' ||
+        present.some((k) => !Number.isSafeInteger(counts[k]) || counts[k]! < 0))
+    )
+      return;
+    const journal = Object.fromEntries(present.map((k) => [k, counts[k]!]));
     if (completed !== undefined || total !== undefined) {
       if (
         !Number.isSafeInteger(completed) ||
@@ -36,9 +56,10 @@ export function copyRetentionProgress(value: RetentionProgress): RetentionProgre
         stage,
         completed: completed!,
         total: total!,
+        ...journal,
       });
     }
-    return Object.freeze({ stage });
+    return Object.freeze({ stage, ...journal });
   } catch {
     return;
   }

@@ -83,6 +83,7 @@
     "test/privateMigration.test.ts",
     "test/projectionEquality.test.ts",
     "test/recoveryProgressIsolation.test.ts",
+    "test/reductionEstimate.test.ts",
     "test/reductionHoldDutyCycle.test.ts",
     "test/reductionSyncHold.test.ts",
     "test/relayAuth.test.ts",

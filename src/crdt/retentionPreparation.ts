@@ -370,6 +370,10 @@ export function createPreparationJournal(options: {
   ratio?: number;
   /** Told once, with `now`, when the first fresh check ends this attempt's setup (phase 564). */
   onFirstFresh?(at: number): void;
+  /** Phase 565, presentation only: the pass's counts, at its first check, its first fresh check
+   * (with the budget), every 32 fresh results and before a pause. An observer cannot change a
+   * check. */
+  report?(counts: PreparationCounts): void;
 }) {
   if (!hashString(options.context)) invalid();
   const room = Math.min(options.room ?? PREPARATION_VALUE_BYTES, PREPARATION_VALUE_BYTES);
@@ -394,6 +398,34 @@ export function createPreparationJournal(options: {
   // nothing more is kept and no slice pauses, since a saved slice could not hold the work.
   let full = false,
     pendingBytes = 0;
+  // Phase 565, presentation only: results imported before the first check, fresh results this
+  // journal could not keep (they still count as checked in this pass), and the census estimate.
+  let imported = 0,
+    uncached = 0,
+    planned: number | undefined;
+  const counts = (extra?: { budget: number }): PreparationCounts | undefined =>
+    started
+      ? {
+          saved: imported,
+          held: entries.size + uncached,
+          fresh: misses + uncached,
+          ...(planned === undefined ? {} : { planned }),
+          ...(extra && Number.isFinite(extra.budget) ? { budget: Math.round(extra.budget) } : {}),
+        }
+      : undefined;
+  const tell = (extra?: { budget: number }) => {
+    const value = options.report && counts(extra);
+    if (!value) return;
+    try {
+      options.report!(value);
+    } catch {
+      /* Presentation cannot change verification. */
+    }
+  };
+  // Every 32 fresh results, as opening reports every 32 records: the hot loop stays cheap.
+  const tally = () => {
+    if ((misses + uncached) % 32 === 0) tell();
+  };
   const now = options.now ?? performance.now.bind(performance);
   const slice = options.sliceMs ?? PREPARATION_SLICE_MS;
   if (!Number.isFinite(slice) || slice <= 0) invalid();
@@ -438,7 +470,11 @@ export function createPreparationJournal(options: {
     current();
     assert();
     if (!validSlot(slot)) invalid();
-    started = true;
+    if (!started) {
+      started = true;
+      imported = entries.size;
+      tell();
+    }
     const at = revision,
       captured = input.map((b) => new Uint8Array(b));
     const unchanged = () => {
@@ -480,15 +516,24 @@ export function createPreparationJournal(options: {
           /* A measurement observer cannot change verification. */
         }
       }
-      limit ??= budget(freshAt);
-      if (!full && pending.size && (freshAt - began >= limit || pending.size >= SLICE_ROWS))
+      if (limit === undefined) {
+        limit = budget(freshAt);
+        tell({ budget: limit });
+      }
+      if (!full && pending.size && (freshAt - began >= limit || pending.size >= SLICE_ROWS)) {
+        tell();
         throw new PreparationPause();
+      }
       const value = await verify();
       let result: Bytes | undefined;
       try {
         unchanged();
         // The caller receives the same detached copy as from a kept result; it is not kept.
-        if (full) return structuredClone(value);
+        if (full) {
+          uncached++;
+          tally();
+          return structuredClone(value);
+        }
         result = encodePreparationValue(value);
         validateResult(slot, result);
         pageInput(slot, value, captured);
@@ -504,6 +549,8 @@ export function createPreparationJournal(options: {
           nextPending + SLICE_FRAME > room
         ) {
           full = true;
+          uncached++;
+          tally();
           return structuredClone(value);
         }
         ownedBytes += result.length - (prior?.result.length ?? 0);
@@ -515,6 +562,7 @@ export function createPreparationJournal(options: {
         pendingBytes = nextPending;
         misses++;
         result = undefined;
+        tally();
         return structuredClone(value);
       } finally {
         result?.fill(0);
@@ -607,6 +655,16 @@ export function createPreparationJournal(options: {
     get statistics() {
       return Object.freeze({ entries: entries.size, pending: pending.size, hits, misses, full });
     },
+    /** Phase 565, presentation only: about how many results a full check makes, from the census
+     * the verifier has just read. It sizes the progress shown; nothing here reads it. */
+    expect(checks: number) {
+      if (!Number.isSafeInteger(checks) || checks < 0) return;
+      planned = checks;
+      tell();
+    },
+    /** Phase 565, presentation only: the pass's counts now (undefined before its first check),
+     * for the owner's final report when checking gives way to building. */
+    counts: () => counts(),
     dispose() {
       memo.clear();
       closed = true;
@@ -614,4 +672,12 @@ export function createPreparationJournal(options: {
   });
 }
 export type PreparationJournal = ReturnType<typeof createPreparationJournal>;
+/** Phase 565: a pass's verification counts, for presentation (`RetentionProgress` at verifying). */
+export interface PreparationCounts {
+  readonly saved: number;
+  readonly held: number;
+  readonly fresh: number;
+  readonly planned?: number;
+  readonly budget?: number;
+}
 export const preparationDomain = (...parts: string[]) => fields(DOMAIN, ...parts);

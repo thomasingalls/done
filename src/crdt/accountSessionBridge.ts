@@ -8,6 +8,7 @@ import type {
 import type { AutomaticHistoryStatus } from '../account/automaticHistoryMaintenance';
 import type { LocalRetentionStatus } from './automaticLocalRetention';
 import { copyRetentionDetail } from './localRetentionDetail';
+import { copyReductionFacts } from './reductionProgress';
 import { isSyncRefusal } from '../account/syncRefusal';
 import type { SyncRuntime, SyncStatus, SyncLane } from './accountSyncDriver';
 import type { ReceiveHaltDetail } from './accountReceiveDriver';
@@ -177,11 +178,17 @@ function sync(input: unknown): SyncStatus {
   return Object.freeze(out);
 }
 function local(input: unknown): LocalRetentionStatus {
-  fields(input, ['phase', 'reason'], ['progress', 'detail']);
-  const { detail: raw, ...rest } = input as LocalRetentionStatus;
+  fields(input, ['phase', 'reason'], ['progress', 'detail', 'reduction']);
+  const { detail: raw, reduction: facts, ...rest } = input as LocalRetentionStatus;
   // Presentation only: an unknown or malformed detail is dropped and the page falls back.
   const detail = rest.reason === 'capacity' ? copyRetentionDetail(raw) : undefined;
-  const v: LocalRetentionStatus = { ...rest, ...(detail ? { detail } : {}) };
+  // Phase 565, the same rule for the reduction's facts: malformed facts are dropped.
+  const reduction = facts === undefined ? undefined : copyReductionFacts(facts);
+  const v: LocalRetentionStatus = {
+    ...rest,
+    ...(detail ? { detail } : {}),
+    ...(reduction ? { reduction } : {}),
+  };
   if (!phases.includes(v.phase) || (v.reason !== undefined && !text(v.reason))) throw fail();
   if (v.progress !== undefined) {
     const p = v.progress;
