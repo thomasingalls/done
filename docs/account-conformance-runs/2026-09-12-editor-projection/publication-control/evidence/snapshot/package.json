@@ -169,8 +169,8 @@
     "oxlint": "^1.76.0",
     "oxlint-tsgolint": "^7.0.2001",
     "typescript": "^7.0.2",
-    "vite": "^8.1.5",
-    "vitest": "^4.1.10"
+    "vite": "^8.1.6",
+    "vitest": "^5.0.5"
   },
   "packageManager": "pnpm@11.20.0"
 }
