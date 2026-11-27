@@ -1,0 +1,98 @@
+Phase 558: related existing test files run on the final tree after review (2026-11-13, Node v26.13.1, vitest 4.1.10).
+Selection: every test/*.test.ts(x) that imports src/crdt/contentStore, inboundLedger, serialize, persistence,
+src/editor/gentleContext or the src/crdt barrel, which includes test/argumentSpreads.test.ts itself.
+
+ Test Files  76 passed (76)
+      Tests  1242 passed | 1 skipped (1243)
+   Duration  122.10s (transform 3.80s, setup 1.03s, import 14.87s, tests 210.32s, environment 8.67s)
+
+Files:
+  test/accountLedgerCloneBudget.test.ts
+  test/accountLedgerIndexBudget.test.ts
+  test/accountLiveness.test.ts
+  test/accountReceiveLedger.test.ts
+  test/accountSelfReceive.test.ts
+  test/archiveProjection.test.ts
+  test/argumentSpreads.test.ts
+  test/attribution.test.ts
+  test/baselineProjectionInterruption.test.ts
+  test/baselineReplayBuilds.test.ts
+  test/baselineReplayCoverage.test.ts
+  test/cap.test.ts
+  test/cardArrival.test.ts
+  test/cardGoalsContext.test.ts
+  test/contentInterruptedReuse.test.ts
+  test/convergence.test.ts
+  test/coverageBatches.test.ts
+  test/doneForNow.test.ts
+  test/export.test.ts
+  test/freeze.test.ts
+  test/gentleContext.test.ts
+  test/gentleContextIncremental.test.ts
+  test/historyFoldOracle.test.ts
+  test/historyInstallBound.test.ts
+  test/inboundAppendIndex.test.ts
+  test/inboundAppendTurn.test.ts
+  test/inboundAuditUnits.test.ts
+  test/inboundColdIndex.test.ts
+  test/inboundIndirectReaders.test.ts
+  test/inboundLedgerCapture.test.ts
+  test/inboundLoadTurn.test.ts
+  test/inboundMixedReplay.test.ts
+  test/inboundPageLedger.test.ts
+  test/inboundReceiptContext.test.ts
+  test/inboundTurnLedger.test.ts
+  test/incrementalLedger.test.ts
+  test/initialAccountGeneration.test.ts
+  test/localBaseline.test.ts
+  test/localBaselineExactReuse.test.ts
+  test/localBaselineLargeCarrier.test.ts
+  test/localBaselineReuse.test.ts
+  test/localBaselineWarm.test.ts
+  test/localProperties.test.ts
+  test/localRetentionSharedProof.test.ts
+  test/localRetentionStorage.test.ts
+  test/membership.property.test.ts
+  test/membership.test.ts
+  test/moves.test.ts
+  test/multiDevice.test.ts
+  test/multiEntryInboundReaders.test.ts
+  test/oracleReplayWindow.test.ts
+  test/oversizedActions.test.ts
+  test/preparedCoverage.test.ts
+  test/receiveOriginalsBudget.test.ts
+  test/receiveQuietPages.test.ts
+  test/receiveQuietSelection.test.ts
+  test/receiveReadProjection.test.ts
+  test/receiveSelection.test.ts
+  test/relayAuth.test.ts
+  test/retentionSliceBudget.test.ts
+  test/retiredCutVerification.test.ts
+  test/roundTrip.test.ts
+  test/sections.test.ts
+  test/sendPathWalks.test.ts
+  test/serialize.test.ts
+  test/slotIndex.test.ts
+  test/store.test.ts
+  test/sync.test.ts
+  test/syncDefects.test.ts
+  test/syncProperties.test.ts
+  test/unfiledPanel.test.tsx
+  test/unreducedBaselineExactReuse.test.ts
+  test/useYjs.test.tsx
+  test/warmAuditPressure.test.ts
+  test/warmContent.test.ts
+  test/workspaceAdmission.test.ts
+
+Final run of test/argumentSpreads.test.ts alone:
+ ✓ test/argumentSpreads.test.ts > the old expressions throw at this size in this realm (control) > push, unshift and Math.max with ROWS spread arguments throw a RangeError here 6ms
+ ✓ test/argumentSpreads.test.ts > the content owner opens and appends ROWS rows > a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot) 11495ms
+ ✓ test/argumentSpreads.test.ts > the content owner opens and appends ROWS rows > one append of ROWS rows extends the warm view (contentStore appendRecords) 15925ms
+ ✓ test/argumentSpreads.test.ts > the receive owner appends ROWS content rows to its coverage view > an incremental prepare appends every new row in order (inboundLedger prepare) 2162ms
+ ✓ test/argumentSpreads.test.ts > export writes a card of ROWS lines > serializes and parses back a card with ROWS lines (serialize collectionLines) 61ms
+ ✓ test/argumentSpreads.test.ts > local persistence puts a failed batch of ROWS updates back in order > a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 1528ms
+ ✓ test/argumentSpreads.test.ts > gentle context measures ROWS visible ranges > dims the same lines as a fresh projection (gentleContext write) 90ms
+ ✓ test/argumentSpreads.test.ts > no argument spread returns at the sites phase 558 changed (guard) > finds the old expressions (control) 13ms
+ ✓ test/argumentSpreads.test.ts > no argument spread returns at the sites phase 558 changed (guard) > the five changed files spread arguments only where the call has a fixed parameter list 45ms
+      Tests  9 passed (9)
+   Duration  32.29s (transform 578ms, setup 27ms, import 811ms, tests 31.33s, environment 0ms)

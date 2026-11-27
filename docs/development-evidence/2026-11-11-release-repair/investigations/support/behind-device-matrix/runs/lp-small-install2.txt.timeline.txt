@@ -1,0 +1,25 @@
+32.1s three devices ready
+32.1s production /config {"v":2,"pin":{"v":1,"serviceId":"4cb4e866b18218b500fd946453c86842","origin":"https://localhost:53441","rpId":"localhost","authRoot":"93ae12a6491f7d6b274bb879d05df6801617606727da479ef40d10725cf00095"},"networkSessions":true,"membershipContinuation":true}
+37.2s C offline (it takes no part from here)
+37.4s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+38.5s C large card 0: 25 ms
+38.5s C holds its unsent writing
+46.6s snapshot 2 admitted
+61.2s A received C accepted writing after cutting
+69.1s snapshot 3 admitted
+70.7s prune 1 (floor: snapshot 2)
+70.7s A large card 0: 26 ms
+70.7s A large card 1: 24 ms
+79.1s snapshot 4 admitted
+87.2s snapshot 5 admitted
+88.8s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+99.3s history written
+99.3s C online
+104.3s install-first first phase done=true
+109.3s both directions arrived=true C catalog reads=2 C read requests=19 C read epochs=[5]
+109.4s C sync: ["Sending: idleLast accepted upload: 12:00:21 AMAccepted position: 6Receiving: idleLast successful receive check: 12:00:17 AMReceived positions: 75"]
+119.5s converged=true markers=81 missing=[0,0,0] duplicated=[0,0,0] text bytes=17308,17308,17308
+119.5s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (install-first, small) (2.0m)
+  1 passed (2.0m)
+exit 0

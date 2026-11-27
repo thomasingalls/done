@@ -1,0 +1,144 @@
+{
+ "phase": 551,
+ "date": "2026-11-12",
+ "base": "3b8394590",
+ "requested": "coordinating session, 2026-11-12: refusal messages for history maintenance and sign-in, from investigation 14 part B; sync-lane refusals are the next phase",
+ "operatorAsk": "2026-11-11: 'if there are messages that would help a user take action, that might be worth an edit as well. check your connection is not a helpful message in any case'",
+ "amends": {},
+ "unchanged": [
+  "no service change and no service logging",
+  "no stored format, wire message, route or limit",
+  "HistoryTransportUnavailable retry behaviour for automatic maintenance and the receive path (no error changed class)",
+  "phase 547 classification of a saved snapshot against the authenticated catalog",
+  "retry timing tested by phases 539, 540 and 546"
+ ],
+ "sourceSha256": {
+  "src/account/historyFailure.ts": "be7db70a42cbac91d309a33507ed44ab4b39cc80b36a825176800fb85f6991f0",
+  "src/account/historyHttp.ts": "01be0ecbf3f70cadd795ee8b20ee130e120ce90574a540649402d240fb70fe3e",
+  "src/account/historyMaintenance.ts": "03dc6c4502de2f36884807dfe04a00e57aaf4567cb221014d45891e8c15b3a5a",
+  "src/account/networkLogin.ts": "2809f80f54d1115b982b998c8978768961dfd6a98a9ed8aaaed457b06e52200b",
+  "src/account/scopedTransport.ts": "befcdae6a3b08035462b73b1b79d8bed7f2991d0f50485f75b2c34b822641c16",
+  "src/crdt/accountReceive.ts": "3753f464acf1b4d9123491a676a47a0ab67b09771374bd0b9bce2dd67d28b45f",
+  "src/crdt/accountSessionBridge.ts": "ba815a3ec413eecb198b4fa41f9ce4e9abd86da8fb745a3884b3b4820deebf84",
+  "src/crdt/historyOwner.ts": "f8ca53802e5aa8ba2266a00ee0d2a346262f063f0b457afd0e9b998aa8163339",
+  "src/ui/AccountHistory.tsx": "4edf30820edf49dba3fc61ef62196c4e2010a1ea06cdd2867a58b245e78119e8",
+  "src/ui/NetworkLoginNotice.tsx": "038aa6f4f38b9a5c7c9fa6e8743dbedfba6e8199518ea906a998613c13e20778",
+  "src/ui/SyncNotice.tsx": "0888daddd3cf8e1d5e476212d3f467222b4b76f369205b6e845611ad4f84be48",
+  "src/ui/historyFailureMessages.ts": "83ee74ed7e48d57efbdccf3367208b6a6912485056a008a9d999ceeda59cc4de"
+ },
+ "codes": {
+  "history": 33,
+  "signIn": [
+   "unreachable",
+   "busy",
+   "unavailable",
+   "outdated",
+   "refused"
+  ]
+ },
+ "tests": {
+  "new": {
+   "test/account-history/refusals.test.mjs": 13,
+   "test/account-sessions/client.test.mjs": 3,
+   "test/accountHistory.test.tsx": 1,
+   "test/syncNotice.test.tsx": 1,
+   "test/accountSessionBridge.test.ts": 1
+  },
+  "changedAssertions": [
+   "test/syncNotice.test.tsx: the history-waiting sentence's new wording"
+  ],
+  "fixtures": [
+   "test/account-history/http-fixture.mjs (new)",
+   "test/account-history/devices-fixture.mjs ({ http: true } option; Refused carries the HTTP code)",
+   "test/account-history/client-entry.ts (exports)"
+  ]
+ },
+ "baseTree": {
+  "refusals": "13 of 13 fail",
+  "signInClient": "3 new fail, 18 existing pass",
+  "vitest": "4 fail (3 new and the changed waiting assertion), 22 pass",
+  "shim": "historyFailure.ts imports base-absent GrantDenied and NetworkLoginUnavailable as local classes"
+ },
+ "mutationControls": {
+  "applied": 22,
+  "detected": 22
+ },
+ "runsThisSeat": {
+  "typecheck": "pass",
+  "oxfmt": "22 changed code files clean through stdin",
+  "oxlint": "22 changed code files, 0 diagnostics",
+  "vitestRelevant": {
+   "files": 20,
+   "cases": 198,
+   "passed": 198,
+   "list": [
+    "accountReceiveDriver",
+    "accountSessionBridge",
+    "accountWorkerReceive",
+    "automaticServiceHistory",
+    "enrollmentErrorPresentation",
+    "firstDeviceOpeningProgress",
+    "firstDeviceWorkspacePort",
+    "firstDeviceBrowserPort",
+    "historyInstallBound",
+    "historyReadRetry",
+    "nativeEnrollmentController",
+    "networkLoginActivityPort",
+    "privateDeliveryHttp",
+    "recoveryExecution",
+    "receiveSelection",
+    "sendDueReceiveYield",
+    "accountHistory",
+    "syncNotice",
+    "workerChannel",
+    "historyReceiveFence"
+   ]
+  },
+  "accountHistoryNode": {
+   "files": "test/account-history/*.test.mjs",
+   "cases": 100,
+   "passed": 100,
+   "seconds": 272
+  },
+  "sessionsNode": {
+   "files": [
+    "test/account-sessions/client.test.mjs",
+    "test/account-sessions/scoped-client.test.mjs",
+    "test/account-sessions/inbound-batch.test.mjs",
+    "test/account-sessions/inbound-authority-reuse.test.mjs",
+    "test/account-sessions/request-budget-work.test.mjs",
+    "test/account-sessions/inbound-batch-budget.test.mjs",
+    "test/account-sessions/scoped-http.test.mjs",
+    "test/account-membership/handoff.test.mjs"
+   ],
+   "cases": 90,
+   "passed": 90
+  },
+  "adapters": "178/178",
+  "validationInventory": "10/10",
+  "plan": {
+   "obligations": 1126,
+   "unresolved": 556
+  },
+  "accountCryptoPrep": "6/6; census matched after record"
+ },
+ "bookkeeping": {
+  "denominator": "3031 -> 3032 (accountHistory.test.tsx +1)",
+  "planningInventory": "1125/555 -> 1126/556 (refusals.test.mjs blocked like test/account-history/)",
+  "census": "two new sources, ten new hashes, no new label or cryptographic call",
+  "registry": "done/account-ledger-reference-mismatch: accountReceive.ts line 966 -> 967",
+  "anchors": "256 strings and 122 literals checked; ordinary strings only; 'History maintenance' in AccountHistory.tsx 3 -> 2 (the old failure sentence moved)"
+ },
+ "notRun": [
+  "the Worker boundary wrapper and historyOwner codes in a running Worker (packaged browser harness only)",
+  "the client's own verification wrapper inside historyMaintenance (needs a service-signed bad snapshot)",
+  "the 512-byte refusal-body bound",
+  "a real gateway or proxy",
+  "the session route's HTTP 429",
+  "any browser or device"
+ ],
+ "review": {
+  "fullSuite": "pnpm test --maxWorkers=1 on the final tree: 352 files, 3,677 passed and 1 existing skip, 366.03 s",
+  "checks": "pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check, node --test test/account-history/*.test.mjs, and the CI session and history step"
+ }
+}

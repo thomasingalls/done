@@ -1,0 +1,21 @@
+// Read-only survey probe: builds <entry> from the working tree with each <ref:path> swapped in, as the
+// overlay fixtures do, and reports whether the bundle builds. Usage: node swap-probe.mjs <entry> [ref:path ...]
+import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+const { build } = await import(pathToFileURL(createRequire(process.cwd() + '/package.json').resolve('vite')).href);
+const [entry, ...swaps] = process.argv.slice(2);
+const pairs = swaps.map((s) => s.split(':'));
+let hits = 0;
+try {
+  await build({ configFile: false, logLevel: 'silent',
+    plugins: [{ name: 'swap', enforce: 'pre', transform(_c, id) {
+      const p = pairs.find(([, path]) => id.endsWith('/' + path)); if (!p) return; hits++;
+      return execFileSync('git', ['show', p[0] + ':' + p[1]], { encoding: 'utf8' }); } }],
+    build: { write: false, minify: false, lib: { entry: resolve(entry), name: 'H', formats: ['iife'] } } });
+  console.log(JSON.stringify({ entry, swaps, ok: true, hits }));
+} catch (e) {
+  const errs = (e.errors ?? [e]).map((x) => String(x.message ?? x).replace(/\x1b\[[0-9;]*m/g, '').split('\n')[0]);
+  console.log(JSON.stringify({ entry, swaps, ok: false, hits, errors: [...new Set(errs)].slice(0, 6), errorCount: errs.length }));
+}

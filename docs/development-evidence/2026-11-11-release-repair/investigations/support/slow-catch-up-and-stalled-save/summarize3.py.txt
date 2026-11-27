@@ -1,0 +1,23 @@
+import json, sys, glob, re
+run = sys.argv[1]; art = glob.glob(run + '/artifacts/*/')[0]
+tl = open(art + 'timeline.txt').read().splitlines()
+def at(pat):
+    for l in tl:
+        if re.search(pat, l): return float(l.split('s ')[0])
+online, second = at('C online'), at('second phase starts')
+samples = [json.loads(l) for l in open(art + 'c-samples.jsonl')]
+def w(s,*p):
+    v=s.get('metrics') or {}
+    for k in p[:-1]: v=(v or {}).get(k,{})
+    return (v or {}).get(p[-1],0) or 0
+def window(a,b,label):
+    S=[s for s in samples if a<=s['t']<=b]
+    if len(S)<2: return
+    d=lambda *p: w(S[-1],*p)-w(S[0],*p)
+    blk=[s for s in S if s['evalMs']>1000]
+    print(f"{label} [{a}..{b}]: replays {d('work','baselineFullReplays')}, rebuilds {d('timings','coverageRebuild','calls')}, checks {d('timings','coverageCheck','calls')} ({round(d('timings','coverageCheck','totalMs')/1000,1)} s), worker blocked >1 s: {len(blk)} samples / {round(sum(s['evalMs'] for s in blk)/1000,1)} s, recv {S[0]['sync']['receive']['receivedThrough']}->{S[-1]['sync']['receive']['receivedThrough']}, sent {S[0]['sync']['send']['acceptedThrough']}->{S[-1]['sync']['send']['acceptedThrough']}, load {S[0]['load']} .. {S[-1]['load']}")
+window(online, second, 'first phase')
+window(second, samples[-1]['t'], 'second phase')
+trace=[json.loads(l) for l in open(art+'c-trace.jsonl') if l.strip()]
+aw=[r for r in trace if r.get('ev')=='auditWarm' and r['ms']>1000]
+print('long auditWarm', len(aw), 'interrupted', sum(1 for r in aw if r.get('interrupted')), 'completed', sum(1 for r in aw if r.get('completed')), 'ms', [r['ms'] for r in aw])

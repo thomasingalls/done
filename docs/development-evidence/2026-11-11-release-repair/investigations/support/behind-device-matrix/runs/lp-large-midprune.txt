@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+33.6s three devices ready
+33.6s production /config {"v":2,"pin":{"v":1,"serviceId":"809afeabdfff8b20c7cf80fc73ada746","origin":"https://localhost:53441","rpId":"localhost","authRoot":"2324cffc0f82d8d867777179b3868b6770ae31a1242c2706cf0586fb77a567bb"},"networkSessions":true,"membershipContinuation":true}
+37.2s C offline (it takes no part from here)
+37.4s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+48.2s C large card 0: 35 ms
+48.3s C large card 1: 47 ms
+48.3s C large card 2: 39 ms
+48.3s C holds its unsent writing
+84.2s snapshot 2 admitted
+100.0s A received C accepted writing after cutting
+129.2s snapshot 3 admitted
+131.4s prune 1 (floor: snapshot 2)
+222.5s A wrote 200 large cards of 5000 bytes (20134 ms saving)
+276.7s snapshot 4 admitted
+329.7s snapshot 5 admitted
+338.9s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+496.7s history written
+496.7s C online
+499.5s C fetched snapshot 5 and is reading its suffix slowly; pruning again now
+544.6s snapshot 6 admitted
+604.6s snapshot 7 admitted
+615.6s prune 3 landed while C was mid-receive (floor: snapshot 6)
+620.8s install-first first phase done=true
+636.2s C after second phase 15s both=true: notice=[]
+636.2s both directions arrived=true C catalog reads=13 C read requests=52 C read epochs=[5]
+636.4s C sync: ["Sending: idleLast accepted upload: 12:46:42 AMAccepted position: 10Receiving: idleLast successful receive check: 12:46:33 AMReceived positions: 578"]
+648.2s converged=true markers=936 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037971,1037971,1037971
+648.2s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (install-first, large) (10.8m)
+
+  Slow test file: test/packaged-account/lostphone.public.spec.ts (10.8m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (10.8m)
+exit 0

@@ -1,0 +1,166 @@
+// @vitest-environment node
+// Draft for the reduced-peer fix: a snapshot cut this device is already past, inside a range it
+// reduced, is skipped per publisher instead of refusing the whole installation.
+import { expect, it } from 'vitest';
+import {
+  prepareLocalBaseline,
+  replayLocalBaseline,
+  replayFullLocalHistory,
+  type BaselineAuthentication,
+  type LocalBaselineContext,
+} from '../src/crdt/localBaselineReplay';
+import { applyHistoryReceiveCuts, inspectInbound } from '../src/crdt/inboundLedger';
+import { checkRetainedCheckpointCuts } from '../src/crdt/retentionCheckpoint';
+import { decodeLocalBaseline } from '../src/crdt/localBaselineRecord';
+import { decodeHistoryInstall } from '../src/crdt/historyInstall';
+import {
+  emptySpoolWitness,
+  type ContentCounter,
+  type OpenedRecord,
+} from '../src/crdt/contentRecord';
+import { extendSpoolWitness } from '../src/crdt/spoolRecord';
+// @ts-expect-error Shared real-protocol JavaScript fixture.
+import { memberFixture } from './local-baseline/fixtures.mjs';
+
+const key = await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256' }, false, [
+  'sign',
+  'verify',
+]);
+const auth: BaselineAuthentication = {
+  sign: async (p) => new Uint8Array(await crypto.subtle.sign('HMAC', key, p)),
+  verify: (p, mac) => crypto.subtle.verify('HMAC', key, mac, p),
+};
+async function input(records: readonly OpenedRecord[], c: LocalBaselineContext) {
+  const census = inspectInbound(records, c.route, c.inbound);
+  let spool = emptySpoolWitness();
+  for (const e of census.delivery.spool.events)
+    spool = await extendSpoolWitness(spool, e, crypto.subtle);
+  const next = (records.at(-1)?.seq ?? 0) + 1;
+  const counter: ContentCounter = {
+    v: 2,
+    spool,
+    store_id: c.identity.storeId,
+    intent: '04'.repeat(16),
+    active_gen: 1,
+    next_seq: next,
+    reserved: { 1: next - 1 },
+    mac: new Uint8Array(32),
+  };
+  return { records, counter };
+}
+type Cursor = { position: number; link: string };
+const cursors = (s: {
+  prefix: Cursor;
+  startingPoint?: Cursor;
+  peers?: Map<string, { prefix: Cursor; startingPoint?: Cursor }>;
+}) => ({
+  own: { position: s.prefix.position, link: s.prefix.link },
+  peers: [...(s.peers ?? [])].map(([id, p]) => [id, p.prefix.position, p.prefix.link]),
+});
+
+/** A snapshot prepared before this device received more from both streams, installed only after
+ * it reduced past both of its cuts. Before the fix the baseline replay refuses as history-required. */
+async function olderSnapshotAfterReduction() {
+  const f = await memberFixture(),
+    c: LocalBaselineContext = f.ctx;
+  await f.appendOwn();
+  await f.appendPeer();
+  const record = await f.appendHistory();
+  const install = f.rows.splice(-2); // prepared now, delivered later
+  await f.appendOwn();
+  await f.appendPeer();
+  const prefix = await input(f.rows, c),
+    reduced = await prepareLocalBaseline(prefix, c, auth),
+    cut = f.rows.length;
+  for (const r of install) f.rows.push({ ...r, seq: f.rows.length + 1 });
+  return { f, c, record, reduced, cut, prefix, all: await input(f.rows, c) };
+}
+
+it('an older snapshot installed after reduction replays to the same cursors as full history', async () => {
+  const x = await olderSnapshotAfterReduction();
+  try {
+    const heads = decodeHistoryInstall(x.record).checkpoint.heads;
+    const full = await replayFullLocalHistory(x.all, x.c);
+    const reduced = await replayLocalBaseline(
+      x.reduced.baseline,
+      x.reduced.anchor,
+      { ...x.all, records: x.f.rows.slice(x.cut) },
+      x.c,
+      auth,
+    );
+    // Both cuts are behind the frontiers this device holds: neither moves a cursor anywhere.
+    for (const h of heads) expect(h.position).toBeGreaterThan(0);
+    expect(cursors(reduced.inbound)).toEqual(cursors(full.inbound));
+    expect(reduced.inbound.installedHistory).toEqual(full.inbound.installedHistory);
+    // The live pre-install gate agrees: nothing it cannot check is refused.
+    expect(() =>
+      checkRetainedCheckpointCuts(decodeLocalBaseline(x.reduced.baseline.payload), heads),
+    ).not.toThrow();
+  } finally {
+    x.f.clear();
+  }
+}, 60000);
+
+it('a cut at retained evidence must still match it; only an uncheckable past cut is skipped', async () => {
+  const x = await olderSnapshotAfterReduction();
+  try {
+    const replay = await replayLocalBaseline(
+      x.reduced.baseline,
+      x.reduced.anchor,
+      { ...x.prefix, records: [] },
+      x.c,
+      auth,
+    );
+    const self = x.c.route.credential;
+    const peer = [...replay.inbound.peers!.keys()][0]!;
+    const frontier = replay.inbound.peers!.get(peer)!.prefix;
+    const own = replay.inbound.prefix;
+    const census = replay.census;
+    const wrong = 'ee'.repeat(32);
+    // At the retained peer frontier, a different link is a conflict.
+    await expect(
+      applyHistoryReceiveCuts(structuredClone(replay.inbound), x.c.inbound, census, [
+        { credentialId: peer, position: frontier.position, link: wrong },
+      ]),
+    ).rejects.toThrow('conflicts');
+    // At this device's own retained origin, a different link is refused.
+    const origin = census.delivery.spool.origin!;
+    await expect(
+      applyHistoryReceiveCuts(structuredClone(replay.inbound), x.c.inbound, census, [
+        { credentialId: self, position: origin.position, link: wrong },
+      ]),
+    ).rejects.toThrow('differs from retained self stream');
+    // Behind the own origin at the pinned position, a different link is refused.
+    const pinned = structuredClone(replay.inbound);
+    pinned.checkpointCuts = new Map([[self, { position: 1, link: 'dd'.repeat(32) }]]);
+    await expect(
+      applyHistoryReceiveCuts(pinned, x.c.inbound, census, [
+        { credentialId: self, position: 1, link: wrong },
+      ]),
+    ).rejects.toThrow('differs from retained checkpoint');
+    // The live gate refuses a different link at the baseline frontier.
+    const b = decodeLocalBaseline(x.reduced.baseline.payload);
+    expect(() =>
+      checkRetainedCheckpointCuts(b, [
+        { credentialId: peer, position: frontier.position, link: wrong },
+      ]),
+    ).toThrow('differs from retained evidence');
+    // Uncheckable past cuts are skipped without moving either cursor.
+    const state = structuredClone(replay.inbound);
+    await applyHistoryReceiveCuts(state, x.c.inbound, census, [
+      { credentialId: self, position: 1, link: wrong },
+      { credentialId: peer, position: 1, link: wrong },
+    ]);
+    expect(state.prefix).toEqual(own);
+    expect(state.peers!.get(peer)!.prefix).toEqual(frontier);
+    // A cut beyond the peer frontier still applies alongside a skipped one.
+    await applyHistoryReceiveCuts(state, x.c.inbound, census, [
+      { credentialId: self, position: 1, link: wrong },
+      { credentialId: peer, position: frontier.position + 3, link: 'ab'.repeat(32) },
+    ]);
+    expect(state.peers!.get(peer)!.prefix.position).toBe(frontier.position + 3);
+    expect(state.prefix).toEqual(own);
+  } finally {
+    x.f.clear();
+  }
+}, 60000);

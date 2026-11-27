@@ -1,0 +1,71 @@
+// Copy-only probe for the phase 544 follow-up: what a behind reader meets after pruning.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { setup } from './service-fixture.mjs';
+import { client as c } from './client.mjs';
+import { query, read } from '../account-service-inbound/oracle.mjs';
+
+async function pruned(t) {
+  const f = await setup(t);
+  const retained = [];
+  let previous = null,
+    catalog;
+  for (let position = 1; position <= 3; position++) {
+    const wire = f.make(position, 'prune-' + position, {
+      updates: [new Uint8Array(c.Y.encodeStateAsUpdate(f.doc))],
+    });
+    const result = await f.call(wire);
+    assert.equal(result.kind, 'decision');
+    retained.push({ wire, result });
+    if (position === 3) break;
+    const head = {
+      credentialId: f.credential,
+      position,
+      link: JSON.parse(Buffer.from(result.bytes).toString())[6],
+    };
+    const cp = await f.create(previous, [head]);
+    const publish = await f.makeRequest('publish', cp);
+    await f.check(publish, await f.exchange(publish));
+    const admit = await f.makeRequest('admit', await f.admit(cp));
+    catalog = (await f.check(admit, await f.exchange(admit))).catalog;
+    previous = cp;
+  }
+  return { f, retained, catalog };
+}
+
+test('after pruning, a read below the previous snapshot cut is refused as unavailable and reads past it continue', async (t) => {
+  const { f, catalog } = await pruned(t);
+  const at = { head: f.p.head, epoch: f.p.epoch };
+  const before = await read(f, query(f, 0, 8, at));
+  assert.equal(before.kind, 'decision', 'unpruned history reads normally');
+  const prune = await f.makeRequest('prune', { latest: catalog.latest, previous: catalog.previous });
+  await f.check(prune, await f.exchange(prune));
+  const below = await read(f, query(f, 0, 8, at));
+  assert.deepEqual(below, { kind: 'unknown', reason: 'unavailable' });
+  const past = await read(f, query(f, 1, 8, at));
+  assert.equal(past.kind, 'decision');
+  const page = JSON.parse(Buffer.from(past.bytes).toString());
+  assert.equal(page[5].length, 2, 'positions 2 and 3 remain readable');
+  // The latest snapshot a behind reader installs covers position 2, past the pruned floor.
+  const latest = await f.makeRequest('read', 'latest');
+  const cut = (await f.check(latest, await f.exchange(latest))).checkpoint.heads[0];
+  assert.equal(cut.position, 2);
+});
+
+test('after pruning, the publisher continues its own stream and exact retries return their original decisions', async (t) => {
+  const { f, retained, catalog } = await pruned(t);
+  const prune = await f.makeRequest('prune', { latest: catalog.latest, previous: catalog.previous });
+  await f.check(prune, await f.exchange(prune));
+  for (const { wire, result } of retained) {
+    const replay = await f.call(wire);
+    assert.equal(replay.kind, 'decision');
+    assert.deepEqual(replay.bytes, result.bytes);
+  }
+  const next = await f.call(
+    f.make(4, 'unsent while offline', {
+      updates: [new Uint8Array(c.Y.encodeStateAsUpdate(f.doc))],
+    }),
+  );
+  assert.equal(next.kind, 'decision');
+  assert.equal(JSON.parse(Buffer.from(next.bytes).toString())[2], 'accepted');
+});

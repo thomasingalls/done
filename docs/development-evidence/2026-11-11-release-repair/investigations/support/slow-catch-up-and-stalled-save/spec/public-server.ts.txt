@@ -1,0 +1,88 @@
+// COPY-ONLY: start the service the way production does (scripts/public-account.mjs initialize,
+// api and app), behind an HTTPS terminator with an ephemeral certificate. Ports 53441-53443.
+import { spawn, execFileSync, type ChildProcess } from 'node:child_process';
+import { mkdirSync, writeFileSync, readFileSync, createWriteStream } from 'node:fs';
+import { randomBytes } from 'node:crypto';
+import { join, resolve } from 'node:path';
+import { createServer, type Server } from 'node:tls';
+import { connect } from 'node:net';
+const base = Number(process.env.ODD_PORT_BASE ?? 54860);
+export const tlsPort = base + 1,
+  appPort = base + 2,
+  apiPort = base + 3;
+export const origin = `https://localhost:${tlsPort}`;
+const certDir = resolve('../cert');
+function ready(child: ChildProcess, text: string) {
+  let out = '';
+  return new Promise<void>((yes, no) => {
+    const timer = setTimeout(() => no(Error('Public start timeout: ' + out)), 30000);
+    const data = (b: Buffer) => {
+      out = (out + b.toString()).slice(-8000);
+      if (out.includes(text)) {
+        clearTimeout(timer);
+        yes();
+      }
+    };
+    child.stdout!.on('data', data);
+    child.stderr!.on('data', data);
+    child.once('exit', (code) => no(Error(`Public ${text} exited ${code}: ${out}`)));
+  });
+}
+export async function startPublic(dir: string, build = resolve('dist'), extra: Record<string, string> = {}) {
+  mkdirSync(dir, { recursive: true, mode: 0o700 });
+  const key = join(dir, 'operator.key'),
+    pin = join(dir, 'pin.json');
+  writeFileSync(key, randomBytes(32), { mode: 0o600 });
+  const env = {
+    ...process.env,
+    DONE_PUBLIC_ORIGIN: origin,
+    DONE_STATE_DIR: join(dir, 'state'),
+    DONE_OPERATOR_KEY_FILE: key,
+    DONE_SERVICE_PIN_FILE: pin,
+    DONE_APP_PORT: String(appPort),
+    DONE_API_PORT: String(apiPort),
+    DONE_APP_ADDRESS: '127.0.0.1',
+    DONE_APP_DIST: build,
+    ...extra,
+  };
+  const out = execFileSync(process.execPath, ['scripts/public-account.mjs', 'initialize'], { env }).toString();
+  writeFileSync(pin, out.trim().split('\n').at(-1)!, { mode: 0o600 });
+  const api = spawn(process.execPath, ['scripts/public-account.mjs', 'api'], { env, stdio: ['ignore', 'pipe', 'pipe'] });
+  { const log = createWriteStream(join(dir, 'api.log')); api.stdout!.pipe(log); api.stderr!.pipe(log); }
+  await ready(api, 'Public api ready');
+  const app = spawn(process.execPath, ['scripts/public-account.mjs', 'app'], { env, stdio: ['ignore', 'pipe', 'pipe'] });
+  { const log = createWriteStream(join(dir, 'app.log')); app.stdout!.pipe(log); app.stderr!.pipe(log); }
+  await ready(app, 'Public app ready');
+  const sockets = new Set<{ destroy(): void }>();
+  const tls: Server = createServer(
+    { cert: readFileSync(join(certDir, 'cert.pem')), key: readFileSync(join(certDir, 'key.pem')) },
+    (socket) => {
+      const upstream = connect(appPort, '127.0.0.1');
+      sockets.add(socket);
+      sockets.add(upstream);
+      socket.on('close', () => sockets.delete(socket));
+      upstream.on('close', () => sockets.delete(upstream));
+      socket.pipe(upstream);
+      upstream.pipe(socket);
+      socket.on('error', () => upstream.destroy());
+      upstream.on('error', () => socket.destroy());
+    },
+  );
+  await new Promise<void>((yes) => tls.listen(tlsPort, '127.0.0.1', yes));
+  return {
+    accountDb: join(dir, 'state', 'account.sqlite'),
+    async stop() {
+      const closed = new Promise<void>((yes) => tls.close(() => yes()));
+      for (const s of sockets) s.destroy();
+      await closed;
+      for (const c of [app, api]) {
+        if (c.exitCode !== null) continue;
+        await new Promise<void>((yes) => {
+          c.once('exit', () => yes());
+          c.kill('SIGTERM');
+          setTimeout(() => c.kill('SIGKILL'), 8000);
+        });
+      }
+    },
+  };
+}

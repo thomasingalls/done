@@ -14,12 +14,13 @@ import {
 import {
   openAdmissionSession,
   AdmissionError,
+  MAX_PENDING_BYTES,
   type AdmissionOptions,
   type AdmissionSession,
   type AdmissionReceipt,
   type AdmissionStatus,
 } from './admission';
-import { type CustodyAuthority } from './custody';
+import { type CustodyAuthority, MAX_JOURNAL_UPDATE } from './custody';
 import { type Bytes } from './custodyCrypto';
 import { type WorkspaceActorIdentity, type Origin, listActors } from './actors';
 import { readSettings, SCHEMA_VERSION } from './doc';
@@ -58,6 +59,7 @@ import {
   type TextTarget,
   type CommandValue,
 } from './workspaceCommands';
+import { ActionTooLarge, MAX_ACTION_TEXT_UNITS, TOO_LARGE_FOR_ONE_ACTION } from './actionSize';
 import {
   localWorkspacePreparation,
   type PreparationScope,
@@ -278,16 +280,27 @@ export const createAdmittedWorkspace = async (
         );
     }
     if (!reusable || spare?.basis !== basis) resetSpare();
-    let state: State;
+    const fork = (): State => {
+      const history = selectionHistory
+        ? selectionHistory.fork(basis.history, human)
+        : forkWorkspaceHistory(basis.history, human);
+      return { history, selections: new Map(), group: intent.group, value: false };
+    };
+    // The scope takes the history once the change is known to fit, so an oversized command
+    // can hand it an unchanged fork instead (an oversized command is refused, never sealed).
+    let state: State,
+      owned = false;
     if (spare) {
       const old = spare;
       spare = undefined;
       state = old.state;
       try {
-        scope!.ownState(state);
         if (!old.untouched()) throw Error('Retired text buffer changed while idle');
         old.unwatch();
         selectionHistory!.catchUpText(state.history, basis.history, old.update);
+      } catch (error) {
+        dispose(state);
+        throw error;
       } finally {
         old.unwatch();
         old.update.fill(0);
@@ -295,13 +308,7 @@ export const createAdmittedWorkspace = async (
       state.selections = new Map();
       state.group = intent.group;
       state.value = false;
-    } else {
-      const history = selectionHistory
-        ? selectionHistory.fork(basis.history, human)
-        : forkWorkspaceHistory(basis.history, human);
-      state = { history, selections: new Map(), group: intent.group, value: false };
-      scope?.ownState(state);
-    }
+    } else state = fork();
     const history = state.history,
       doc = history.doc;
     commands.inherit(basis.history, history);
@@ -404,18 +411,41 @@ export const createAdmittedWorkspace = async (
             selections.set(key, selectionHistory ? value : structuredClone(value));
         }
       }
-      state.value = result.value;
-      const update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0]));
+      // A later slice of a split command reports the business result of its first slice.
+      state.value = intent.continuation ? basis.value : result.value;
+      let update = own(new Uint8Array(updates.length ? Y.mergeUpdates(updates) : [0, 0])),
+        remaining = result.remaining;
+      if (update.length > MAX_JOURNAL_UPDATE) {
+        // No slice of this command fits one update, and it cannot be split soundly. Refuse this
+        // input alone: an unchanged fork completes as a no-op whose result says why.
+        const unchanged = fork();
+        for (const [key, value] of basis.selections)
+          unchanged.selections.set(key, structuredClone(value));
+        commands.inherit(basis.history, unchanged.history);
+        unchanged.history.doc.clientID = writer;
+        unchanged.value = TOO_LARGE_FOR_ONE_ACTION;
+        update.fill(0);
+        sources.length = 0;
+        remaining = undefined;
+        textOnly = false;
+        const refused = state;
+        state = unchanged;
+        dispose(refused);
+        update = own(new Uint8Array([0, 0]));
+      }
+      scope?.ownState(state);
+      owned = true;
       if (selectionHistory && scope) {
         transitions.set(state, { update, textOnly });
         // Unknown/structural transitions rescan later. A conservative negative text fact may persist.
-        if (textOnly) stable.set(history, true);
-        else if (textCommand && stable.get(basis.history) === false) stable.set(history, false);
+        if (textOnly) stable.set(state.history, true);
+        else if (textCommand && stable.get(basis.history) === false)
+          stable.set(state.history, false);
       }
       return {
         state,
         update,
-        ...(result.remaining ? { remaining: own(encode(result.remaining)) } : {}),
+        ...(remaining ? { remaining: own(encode(remaining)) } : {}),
         ...(options.captureSources
           ? {
               sources: (sources.length || options.suppressEmptySources
@@ -426,10 +456,8 @@ export const createAdmittedWorkspace = async (
           : {}),
       };
     } catch (error) {
-      if (!scope) {
-        dispose(state);
-        for (const bytes of allocated) bytes.fill(0);
-      }
+      if (!scope || !owned) dispose(state);
+      if (!scope) for (const bytes of allocated) bytes.fill(0);
       throw error;
     } finally {
       doc.off('afterTransaction', changed);
@@ -507,7 +535,8 @@ export const createAdmittedWorkspace = async (
       edit.to,
       edit.insert,
     );
-    if (!update) return undefined;
+    // A change too large for one update takes the general path, which refuses it.
+    if (!update || update.length > MAX_JOURNAL_UPDATE) return undefined;
     countLedgerWork('directTextPreparations');
     const basis = accepted,
       transactions = projectionTransactions;
@@ -557,8 +586,9 @@ export const createAdmittedWorkspace = async (
           item.meta.set('after', selectionHistory!.capture(history, selections));
           basis.selections = selections;
           basis.group = intent.group;
-          basis.value = true;
-          outcomes.set(intent.group, true);
+          // A later slice of a split command reports the business result of its first slice.
+          if (!intent.continuation) basis.value = true;
+          outcomes.set(intent.group, basis.value);
           directRevision = verifiedRevision = revision;
           verifiedTransactions = projectionTransactions;
         } finally {
@@ -683,6 +713,8 @@ export const createAdmittedWorkspace = async (
     masterMove?: WorkspaceIntent['masterMove'],
   ): WorkspaceTicket => {
     live();
+    if (command.kind === 'compose' && command.text.length > MAX_ACTION_TEXT_UNITS)
+      throw new ActionTooLarge();
     const group = ++nextGroup,
       bytes = encode({
         command,
@@ -691,6 +723,9 @@ export const createAdmittedWorkspace = async (
         ...(masterMove ? { masterMove } : {}),
       });
     try {
+      // An input that cannot fit the queue's reservation even when the queue is empty is refused
+      // here with its own sentence, rather than as a full queue.
+      if (bytes.length * 2 + MAX_JOURNAL_UPDATE > MAX_PENDING_BYTES) throw new ActionTooLarge();
       const ticket = session.submit(bytes);
       const completed = ticket.accepted
         .then((receipt) => ({
@@ -1028,8 +1063,8 @@ export const createAdmittedWorkspace = async (
           const doc = accepted!.history.doc;
           if (!editableTarget(doc, captured, today()))
             throw Error('This card is frozen or no longer editable.');
-          if (action.name === 'insert' && action.text.length > 1024 * 1024)
-            throw Error('Split the input source before admission.');
+          if (action.name === 'insert' && action.text.length > MAX_ACTION_TEXT_UNITS)
+            throw new ActionTooLarge();
           return submit({
             kind: 'text',
             target: captured,

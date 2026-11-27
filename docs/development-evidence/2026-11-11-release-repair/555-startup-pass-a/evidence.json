@@ -1,0 +1,710 @@
+{
+  "phase": 555,
+  "date": "2026-11-12",
+  "base": "8d83e19c65b12c8d73bcda3092c6621915195b1e",
+  "requested": "Measure pass A (the temporary custody owner) on a normal open; build the one-owner path of investigation 06 section 3 only if pass A is at least 20% of click-to-first-frame or at least 1 s on the 3,000-position unreduced original device.",
+  "gate": {
+    "device": "A, 3,000 own positions, unreduced, online",
+    "passAMedianMs": 5478.1,
+    "clickToFrameMedianMs": 11084.7,
+    "share": 0.495,
+    "result": "build"
+  },
+  "built": false,
+  "whyNotBuilt": {
+    "finding": "On a normal v9 open of a device that has not reduced, pass A is the only caller of verifyInboundLedger without reuse state, so the only place the fallback coverage branch (localCoverage!.check) runs; the live owner full check and its semantic audit both take reuse.coverage.check. On a reduced device both passes reach the fallback through replayLocalBaseline (src/crdt/localBaselineReplay.ts:819). A required release-validation case, on an unreduced fixture, depends on both branches running at open.",
+    "case": "test/account-receive/native.test.mjs :: cold replay refuses missing or changed content (controls coverage-without-reuse, coverage-without-fallback; artifact control-coverage.json omitted: startup fallback, owner reuse)",
+    "reconciliation": "scripts/release-validation/account-receive-wrapper.mjs reconcileReceiveEvidence asserts both single omissions refuse",
+    "manifest": "docs/release-validation-manifest.json, required stage test:test/account-receive/native.test.mjs",
+    "origin": "Q-01/Q-04 validation-control repair, 2026-09-12 (024664d9b); scope preserved by decision 2026-11-04 patch 433",
+    "sourceLines": {
+      "branches": "src/crdt/inboundLedger.ts:819-821",
+      "passACall": "src/crdt/accountStartup.ts:320",
+      "liveCall": "src/crdt/accountReceive.ts:805-812",
+      "auditIsolatedCoverage": "src/crdt/accountReceive.ts:733-734"
+    },
+    "correctsInvestigation06": "Its claim that both passes call the same functions is wrong for inbound coverage; the control is missing from its Guarantees kept list."
+  },
+  "options": [
+    {
+      "id": 1,
+      "summary": "Build as reported and amend the Q-01 coverage control and its release expectation",
+      "estimatedSavingMs": "about 5,400 less one warm load and the ancestry replay (about 100 in the profile)"
+    },
+    {
+      "id": 2,
+      "summary": "Build one owner and also run the fallback coverage branch once at open on the live verified census and records",
+      "estimatedAddedMs": "a few hundred at most at 3,000; profile puts verifyInboundLedger with receipts at about 90 and its coverage view at 20-30 synchronous; unmeasured",
+      "keepsControl": true
+    },
+    {
+      "id": 3,
+      "summary": "Keep pass A"
+    }
+  ],
+  "measurement": {
+    "host": "Apple M1 Pro, 10 cores, 32 GB, macOS 26.5.1, headless Chromium via Playwright 1.62.0, caffeinate -d; load average 7 to 9 from other sessions",
+    "path": "packaged application through the root page, setup Worker, unlock form, virtual-authenticator passkey, setup-to-account handoff, both Worker passes, Window stream, replay, fork and compare, to the second animation frame after the shell appears",
+    "buildFlags": "VITE_ACCOUNT_RETENTION_AUTO=1 RETENTION_RESUME=1 RANGE_RECEIVE=1 HISTORY_AUTO=0 BATCH=coordinated-2000 (default) plus VITE_ACCOUNT_LEDGER_PROFILE=1; checked in the opening Worker chunk",
+    "harness": "scripts/performance/open-cost/harness.ts (new)",
+    "fixtures": {
+      "source": "phase 554 snapshots, copied per open and deleted; snapshots unmodified",
+      "snap-3000/snapshot.json": "3061e58c797b92878836d48b6d69f759ffffe34c39d449c19a04794b61f7c467",
+      "snap-3000/seed.json": "3845ccde696a8607f48bed4d4b4385c33595ed4f3567c46a4a1df389cd60c1d9",
+      "snap-3000-reduced/reduced.json": "5ba5e88c639a7ebc4a985da058f1ae09208c3ad3d7d53a9d0838550946010a6f",
+      "rows": {
+        "A": 21602,
+        "B": 8108
+      }
+    },
+    "protocol": "5 repetitions of four cases interleaved within each repetition; quiet guard waits until no other Vitest or Playwright process runs and samples pgrep before each open and at its first frame",
+    "quietSet": {
+      "A-snap-3000-offline": {
+        "n": 5,
+        "formAfterNav": {
+          "median": 940.7,
+          "min": 937.4,
+          "max": 951.1
+        },
+        "clickToAuthorized": {
+          "median": 130.1,
+          "min": 114.6,
+          "max": 145.2
+        },
+        "passA": {
+          "median": 5386.2,
+          "min": 5339.2,
+          "max": 5825.0
+        },
+        "passB": {
+          "median": 5025.4,
+          "min": 4976.9,
+          "max": 5518.2
+        },
+        "ownerToEditor": {
+          "median": 212.3,
+          "min": 203.2,
+          "max": 216.7
+        },
+        "editorToFrame": {
+          "median": 62.2,
+          "min": 53.6,
+          "max": 68.5
+        },
+        "clickToFrame": {
+          "median": 10799.2,
+          "min": 10716.3,
+          "max": 11769.2
+        },
+        "passAShare": {
+          "median": 0.497,
+          "min": 0.493,
+          "max": 0.5
+        },
+        "A_physicalReads": {
+          "median": 2,
+          "min": 2,
+          "max": 2
+        },
+        "A_loadedRows": {
+          "median": 43204,
+          "min": 43204,
+          "max": 43204
+        },
+        "A_startupValidations": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_inboundVerifications": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "A_baselineExactReuses": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "B_physicalReads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_loadedRows": {
+          "median": 21602,
+          "min": 21602,
+          "max": 21602
+        },
+        "B_full": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_fullMs": {
+          "median": 4278.7,
+          "min": 4212.9,
+          "max": 4643.7
+        },
+        "B_baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "E_warmLoads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "A-snap-3000-online": {
+        "n": 5,
+        "formAfterNav": {
+          "median": 944,
+          "min": 938.5,
+          "max": 958.9
+        },
+        "clickToAuthorized": {
+          "median": 134.9,
+          "min": 122.5,
+          "max": 169.6
+        },
+        "passA": {
+          "median": 5478.1,
+          "min": 5432.4,
+          "max": 5505.8
+        },
+        "passB": {
+          "median": 5129.4,
+          "min": 5074.7,
+          "max": 5215.5
+        },
+        "ownerToEditor": {
+          "median": 210.1,
+          "min": 205.2,
+          "max": 213.9
+        },
+        "editorToFrame": {
+          "median": 115.4,
+          "min": 112.7,
+          "max": 128.5
+        },
+        "clickToFrame": {
+          "median": 11084.7,
+          "min": 11024.5,
+          "max": 11141.1
+        },
+        "passAShare": {
+          "median": 0.495,
+          "min": 0.489,
+          "max": 0.498
+        },
+        "A_physicalReads": {
+          "median": 2,
+          "min": 2,
+          "max": 2
+        },
+        "A_loadedRows": {
+          "median": 43204,
+          "min": 43204,
+          "max": 43204
+        },
+        "A_startupValidations": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_inboundVerifications": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "A_baselineExactReuses": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "B_physicalReads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_loadedRows": {
+          "median": 21602,
+          "min": 21602,
+          "max": 21602
+        },
+        "B_full": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_fullMs": {
+          "median": 4373.7,
+          "min": 4300,
+          "max": 4429
+        },
+        "B_baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "E_warmLoads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "A-snap-3000-reduced-online": {
+        "n": 5,
+        "formAfterNav": {
+          "median": 942.6,
+          "min": 937.7,
+          "max": 964.9
+        },
+        "clickToAuthorized": {
+          "median": 117.4,
+          "min": 116.0,
+          "max": 179.3
+        },
+        "passA": {
+          "median": 160.3,
+          "min": 154.0,
+          "max": 216.6
+        },
+        "passB": {
+          "median": 42.4,
+          "min": 41.6,
+          "max": 47.7
+        },
+        "ownerToEditor": {
+          "median": 26.2,
+          "min": 26.1,
+          "max": 29.6
+        },
+        "editorToFrame": {
+          "median": 57.2,
+          "min": 55.5,
+          "max": 64.2
+        },
+        "clickToFrame": {
+          "median": 401.1,
+          "min": 396,
+          "max": 537.4
+        },
+        "passAShare": {
+          "median": 0.4,
+          "min": 0.389,
+          "max": 0.404
+        },
+        "A_physicalReads": {
+          "median": 2,
+          "min": 2,
+          "max": 2
+        },
+        "A_loadedRows": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "A_startupValidations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "A_inboundVerifications": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_baselineFullReplays": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_baselineExactReuses": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_physicalReads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_loadedRows": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "B_full": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "B_fullMs": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "B_baselineFullReplays": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "E_warmLoads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        }
+      },
+      "B-snap-3000-online": {
+        "n": 5,
+        "formAfterNav": {
+          "median": 432.3,
+          "min": 413.8,
+          "max": 439.8
+        },
+        "clickToAuthorized": {
+          "median": 282,
+          "min": 276.4,
+          "max": 328.5
+        },
+        "passA": {
+          "median": 4638.6,
+          "min": 4606.4,
+          "max": 4748.7
+        },
+        "passB": {
+          "median": 3548.9,
+          "min": 3479.0,
+          "max": 4037.7
+        },
+        "ownerToEditor": {
+          "median": 105.5,
+          "min": 103.4,
+          "max": 120.7
+        },
+        "editorToFrame": {
+          "median": 55.5,
+          "min": 54.2,
+          "max": 64.9
+        },
+        "clickToFrame": {
+          "median": 8662.8,
+          "min": 8519.4,
+          "max": 9182.9
+        },
+        "passAShare": {
+          "median": 0.536,
+          "min": 0.51,
+          "max": 0.542
+        },
+        "A_physicalReads": {
+          "median": 2,
+          "min": 2,
+          "max": 2
+        },
+        "A_loadedRows": {
+          "median": 16216,
+          "min": 16216,
+          "max": 16216
+        },
+        "A_startupValidations": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "A_inboundVerifications": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "A_baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "A_baselineExactReuses": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "B_physicalReads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_loadedRows": {
+          "median": 8108,
+          "min": 8108,
+          "max": 8108
+        },
+        "B_full": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "B_fullMs": {
+          "median": 3153.9,
+          "min": 3099.5,
+          "max": 3614
+        },
+        "B_baselineFullReplays": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "E_warmLoads": {
+          "median": 1,
+          "min": 1,
+          "max": 1
+        }
+      }
+    },
+    "firstSetAgreement": {
+      "passAMedianMs": [
+        5510.3,
+        5478.1
+      ],
+      "clickToFrameMedianMs": [
+        11318.2,
+        11084.7
+      ],
+      "note": "first set had no quiet guard; another project's Playwright runs appeared at three 30-second samples"
+    },
+    "overlapInQuietSet": "one original online open (r4) found another project's run at its first frame (kept, inside the range); one joined open waited 15 s before starting",
+    "profile": "two sampled opens (0.5 ms) of an unminified build of the same source; windows 6.1 and 7.0 s with the profiler against 5.5 s without; synchronous inclusive attribution in profile-attribution.json"
+  },
+  "sourceChanges": [],
+  "newFiles": [
+    {
+      "path": "scripts/performance/open-cost/harness.ts",
+      "sha256": "352c2a1001e1cda9fa161b56af2f828e62b28c52923e8b96fd716c48c3dbff98"
+    },
+    {
+      "path": "scripts/performance/open-cost/playwright.config.ts",
+      "sha256": "d71f36c8c5a9618a2bdd3a83e133faee7a5e6d527962fadd883a5465dc620e07"
+    }
+  ],
+  "rawResultsKeptOutOfGit": [
+    {
+      "path": "555/open/part1q/A-snap-3000-offline-r1.json",
+      "sha256": "e3e1827c44e80c479a7b84c14f589480815253f72b5d6bfda00d772323da6e72"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-offline-r2.json",
+      "sha256": "8910b4be12cfd8a1e079b11bef37d74814871b32cbcf66e32f0306678a343389"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-offline-r3.json",
+      "sha256": "309890740dccb9550c0489640357cb2e5a0fc7bcda499ee44232fb9ce6bc6499"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-offline-r4.json",
+      "sha256": "c1c731a497d9d4a5af94ebcd8e1794051fab8d6f8bfb90631c4c2a01ec54d82a"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-offline-r5.json",
+      "sha256": "e9c739a694d81914ba4b7f30a69e94e99141359ab2fc18e3abcc4cfedbdac8fa"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-online-r1.json",
+      "sha256": "b84976a4e8eec8c1a4c4f0fad8fae990cf58621f652b141a48134a59dbc15f55"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-online-r2.json",
+      "sha256": "5b86a40951cf6f83c45dad751d401b029d1377d3dda87707155667d6dc0e8893"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-online-r3.json",
+      "sha256": "6eb87b26691427e54bd9cfa081ba0784ac1fb82c3b64ddf3e9d4c2cc586d0a3a"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-online-r4.json",
+      "sha256": "5fdee4bfedf86f83f4c22fedc4b131df4922fc02fa684ce302d7e748433ff435"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-online-r5.json",
+      "sha256": "7784212745727108aebe00ca30e8e59b69aab4c9530b4a90aec9177af145a86b"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-reduced-online-r1.json",
+      "sha256": "b09f45e73c052d174f8b7f66ea12269e37b3ff5529e1116dc52ce8b44d969ce3"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-reduced-online-r2.json",
+      "sha256": "b369f899f8b6b1d0c5efd893f4852d8b5ceef8b69b2fb6d2f690b7e8806494e8"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-reduced-online-r3.json",
+      "sha256": "786151b81bbeabe44f35f5e4f4ecc891263a81dd3eca81884116a02f3e0e4fee"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-reduced-online-r4.json",
+      "sha256": "0e6f65b2e7b4d95441a56669337aa22e554e79fe71d4803b1e3d6d5763ddf707"
+    },
+    {
+      "path": "555/open/part1q/A-snap-3000-reduced-online-r5.json",
+      "sha256": "0908c5ecc28850524897218d3cbd271839d6017c8eb706362c28b533be4af493"
+    },
+    {
+      "path": "555/open/part1q/B-snap-3000-online-r1.json",
+      "sha256": "a99ecdf86ee549a37bd9cf0dde3301a1c4377a6775b9913fead50604d0fe2c10"
+    },
+    {
+      "path": "555/open/part1q/B-snap-3000-online-r2.json",
+      "sha256": "4719d561e7995b5b06d313e3144a70c9066f403bddd35e0f1e1c17291fe2918b"
+    },
+    {
+      "path": "555/open/part1q/B-snap-3000-online-r3.json",
+      "sha256": "6293f6b2522ae2bfd25ea197eb1b42cf3926d0c36e97ca68fe318937836c4d6d"
+    },
+    {
+      "path": "555/open/part1q/B-snap-3000-online-r4.json",
+      "sha256": "b907b0d063bd93c0bb2655fc6855929581e169fcf5d7e173b44cb3edc57e61ac"
+    },
+    {
+      "path": "555/open/part1q/B-snap-3000-online-r5.json",
+      "sha256": "e1f54749641374d7c15accb15223e36395685d8c3f6c863871945c21edb444e9"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-offline-r1.json",
+      "sha256": "2028da3f5341ed2b4c5a973a1f4c5ac1949db4a579194f4653c040f71d5c63f6"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-offline-r2.json",
+      "sha256": "fbca6fda2da3a0c2852a2133a6e9d8f9862a48715518cf177d5c42397b14633d"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-offline-r3.json",
+      "sha256": "3b81b0e8e77fee73da15a3e2ef75c231c2bc71bf84b4ddf6c06e3af4183a871b"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-offline-r4.json",
+      "sha256": "d597a2d6e0de0d6139a2bf3b7f2b043c85cbc30220cf14a246734aa285572721"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-offline-r5.json",
+      "sha256": "3617bc3881963368bed89d6e5ae48cf52e406f8f6f6e46344118ca7f91c016a8"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-online-r1.json",
+      "sha256": "6afef86dfe0ab2f7ade586824c5df9fdd345cdc876a628820e60755b8dcda14f"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-online-r2.json",
+      "sha256": "c4f9a4ef411dce0c6a1774c5b4e28c307c9667540dfb731dcc4d6186c00a09b1"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-online-r3.json",
+      "sha256": "9a3afc9e334a081457d6fedfb0b3db13057a259b5a46e896e0d6d1f4096ff54d"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-online-r4.json",
+      "sha256": "19d025a4e63890b2a8e54a465a656479ca7d0f59e63b6972c38760960ae3b4bf"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-online-r5.json",
+      "sha256": "e7c413403c9ae7ec06af69dd2748f8743c5fb894fd7ca4c0e256e34145c22f87"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-reduced-online-r1.json",
+      "sha256": "db6005b1f914b86c86073d31415807663d28169796bc16645e422c2c505b684c"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-reduced-online-r2.json",
+      "sha256": "a6033e9749c5883df557a41daee7fd20261972daabd999d1b0ca47b258d83c21"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-reduced-online-r3.json",
+      "sha256": "3a38c2ea67fedc6d87cbf914846b0206fccf088393a596d97419fbd4496731ea"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-reduced-online-r4.json",
+      "sha256": "f33f101a50ae1e30187a4e60a2ff645d5a8db3e662a8494a065c325957d09c15"
+    },
+    {
+      "path": "555/open/part1/A-snap-3000-reduced-online-r5.json",
+      "sha256": "e74e4c988c021e35a4108bbd1942c9e8c24e5a652ca27d103488346e44f81eba"
+    },
+    {
+      "path": "555/open/part1/B-snap-3000-online-r1.json",
+      "sha256": "37f57d704c2c1cf23d4ac4dbbcf3d472c39868433293b0bd4fcd879d574d1286"
+    },
+    {
+      "path": "555/open/part1/B-snap-3000-online-r2.json",
+      "sha256": "8b1e8dfd58f56dfe017d3315fe601a62143b3106c2bd2c6626ceab5eab60524a"
+    },
+    {
+      "path": "555/open/part1/B-snap-3000-online-r3.json",
+      "sha256": "7a6c5ae2567b86f6197491959c8b2808ebb6ed75356bc4742dc796a9c4c0ee11"
+    },
+    {
+      "path": "555/open/part1/B-snap-3000-online-r4.json",
+      "sha256": "a23b5d7f423cb76cb617ee1c797f0656d28556bcec6c497255e568dfdb3012e4"
+    },
+    {
+      "path": "555/open/part1/B-snap-3000-online-r5.json",
+      "sha256": "ad302e73a4f77986ba3c8887449e4bc6e71e910f84b0394ecd9d31859f7aef4c"
+    },
+    {
+      "path": "555/open/profile/A-snap-3000-online-r1.cpuprofile.json",
+      "sha256": "78df85ccc9898ad13b18c6cd9053354c5c3938744aa49460a7990618f84fdc26"
+    },
+    {
+      "path": "555/open/profile/A-snap-3000-online-r1.json",
+      "sha256": "5a4b9d79b67fcc3200c9a7afa63d9ef4779bec5c052e9f4ed34a9f0fc9541224"
+    },
+    {
+      "path": "555/open/profile/A-snap-3000-online-r2.cpuprofile.json",
+      "sha256": "7bb8f194998c990aac6f3982a1f459b93bd7aa96912912a202d17761747b0e6b"
+    },
+    {
+      "path": "555/open/profile/A-snap-3000-online-r2.json",
+      "sha256": "2d4358ad9ba539b226fcdaa502341a20a35318f94627cf5129e19c3456749d42"
+    },
+    {
+      "path": "555/builds/base/assets/firstDeviceOwner.worker-B0AvmPhS.js",
+      "sha256": "e0306dfbfe278ba66a8d31267345607fd8fd03da15eb177e4be80be0aff6fa47"
+    },
+    {
+      "path": "555/builds/base/assets/enrollmentOwner.worker-CRhEMIlL.js",
+      "sha256": "a8c404336efa48f3f7b2c18b3184f1b0f812a0d96eab47b4bc1090a2965f2357"
+    },
+    {
+      "path": "555/builds/unmin/assets/firstDeviceOwner.worker-NfiqJCB3.js",
+      "sha256": "694141567f1070212fd3dbc0cdbcb7eec591ce2cae96fff53ca8dbe9469cc25e"
+    }
+  ],
+  "notVerified": [
+    "Part 2 (no build, tests, mutation controls or paired comparison)",
+    "time to the first completed background audit after open",
+    "option 2 cost beyond profile attribution",
+    "other tests that the one-owner path might change beyond the coverage control",
+    "real device, the affected account, WebKit, Firefox, a phone"
+  ],
+  "bookkeeping": {
+    "inventory": "scripts/release-validation/check.mjs --record: the two new harness files added to the graph, manifest inventory digest moved; inventory test 10 of 10",
+    "plan": "plan.mjs --record: blocked, 1,132 obligations, 561 unresolved (unchanged)",
+    "census": "no runtime source changed; pnpm account:crypto-prep passes 6 of 6 with no census change",
+    "denominators": "unchanged: no test file added",
+    "checks": "CI contract commands pass; nine adapter test files pass 178 of 178; pnpm build (typecheck, budget, origin) passes; pnpm trace:check passes after the gates re-minted their receipts",
+    "notWritten": "no docs/decisions.md entry and no docs/progress.md section, since nothing was built (coordinator instruction for a held build)"
+  },
+  "review": {
+    "fullSuite": "pnpm test --maxWorkers=1 on the final tree: 355 files, 3,690 passed and 1 existing skip, 383.39 s",
+    "checks": "pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check after the build, node --test test/account-history/*.test.mjs, test/account-service-delivery/*.test.mjs and test/account-service-inbound/*.test.mjs, and the CI session, authority and quarantine steps",
+    "finding": "read again at review: verifyInboundLedger's three coverage branches (inboundLedger.ts), accountStartup.ts passing no reuse state, the required case in test/account-receive/native.test.mjs that omits each branch in turn, and reconcileReceiveEvidence in the release wrapper. The reason for not building stands."
+  }
+}

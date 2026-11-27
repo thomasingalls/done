@@ -1,0 +1,227 @@
+{
+  "phase": 556,
+  "date": "2026-11-12",
+  "base": "2d42b9ca5",
+  "requested": "coordinating session, 2026-11-12: measure a sliced reduction against one uncached pass, then build change A (slice budget sized to the attempt's setup and last save, rho = 2 to start) and change D (no cached opened rows) from investigation 10, measuring after each; tune rho only if the numbers ask; E, G and F not started",
+  "amends": [
+    "the two-second slice target of the resumable preparation journal (2026-10-28 journal contract; hardening 336)",
+    "use, not format, of phase 127's opened-row receipts: no attempt consults them"
+  ],
+  "checksNarrowed": [],
+  "checksRunMoreOften": ["authenticated decryption of every saved row on every attempt"],
+  "sourceSha256": {
+    "src/crdt/accountReceive.ts": "501f9ec0a46dbdba51ba903388c5cbc8a9a5cc9d913f2edaab4ab21dcbb9a5a4",
+    "src/crdt/automaticLocalRetention.ts": "c9d62590027227b95194c4b83b512a86ef49bccf77100d324204762305530328",
+    "src/crdt/contentStore.ts": "3fd24f0fba6452576ff78b92eb290cf90733babf3fb22d430a0db55ba9b66501",
+    "src/crdt/retentionPreparation.ts": "87bb31c2fac3e23ce498162092485075daa23964bac4ac82ba643f55fd56a522",
+    "src/crdt/localRetentionPlan.ts": "84081c4435ccc8ac0ebe55d6c7102642a01c016f3a14266c60ce5ec839baecdc",
+    "test/retentionSliceBudget.test.ts": "2d83a862547b1f62706c51ed7390fb9c7992de709cd3c8c08c9a8f3e4fea9eb2",
+    "test/retentionPreparationOwner.test.ts": "291e984d6ebe7fd018bff8c19efe2275426b48bb703040f9a653e5c0c4dea25f"
+  },
+  "probe": {
+    "files": {
+      "scripts/performance/reduction-cost/reduction.probe.ts": "663c6de7f1e79034713b99f6d711cdd6a1fba707f8404350d46fcf61e4724178",
+      "scripts/performance/reduction-cost/vitest.config.ts": "af278401a4e96225e1962114f22fe18c035430064b566fe9dd2d50d871190c32",
+      "scripts/performance/reduction-cost/run.sh": "94dcfb168cb57a81ff28e03b94ef1e104c7b50e7d950e7c4311b21ccfa09dc45",
+      "scripts/performance/reduction-cost/summarise.py": "cb015c2edb02c912ffa7c7c6de256c8272360df6688b3a5e0ad02640a1052e74",
+      "scripts/performance/reduction-cost/mutation-controls.py": "ee5c00de61478b051d70a210cdd3e4df5548928ab3994c6b72facfc4d135e7f4"
+    },
+    "probeFormattedAfterRuns": "whitespace only (oxfmt); smoke-run again afterwards",
+    "environment": "Node v26.13.1, fake in-memory IndexedDB, real WebCrypto, one Mac with load averages of 4 to 12 from other work; no other test run of this seat overlapping",
+    "fixture": "test/local-baseline/fixtures.mjs memberFixture: per pair one own position (update, capsule, position, attempt, envelope, submission, response) and one received peer receipt, 9 rows; sealed once per size and copied byte for byte into a fresh store for every run",
+    "arms": {
+      "uncached": "VITE_ACCOUNT_RETENTION_RESUME off: one pass, the floor",
+      "sliced": "production profile, PREPARATION_SLICE_MS 2000",
+      "sliced500": "slice target 500 ms: emulates a device four times slower than this host"
+    },
+    "runs": "3 per arm up to 1,024 pairs, 2 at 2,048; the phase 555 source's second 500 ms run at 2,048 ran out of memory in its shared process and is missing",
+    "rawResults": "outside git; sha256 of each result file in raw-hashes.json (167 files)",
+    "tables": "tables.md"
+  },
+  "baseline": {
+    "pairs": [128, 256, 512, 1024, 2048],
+    "rows": [1152, 2304, 4608, 9216, 18432],
+    "uncachedWallMs": [679, 1424, 3748, 10563, 36732],
+    "sliced2000": {
+      "wallRatio": [1.13, 1.37, 1.76, 1.89, 2.67],
+      "cpuRatio": [0.95, 1.29, 2.09, 2.71, 4.91],
+      "fencedSaves": ["0", "0", "1", "2", "4-6"]
+    },
+    "sliced500": {
+      "wallRatio": [1.66, 2.17, 2.46, 4.09, 7.68],
+      "cpuRatio": [1.69, 2.51, 3.94, 8.46, 15.74],
+      "fencedSaves": ["1", "2", "4", "9-11", "21"],
+      "inventoryReads": [8, 11, 17, 32, 68],
+      "prefixCaptures": [7, 13, 25, 55, 127]
+    },
+    "quadratic": true
+  },
+  "uncachedByStageMs": {
+    "source": "A and D runs (the uncached pass is unchanged)",
+    "opening": [34, 66, 136, 328, 722],
+    "verifying": [372, 1506, 1420, 3487, 8467],
+    "building": [15, 25, 56, 195, 838],
+    "coverage": [148, 615, 1702, 6522, 24655],
+    "commit": [64, 65, 211, 349, 570],
+    "total": [650, 2292, 3553, 10946, 35377],
+    "vLinear": false,
+    "why": "the plan's coverage stage checks each update row against the candidate snapshot and forks the whole candidate document for each row not stored verbatim (localRetentionPlan.ts coverage loop); verifying grows about 2.3 times per doubling"
+  },
+  "afterA": {
+    "uncachedWallMs": [670, 1363, 3832, 10715, 37509],
+    "sliced2000": {
+      "wallRatio": [1.23, 1.42, 1.7, 1.45, 1.18],
+      "cpuRatio": [1.23, 1.4, 2.08, 1.96, 1.56],
+      "fencedSaves": ["0", "0", "1", "1", "1"]
+    },
+    "sliced500": {
+      "wallRatio": [1.76, 1.77, 1.8, 1.61, 1.51],
+      "cpuRatio": [2.03, 1.97, 2.71, 2.16, 2.13],
+      "fencedSaves": ["1", "1", "2", "1-2", "2"],
+      "inventoryReads": [8, 8, 11, 11, 11],
+      "prefixCaptures": [7, 7, 13, 13, 13]
+    }
+  },
+  "afterAD": {
+    "uncachedWallMs": [650, 2292, 3553, 10946, 35461],
+    "uncachedNote": "the 256-pair median is high: runs of 2.4, 1.4 and 2.3 s under load",
+    "sliced2000": {
+      "wallRatio": [1.16, 0.77, 1.19, 1.44, 1.22],
+      "cpuRatio": [1.05, 0.94, 1.17, 1.88, 1.47],
+      "fencedSaves": ["0", "0", "0", "1", "1"]
+    },
+    "sliced500": {
+      "wallRatio": [1.72, 0.97, 1.45, 1.59, 1.24],
+      "cpuRatio": [1.64, 1.3, 1.54, 1.86, 1.51],
+      "fencedSaves": ["0-1", "1", "1", "1", "1"],
+      "inventoryReads": [8, 8, 8, 8, 8],
+      "prefixCaptures": [7, 7, 7, 7, 7]
+    },
+    "journalAt2048PairsMiB": { "afterA": 19.0, "afterAD": 4.6 }
+  },
+  "ratioTried4": {
+    "adopted": false,
+    "sliced2000": { "wallRatio": [1.51, 1.27, 1.27, 1.41, 1.15], "cpuRatio": [1.44, 1.2, 1.22, 1.79, 1.3] },
+    "sliced500": { "wallRatio": [1.3, 1.62, 1.44, 1.36, 1.08], "cpuRatio": [1.24, 1.73, 1.2, 1.6, 1.16] },
+    "why": "within run-to-run noise except at 2,048 pairs, still 1.79 by CPU at 1,024, while doubling what one interruption can lose"
+  },
+  "stopCondition": {
+    "rule": "at every size the sliced reduction costs at most 1.5 times the uncached pass, and fenced saves grow no faster than log N",
+    "saves": "met: constant 0 or 1 at every size",
+    "wallTime": "met with the 2 s target at every size; on the emulated slower device met except 128 pairs (1.72, on 0.65 s) and 1,024 pairs (1.59)",
+    "cpuTime": "not met at 1,024 pairs (1.88 and 1.86), 512 pairs on the slower device (1.54) or 2,048 pairs on the slower device (1.51)",
+    "remainderAt1024Pairs": {
+      "slicedMs": 15761,
+      "uncachedMs": 10946,
+      "secondAttemptSetupMs": 1925,
+      "firstAttemptJournalSetupMs": "about 700",
+      "fencedSaveMs": 830,
+      "perCheckBookkeepingMs": "about 1,400 (the rest)"
+    }
+  },
+  "newUnitCases": { "test/retentionSliceBudget.test.ts": 9 },
+  "newTestFiles": ["test/retentionSliceBudget.test.ts"],
+  "changedExistingCases": {
+    "test/retentionPreparationOwner.test.ts": [
+      "journal mock drops setupSince, carriedMs and deadline: its cases force a pause with a clock that charges 2.1 s per read, and the grown budget measured on that clock stopped four of them pausing; bodies unchanged",
+      "'a paused read task returns only a sealed handoff…' now asserts that a resumed attempt opens row 1 again (change D), where it asserted the opened-row cache"
+    ]
+  },
+  "failedOnBase": {
+    "cases": 10,
+    "detail": "all 9 new cases and the restated owner case fail with the five changed sources restored to HEAD; in the final-text run two fail on PREPARATION_SETUP_RATIO's absence, and an earlier run with the literal 2 shows them failing on their assertions",
+    "record": "base-tree-run.txt"
+  },
+  "mutationControls": {
+    "fixed 2 s budget": 6,
+    "budget ignores the last save's duration": 1,
+    "budget ignores the window": 1,
+    "no plain slice after an interruption": 2,
+    "scheduler does not pass the window": 1,
+    "cached row accepted without its check": 4,
+    "record": "mutation-controls.txt"
+  },
+  "relatedFilesPassed": { "files": 36, "cases": 381, "record": "related-run.txt" },
+  "keptUnmodified": [
+    "the other phase 541 files",
+    "test/retentionPreparationFreshSlice.test.ts",
+    "test/retentionPreparationScheduling.test.ts",
+    "test/automaticLocalRetention.test.ts",
+    "test/reductionSyncHold.test.ts",
+    "test/retentionReductionHold.test.ts",
+    "test/reductionHoldDutyCycle.test.ts",
+    "test/retentionFenceCollision.test.ts"
+  ],
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": true,
+  "fullUnit": "not run by this seat; the coordinating session runs it once before the commit",
+  "inventory": {
+    "recorded": true,
+    "obligations": 1133,
+    "unresolved": 561,
+    "caseDenominatorBefore": 3035,
+    "caseDenominator": 3044,
+    "vitestReviewedFilesBefore": 118,
+    "vitestReviewedFiles": 119,
+    "generalStagesBefore": 303,
+    "generalStages": 304,
+    "vitestReviewedStagesBefore": 137,
+    "vitestReviewedStages": 138
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 526,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      { "label": "done/source-capture/v1", "path": "src/crdt/localRetentionPlan.ts", "from": 508, "to": 504 },
+      { "label": "done/account-spool/v1", "path": "src/crdt/localRetentionPlan.ts", "from": 514, "to": 510 },
+      { "label": "done/account-delivery/v1", "path": "src/crdt/localRetentionPlan.ts", "from": 515, "to": 511 }
+    ],
+    "constructionRegistryLinesFollowed": 3
+  },
+  "anchors": {
+    "checked": 172,
+    "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the five edited sources occurs the same number of times now",
+    "exceptions": "'performance.now()' and '} catch (cause) {' occur more often in contentStore.ts; neither is a split anchor on that file",
+    "harnessAnchorsUntouched": [
+      "PREPARATION_SLICE_MS = 2000;",
+      "LOCAL_RETENTION_MIN_RECORDS = 1024;",
+      "remove: result.removeLocalHistory,",
+      "const result = task.step(() => structuredClone(openedView!.baseline!));"
+    ]
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "accountCryptoAudit": "stops at 16 open constructions, as on main",
+  "notRun": [
+    "the full unit suite",
+    "pnpm build and pnpm trace:check",
+    "browser and native suites (pnpm test:local-baseline fails before any change; its repair is queued separately)",
+    "any real device or account"
+  ],
+  "review": {
+    "by": "coordinating session, 2026-11-13",
+    "read": "the diff of the five sources and both test files, the journal's pause and capacity rules, the scheduler's hold and poll-deferral code, the verifier identity, the base-tree and mutation outputs",
+    "fullUnit": { "files": 356, "passed": 3699, "skipped": 1, "failed": 0 },
+    "independentControl": "budget fixed at the plain target on the final tree: 'fenced saves and full reads stay nearly flat while history grows fourfold' fails, 97 saves against a bound of 26; source restored byte for byte",
+    "corrected": "the record said a device interrupted at a steady rhythm finishes as it did before; it finishes, but each saved plain-target slice is followed by a grown slice that is lost if cut, so in that regime it is slower than before (not measured)",
+    "noted": [
+      "a first slice capped by the window has no margin for its save, because no save has been timed yet; the cap binds only when setup exceeds about a third of the window",
+      "the carried save duration is kept by the content owner until the next save or a reopen, so it can lengthen the first slice of a later reduction, within the window"
+    ],
+    "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, and the CI session, authority and quarantine steps"
+  },
+  "scratch": "about 2 MB of probe output and helper scripts under the session scratchpad; no copy of the repository",
+  "deployed": false
+}

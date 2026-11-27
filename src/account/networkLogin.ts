@@ -63,6 +63,41 @@ export type LoginStatus =
   | 'sign-out-pending'
   | 'signed-out';
 
+/** Why the last sign-in attempt did not finish, when the status alone does not say (phase 551).
+ * A session refusal is unsigned: it only chooses the sentence. */
+export type LoginProblem = 'unreachable' | 'busy' | 'unavailable' | 'outdated' | 'refused';
+/** Refusals that "reconnect" already answers: the passkey ceremony has to run again. */
+const CEREMONY_REFUSALS = new Set([
+  'unknown-attempt',
+  'request-conflict',
+  'proof-conflict',
+  'invalid-proof',
+  'expired',
+  'cancelled',
+  'retry-unavailable',
+  'sign-in-required',
+  'access-required',
+]);
+const loginProblem = (refusal: string): LoginProblem | undefined =>
+  refusal === 'capacity'
+    ? 'busy'
+    : refusal === 'storage-unavailable'
+      ? 'unavailable'
+      : refusal === 'malformed'
+        ? 'outdated'
+        : CEREMONY_REFUSALS.has(refusal)
+          ? undefined
+          : 'refused';
+/** A session request with no usable answer, or one the service refused. */
+class LoginTrouble extends Error {
+  constructor(
+    readonly problem: LoginProblem | undefined,
+    options?: ErrorOptions,
+  ) {
+    super('Network login did not finish', options);
+  }
+}
+
 /** Explicit connection is required or already in progress; lane retries cannot replace it. */
 export const networkLoginNeedsPasskey = (status: LoginStatus | undefined) =>
   status === 'connect' || status === 'reconnect' || status === 'connecting';
@@ -148,6 +183,8 @@ export class NetworkLogin {
   readonly #post: Post;
   readonly #stop = new AbortController();
   #status: LoginStatus = 'closed';
+  #problem: LoginProblem | undefined;
+  #warmProblem: LoginProblem | undefined;
   #listeners = new Set<() => void>();
   #vault: SessionVault | undefined;
   #proof: BindingProof | undefined;
@@ -213,15 +250,25 @@ export class NetworkLogin {
     return this.#stop.signal.aborted;
   }
   getSnapshot = () => this.#status;
+  getProblem = () => this.#problem;
   subscribe = (fn: () => void) => {
     this.#listeners.add(fn);
     return () => {
       this.#listeners.delete(fn);
     };
   };
-  #publish(status: LoginStatus) {
+  #publish(status: LoginStatus, problem?: LoginProblem) {
     this.#status = status;
+    this.#problem = problem;
     for (const fn of this.#listeners) fn();
+  }
+  /** A session request; a rejection (no reply, a timeout, a body outside the closed list) is no answer. */
+  async #ask(operation: SessionOperation, body: unknown) {
+    try {
+      return await this.#post(operation, body, this.#stop.signal);
+    } catch (cause) {
+      throw new LoginTrouble('unreachable', { cause });
+    }
   }
   #current(epoch: number) {
     this.#stop.signal.throwIfAborted();
@@ -246,21 +293,20 @@ export class NetworkLogin {
       retryKey = b64(crypto.getRandomValues(new Uint8Array(32))),
       epoch = this.#epoch;
     this.#warming = (async () => {
+      this.#warmProblem = undefined;
       try {
-        const view = await this.#post(
-          'begin',
-          {
-            accountId: binding.accountId,
-            retryKey,
-            unlock: { nonce, principalId: binding.principalId, credentialId: binding.credId },
-          },
-          this.#stop.signal,
-        );
+        const view = await this.#ask('begin', {
+          accountId: binding.accountId,
+          retryKey,
+          unlock: { nonce, principalId: binding.principalId, credentialId: binding.credId },
+        });
         this.#current(epoch);
         if (view.ok && view.stage === 'challenge' && view.unlock)
           this.#prepared = { nonce, retryKey, view };
-      } catch {
-        /* Offline/slow service never delays local unlock. */
+        else if (!view.ok) this.#warmProblem = loginProblem(view.refusal) ?? 'refused';
+      } catch (cause) {
+        /* Offline/slow service never delays local unlock; a later connect names why. */
+        if (cause instanceof LoginTrouble) this.#warmProblem = cause.problem;
       }
     })().finally(() => {
       this.#warming = undefined;
@@ -523,15 +569,16 @@ export class NetworkLogin {
       this.#current(epoch);
       let held = this.#held;
       if ('kind' in held) {
-        const r = await this.#post(
-          'finish',
-          { retryKey: held.retryKey, attemptId: held.attemptId, response: held.response },
-          this.#stop.signal,
-        );
+        const r = await this.#ask('finish', {
+          retryKey: held.retryKey,
+          attemptId: held.attemptId,
+          response: held.response,
+        });
         this.#current(epoch);
         if (!r.ok) {
           this.#publish(
             ['storage-unavailable', 'capacity'].includes(r.refusal) ? 'disconnected' : 'reconnect',
+            loginProblem(r.refusal),
           );
           return;
         }
@@ -544,14 +591,15 @@ export class NetworkLogin {
       }
       const body = { sessionId: held.sessionId, renewalToken: held.renewalToken };
       // Sealing precedes acknowledgement. Repeating it after crash is harmless.
-      await this.#post('acknowledge', body, this.#stop.signal);
+      await this.#ask('acknowledge', body);
       this.#current(epoch);
-      const r = await this.#post('renew', body, this.#stop.signal);
+      const r = await this.#ask('renew', body);
       this.#current(epoch);
       if (!r.ok) {
         this.#access = undefined;
         this.#needsSignIn = r.refusal === 'sign-in-required';
-        this.#publish(this.#needsSignIn ? 'reconnect' : 'disconnected');
+        if (this.#needsSignIn) this.#publish('reconnect');
+        else this.#publish('disconnected', loginProblem(r.refusal) ?? 'refused');
         return;
       }
       if (
@@ -579,8 +627,9 @@ export class NetworkLogin {
       expire();
       this.#publish('remembered');
       return r.accessToken;
-    } catch {
-      if (!this.#stop.signal.aborted && epoch === this.#epoch) this.#publish('disconnected');
+    } catch (cause) {
+      if (!this.#stop.signal.aborted && epoch === this.#epoch)
+        this.#publish('disconnected', cause instanceof LoginTrouble ? cause.problem : undefined);
       return;
     }
   }
@@ -613,11 +662,12 @@ export class NetworkLogin {
       this.#current(epoch);
       const p = this.#prepared;
       this.#prepared = undefined;
-      if (!p || !(await this.#validPrepared(p, this.#proof.stored.binding)))
+      if (!p) throw new LoginTrouble(this.#warmProblem);
+      if (!(await this.#validPrepared(p, this.#proof.stored.binding)))
         throw Error('Challenge unavailable');
       await this.#run((task) => this.#prove(task, this.#proof!, this.#assert!, p));
       await this.access();
-    } catch {
+    } catch (cause) {
       if (!this.#stop.signal.aborted && epoch === this.#epoch)
         this.#publish(
           this.#needsSignIn || this.#held === 'signed-out'
@@ -625,6 +675,7 @@ export class NetworkLogin {
             : !this.#held
               ? 'connect'
               : 'disconnected',
+          cause instanceof LoginTrouble ? cause.problem : undefined,
         );
     } finally {
       this.#connecting = false;
@@ -633,14 +684,10 @@ export class NetworkLogin {
   async #connectEnrollment() {
     const epoch = this.#epoch,
       retryKey = b64(crypto.getRandomValues(new Uint8Array(32)));
-    const v = await this.#post(
-      'begin',
-      { accountId: this.#identity!.accountId, retryKey },
-      this.#stop.signal,
-    );
+    const v = await this.#ask('begin', { accountId: this.#identity!.accountId, retryKey });
     this.#current(epoch);
+    if (!v.ok) throw new LoginTrouble(loginProblem(v.refusal) ?? 'refused');
     if (
-      !v.ok ||
       v.stage !== 'challenge' ||
       v.unlock ||
       !secret(v.attemptId) ||

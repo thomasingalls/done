@@ -1,0 +1,20 @@
+#!/bin/sh
+# Phase 552 base-tree run: the seven edited sources at 51779e97d, the new modules, tests and
+# fixtures kept (no base source imports the new modules). Restores phase 552 from the backup.
+set -u
+cd <worktree>
+S=<scratch>
+BASE=51779e97d
+for f in src/account/historyFailure.ts src/account/privateDeliveryHttp.ts src/crdt/accountDelivery.ts \
+  src/crdt/accountReceive.ts src/crdt/accountSessionBridge.ts src/crdt/accountSyncDriver.ts src/ui/SyncNotice.tsx; do
+  git show "$BASE:$f" > "$f"
+done
+git diff --stat
+echo "=== node --test test/account-history/delivery-refusals.test.mjs"
+timeout 900 node --test test/account-history/delivery-refusals.test.mjs > $S/base-delivery.txt 2>&1; echo "exit $?" >> $S/base-delivery.txt
+echo "=== vitest"
+timeout 600 npx vitest run test/syncRefusal.test.ts test/syncNotice.test.tsx test/accountSessionBridge.test.ts > $S/base-vitest.txt 2>&1; echo "exit $?" >> $S/base-vitest.txt
+echo "=== node --test test/account-sync/refusal-native.test.mjs"
+timeout 600 node --test --test-concurrency=1 test/account-sync/refusal-native.test.mjs > $S/base-native.txt 2>&1; echo "exit $?" >> $S/base-native.txt
+tar xf $S/final/tree.tar
+git diff | shasum | diff - $S/final/diff.sha && echo "restored"

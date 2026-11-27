@@ -96,7 +96,8 @@ const collectionLines = (bodies: readonly string[]): string[] => {
   const out: string[] = [];
   bodies.forEach((body, index) => {
     if (index > 0) out.push('');
-    out.push(...encodeCard(body));
+    // One push per line: a card's lines spread as call arguments throw past the engine's limit.
+    for (const line of encodeCard(body)) out.push(line);
   });
   return out;
 };

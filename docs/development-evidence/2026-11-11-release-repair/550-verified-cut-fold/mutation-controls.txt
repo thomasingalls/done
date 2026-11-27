@@ -1,0 +1,35 @@
+M1 replay of a committed install re-requires the chain: exit 1; Tests  2 failed | 5 passed (7)
+    × full replay, the live verified install and a cold reopen reach the same state 97ms
+    × only a committed installation older builds cannot replay asks for a fold, and a fold clears it 81ms
+M2 gate ignores verified evidence: exit 1; Tests  3 failed | 4 passed (7)
+    × verifies both cuts against the chain read up to the retained frontiers, then installs 126ms
+    × full replay, the live verified install and a cold reopen reach the same state 96ms
+    × only a committed installation older builds cannot replay asks for a fold, and a fold clears it 95ms
+M3 read never compares the end link to the retained frontier: exit 1; Tests  1 failed | 6 passed (7)
+    × refuses an inconsistent cut as integrity, where skipping the cut would have merged it 71ms
+M4 skip: unknown retired cuts accepted online (the rejected draft): exit 1; Tests  1 failed | 6 passed (7)
+    × verifies both cuts against the chain read up to the retained frontiers, then installs 121ms
+M5 served-page failures not normalized to integrity: exit 1; Tests  1 failed | 6 passed (7)
+    × refuses tampered entries in the verification read; short honest pages still verify 63ms
+M6 driver does not read the standing condition: exit 1; Tests  1 failed | 22 passed (23)
+    × keeps an unverified history snapshot named while other devices keep arriving, until it clears 3ms
+M7 notice has no sentence for it: exit 1; Tests  1 failed | 3 passed (4)
+    × names an unverified history snapshot, says what resolves it, and offers no ineffective retry 3ms
+M9 a retried read hides the standing condition (the masked browser run): exit 1; Tests  1 failed | 22 passed (23)
+    × keeps an unverified history snapshot named while other devices keep arriving, until it clears 5ms
+M10 a committed installation never asks for a fold: exit 1; Tests  1 failed | 6 passed (7)
+    × only a committed installation older builds cannot replay asks for a fold, and a fold clears it 79ms
+M11 the scheduler ignores a due fold (growth threshold applies): exit 1; Tests  2 failed | 20 passed (22)
+    × folds a verified installation at once: no growth threshold or cooldown, every other check kept 4ms
+    × a fold report that survives its fold cannot loop: spaced by the retry clock, then capped 1ms
+M12 no streak cap on cooldown-skipping folds: exit 1; Tests  1 failed | 21 passed (22)
+    × a fold report that survives its fold cannot loop: spaced by the retry clock, then capped 4ms
+M13 a fold may skip the retry clock too: exit 1; Tests  2 failed | 20 passed (22)
+    × folds a verified installation at once: no growth threshold or cooldown, every other check kept 4ms
+    × a fold report that survives its fold cannot loop: spaced by the retry clock, then capped 1ms
+M14 every snapshot counts as needed: exit 1; Tests  1 failed | 6 passed (7)
+    × a snapshot is needed only when it moves a receive cursor forward 68ms
+M15 the waiting state has no sentence: exit 1; Tests  1 failed | 3 passed (4)
+    × names an unverified history snapshot, says what resolves it, and offers no ineffective retry 5ms
+M8 replay bound not applied: exit 1; Tests  1 failed | 6 passed (7)
+    × reports unverifiable when the service holds no answer or the range exceeds the replay bound 73ms

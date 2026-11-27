@@ -1,0 +1,84 @@
+{
+  "buildx.build.provenance": {
+    "builder": {
+      "id": ""
+    },
+    "buildType": "https://mobyproject.org/buildkit@v1",
+    "materials": [
+      {
+        "uri": "pkg:docker/golang@1.27.3-alpine?digest=sha256:b8c9b82affbbb82a020bbcf998dad2ba9516944ac7e883524642a481a9505e9c\u0026platform=linux%2Farm64",
+        "digest": {
+          "sha256": "b8c9b82affbbb82a020bbcf998dad2ba9516944ac7e883524642a481a9505e9c"
+        }
+      },
+      {
+        "uri": "pkg:docker/node@24.22.1-bookworm-slim?digest=sha256:be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c\u0026platform=linux%2Farm64",
+        "digest": {
+          "sha256": "be8204d4bd327363357f532187b752ff62759c31bedf98e9e18fc08c9cbd605c"
+        }
+      },
+      {
+        "uri": "pkg:docker/gcr.io/distroless/cc-debian13@nonroot?digest=sha256:83b9b50586253821cf63ffcec87d3d94265a093ad30da232039af962dd8f4edf\u0026platform=linux%2Farm64",
+        "digest": {
+          "sha256": "83b9b50586253821cf63ffcec87d3d94265a093ad30da232039af962dd8f4edf"
+        }
+      }
+    ],
+    "invocation": {
+      "configSource": {
+        "entryPoint": "Dockerfile"
+      },
+      "parameters": {
+        "frontend": "dockerfile.v0",
+        "args": {
+          "build-arg:APP_BUILD_DATE": "2026-11-27",
+          "build-arg:APP_BUILD_REVISION": "913b586423eb6fa8e1a42525381aea471ea0730d",
+          "build-arg:VITE_ACCOUNT_BATCH": "coordinated-2000",
+          "build-arg:VITE_ACCOUNT_HISTORY_AUTO": "0",
+          "build-arg:VITE_ACCOUNT_LEDGER": "incremental",
+          "build-arg:VITE_ACCOUNT_RANGE_RECEIVE": "0",
+          "build-arg:VITE_ACCOUNT_RETENTION_AUTO": "1",
+          "build-arg:VITE_ACCOUNT_RETENTION_RESUME": "1"
+        },
+        "locals": [
+          {
+            "name": "context"
+          },
+          {
+            "name": "dockerfile"
+          }
+        ],
+        "root": {
+          "configSource": {
+            "path": "Dockerfile"
+          },
+          "request": {
+            "args": {
+              "build-arg:APP_BUILD_DATE": "2026-11-27",
+              "build-arg:APP_BUILD_REVISION": "913b586423eb6fa8e1a42525381aea471ea0730d",
+              "build-arg:VITE_ACCOUNT_BATCH": "coordinated-2000",
+              "build-arg:VITE_ACCOUNT_HISTORY_AUTO": "0",
+              "build-arg:VITE_ACCOUNT_LEDGER": "incremental",
+              "build-arg:VITE_ACCOUNT_RANGE_RECEIVE": "0",
+              "build-arg:VITE_ACCOUNT_RETENTION_AUTO": "1",
+              "build-arg:VITE_ACCOUNT_RETENTION_RESUME": "1"
+            }
+          }
+        },
+        "compatibilityVersion": 30
+      },
+      "environment": {
+        "dockerfileVersion": "1.28.0",
+        "platform": "linux/arm64"
+      }
+    }
+  },
+  "buildx.build.ref": "desktop-linux/desktop-linux/g6kj4feikaoc992khmns84jy2",
+  "containerimage.descriptor": {
+    "mediaType": "application/vnd.oci.image.index.v1+json",
+    "digest": "sha256:4e2ab7474f848ef360bf91ed5fe27b9619cae001404b0a71e988548dc5d2b81c",
+    "size": 856
+  },
+  "containerimage.digest": "sha256:4e2ab7474f848ef360bf91ed5fe27b9619cae001404b0a71e988548dc5d2b81c",
+  "image.name": "docker.io/library/done-reader-rollback:913b58642"
+}

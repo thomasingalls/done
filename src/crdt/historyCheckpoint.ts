@@ -128,6 +128,10 @@ export async function createHistoryCheckpoint(
     const reopened = await openHistoryCheckpoint(c, held, authority);
     try {
       if (!sameDocState(doc, reopened)) throw Error('History checkpoint replay changed');
+      // Size checks without the key (`historyInstallBytes`) read the plaintext length from the
+      // ciphertext; an installer re-derives the update, which must never be longer.
+      if (Y.encodeStateAsUpdate(reopened).length > bytes.length)
+        throw Error('History checkpoint replay changed');
     } finally {
       reopened.destroy();
     }

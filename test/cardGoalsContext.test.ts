@@ -72,8 +72,8 @@ describe('optional Goals context remains card metadata', () => {
     h = await harness();
     compose(h.me, TO, 'old writing');
     compose(h.me, TO, 'new writing', { goalsContext: WORK });
-    expect(cardGoalsContext(cards()[0]!)).toBeNull();
-    const clone = copyCard(cards()[1]!);
+    expect(cardGoalsContext(cards().find((card) => cardBody(card) === 'old writing')!)).toBeNull();
+    const clone = copyCard(cards().find((card) => cardBody(card) === 'new writing')!);
     const doc = createDoc();
     try {
       doc.getMap('cards').set(cardId(clone), clone);
@@ -96,7 +96,9 @@ describe('optional Goals context remains card metadata', () => {
     compose(h.me, next, 'one');
     compose(h.me, next, 'two');
     expect(copyFromMaster(h.me, next, ['a', 'b'], [WORK, HOME])).toBe(1);
-    expect(cardGoalsContext(cardsIn(h.store.doc, TODAY, 'next')[2]!)).toEqual(WORK);
+    expect(
+      cardGoalsContext(cardsIn(h.store.doc, TODAY, 'next').find((card) => cardBody(card) === 'a')!),
+    ).toEqual(WORK);
     h.store.master.insert(0, 'a\nb');
     expect(
       moveFromMaster(
@@ -139,8 +141,8 @@ describe('optional Goals context remains card metadata', () => {
   });
   it('merging different contexts clears an ambiguous label and undo restores both paths', async () => {
     h = await harness();
-    compose(h.me, TO, 'work', { goalsContext: WORK });
     compose(h.me, TO, 'home', { goalsContext: HOME });
+    compose(h.me, TO, 'work', { goalsContext: WORK });
     const id = cardId(cards()[1]!);
     expect(mergeCardBackwards(h.me, TO, id)).toBe(4);
     expect(cards().map(cardBody)).toEqual(['workhome']);

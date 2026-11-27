@@ -58,7 +58,9 @@ For large paste/import/maintenance commands, the adapter performs a bounded slic
 `{ remaining: smallerIntentBytes }`. Remaining intent must be nonempty and strictly shorter in bytes,
 which bounds continuation count. Each prepared update must be at most the existing interim **16 KiB**.
 An adapter exceeding it is blocked with `slice-required` before journal nonce generation or sealing;
-arbitrary encoded Yjs updates are not cut into byte fragments. A sliced command uses completed content
+arbitrary encoded Yjs updates are not cut into byte fragments. The workspace adapter checks its own
+output against this limit and refuses an unsplittable command as a completed no-op (phase 548), so this
+block remains the guard for an adapter that breaks the contract. A sliced command uses completed content
 commits for each slice before promotion and before preparing its next slice. Later queued commands wait
 behind the whole command. Page loss can preserve an accepted prefix and lose an unaccepted remainder.
 The application must retain/reconstruct an import source if product-level resumability is required.

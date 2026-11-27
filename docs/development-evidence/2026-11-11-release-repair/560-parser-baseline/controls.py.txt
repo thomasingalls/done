@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Phase 560 controls for test/account-parser-conformance/baseline.test.mjs.
+
+Each control writes a copy of the test (and, where needed, of helpers.mjs) into the scratch
+folder with one stated change, runs it with `node --test` from the repository root, and records
+which cases pass and fail and the first assertion message of each failure. The repository is not
+modified. Bare and relative imports of the copies are rewritten to the same absolute files the
+originals load, so the copies run the same oracles, the same Vite and the same Yjs module.
+
+Usage: python3 -I controls.py <repo> <scratch-dir> <base-tree>
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+
+repo, scratch, base_tree = sys.argv[1:4]
+out_dir = os.path.join(scratch, 'controls')
+os.makedirs(out_dir, exist_ok=True)
+suite = os.path.join(repo, 'test/account-parser-conformance')
+
+
+def resolve_url(spec):
+    return subprocess.run(
+        ['node', '--input-type=module', '-e', f'console.log(import.meta.resolve({json.dumps(spec)}))'],
+        cwd=repo, capture_output=True, text=True, check=True).stdout.strip()
+
+
+bare = {spec: resolve_url(spec) for spec in ['vite', 'yjs', 'fast-check']}
+
+
+def read(path):
+    with open(os.path.join(repo, path), encoding='utf-8') as f:
+        return f.read()
+
+
+def base_text(path):
+    return subprocess.run(['git', 'show', f'{base_tree}:{path}'], cwd=repo, capture_output=True,
+                          text=True, check=True).stdout
+
+
+def portable_helpers(text):
+    for spec, url in bare.items():
+        text = text.replace(f"from '{spec}';", f"from '{url}';")
+    text = text.replace("from '../account-promotion-contract/oracle.mjs'",
+                        f"from 'file://{suite}/../account-promotion-contract/oracle.mjs'")
+    text = text.replace("from '../account-ledger-contract/oracle.mjs'",
+                        f"from 'file://{suite}/../account-ledger-contract/oracle.mjs'")
+    assert "from '../" not in text and "from 'vite'" not in text, 'unrewritten import'
+    return text
+
+
+def once(text, old, new, label):
+    assert text.count(old) == 1, f'{label}: anchor found {text.count(old)} times: {old!r}'
+    return text.replace(old, new)
+
+
+def run(name, test_text, helpers_text=None, expect=None):
+    folder = os.path.join(out_dir, name)
+    os.makedirs(folder, exist_ok=True)
+    helpers_url = f'file://{suite}/helpers.mjs'
+    if helpers_text is not None:
+        with open(os.path.join(folder, 'helpers.mjs'), 'w', encoding='utf-8') as f:
+            f.write(portable_helpers(helpers_text))
+        helpers_url = f'file://{folder}/helpers.mjs'
+    test_text = once(test_text, "from './helpers.mjs'", f"from '{helpers_url}'", name)
+    path = os.path.join(folder, 'baseline.test.mjs')
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(test_text)
+    proc = subprocess.run(['node', '--test', '--test-concurrency=1', '--test-reporter=tap', path],
+                          cwd=repo, capture_output=True, text=True, timeout=300)
+    with open(os.path.join(folder, 'output.tap'), 'w', encoding='utf-8') as f:
+        f.write(proc.stdout + proc.stderr)
+    cases = []
+    lines = proc.stdout.splitlines()
+    for i, line in enumerate(lines):
+        m = re.match(r'^(not ok|ok) \d+ - (.*)$', line)
+        if not m:
+            continue
+        message = None
+        if m.group(1) == 'not ok':
+            for follow in lines[i + 1:i + 40]:
+                e = re.match(r"^\s+error: (.*)$", follow)
+                if e:
+                    message = e.group(1).strip().strip("'|-")[:300]
+                    break
+        cases.append({'name': m.group(2), 'outcome': 'pass' if m.group(1) == 'ok' else 'fail',
+                      **({'error': message} if message else {})})
+    errors = sorted(set(re.findall(r'(Frozen baseline file [^\n\'"]*|baseline bundle reached a module outside[^\n\'"]*|[\w.@/-]+ is not locked at \w+|MISSING_EXPORT\][^\n]*?is not exported by "[^"]+")', proc.stdout + proc.stderr)))
+    result = {'control': name, 'exit': proc.returncode, 'cases': cases,
+              **({'expect': expect} if expect else {}), **({'errors': errors[:6]} if errors else {})}
+    print(json.dumps(result))
+    return result
+
+
+test_now, helpers_now = read(f'{suite}/baseline.test.mjs'[len(repo) + 1:]), read(f'{suite}/helpers.mjs'[len(repo) + 1:])
+results = []
+
+# 1. Base text (phases 557-559): the loader as it was, the test as it was.
+results.append(run('base-tree', base_text('test/account-parser-conformance/baseline.test.mjs'),
+                   base_text('test/account-parser-conformance/helpers.mjs'),
+                   'file fails: the overlay bundle does not build'))
+
+# 2. Final text, unchanged copy (the harness itself must not change the outcome).
+results.append(run('final-copy', test_now, helpers_now, 'all four cases pass'))
+
+REAL = 'const real = await load(),\n  old = await loadBaseline();'
+assert REAL in test_now
+
+# 3. The current side pointed at the frozen modules.
+results.append(run('current-is-frozen', once(test_now, REAL, 'const real = await loadBaseline(),\n  old = await loadBaseline();', 'c3'),
+                   expect='promotion, spool and shapes cases fail at the current-side refusal'))
+
+# 4. The frozen side pointed at the current modules.
+results.append(run('frozen-is-current', once(test_now, REAL, 'const real = await load(),\n  old = await load();', 'c4'),
+                   expect='promotion, spool and shapes cases fail: the old side refuses'))
+
+# 5. Each repaired guard removed from the current parser (helpers.mjs `controls`).
+shapes = 'assert.throws(() => real.parsePromotion(v));'
+labelled = "assert.throws(() => real.parsePromotion(v), 'current parser accepted ' + field);"
+for control in ['promotion', 'spool', 'credentials', 'actors', 'wraps', 'promotionId', 'requestDigest', 'epochHead']:
+    text = once(test_now, REAL, f"const real = await load('{control}'),\n  old = await loadBaseline();", control)
+    text = once(text, shapes, labelled, control)  # names the field in the failure message only
+    family = control if control in ('promotion', 'spool') else 'shapes'
+    results.append(run('omit-' + control, text,
+                       expect=f'{family} case fails' + ('' if family != 'shapes' else f' at {control}')))
+
+# 6. The identity check removed from the loader: the one-byte control must then fail.
+results.append(run('identity-check-removed', test_now, once(
+    helpers_now,
+    "      if (actual !== tree.get(path))\n        throw Error(",
+    "      if (false)\n        throw Error(", 'c6'), 'the one-byte case fails; the others pass'))
+
+# 7. One frozen import escapes to the current checkout: the graph audit must refuse.
+results.append(run('graph-escape', test_now, once(
+    helpers_now,
+    "      return frozenRoot + '/' + path;",
+    "      if (path === 'src/crdt/storeName.ts') return resolve(path);\n      return frozenRoot + '/' + path;", 'c7'),
+    'file fails: baseline bundle reached a module outside f0b6acd2'))
+
+# 8. The baseline lockfile does not have one package version the graph reaches.
+results.append(run('dependency-not-locked', test_now, once(
+    helpers_now,
+    "const lock = git(['show', baselineRef + ':pnpm-lock.yaml'], 'utf8');",
+    "const lock = git(['show', baselineRef + ':pnpm-lock.yaml'], 'utf8').replaceAll('y-protocols@1.0.7', 'y-protocols@1.0.6');", 'c8'),
+    'file fails: y-protocols@1.0.7 is not locked at f0b6acd2'))
+
+# 9. The yjs patch differs between the baseline lockfile and the current one.
+results.append(run('yjs-patch-differs', test_now, once(
+    helpers_now,
+    "const lock = git(['show', baselineRef + ':pnpm-lock.yaml'], 'utf8');",
+    "const lock = git(['show', baselineRef + ':pnpm-lock.yaml'], 'utf8').replace('yjs@13.6.31: d0', 'yjs@13.6.31: e0');", 'c9'),
+    'file fails: yjs patch'))
+
+with open(os.path.join(scratch, 'controls.json'), 'w', encoding='utf-8') as f:
+    json.dump(results, f, indent=1)

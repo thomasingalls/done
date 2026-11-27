@@ -179,8 +179,8 @@ describe('the cap stretches where it cannot refuse', () => {
     // to the human's own last write.
     context.store.undo.undo();
     expect(cardsIn(context.store.doc, TODAY, 'next').map(cardBody)).toEqual([
-      'item 0',
       'item 1',
+      'item 0',
       'from elsewhere',
     ]);
     expect(cardsIn(context.store.doc, TODAY, 'scheduled')).toHaveLength(0);

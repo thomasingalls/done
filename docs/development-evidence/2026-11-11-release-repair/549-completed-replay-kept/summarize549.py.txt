@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+"""Summarize a phase 549 lost-phone run. Usage: summarize549.py <run dir>"""
+import json, sys, glob, re, statistics
+run = sys.argv[1]
+art = glob.glob(run + '/artifacts/*/')[0]
+tl = open(art + 'timeline.txt').read().splitlines()
+def at(pat):
+    for l in tl:
+        if re.search(pat, l):
+            return float(l.split('s ')[0])
+online, second = at('C online'), at('second phase starts')
+both_lines = [l for l in tl if 'both=' in l]
+done_at = None
+for l in both_lines:
+    if 'both=true' in l:
+        done_at = float(l.split('s ')[0]); break
+arrived = [l for l in tl if 'both directions arrived=' in l]
+conv = [l for l in tl if 'converged=' in l]
+second_state = [l for l in tl if 'second phase state' in l]
+print('run', run.split('/')[-1])
+print('second phase start', second, '| last "both=false" sample', [float(l.split('s ')[0]) for l in both_lines if 'both=false' in l][-1:] , '| second phase state at', [float(l.split('s ')[0]) for l in second_state])
+print(arrived[0][arrived[0].index('both'):][:120] if arrived else 'no arrival line')
+print(conv[0][conv[0].index('converged'):][:160] if conv else 'no convergence line')
+samples = [json.loads(l) for l in open(art + 'c-samples.jsonl')]
+def w(s, *p):
+    v = s.get('metrics') or {}
+    for k in p[:-1]:
+        v = (v or {}).get(k, {})
+    return (v or {}).get(p[-1], 0) or 0
+def recv(s):
+    return ((s.get('sync') or {}).get('receive') or {}).get('receivedThrough')
+caught = None
+target = recv(samples[-1])
+for s in samples:
+    if s['t'] >= second and recv(s) == target:
+        caught = s['t']; break
+print(f'receive reached its final position {target} at {caught} s, {round(caught - second, 1) if caught else None} s into the second phase')
+S = [s for s in samples if s['t'] >= second]
+d = lambda *p: w(S[-1], *p) - w(S[0], *p)
+blk = [s for s in S if s['evalMs'] > 1000]
+print(f"second phase: replays started {d('work','baselineFullReplays')}, worker blocked >1 s: {len(blk)} samples / {round(sum(s['evalMs'] for s in blk)/1000,1)} s, load {S[0]['load']} .. {S[-1]['load']}")
+tr = [json.loads(l) for l in open(art + 'c-trace.jsonl') if l.strip()]
+t0 = None
+aw = [r for r in tr if r.get('ev') == 'auditWarm' and r['ms'] > 500]
+print('long auditWarm', len(aw), 'interrupted', sum(1 for r in aw if r.get('interrupted')), 'completed', sum(1 for r in aw if r.get('completed')), 'other', sum(1 for r in aw if not r.get('interrupted') and not r.get('completed')))
+print('  ms', [r['ms'] for r in aw])
+print('  due after', [r.get('dueAfter') for r in aw])
+rd = [r for r in tr if r.get('ev') == 'replayDone']
+print('replays returned', len(rd), 'of them in the oracle load', sum(1 for r in rd if r.get('oracle')), 'ms', [r['ms'] for r in rd])
+se = [r for r in tr if r.get('ev') == 'snapError']
+from collections import Counter
+print('openSnapshot stopped:', dict(Counter((r['replay'], r['interrupted'], r.get('oracle')) for r in se)))
+print('  after return, ms from return to the stop', [r['sinceReturn'] for r in se if r['replay'] == 'after-return'])
+print('  during replay, ms from replay start to the stop', [r['sinceStart'] for r in se if r['replay'] == 'during'])
+rec = [r for r in tr if r.get('ev') == 'recorded']
+print('recorded (post-replay steps, ms):', 'oracle', [r['postMs'] for r in rec if r.get('oracle')], 'other', [r['postMs'] for r in rec if not r.get('oracle')])
+jobs = [r for r in tr if r.get('ev') == 'job' and r.get('kind') == 'foreground' and not r.get('preparation')]
+waits = sorted(r['wait'] for r in jobs)
+def pct(a, q):
+    return a[min(len(a) - 1, int(q * len(a)))] if a else None
+print(f'foreground jobs waiting >20 ms: {len(jobs)}; wait ms p50 {pct(waits,.5)} p90 {pct(waits,.9)} max {waits[-1] if waits else None}')
+# Foreground jobs whose wait overlapped an oracle audit's post-replay window.
+wins = [(r['t'], r['t'] + r['postMs']) for r in rec if r.get('oracle')]
+over = [r for r in jobs if any(r['t'] < e and r['t'] + r['wait'] > s for s, e in wins)]
+print('  of them overlapping an oracle window:', len(over), 'waits', sorted(r['wait'] for r in over))

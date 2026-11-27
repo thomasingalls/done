@@ -16,6 +16,11 @@ import type { Extension } from '@codemirror/state';
 import { createAdmittedEditor } from '../editor/admittedEditor';
 import { masterLineSelection } from '../editor/masterLineSelection';
 import { requestPersistentStorage, type StoragePersistence } from '../lib/storagePersistence';
+import {
+  ActionTooLarge,
+  TOO_LARGE_FOR_ONE_ACTION,
+  TOO_LARGE_FOR_ONE_ACTION_MESSAGE,
+} from '../crdt/actionSize';
 import type {
   AdmittedWorkspace,
   TextTarget,
@@ -35,7 +40,11 @@ export interface WorkspaceUi {
   actorId: string;
   storage: string;
   execute(command: WorkspaceCommand, options?: CommandFeedback): Promise<unknown>;
-  removeMasterLines(lines: readonly number[], options?: CommandFeedback): Promise<boolean>;
+  /** False when nothing was removed; undefined when refused for too much text (the banner says so). */
+  removeMasterLines(
+    lines: readonly number[],
+    options?: CommandFeedback,
+  ): Promise<boolean | undefined>;
   mountEditor(
     parent: HTMLElement,
     target: TextTarget,
@@ -127,7 +136,11 @@ export const WorkspaceUiProvider = ({
           const surface = workspace.text({ kind: 'master' });
           const selection = masterLineSelection(surface.read().text, lines);
           if (!selection) return false;
-          await surface.input({ name: 'insert', text: '' }, selection).accepted;
+          const receipt = await surface.input({ name: 'insert', text: '' }, selection).accepted;
+          if ((receipt as { value?: unknown }).value === TOO_LARGE_FOR_ONE_ACTION) {
+            setError(TOO_LARGE_FOR_ONE_ACTION_MESSAGE);
+            return undefined;
+          }
           return true;
         } catch {
           if (options?.feedback !== 'local')
@@ -139,13 +152,23 @@ export const WorkspaceUiProvider = ({
         try {
           if (options?.feedback !== 'local') setError('');
           const result = await workspace.command(command).accepted;
+          // Too much text for one action: nothing changed, the queue and sync carry on. Every
+          // caller treats undefined as nothing done, and this sentence replaces their own.
+          if (result.value === TOO_LARGE_FOR_ONE_ACTION) {
+            setError(TOO_LARGE_FOR_ONE_ACTION_MESSAGE);
+            return undefined;
+          }
           if (options?.feedback !== 'local' && (result.value === false || result.value === null)) {
             setError(
               'That action could not be applied. Check the destination and whether the day is frozen.',
             );
           }
           return result.value;
-        } catch {
+        } catch (cause) {
+          if (cause instanceof ActionTooLarge) {
+            setError(TOO_LARGE_FOR_ONE_ACTION_MESSAGE);
+            return undefined;
+          }
           if (options?.feedback !== 'local')
             setError('That action was not saved. Check storage and try again.');
           return false;

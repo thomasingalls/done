@@ -1,0 +1,77 @@
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -1704,6 +1704,8 @@
+   let historyRequired = false;
+   const fetchHistory = () =>
+     runNetworkTask(async (network) => {
++      // COPY-ONLY SEAM: emulate receive passes that run between catalog checks (a long pass).
++      if ((globalThis as { __holdHistory?: boolean }).__holdHistory === true) return null;
+       if (!access || account.detached || !canReceive() || Date.now() < historyDue) return null;
+       const stamp = retentionReads.capture();
+       const prepared = await runCaptureTask(async (task, owner, route) => {
+@@ -3945,6 +3947,8 @@
+         signal: carrier.signal,
+         observe: () => ({
+           ready:
++            // COPY-ONLY SEAM: reduction runs only on the device the test chooses.
++            (globalThis as { __allowReduction?: boolean }).__allowReduction === true &&
+             historyFlights === 0 &&
+             automaticHistory?.status.phase !== 'running' &&
+             carrier.state === 'active' &&
+@@ -4093,6 +4097,9 @@
+             holdNewEnvelope,
+           ),
+         receive: async (sendDue) => {
++          // COPY-ONLY SEAM: a device whose receive is away (offline for receiving only).
++          if ((globalThis as { __holdReceive?: boolean }).__holdReceive === true)
++            return { kind: 'idle', receivedThrough: (await api.status()).receivedThrough };
+           const authority = await refreshAuthority(operatorToken ?? '').catch((cause) => {
+             receiveSweep.reset();
+             throw cause;
+--- a/src/crdt/automaticLocalRetention.ts
++++ b/src/crdt/automaticLocalRetention.ts
+@@ -14,10 +14,10 @@
+   readonly revision: number;
+   readonly records: number;
+ }
+-export const LOCAL_RETENTION_MIN_RECORDS = 1024;
+-export const LOCAL_RETENTION_QUIET_MS = 10000;
+-export const LOCAL_RETENTION_COOLDOWN_MS = 30 * 60000;
+-export const LOCAL_RETENTION_RETRY_MS = 60000;
++export const LOCAL_RETENTION_MIN_RECORDS = 1; // COPY-ONLY SEAM
++export const LOCAL_RETENTION_QUIET_MS = 3000; // COPY-ONLY SEAM
++export const LOCAL_RETENTION_COOLDOWN_MS = 1000; // COPY-ONLY SEAM
++export const LOCAL_RETENTION_RETRY_MS = 2000; // COPY-ONLY SEAM
+ /** Longest a settled hold may defer routine sync before it yields (scheduling bound, unmeasured). */
+ export const LOCAL_RETENTION_HOLD_MS = 5 * 60000;
+ /** Normal sync window after a hold or poll deferral expires, before it may engage again. */
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -990,6 +990,13 @@
+     exportArchive: () => {
+       live();
+       const doc = accepted!.history.doc;
++      // COPY-ONLY SEAM: the exact Yjs state (state vector and delete set) at export time.
++      {
++        const sv = Y.encodeStateVector(doc),
++          snap = Y.encodeSnapshot(Y.snapshot(doc));
++        const h = (b: Uint8Array) => [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
++        (globalThis as { __doneState?: unknown }).__doneState = { sv: h(sv), snapshot: h(snap) };
++      }
+       return new Uint8Array(exportArchive(doc, doc.getText('master').toString()));
+     },
+     close,
+--- a/account-service/session-host.ts
++++ b/account-service/session-host.ts
+@@ -29,7 +29,10 @@
+           v: 2,
+           pin,
+           networkSessions: true,
+-          ...(core.membershipContinuationEnabled ? { membershipContinuation: true } : {}),
++          // COPY-ONLY SEAM: advertise no continuation while still serving history (gate control).
++          ...(core.membershipContinuationEnabled && process.env.COPY_CONFIG_CONTINUATION_OFF !== '1'
++            ? { membershipContinuation: true }
++            : {}),
+         }),
+       },
+     ],

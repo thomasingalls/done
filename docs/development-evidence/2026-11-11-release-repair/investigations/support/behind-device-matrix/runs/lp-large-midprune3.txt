@@ -1,0 +1,37 @@
+
+Running 1 test using 1 worker
+
+32.5s three devices ready
+32.5s production /config {"v":2,"pin":{"v":1,"serviceId":"7f40abce23edf07bcd7b56d4bdcae920","origin":"https://localhost:53441","rpId":"localhost","authRoot":"c20c38ece7953df9468a1f8e8128d5678cd8f6ad4fcfdee8e796a2ca49618ad5"},"networkSessions":true,"membershipContinuation":true}
+34.6s C offline (it takes no part from here)
+34.8s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+45.9s C large card 0: 35 ms
+45.9s C large card 1: 37 ms
+45.9s C large card 2: 33 ms
+45.9s C holds its unsent writing
+82.4s snapshot 2 admitted
+100.7s A received C accepted writing after cutting
+130.6s snapshot 3 admitted
+132.7s prune 1 (floor: snapshot 2)
+220.4s A wrote 200 large cards of 5000 bytes (16953 ms saving)
+273.0s snapshot 4 admitted
+325.1s snapshot 5 admitted
+335.9s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+490.5s history written
+490.5s C online
+492.3s C fetched snapshot 5 and is reading its suffix slowly; pruning again now
+538.5s snapshot 6 admitted
+596.0s snapshot 7 admitted
+608.0s prune 3 landed (floor: snapshot 6); C still behind: false
+613.0s install-first first phase done=true
+628.3s C after second phase 15s both=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:59:58 AMReason: send:network-unavailableRetry sending"]
+638.5s both directions arrived=true C catalog reads=9 C read requests=17 C read epochs=[5]
+638.7s C sync: ["Sending: idleLast accepted upload: 1:09:58 AMAccepted position: 9Receiving: idleLast successful receive check: 1:09:51 AMReceived positions: 582"]
+650.4s converged=true markers=936 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037971,1037971,1037971
+650.4s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (install-first, large) (10.9m)
+
+  Slow test file: test/packaged-account/lostphone.public.spec.ts (10.9m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (10.9m)
+exit 0

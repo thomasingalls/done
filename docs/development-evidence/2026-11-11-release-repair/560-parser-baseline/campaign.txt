@@ -1,0 +1,123 @@
+# pnpm account:parser-conformance on the phase 560 tree (helpers.mjs and baseline.test.mjs changed; base tree 3daa3e4d)
+# 2026-11-13, Node 26.13.1; evidence directory test-results/account-parser-conformance/2026-11-13T06-05-37.154Z (not committed)
+status: passed | started 2026-11-13T06:05:37.280Z | completed 2026-11-13T06:09:27.939Z | source pins re-verified after the run: 2104
+
+stage                exit timed out executed cases
+inventory            0    False     
+authority            0    False     
+registry             0    False     13
+parser               0    False     34
+parser-native        0    False     1
+first-authority      0    False     6
+promotion-contract   0    False     10
+ledger-contract      0    False     12
+transport-contract   0    False     13
+admission-core       0    False     12
+genesis              0    False     17
+spool                0    False     24
+typecheck            0    False     
+unit                 0    False     54
+vectors-01           0    False     
+vectors-02           0    False     
+vectors-03           0    False     
+vectors-04           0    False     
+vectors-05           0    False     
+vectors-06           0    False     
+vectors-07           0    False     
+vectors-08           0    False     
+vectors-09           0    False     
+vectors-10           0    False     
+vectors-11           0    False     
+vectors-12           0    False     
+vectors-13           0    False     
+vectors-14           0    False     
+vectors-15           0    False     
+vectors-16           0    False     
+vectors-17           0    False     
+vectors-18           0    False     
+vectors-19           0    False     
+vectors-20           0    False     
+vectors-21           0    False     
+vectors-22           0    False     
+vectors-23           0    False     
+vectors-24           0    False     
+vectors-25           0    False     
+vectors-26           0    False     
+vectors-27           0    False     
+vectors-28           0    False     
+vectors-29           0    False     
+vectors-30           0    False     
+vectors-31           0    False     
+lint                 0    False     
+format               0    False     
+
+## executed cases per file (junit), no failure, error or skipped element in any stage
+registry             test/account-crypto-prep/contracts.test.mjs: 1
+registry             test/account-first-authority/registry.test.mjs: 12
+parser               test/account-parser-conformance/baseline.test.mjs: 4
+parser               test/account-parser-conformance/controls.test.mjs: 12
+parser               test/account-parser-conformance/objects.test.mjs: 7
+parser               test/account-parser-conformance/submission.test.mjs: 3
+parser               test/account-parser-conformance/wires.test.mjs: 8
+parser-native        test/account-parser-conformance/native.test.mjs: 1
+first-authority      test/account-first-authority/formats.test.mjs: 6
+promotion-contract   test/account-promotion-contract/formats.test.mjs: 7
+promotion-contract   test/account-promotion-contract/native.test.mjs: 3
+ledger-contract      test/account-ledger-contract/controls.test.mjs: 5
+ledger-contract      test/account-ledger-contract/formats.test.mjs: 7
+transport-contract   test/account-transport-contract/controls.test.mjs: 4
+transport-contract   test/account-transport-contract/formats.test.mjs: 9
+admission-core       test/account-admission/core.test.mjs: 12
+genesis              test/account-genesis/crypto.test.mjs: 3
+genesis              test/account-genesis/native.test.mjs: 14
+spool                test/account-spool/native.test.mjs: 24
+unit                 ?: 54
+
+## parser stage, spec output
+✔ promotion original generated failure shrinks against the frozen signed baseline (3.795ms)
+✔ spool original generated failure shrinks against the frozen signed baseline (0.760625ms)
+✔ frozen baseline accepts sparse credentials/genesis and coerced index metadata; current parser refuses (6.817333ms)
+✔ frozen baseline refuses a loaded file that differs by one byte from the signed commit (558.347459ms)
+✔ promotion omission control rescues its rejected malformed input (85.5775ms)
+✔ admission omission control rescues its rejected malformed input (83.498709ms)
+✔ source omission control rescues its rejected malformed input (82.866125ms)
+✔ spool omission control rescues its rejected malformed input (84.832167ms)
+✔ delivery omission control rescues its rejected malformed input (81.565917ms)
+✔ submission omission control rescues its rejected malformed input (84.352209ms)
+✔ credentials strictness repair has an effective omission control (82.849416ms)
+✔ actors strictness repair has an effective omission control (83.156125ms)
+✔ wraps strictness repair has an effective omission control (86.354125ms)
+✔ promotionId strictness repair has an effective omission control (81.465583ms)
+✔ requestDigest strictness repair has an effective omission control (80.384042ms)
+✔ epochHead strictness repair has an effective omission control (87.768209ms)
+✔ generated coercible stage values must be rejected by the promotion parser (6.727833ms)
+✔ all nested data nodes reject incompatible types across thirteen promotions and admission (1249.263542ms)
+✔ sparse retained arrays cannot skip validation of credentials, actors or recipients (21.177417ms)
+✔ direct admission omissions and extra keys, inherited-only fields and cyclic data refuse (6.041041ms)
+✔ generated valid promotion budgets and detached credential bytes preserve independent payloads (80.979458ms)
+✔ generated admission scalar corruptions execute the direct parser (5.954458ms)
+✔ admission nested genesis limits are checked at the declared byte edges (40.47575ms)
+✔ generated internal length-prefix changes refuse for first and successor submissions (6.582208ms)
+✔ parent framing must be refusal and canonical; nested corruption cannot hide behind a valid outer frame (0.685042ms)
+✔ generated detached signature bytes round-trip structurally without conferring signature authority (21.503666ms)
+✔ generated coercible source hashes must be rejected by the spool decoder (5.605583ms)
+✔ generated source nested type mutations reach the decoder (8.310459ms)
+✔ generated spool nested type mutations reach the decoder (5.008083ms)
+✔ generated delivery nested type mutations reach the decoder (3.604875ms)
+✔ decoder numeric boundaries and nested response/submission damage refuse without encoder prechecks (2.088708ms)
+✔ generated valid reference positions and invocation counts preserve exact independent wire bytes (6.403375ms)
+✔ generated real Yjs updates and both actor kinds round-trip while malformed count and frame data refuse (44.202208ms)
+✔ source wire limit accepts a real near-limit frame and refuses the first larger canonical wire (82.299042ms)
+ℹ tests 34
+ℹ pass 34
+ℹ fail 0
+ℹ skipped 0
+ℹ duration_ms 5138.100791
+
+## parser-native stage, spec output
+✔ IndexedDB retains sparse and coercible data; cold parser readback refuses each malformed record (795.326791ms)
+ℹ tests 1
+ℹ pass 1
+ℹ fail 0
+ℹ skipped 0
+ℹ duration_ms 1472.867834

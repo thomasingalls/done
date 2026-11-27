@@ -1,0 +1,225 @@
+{
+  "phase": 561,
+  "date": "2026-11-13",
+  "base": {
+    "description": "phases 557 to 560, uncommitted",
+    "tree": "619798eacad4be6fb68731fa93b6e436cbe38d62",
+    "onCommit": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935"
+  },
+  "requested": "coordinating session, 2026-11-13: test-only repairs to the five stale setup.spec.ts cases and welcome.spec.ts :252, with the welcome refusal injected deterministically where the deletion now runs and no product code or test hook; controls for the injection; removal-regressions.spec.ts left failing and untouched; the investigation and CI history filed; SETUP-CLOSING-STUCK, CI-UNIT-BUDGET and CI-JOB-LIMIT recorded in the backlog",
+  "productCodeChanged": false,
+  "investigation": {
+    "file": "investigation.md",
+    "ciHistory": "ci-history.md",
+    "author": "a read-only agent of the coordinating session, 2026-11-13",
+    "copiedUnchangedAfterLine1": true,
+    "scratchLogsKept": false
+  },
+  "repairs": {
+    "test/first-device-setup/setup.spec.ts": {
+      "timeouts": {
+        "cases": {
+          "210": "password-manager app switching preserves code-saving and confirmation steps (final line 210)",
+          "284": "homepage opens the app, account choice stays explicit, and a first account reopens through either entry (final line 285)",
+          "962": "browser Back redisplays recovery only within its unfinished ceremony and warns before retiring it (final line 965)",
+          "1031": "Back during registration drains the owner and resumes the saved passkey proof after a lost reply (final line 1035)"
+        },
+        "cause": "openMenuSection returns at once when #menu is not mounted (count() does not wait); since 81c75e93b (phase 40, 2026-10-23) the sections start closed, so the click on 'Use another account' inside the closed Account section waited out the 90 s test timeout",
+        "helperOrigin": "dc8f09727 (2026-10-23) added the early return",
+        "change": "await expect(page.locator('.shell')).toBeVisible() before the first openMenuSection, the d1c2784be pattern",
+        "whyItWaitsForTheRightThing": "#menu is the first child of .shell in the same React render (src/ui/App.tsx), so a visible shell means a mounted menu and the helper opens the section"
+      },
+      "hiddenNote": {
+        "case": "486: existing writing survives recovery reload, wrong code, lost admission reply, and offline Account reopen (final line 488)",
+        "cause": "'Account connected. Approved devices can sync writing.' is in the Sync section (src/ui/Menu.tsx), closed after the offline reopen; the locator resolved and stayed hidden",
+        "change": "await openMenuSection(page, 'Sync') before the assertion"
+      },
+      "sharedHelperChanged": false
+    },
+    "test/packaged-account/welcome.spec.ts": {
+      "case": "an interrupted protection transition resumes after reload with the saved code (base line 252, final line 272)",
+      "cause": "since 98de7c303 (phase 226, 2026-10-29) LocalApp uses createWorkerLocalStartupRuntime and protectLocalWorkspace deletes the source database in the localStartup dedicated Worker; the page-realm patch never fired and protection completed",
+      "change": "a Playwright route on /localStartup.worker-*.js serves the real script with the same one-shot refusal prepended, for the first such request after the writing is added; later requests pass through; serviceWorkers: 'block' for this case only, in an anonymous test.describe",
+      "whyServiceWorkerBlocked": "an active precache worker answers dedicated Worker script requests from its cache, so the route saw the protect-time script only while the service worker was still installing (probe: routed at +641 ms, next Worker's script fromServiceWorker at +800 ms)",
+      "determinism": [
+        "with no service worker every Worker script request reaches the network and the page route (instrumented run: routed, fromServiceWorker false)",
+        "the route is awaited before the click that starts the protecting Worker",
+        "the refusal is the first code in the script (an IIFE bundle), so it runs before the Worker's own code and before any message can be handled",
+        "protectLocalWorkspace looks up indexedDB.deleteDatabase at call time",
+        "the startup Worker is released when the workspace opens and protect creates the next one; the instrumented run shows exactly one patched Worker, closed by the reload, and an unpatched one after it; a different first Worker would fail the first expectation, not pass"
+      ],
+      "assertionsChanged": false
+    },
+    "test/packaged-account/removal-regressions.spec.ts": "unchanged; still fails (both variants)",
+    "test/geometry/openApp.ts": "unchanged"
+  },
+  "checksNarrowed": [],
+  "checksRunLessOftenOrDifferently": [
+    "welcome.spec.ts › 'an interrupted protection transition…' runs without a service worker (serviceWorkers: 'block'); before, the precache worker installed in the background and served the page after the reload",
+    "its refusal is in the first localStartup Worker started after the writing is added instead of the page realm; one refusal in one realm, discarded by the reload, in both forms",
+    "four setup.spec.ts cases wait for .shell before their first menu action, and one opens Sync before its last assertion"
+  ],
+  "assertionsDeadlinesRetriesChanged": false,
+  "casesAddedRemovedOrSkipped": [],
+  "sourceSha256": {
+    "test/first-device-setup/setup.spec.ts": "ae3491933d8ca6115c9758ceb20168e1eb9a9507937e80aa5afb5bea8939ae75",
+    "test/packaged-account/welcome.spec.ts": "661e9f43e5a5ec53342f0bc278eb164f1490fe61876f9dad0c35c081037cefa8"
+  },
+  "baseSourceSha256": {
+    "test/first-device-setup/setup.spec.ts": "210039efc6eeb28a46b345315b289e24f4ac80119570575570120047c6956ae5",
+    "test/packaged-account/welcome.spec.ts": "a78f63bf78394052dfd845bd5e72a56980ffb3e702af953f279911b6ce1cc936"
+  },
+  "probeSha256": {
+    "make_controls.py.txt": "0cca8c9e5a4a37294350a77bd537028598c6bf455778dca6c52b10f46f257715"
+  },
+  "failedOnBase": {
+    "record": "base-tree-run.txt",
+    "setup": "5 of 5 fail: four at the 90 s timeout on 'Use another account', one with the Sync note hidden",
+    "welcome": "fails at the first 'Finish enabling protection'"
+  },
+  "controls": {
+    "record": "controls.txt",
+    "script": "make_controls.py.txt",
+    "run": 9,
+    "asExpected": 9,
+    "items": {
+      "final-copy": "passes",
+      "base-text": "fails at the first 'Finish enabling protection'",
+      "no-injection": "fails at the first 'Finish enabling protection' (page: 'Protection is enabled'); run twice",
+      "page-only-sw-blocked": "fails at the first 'Finish enabling protection'",
+      "sw-allowed-ready": "fails at the first 'Finish enabling protection'; the script came from the service worker, unpatched",
+      "sw-allowed-race": "passed in its one run, because the service worker was still installing",
+      "permanent": "passes both 'Finish enabling protection' expectations, then fails at the writing check ('Could not open your workspace')",
+      "one-shot-every-worker": "fails at the writing check ('Could not open your workspace'); run twice",
+      "permanent-in-first-worker": "passes: the resume runs in a new Worker"
+    },
+    "instrumented": "final, sw-allowed-ready, sw-allowed-race and permanent copies with Worker and script logging, in controls.txt"
+  },
+  "runs": {
+    "record": "runs.txt",
+    "aloneThreeRounds": {
+      "setup:210": "3 passed",
+      "setup:285": "3 passed",
+      "setup:488": "3 passed",
+      "setup:965": "3 passed",
+      "setup:1035": "3 passed",
+      "welcome:272": "3 passed"
+    },
+    "accountSetupSuite": {
+      "command": "pnpm test:account-setup",
+      "passed": 20,
+      "failed": 0,
+      "durationMin": 1.7
+    },
+    "packagedCiStep": {
+      "command": "the 'Run onboarding, account compatibility and device-removal browser regressions' command from .github/workflows/ci.yml",
+      "passed": 52,
+      "failed": 2,
+      "failing": [
+        "removal-regressions.spec.ts › a delayed registration reply cannot recreate removed setup",
+        "removal-regressions.spec.ts › a delayed registration reply cannot recreate removed setup after Start fresh"
+      ],
+      "durationMin": 10.0
+    },
+    "environment": "Node 26.13.1, Playwright 1.62.0 Chromium, macOS; dist/ built at 06:33Z and not rebuilt; it carries phase 559's hex routine (one marker checked); the nine product files of phases 557 to 559 were rewritten at 07:05Z with text equal to the base",
+    "overlap": "overlap.log: another project's Playwright run (certo) had just started before the first probe and was gone at the next check; none before any other run",
+    "testResultsOverwritten": "the CI-exact runs replaced test-results/account-setup and test-results/packaged-account in the checkout; the coordinating session's two results.json files were copied to the scratch folder first"
+  },
+  "investigationClaims": {
+    "checked": [
+      "helper early return and its origin in dc8f09727; sections closed since 81c75e93b; #menu inside .shell",
+      "the four timeouts and the hidden Sync note on the base text",
+      "the Sync note's place in src/ui/Menu.tsx",
+      "98de7c303 switching LocalApp to the Worker runtime; the deletion in localProtection.ts inside the localStartup Worker",
+      "page-only injection fails; Worker injection gives 'Finish enabling protection', survives a reload and completes",
+      "SETUP-CLOSING-STUCK code facts: closing copy, onSlotRetirement and done/slot-lifecycle, createWindowCeremonyUi shared by setup, enrollment and recovery, phase 230's forever-closing note, the test's page-only BroadcastChannel patch",
+      "CI-UNIT-BUDGET code facts: the two toEqual byte comparisons at inboundReceiptViews.test.ts:74-75, no testTimeout in vite.config.ts, the 2026-10-16 decision's wording, timeout-minutes: 20"
+    ],
+    "takenOnTrust": [
+      "bisection results and trace timings",
+      "removal-regressions runtime behaviour beyond the code read (no fail() or drain() in 20 s, the 90 s watch, what Back and a reload show)",
+      "every CI figure and the all72 timings",
+      "Node 26 against 24.22.1 not being a factor"
+    ],
+    "corrections": "none of substance; routing the Worker script, as suggested, is deterministic only with the precache service worker blocked"
+  },
+  "inventory": {
+    "caseDenominator": [
+      3092,
+      3092
+    ],
+    "obligations": [
+      1136,
+      1136
+    ],
+    "unresolved": [
+      561,
+      561
+    ],
+    "declarations": {
+      "test/first-device-setup/setup.spec.ts": [
+        20,
+        20
+      ],
+      "test/packaged-account/welcome.spec.ts": [
+        7,
+        7
+      ]
+    },
+    "recorded": "check.mjs --record once after review: only the two spec hashes changed; plan.mjs --record: only inventoryDigest changed",
+    "playwrightAdapterCounts": "none registered for either file; unchanged"
+  },
+  "runtimeCensus": {
+    "recorded": false,
+    "reason": "no file under src, account-protocol or account-service changed"
+  },
+  "decision": "docs/decisions.md, 2026-11-13, phase 561; amends nothing",
+  "backlogAdded": [
+    "SETUP-CLOSING-STUCK (decision), under Worker and page boundaries",
+    "CI-UNIT-BUDGET, under Continuous integration (new)",
+    "CI-JOB-LIMIT (decision), under Continuous integration (new)"
+  ],
+  "backlogChanged": [],
+  "checks": {
+    "formatAndLint": "oxfmt --check and oxlint --react-plugin pass on the two specs; Markdown and JSON records follow the repository's unformatted convention",
+    "typecheck": "tsc -b --noEmit passed",
+    "validationInventory": "10 passed",
+    "releaseAdapters": "CI's nine adapter files, 178 passed",
+    "ciContractChecks": "vectors:check, retention:check, status:check, limit:check, authority:check, recipient:check, admission:check, remediation:check, debts:check, wasm:verify: all exit 0",
+    "traceCheck": "run last: 6 failures, all receipts written against an earlier state of the tree: check-debts, check-retention, check-selection-status, check-update-limit and check-wasm-seal (run by this phase at 08:46Z, before the records were finished) and check-origin-isolation (inside pnpm build, 06:33Z); every receipt needs minting on the final tree"
+  },
+  "notRun": [
+    "full unit suite",
+    "pnpm build"
+  ],
+  "notVerified": [
+    "whether device enrollment and recovery show the same stuck closing screen",
+    "any CI-UNIT-BUDGET or CI-JOB-LIMIT figure; no CI run and no unit timing in this phase",
+    "the repaired cases under Node 24.22.1 or on Linux",
+    "the welcome injection with an ES-module Worker build; only the IIFE build was run"
+  ],
+  "deployed": false,
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-13",
+    "found": "the eight failures, with a local run of CI's remaining steps on the phase 560 tree",
+    "ruledOut": "phases 557 to 560: with their nine product files at the phase 556 text, setup.spec.ts :486 failed the same way",
+    "accountSetup": {
+      "passed": 20,
+      "failed": 0
+    },
+    "packagedStep": {
+      "passed": 52,
+      "failed": 2,
+      "failing": "removal-regressions.spec.ts :6, both variants"
+    },
+    "fullUnit": {
+      "files": 359,
+      "passed": 3746,
+      "skipped": 1,
+      "failed": 0
+    },
+    "overlap": "another project's Playwright run (Google Chrome, other ports) was in its first minute when the account-setup suite started",
+    "notRepeated": "the controls on the welcome case; the investigation's by-hand reproduction of the removal defect (the stuck closing screen was seen in this session's own runs of the removal test)",
+    "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, and the CI session, authority and quarantine steps"
+  }
+}

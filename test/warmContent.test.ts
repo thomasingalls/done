@@ -15,6 +15,7 @@ import {
   baselineAuthenticationPayload,
 } from '../src/crdt/localBaselineRecord';
 import type { BaselineAuthentication } from '../src/crdt/localBaselineReplay';
+import { MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
 
 const cleanups: (() => void)[] = [];
 afterEach(() => {
@@ -253,6 +254,23 @@ it('resume invalidation forces a complete physical read before reusing the cache
   const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
   await expect(f.owner.load(f.task)).rejects.toThrow();
   expect(read).toHaveBeenCalled();
+});
+it('an interrupted read after resume leaves the complete read due, so damage is still found', async () => {
+  const f = await fixture();
+  await f.damage(25);
+  f.owner.invalidateWarm();
+  let interrupt = true;
+  const interrupted: SessionTask = {
+    ...f.task,
+    wait: (start) => {
+      if (!interrupt) return f.task.wait(start);
+      interrupt = false;
+      return Promise.reject(new MaintenanceInterrupted());
+    },
+  };
+  await expect(f.owner.load(interrupted)).rejects.toBeInstanceOf(MaintenanceInterrupted);
+  // A warm load would audit rows 0 to 15 only and miss row 25.
+  await expect(f.owner.load(f.task)).rejects.toThrow();
 });
 it('a changed authenticated counter requires a full read, never a guessed append range', async () => {
   const f = await fixture();

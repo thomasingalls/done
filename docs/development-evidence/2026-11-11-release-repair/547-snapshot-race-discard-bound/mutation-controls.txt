@@ -1,0 +1,217 @@
+
+## M1 no catalog re-read after preparing (race window left open)
+src/account/historyMaintenance.ts: removed
+  if (
+    now.catalog.sequence !== pending.catalog.sequence ||
+    now.catalog.latest !== pending.catalog.latest ||
+    now.catalog.pending !== pending.catalog.pending
+  )
+    return { ...(await describe(now)), raced: true };
+
+$ node --test --test-concurrency=1 --test-name-pattern creating at once test/account-history/race.test.mjs
+exit 1
+✖ two devices creating at once: the one that finishes preparing second saves and sends nothing, then verifies the other (1081.162959ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ two devices creating at once: the one that finishes preparing second saves and sends nothing, then verifies the other (1081.162959ms)
+
+## M2 an own unadmitted snapshot is not offered for discard
+src/account/historyMaintenance.ts: removed
+        (saved !== undefined && saved !== 'cancelling') ||
+
+$ node --test --test-concurrency=1 test/account-history/race.test.mjs
+exit 1
+✔ two devices creating at once: the one that finishes preparing second saves and sends nothing, then verifies the other (887.992667ms)
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (1831.914334ms)
+✔ a cancellation kept for later is recorded once the other device discards its snapshot instead (2448.670375ms)
+✖ three devices: a snapshot verified by the third leaves the loser superseded; it discards it here and verifies the next (2791.40025ms)
+✖ every saved snapshot of this device that no device admitted can be discarded: not sent, and waiting (687.320708ms)
+✔ an admitted snapshot, or another device’s waiting snapshot, is never discarded from here (1843.171042ms)
+ℹ tests 6
+ℹ pass 3
+ℹ fail 3
+✖ failing tests:
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (1831.914334ms)
+✖ three devices: a snapshot verified by the third leaves the loser superseded; it discards it here and verifies the next (2791.40025ms)
+✖ every saved snapshot of this device that no device admitted can be discarded: not sent, and waiting (687.320708ms)
+
+$ node --test --test-concurrency=1 --test-name-pattern stale test/account-history/client.test.mjs
+exit 1
+✔ stale attempts preserve progress until explicitly cancelled; a lost cancellation reply resumes cancellation (305.08775ms)
+✖ a saved snapshot left behind by a membership change is named stale, offered for discard and cancelled (phase 547) (148.960834ms)
+ℹ tests 2
+ℹ pass 1
+ℹ fail 1
+✖ failing tests:
+✖ a saved snapshot left behind by a membership change is named stale, offered for discard and cancelled (phase 547) (148.960834ms)
+
+## M3 discarding a blocked snapshot sends the cancellation at once (no keeping it for later)
+src/account/historyMaintenance.ts: removed
+        await save({ ...current(), attempt: null, discard: hash });
+      } else {
+
+$ node --test --test-concurrency=1 --test-name-pattern deadlock|kept for later test/account-history/race.test.mjs
+exit 1
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (1525.705959ms)
+✖ a cancellation kept for later is recorded once the other device discards its snapshot instead (1037.217458ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (1525.705959ms)
+✖ a cancellation kept for later is recorded once the other device discards its snapshot instead (1037.217458ms)
+
+## M4 a kept cancellation is not cleared once the other snapshot is admitted
+src/account/historyMaintenance.ts: removed
+    await save({ ...current(), attempt: null, ...(fenced ? { discard: null } : {}) });
+
+$ node --test --test-concurrency=1 --test-name-pattern deadlock test/account-history/race.test.mjs
+exit 1
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (1620.236167ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (1620.236167ms)
+
+## M5 creating counts nothing before preparing
+src/account/historyMaintenance.ts: removed
+  if (needed > HISTORY_REPLAY_EVENTS) return refused(pending, 'new', needed);
+
+$ node --test --test-concurrency=1 --test-name-pattern 4,097 test/account-history/replay-bound.test.mjs
+exit 1
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (35172.439417ms)
+✖ 4,097 positions after an admitted snapshot: creating and verifying stop before any replay (47942.605125ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (35172.439417ms)
+✖ 4,097 positions after an admitted snapshot: creating and verifying stop before any replay (47942.605125ms)
+
+## M6 verifying counts nothing before admitting
+src/account/historyMaintenance.ts: removed
+        if (needed > HISTORY_REPLAY_EVENTS) return refused(page, 'pending', needed);
+
+$ node --test --test-concurrency=1 --test-name-pattern 4,097 test/account-history/replay-bound.test.mjs
+exit 1
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (42632.119542ms)
+✖ 4,097 positions after an admitted snapshot: creating and verifying stop before any replay (37956.938041ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (42632.119542ms)
+✖ 4,097 positions after an admitted snapshot: creating and verifying stop before any replay (37956.938041ms)
+
+## M7 the replay itself does not count before reading
+src/crdt/historySource.ts: removed
+    if (remaining > HISTORY_REPLAY_EVENTS)
+      throw new HistoryReplayLimit(remaining, HISTORY_REPLAY_EVENTS);
+    // A display
+
+$ node --test --test-concurrency=1 test/account-history/replay-bound-source.test.mjs
+exit 1
+✔ a replay of exactly 4,096 positions completes (4868.353875ms)
+✔ a replay of exactly 4,096 positions completes after an admitted snapshot (5670.779459ms)
+✖ a replay of 4,097 positions is refused before any position is read (7007.019417ms)
+✖ a replay of 4,097 positions is refused before any position is read after an admitted snapshot (6390.417625ms)
+ℹ tests 4
+ℹ pass 2
+ℹ fail 2
+✖ failing tests:
+✖ a replay of 4,097 positions is refused before any position is read (7007.019417ms)
+✖ a replay of 4,097 positions is refused before any position is read after an admitted snapshot (6390.417625ms)
+
+## M8 a bound met inside preparation is the generic failure again
+src/account/historyMaintenance.ts: removed
+  } catch (cause) {
+    if (!(cause instanceof HistoryReplayLimit)) throw cause;
+    return refused(pending, 'new', cause.needed, cause.allowed);
+  }
+
+$ node --test --test-concurrency=1 --test-name-pattern named outcome test/account-history/replay-bound.test.mjs
+exit 1
+✖ a replay that meets the bound inside preparation or verification is a named outcome, not a failure (829.133208ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ a replay that meets the bound inside preparation or verification is a named outcome, not a failure (829.133208ms)
+
+## M9 checking history reports no positions
+src/account/historyMaintenance.ts: removed
+      ...(latest !== undefined
+        ? {
+
+$ node --test --test-concurrency=1 --test-name-pattern too large test/account-history/client.test.mjs
+exit 1
+✔ resuming a saved proposal too large to install sends nothing, and it can be discarded (3990.171375ms)
+✖ verification never admits a pending snapshot too large to install, and inspection names it (4827.279042ms)
+✖ pruning is refused while the latest snapshot is too large to install (6078.081417ms)
+ℹ tests 3
+ℹ pass 1
+ℹ fail 2
+✖ failing tests:
+✖ verification never admits a pending snapshot too large to install, and inspection names it (4827.279042ms)
+✖ pruning is refused while the latest snapshot is too large to install (6078.081417ms)
+
+$ node --test --test-concurrency=1 --test-name-pattern 4,097 positions with no test/account-history/replay-bound.test.mjs
+exit 1
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (57641.229375ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (57641.229375ms)
+
+## M10 an admitted snapshot of this device is discarded instead of reconciled
+src/account/historyMaintenance.ts: removed
+      if (state === undefined) return finish(await exchange('publish', mine.checkpoint));
+
+$ node --test --test-concurrency=1 --test-name-pattern never discarded test/account-history/race.test.mjs
+exit 1
+✖ an admitted snapshot, or another device’s waiting snapshot, is never discarded from here (1976.031667ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+✖ failing tests:
+✖ an admitted snapshot, or another device’s waiting snapshot, is never discarded from here (1976.031667ms)
+
+## M11 the view offers Resume for snapshots resuming cannot send
+src/ui/AccountHistory.tsx: removed
+const noResume = new Set(['blocked', 'superseded', 'stale', 'cancelling']);
+
+$ node node_modules/vitest/vitest.mjs run --maxWorkers=1 test/accountHistory.test.tsx
+exit 1
+   × offers Discard for every saved snapshot of this device that is not admitted, and only actions that can help 13ms
+      Tests  1 failed | 5 passed (6)
+
+## M12 the warning starts at three quarters instead of past it
+src/ui/AccountHistory.tsx: removed
+  if (p.since * 4 > p.allowed * 3)
+
+$ node node_modules/vitest/vitest.mjs run --maxWorkers=1 test/accountHistory.test.tsx
+exit 1
+   × says how many positions were accepted, warns past three quarters of the bound and says plainly past it 16ms
+      Tests  1 failed | 5 passed (6)
+
+## M13 the view does not say what discarding affects
+src/ui/AccountHistory.tsx: removed
+  if (status.canDiscard && saved !== 'cancelling') parts.push(HISTORY_DISCARD_EFFECT);
+
+$ node node_modules/vitest/vitest.mjs run --maxWorkers=1 test/accountHistory.test.tsx
+exit 1
+   × says where this device’s saved snapshot stands and what discarding affects 3ms
+      Tests  1 failed | 5 passed (6)
+
+## M14 the session bridge refuses the new fields
+src/crdt/accountSessionBridge.ts: removed
+    ['pruned', 'tooLarge', 'saved', 'positions', 'replay', 'raced'],
+
+$ node node_modules/vitest/vitest.mjs run --maxWorkers=1 test/accountSessionBridge.test.ts
+exit 1
+   × carries where a saved snapshot stands, positions since the last one and a replay-bound refusal, refusing malformed ones (phase 547) 3ms
+      Tests  1 failed | 12 passed (13)

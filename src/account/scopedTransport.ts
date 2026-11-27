@@ -9,7 +9,7 @@ import {
   type GrantScope,
   type GrantChallenge,
 } from '../../account-protocol/scopedGrant';
-import type { NetworkLogin } from './networkLogin';
+import type { NetworkLogin, LoginProblem } from './networkLogin';
 
 export class NetworkSignInRequired extends Error {
   constructor(
@@ -28,7 +28,18 @@ export class NetworkThrottled extends Error {
     super('The account service is busy. Saved progress can be retried.');
   }
 }
-type Login = Pick<NetworkLogin, 'authorization' | 'rejectAccess' | 'getSnapshot' | 'networkSignal'>;
+/** No access: the network login is not connected and is not asking for a passkey. `problem` is why
+ * its last attempt failed, if it knows (phase 551). */
+export class NetworkLoginUnavailable extends Error {
+  constructor(readonly problem: LoginProblem | undefined) {
+    super('Account connection unavailable');
+  }
+}
+type Login = Pick<
+  NetworkLogin,
+  'authorization' | 'rejectAccess' | 'getSnapshot' | 'networkSignal'
+> &
+  Partial<Pick<NetworkLogin, 'getProblem'>>;
 export interface GrantBinding {
   login: Login;
   scope: GrantScope;
@@ -316,7 +327,7 @@ export class ScopedTransport {
             )
           )
             throw new NetworkSignInRequired();
-          throw Error('Account connection unavailable');
+          throw new NetworkLoginUnavailable(binding.login.getProblem?.());
         }
         const key = JSON.stringify([auth.accountId, auth.sessionId, binding.scope]);
         try {
@@ -385,7 +396,8 @@ export class ScopedTransport {
     }
   }
 }
-class GrantDenied extends Error {
+/** An authorization refusal the transport does not resolve itself. `reason` is unsigned. */
+export class GrantDenied extends Error {
   constructor(readonly reason: string) {
     super('Account authorization refused: ' + reason);
   }

@@ -157,7 +157,7 @@ export const Goals = ({
     setTransferError('');
     void removeMasterLines(selection.lines, { feedback: 'local' })
       .then((removed) => {
-        if (!removed) setTransferError('Nothing removed. Try again.');
+        if (removed === false) setTransferError('Nothing removed. Try again.');
       })
       .finally(() => {
         transferring.current = false;

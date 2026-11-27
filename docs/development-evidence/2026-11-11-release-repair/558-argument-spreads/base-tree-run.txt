@@ -1,0 +1,50 @@
+Phase 558: test/argumentSpreads.test.ts (final text, after review) run against the phase 557 text of the
+five changed sources (written from the index with git show :<path>, then restored and checked with cmp).
+Node v26.13.1, vitest 4.1.10 (forks pool). Trimmed from the verbose report: case lines, each
+failure's first message and its first source frame, and the totals.
+
+ ✓ test/argumentSpreads.test.ts > the old expressions throw at this size in this realm (control) > push, unshift and Math.max with ROWS spread arguments throw a RangeError here 6ms
+ × test/argumentSpreads.test.ts > the content owner opens and appends ROWS rows > a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot) 10744ms
+   → Maximum call stack size exceeded
+ × test/argumentSpreads.test.ts > the content owner opens and appends ROWS rows > one append of ROWS rows extends the warm view (contentStore appendRecords) 15390ms
+   → Maximum call stack size exceeded
+ × test/argumentSpreads.test.ts > the receive owner appends ROWS content rows to its coverage view > an incremental prepare appends every new row in order (inboundLedger prepare) 1288ms
+   → Maximum call stack size exceeded
+ × test/argumentSpreads.test.ts > export writes a card of ROWS lines > serializes and parses back a card with ROWS lines (serialize collectionLines) 33ms
+   → Maximum call stack size exceeded
+ × test/argumentSpreads.test.ts > local persistence puts a failed batch of ROWS updates back in order > a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 1351ms
+   → expected RangeError: Maximum call stack size excee… to be DOMException{ stack: 'InvalidStateEr…' } // Object.is equality
+ × test/argumentSpreads.test.ts > gentle context measures ROWS visible ranges > dims the same lines as a fresh projection (gentleContext write) 50ms
+   → Maximum call stack size exceeded
+ ✓ test/argumentSpreads.test.ts > no argument spread returns at the sites phase 558 changed (guard) > finds the old expressions (control) 13ms
+ × test/argumentSpreads.test.ts > no argument spread returns at the sites phase 558 changed (guard) > the five changed files spread arguments only where the call has a fixed parameter list 46ms
+   → expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+
+ FAIL  test/argumentSpreads.test.ts > the content owner opens and appends ROWS rows > a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot)
+  RangeError: Maximum call stack size exceeded
+  first source frame: ❯ openSnapshot src/crdt/contentStore.ts:423:25
+
+ FAIL  test/argumentSpreads.test.ts > the content owner opens and appends ROWS rows > one append of ROWS rows extends the warm view (contentStore appendRecords)
+  RangeError: Maximum call stack size exceeded
+  first source frame: ❯ src/crdt/contentStore.ts:806:34
+
+ FAIL  test/argumentSpreads.test.ts > the receive owner appends ROWS content rows to its coverage view > an incremental prepare appends every new row in order (inboundLedger prepare)
+  RangeError: Maximum call stack size exceeded
+  first source frame: ❯ Object.prepare src/crdt/inboundLedger.ts:704:14
+
+ FAIL  test/argumentSpreads.test.ts > export writes a card of ROWS lines > serializes and parses back a card with ROWS lines (serialize collectionLines)
+  RangeError: Maximum call stack size exceeded
+  first source frame: ❯ src/crdt/serialize.ts:99:9
+
+ FAIL  test/argumentSpreads.test.ts > local persistence puts a failed batch of ROWS updates back in order > a failed flush of ROWS recovered updates is retried whole (persistence startFlush)
+  AssertionError: expected RangeError: Maximum call stack size excee… to be DOMException{ stack: 'InvalidStateEr…' } // Object.is equality
+
+ FAIL  test/argumentSpreads.test.ts > gentle context measures ROWS visible ranges > dims the same lines as a fresh projection (gentleContext write)
+  RangeError: Maximum call stack size exceeded
+  first source frame: ❯ src/editor/gentleContext.ts:314:34
+
+ FAIL  test/argumentSpreads.test.ts > no argument spread returns at the sites phase 558 changed (guard) > the five changed files spread arguments only where the call has a fixed parameter list
+  AssertionError: expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+ Test Files  1 failed (1)
+      Tests  7 failed | 2 passed (9)
+   Duration  29.88s (transform 564ms, setup 28ms, import 792ms, tests 28.92s, environment 0ms)

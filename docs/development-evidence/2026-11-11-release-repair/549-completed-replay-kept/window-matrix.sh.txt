@@ -1,0 +1,17 @@
+#!/bin/zsh
+# Usage: window-matrix.sh <out.jsonl>. Node window probe, base copy and final worktree, three sizes.
+set -u
+P=<scratch>
+WT=<worktree>
+OUT=$1
+for size in "1000000 20 120" "3000000 50 600" "3000000 200 1500"; do
+  set -- ${=size}
+  for tree in base final; do
+    root=$WT; [ $tree = base ] && root=$P/nbase
+    echo "== $tree chars=$1 own=$2 peers=$3 $(sysctl -n vm.loadavg)"
+    cd $root
+    PROBE_ROOT=$root PROBE_LABEL=$tree PROBE_AT=replay-end PROBE_ATTEMPTS=5 PROBE_REPS=3 PROBE_CHARS=$1 PROBE_OWN=$2 PROBE_PEERS=$3 PROBE_OUT=$OUT \
+      timeout 1500 node node_modules/vitest/vitest.mjs run --config $P/probe/vitest.config.mjs --configLoader runner 2>&1 | grep -E "Tests |FAIL|Error" | head -5
+  done
+done
+echo "MATRIX DONE $(sysctl -n vm.loadavg)"

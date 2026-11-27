@@ -2,14 +2,24 @@ import { HistoryReplyRefused } from '../account/historyHttp';
 import { type AccountAccess } from '../account/accountHttp';
 /** Two lanes, one pass. Runtime scheduling contains no account or storage authority. */
 import type { DriverClock, DriverGate, DriverOperations } from './accountDriver';
-import type { ReceiveStep } from './accountReceiveDriver';
+import type { ReceiveHaltDetail, ReceiveStep } from './accountReceiveDriver';
 import { EnvelopeSizeError } from '../../account-protocol/envelope';
 import { AdmissionError } from './admissionQueue';
 import { ContentError } from './contentRecord';
 import { CustodyError } from './custodyRecord';
 import { InboundError } from './accountInbound';
 import { createBatchWindow, type BatchTiming } from './batchWindow';
+import {
+  ledgerCostTotal,
+  ledgerProfiling,
+  ledgerWorkStart,
+  measureLedgerWork,
+  recordAcceptedSend,
+} from './accountLedgerMetrics';
+import type { SyncRefusal } from '../account/syncRefusal';
 export type SyncLane = 'send' | 'receive';
+/** A receive condition that stays named while receiving otherwise continues. Not a halt. */
+export type SyncStanding = 'history-unverified' | 'history-waiting';
 export type SyncGate = DriverGate | 'sign-in-required';
 export type SyncHalt =
   | 'closed'
@@ -18,13 +28,28 @@ export type SyncHalt =
   | 'envelope-size'
   | 'integrity'
   | import('./accountReceiveDriver').ReceiveHalt;
-export type OutboundStep = { receivedThrough?: number; acceptedNow?: true } & (
-  | { kind: 'idle' | 'progress' | 'unknown' | 'paused'; acceptedThrough: number }
-  | { kind: 'batching'; acceptedThrough: number; due: number }
-  | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
-);
+/** Phase 552: why an `unknown` step got no result. Shown beside the unchanged reason only; the
+ * scheduler never reads it to decide anything. */
+export type ExplainedStep = { refusal?: SyncRefusal };
+export type OutboundStep = { receivedThrough?: number; acceptedNow?: true } & ExplainedStep &
+  (
+    | { kind: 'idle' | 'progress' | 'unknown' | 'paused' | 'held'; acceptedThrough: number }
+    | { kind: 'batching'; acceptedThrough: number; due: number }
+    | { kind: 'blocked'; acceptedThrough: number; reason: SyncHalt }
+  );
+/** Scheduling hint read live at each decision. Never authority: the owner still checks effects. */
+export interface SyncHold {
+  /** Stop before allocating a new envelope; allocated positions still drain to acceptance. */
+  readonly send: boolean;
+  /** Do not start receive passes. A pass already running finishes normally. */
+  readonly receive: boolean;
+  /** Do not start a receive pass whose only cause is the idle reconciliation timer. A content
+   * hint, reconnection, retry, authority change or unanswered submit still starts one at once. */
+  readonly idlePoll?: boolean;
+}
 /** A completed check can yield its turn without claiming progress or a complete idle sweep. */
-export type SyncReceiveStep = ReceiveStep | { kind: 'yielded'; receivedThrough: number };
+export type SyncReceiveStep = (ReceiveStep | { kind: 'yielded'; receivedThrough: number }) &
+  ExplainedStep;
 export interface SyncLaneStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly failures: number;
@@ -35,9 +60,14 @@ export interface SyncLaneStatus {
     | 'sign-in-required'
     | 'request-expired'
     | 'network-unavailable'
+    | SyncStanding
     | null;
   readonly issueSince: number | null;
   readonly lastSuccessAt: number | null;
+  /** Only beside a halt whose step named its cause; cleared with the halt. */
+  readonly detail?: ReceiveHaltDetail;
+  /** Phase 552: only beside `network-unavailable`, why the last attempt got no result. */
+  readonly refusal?: SyncRefusal;
 }
 export interface SyncStatus {
   readonly send: SyncLaneStatus & { readonly acceptedThrough: number };
@@ -49,12 +79,20 @@ interface Lane {
   failures: number;
   due?: number | undefined;
   halt?: SyncHalt | undefined;
+  haltDetail?: ReceiveHaltDetail | undefined;
   retryReason?: 'request-expired' | 'operation-failed' | 'network-unavailable' | undefined;
+  /** Presentation only, set and cleared with retryReason. */
+  refusal?: SyncRefusal | undefined;
+  standing?: SyncStanding | undefined;
   issueSince?: number;
   lastSuccessAt?: number;
   expedite: boolean;
   dirty: boolean;
   continuing: boolean;
+  /** Send only: parked at a settled boundary (nothing allocated and unaccepted). */
+  held: boolean;
+  /** Receive only: the pending deadline came from the idle interval and no signal since. */
+  routine: boolean;
 }
 const clockDefault: DriverClock = {
   now: () => Date.now(),
@@ -68,12 +106,21 @@ export const idleReceiveInterval = (notificationHealthy: boolean): number =>
 export function createSyncScheduler(options: {
   signal: AbortSignal;
   gate(): SyncGate;
-  send(beforeNewEnvelope?: () => number | undefined): Promise<OutboundStep>;
+  /** `holdNewEnvelope` is consulted at the same boundary, before any batch delay. */
+  send(
+    beforeNewEnvelope?: () => number | undefined,
+    holdNewEnvelope?: () => boolean,
+  ): Promise<OutboundStep>;
   receive(sendDue: () => boolean): Promise<SyncReceiveStep>;
   detach(): void;
   clock?: DriverClock;
   receiveInterval?(): number;
   publicationBatch?: BatchTiming;
+  /** Maintenance may ask routine sync to hold; call wake('hold') when it changes. */
+  hold?(): SyncHold | undefined;
+  /** Read after each receive step. Progress from other devices does not clear it; only the
+   * owner reporting it gone does. */
+  standing?(): SyncStanding | undefined;
 }) {
   const clock = options.clock ?? clockDefault;
   const batch = options.publicationBatch
@@ -86,6 +133,8 @@ export function createSyncScheduler(options: {
     expedite: false,
     dirty: false,
     continuing: false,
+    held: false,
+    routine: false,
   });
   const lanes = { send: fresh(), receive: fresh() };
   const listeners = new Set<(status: SyncStatus) => void>();
@@ -96,9 +145,30 @@ export function createSyncScheduler(options: {
     last: SyncLane = 'receive';
   let signInSince: number | undefined;
   let turn = 0;
+  const hold = (): SyncHold | undefined => {
+    try {
+      return options.hold?.();
+    } catch {
+      return undefined; // A hint observer cannot stop synchronization.
+    }
+  };
+  // A parked sender stays parked only while the hold asks; receive defers for the whole request,
+  // or only its idle reconciliation poll. Any signal clears `routine`, so it runs at once.
+  const deferred = (name: SyncLane) => {
+    if (name === 'send') return lanes.send.held && hold()?.send === true;
+    const current = hold();
+    return current?.receive === true || (lanes.receive.routine && current?.idlePoll === true);
+  };
   const laneStatus = (name: SyncLane): SyncLaneStatus => {
     const lane = lanes[name],
       gate = options.gate();
+    const reason = stopped
+      ? null
+      : (lane.halt ??
+        (gate === 'local-storage' || gate === 'sign-in-required'
+          ? gate
+          : // Reads that fail because of it (a pruned stream) do not hide the cause.
+            (lane.standing ?? lane.retryReason ?? null)));
     return {
       phase: stopped
         ? 'closed'
@@ -111,7 +181,12 @@ export function createSyncScheduler(options: {
               : lane.phase,
       failures: lane.failures,
       nextAttemptAt:
-        !stopped && gate === 'ready' && !lane.halt && active !== name && lane.due !== undefined
+        !stopped &&
+        gate === 'ready' &&
+        !lane.halt &&
+        active !== name &&
+        lane.due !== undefined &&
+        !deferred(name)
           ? Math.max(
               lane.due,
               name === 'send' && lane.failures === 0 ? (batch?.due ?? -Infinity) : -Infinity,
@@ -119,12 +194,9 @@ export function createSyncScheduler(options: {
           : null,
       issueSince: (lane.halt ? lane.issueSince : (signInSince ?? lane.issueSince)) ?? null,
       lastSuccessAt: lane.lastSuccessAt ?? null,
-      reason: stopped
-        ? null
-        : (lane.halt ??
-          (gate === 'local-storage' || gate === 'sign-in-required'
-            ? gate
-            : (lane.retryReason ?? null))),
+      ...(!stopped && lane.halt && lane.haltDetail ? { detail: lane.haltDetail } : {}),
+      reason,
+      ...(reason === 'network-unavailable' && lane.refusal ? { refusal: lane.refusal } : {}),
     };
   };
   const snapshot = (): SyncStatus =>
@@ -162,6 +234,8 @@ export function createSyncScheduler(options: {
       lanes[name].due = undefined;
       lanes[name].dirty = lanes[name].expedite = false;
       lanes[name].continuing = false;
+      lanes[name].held = false;
+      lanes[name].routine = false;
     }
     options.signal.removeEventListener('abort', stop);
     options.detach();
@@ -173,7 +247,8 @@ export function createSyncScheduler(options: {
     publish();
     return !stopped && options.gate() === 'ready';
   };
-  const eligible = () => names.filter((name) => !lanes[name].halt && lanes[name].due !== undefined);
+  const eligible = () =>
+    names.filter((name) => !lanes[name].halt && lanes[name].due !== undefined && !deferred(name));
   // A failed operation owns its retry clock. New typing cannot move it in either direction.
   const dueAt = (name: SyncLane) =>
     name === 'send' && lanes.send.failures === 0
@@ -210,11 +285,13 @@ export function createSyncScheduler(options: {
     const lane = lanes[name];
     work = Promise.resolve()
       .then(async () => {
-        if (!ready() || lane.halt) return;
+        // A hold can engage between choosing this lane and starting it. Keep its deadline.
+        if (!ready() || lane.halt || deferred(name)) return;
         lane.phase = 'working';
         // Keep the deadline until after observers have had their last opportunity to pause this pass.
         if (!ready() || lane.halt) return;
         lane.due = undefined;
+        lane.routine = false;
         if (!lane.continuing) lane.dirty = lane.expedite = false;
         lane.continuing = false;
         last = name;
@@ -228,6 +305,8 @@ export function createSyncScheduler(options: {
                   options.gate() === 'ready' &&
                   !lanes.send.halt &&
                   lanes.send.due !== undefined &&
+                  // A parked sender cannot use the turn; do not cut a receive sweep for it.
+                  !deferred('send') &&
                   dueAt('send') <= clock.now(),
               )
             : await options.send(
@@ -240,6 +319,9 @@ export function createSyncScheduler(options: {
                       return undefined;
                     }
                   : undefined,
+                // Same boundary: any allocated position has been driven first, so reduction can
+                // cut here. Persisted submissions never wait for a hold.
+                options.hold ? () => hold()?.send === true : undefined,
               );
         if (stopped) return;
         const position =
@@ -263,6 +345,14 @@ export function createSyncScheduler(options: {
           (name === 'receive' && (result.kind === 'progress' || result.kind === 'idle'))
         )
           lane.lastSuccessAt = clock.now();
+        if (name === 'receive') {
+          try {
+            lane.standing = options.standing?.();
+          } catch {
+            lane.standing = undefined; // An observer cannot stop synchronization.
+          }
+          if (lane.standing) lane.issueSince ??= clock.now();
+        }
         // An unanswered submit can have committed. Preserve independent read reconciliation,
         // but never override a receiver's failure backoff or diagnostic halt.
         if (
@@ -270,9 +360,20 @@ export function createSyncScheduler(options: {
           result.kind === 'unknown' &&
           !lanes.receive.halt &&
           lanes.receive.failures === 0
-        )
+        ) {
           lanes.receive.due = Math.min(lanes.receive.due ?? clock.now(), clock.now());
-        if (result.kind === 'yielded') {
+          lanes.receive.routine = false;
+        }
+        if (result.kind === 'held') {
+          // Parked, not failed or idle-swept: local edits keep their dirty mark for release.
+          delete lane.issueSince;
+          lane.phase = 'idle';
+          lane.failures = 0;
+          lane.retryReason = lane.refusal = undefined;
+          lane.due = undefined;
+          lane.expedite = false;
+          lane.held = true;
+        } else if (result.kind === 'yielded') {
           // Preserve hints received before/during the pause, so completing the remaining
           // checks cannot hide writing on a publisher checked before that hint.
           lane.continuing = true;
@@ -281,11 +382,13 @@ export function createSyncScheduler(options: {
           delete lane.issueSince;
           lane.phase = 'idle';
           lane.failures = 0;
-          lane.retryReason = undefined;
+          lane.retryReason = lane.refusal = undefined;
           lane.due = result.due;
           lane.dirty = lane.expedite = false;
         } else if (result.kind === 'blocked') {
           lane.halt = result.reason;
+          lane.haltDetail =
+            'detail' in result && result.detail ? Object.freeze({ ...result.detail }) : undefined;
           lane.issueSince ??= clock.now();
           lane.due = undefined;
           lane.expedite = lane.dirty = false;
@@ -300,7 +403,8 @@ export function createSyncScheduler(options: {
               : retryable
                 ? 'network-unavailable'
                 : undefined;
-          if (retryable) lane.issueSince ??= clock.now();
+          lane.refusal = result.kind === 'unknown' ? result.refusal : undefined;
+          if (retryable || lane.standing) lane.issueSince ??= clock.now();
           else delete lane.issueSince;
           lane.phase = retryable ? 'retrying' : result.kind === 'idle' ? 'idle' : 'working';
           lane.failures = retryable ? Math.min(lane.failures + 1, 6) : 0;
@@ -322,6 +426,9 @@ export function createSyncScheduler(options: {
                 : lane.dirty
                   ? clock.now() + 50
                   : undefined;
+          // Only a clean idle sweep's own timer is routine; a hint during the pass made it dirty.
+          lane.routine =
+            name === 'receive' && result.kind === 'idle' && !lane.expedite && !lane.dirty;
           lane.expedite = lane.dirty = false;
         }
         ready();
@@ -351,6 +458,7 @@ export function createSyncScheduler(options: {
           else {
             lane.phase = 'retrying';
             lane.retryReason = 'operation-failed';
+            lane.refusal = undefined;
             lane.failures = Math.min(lane.failures + 1, 6);
             lane.due = clock.now() + Math.min(1000 * 2 ** (lane.failures - 1), 30000);
           }
@@ -365,10 +473,27 @@ export function createSyncScheduler(options: {
       });
   };
   const wake = (
-    cause: 'start' | 'gate' | 'online' | 'authority' | 'local' | 'remote' | 'retry' | 'flush',
+    cause:
+      | 'start'
+      | 'gate'
+      | 'online'
+      | 'authority'
+      | 'local'
+      | 'remote'
+      | 'retry'
+      | 'flush'
+      | 'hold',
     target?: SyncLane,
   ) => {
     if (stopped) return;
+    // Released: the parked sender checks once for edits that arrived while it was held.
+    const send = lanes.send;
+    if (send.held && !hold()?.send) {
+      send.held = false;
+      if (!send.halt && active !== 'send')
+        send.due = Math.min(send.due ?? clock.now(), clock.now());
+      else if (active === 'send') send.dirty = true;
+    }
     if (options.gate() === 'offline')
       for (const lane of Object.values(lanes)) delete lane.issueSince;
     if (cause === 'local') {
@@ -386,11 +511,14 @@ export function createSyncScheduler(options: {
         lane.issueSince ??= clock.now();
       if (cause === 'remote' && name === 'receive' && !lane.halt) {
         if (active === name || lane.continuing) lane.dirty = true;
-        else if (lane.failures === 0) lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+        else if (lane.failures === 0) {
+          lane.due = Math.min(lane.due ?? clock.now(), clock.now());
+          lane.routine = false; // A hint is a real signal, never an idle-poll deferral.
+        }
       }
       // Only the owner calls this after installing verified membership. Other evidence halts stay closed.
       if (cause === 'retry' || (cause === 'authority' && name === 'send' && lane.halt === 'closed'))
-        lane.halt = undefined;
+        lane.halt = lane.haltDetail = undefined;
       if (cause === 'local' && name === 'send') {
         lane.dirty = true;
         if (!lane.halt && active !== name && lane.due === undefined) lane.due = clock.now() + 50;
@@ -409,7 +537,10 @@ export function createSyncScheduler(options: {
         lane.due = clock.now();
       if ((cause === 'online' || cause === 'authority' || cause === 'retry') && !lane.halt) {
         if (active === name || lane.continuing) lane.expedite = true;
-        else lane.due = clock.now();
+        else {
+          lane.due = clock.now();
+          lane.routine = false;
+        }
       }
     }
     arm();
@@ -477,12 +608,21 @@ export async function driveOutboundStep(
   token: AccountAccess,
   gate: () => DriverGate,
   beforeNewEnvelope?: () => number | undefined,
+  holdNewEnvelope?: () => boolean,
 ): Promise<OutboundStep> {
   const progress = (s: Awaited<ReturnType<DriverOperations['deliveryStatus']>>) => ({
     acceptedThrough: s.acceptedThrough,
     ...(s.receivedThrough !== undefined ? { receivedThrough: s.receivedThrough } : {}),
   });
-  let status = await ops.deliveryStatus();
+  // Profiling only (phase 554): op timers include queue waits; an accepted step is one sample.
+  const stepAt = ledgerWorkStart(),
+    networkBefore = ledgerCostTotal('sendNetwork');
+  const timed = <T>(name: Parameters<typeof measureLedgerWork>[0], run: () => Promise<T>) => {
+    if (!ledgerProfiling) return run();
+    const at = ledgerWorkStart();
+    return run().finally(() => measureLedgerWork(name, at));
+  };
+  let status = await timed('opDeliveryStatus', () => ops.deliveryStatus());
   if (status.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.()))
     status = await ops.deliveryStatus();
   const pause = (): OutboundStep | null => {
@@ -495,20 +635,23 @@ export async function driveOutboundStep(
   if (paused) return paused;
   const position = status.acceptedThrough + 1;
   if (!status.submissions.includes(position)) {
-    const spool = await ops.spoolStatus();
+    const spool = await timed('opSpoolStatus', () => ops.spoolStatus());
     paused = pause();
     if (paused) return paused;
     if (!spool.positions.some((p) => p.position === position && p.persisted)) {
+      // acceptedThrough + 1 has no submission and no persisted spool position: nothing allocated
+      // is unaccepted. Parking here leaves the settled cut local reduction requires.
+      if (holdNewEnvelope?.()) return { kind: 'held', ...progress(status) };
       const due = beforeNewEnvelope?.();
       if (due !== undefined) return { kind: 'batching', due, ...progress(status) };
-      const prepared = await ops.prepareNextEnvelope();
+      const prepared = await timed('opPrepareEnvelope', () => ops.prepareNextEnvelope());
       if (!prepared) return pause() ?? { kind: 'idle', ...progress(status) };
       prepared.bytes.fill(0);
       if (prepared.position !== position) throw Error('Unexpected delivery position');
     }
     paused = pause();
     if (paused) return paused;
-    const submission = await ops.prepareSubmission(position);
+    const submission = await timed('opPrepareSubmission', () => ops.prepareSubmission(position));
     if ('bytes' in submission && submission.bytes instanceof Uint8Array) submission.bytes.fill(0);
     if (submission.kind !== 'ready') {
       status = await ops.deliveryStatus();
@@ -517,8 +660,8 @@ export async function driveOutboundStep(
   }
   paused = pause();
   if (paused) return paused;
-  await ops.submitPending(token);
-  let next = await ops.deliveryStatus();
+  await timed('opSubmit', () => ops.submitPending(token));
+  let next = await timed('opDeliveryStatus', () => ops.deliveryStatus());
   let retried = false;
   if (next.state === 'closed' && gate() === 'ready' && (await ops.retryRetiredGeneration?.())) {
     retried = true;
@@ -527,6 +670,10 @@ export async function driveOutboundStep(
   if (next.acceptedThrough < status.acceptedThrough)
     throw Error('Durable delivery prefix regressed');
   if (next.state !== 'ready') return { kind: 'blocked', ...progress(next), reason: next.state };
+  if (ledgerProfiling && next.acceptedThrough > status.acceptedThrough) {
+    measureLedgerWork('sendStep', stepAt);
+    recordAcceptedSend(performance.now() - stepAt, ledgerCostTotal('sendNetwork') - networkBefore);
+  }
   return {
     kind:
       retried || next.acceptedThrough > status.acceptedThrough

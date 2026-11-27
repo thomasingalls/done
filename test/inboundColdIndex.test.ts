@@ -126,7 +126,7 @@ it('two genuinely certified publisher pages retain a physical two-event witness 
     f.cleanup();
   }
 });
-it('binary eligibility keeps exact actual-byte and clone limits and the old counter-version guard', async () => {
+it('binary eligibility does not refuse on the retained-byte charge and keeps the old counter-version guard', async () => {
   const f = await fixture();
   const bytes = accountLedgerIndexUsage(f.view, f.records).ownedBytes!;
   const proofBytes = 32 * 1024 * 1024 - bytes;
@@ -135,7 +135,7 @@ it('binary eligibility keeps exact actual-byte and clone limits and the old coun
   ).toBeDefined();
   expect(
     await indexVerifiedLedger(f.view, f.records, route, f.counter, crypto.subtle, proofBytes + 1),
-  ).toBeUndefined();
+  ).toBeDefined();
   expect(
     await indexVerifiedLedger(
       f.view,
@@ -146,7 +146,7 @@ it('binary eligibility keeps exact actual-byte and clone limits and the old coun
       proofBytes,
       'cloned',
     ),
-  ).toBeUndefined();
+  ).toBeDefined();
   const old: ContentCounter = {
     v: 1,
     store_id: f.counter.store_id,

@@ -1,0 +1,84 @@
+--- src/crdt/accountReceive.ts	2026-11-12 04:01:31
++++ src/crdt/accountReceive.ts	2026-11-12 04:01:38
+@@ -27,7 +27,6 @@
+ } from '../account/automaticHistoryMaintenance';
+ import { createRetentionReads } from './retentionReads';
+ import { RetiredHistoryRequired, type RetiredCut } from './retainedHistory';
+-import { testHoldsHistory } from './testHooks';
+ import type { PreparedReceiveFinish } from './admissionQueue';
+ import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
+ import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
+@@ -1725,7 +1724,8 @@
+   let historyRequired = false;
+   const fetchHistory = () =>
+     runNetworkTask(async (network) => {
+-      if (testHoldsHistory()) return null;
++      // COPY-ONLY SEAM: receive passes without a catalog check (as inside one long pass).
++      if ((globalThis as { __holdHistory?: boolean }).__holdHistory === true) return null;
+       if (!access || account.detached || !canReceive() || Date.now() < historyDue) return null;
+       const stamp = retentionReads.capture();
+       const prepared = await runCaptureTask(async (task, owner, route) => {
+@@ -4149,6 +4149,8 @@
+         signal: carrier.signal,
+         observe: () => ({
+           ready:
++            // COPY-ONLY SEAM: reduction runs only on the device the test chooses.
++            (globalThis as { __allowReduction?: boolean }).__allowReduction === true &&
+             historyFlights === 0 &&
+             automaticHistory?.status.phase !== 'running' &&
+             carrier.state === 'active' &&
+@@ -4166,7 +4168,15 @@
+           deferPolls: stable(),
+           hint: localRetentionHint(),
+         }),
+-        remove: result.removeLocalHistory,
++        // COPY-ONLY SEAM: a reduction that reaches a preparation ceiling.
++        remove: (revision, report) =>
++          (globalThis as { __forceCapacity?: boolean }).__forceCapacity === true
++            ? Promise.resolve({
++                kind: 'skipped',
++                reason: 'capacity',
++                detail: { cause: 'snapshot-size', needed: 2, allowed: 1 },
++              })
++            : result.removeLocalHistory!(revision, report),
+       });
+       automaticRetention = maintenance;
+       // A checked installation older builds cannot replay is committed only when its reduction
+--- src/crdt/automaticLocalRetention.ts	2026-11-12 04:01:31
++++ src/crdt/automaticLocalRetention.ts	2026-11-12 03:06:15
+@@ -9,7 +9,6 @@
+ import { PreparationCapacity } from './preparationCapacity';
+ import { LocalBaselineError } from './localBaselineError';
+ import { copyRetentionDetail, type LocalRetentionDetail } from './localRetentionDetail';
+-import { testMinRecords } from './testHooks';
+ export type { LocalRetentionCause, LocalRetentionDetail } from './localRetentionDetail';
+ export interface LocalRetentionHint {
+   readonly revision: number;
+@@ -256,7 +255,10 @@
+       Number.isSafeInteger(hint.revision) &&
+       hint.revision >= 0 &&
+       Number.isSafeInteger(hint.records) &&
+-      (hint.records >= (testMinRecords() ?? LOCAL_RETENTION_MIN_RECORDS) || fold);
++      // COPY-ONLY SEAM: the growth threshold, switchable at run time.
++      (hint.records >=
++        ((globalThis as { __minRecords?: number }).__minRecords ?? LOCAL_RETENTION_MIN_RECORDS) ||
++        fold);
+     // A hint withdrawn by an in-flight validation, or pending input, never releases a hold.
+     // Only the owner's stable hold observation, outcomes, the budget and lifecycle do.
+     if (hold !== true) releaseHold();
+--- src/crdt/admittedWorkspace.ts	2026-11-12 00:55:11
++++ src/crdt/admittedWorkspace.ts	2026-11-12 03:06:15
+@@ -990,6 +990,13 @@
+     exportArchive: () => {
+       live();
+       const doc = accepted!.history.doc;
++      // COPY-ONLY SEAM: the exact Yjs state (state vector and delete set) at export time.
++      {
++        const sv = Y.encodeStateVector(doc),
++          snap = Y.encodeSnapshot(Y.snapshot(doc));
++        const h = (b: Uint8Array) => [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
++        (globalThis as { __doneState?: unknown }).__doneState = { sv: h(sv), snapshot: h(snap) };
++      }
+       return new Uint8Array(exportArchive(doc, doc.getText('master').toString()));
+     },
+     close,

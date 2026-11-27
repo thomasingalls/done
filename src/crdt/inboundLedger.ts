@@ -303,6 +303,10 @@ export interface InboundState {
   conflict: boolean;
   retained: Map<number, NonNullable<InboundContext['retained']>>;
   peers?: Map<string, InboundState>;
+  /** Top level only: an installation after the baseline holds a cut below a retained frontier
+   * that only this build's evidence accepts. Older builds refuse to replay this store until a
+   * reduction carries the installation into the baseline. Derived, never persisted. */
+  foldDue?: true;
 }
 export const emptyInbound = (
   prefix: InboundContext['prefix'] = { position: 0, link: ZERO_REFUSAL, observedThrough: 0 },
@@ -364,13 +368,26 @@ export function contextAt(
   const retained = state.retained.get(after + 1);
   return { ...base, prefix: { ...state.prefix }, ...(retained ? { retained } : {}) };
 }
-/** Retain existing receipt evidence; a checkpoint changes only where future reads begin. */
+/** A snapshot this device needs: it moves a receive cursor forward on at least one stream, so
+ * without it the device can stop catching up once that history is pruned. Read before applying. */
+export function historyAdvances(
+  own: InboundState,
+  base: InboundContext,
+  heads: readonly HistoryHead[],
+) {
+  return heads.some((h) => h.position > publisherState(own, base, h.credentialId).prefix.position);
+}
+/** Retain existing receipt evidence; a checkpoint changes only where future reads begin.
+ * `retired`: cuts below a retained frontier already authenticated before installation, by the
+ * retained-baseline gate or a verified read of the accepted chain; `'committed'` replays an
+ * installation that passed that check before it was written. Neither is learned from a reply. */
 export async function applyHistoryReceiveCuts(
   own: InboundState,
   base: InboundContext,
   census: ReturnType<typeof inspectInbound>,
   heads: readonly HistoryHead[],
   beforeSequence = Infinity,
+  retired?: ReadonlyMap<string, { position: number; link: string }> | 'committed',
 ) {
   const route: CaptureRoute = {
     workspace: base.authority.workspace,
@@ -383,12 +400,18 @@ export async function applyHistoryReceiveCuts(
   for (const cut of heads) {
     const state = publisherState(own, base, cut.credentialId);
     if (state.conflict) captureError('History cut crosses a stream conflict');
+    const checked =
+      retired === 'committed' ||
+      (retired?.get(cut.credentialId)?.position === cut.position &&
+        retired.get(cut.credentialId)!.link === cut.link);
     if (cut.credentialId === base.publisher.id && cut.position > 0) {
       const origin = census.delivery.spool.origin;
       if (origin && cut.position < origin.position) {
         const pin = own.checkpointCuts?.get(cut.credentialId);
-        if (!pin || pin.position !== cut.position) throw new RetiredHistoryRequired();
-        if (pin.link !== cut.link) captureError('History cut differs from retained checkpoint');
+        if (pin?.position === cut.position) {
+          if (pin.link !== cut.link) captureError('History cut differs from retained checkpoint');
+        } else if (!checked) throw new RetiredHistoryRequired();
+        // The retired-frontier check below marks the fold for this stream too.
       } else if (origin && cut.position === origin.position) {
         if (cut.link !== origin.link) captureError('History cut differs from retained self stream');
       } else {
@@ -428,8 +451,10 @@ export async function applyHistoryReceiveCuts(
       cut.position > 0 &&
       cut.position <= state.retiredThrough &&
       known === undefined
-    )
-      throw new RetiredHistoryRequired();
+    ) {
+      if (!checked) throw new RetiredHistoryRequired();
+      own.foldDue = true;
+    }
     if (known !== undefined && known !== cut.link)
       captureError('History cut conflicts with received history');
     if (cut.position > (state.startingPoint?.position ?? 0))
@@ -481,11 +506,54 @@ function updateIndex(bounded: boolean) {
     bytes: () => size,
   };
 }
-/** A fork must be unchanged by each evidenced original; no vector-only shortcut. */
+/** Held updates applied to a batch's fork in one Yjs transaction (phase 557). */
+const COVERAGE_GROUP = 64;
+/** A fork must be unchanged by each evidenced original; no vector-only shortcut. A batch (phase
+ * 557) proves this for each of its updates: one fork with every update applied in turn, then the
+ * same comparison. Every compared part only grows under apply (string content changes only by a
+ * one-way surrogate replacement, and pending parts empty only as the state vector grows), so an
+ * unchanged fork means no update changed it; and an update that changes nothing behaves the same
+ * on any equal document, because item boundaries never fall inside a surrogate pair. Sharing a
+ * transaction defers only cleanup, which merges items and can only add deletions. A view with
+ * pending parts never proves a batch. Anything else, including an error, proves nothing and the
+ * caller checks each update alone. */
 function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false, direct = false) {
   const doc = new Y.Doc({ gc: false }),
     originals = updateIndex(false),
     positives = updateIndex(true);
+  // The open batch: its fork, its updates in order, their bytes, and whether it can still prove.
+  // Held updates are applied a group at a time in one Yjs transaction, because Yjs computes a
+  // state vector over every client at each transaction's start and end; `waiting` counts the held
+  // updates not yet applied.
+  let running: ReturnType<typeof forkDoc> | undefined,
+    held: Bytes[] = [],
+    heldBytes = 0,
+    waiting = 0,
+    broken = false;
+  const release = () => {
+    running?.destroy();
+    running = undefined;
+    held = [];
+    heldBytes = 0;
+    waiting = 0;
+    broken = false;
+  };
+  const applyWaiting = () => {
+    if (broken || !waiting) return;
+    const began = performance.now(),
+      from = held.length - waiting;
+    waiting = 0;
+    try {
+      const copy = (running ??= forkDoc(doc, false));
+      Y.transact(copy, () => {
+        for (let i = from; i < held.length; i++) Y.applyUpdate(copy, held[i]!);
+      });
+    } catch {
+      broken = true;
+    } finally {
+      measureLedger('coverageCheck', began);
+    }
+  };
   const append = (rows: readonly OpenedRecord[]) => {
     const pending = hasPendingUpdates(doc);
     for (const r of rows) {
@@ -511,9 +579,47 @@ function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false
     doc,
     append,
     clear() {
+      release();
       doc.destroy();
       originals.clear();
       positives.clear();
+    },
+    /** Adds one update to the open batch; every COVERAGE_GROUP held updates are applied to the
+     * batch's fork, in order, in one transaction. Returns the batch's bytes so far, or Infinity
+     * once the batch can no longer prove anything (settle it now). An update stored verbatim or
+     * already proven is skipped, as `check` skips it. */
+    hold(update: Bytes): number {
+      if (originals.has(update) || positives.has(update)) return heldBytes;
+      held.push(update);
+      heldBytes += update.length;
+      if (broken) return Infinity;
+      if (hasPendingUpdates(doc)) broken = true;
+      else if (++waiting >= COVERAGE_GROUP) applyWaiting();
+      return broken ? Infinity : heldBytes;
+    },
+    /** Closes the open batch, applying what is still waiting. Undefined: every held update is
+     * proven covered and recorded as a positive. Otherwise the held updates, in order, for the
+     * caller to check alone; nothing about them is recorded and the batch's fork is gone. */
+    settle(): Bytes[] | undefined {
+      if (!held.length) {
+        release();
+        return undefined;
+      }
+      const batch = held;
+      let proven = false;
+      const began = performance.now();
+      try {
+        applyWaiting();
+        proven = !broken && running !== undefined && sameDocState(doc, running);
+      } catch {
+        proven = false;
+      } finally {
+        release();
+        measureLedger('coverageCheck', began);
+      }
+      if (!proven) return batch;
+      for (const update of batch) positives.add(update);
+      return undefined;
     },
     preserve(previous: { doc: ReturnType<typeof forkDoc>; positives(): Uint8Array[] }): boolean {
       if (!sameDocState(previous.doc, doc)) return false;
@@ -558,6 +664,8 @@ function contentCoverage(content: readonly OpenedRecord[], reuseBaseline = false
     },
   };
 }
+/** Per-call reference: builds a fresh view for one check. A pass that checks many updates against
+ * the same captured rows uses createPassCoverage; tests keep this as the equivalence reference. */
 export function verifyInboundCoverage(
   records: readonly OpenedRecord[],
   updates: readonly Bytes[],
@@ -593,7 +701,8 @@ export function createInboundCoverage(options: { incremental?: boolean; direct?:
         sameRecords(rows, content.slice(0, rows.length))
       ) {
         const added = copyRecords(content.slice(rows.length));
-        rows.push(...added);
+        // One push per row: a spread of `added` as call arguments throws past the engine's limit.
+        for (const row of added) rows.push(row);
         coverage!.append(added);
         return 'append';
       }
@@ -634,9 +743,12 @@ export function createInboundCoverage(options: { incremental?: boolean; direct?:
     bind(records: readonly OpenedRecord[]) {
       prepare(records);
       const at = coverage;
+      const current = (input: readonly OpenedRecord[]) => {
+        if (input !== records || coverage !== at) captureError('Coverage view was invalidated');
+      };
       return {
         check(input: readonly OpenedRecord[], updates: readonly Bytes[]) {
-          if (input !== records || coverage !== at) captureError('Coverage view was invalidated');
+          current(input);
           try {
             at!.check(updates);
           } catch (e) {
@@ -644,8 +756,70 @@ export function createInboundCoverage(options: { incremental?: boolean; direct?:
             throw e;
           }
         },
+        /** See contentCoverage.hold; checkInBatches is the only intended caller. */
+        hold(input: readonly OpenedRecord[], update: Bytes): number {
+          current(input);
+          return at!.hold(update);
+        },
+        /** See contentCoverage.settle; a refusal comes only from `check` on what it returns. */
+        settle(input: readonly OpenedRecord[]): Bytes[] | undefined {
+          current(input);
+          return at!.settle();
+        },
       };
     },
+  };
+}
+/** Phase 557: checks single updates against one bound view a batch at a time, with the
+ * contentCoverage verdict for each. A batch is one fork with its updates applied in turn and one
+ * comparison; it closes once its updates hold `budget` bytes, as soon as it is known that it
+ * cannot prove, and at `finish`. A batch that is not proven is checked again one update at a
+ * time, in order, yielding between them, so a refusal is the same error at the same update as
+ * checking each alone. The caller yields between `add` calls as before; nothing is proven until
+ * its batch settles, and the caller keeps every added buffer unchanged until then (the batch's
+ * fork may alias its bytes). */
+export function checkInBatches(
+  view: ReturnType<ReturnType<typeof createInboundCoverage>['bind']>,
+  records: readonly OpenedRecord[],
+  budget: number,
+  checkpoint: () => Promise<void> | undefined,
+) {
+  const settle = async () => {
+    const alone = view.settle(records);
+    if (!alone) return;
+    for (const update of alone) {
+      const pause = checkpoint();
+      if (pause) await pause;
+      view.check(records, [update]);
+    }
+  };
+  return {
+    add(update: Bytes): Promise<void> | undefined {
+      return view.hold(records, update) >= budget ? settle() : undefined;
+    },
+    finish: settle,
+  };
+}
+/** One view for a pass that checks many updates against the same immutable captured rows and stops
+ * at its first refusal. Each check gives the verifyInboundCoverage verdict: the document is built
+ * from a private copy, only ever forked, and keeps nothing between checks except proven positives.
+ * It is built at the first check, where the per-call reference builds, so a damaged row refuses at
+ * the same point. A refusal clears the view; any later check refuses. */
+export function createPassCoverage(records: readonly OpenedRecord[]) {
+  const coverage = createInboundCoverage();
+  let bound: ReturnType<typeof coverage.bind> | undefined,
+    refused = false;
+  return {
+    check(updates: readonly Bytes[]) {
+      if (refused) captureError('Coverage view was invalidated');
+      try {
+        (bound ??= coverage.bind(records)).check(records, updates);
+      } catch (e) {
+        refused = true;
+        throw e;
+      }
+    },
+    clear: coverage.clear,
   };
 }
 export async function verifyInboundLedger(
@@ -715,7 +889,14 @@ export async function verifyInboundLedger(
           else if (reuse) reuse.coverage.check(records, [result.update]);
           else localCoverage!.check([result.update]);
           if (result.heads)
-            await applyHistoryReceiveCuts(own, base, census, result.heads, entry.record.seq);
+            await applyHistoryReceiveCuts(
+              own,
+              base,
+              census,
+              result.heads,
+              entry.record.seq,
+              'committed',
+            );
           own.installedHistory = result.installed;
         } finally {
           result.update.fill(0);

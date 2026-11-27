@@ -1,0 +1,246 @@
+// @vitest-environment node
+// Phase 549 probe (outside the repository's tests). On a reduced owner whose oracle is due, run
+// auditWarm under the Worker's task stack, as that tree's accountCapture.ts builds it, and queue
+// foreground work at a chosen moment. Records: replay ms; event-loop yields and checks inside the
+// replay (and the gap from the last in-replay check to the replay's return); where the audit
+// stopped; the post-replay window; how long the queued work waited for the audit job to end;
+// whether the oracle is still due; replays per oracle completion over repeated attempts.
+// Env: PROBE_ROOT (tree), PROBE_CHARS, PROBE_OWN, PROBE_PEERS, PROBE_REPS, PROBE_AT
+// (replay-end | none), PROBE_ATTEMPTS, PROBE_OUT (jsonl), PROBE_LABEL.
+import { it, vi } from 'vitest';
+import { appendFileSync } from 'node:fs';
+
+const R = process.env.PROBE_ROOT!;
+const H = vi.hoisted(() => ({
+  inReplay: false,
+  replayStart: 0,
+  replayEnd: 0,
+  replays: 0,
+  yields: 0,
+  checks: 0,
+  lastCheck: 0,
+  onReplayEnd: () => {},
+  recordedAt: 0,
+}));
+vi.mock(process.env.PROBE_ROOT + '/src/crdt/localBaselineShadow.ts', async (importOriginal) => {
+  const m: any = await importOriginal();
+  return {
+    ...m,
+    verifyCompleteLocalBaseline: async (...a: unknown[]) => {
+      H.replayStart = performance.now();
+      H.inReplay = true;
+      H.yields = H.checks = 0;
+      try {
+        return await m.verifyCompleteLocalBaseline(...a);
+      } finally {
+        H.inReplay = false;
+        H.replays++;
+        H.replayEnd = performance.now();
+        H.onReplayEnd();
+      }
+    },
+  };
+});
+vi.mock(process.env.PROBE_ROOT + '/src/crdt/localBaselineReuse.ts', async (importOriginal) => {
+  const m: any = await importOriginal();
+  return {
+    ...m,
+    createBaselineReuse: async (...a: unknown[]) => {
+      try {
+        return await m.createBaselineReuse(...a);
+      } finally {
+        H.recordedAt = performance.now();
+      }
+    },
+  };
+});
+
+const CHARS = Number(process.env.PROBE_CHARS ?? 1000000);
+const OWN = Number(process.env.PROBE_OWN ?? 20);
+const PEERS = Number(process.env.PROBE_PEERS ?? 120);
+const REPS = Number(process.env.PROBE_REPS ?? 3);
+const AT = process.env.PROBE_AT ?? 'replay-end';
+const ATTEMPTS = Number(process.env.PROBE_ATTEMPTS ?? 1);
+const OUT = process.env.PROBE_OUT!;
+const LABEL = process.env.PROBE_LABEL ?? '';
+const r1 = (x: number) => Math.round(x * 10) / 10;
+
+it('phase 549 window probe', async () => {
+  vi.stubGlobal('indexedDB', new (globalThis as any).IDBFactory());
+  for (const n of ['VITE_ACCOUNT_RETENTION', 'VITE_ACCOUNT_BASELINE_READ', 'VITE_ACCOUNT_BASELINE_INSTALL'])
+    vi.stubEnv(n, '1');
+  const realTimeout = globalThis.setTimeout;
+  vi.stubGlobal('setTimeout', ((fn: any, ms?: number, ...rest: any[]) => {
+    if (H.inReplay && !ms) H.yields++;
+    return realTimeout(fn, ms, ...rest);
+  }) as any);
+  const { createContentOwner } = await import(R + '/src/crdt/contentStore');
+  const { extendSpoolWitness } = await import(R + '/src/crdt/spoolRecord');
+  const { cryptFor, keys } = await import(R + '/test/local-baseline/anchor-fixture');
+  const { Y } = await import(R + '/src/crdt/yjs');
+  const cm: any = await import(R + '/src/crdt/contentMaintenance');
+  const { budgetedTask } = await import(R + '/src/crdt/cpuBudget');
+  const { createVerifiedRecords } = await import(R + '/src/crdt/verifiedRecords');
+  // @ts-expect-error JavaScript fixture.
+  const { memberFixture } = await import(R + '/test/local-baseline/fixtures.mjs');
+  const plain: any = { signal: new AbortController().signal, step: (f: any) => f(), wait: async (f: any) => f() };
+  const f = await memberFixture();
+  const context = f.ctx;
+  const verified = createVerifiedRecords<any>({ ownResults: true });
+  const crypt: any = {
+    ...cryptFor(context.identity, await keys()),
+    reuseOpened: true,
+    warmLoads: true,
+    readBaseline: true,
+    baseline: async (task: any) => {
+      task.step(() => {});
+      return {
+        ...context,
+        identity: { ...context.identity },
+        route: { ...context.route },
+        assertCurrent: () => task.step(() => {}),
+      };
+    },
+    validate: async (records: any, task: any, _c: any, view: any, baseline: any) => {
+      if (!baseline) return;
+      await verified.verify(records, view ?? {}, async () => ({
+        ...structuredClone(baseline.ledger),
+        baseline: structuredClone({ anchor: baseline.anchor, firstSuffix: baseline.firstSuffix, records: baseline.records }),
+      }), () => task.step(() => {}));
+    },
+  };
+  const owner: any = createContentOwner(context.identity, 1, crypt);
+  await owner.initialize(plain, { intent: '04'.repeat(16), checkCreation() {} });
+  await owner.enableSpool(plain);
+  let persisted = 0;
+  const append = async () => {
+    for (const row of f.rows.slice(persisted)) {
+      const event = row.kind === 'heads' || (row.kind === 'outbound' && !new TextDecoder().decode(row.bytes).startsWith('["done/source-capture/v1"'));
+      if (event) {
+        const before = await owner.spoolWitness(plain), after = await extendSpoolWitness(before, row.bytes, crypto.subtle);
+        await owner.appendSpool(plain, row, { before, after });
+      } else await owner.append(plain, [row]);
+      persisted++;
+    }
+  };
+  await f.appendOwn();
+  await f.appendPeer();
+  await append();
+  const doc = new Y.Doc({ gc: false });
+  const text = doc.getText('big');
+  const step = 3 * 1024 * 1024;
+  for (let done = 0; done < CHARS; done += step) {
+    let u: Uint8Array | undefined;
+    const cap = (x: Uint8Array) => (u = new Uint8Array(x));
+    doc.on('update', cap);
+    doc.transact(() => text.insert(done, 'y'.repeat(Math.min(step, CHARS - done))));
+    doc.off('update', cap);
+    await owner.append(plain, [{ kind: 'update', bytes: u! }]);
+  }
+  doc.destroy();
+  const removed = await owner.removeHistory(plain, async () => {}, () => {}, 0);
+  const first = await owner.loadAccount(plain);
+  if (first.kind !== 'baseline-plus-suffix') throw Error('Expected a reduced owner: ' + JSON.stringify(removed));
+  for (const r of first.records) r.bytes.fill(0);
+  for (let i = 0; i < OWN; i++) await f.appendOwn();
+  for (let i = 0; i < PEERS; i++) await f.appendPeer();
+  await append();
+  const view = await owner.loadAccount(plain);
+  const records = view.records.length;
+  for (const r of view.records) r.bytes.fill(0);
+
+  const real = performance.now.bind(performance);
+  let offset = 0;
+  vi.spyOn(performance, 'now').mockImplementation(() => real() + offset);
+  // The base copy carries the test shim (base behaviour through the new interface).
+  const tree = typeof cm.warmAuditInterruptible === 'function' ? 'final' : 'base';
+
+  for (let rep = 0; rep < REPS; rep++) {
+    offset += 5 * 60 * 1000 + 1;
+    if (!owner.warmAuditDue()) throw Error('Oracle not due');
+    const state = { foreground: false, queuedAt: 0 };
+    let stoppedAt = 'none';
+    const conditions = () => ({ suspended: false, shadowActivity: false, queuePriority: state.foreground });
+    // As each tree's accountCapture.ts builds the warm-audit task.
+    const interruptible: any =
+      tree === 'final'
+        ? cm.warmAuditInterruptible(plain, owner, {
+            suspended: () => false,
+            inputSince: () => false,
+            foregroundPending: () => state.foreground,
+          })
+        : {
+            signal: plain.signal,
+            step: (effect: any) => plain.step(() => { if (state.foreground) throw new cm.MaintenanceInterrupted([conditions()]); return effect(); }),
+            wait: (start: any) => plain.wait(() => { if (state.foreground) throw new cm.MaintenanceInterrupted([conditions()]); return start(); }),
+          };
+    // Count checks inside the replay, and note where the audit stopped.
+    const counted: any = {
+      signal: plain.signal,
+      step: (effect: any) => {
+        if (H.inReplay) { H.checks++; H.lastCheck = performance.now(); }
+        try { return interruptible.step(effect); } catch (e) { stoppedAt = H.inReplay ? 'inside the replay' : H.recordedAt > H.replayEnd && H.replayEnd ? 'after the oracle was recorded' : H.replayEnd >= H.replayStart && H.replayEnd ? 'after the replay, before recording' : 'before the replay'; throw e; }
+      },
+      wait: (start: any) => {
+        if (H.inReplay) { H.checks++; H.lastCheck = performance.now(); }
+        return interruptible.wait(start).catch((e: unknown) => { stoppedAt = H.inReplay ? 'inside the replay' : H.recordedAt > H.replayEnd && H.replayEnd ? 'after the oracle was recorded' : 'after the replay, before recording'; throw e; });
+      },
+    };
+    const auditTask = () => cm.maintenanceTask(budgetedTask(counted), plain.signal);
+    H.onReplayEnd = () => {
+      if (AT === 'replay-end' && !state.foreground) {
+        state.foreground = true;
+        state.queuedAt = performance.now();
+      }
+    };
+    const replaysBefore = H.replays;
+    const outcomes: string[] = [];
+    let waitMs: number | undefined, replayMs = 0, windowMs: number | undefined, yields = 0, checks = 0, tail = 0;
+    let firstDueAfter: boolean | undefined;
+    H.recordedAt = 0;
+    for (let a = 0; a < ATTEMPTS; a++) {
+      H.replayStart = H.replayEnd = 0;
+      let outcome = 'completed';
+      try {
+        while (!(await owner.auditWarm(auditTask()))) { /* slices */ }
+      } catch (e) {
+        outcome = e instanceof cm.MaintenanceInterrupted ? 'interrupted ' + stoppedAt : 'error: ' + String(e);
+      }
+      const ended = performance.now();
+      if (a === 0) {
+        if (state.queuedAt) waitMs = ended - state.queuedAt;
+        if (H.replayEnd) {
+          replayMs = H.replayEnd - H.replayStart;
+          yields = H.yields;
+          checks = H.checks;
+          tail = H.replayEnd - H.lastCheck;
+        }
+        if (H.recordedAt && H.replayEnd) windowMs = H.recordedAt - H.replayEnd;
+        firstDueAfter = owner.warmAuditDue();
+      }
+      outcomes.push(outcome);
+      // The queued job runs (a warm foreground load), then settles.
+      if (state.foreground) {
+        for (const r of (await owner.loadAccount(plain)).records) r.bytes.fill(0);
+        state.foreground = false;
+        state.queuedAt = 0;
+      }
+    }
+    H.onReplayEnd = () => {};
+    const row = {
+      label: LABEL, tree, at: AT, chars: CHARS, own: OWN, peers: PEERS, records, rep,
+      replayMs: r1(replayMs), yieldsInReplay: yields, checksInReplay: checks, lastCheckToReturnMs: r1(tail),
+      windowMs: windowMs === undefined ? null : r1(windowMs), queuedWaitMs: waitMs === undefined ? null : r1(waitMs),
+      outcomes, replays: H.replays - replaysBefore, dueAfterFirst: firstDueAfter, dueAfterAll: owner.warmAuditDue(),
+      load: (await import('node:os')).loadavg()[0].toFixed(2),
+    };
+    appendFileSync(OUT, JSON.stringify(row) + '\n');
+    console.log(JSON.stringify(row));
+    if (owner.warmAuditDue()) {
+      // Leave the owner settled for the next repetition.
+      while (!(await owner.auditWarm(plain))) { /* slices */ }
+    }
+  }
+  owner.dispose();
+  f.clear();
+}, 3600000);

@@ -1,0 +1,64 @@
+Phase 549 Node window probe (window-probe.ts.txt, run by window-matrix.sh.txt). Base = the phase 548 source with the
+base shim; final = the working tree. Queued work arrives as the replay returns; five attempts per repetition, three
+repetitions; between attempts the queued job runs (a warm foreground load) and settles.
+'interrupted after the oracle was recorded' is the very next step after recording, where queued work interrupts again.
+
+Summary (median [min-max]):
+tree | baseline chars | opened records | replay ms (median [min-max]) | yields / checks inside the replay | post-replay window ms | queued work waited ms | where attempt 1 stopped | replays in 5 attempts | oracle due after attempt 1 / after 5 | load
+base | 1000000 | 381 | 233.4 [233.3-236.7] | 2 / 6831 | - | 0.4 [0.4-0.6] | ['interrupted after the replay, before recording'] | [5, 5, 5] | [True, True, True] / [True, True, True] | 4.09-4.09
+final | 1000000 | 381 | 228.1 [223.5-246.6] | 2 / 6831 | 26.1 [24.7-31.3] | 26.6 [25.2-31.9] | ['interrupted after the oracle was recorded'] | [1, 1, 1] | [False, False, False] / [False, False, False] | 4.24-4.24
+base | 3000000 | 1551 | 1005.3 [986-1015.2] | 2 / 31971 | - | 1.3 [1.3-2.4] | ['interrupted after the replay, before recording'] | [5, 5, 5] | [True, True, True] / [True, True, True] | 4.05-6.12
+final | 3000000 | 1551 | 976.8 [931.5-991.8] | 2 / 31971 | 125.1 [123.7-139.2] | 126.6 [125.1-140.8] | ['interrupted after the oracle was recorded'] | [1, 1, 1] | [False, False, False] / [False, False, False] | 6.03-5.87
+base | 3000000 | 4401 | 2235.2 [2195.5-2296.5] | 2 / 82671 | - | 3.1 [3-3.9] | ['interrupted after the replay, before recording'] | [5, 5, 5] | [True, True, True] / [True, True, True] | 10.39-7.79
+final | 3000000 | 4401 | 2195.5 [2165.9-2201.4] | 2 / 82671 | 341.5 [330.9-848.3] | 345.7 [335.2-851.5] | ['interrupted after the oracle was recorded'] | [1, 1, 1] | [False, False, False] / [False, False, False] | 6.17-5.61
+
+Host load at the start of each group:
+== base chars=1000000 own=20 peers=120 { 3.92 5.79 6.22 }
+      Tests  1 passed (1)
+== final chars=1000000 own=20 peers=120 { 4.09 5.79 6.22 }
+      Tests  1 passed (1)
+== base chars=3000000 own=50 peers=600 { 4.24 5.79 6.22 }
+      Tests  1 passed (1)
+== final chars=3000000 own=50 peers=600 { 6.12 6.05 6.29 }
+      Tests  1 passed (1)
+== base chars=3000000 own=200 peers=1500 { 5.87 6.00 6.27 }
+      Tests  1 passed (1)
+== final chars=3000000 own=200 peers=1500 { 7.25 6.81 6.58 }
+      Tests  1 passed (1)
+MATRIX DONE { 5.61 6.44 6.46 }
+
+A first matrix used 8,000,000 characters for the larger sizes; reduction refused them (capacity: the baseline needed
+16,005,724 bytes against 8,388,608), so those owners were unreduced and ran no oracle. Its log:
+== base chars=1000000 own=20 peers=120 { 4.69 6.38 6.45 }
+      Tests  1 passed (1)
+== final chars=1000000 own=20 peers=120 { 5.11 6.44 6.47 }
+      Tests  1 passed (1)
+== base chars=8000000 own=50 peers=600 { 5.19 6.43 6.47 }
+      Tests  1 passed (1)
+== final chars=8000000 own=50 peers=600 { 4.85 6.34 6.44 }
+      Tests  1 passed (1)
+== base chars=8000000 own=200 peers=1500 { 4.94 6.33 6.43 }
+      Tests  1 passed (1)
+== final chars=8000000 own=200 peers=1500 { 5.53 6.40 6.45 }
+      Tests  1 passed (1)
+MATRIX DONE { 4.74 6.18 6.37 }
+
+Raw rows (final matrix):
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 1000000, "own": 20, "peers": 120, "records": 381, "rep": 0, "replayMs": 233.3, "yieldsInReplay": 2, "checksInReplay": 6831, "lastCheckToReturnMs": 1.9, "windowMs": null, "queuedWaitMs": 0.6, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "4.09"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 1000000, "own": 20, "peers": 120, "records": 381, "rep": 1, "replayMs": 233.4, "yieldsInReplay": 2, "checksInReplay": 6831, "lastCheckToReturnMs": 1.6, "windowMs": null, "queuedWaitMs": 0.4, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "4.09"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 1000000, "own": 20, "peers": 120, "records": 381, "rep": 2, "replayMs": 236.7, "yieldsInReplay": 2, "checksInReplay": 6831, "lastCheckToReturnMs": 1.5, "windowMs": null, "queuedWaitMs": 0.4, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "4.09"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 1000000, "own": 20, "peers": 120, "records": 381, "rep": 0, "replayMs": 246.6, "yieldsInReplay": 2, "checksInReplay": 6831, "lastCheckToReturnMs": 2.2, "windowMs": 31.3, "queuedWaitMs": 31.9, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "4.24"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 1000000, "own": 20, "peers": 120, "records": 381, "rep": 1, "replayMs": 228.1, "yieldsInReplay": 2, "checksInReplay": 6831, "lastCheckToReturnMs": 1.7, "windowMs": 24.7, "queuedWaitMs": 25.2, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "4.24"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 1000000, "own": 20, "peers": 120, "records": 381, "rep": 2, "replayMs": 223.5, "yieldsInReplay": 2, "checksInReplay": 6831, "lastCheckToReturnMs": 1.6, "windowMs": 26.1, "queuedWaitMs": 26.6, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "4.24"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 50, "peers": 600, "records": 1551, "rep": 0, "replayMs": 1005.3, "yieldsInReplay": 2, "checksInReplay": 31971, "lastCheckToReturnMs": 20.7, "windowMs": null, "queuedWaitMs": 2.4, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "4.05"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 50, "peers": 600, "records": 1551, "rep": 1, "replayMs": 1015.2, "yieldsInReplay": 2, "checksInReplay": 31971, "lastCheckToReturnMs": 7.9, "windowMs": null, "queuedWaitMs": 1.3, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "4.53"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 50, "peers": 600, "records": 1551, "rep": 2, "replayMs": 986, "yieldsInReplay": 2, "checksInReplay": 31971, "lastCheckToReturnMs": 6.8, "windowMs": null, "queuedWaitMs": 1.3, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "6.12"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 50, "peers": 600, "records": 1551, "rep": 0, "replayMs": 976.8, "yieldsInReplay": 2, "checksInReplay": 31971, "lastCheckToReturnMs": 21.2, "windowMs": 139.2, "queuedWaitMs": 140.8, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "6.03"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 50, "peers": 600, "records": 1551, "rep": 1, "replayMs": 991.8, "yieldsInReplay": 2, "checksInReplay": 31971, "lastCheckToReturnMs": 8.9, "windowMs": 125.1, "queuedWaitMs": 126.6, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "6.03"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 50, "peers": 600, "records": 1551, "rep": 2, "replayMs": 931.5, "yieldsInReplay": 2, "checksInReplay": 31971, "lastCheckToReturnMs": 7.7, "windowMs": 123.7, "queuedWaitMs": 125.1, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "5.87"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 200, "peers": 1500, "records": 4401, "rep": 0, "replayMs": 2195.5, "yieldsInReplay": 2, "checksInReplay": 82671, "lastCheckToReturnMs": 20.1, "windowMs": null, "queuedWaitMs": 3.9, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "10.39"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 200, "peers": 1500, "records": 4401, "rep": 1, "replayMs": 2235.2, "yieldsInReplay": 2, "checksInReplay": 82671, "lastCheckToReturnMs": 20.7, "windowMs": null, "queuedWaitMs": 3, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "8.35"}
+{"label": "base", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 200, "peers": 1500, "records": 4401, "rep": 2, "replayMs": 2296.5, "yieldsInReplay": 2, "checksInReplay": 82671, "lastCheckToReturnMs": 20.2, "windowMs": null, "queuedWaitMs": 3.1, "outcomes": ["interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording", "interrupted after the replay, before recording"], "replays": 5, "dueAfterFirst": true, "dueAfterAll": true, "load": "7.79"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 200, "peers": 1500, "records": 4401, "rep": 0, "replayMs": 2201.4, "yieldsInReplay": 2, "checksInReplay": 82671, "lastCheckToReturnMs": 22.5, "windowMs": 330.9, "queuedWaitMs": 335.2, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "6.17"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 200, "peers": 1500, "records": 4401, "rep": 1, "replayMs": 2165.9, "yieldsInReplay": 2, "checksInReplay": 82671, "lastCheckToReturnMs": 21.5, "windowMs": 848.3, "queuedWaitMs": 851.5, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "5.75"}
+{"label": "final", "tree": "final", "at": "replay-end", "chars": 3000000, "own": 200, "peers": 1500, "records": 4401, "rep": 2, "replayMs": 2195.5, "yieldsInReplay": 2, "checksInReplay": 82671, "lastCheckToReturnMs": 22, "windowMs": 341.5, "queuedWaitMs": 345.7, "outcomes": ["interrupted after the oracle was recorded", "completed", "completed", "completed", "completed"], "replays": 1, "dueAfterFirst": false, "dueAfterAll": false, "load": "5.61"}

@@ -13,6 +13,13 @@ import type { AccountMirrorOpening } from './accountMirrorMaterial';
 
 export const workspaceQueueRefused = () =>
   Error('Worker workspace handoff changed or is unavailable');
+/** The single handoff slot is held by another operation. Thrown only before a flight begins, so
+ * nothing has run; every refusal after that stays a plain fail-closed error. Same message. */
+export class WorkspaceQueueBusy extends Error {
+  constructor() {
+    super('Worker workspace handoff changed or is unavailable');
+  }
+}
 export function workspaceQueueFields(input: unknown, names: readonly string[]): void {
   if (!input || typeof input !== 'object' || Object.getPrototypeOf(input) !== Object.prototype)
     throw workspaceQueueRefused();
@@ -59,13 +66,13 @@ export function createWorkerWorkspaceQueues(config: {
   const begin = (bytes: Bytes, kind: Flight['kind']) => {
     live();
     if (
-      flight ||
       !(bytes instanceof Uint8Array) ||
       !bytes.length ||
       bytes.length > MAX_PENDING_BYTES ||
       sequence === Number.MAX_SAFE_INTEGER
     )
       throw workspaceQueueRefused();
+    if (flight) throw new WorkspaceQueueBusy();
     const state: Flight = { id: ++sequence, kind, phase: 'preparing', sent: false };
     flight = state;
     return { state, input: bytes.slice() };

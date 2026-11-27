@@ -1,0 +1,187 @@
+{
+  "phase": 553,
+  "date": "2026-11-12",
+  "base": "6e88b46e0",
+  "requested": "coordinating session, 2026-11-12: build the operator-approved scoping of the history route's cache wipe and the submission retry, from investigation 12",
+  "operatorApproval": "2026-11-11, \"Yes, scope it\": option 2 of investigation 12 (publish, admit and discard stop clearing; prune invalidates only the pruned account's publisher keys) and the submission retry",
+  "notApproved": [
+    "keeping the pruned account's own tips across a prune",
+    "the error-path clears in delivery.ts, discovery.ts and successor.ts (SVC-ERROR-CLEARS)",
+    "the prune commit cost (SVC-PRUNE-COMMIT)",
+    "workers",
+    "any service logging (SVC-NO-LOGS)"
+  ],
+  "amends": {
+    "2026-10-11 verified-tip policy, plan.md lines 17-18": "pruning invalidates reuse for the pruned account only (its tips, capture owners and queued audits), not every account's tips, authority proofs and row results; publish, admit and discard, which the code also treated this way, invalidate nothing",
+    "2026-10-23 phase 30 retry rule": "extended from the native read caller to the submission caller, same conditions: only a typed revision clear (AuthorityCacheClearedError) retries, within the four attempts; close, changed input, custody, signature, authorization and expiry stay hard"
+  },
+  "alignedExpectation": {
+    "test": "test/account-service-delivery/publisher-commit-races.test.mjs: publication authority cache never revives an in-flight proof after clear",
+    "before": "the held submission answers unknown; 4 rows",
+    "after": "the held submission is accepted after a second fresh proof (offers 2 straight after it); 5 rows; title, setup and other assertions unchanged"
+  },
+  "unchanged": [
+    "invalidation on other-connection writes (data_version), membership changes, close and failed verification",
+    "the error-path whole-cache clears: delivery.ts 1163, 1291, 1425, 1614; discovery.ts 110; successor.ts 234",
+    "full verification at first use after start-up; quarantine until restart; off-path audits",
+    "the commit fence (guard inside BEGIN IMMEDIATE), the four attempts, custody and authorization checks",
+    "no connection, worker, process or log line added; no stored format, wire message, route or limit change"
+  ],
+  "sourceSha256": {
+    "account-service/historyCheckpoint.ts": "9751180cc61f1a6f798cc768f07a4415677d058b6ef426ae3f1c25fb018abb3e",
+    "account-service/delivery.ts": "306f710a9a5ff2fbf4777b97e5b9a2c8dfaf38163fb80ac9e3d55c7c5e83e1aa",
+    "account-service/publisherTips.ts": "3171c42db237e4cc056bd71c00c6633490ded644c7f7c38d16db3b23e251981d",
+    "test/account-history/cache-scope.test.mjs": "ab421e36b7227e4ea072473e2c2f586f351b99e92f1f45c794c8f3fb24457b77",
+    "test/account-service-delivery/publisher-commit-races.test.mjs": "3e9848804d7ed3612054641d05ff9a336e64b265907a77dea580edbd9d9592b2"
+  },
+  "baseSha256": {
+    "account-service/historyCheckpoint.ts": "c708f50d44a6031562103b735dc12fd267f4d6ce5380b50e08d1cadd04d610f7",
+    "account-service/delivery.ts": "a85725d15524fae6c48acd203085a6daf37586cfe03c386fcc94d464f57b7a3c",
+    "account-service/publisherTips.ts": "4245098a4f626e92b3e6a925c5f8bf00e4003703df1ba812acf7cf6d0d441c0d",
+    "test/account-service-delivery/publisher-commit-races.test.mjs": "a9ae6849535d6557aa7a8c719c4cee2221381366113e73661f93097a83b8f750"
+  },
+  "fixture": {
+    "service": "one in-process AccountCore with membership continuation and sessions; the real PrivateAuthority",
+    "accountA": "two certified devices (phase 547 devices fixture), real runHistoryMaintenance; A1 1,024 positions, A2 512",
+    "accountB": "delivery fixture on the same core; 1,024 positions",
+    "snapshots": "1 at 512 + 256, 2 at 1,024 + 512; a prune covers 768 rows",
+    "harness": "cases 2-6 run readInbound, decideSubmission and exchangeHistoryCheckpoint on a second connection with its own verification owner; every write after set-up goes through it"
+  },
+  "scopingCounts": {
+    "case1PerStep": {
+      "steps": [
+        "publish",
+        "admit",
+        "second publish",
+        "second admit",
+        "third publish",
+        "discard",
+        "prune"
+      ],
+      "base": {
+        "BtipsHeldAfterStep": 0,
+        "BfullCensuses": 1,
+        "BauthorityProofs": 1,
+        "BsubmitAndReadMs": "621-750 (two runs)",
+        "AfullCensuses": 2,
+        "AverifiedRows": "768 to 1,544"
+      },
+      "candidate": {
+        "BtipsHeldAfterStep": "3 (1 after the prune: A's two retired)",
+        "BfullCensuses": 0,
+        "BauthorityProofs": 0,
+        "BsubmitAndReadMs": "11-12 (20 and 40 in one run's last two steps)",
+        "AfullCensuses": "0, and 2 after the prune",
+        "AverifiedRows": "the suffix only, and 1,544 after the prune"
+      }
+    },
+    "case2": {
+      "base": "B's capture refused by the fence (other: false); 2 wipes",
+      "candidate": "B's capture valid; A's two refused; the read of A1 retried once and re-verified A1 once; 0 wipes"
+    },
+    "case3": {
+      "base": "B's read retried (guards 2, censuses 2); 2 wipes",
+      "candidate": "B's read guarded once; no census; prune one attempt; 0 wipes"
+    },
+    "case4": {
+      "base": "submission unknown/unavailable, no fence reached, 2 wipes",
+      "candidate": "accepted on its retry, one fence, 1 wipe (the injected one)"
+    },
+    "case5": {
+      "base": "refused prune wiped twice; B re-verified",
+      "candidate": "refused prune wiped nothing; quarantine 1; B kept its tip; restored bytes still refused"
+    },
+    "case6": {
+      "base": "no tip held; B re-verified twice across the prune and its resend; 4 wipes",
+      "candidate": "B's tip held; A re-verified once per stream; 0 wipes"
+    }
+  },
+  "tests": {
+    "new": {
+      "test/account-history/cache-scope.test.mjs": 6
+    },
+    "aligned": {
+      "test/account-service-delivery/publisher-commit-races.test.mjs": 1
+    }
+  },
+  "baseTree": {
+    "script": "base-run.sh.txt",
+    "result": "6 of 6 new cases fail (base-tree-run.txt)",
+    "alignedTest": "with the aligned expectation, that case fails on the base sources (answers unknown); 44 of 45 pass (aligned-test-base-run.txt)"
+  },
+  "mutationControls": {
+    "applied": 13,
+    "detected": 13,
+    "byNewCases": 12,
+    "byExistingCases": "M13 (the fence's byte comparison skipped): 4 cases in publisher-tips and publisher-commit-races; case 2 survives it, because the account invalidation already refuses A's captures",
+    "fenceByteComparison": "under M3 the capture of a row the prune replaced is still refused (covered: false) while the unpruned-row capture passes"
+  },
+  "staticChecks": "static-checks.txt: no added connection, worker, process or await; no await between BEGIN and COMMIT/ROLLBACK in the three files",
+  "runsThisSeat": {
+    "newFileFinalTree": {
+      "cases": 6,
+      "passed": 6,
+      "seconds": 100
+    },
+    "accountHistoryNode": {
+      "files": "test/account-history/*.test.mjs",
+      "cases": 113,
+      "passed": 113,
+      "seconds": 375,
+      "note": "run before oxfmt changed one new title's quotes"
+    },
+    "serviceDeliveryInboundLiveness": {
+      "cases": 162,
+      "passed": 161,
+      "failed": [
+        "service cache retains reuse with 65536-byte checkpoint and 35 larger rows (fails identically at 6e88b46e0)"
+      ]
+    },
+    "sessionsNode": {
+      "cases": 195,
+      "passed": 195
+    },
+    "ciNativeSyncAuthority": {
+      "cases": 307,
+      "passed": 307,
+      "seconds": 142
+    },
+    "ciEnrollmentReadBatching": {
+      "cases": 69,
+      "passed": 69
+    },
+    "ciServiceQuarantine": "passed",
+    "typecheck": "pnpm typecheck and tsc -p tsconfig.node.json --noEmit: clean",
+    "oxfmt": "5 changed code files clean through stdin",
+    "oxlint": "5 changed code files with --no-ignore: 0 warnings, 0 errors",
+    "adapters": {
+      "files": 9,
+      "cases": 178,
+      "passed": 178
+    },
+    "validationInventory": "passed, 10 of 10; plan 1130/559",
+    "cryptoPrep": "census matched, 6 of 6",
+    "contractChecks": "10 of 10 pass",
+    "traceCheck": "fails only on the local origin-isolation receipt written by a build on the phase 551 tree; pnpm build not run"
+  },
+  "bookkeeping": {
+    "denominator": "3035, unchanged (the new file is a node test in test/account-history, blocked like its neighbours)",
+    "planningInventory": "1129/558 -> 1130/559 (test/account-history/cache-scope.test.mjs joins the release selection, blocked); the progress header had lagged at 1126/556",
+    "inventoryGraph": "testFiles 765 -> 766, requiredTestFiles 759 -> 760; two test hashes recorded",
+    "census": "new hashes for the three service sources; no new label or cryptographic call",
+    "registry": "no registered site moved (delivery.ts:781 is above the change)"
+  },
+  "notVerified": [
+    "no device, browser, real gateway or deployed service",
+    "whether this explains the desktop sign-in failure (SVC-SIGN-IN); session login and grants never used these caches",
+    "two prunes of one account at once, or a prune racing an audit of the same account (reasoned, not tested)",
+    "the production account's size"
+  ],
+  "outsideTheTask": [
+    "test/account-liveness/service-cache.test.mjs 'service cache retains reuse with 65536-byte checkpoint and 35 larger rows' fails on 6e88b46e0 too (116 verifies, 105 expected); it is not in a CI step"
+  ],
+  "review": {
+    "fullSuite": "pnpm test --maxWorkers=1 on the final tree: 353 files, 3,682 passed and 1 existing skip, 327.45 s",
+    "checks": "pnpm typecheck, pnpm build, the ten contract checks, pnpm validation:inventory and the plan check, pnpm account:crypto-prep, the nine CI adapter files, test/account-application/*.test.mjs, pnpm trace:check after the build, node --test test/account-history/*.test.mjs, test/account-service-delivery/*.test.mjs and test/account-service-inbound/*.test.mjs, and the CI session, authority and quarantine steps"
+  }
+}

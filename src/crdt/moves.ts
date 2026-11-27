@@ -93,10 +93,11 @@ export interface Workspace {
  * A structural change: its own transaction, and its own undo step on each side.
  * Every operation below that moves, creates or destroys a card goes through it.
  */
-const discrete = <T>(workspace: Workspace, fn: () => T): T => {
+const discrete = <T>(workspace: Workspace, fn: () => T, open = false): T => {
   workspace.undo?.stopCapturing();
   const result = transact(workspace.doc, workspace.origin, fn);
-  workspace.undo?.stopCapturing();
+  // An open step stays capturing so the same command's later text slices join it.
+  if (!open) workspace.undo?.stopCapturing();
   return result;
 };
 
@@ -105,13 +106,11 @@ const writable = (workspace: Workspace, date: ISODate): boolean => !isFrozen(dat
 /**
  * Where a card arriving in a collection lands.
  *
- * Done reads newest-first: the thing you just finished is the thing you want to
- * see, and a record you only ever append to is read from the top. Next and
- * Scheduled are ordered by intent rather than by time, so an arrival goes to
- * the end and the order stays yours.
+ * Every collection puts ordinary arrivals on top. Existing membership order
+ * remains the user's: explicit reorder indices and split adjacency are separate,
+ * and editing text never sorts the collection or changes a timestamp.
  */
-const arrivalIndex = (section: Section, length: number): number =>
-  section === 'done' ? 0 : length;
+const ARRIVAL_INDEX = 0;
 
 /**
  * Capacity check for Next, from PRD §3. Every insert path goes through it, and
@@ -165,7 +164,7 @@ export const compose = (
   workspace: Workspace,
   ref: Ref,
   text: string,
-  options: { origin?: string | null; goalsContext?: GoalsContext | null } = {},
+  options: { origin?: string | null; goalsContext?: GoalsContext | null; open?: boolean } = {},
 ): boolean => {
   if (!canAccept(workspace, ref)) return false;
 
@@ -178,11 +177,15 @@ export const compose = (
     origin: options.origin ?? null,
     goalsContext: options.goalsContext ?? null,
   });
-  return discrete(workspace, () => {
-    registerCard(workspace.doc, id, card, ref);
-    target.insert(arrivalIndex(ref.section, target.length), [id]);
-    return true;
-  });
+  return discrete(
+    workspace,
+    () => {
+      registerCard(workspace.doc, id, card, ref);
+      target.insert(ARRIVAL_INDEX, [id]);
+      return true;
+    },
+    options.open === true,
+  );
 };
 
 /* -------------------------------------------------------------------------- */
@@ -215,10 +218,41 @@ export const moveCard = (
 
   return discrete(workspace, () => {
     source.delete(index, 1);
-    const at = toIndex ?? arrivalIndex(to.section, target.length);
+    const at = toIndex ?? ARRIVAL_INDEX;
     target.insert(Math.min(Math.max(at, 0), target.length), [id]);
     setCardLocation(workspace.doc, id, to);
     return true;
+  });
+};
+
+/** Record partial progress and keep the original task for later, in one undo step. */
+export const doneForNow = (workspace: Workspace, from: Ref, id: string): string | null => {
+  if (from.section !== 'next' || !writable(workspace, from.date)) return null;
+  const source = collectionOf(dayAt(workspace.doc, from.date), 'next');
+  const index = source ? indexOfCard(source, id) : -1;
+  const card = cardAt(workspace.doc, id);
+  const location = card && cardLocation(workspace.doc, id);
+  if (!source || index < 0 || !card || location?.date !== from.date || location.section !== 'next')
+    return null;
+
+  const doneRef: Ref = { date: from.date, section: 'done' };
+  const laterRef: Ref = { date: from.date, section: 'scheduled' };
+  const done = collectionAt(workspace, doneRef);
+  const later = collectionAt(workspace, laterRef);
+  if (!done || !later) return null;
+  const copyId = newId();
+  const copy = newCard(cardBody(card), workspace.author, {
+    id: copyId,
+    origin: id,
+    goalsContext: cardGoalsContext(card),
+  });
+  return discrete(workspace, () => {
+    source.delete(index, 1);
+    registerCard(workspace.doc, copyId, copy, doneRef);
+    done.insert(ARRIVAL_INDEX, [copyId]);
+    later.insert(ARRIVAL_INDEX, [id]);
+    setCardLocation(workspace.doc, id, laterRef);
+    return copyId;
   });
 };
 
@@ -305,7 +339,7 @@ export const fileCardTo = (workspace: Workspace, id: string, to: Ref): boolean =
   return discrete(workspace, () => {
     detachCard(workspace, id);
     setCardLocation(workspace.doc, id, to);
-    target.insert(arrivalIndex(to.section, target.length), [id]);
+    target.insert(ARRIVAL_INDEX, [id]);
     return true;
   });
 };
@@ -431,12 +465,9 @@ const placeMasterCards = (
       registerCard(workspace.doc, id, card, ref);
       return id;
     });
-    // Reversed where the section reads newest-first, so a multi-line copy keeps
-    // the order it had in master once each line has been put on top of the last.
-    target.insert(
-      arrivalIndex(ref.section, target.length),
-      ref.section === 'done' ? [...ids].reverse() : ids,
-    );
+    // Preserve the established order within a transferred block: Done inserts
+    // its lines in reverse; Next and Scheduled retain their source order.
+    target.insert(ARRIVAL_INDEX, ref.section === 'done' ? [...ids].reverse() : ids);
     removeSource?.();
     return bodies.length;
   });
@@ -594,10 +625,7 @@ export const moveAllNextTo = (workspace: Workspace, from: ISODate, to: Ref): num
       if (index >= 0) source.delete(index, 1);
       if (cardAt(workspace.doc, id)) setCardLocation(workspace.doc, id, to);
     }
-    target.insert(
-      arrivalIndex(to.section, target.length),
-      to.section === 'done' ? [...ids].reverse() : ids,
-    );
+    target.insert(ARRIVAL_INDEX, to.section === 'done' ? [...ids].reverse() : ids);
     return count;
   });
 };

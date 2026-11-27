@@ -1,0 +1,104 @@
+Phase 559: test/hexEncoding.test.ts (final text) run with src/crdt/custodyCrypto.ts, account-protocol/recovery.ts and src/crdt/legacySource.ts replaced by their base text (git show 4ef09a61b8da0101e356e1c9dd5e69f29dfbd476:<path>), then restored and compared with cmp.
+Command: pnpm exec vitest run --reporter=verbose test/hexEncoding.test.ts
+
+
+ RUN  v4.1.10 /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 5ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 177ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 1ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 2ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex returns what the base routine returned (control) > an input of 8388609 bytes 341ms
+ ✓ test/hexEncoding.test.ts > recovery hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 3ms
+ ✓ test/hexEncoding.test.ts > recovery hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 149ms
+ ✓ test/hexEncoding.test.ts > recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 1ms
+ ✓ test/hexEncoding.test.ts > recovery hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 2ms
+ ✓ test/hexEncoding.test.ts > recovery hex returns what the base routine returned (control) > an input of 8388609 bytes 167ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex keeps every refusal of the base routine (control) > views over a detached buffer, of every length, refuse with the same error 8ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex keeps every refusal of the base routine (control) > zero-length views of live buffers return the empty string 0ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 1ms
+ ✓ test/hexEncoding.test.ts > custodyCrypto hex keeps every refusal of the base routine (control) > a missing input refuses with the same error 0ms
+ ✓ test/hexEncoding.test.ts > recovery hex keeps every refusal of the base routine (control) > views over a detached buffer, of every length, refuse with the same error 0ms
+ ✓ test/hexEncoding.test.ts > recovery hex keeps every refusal of the base routine (control) > zero-length views of live buffers return the empty string 0ms
+ ✓ test/hexEncoding.test.ts > recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 1ms
+ ✓ test/hexEncoding.test.ts > recovery hex keeps every refusal of the base routine (control) > a missing input refuses with the same error 0ms
+ ✓ test/hexEncoding.test.ts > hex builds no array with one element per input byte > the counter sees the base routines join one element per byte (control) 1ms
+ × test/hexEncoding.test.ts > hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source) 254ms
+   → expected 1 to be +0 // Object.is equality
+ × test/hexEncoding.test.ts > hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source) 245ms
+   → expected 1 to be +0 // Object.is equality
+ × test/hexEncoding.test.ts > hex builds no array with one element per input byte > custodyCrypto joins below 64 bytes and not from 64 (fails on the base source) 0ms
+   → expected 1 to be +0 // Object.is equality
+ × test/hexEncoding.test.ts > hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source) 0ms
+   → expected 1 to be +0 // Object.is equality
+ ✓ test/hexEncoding.test.ts > the legacy source observation over more than 8 MiB of legacy rows > hashes to the digest computed with Node's encoder (control) 711ms
+ × test/hexEncoding.test.ts > the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 667ms
+   → expected 2 to be +0 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/hexEncoding.test.ts > hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source)
+ FAIL  test/hexEncoding.test.ts > hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source)
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/hexEncoding.test.ts:267:81
+    265|     const { input, expected } = large();
+    266|     let actual = '';
+    267|     expect(await largeJoins(LARGE, () => (actual = routines[name].hex(…
+       |                                                                                 ^
+    268|     expect(actual === expected).toBe(true);
+    269|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯
+
+ FAIL  test/hexEncoding.test.ts > hex builds no array with one element per input byte > custodyCrypto joins below 64 bytes and not from 64 (fails on the base source)
+ FAIL  test/hexEncoding.test.ts > hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source)
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/hexEncoding.test.ts:278:74
+    276|       // The base code is kept below the threshold, where it is the fa…
+    277|       expect(await largeJoins(SLOTS_FROM - 1, () => routines[name].hex…
+    278|       expect(await largeJoins(SLOTS_FROM, () => routines[name].hex(at)…
+       |                                                                          ^
+    279|     },
+    280|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯
+
+ FAIL  test/hexEncoding.test.ts > the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source)
+AssertionError: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ test/hexEncoding.test.ts:359:7
+    357|     expect(
+    358|       await largeJoins(shortest, async () => (digest = (await inspectL…
+    359|     ).toBe(0);
+       |       ^
+    360|     expect(digest).toBe(expectedDigest(stored));
+    361|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  5 failed | 20 passed (25)
+   Start at  06:16:47
+   Duration  3.04s (transform 103ms, setup 28ms, import 150ms, tests 2.74s, environment 0ms)
+

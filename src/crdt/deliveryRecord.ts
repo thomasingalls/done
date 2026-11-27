@@ -2,6 +2,7 @@ import { countLedgerWork } from './accountLedgerMetrics';
 import { historyAuthority, verifyHistoryDecision } from '../../account-protocol/admissionHistory';
 /** Private v8 delivery ledger. Status is derived from authenticated proof bytes, never a stored setter. */
 import { hex, utf8, type Bytes } from './custodyCrypto';
+import { lowerHexBytes } from '../../account-protocol/recovery';
 import type { VerificationMemo } from './verificationMemo';
 import { MAX_BATCH_BYTES, type OpenedRecord } from './contentRecord';
 import { captureError, captureRouteAt, type CaptureRoute } from './sourceCapture';
@@ -82,11 +83,9 @@ export function applyDecision(
     for (const position of s.refusals.keys()) if (position <= s.acceptedThrough) s.conflict = true;
   }
 }
-const bytes = (v: unknown, max: number): Bytes => {
-  if (typeof v !== 'string' || !v.length || v.length > max * 2 || !/^(?:[0-9a-f]{2})+$/.test(v))
-    return captureError('Invalid delivery wire');
-  return Uint8Array.from(v.match(/../g)!, (x) => parseInt(x, 16));
-};
+const bytes = (v: unknown, max: number): Bytes =>
+  (typeof v === 'string' && v.length <= max * 2 ? lowerHexBytes(v) : undefined) ??
+  captureError('Invalid delivery wire');
 export function encodeDeliveryEntry(
   e: DeliveryEntry,
   r: CaptureRoute,

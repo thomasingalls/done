@@ -1,0 +1,722 @@
+Phase 559 Node suites over the protocol module. The first blocks ran on the first build (before the legacy source change, which no suite here imports); the blocks marked 'after the legacy cases' and 'after the browser-review change' ran on the later trees.
+
+=== pnpm account:recovery
+$ node scripts/account-recovery/run.mjs
+Account recovery evidence: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-recovery/2026-11-13T04-25-35.662Z
+✔ control: removing recovery verification actually accepts a one-factor finalization (119.022916ms)
+✔ control: removing passkey verification actually accepts a one-factor finalization (112.978667ms)
+✔ control: removing the sealed-root check accepts an attacker-substituted authority root (71.758334ms)
+✔ both proofs finalize one exact recovery preparation (-8) (31.26475ms)
+✔ both proofs finalize one exact recovery preparation (-7) (16.554833ms)
+✔ wrong code, binding and substituted private keys cannot confirm (15.653ms)
+✔ unconfirmed registration, another attempt, malformed draft and extra authority fields refuse (10.777125ms)
+✔ finalization rechecks cancel after verification (10.8325ms)
+✔ finalization rechecks expiry after verification (11.313ms)
+✔ finalization rechecks activation after verification (10.730041ms)
+✔ finalization rechecks key after verification (14.323666ms)
+✔ finalization before-commit write failure has one retry outcome (21.911583ms)
+✔ finalization after-commit write failure has one retry outcome (11.366417ms)
+✔ schema v1 requires an explicit offline additive upgrade and preserves pending registration (11.290375ms)
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (10.017458ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (5.0575ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (0.290292ms)
+✔ native saved-code reentry, full browser restart, owner exclusion and lost finalization response (1634.657791ms)
+✔ 160 generated recovery histories obey an independent durable outcome ledger (2381.083541ms)
+✔ SIGKILL before-commit begin-recovery resumes from a cold process (630.530083ms)
+✔ SIGKILL after-commit begin-recovery resumes from a cold process (589.24525ms)
+✔ SIGKILL before-commit finalize-recovery resumes from a cold process (611.834625ms)
+✔ SIGKILL after-commit finalize-recovery resumes from a cold process (571.83875ms)
+✔ SIGKILL before-commit cancel-recovery resumes from a cold process (529.981292ms)
+✔ SIGKILL after-commit cancel-recovery resumes from a cold process (523.388291ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3816.5815
+Account recovery campaign passed: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-recovery/2026-11-13T04-25-35.662Z
+=== account:recovery exit 0
+=== pnpm account:recovery-contract
+$ node scripts/account-recovery-contract/run.mjs
+Recovery-contract evidence: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-recovery-contract/2026-11-13T04-25-40.051Z
+Starting inventory
+Matched pinned runtime census: 526 sources, 201 labels/templates, 36 groups; 15 manual entrypoints.
+Inventory only: this command checks source classification, not byte contracts or finding closure. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit for aggregate evidence.
+Starting authority
+authority map: 80 entries, 102 chains; every chain terminates at a permitted root for its guard, and every signature and AEAD construction in the 19 swept documents sits in a pinned section.
+  open at their own joint: 0
+  blocked through an open home: 0
+  This proves the rules resolve and their homes are pinned — not that the corpus implements them: each open entry flips only at its return, under that record's falsifiers. Account construction coverage is reported separately below.
+  Account constructions: 78 specified, 16 open, 4 inherited outside Account acceptance, 1 non-crypto exclusions. This is registration evidence, not a finding-closure decision. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit.
+Starting first-authority
+✔ published fixed vectors match runtime and independent encoders with every declared binding exercised (181.419542ms)
+✔ 200 shrinking-enabled recursive property reorderings preserve the complete byte contracts (49.247958ms)
+✔ fixed proofs cross actual verifier boundaries; genuinely signed wrong purpose, scope and key namespace refuse (15.522417ms)
+✔ signed descriptors are not plaintext evidence; explicit zero-position genesis baseline refuses (2.466333ms)
+✔ closed nested objects, versions and array order are enforced before durable authority acceptance (2.313834ms)
+✔ six production message-builder field omissions rescue real signature failures (6.534125ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 501.032791
+Starting registry
+✔ D8 requires live claim evidence and cannot relabel it as inherited migration scope (405.966292ms)
+✔ D7 cannot discard native startup, genesis scope, shrinking or inherited cipher evidence (222.02175ms)
+✔ D6 custody cannot drop correspondence, parser repair, native comparison or inherited byte obligations (335.607541ms)
+✔ D5 bridges cannot lose native owners, inherited agreement, primitive roles or AEAD omission evidence (296.036083ms)
+✔ registered Account source sites, exact homes and evidence join the existing map without closing unfinished groups (593.397333ms)
+✔ registration omission controls fail for the missing obligation, not just a stale aggregate hash (730.772333ms)
+✔ recovery corpus cannot lose its phase, primitive role, negative corpus or factor authority under updated hashes (254.157ms)
+✔ transport coverage refuses missing bytes, misclassified carriers/hashes and service authority over content (379.211625ms)
+✔ D1 service custody cannot drop its corpus, owner, export predicate, AEAD discipline edge or negatives (274.106083ms)
+✔ D2 promotion cannot drop its MAC edge, role, version cases, omission evidence or identity source (338.349708ms)
+✔ D3 ledger byte coverage cannot discard canonical negatives or its counter witness dependency (336.226958ms)
+✔ D4 metadata cannot drop its scoped MAC owner, native coupling or negative corpus (337.478541ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4654.49175
+Starting prep-probes
+✔ prep probes: six declared message encodings, first-head distinction and old/current recovery payloads (45.291458ms)
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 325.192708
+Starting formats
+(node:3162) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ removing each production context/root/key-pair check rescues its separately authentic counterexample (16.561792ms)
+✔ omitting exact PKCS#8 format checks recreates acceptance of each malformed export (5.675208ms)
+✔ PKCS#8 extraction refuses wrong algorithm, prefix, truncation and extra bytes for each private key; clears exports before returning (10.486084ms)
+✔ fixed corpus independently reproduces; amended row 14 agrees and historical scalar-only ciphertext refuses (23.554459ms)
+✔ actual generator and opener reproduce full deterministic payload, KDF/AAD, root and key checks (3.780708ms)
+✔ actual service challenge encoders use exact operation, scope and fresh nonce; proof/retry hashes preserve their byte rules (1.45675ms)
+✔ authenticated wrong private/public pairs, sealed roots, segment order and widths refuse before releasing keys (5.09625ms)
+✔ every encoded field mutation and omission changes its independent result; signatures and AEAD reject valid wrong-purpose bytes (4.198375ms)
+✔ recovery-opened key consumes fixed HPKE wrap with exact generation info; each binding and low-order recipient refuses (5.971333ms)
+✔ 200 generated contexts, normalized codes and authentic payload faults: runtime and independent oracle agree (241.043875ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 649.17125
+Starting recovery-regressions
+✔ control: removing recovery verification actually accepts a one-factor finalization (101.7435ms)
+✔ control: removing passkey verification actually accepts a one-factor finalization (92.129ms)
+✔ control: removing the sealed-root check accepts an attacker-substituted authority root (32.113542ms)
+✔ both proofs finalize one exact recovery preparation (-8) (24.171583ms)
+✔ both proofs finalize one exact recovery preparation (-7) (13.905542ms)
+✔ wrong code, binding and substituted private keys cannot confirm (11.832167ms)
+✔ unconfirmed registration, another attempt, malformed draft and extra authority fields refuse (8.845708ms)
+✔ finalization rechecks cancel after verification (8.897042ms)
+✔ finalization rechecks expiry after verification (9.631ms)
+✔ finalization rechecks activation after verification (9.077917ms)
+✔ finalization rechecks key after verification (8.227209ms)
+✔ finalization before-commit write failure has one retry outcome (9.749542ms)
+✔ finalization after-commit write failure has one retry outcome (8.092416ms)
+✔ schema v1 requires an explicit offline additive upgrade and preserves pending registration (10.246125ms)
+✔ independent Node crypto opens the complete three-part payload and verifies confirmation bytes (8.08375ms)
+✔ sealed root, X25519 private/public and bootstrap private/public checks are independently necessary (4.138958ms)
+✔ normalization preserves the selected full-width alphabet and rejects non-codes (0.223125ms)
+✔ native saved-code reentry, full browser restart, owner exclusion and lost finalization response (1470.799166ms)
+✔ 160 generated recovery histories obey an independent durable outcome ledger (1845.966625ms)
+✔ SIGKILL before-commit begin-recovery resumes from a cold process (521.116792ms)
+✔ SIGKILL after-commit begin-recovery resumes from a cold process (520.758916ms)
+✔ SIGKILL before-commit finalize-recovery resumes from a cold process (527.618083ms)
+✔ SIGKILL after-commit finalize-recovery resumes from a cold process (541.760667ms)
+✔ SIGKILL before-commit cancel-recovery resumes from a cold process (674.877667ms)
+✔ SIGKILL after-commit cancel-recovery resumes from a cold process (598.476375ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8971.274958
+Starting genesis-crypto
+✔ runtime and independent oracle open the published AES-256 HPKE generation vector (4.940167ms)
+✔ 100 generated runtime seals interoperate with OpenSSL; info and ciphertext substitutions refuse (139.800625ms)
+✔ low-order recipients and malformed generation size refuse (0.489666ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 268.940583
+Starting typecheck
+Starting unit
+
+ RUN  v4.1.10 /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+
+DUTY durable-attempt unchanged-history held=0ms fraction=0.0000 attempts=1 status=durable-attempt
+
+DUTY pending-promotion unchanged-history held=300000ms fraction=0.0139 attempts=360 status=pending-promotion
+
+DUTY activity-or-journal unchanged-history held=300000ms fraction=0.0139 attempts=360 status=activity-or-journal
+
+DUTY already-preparing unchanged-history held=0ms fraction=0.0000 attempts=360 status=already-preparing
+
+DUTY ineligible unchanged-history held=0ms fraction=0.0000 attempts=1 status=ineligible
+
+DUTY capacity unchanged-history held=0ms fraction=0.0000 attempts=1 status=capacity
+
+DUTY history-required unchanged-history held=0ms fraction=0.0000 attempts=1 status=history-required
+
+DUTY a-later-reason unchanged-history held=0ms fraction=0.0000 attempts=360 status=a-later-reason
+
+DUTY durable-attempt changing-history held=0ms fraction=0.0000 attempts=36
+unit still running; see unit.log
+unit still running; see unit.log
+unit still running; see unit.log
+
+ Test Files  359 passed (359)
+      Tests  3740 passed | 1 skipped (3741)
+   Start at  05:25:58
+   Duration  207.54s (transform 8.21s, setup 4.74s, import 40.38s, tests 304.66s, environment 23.45s)
+
+Starting admission-core
+✔ certified first epoch and receipt bind exact recovery, recipients and separate semantic bytes (58.57575ms)
+✔ validly signed changes of recovery, recipient and candidate cannot replace the offer (24.550334ms)
+✔ proposal cannot be replayed as an epoch or completion; malformed and wrong-purpose signatures refuse (23.128416ms)
+✔ abandonment during asynchronous verification wins before activation (22.039917ms)
+✔ unreadable acceptance custody refuses cold reopen without replacing its key (17.560875ms)
+✔ before-commit offer-promotion commit failure has one recoverable result (20.575334ms)
+✔ after-commit offer-promotion commit failure has one recoverable result (19.866958ms)
+✔ before-commit admit-promotion commit failure has one recoverable result (34.192166ms)
+✔ after-commit admit-promotion commit failure has one recoverable result (32.481834ms)
+✔ schema 2 upgrade is explicit and preserves all prior rows (15.500334ms)
+✔ 80 generated service histories match an independent pending/offered/active/cancelled ledger (1720.968417ms)
+✔ a cancelled proposal permits a fresh registration for the same retained workspace (29.391459ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2304.477084
+Starting slot-verifier
+
+ RUN  v4.1.10 /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+
+
+ Test Files  1 passed (1)
+      Tests  28 passed (28)
+   Start at  05:29:28
+   Duration  745ms (transform 257ms, setup 24ms, import 274ms, tests 19ms, environment 316ms)
+
+Starting vectors-01
+algorithm-suite.json is current; primitive KATs and the §13.2 separation check pass.
+Starting vectors-02
+record-format.json is current, and every negative still fails to authenticate.
+Starting vectors-03
+journal-aead.json is current, and the primitive KAT passes.
+Starting vectors-04
+recovery-code.json is current; the alphabet and keypair checks pass.
+Starting vectors-05
+device-lock.json is current; the alphabet, row 3 and row 14 cross-checks pass.
+Starting vectors-06
+finalization.json is current, and every negative still fails.
+Starting vectors-07
+enrollment-ceremony.json is current, and every negative still fails.
+Starting vectors-08
+envelope.json is current, and every negative still fails.
+Starting vectors-09
+Private envelope vectors checked: five independent Node/OpenSSL cases and 20 isolating negatives.
+Starting vectors-10
+head-discovery.json is current, and every negative still fails.
+Starting vectors-11
+attribution.json is current, and every negative still fails.
+Starting vectors-12
+checkpoint.json is current, and every negative still fails.
+Starting vectors-13
+antireplay.json is current, and every negative still fails.
+Starting vectors-14
+package.json is current, and every negative still fails.
+Starting vectors-15
+account-credential.json is current; the keypair and row 1 cross-checks pass.
+Starting vectors-16
+transition.json is current; the keypair and row 1 cross-checks pass.
+Starting vectors-17
+web-security-baseline.json is current; 17 ASVS 5.0.0 chapters dispositioned.
+Starting vectors-18
+Four v2 implementation vectors agree with independent OpenSSL bytes; 92 field mutations refuse.
+Starting vectors-19
+17 first-authority vectors; 399 input negatives; 333 encoded-field omission controls agree with independent bytes.
+Starting vectors-20
+Current recovery corpus: 13 fixed constructions.
+Starting vectors-21
+37 fixed transport constructions reproduced independently.
+Starting vectors-22
+8 independent service custody vectors current.
+Starting vectors-23
+  ok  scripts/generate-account-credential-vectors.mjs — slot binding (8), unlock challenge (5)
+  ok  scripts/generate-antireplay-vectors.mjs — heads record (7), position refusal (9)
+  ok  scripts/generate-attribution-vectors.mjs — attribution record (9)
+  ok  scripts/generate-baseline-vectors.mjs — no AAD
+  ok  scripts/generate-checkpoint-vectors.mjs — checkpoint aad (5), checkpoint manifest (11), checkpoint admission (12)
+  ok  scripts/generate-device-lock-vectors.mjs — lock seal (6)
+  ok  scripts/generate-enrollment-vectors.mjs — nonce commitment (3), enrollment transcript (11)
+  ok  scripts/generate-envelope-vectors.mjs — envelope aad (7), envelope signature (9)
+  ok  scripts/generate-finalization-vectors.mjs — accepted link (7), accepted head (7)
+  ok  scripts/generate-head-discovery-vectors.mjs — recovery bootstrap (14), head assertion (6)
+  ok  scripts/generate-journal-vectors.mjs — journal record (4)
+  ok  scripts/generate-package-vectors.mjs — generation wrap info (5), archive envelope (4), package manifest (10)
+  ok  scripts/generate-private-envelope-vectors.mjs — private envelope hkdf_info (4), private envelope aad (7), private envelope signature_message (9)
+  ok  scripts/generate-record-vectors.mjs — content record (8), key envelope (6)
+  ok  scripts/generate-recovery-vectors.mjs — recovery envelope (4), step-up challenge (4)
+  ok  scripts/generate-suite-vectors.mjs — no AAD
+  ok  scripts/generate-transition-vectors.mjs — certified set (8), transition intent (8), transition outcome (8)
+
+225 AAD fields, each isolated by a published negative.
+Starting vectors-24
+16 independent local promotion vectors current.
+Starting vectors-25
+20 independent Account ledger vectors current.
+Starting vectors-26
+8 independent counter/witness vectors current.
+Starting vectors-27
+11 independent store/journal bridge vectors current.
+Starting vectors-28
+15 independent factor/custody bridge vectors current.
+Starting vectors-29
+6 independent checkpoint bridge vectors current.
+Starting vectors-30
+8 independent retained Local claim vectors current.
+Starting vectors-31
+account-successor.json matches the independent encoding/signature oracle.
+Starting lint
+Starting format
+Checking formatting...
+
+All matched files use the correct format.
+Finished in 55ms on 50 files using 10 threads.
+passed: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-recovery-contract/2026-11-13T04-25-40.051Z
+=== account:recovery-contract exit 0
+=== pnpm account:authority
+$ node scripts/account-authority/run.mjs
+Account authority evidence: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-authority/2026-11-13T04-29-36.951Z
+✔ control: resolving the anchor from the reply accepts a self-signed attacker root (21.25625ms)
+✔ control: trusting the returned nonce accepts a captured bootstrap response (9.580666ms)
+✔ durable encrypted root, independent proof bytes and close/restart (16.191625ms)
+✔ missing, damaged, wrong-factor, substituted-root and unknown-version states never create a new root (8.00975ms)
+✔ root proof refuses changed nonce, policy, pin and signature; service accepts only a nonce request (9.332208ms)
+✔ private files only and initialization failures preserve a classified prior outcome (10.226709ms)
+✔ native Local+encrypted-journal preflight, independent pin, repeatable recovery context and refusal boundaries (972.640583ms)
+✔ native preflight cancellation holds slot exclusion until the network attempt settles (617.571917ms)
+✔ 40 generated native histories preserve carriers and keep the recovery context stable (9047.358625ms)
+✔ preflight snapshots caller input before queued acquisition (408.82ms)
+✔ 160 generated authority histories preserve the root through corruption, restart and competing setup (1126.76125ms)
+✔ SIGKILL before-commit: cold operator recovery never silently rekeys (478.529875ms)
+✔ SIGKILL after-commit: cold operator recovery never silently rekeys (462.58675ms)
+✔ competing processes initialize exactly one root and can cold-recover the winner (310.794708ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11849.675209
+Account authority campaign passed: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-authority/2026-11-13T04-29-36.951Z
+=== account:authority exit 0
+=== pnpm account:service-delivery
+$ node scripts/account-service-delivery/run.mjs
+Account service delivery evidence: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-service-delivery/2026-11-13T04-29-49.453Z
+Starting service
+✔ actual commit control demonstrates the protected bad outcome (191.911917ms)
+✔ actual generation control demonstrates the protected bad outcome (165.725334ms)
+✔ actual current control demonstrates the protected bad outcome (159.975125ms)
+(node:18294) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:18294) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(node:18294) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ actual witness control demonstrates the protected bad outcome (147.413791ms)
+✔ the committed v3 reader refuses schema 4 without modifying it (105.626041ms)
+✔ exact persisted decisions extend a contiguous chain and survive restart without replacing ciphertext (77.718833ms)
+✔ permanent closure cannot reopen; only an owned issued parent permits a different attempt at that position (91.96525ms)
+✔ invalid, foreign, future and unordered submissions never create a permanent refusal (51.302958ms)
+✔ caller bytes are captured before asynchronous verification (35.0675ms)
+✔ before-commit generation 1 decision fault resolves from durable readback (52.195834ms)
+✔ before-commit generation 2 decision fault resolves from durable readback (44.823958ms)
+✔ after-commit generation 1 decision fault resolves from durable readback (48.197709ms)
+✔ after-commit generation 2 decision fault resolves from durable readback (44.903625ms)
+(node:18295) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ missing-tail damage refuses without signing or repairing the ledger (43.699ms)
+✔ missing-all damage refuses without signing or repairing the ledger (38.935959ms)
+(node:18295) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ witness damage refuses without signing or repairing the ledger (38.188208ms)
+(node:18295) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ submission damage refuses without signing or repairing the ledger (37.587291ms)
+(node:18295) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ response damage refuses without signing or repairing the ledger (38.965708ms)
+(node:18295) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ seal damage refuses without signing or repairing the ledger (40.632042ms)
+✔ membership damage refuses without signing or repairing the ledger (36.456875ms)
+✔ membership changes during verification prevent commit (40.158291ms)
+✔ schema 3 upgrade preserves historical rows but cannot invent fresh activation authority (39.664042ms)
+✔ a valid acceptance-key signature is insufficient without the service-issued closure record (33.886917ms)
+✔ closing authority during verification prevents any decision or witness from escaping (30.013417ms)
+✔ R-01 independent sender cannot allocate an oversized decision, including refusal successors (139.823584ms)
+✔ 80 generated service histories preserve permanent subjects, one accepted leaf, and exact retries across unknown commits (12923.365292ms)
+✔ SIGKILL before-commit generation 1 preserves the exact durable decision (666.300875ms)
+✔ SIGKILL before-commit generation 2 preserves the exact durable decision (628.331209ms)
+✔ SIGKILL after-commit generation 1 preserves the exact durable decision (604.581458ms)
+✔ SIGKILL after-commit generation 2 preserves the exact durable decision (608.31325ms)
+✔ two service processes accepting competing leaves converge on one persisted head (636.732458ms)
+✔ acceptance racing closure of the same subject can never yield both signed outcomes (597.545792ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13244.956875
+passed: /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test-results/account-service-delivery/2026-11-13T04-29-49.453Z
+=== account:service-delivery exit 0
+=== pnpm account:crypto-prep
+$ node scripts/account-crypto-prep/run.mjs && node --test test/account-crypto-prep/*.test.mjs
+Matched pinned runtime census: 526 sources, 201 labels/templates, 36 groups; 15 manual entrypoints.
+Inventory only: this command checks source classification, not byte contracts or finding closure. See docs/review/implementation/account-crypto-closure.md and run account:crypto-audit for aggregate evidence.
+✔ runtime strings, escapes, JSX and templates are distinct from comments and literal types (14.389458ms)
+✔ 300 generated quoted labels are discovered; comments/types cannot pay classification (26.569208ms)
+✔ effective controls: missing, duplicate, stale and unresolved classifications refuse (0.310334ms)
+✔ new source files and unlabelled byte changes invalidate pinned source coverage (4.982625ms)
+✔ prefix scan limit is explicit: arbitrary constructed domains require manual review (0.486792ms)
+✔ prep probes: six declared message encodings, first-head distinction and old/current recovery payloads (45.909917ms)
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 331.903417
+=== account:crypto-prep exit 0
+=== node --test test/account-ceremony/content-transfer.test.mjs
+✔ history read retries a concurrent upload before capturing the new device empty stream (266.701625ms)
+✔ history read stops after four changing snapshots without returning a mixed page (309.003583ms)
+✔ history read still refuses authority damage during verification (163.513959ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ history read still refuses old-row damage during verification (224.211292ms)
+✔ bootstrap retries a certification committed while signing without returning the old authority (168.417458ms)
+✔ next-device preparation binds the certified parent and survives a lost reply (295.694708ms)
+✔ next-device preparation binds the certified parent and survives a lost reply with one login (282.059125ms)
+✔ next-device proof racing account invalidation cannot commit a receipt or login (160.594583ms)
+✔ private continuation admission retains both publisher boundaries, aborts atomically and recovers the exact committed result (701.95925ms)
+✔ only a proved next-device connection reserves the account; concurrent proof, cancellation and retry preserve one login (260.52225ms)
+✔ continuation schema requires explicit offline opt-in and preserves retained session/account rows (137.638ms)
+✔ continuation admission requires the immutable baseline and rechecks it before changing authority (478.051584ms)
+✔ later certified readers authenticate the original baseline without borrowing its earlier admission (1982.747083ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ historical checkpoint reads recheck the captured row, login and deadline after verification (694.529542ms)
+✔ continuation relay preserves the original ceremony and binds restart/retry to the existing approver (1207.917958ms)
+✔ continuation relay preserves the original ceremony and binds restart/retry to the new approver (1204.056083ms)
+✔ continuation commitment/approval aborts, lost replies and final authorization checks retain exact state (938.943459ms)
+✔ competing certified approvers cannot replace the retained pair; cancellation stays terminal (716.073875ms)
+✔ continuation relay refuses authority changes, expiry at commit and tampered retained approval (853.140167ms)
+✔ private schema-15 admission needs an explicit offline relay upgrade and keeps prior proof bytes (290.083667ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ certified devices publish independent positions and read each other across lost replies and restart (267.55475ms)
+✔ checkpoint publication and second-client admission resume exact bytes across commit failures and restart (604.447542ms)
+✔ first checkpoint binds the nonzero accepted prefix from single-device uploads (344.303959ms)
+(node:18412) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+✔ certification retains both local ledger cuts when the first device already adopted epoch two (262.54625ms)
+✔ checkpoint exchange checks participant role, signing key and current authority without losing an accepted suffix (444.474375ms)
+✔ schema ten upgrade preserves the checkpoint, admission and original publisher history (284.671208ms)
+✔ schema nine requires explicit upgrade and retains certified content access (166.918958ms)
+✔ approval is required; exact delivery survives lost replies, cannot be replaced, and does not yet certify (161.788625ms)
+✔ installation and certification are atomic, restartable after a lost reply, and preserve all three issuance epochs (304.544042ms)
+✔ recipient keys, transcript, recovery state and approver are authenticated before delivery (188.121416ms)
+✔ a competing authority change during verification cannot commit installation (114.511209ms)
+✔ schema eight opens only through the explicit offline upgrade, preserving retained attempts (83.305583ms)
+✔ certified receiver opens original encrypted Yjs updates and rechecks retained evidence after expiry (238.724459ms)
+✔ a valid version-2 relay decision cannot replace the original version-1 delivery approval (82.401125ms)
+✔ private continuation transfer by existing preserves both ledgers across aborted/lost certification and restart (1768.767875ms)
+✔ private continuation transfer by new preserves both ledgers across aborted/lost certification and restart (1816.424375ms)
+✔ continuation installation cannot cross final authorization, receipt or current-head boundaries (1236.008125ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ continuation certification verifies frozen publisher witnesses and refuses missing or tampered coverage (1259.482541ms)
+✔ schema-16 pending comparison upgrades explicitly without replacing its messages (349.415708ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ three publisher ledgers preserve queued payloads, refused parents and live admission/certification cuts through restart (1607.998417ms)
+✔ continuation grants distinguish both approvers, pending enrollment and certified content through restart (1664.420667ms)
+✔ continuation grant verification refuses changed pointers, receipts and changes before grant publication (468.225083ms)
+✔ continuation bootstrap permits either certified inviter and rebuilds after a signing-time certification (1312.802833ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ continuation discovery keeps publisher coverage and exact network authorization through restart (664.484875ms)
+✔ continuation discovery rechecks session and expiry after asynchronous proof and signing work (357.050334ms)
+✔ opt-in HTTP continuation uses exact scoped grants and publishes hints only for committed changes (2069.77225ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ later browser reader preserves pre-sync writing, cold replay and cross-publisher dependencies through interrupted saves (2336.347417ms)
+✔ later browser reader refuses substituted custody, publishers, admissions and retained evidence before ready (2248.158417ms)
+✔ later native slot resumes activation after index interruption and rejects changed retained reading (4397.864ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ browser comparison by existing composes with the real continuation relay and key handoff after restart (1948.322667ms)
+✔ browser comparison by new composes with the real continuation relay and key handoff after restart (1751.317417ms)
+✔ browser continuation enrollment saves before effects and retries finish and admission after service restart (451.263375ms)
+✔ browser continuation preparation rejects unsaved state and changed custody before network effects (205.289417ms)
+✔ retained connection coordinates invitation through third-device certification with existing approving (5848.607167ms)
+✔ retained connection coordinates invitation through third-device certification with new approving (5922.097417ms)
+✔ retained connection loads actual encrypted writing and retries interrupted installation from committed reader state (2875.929ms)
+✔ membership cancellation retains exact retry, both publisher boundaries and subsequent writing after crash (1461.932042ms)
+✔ membership cancellation and approval have one winner; uncertain or delivered keys require removal (2678.652625ms)
+✔ membership cancellation checks commit authorization, changed boundaries and signed mismatch (980.858125ms)
+✔ schema-17 continuation requires explicit cancellation upgrade and preserves the pending attempt (312.582083ms)
+✔ protected membership cancellation invalidates old grants and emits only one committed hint (881.970792ms)
+✔ retained client cancellation saves before effects and cold-resolves a lost committed reply (1369.065333ms)
+✔ removal preparation fences only the target and preserves exact accepted retries through lost response and restart (390.853958ms)
+✔ removal preparation serializes a racing write and a racing publication cannot bypass its fence (219.64ms)
+✔ pending removal prevents comparison, delivery, certification and cancellation from changing the prepared parent (962.072416ms)
+✔ removal preparation refuses lost commit authorization and tampered retained fence without blocking prior rollback writes (337.495166ms)
+✔ removal schema upgrades only offline from 18 and refuses an older host (149.576917ms)
+✔ joined owner can prepare original-device removal while a new admission cannot invalidate its parent (491.590791ms)
+✔ rotation commits once across rollback, lost reply, restart and a competing signed intent (449.264333ms)
+✔ rotation retains old accepted history and allows survivor offline work before and after its new generation writes (439.041875ms)
+✔ rotation can remove the original publisher and finalize a never-writing or exposed pending target (1353.642292ms)
+✔ rotation fails closed on final authorization loss, altered preparation, and missing committed proof (570.331834ms)
+✔ rotation serializes a survivor publication and fences previously issued target grants (606.295458ms)
+✔ rotation schema explicitly upgrades a retained preparation from 19 without reopening an old host (196.733125ms)
+✔ protected rotation routes require the exact actor and emit only committed preparation and rotation hints (564.947292ms)
+✔ retained browser rotation producer composes with scoped HTTP through lost preparation and committed replies (767.642416ms)
+✔ removed and exposed pending devices receive only their authenticated terminal proof through a separate grant (1915.70325ms)
+✔ removed-device discovery stops at its own removal even after another rotation (1330.864667ms)
+✔ another remaining device can finish the same prepared removal without replacing its cutoff or original retry evidence (494.051083ms)
+✔ repeatable admission after cancellation preserves old attempts and refuses old ceremony authority (1437.269167ms)
+✔ replacement after rotation (original removed: false) certifies at generation two and permits another rotation (1648.439166ms)
+✔ replacement after rotation (original removed: true) certifies at generation two and permits another rotation (1622.36775ms)
+✔ replacement admission fences new historical-key uploads but retains accepted bytes and signed retry outcomes (810.738ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ replacement publication binds admitted history and source inventory while preserving exact lost-reply retries (1897.418208ms)
+✔ replacement snapshot retention survives commit faults and cannot be swapped or bypassed at certification (2889.338333ms)
+✔ replacement snapshot HTTP route requires the exact enrollment grant and only hints on its first publication (1388.664833ms)
+✔ replacement snapshot schema requires explicit upgrade from 20 and preserves retained rows (148.891875ms)
+✔ lost-device recovery verifies rotated history and reads finalized publisher writing without a surviving-device grant (452.8105ms)
+Yjs was already imported. This breaks constructor checks and will lead to issues! - https://github.com/yjs/yjs/issues/438
+✔ lost-device recovery cold-replays removed writing and a later generation using the saved code (1478.308833ms)
+✔ history maintenance preserves admitted ancestry across rotation and rechecks eligible admitters (1282.977584ms)
+✔ retained generation-one reader adopts admitted history across interrupted save and preserves suffix receipts (2801.306666ms)
+✔ discovery completes once while the unrelated first publisher appends at every signing cut (416.821792ms)
+✔ discovery retries its own publisher append and returns only the freshly covered history (413.917334ms)
+✔ discovery still refuses continuous changes to its own publisher after four attempts (423.292708ms)
+✔ first publisher discovery retains its own witness under continuous signing-time writes (412.136167ms)
+✔ discovery rebuilds a genuine membership certification committed during signing (985.82775ms)
+✔ discovery retains exact other authority fields and external-version invalidation (457.221167ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ discovery never hides a deleted requesting-publisher prefix behind current membership (381.138291ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ discovery never hides same-count requesting-publisher corruption after verification (383.989375ms)
+✔ discovery reauthorizes a revoked session after signing even with discovery capture purpose (375.433875ms)
+✔ discovery refuses request expiry reached while signing the response (343.747584ms)
+✔ discovery snapshot purpose is captured and must match both guard directions (321.481208ms)
+✔ discovery projection removes exactly the unrelated witness and retains every other snapshot field (312.0085ms)
+✔ uncached discovery also ignores unrelated writing while retaining complete own census (409.138ms)
+✔ history catalog reuses the current branded membership timeline instead of verifying its admission twice (345.110125ms)
+✔ history timeline reuse retains fresh-head retry during writing (383.759542ms)
+✔ history timeline reuse retains four-attempt refusal during writing (444.415875ms)
+✔ history timeline reuse refuses authority damage without returning a catalog (348.22025ms)
+✔ history timeline reuse refuses old-row damage without returning a catalog (381.948209ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ history timeline reuse refuses membership-proof damage without returning a catalog (337.877917ms)
+✔ history timeline reuse retains transaction-time session revocation (383.966ms)
+✔ history timeline reuse refuses a request that expires during signing (345.645375ms)
+✔ history early-epoch lookup verifies only the latest complete timeline and reuses its earlier memberships (240.547958ms)
+✔ history complete timeline still resolves a retained checkpoint under its earlier membership (96.175125ms)
+✔ history timeline reuse preserves head request validation (336.394ms)
+✔ history timeline reuse preserves epoch request validation (333.055334ms)
+✔ history timeline reuse preserves signature request validation (351.231458ms)
+✔ history complete timeline includes epochs after the original publisher was finalized (466.8955ms)
+✔ history catalog captures fresh publisher heads after authority verification despite continuous signed writing (204.94325ms)
+✔ catalog's late publisher capture refuses authority-input changed during authority verification (179.631042ms)
+✔ catalog's late publisher capture refuses old-row changed during authority verification (198.022291ms)
+(node:18412) [ledger-integrity] Warning: Publisher ledger verification failed; operator inspection required
+✔ independent continuation reads reuse branded history evidence without repeating its admission (345.577667ms)
+✔ v2 late-ledger continuation first-publisher capture survives writing during authenticated request verification (344.340792ms)
+✔ v2 late-ledger continuation reader-own capture survives writing during authenticated request verification (383.125708ms)
+✔ v2 late-ledger refuses a membership-removal transition across the authority-to-ledger boundary (375.770792ms)
+✔ single request shares one complete certified authority timeline for bootstrap (243.612083ms)
+✔ single request shares one complete certified authority timeline for discovery (237.716208ms)
+✔ single request shares one complete certified authority timeline for catalog (208.380083ms)
+✔ single request shares one complete continued authority timeline for bootstrap (400.063625ms)
+✔ single request shares one complete continued authority timeline for discovery (418.815291ms)
+✔ single request shares one complete continued authority timeline for catalog (389.0935ms)
+✔ single history producer refuses recovery-draft damage before exposing verified evidence (175.005042ms)
+✔ single history producer refuses recovery-confirmation damage before exposing verified evidence (173.806708ms)
+✔ single history producer refuses activation damage before exposing verified evidence (180.56275ms)
+✔ single history producer refuses native-credential damage before exposing verified evidence (173.622333ms)
+✔ single history producer refuses workspace damage before exposing verified evidence (176.831125ms)
+✔ single history producer refuses request-digest damage before exposing verified evidence (173.213042ms)
+✔ single history producer refuses offer damage before exposing verified evidence (173.534375ms)
+✔ single history producer refuses successor-row damage before exposing verified evidence (180.254292ms)
+✔ single history producer refuses transfer-row damage before exposing verified evidence (173.463709ms)
+✔ single history producer refuses retained-delivery damage before exposing verified evidence (177.653542ms)
+✔ single history producer refuses successor-signature damage before exposing verified evidence (178.454125ms)
+✔ single history producer refuses certification-signature damage before exposing verified evidence (196.855208ms)
+✔ single history producer refuses pending-delivery damage before exposing verified evidence (183.44425ms)
+✔ single history producer retains protocol brands and the original standalone delivery-authority shape (253.972ms)
+✔ publication authority reuse keeps independent joined and original streams under certified membership (208.007583ms)
+✔ publication authority reuse keeps independent joined and original streams under continued membership (405.168625ms)
+✔ stable read authority reuses branded certified history across independent publisher ledgers (239.916666ms)
+✔ stable read authority reuses branded continued history across independent publisher ledgers (427.543166ms)
+✔ complete prelude authority is reused for independent discovery requests under certified membership (321.35575ms)
+✔ complete prelude authority is reused for independent catalog requests under certified membership (202.718166ms)
+✔ complete prelude authority is reused for independent discovery requests under continued membership (496.832167ms)
+✔ complete prelude authority is reused for independent catalog requests under continued membership (438.480667ms)
+✔ complete prelude authority coexists with ordinary read proofs under certified membership (372.238ms)
+✔ complete prelude authority coexists with ordinary read proofs under continued membership (571.684833ms)
+✔ complete prelude authority survives genuine independent appends under certified membership (457.692167ms)
+✔ complete prelude authority survives genuine independent appends under continued membership (667.220875ms)
+✔ complete prelude proof preserves detached authority, private history brands and native certified shape (208.213834ms)
+✔ complete prelude proof preserves detached authority, private history brands and native continued shape (368.9345ms)
+✔ complete prelude proof keeps future fields, native evidence, pin and fresh custody in certified context (249.024667ms)
+✔ complete prelude proof keeps future fields, native evidence, pin and fresh custody in continued context (415.407917ms)
+✔ warm complete discovery proof retains fresh request, grant completion and signing expiry under certified membership (272.028ms)
+✔ warm complete catalog proof retains fresh request, grant completion and signing expiry under certified membership (233.011583ms)
+✔ warm complete discovery proof retains fresh request, grant completion and signing expiry under continued membership (428.8225ms)
+✔ warm complete catalog proof retains fresh request, grant completion and signing expiry under continued membership (396.873167ms)
+✔ warm complete discovery proof cannot hide corrupt live writing under certified membership (232.251042ms)
+✔ warm complete catalog proof cannot hide corrupt live writing under certified membership (209.971166ms)
+✔ warm complete discovery proof cannot hide corrupt live writing under continued membership (422.673792ms)
+✔ warm complete catalog proof cannot hide corrupt live writing under continued membership (387.484209ms)
+✔ complete prelude proof retains no-pool fallback and clear/close fences under certified membership (282.80625ms)
+✔ complete prelude proof retains no-pool fallback and clear/close fences under continued membership (441.231042ms)
+ℹ tests 171
+ℹ suites 0
+ℹ pass 171
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 120892.638916
+=== content-transfer exit 0
+=== node --test release-validation general, generated, inventory
+(node:27947) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ reviewed Vitest and Node selections preserve the 3085-case file denominator and separate wrapper obligations (2620.362833ms)
+✔ new literal test files remain blocked until their fixture/process ownership is explicitly reviewed (1957.902791ms)
+✔ reviewed filenames include dotted names and vite tests but never options or directory traversal (2.09625ms)
+✔ malformed, duplicate and overlapping general policies refuse before execution (3.65575ms)
+✔ 160 generated removed, excluded and changed-runner obligations cannot retain general execution credit (36.6895ms)
+(node:27948) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ 160 generated exported control tables preserve case order and pin all helper bytes without executing its imports or body (170.775458ms)
+✔ module registration refuses unreviewed consumers, imports, dynamic tables, mutable exports, invalid keys and symlinks (6.922833ms)
+✔ finite nested suite tables, literal loops, tuples, nullable scalars and object titles have independently computed identities (4.729375ms)
+✔ JSON imports and explicit UTF-8 reads bind exact vector bytes, filters and input order without importing a module (4.933417ms)
+✔ unknown functions, mutable declarations, unsupported predicates, paths, duplicate names and nonliteral registration control flow refuse (2.899834ms)
+✔ generated Node declarations expand the reviewed algorithm loops and still refuse nested, conditional and modified registrations (1.147209ms)
+✔ all reviewed generated files retain 224 cases and the compact manifest preserves every row, contract, selection and blocked obligation (2601.868833ms)
+✔ 160 generated literal populations preserve tuple binding, loop order and suite scope independently of runtime collection (36.592167ms)
+✔ registration data metadata cannot extend unreviewed Node stages, and inherited-key filters are outside the finite subset (1.99475ms)
+✔ 160 generated boolean title branches preserve Node and Vitest identities without truthiness coercion or helper execution (30.758083ms)
+✔ 160 generated boolean concatenations preserve Node and Vitest titles while coercible objects and boolean arithmetic refuse (64.681958ms)
+✔ 160 finite numeric comparisons retain exact signed titles without coercion or evaluating unused branches (7.046833ms)
+✔ 160 generated package DAGs preserve exact ordered leaves and duplicate prerequisites (17.230833ms)
+✔ cycles, missing package references and unsupported shell syntax are refused (0.788833ms)
+✔ environment, argument variants and paths stay distinct across package expansion (0.166916ms)
+✔ AST facts exclude comments/strings and preserve dynamic call-site uncertainty (12.502875ms)
+✔ the inventory includes direct coverage, dynamic properties, catalogs and registered corpus bindings (10.121292ms)
+✔ real added test, changed helper and lost package wiring invalidate a retained snapshot (15.554958ms)
+✔ missing or excluded registered tests and removed vector cases fail before snapshotting (7.477209ms)
+✔ new nested corpus, orphan catalogue and new package require explicit review (8.373334ms)
+✔ generator prerequisite omission and stale/duplicate policy entries are refused (5.839667ms)
+✔ the checker imports no test bodies or runner modules (5.437625ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5071.67475
+=== release-validation exit 0
+=== node --test release-validation general, generated, inventory (after the legacy cases)
+=== exit 0
+=== pnpm account:crypto-prep (after the legacy census record)
+Matched pinned runtime census: 526 sources, 201 labels/templates, 36 groups; 15 manual entrypoints.
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+=== exit 0
+=== counts: node --test release-validation general, generated, inventory
+ℹ tests 27
+ℹ pass 27
+ℹ fail 0
+=== exit 0
+
+=== after the browser-review change (two-path routines): node --test release-validation general, generated, inventory
+ℹ tests 27
+ℹ pass 27
+ℹ fail 0
+=== exit 0
+=== after the browser-review change: pnpm account:crypto-prep
+Matched pinned runtime census: 526 sources, 201 labels/templates, 36 groups; 15 manual entrypoints.
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+ℹ tests 6
+ℹ pass 6
+ℹ fail 0
+=== account:crypto-prep exit 0
+=== after the browser-review change: pnpm account:recovery
+ℹ tests 25
+ℹ pass 25
+ℹ fail 0
+=== account:recovery exit 0
+=== after the browser-review change: pnpm account:recovery-contract
+Matched pinned runtime census: 526 sources, 201 labels/templates, 36 groups; 15 manual entrypoints.
+ℹ tests 6
+ℹ pass 6
+ℹ fail 0
+ℹ tests 12
+ℹ pass 12
+ℹ fail 0
+ℹ {"messages":6,"genesisHeads":{"emptyDigest":"f472f85be176aa75e6acb88c4ed194815fba51d39f1d64b7afa04576ad99e475","explicitZeroPositionDigest":"b7fc8fd676e0cd222bb19a7abb9a713f815f2903cac0996d3825f56a485e4121","selected":"empty only for first genesis"},"recovery":{"historical":{"ciphertextBytes":48,"payloadBytes":32},"current":{"ciphertextBytes":112,"payloadBytes":96,"segments":["X25519 scalar [0,32)","root commitment [32,64)","Ed25519 bootstrap seed [64,96)"]},"publicKeysAndDigestsMatched":true,"historicalPayloadRejectedByCurrentParser":true}}
+ℹ tests 1
+ℹ pass 1
+ℹ fail 0
+ℹ tests 10
+ℹ pass 10
+ℹ fail 0
+ℹ tests 25
+ℹ pass 25
+ℹ fail 0
+ℹ tests 3
+ℹ pass 3
+ℹ fail 0
+ℹ tests 12
+ℹ pass 12
+ℹ fail 0
+=== account:recovery-contract exit 0

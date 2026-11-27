@@ -1,0 +1,90 @@
+Phase 548 base-tree runs: the phase 547 source (ccd0baca0) with this phase's two test files and src/crdt/actionSize.ts (constants only, so the files load) added, in a copy. node node_modules/vitest/vitest.mjs run <files> --reporter=verbose.
+
+== Run 1: test/oversizedActions.test.ts (283 cases then) and test/oversizedActionsUi.test.tsx (3 cases then)
+host:  3:45  up 153 days,  5:22, 67 users, load averages: 4.94 5.24 5.40
+host:  4:02  up 153 days,  5:39, 67 users, load averages: 5.13 5.49 5.56
+⎯⎯⎯⎯⎯⎯ Failed Tests 220 ⎯⎯⎯⎯⎯⎯
+ Test Files  2 failed (2)
+      Tests  220 failed | 66 passed (286)
+   Duration  983.24s (transform 1.44s, setup 58ms, import 1.79s, tests 981.86s, environment 584ms)
+
+Results by command and size (count, case, size, outcome, first line of the failure):
+cases 286 passed 66 failed 220
+6 ('Next to Goals', '200 KiB', '×', 'Ticket did not settle')
+6 ('Next to Goals', '64 KiB', '×', 'Ticket did not settle')
+6 ('Next to Goals', 'just over', '×', 'Ticket did not settle')
+6 ('Next to Goals', 'just under', '✓', '')
+3 ('Undo removes the whole split card in one step; Redo of more than one u', '-', '×', 'Test timed out in 5000ms.')
+3 ('a crash between slices leaves the card with its saved slices; the rest', '-', '×', 'Test timed out in 5000ms.')
+1 ('a refused action keeps the draft and says the text is too long, not th', '-', '×', "expected '' to be 'a long draft' // Obje")
+1 ('an editor action refused for too much text says so and stays editable', '-', '×', "expected '' to be 'That text is too long")
+1 ('an input over the one-action ceiling keeps the draft and says the text', '-', '×', "expected 'That action was not saved. Che")
+3 ('another device receives the card whole and identical, slice by slice', '-', '×', 'Test timed out in 5000ms.')
+6 ('compose', '200 KiB', '×', 'Ticket did not settle')
+6 ('compose', '64 KiB', '×', 'Ticket did not settle')
+6 ('compose', 'just over', '×', 'Ticket did not settle')
+6 ('compose', 'just under', '✓', '')
+6 ('copy from Goals', '200 KiB', '×', 'Ticket did not settle')
+6 ('copy from Goals', '64 KiB', '×', 'Ticket did not settle')
+6 ('copy from Goals', 'just over', '×', 'Ticket did not settle')
+6 ('copy from Goals', 'just under', '✓', '')
+6 ('done-for-now', '200 KiB', '×', 'Ticket did not settle')
+6 ('done-for-now', '64 KiB', '×', 'Ticket did not settle')
+6 ('done-for-now', 'just over', '×', 'Ticket did not settle')
+6 ('done-for-now', 'just under', '✓', '')
+6 ('duplicate', '200 KiB', '×', 'Ticket did not settle')
+6 ('duplicate', '64 KiB', '×', 'Ticket did not settle')
+6 ('duplicate', 'just over', '×', 'Ticket did not settle')
+6 ('duplicate', 'just under', '✓', '')
+6 ('indent many lines', '200 KiB', '×', 'Ticket did not settle')
+6 ('indent many lines', '64 KiB', '×', 'Ticket did not settle')
+6 ('indent many lines', 'just over', '×', 'Ticket did not settle')
+6 ('indent many lines', 'just under', '✓', '')
+1 ('keeps nothing of the stuck input across a reload; the updated build sa', '-', '×', 'Test timed out in 5000ms.')
+6 ('merge', '200 KiB', '×', 'Ticket did not settle')
+6 ('merge', '64 KiB', '×', 'Ticket did not settle')
+6 ('merge', 'just over', '×', 'Ticket did not settle')
+6 ('merge', 'just under', '✓', '')
+6 ('move from Goals', '200 KiB', '×', 'Ticket did not settle')
+6 ('move from Goals', '64 KiB', '×', 'Ticket did not settle')
+6 ('move from Goals', 'just over', '×', 'Ticket did not settle')
+6 ('move from Goals', 'just under', '✓', '')
+3 ('never ends a slice inside a surrogate pair; combining sequences arrive', '-', '×', 'Test timed out in 5000ms.')
+6 ('redo a paste', '200 KiB', '×', 'Ticket did not settle')
+6 ('redo a paste', '64 KiB', '×', 'Ticket did not settle')
+6 ('redo a paste', 'just over', '×', 'Ticket did not settle')
+6 ('redo a paste', 'just under', '✓', '')
+3 ('refuses, before queueing, text over the paste bound or an input the qu', '-', '×', 'expected function to throw an error, but')
+6 ('split', '200 KiB', '×', 'Ticket did not settle')
+6 ('split', '64 KiB', '×', 'Ticket did not settle')
+6 ('split', 'just over', '×', 'Ticket did not settle')
+6 ('split', 'just under', '✓', '')
+3 ('splits only past the whole-card bound, and every slice fits one update', '-', '×', 'expected 1 to be NaN // Object.is equali')
+6 ('undo a removal', '200 KiB', '×', 'Ticket did not settle')
+6 ('undo a removal', '64 KiB', '×', 'Ticket did not settle')
+6 ('undo a removal', 'just over', '×', 'Ticket did not settle')
+6 ('undo a removal', 'just under', '✓', '')
+
+== Run 2: the fragmented deletion cases, added after run 1
+ × test/oversizedActions.test.ts > reference fragmented deletion > deleting a heavily edited Goals text in one action is refused alone, on every text path 5008ms
+   → Test timed out in 5000ms.
+ × test/oversizedActions.test.ts > local-snapshots fragmented deletion > deleting a heavily edited Goals text in one action is refused alone, on every text path 4548ms
+   → Ticket did not settle
+ × test/oversizedActions.test.ts > account-text fragmented deletion > deleting a heavily edited Goals text in one action is refused alone, on every text path 4477ms
+   → Ticket did not settle
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 283 skipped (286)
+
+== Run 3: test/oversizedActionsUi.test.tsx with the Goals removal case, added after run 1
+ × test/oversizedActionsUi.test.tsx > a refused action keeps the draft and says the text is too long, not that storage failed 23ms
+   → expected '' to be 'a long draft' // Object.is equality
+ × test/oversizedActionsUi.test.tsx > an input over the one-action ceiling keeps the draft and says the text is too long, not that storage failed 6ms
+   → expected 'That action was not saved. Check stor…' to contain 'That text is too long for one action.…'
+ × test/oversizedActionsUi.test.tsx > removing Goals lines refused for too much text says so instead of nothing removed 3ms
+   → expected true to be undefined
+ × test/oversizedActionsUi.test.tsx > an editor action refused for too much text says so and stays editable 87ms
+   → expected '' to be 'That text is too long for one action.…' // Object.is equality
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed (4)
+
+Totals: 290 cases; 224 fail and 66 pass. Run 1's three UI failures are repeated in run 3.

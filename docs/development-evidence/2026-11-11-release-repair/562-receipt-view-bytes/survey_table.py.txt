@@ -1,0 +1,83 @@
+"""Phase 562 survey: per target case, uninstrumented time (5 runs) and the time its equality
+matchers take on binary data (3 instrumented runs). Usage: python3 -I survey_table.py <scratch>"""
+import json
+import os
+import statistics
+import sys
+from collections import defaultdict
+
+S = sys.argv[1]
+TARGETS = [
+    ('inboundStaleTurnControl', 'the permanent dense-to-legacy stale-turn negative control', 'inboundStaleTurnControl.test.ts:4'),
+    ('inboundPageCodec', 'round trips every contiguous admitted extent for two publishers', 'inboundPageCodec.test.ts:26'),
+    ('inboundMixedReplay', 'seed406', 'inboundMixedReplay.test.ts seed406'),
+    ('inboundMixedReplay', 'seed407', 'inboundMixedReplay.test.ts seed407'),
+    ('inboundMixedReplay', 'seed408', 'inboundMixedReplay.test.ts seed408'),
+    ('workspaceAdmission', 'generated master and card selection snapshots follow', 'workspaceAdmission.test.ts:1256'),
+    ('inboundMixedReaders', 'replacement replay mixes both accepted publishers', 'inboundMixedReaders.test.ts:124'),
+    ('preparationReceiptJournal', 'accepts all72 bounded extents', 'preparationReceiptJournal.test.ts all72'),
+]
+
+
+def case_times(prefix, f, needle, runs):
+    out = defaultdict(list)
+    for i in range(1, runs + 1):
+        p = os.path.join(S, 'runs', f'{prefix}{f}-{i}.json')
+        d = json.load(open(p))
+        for tf in d['testResults']:
+            for a in tf['assertionResults']:
+                if needle in a['fullName']:
+                    assert a['status'] == 'passed', (p, a['fullName'], a['status'])
+                    out[a['fullName']].append(a.get('duration') or 0)
+    return out
+
+
+matchers = defaultdict(lambda: defaultdict(list))  # name -> bucket -> [ms per run]
+for i in (1, 2, 3):
+    for line in open(os.path.join(S, f'survey-matchers-{i}.jsonl')):
+        d = json.loads(line)
+        for k, b in d['buckets'].items():
+            matchers[d['test']][k].append((i, b['ms'], b['calls'], b['maxBytes']))
+
+rows = []
+print('| Case | Time here, 5 runs, ms | Instrumented, 3 runs, ms | toEqual on a byte array of 1 KiB or more | toEqual on an object holding one | toEqual on smaller byte arrays | other toEqual |')
+print('|---|---|---|---|---|---|---|')
+for f, needle, label in TARGETS:
+    plain = case_times('survey-', f, needle, 5)
+    instr = case_times('instr-', f, needle, 3)
+    for name in sorted(plain):
+        t = plain[name]
+        it = instr[name]
+        short = name.split(' > ')[-1] if ' > ' in name else name
+        variant = name.split(' generated master')[0].replace('workspace preparation ', '') if 'workspaceAdmission' in label else ''
+        # match the instrumentation key (Vitest's currentTestName joins describes with ' > ')
+        key = next((k for k in matchers if k.replace(' > ', ' ') == name), None)
+        direct = nested = small = other = 0.0
+        dcalls = ncalls = dmax = nmax = scalls = smax = ocalls = 0
+        assert key, ('no matcher record for', name)
+        if key:
+            for bucket, vals in matchers[key].items():
+                if not bucket.startswith(('toEqual', 'toStrictEqual')):
+                    continue
+                ms = statistics.mean(v[1] for v in vals)
+                calls = vals[0][2]
+                mx = max(v[3] for v in vals)
+                if 'direct binary >= 1 KiB' in bucket:
+                    direct += ms; dcalls += calls; dmax = max(dmax, mx)
+                elif 'nested binary >= 1 KiB' in bucket:
+                    nested += ms; ncalls += calls; nmax = max(nmax, mx)
+                elif 'binary < 1 KiB' in bucket:
+                    small += ms; scalls += calls; smax = max(smax, mx)
+                else:
+                    other += ms; ocalls += calls
+        im = statistics.mean(it)
+        rows.append({'case': label, 'variant': variant, 'name': name, 'plain': t, 'instrumented': it,
+                     'direct': [round(direct, 1), dcalls, dmax], 'nested': [round(nested, 1), ncalls, nmax],
+                     'small': [round(small, 1), scalls, smax], 'other': [round(other, 1), ocalls],
+                     'shareDirect': round(direct / im, 3), 'shareBinary': round((direct + nested) / im, 3),
+                     'shareSmall': round(small / im, 3), 'shareOther': round(other / im, 3)})
+        lab = label + (f' ({variant})' if variant else '')
+        cell = lambda ms, calls, mx=None: '—' if calls == 0 else (f'{ms:.0f} ms ({100 * ms / im:.0f}%), {calls} calls' + (f', up to {mx:,} B' if mx else ''))
+        print(f'| {lab} | {min(t):.0f} to {max(t):.0f} (median {statistics.median(t):.0f}) | {min(it):.0f} to {max(it):.0f} | '
+              f'{cell(direct, dcalls, dmax)} | {cell(nested, ncalls, nmax)} | {cell(small, scalls, smax)} | {cell(other, ocalls)} |')
+json.dump(rows, open(os.path.join(S, 'survey.json'), 'w'), indent=1)

@@ -1,0 +1,50 @@
+{
+  "url": "https://done.oxidationlabs.com/",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "bytes": 3306,
+      "sha256": "93928cc38c009ce94479935ed23862a1a4a8c9e11cfa0f6492a63d741c747eeb",
+      "contentType": "text/html",
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "hsts": "max-age=31536000"
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "bytes": 13113,
+      "sha256": "3d3abcfebc607a1f655c6b4b5594b21088efeb0592e8db2701fe9982b4a8ac00",
+      "contentType": "text/javascript",
+      "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'",
+      "hsts": "max-age=31536000"
+    },
+    {
+      "path": "/.well-known/done-account.json",
+      "error": "HTTP Error 404: Not Found"
+    }
+  ],
+  "service": {
+    "status": 200,
+    "pin": {
+      "v": 1,
+      "serviceId": "f8d715e0f60edcbe5c59f677c4ee4dea",
+      "origin": "https://done.oxidationlabs.com",
+      "rpId": "done.oxidationlabs.com",
+      "authRoot": "02ffe2cf3937039be7579496a651b447b58a708507d6dc64cad6181ab54ebfa6"
+    },
+    "schema": null,
+    "keys": [
+      "membershipContinuation",
+      "networkSessions",
+      "pin",
+      "v"
+    ],
+    "sha256": "178b9ac2e6d24ada2a18c68961c516bb6a684a61ab4963020aa076362264ae00"
+  },
+  "entry": {
+    "path": "/assets/main-ePvxAZ2L.js",
+    "sha256": "6dd7503659e11f93c33de781fe6c2aebc999904f7f9458857e0e5d69fa9091b2",
+    "versionLiterals": []
+  }
+}

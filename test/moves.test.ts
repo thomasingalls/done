@@ -49,11 +49,11 @@ describe('nothing → Done', () => {
     expect(bodies(context, 'done')).toEqual(['and the plumber', 'called the dentist']);
   });
 
-  it('appends in the sections ordered by intent rather than by time', async () => {
+  it('prepends new arrivals while leaving explicit user ordering available', async () => {
     context = await harness();
     compose(context.me, { date: TODAY, section: 'next' }, 'first');
     compose(context.me, { date: TODAY, section: 'next' }, 'second');
-    expect(bodies(context, 'next')).toEqual(['first', 'second']);
+    expect(bodies(context, 'next')).toEqual(['second', 'first']);
   });
 
   it('records the author and the time (TRD §4.2)', async () => {

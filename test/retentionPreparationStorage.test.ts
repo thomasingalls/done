@@ -10,15 +10,22 @@ import {
   equalCounter,
   parseStoredRecord,
 } from '../src/crdt/contentRecord';
-import { createPreparationJournal } from '../src/crdt/retentionPreparation';
+import {
+  createPreparationJournal,
+  PreparationCapacity,
+  PreparationPause,
+  PREPARATION_SLICE_MS,
+} from '../src/crdt/retentionPreparation';
 import {
   loadPreparationCheckpoint,
   savePreparationCheckpoint,
   savePreparationDelta,
   importPreparationCheckpoint,
   disposePreparationCheckpoint,
+  preparationCheckpointRoom,
   preparationStoreName,
   removePreparationCache,
+  PREPARATION_MAX_BYTES,
   type PreparationStorageOwner,
 } from '../src/crdt/retentionPreparationStorage';
 import {
@@ -197,6 +204,91 @@ it('persists only encrypted data, reopens authenticated receipts and leaves ever
     before.counter.v === 2 && before.counter.spool,
   );
   p.dispose();
+});
+it('a journal told its checkpoint room never keeps a slice the checkpoint would refuse to save', async () => {
+  const f = await fixture(),
+    rows = 1000;
+  // A saved slice of many small receipts: its encoded rows cost more than the cache counts.
+  const seed = await f.open();
+  expect(preparationCheckpointRoom(seed.checkpoint)).toBe(PREPARATION_MAX_BYTES);
+  for (let n = 1; n <= rows; n++)
+    await seed.journal.memo.check(
+      'spool:' + n,
+      'scope',
+      [],
+      async () => {},
+      () => {},
+    );
+  await seed.save();
+  seed.dispose();
+  // Counted by the cache: slot, one encoded byte and 64 per receipt (73,893 bytes in all here).
+  const counted = rows * 74,
+    size = PREPARATION_MAX_BYTES - counted - 4096 - 77;
+  const attempt = async (room: boolean) => {
+    const source = await f.capture(),
+      read = await loadPreparationCheckpoint(task, f.owner, source);
+    let clock = 0;
+    const journal = createPreparationJournal({
+      context: source.context,
+      current: () => task.step(() => {}),
+      now: () => clock,
+      ...(room ? { room: preparationCheckpointRoom(read.checkpoint) } : {}),
+    });
+    try {
+      expect(read.status).toBe('ready');
+      importPreparationCheckpoint(read.checkpoint, journal);
+      const left = preparationCheckpointRoom(read.checkpoint);
+      expect(left).toBeGreaterThan(0);
+      expect(left).toBeLessThan(PREPARATION_MAX_BYTES - counted);
+      // The cache itself has room for this result; the saved checkpoint does not.
+      const value = await journal.memo.check(
+        'opened:1',
+        'physical-row',
+        [new Uint8Array([1])],
+        async () => new Uint8Array(size),
+        () => {},
+      );
+      expect(value.length).toBe(size);
+      clock = PREPARATION_SLICE_MS + 1;
+      let paused = false;
+      try {
+        await journal.memo.check(
+          'opened:2',
+          'physical-row',
+          [],
+          async () => new Uint8Array(1),
+          () => {},
+        );
+      } catch (cause) {
+        if (!(cause instanceof PreparationPause)) throw cause;
+        paused = true;
+      }
+      return { paused, statistics: journal.statistics, read, journal };
+    } catch (cause) {
+      disposePreparationCheckpoint(read.checkpoint);
+      journal.dispose();
+      throw cause;
+    }
+  };
+  // Control: a journal not told the room keeps it, pauses, and the save meets the storage cap.
+  const blind = await attempt(false);
+  try {
+    expect(blind.paused).toBe(true);
+    await expect(
+      savePreparationCheckpoint(task, f.owner, blind.read.checkpoint, blind.journal),
+    ).rejects.toBeInstanceOf(PreparationCapacity);
+  } finally {
+    disposePreparationCheckpoint(blind.read.checkpoint);
+    blind.journal.dispose();
+  }
+  const told = await attempt(true);
+  try {
+    expect(told.paused).toBe(false);
+    expect(told.statistics).toMatchObject({ entries: rows, pending: 0, full: true });
+  } finally {
+    disposePreparationCheckpoint(told.read.checkpoint);
+    told.journal.dispose();
+  }
 });
 it('appends only new deltas and restores both without re-encrypting old chunks', async () => {
   const f = await fixture();

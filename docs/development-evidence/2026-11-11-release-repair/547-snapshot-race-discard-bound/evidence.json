@@ -1,0 +1,219 @@
+{
+  "phase": 547,
+  "date": "2026-11-12",
+  "base": "7e6aff636",
+  "requested": "coordinating session, 2026-11-12, for the operator's 2026-11-11 approval: close the window in which two devices creating a snapshot at once leave one holding a snapshot it cannot publish, make the remaining case visible and discardable, offer Discard for every saved unadmitted snapshot of this device with a sentence on what it affects, report positions since the last admitted snapshot when history is checked, warn past three quarters of HISTORY_REPLAY_EVENTS and say plainly past it before any replay, and make a mid-replay hit a named outcome; no automatic discard, jitter or scheduler policy change; do not change the bound or restructure the transport",
+  "amends": "no recorded decision",
+  "sourceSha256": {
+    "src/account/historyMaintenance.ts": "0f04f9f870d6d4da5f86600f485936d8086c3e2054c1b3966eec8928fed4dfb9",
+    "src/account/historyReplayBound.ts": "c78a15053c33c01bfcb701cb68090ee251044614f800931d9a0a1ffa21eb185e",
+    "src/crdt/accountSessionBridge.ts": "ecf373a0eb4a0af087d96bc890b8c488c31ae1e53f41a532e30400314034154e",
+    "src/crdt/historyOwner.ts": "c871305a3fdf09a77e8528f8821b2500b2e8d71f3e820522a4fa82f7b9d88730",
+    "src/crdt/historySource.ts": "66e687834175bd3da9f4d9d035aef1b8575c421636bc0809e09039f02a2315f9",
+    "src/ui/AccountHistory.tsx": "0b1c4c2d6c3a3129499d759d2d8e50a730d6e0b60ba432308420e99fbb03a6dd",
+    "test/account-history/devices-fixture.mjs": "40e5bb369ba99c0d6560fec0559c1484db5efbdfbd51f70683ba87aee69bfa20",
+    "test/account-history/race.test.mjs": "3c61d20e904921d24d5f6a2f9bb641f1d8798827ee16b1dcc50c8bae943f4578",
+    "test/account-history/replay-bound.test.mjs": "eb4c6f1c75c81c5b55b1cdd17c67762f755c07198a405c659864c691be8af4a5",
+    "test/account-history/replay-bound-source.test.mjs": "24854df195f49e4baa4ff35a7cfa5613930c0dafc0b565d62856a9fb80444fc3",
+    "test/account-history/client.test.mjs": "e933971c62316583cfbccb1d74887bbb2c6c6374ff3f510603a3098b76ebfe16",
+    "test/account-history/client-entry.ts": "c98fa4ad99e237dcf81959628aa29686a150ae06d25b55b91c66892bb24a767e",
+    "test/historyReplayBound.test.ts": "cee1795025b14d783790b550f7149a87d94c052bade3757f94fceedcb3efa9e0",
+    "test/accountHistory.test.tsx": "b7e3abed046370fbab52e4a5e0a3749eb307c2ecb7116eb8c070c05b0ba622d5",
+    "test/accountSessionBridge.test.ts": "fe1c1f044bb29b3489181ee7f8128c25dd1b64b825e56e66b13e8c235e3a3103"
+  },
+  "race": {
+    "windowClosed": "after preparing and the install-size check, creating reads the pending proposal again; if catalog sequence, latest or pending changed it saves and sends nothing and returns the new state with raced: true",
+    "remainingWindow": "between saving the attempt and publishing it",
+    "classification": {
+      "source": "the authenticated catalog and sources from the reads the command already makes, and this device's saved attempt; never a refusal reply",
+      "states": {
+        "sendable": "parent is latest, nothing pending; Discard records a cancellation (unchanged path)",
+        "waiting": "it is the pending proposal; Discard removes it (unchanged path)",
+        "blocked": "parent is latest, another proposal pending; Discard keeps the cancellation in the existing discard field and drops the attempt",
+        "superseded": "parent is no longer latest; Discard records a cancellation if nothing is pending, else drops the attempt only (the service refuses it for good)",
+        "stale": "epoch head or carried sources changed; as superseded",
+        "cancelling": "a cancellation not yet recorded; sent when nothing else is pending",
+        "admitted with its reply lost (hash is latest or previous)": "no saved value, no Discard; Resume and the discard command reconcile it"
+      }
+    },
+    "keptCancellation": {
+      "why": "the service refuses a cancellation (checkpoint-conflict) while a different proposal is pending",
+      "clearedWhen": "the other proposal is admitted in this device's verify: the discarded snapshot names an older parent and can never be published",
+      "recordedWhen": "a later command finds nothing pending; a delayed delivery is then refused checkpoint-cancelled (tested)",
+      "neverBlocks": "verifying the other proposal",
+      "localReduction": "stays parked while kept (retentionAttemptsSettled reads the same field); phase 546's sentence says so"
+    },
+    "transport": "unchanged; refusal bodies are not read",
+    "keptExistingRule": "any current device may discard another device's proposal that a membership change made stale (2026-10-09; the service enforces the same)"
+  },
+  "replayBound": {
+    "constant": 4096,
+    "home": "src/account/historyReplayBound.ts; src/crdt/historySource.ts re-exports it (pinned by test/historyReplayBound.test.ts)",
+    "inspect": "positions: { since, allowed } = sum over current accepted heads of (head - latest admitted snapshot's cut), from genesis before the first",
+    "warnPast": 3072,
+    "pastBound": "since > 4096 hides Create",
+    "create": "counts this device's replay (historyReplayStart: previous snapshot it can open, else recovery or replacement baseline, else genesis) before preparing; past the bound returns replay { snapshot: 'new', needed, allowed }; nothing prepared, saved or sent",
+    "verify": "counts from the proposal's cuts before admitting; past the bound returns replay { snapshot: 'pending', needed, allowed }; nothing admitted or saved",
+    "replay": "readHistorySource counts before reading any position and throws HistoryReplayLimit (message unchanged, with needed and allowed); the in-loop check stays as a backstop with the same error; creating and verifying report it as the same named outcome",
+    "alsoAffects": "the membership handoff replay in membershipSource.ts refuses before reading instead of after 4,096 positions, same message"
+  },
+  "schedulerUnchanged": "src/account/automaticHistoryMaintenance.ts is untouched; its capture() drops the new fields like tooLarge. Outcomes it receives change in two places: a create that loses the race returns the other device's snapshot to verify, and a replay-bound refusal returns a status instead of throwing, so the scheduler continues instead of halting with owner-error",
+  "newTests": {
+    "files": [
+      "test/account-history/race.test.mjs",
+      "test/account-history/replay-bound.test.mjs",
+      "test/account-history/replay-bound-source.test.mjs",
+      "test/historyReplayBound.test.ts"
+    ],
+    "fixture": "test/account-history/devices-fixture.mjs (two devices certified at epoch 3, a third through the continuation ceremony at epoch 5; set-up copied from test/account-ceremony/content-transfer.test.mjs)",
+    "cases": {
+      "test/account-history/race.test.mjs": 6,
+      "test/account-history/replay-bound.test.mjs": 6,
+      "test/account-history/replay-bound-source.test.mjs": 4,
+      "test/account-history/client.test.mjs": 1,
+      "test/historyReplayBound.test.ts": 3,
+      "test/accountHistory.test.tsx": 4,
+      "test/accountSessionBridge.test.ts": 1
+    },
+    "boundMatrix": {
+      "positions": [3072, 3073, 4096, 4097],
+      "snapshot": ["first", "after an admitted snapshot"],
+      "device": ["creating", "verifying"],
+      "4097": "refused before preparing or admitting, nothing saved or sent",
+      "others": "made and admitted"
+    }
+  },
+  "changedAssertions": [
+    "test/account-history/client.test.mjs: verification never admits a pending snapshot too large to install, and inspection names it (inspect result now carries positions { since: 0, allowed: 4096 })",
+    "test/account-history/client.test.mjs: pruning is refused while the latest snapshot is too large to install (same)"
+  ],
+  "failedOnBase": {
+    "tree": "7e6aff636 with the new tests copied in and the base client-entry kept",
+    "node": {
+      "race.test.mjs": "6 of 6",
+      "replay-bound.test.mjs": "6 of 6 (no positions on base; a probe without those checks shows creating at 4,097 returns no refusal on base)",
+      "replay-bound-source.test.mjs": "2 of 4 (base reads 4,096 positions then throws a plain error; the two 4,096 cases pass as controls)",
+      "client.test.mjs": "the new stale case and the two changed assertions"
+    },
+    "vitest": {
+      "cases": 5,
+      "notLoadable": ["test/historyReplayBound.test.ts"],
+      "passingInThoseFiles": 14
+    },
+    "record": "base-tree-runs.txt",
+    "probe": "replay-bound-nopositions.probe.mjs.txt"
+  },
+  "mutationControls": {
+    "M1 no catalog re-read after preparing": 1,
+    "M2 no Discard for an own unadmitted snapshot": 4,
+    "M3 cancellation sent at once instead of kept": 2,
+    "M4 kept cancellation not cleared after admission": 1,
+    "M5 no count before preparing": 2,
+    "M6 no count before admitting": 2,
+    "M7 replay does not count before reading": 2,
+    "M8 bound inside preparation is the generic failure": 1,
+    "M9 no positions when checking": 3,
+    "M10 admitted snapshot discarded instead of reconciled": 1,
+    "M11 Resume offered where it cannot help": 1,
+    "M12 warning at three quarters instead of past": 1,
+    "M13 no sentence on what discarding affects": 1,
+    "M14 bridge refuses the new fields": 1,
+    "record": "mutation-controls.txt",
+    "script": "mutation-controls.py.txt"
+  },
+  "runs": {
+    "fullUnit": {
+      "command": "pnpm test --maxWorkers=1",
+      "files": 347,
+      "passed": 3351,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 352.68,
+      "node": "26.13.0",
+      "hostLoadAverage": "about 8 to 16",
+      "knownLoadTimeoutsFailed": []
+    },
+    "accountHistoryNode": {
+      "command": "node --test test/account-history/*.test.mjs",
+      "tests": 87,
+      "passed": 87,
+      "seconds": 443.4
+    },
+    "ciServiceStep": {
+      "tests": 69,
+      "passed": 69
+    },
+    "adapterFiles": {
+      "files": 9,
+      "cases": 178,
+      "passed": 178
+    },
+    "ciContractChecksPassed": [
+      "vectors:check",
+      "retention:check",
+      "status:check",
+      "limit:check",
+      "authority:check",
+      "recipient:check",
+      "admission:check",
+      "remediation:check",
+      "debts:check",
+      "wasm:verify"
+    ],
+    "validationInventory": "passed",
+    "plan": "1120 obligations, 555 unresolved",
+    "typecheck": "passed",
+    "build": "passed, initial JS 309.0 of 350.0 kB gzipped",
+    "formatAndLintOnChangedFiles": "passed (oxfmt reformatted four files after the mutation controls; whitespace only)",
+    "traceCheck": "passes after the contract checks are rerun on the finished tree (receipts are tree-bound)"
+  },
+  "inventory": {
+    "recorded": true,
+    "obligationsBefore": 1116,
+    "obligations": 1120,
+    "unresolvedBefore": 552,
+    "unresolved": 555,
+    "caseDenominatorBefore": 2704,
+    "caseDenominator": 2711,
+    "vitestReviewedFilesBefore": 111,
+    "vitestReviewedFiles": 112,
+    "generalStagesBefore": 296,
+    "generalStages": 297,
+    "vitestReviewedStagesBefore": 130,
+    "vitestReviewedStages": 131,
+    "newBlockedObligations": [
+      "test/account-history/race.test.mjs",
+      "test/account-history/replay-bound.test.mjs",
+      "test/account-history/replay-bound-source.test.mjs"
+    ]
+  },
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 519,
+    "newSources": ["src/account/historyReplayBound.ts"],
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/checkpoint/v1",
+        "path": "src/crdt/historySource.ts",
+        "from": 266,
+        "to": 282
+      }
+    ],
+    "constructionRegistryLinesFollowed": 1
+  },
+  "anchors": {
+    "checked": 53,
+    "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the five edited sources occurs the same number of times now",
+    "exceptions": "'recovery-reading' and 'replacement-checkpoint' occur once more in historyOwner.ts (kind strings, not anchors); 'History replay exceeds its event bound' moved from historySource.ts to historyReplayBound.ts unchanged and was referenced by no file under vite/, test/ or scripts/ before this phase",
+    "browserSpecSentencesKept": [
+      "Snapshot saved. Verify it from another approved device.",
+      "Verified snapshot N is saved.",
+      "No verified history snapshot yet.",
+      "Covered service history removed."
+    ]
+  },
+  "concurrentActivity": "Playwright runs not started by this seat, from other sessions' scratch copies that use this worktree's node_modules (reduced-peer-verify, lostphone public spec), ran during the unit and node suites; host load average about 8 to 16",
+  "notRun": ["browser suites and native suites (none asked for)", "any real device or account"],
+  "deployed": false
+}

@@ -99,7 +99,7 @@ for (const section of ['next', 'scheduled']) {
     );
     await page.setViewportSize({ width: 1280, height: 900 });
     await openApp(page);
-    for (const text of ['first', 'second', 'third']) {
+    for (const text of ['third', 'second', 'first']) {
       await add(page, text);
       if (section === 'next')
         await cards(page, 'scheduled')

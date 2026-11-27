@@ -1,0 +1,15 @@
+✔ one account's publish, admit, discard and prune leave another account's verification; its prune re-verifies only its own streams (20195.095042ms)
+ℹ B's submit and read after each step, ms: {"publish":10,"admit":11,"second publish":11,"second admit":11,"third publish":10,"discard":10,"prune":10}
+✔ a capture in flight across its own account's prune fails its guard and the read retries; another account's capture stays valid (17960.067375ms)
+✔ another account writes and reads straight through a prune: no lock across its await, no retry and no census (17484.75675ms)
+✔ a submission that meets a cleared authority proof retries and is accepted, without wiping again (8491.563459ms)
+✔ a prune leaves quarantine as it was, even after the damaged bytes are restored (16501.077167ms)
+✔ a prune that commits and then fails to answer still retires its account's tips, and only those (19315.652958ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 100471.735

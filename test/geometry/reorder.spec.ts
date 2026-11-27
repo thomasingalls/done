@@ -21,7 +21,7 @@ const seedCards = async (page: Page, section: string, multiline = false): Promis
       : value;
   if (section === 'done') return addDoneCards(page, ['third', 'second', 'first'].map(body));
   const compose = activeDay(page).getByRole('textbox', { name: 'What’s scheduled?' });
-  for (const value of ['first', 'second', 'third']) {
+  for (const value of ['third', 'second', 'first']) {
     await compose.fill(body(value));
     await compose.press('Enter');
     if (section === 'next')

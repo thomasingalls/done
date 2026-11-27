@@ -1,0 +1,150 @@
+// Scratch probe, not part of the repository: two owners prepare against the same catalog; one wins.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { setup } from './service-fixture.mjs';
+import { client as c } from './client.mjs';
+import { same } from '../../account-protocol/admission.ts';
+
+class Unavailable extends Error {}
+function device(f, authorities, gate) {
+  let saved = null;
+  const refusals = [];
+  const owner = {
+    get authority() {
+      return f.membership;
+    },
+    credentialId: f.credential,
+    async authorityAt(epoch, head) {
+      return authorities.get(head);
+    },
+    sign: f.signer,
+    async prepare(previous, heads) {
+      await gate?.();
+      return f.create(previous, heads);
+    },
+    admit: (cp) => f.admit(cp),
+  };
+  const io = {
+    signal: new AbortController().signal,
+    now: () => 1000,
+    load: async () => structuredClone(saved),
+    replace: async (before, next) => {
+      assert(same(before, saved));
+      saved = structuredClone(next);
+    },
+    async exchange(request) {
+      const reply = await f.exchange(request);
+      // The HTTP route answers a refusal with 409; historyHttp.ts turns any non-200 into
+      // HistoryTransportUnavailable, which the automatic policy treats as retryable.
+      if (!reply.ok) {
+        refusals.push(`${request.action}:${reply.refusal}`);
+        throw new Unavailable(reply.refusal);
+      }
+      return reply.page;
+    },
+  };
+  return {
+    run: (command) => c.runHistoryMaintenance(owner, command, io),
+    saved: () => structuredClone(saved),
+    refusals,
+  };
+}
+
+test('race: the losing owner keeps a stale proposal, inspection says resume with no discard offered', async (t) => {
+  const f = await setup(t);
+  const authorities = new Map([[f.p.head, f.membership]]);
+  let release;
+  const held = new Promise((r) => (release = r));
+  let entered;
+  const inPrepare = new Promise((r) => (entered = r));
+  const b = device(f, authorities, async () => {
+    entered();
+    await held;
+  });
+  const a = device(f, authorities);
+  const bCreate = b.run('create').then(
+    (v) => ({ ok: v }),
+    (e) => ({ error: String(e) }),
+  );
+  await inPrepare; // B has read latest/pending and is preparing
+  const aResult = await a.run('create');
+  release();
+  const bResult = await bCreate;
+  const bInspect = await b.run('inspect');
+  const bResume = await b.run('resume').then(
+    (v) => ({ ok: v }),
+    (e) => ({ error: String(e) }),
+  );
+  const bInspect2 = await b.run('inspect');
+  const bDiscard = await b.run('discard');
+  const bAfter = await b.run('inspect');
+  process.stderr.write(
+    '\nPROBE ' +
+      JSON.stringify({
+        aResult,
+        bResult,
+        bSavedAttempt: !!b.saved()?.attempt,
+        bInspect,
+        bResume,
+        bInspect2,
+        bDiscard,
+        bAfter,
+        refusals: b.refusals,
+      }) +
+      '\n',
+  );
+  assert.equal(aResult.sequence, 1);
+  assert(bResult.error);
+  assert.equal(bInspect.pending, 'resume');
+  assert.equal(bInspect.canDiscard, false);
+  assert.equal(bAfter.pending, 'none');
+});
+
+test('race with the winner still pending: the loser is refused checkpoint-busy and inspection says resume', async (t) => {
+  const f = await setup(t);
+  const authorities = new Map([[f.p.head, f.membership]]);
+  let release;
+  const held = new Promise((r) => (release = r));
+  let entered;
+  const inPrepare = new Promise((r) => (entered = r));
+  const b = device(f, authorities, async () => {
+    entered();
+    await held;
+  });
+  const a = device(f, authorities);
+  // A's admission request is lost, so A's proposal stays pending on the service (as it would while
+  // waiting for a second device to verify it).
+  const original = f.exchange;
+  let dropAdmit = true;
+  f.exchange = async (r, ...rest) => {
+    if (dropAdmit && r.action === 'admit' && r.credentialId === f.credential && !b.inFlight) {
+      dropAdmit = false;
+      throw new Unavailable('lost');
+    }
+    return original(r, ...rest);
+  };
+  const bCreate = b.run('create').then(
+    (v) => ({ ok: v }),
+    (e) => ({ error: String(e) }),
+  );
+  await inPrepare;
+  const aResult = await a.run('create').then(
+    (v) => ({ ok: v }),
+    (e) => ({ error: String(e) }),
+  );
+  const pendingRows = f.f.rows('history_checkpoint_records').filter((r) => r.admission === null).length;
+  release();
+  const bResult = await bCreate;
+  const bInspect = await b.run('inspect');
+  const bResume = await b.run('resume').then(
+    (v) => ({ ok: v }),
+    (e) => ({ error: String(e) }),
+  );
+  process.stderr.write(
+    '\nPROBE2 ' +
+      JSON.stringify({ aResult, pendingRows, bResult, bInspect, bResume, refusals: b.refusals }) +
+      '\n',
+  );
+  assert.equal(pendingRows, 1);
+  assert.equal(bInspect.pending, 'resume');
+});

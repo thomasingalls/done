@@ -1,0 +1,280 @@
+{
+  "phase": 560,
+  "date": "2026-11-13",
+  "base": {
+    "description": "phases 557 to 559, uncommitted",
+    "tree": "3daa3e4d2e07135206df1c50645a721009c01a2d",
+    "onCommit": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935"
+  },
+  "requested": "coordinating session, 2026-11-13: diagnose and repair test/account-parser-conformance/baseline.test.mjs so the differential runs again with the baseline frozen and proven byte-identical to f0b6acd2 in the test or loader; no product code; inputs, assertions and seeds unchanged; controls per family; report the suite file by file and where it is registered",
+  "productCodeChanged": false,
+  "diagnosis": {
+    "symptom": "the baseline bundle does not build: 12 MISSING_EXPORT errors, all names absent from f0b6acd2's src/crdt/spoolRecord.ts (inspectSpoolSteps, positionSources, nextSpoolPosition, MAX_POSITION_SOURCES, MAX_POSITION_BYTES) imported by six current modules",
+    "record": "base-tree-run.txt",
+    "cause": "the loader built the current parser graph and replaced four files with their f0b6acd2 text; that equalled the old code only while those four were the only differing files (true at 77b0bb623, 2026-09-12)",
+    "firstFailingCommit": {
+      "commit": "f89ee3f9d505f29fdfc29aad2260a19c053f312f",
+      "date": "2026-10-13",
+      "subject": "Prepare private history retention outside the input queue",
+      "mergedIn": "0780fee7e731f9f6832e7ab38505d9cdfd86e9c9 (PR #54, 2026-10-14)",
+      "change": "deliveryRecord.ts imports inspectSpoolSteps from ./spoolRecord",
+      "record": "bisect.txt",
+      "method": "build-only bisection of the overlay from git objects; whether assertions held before the break was not checked"
+    },
+    "overlayGraphModules": {
+      "atTestCommit77b0bb623": 34,
+      "atBaseTree": 177,
+      "note": "repository modules including the entry"
+    },
+    "frozenGraphModules": 33,
+    "frozenModulesChangedInBaseTree": 17,
+    "frozenModulesChangedAt77b0bb623": [
+      "account-protocol/genesis.ts",
+      "src/crdt/promotionRecord.ts",
+      "src/crdt/spoolRecord.ts",
+      "src/crdt/startupClassification.ts"
+    ],
+    "phase542SentenceAssessment": "right about the loud symptom; the cause is the overlay of four old files among current modules, failing since 2026-10-13"
+  },
+  "repair": {
+    "file": "test/account-parser-conformance/helpers.mjs",
+    "loader": "every repository module the baseline bundle reaches is resolved within and read from f0b6acd2's tree via git cat-file, in memory; git --no-replace-objects",
+    "refuses": [
+      "a loaded file whose Git blob id (of the exact text handed to the bundler) differs from the commit's tree entry",
+      "any module outside that tree other than the shared entry runtime.ts and node_modules",
+      "an npm package reached by the graph, yjs included, whose installed name@version is not a key in f0b6acd2's pnpm-lock.yaml",
+      "a patchedDependencies block that differs between f0b6acd2's lockfile and the current one"
+    ],
+    "repairedFilesStillRequired": "each of the four repaired files must be among the verified frozen modules",
+    "shims": "none; no frozen file is patched",
+    "packagesInGraph": [
+      "@codemirror/state 6.7.1",
+      "@codemirror/view 6.43.7",
+      "@marijn/find-cluster-break 1.0.3",
+      "crelt 1.0.7",
+      "lib0 0.2.117",
+      "style-mod 4.1.3",
+      "w3c-keyname 2.2.8",
+      "y-codemirror.next 0.3.5",
+      "y-indexeddb 9.0.12",
+      "y-protocols 1.0.7",
+      "y-websocket 3.0.0",
+      "yjs 13.6.31 (external, the caller's instance)"
+    ],
+    "packagesInEmittedChunk": [
+      "y-protocols/awareness.js"
+    ],
+    "lockedVersionsSameInBaseLockfile": true,
+    "reproducesOriginalRecords": {
+      "record": "reports-compare.txt",
+      "files": [
+        "baseline-promotion.json",
+        "baseline-spool.json",
+        "baseline-shapes.json"
+      ],
+      "against": "docs/account-conformance-runs/2026-09-12-account-parser-conformance/parser/",
+      "result": "byte-identical"
+    },
+    "whyNotHistoricalBundle": "scripts/lib/historical-bundle.mjs archives to test-results, bundles yjs inside and returns a browser Harness wrapper; this Node test shares the caller's yjs (external) and builds in memory"
+  },
+  "testChanges": {
+    "addedCases": [
+      "frozen baseline refuses a loaded file that differs by one byte from the signed commit"
+    ],
+    "changedExistingCases": [],
+    "deletedOrSkippedCases": [],
+    "inputsSeedsAssertionsChanged": false,
+    "seeds": [
+      112101,
+      112104
+    ],
+    "numRuns": 250
+  },
+  "checksNarrowed": [],
+  "checksRunLessOftenOrDifferently": [
+    "the old side runs on the complete parser graph at f0b6acd2 (33 modules) instead of four f0b6acd2 files inside the current graph (176 modules at the base); the current side is unchanged"
+  ],
+  "sourceSha256": {
+    "test/account-parser-conformance/helpers.mjs": "9019ef900dfda2651b21307738bf5b4c9fa557f41026527158619cc6114a30d9",
+    "test/account-parser-conformance/baseline.test.mjs": "8601473da9a0219459aa47633a807e0ee40a3f3ae3b663fba5d92d4dc8881a74",
+    "test/release-validation/account-fixtures.test.mjs": "45f171284ca3681863df3bc88ea425b035edfe67596c68ae22febc82ed72fc4b",
+    "test/release-validation/general-tests.test.mjs": "79776ee90f046fd6d2914ee1419968a0487b37d0642f1c306593aa4da6dff9a1",
+    "test/release-validation/generated-tests.test.mjs": "a3a7e18060d87d897d616d518ac41e1285f1f9764d25a760f1deaac9b825aa17",
+    "docs/account-parser-conformance.md": "4948f05568e59a15cbd2991179d3fa6f8181f360301c7ce56cc482c75f213b3f"
+  },
+  "baseSourceSha256": {
+    "test/account-parser-conformance/helpers.mjs": "ad095d2e65731559000aa46adcfa78c9f93655f395d60864546c48796d946159",
+    "test/account-parser-conformance/baseline.test.mjs": "4bfba92d838ccd9fdb587b7cd009df927a5873d01568c53d2319deefbb73b068",
+    "test/release-validation/account-fixtures.test.mjs": "5b027c2042efff31c2fc2e2bcf950a85af8ead312cbaa7ba6f7dc96dee1d8f62",
+    "test/release-validation/general-tests.test.mjs": "b3403ccc58d9d96362f41d31b2a2b28255672552107d63e0317e8ba5b80485e7",
+    "test/release-validation/generated-tests.test.mjs": "c44839983060fdac556ffe6ba491beacc711d34f2ead85d28709e27b191c89a9",
+    "docs/account-parser-conformance.md": "33736b9e065064075e673b17c7ce1741e4c02e6468c9c18ff400481024ea80bf"
+  },
+  "probeSha256": {
+    "controls.py.txt": "f88b421583082a830755728c298d8caa149303403b0d376f39f4927764562193",
+    "overlay-at.mjs.txt": "304147dd3d0da6fb2775bf7cf441d67f6d0685e8af28ee9d9f31c1fbc5589745",
+    "swap-probe.mjs.txt": "46be21d2f4726ef4bf3e5c84f632c1ff1e7c0134b6910dfb0b9dd130bcc7f1f3"
+  },
+  "failedOnBase": {
+    "record": "base-tree-run.txt",
+    "result": "file fails before any case: the overlay bundle does not build"
+  },
+  "controls": {
+    "record": "controls.txt",
+    "script": "controls.py.txt",
+    "run": 16,
+    "asExpected": 16,
+    "items": {
+      "base-tree": "file fails (missing exports)",
+      "final-copy": "4 pass",
+      "current-is-frozen": "promotion, spool, shapes fail; one-byte passes",
+      "frozen-is-current": "promotion, spool, shapes fail; one-byte passes",
+      "omit-promotion": "promotion fails only",
+      "omit-spool": "spool fails only",
+      "omit-credentials": "shapes fails at credentials only",
+      "omit-actors": "shapes fails at actors only",
+      "omit-wraps": "shapes fails at wraps only",
+      "omit-promotionId": "shapes fails at promotionId only",
+      "omit-requestDigest": "shapes fails at requestDigest only",
+      "omit-epochHead": "shapes fails at epochHead only",
+      "identity-check-removed": "one-byte fails only",
+      "graph-escape": "file refused: module outside f0b6acd2",
+      "dependency-not-locked": "file refused: y-protocols@1.0.7 not locked",
+      "yjs-patch-differs": "file refused: yjs patch"
+    },
+    "notCoveredByThisFile": "the admission, source, delivery and submission omission controls belong to controls.test.mjs"
+  },
+  "suite": {
+    "command": "pnpm account:parser-conformance",
+    "record": "campaign.txt",
+    "status": "passed",
+    "stages": 47,
+    "durationS": 231,
+    "sourcePinsVerified": 2104,
+    "parserFiles": {
+      "baseline.test.mjs": 4,
+      "controls.test.mjs": 12,
+      "objects.test.mjs": 7,
+      "submission.test.mjs": 3,
+      "wires.test.mjs": 8,
+      "native.test.mjs": 1
+    },
+    "failingFiles": [],
+    "ranBefore": "the four release-validation and design-note edits, none of which the campaign tests"
+  },
+  "registration": {
+    "releasePolicy": "account:parser-conformance is a required package command (scripts/release-validation/policy.json); the graph records it as not reached from pnpm check",
+    "releaseInventory": "oracle-parser-fixtures (five Node files, baseline expects its cases to pass, four history pins at f0b6acd2) and parser-conformance-native-fixture (native.test.mjs)",
+    "ci": "not run; the adapter test only checks registration and pins",
+    "developmentMd": "not named",
+    "briefClaimNotInCi": "right, but incomplete: the release inventory expected these cases to pass"
+  },
+  "survey": {
+    "record": "survey.txt",
+    "probe": "swap-probe.mjs.txt",
+    "method": "build-only",
+    "failing": [
+      "test/account-ledger-contract/source-census.test.mjs (repeatedSourceReader, 4bcac419 spoolRecord.ts; file fails today; blocked in the inventory)",
+      "test/account-handoff/fixtures.mjs HANDOFF_SLOT_BASELINE=1 (beed8cf slotUnlock.ts)"
+    ],
+    "buildingButSameWeakness": [
+      "account-genesis a4e1c15",
+      "account-admission 280f616",
+      "account-editing 649925f",
+      "account-handoff beed8cf",
+      "account-spool 7210b7d",
+      "account-capture 18ceb40",
+      "account-delivery 81a4655 (promotionRecord.ts old readers)"
+    ],
+    "alreadyWholeGraph": [
+      "account-receive",
+      "account-sync",
+      "account-admission-bounds (scripts/lib/historical-bundle.mjs)"
+    ],
+    "notProbed": [
+      "test/local-baseline/reader-rollout.ts",
+      "service-side tests that write an old file next to current modules",
+      "the activation reproduction"
+    ]
+  },
+  "inventory": {
+    "caseDenominator": [
+      3091,
+      3092
+    ],
+    "parserSelectionCases": [
+      46,
+      47
+    ],
+    "accountFixtureCases": [
+      714,
+      715
+    ],
+    "accountFixtureNodeCases": [
+      702,
+      703
+    ],
+    "baselineDeclarations": [
+      2,
+      3
+    ],
+    "obligations": [
+      1136,
+      1136
+    ],
+    "unresolved": [
+      561,
+      561
+    ],
+    "historyInputs": "unchanged: the four parser files at f0b6acd2",
+    "recorded": "check.mjs --record and plan.mjs --record three times after reviewing each drift: (1) baseline declarations and the hashes of helpers.mjs, baseline.test.mjs and account-fixtures.test.mjs plus the baseline row's cases; (2) the three release-validation test hashes and two case titles; (3) account-fixtures.test.mjs's hash"
+  },
+  "runtimeCensus": {
+    "recorded": false,
+    "reason": "no file under src, account-protocol or account-service changed; the campaign's census stage passed"
+  },
+  "decision": "docs/decisions.md, 2026-11-13, phase 560; amends nothing",
+  "backlogAdded": [
+    "TEST-PARSER-CI",
+    "TEST-FROZEN-OVERLAYS"
+  ],
+  "runs": {
+    "baselineBefore": "failed (build)",
+    "baselineAfter": "4 passed",
+    "controls": "16 as expected",
+    "campaign": "passed",
+    "sourceCensusFile": "failed (as described in the survey)",
+    "formatAndLint": "oxfmt --check and oxlint pass on the five changed test files; Markdown and JSON records follow the repository's unformatted convention",
+    "typecheck": "tsc -b --noEmit passed",
+    "validationInventory": "10 passed",
+    "releaseAdapters": "CI's nine adapter files, 178 passed",
+    "ciContractChecks": "vectors:check, retention:check, status:check, limit:check, authority:check, recipient:check, admission:check, remediation:check, debts:check, wasm:verify: all exit 0",
+    "traceCheck": "see traceCheck"
+  },
+  "traceCheck": "run after the ten contract checks on the finished tree: 1 failure, scripts/check-origin-isolation.mjs's receipt (2026-11-13T05:37Z, written against an earlier tree); that gate runs inside pnpm build, which this seat did not run. Writing this line changes the tree again, so every receipt needs minting on the final tree",
+  "notRun": [
+    "full unit suite",
+    "pnpm build"
+  ],
+  "notVerified": [
+    "whether the differential's assertions still held between 2026-09-12 and 2026-10-13",
+    "the signature on f0b6acd2 (pinned by id only)",
+    "that node_modules matches the current lockfile (the loader checks installed versions against the baseline lockfile)",
+    "the seven promotionRecord.ts overlays against a whole-graph baseline"
+  ],
+  "deployed": false,
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-13",
+    "read": "the loader in helpers.mjs and the added case",
+    "fullUnit": {
+      "files": 359,
+      "passed": 3746,
+      "skipped": 1,
+      "failed": 0
+    },
+    "repairedFile": "4 of 4 pass on the final tree",
+    "independentControl": "a one-byte change to each of eight frozen modules in turn (four outside the parser files, the four parser files) is refused with the identity error; an unchanged load reads 33 frozen modules",
+    "baselineCommit": "git reports a good signature on f0b6acd2 in this checkout; it is an ancestor of the branch",
+    "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, the CI session, authority and quarantine steps, and the five Node files of the parser stage"
+  }
+}

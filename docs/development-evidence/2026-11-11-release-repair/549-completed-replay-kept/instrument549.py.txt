@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""COPY-ONLY trace seams for phase 549 (base and final trees). Usage: instrument549.py <copy root>
+Records, in the owner Worker's __doneTrace:
+  replayDone   a full baseline replay returned (start, duration, inside the oracle load or not)
+  snapError    openSnapshot refused or was interrupted: before or after its replay returned
+  recorded     the new reuse view was built: ms from replay return (the post-replay steps)
+  job          a storage-queue job waited more than 20 ms: kind, preparation, wait
+"""
+import sys, pathlib
+root = pathlib.Path(sys.argv[1])
+G = '(globalThis as any)'
+PUSH = ("const __p549 = (e: Record<string, unknown>) => { const a = ((globalThis as { __doneTrace?: unknown[] }).__doneTrace ??= []); "
+        "a.push(e); if (a.length > 40000) a.splice(0, 10000); };")
+
+
+def edit(rel, old, new):
+    p = root / rel
+    s = p.read_text()
+    n = s.count(old)
+    if n != 1:
+        raise SystemExit(f'{rel}: expected 1 match, found {n}: {old[:80]!r}')
+    p.write_text(s.replace(old, new))
+
+
+cs = 'src/crdt/contentStore.ts'
+edit(cs, '              logical = await verifyCompleteLocalBaseline(\n',
+     '              // COPY-ONLY TRACE SEAM 549\n'
+     f'              {G}.__replay549 = {{ start: Date.now(), returned: 0, oracle: !!{G}.__inOracle549 }};\n'
+     '              logical = await verifyCompleteLocalBaseline(\n')
+edit(cs, '                held.counter.v === 5,\n              );\n',
+     '                held.counter.v === 5,\n              );\n'
+     '              // COPY-ONLY TRACE SEAM 549\n'
+     '              {\n                ' + PUSH + '\n'
+     f'                const r = {G}.__replay549; r.returned = Date.now();\n'
+     "                __p549({ ev: 'replayDone', t: r.start, ms: r.returned - r.start, oracle: r.oracle });\n"
+     '              }\n')
+edit(cs, '          baselineReuse = await createBaselineReuse(task, logical, baselineContext, counter, id);\n',
+     '          baselineReuse = await createBaselineReuse(task, logical, baselineContext, counter, id);\n'
+     '          // COPY-ONLY TRACE SEAM 549\n'
+     '          {\n            ' + PUSH + '\n'
+     f'            const r = {G}.__replay549;\n'
+     "            if (r?.returned) __p549({ ev: 'recorded', t: r.returned, postMs: Date.now() - r.returned, oracle: r.oracle });\n"
+     f'            {G}.__replay549 = undefined;\n'
+     '          }\n')
+edit(cs, '      if (!(cause instanceof MaintenanceInterrupted)) clearView();\n      for (const r of opened) r.bytes.fill(0);\n      throw cause;\n',
+     '      // COPY-ONLY TRACE SEAM 549\n'
+     '      {\n        ' + PUSH + '\n'
+     f'        const r = {G}.__replay549, now = Date.now();\n'
+     "        __p549({ ev: 'snapError', t: now, interrupted: cause instanceof MaintenanceInterrupted, error: String((cause as Error)?.name),\n"
+     "          replay: r ? (r.returned ? 'after-return' : 'during') : 'before', sinceStart: r ? now - r.start : null, sinceReturn: r?.returned ? now - r.returned : null, oracle: r?.oracle ?? !!" + G + ".__inOracle549 });\n"
+     f'        {G}.__replay549 = undefined;\n'
+     '      }\n'
+     '      if (!(cause instanceof MaintenanceInterrupted)) clearView();\n      for (const r of opened) r.bytes.fill(0);\n      throw cause;\n')
+s = (root / cs).read_text()
+if 'oracleLoad = true;' in s:
+    edit(cs, '          oracleLoad = true;\n', f'          oracleLoad = true;\n          {G}.__inOracle549 = true; // COPY-ONLY TRACE SEAM 549\n')
+    edit(cs, '          } finally {\n            oracleLoad = false;\n          }\n',
+         f'          }} finally {{\n            oracleLoad = false;\n            {G}.__inOracle549 = false; // COPY-ONLY TRACE SEAM 549\n          }}\n')
+else:
+    edit(cs, '          forceFullRead = true;\n          const rows = await load(task);\n          eraseVerified(rows);\n',
+         '          forceFullRead = true;\n'
+         f'          {G}.__inOracle549 = true; // COPY-ONLY TRACE SEAM 549\n'
+         f'          try {{\n            const rows = await load(task);\n            eraseVerified(rows);\n          }} finally {{\n            {G}.__inOracle549 = false;\n          }}\n')
+
+ac = 'src/crdt/accountCapture.ts'
+edit(ac, '    const enqueued = ledgerWorkStart();\n',
+     '    const enqueued = ledgerWorkStart();\n    const __enq549 = Date.now(); // COPY-ONLY TRACE SEAM 549\n')
+edit(ac, "        await task.wait(() => previous);\n        measureLedgerWork('storageQueueWait', enqueued);\n",
+     "        await task.wait(() => previous);\n        measureLedgerWork('storageQueueWait', enqueued);\n"
+     '        // COPY-ONLY TRACE SEAM 549\n'
+     '        {\n          ' + PUSH + '\n'
+     '          const wait = Date.now() - __enq549;\n'
+     "          if (wait > 20) __p549({ ev: 'job', t: __enq549, wait, kind, preparation });\n"
+     '        }\n')
+print('instrumented549', root)

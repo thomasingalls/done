@@ -212,6 +212,46 @@ it('semantic audit is due independently of disk slices and remains retryable aft
   expect(read.mock.calls.length).toBeGreaterThanOrEqual(3);
   expect(x.owner.warmAuditDue()).toBe(false);
 });
+it('a return to the app stays due when an audit absorbs its full read and is interrupted', async () => {
+  const x = await fixture();
+  await x.f.appendOwn();
+  await x.append();
+  await x.owner.loadAccount(task);
+  x.owner.invalidateWarm();
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+  // The background audit takes the pending full read first, and foreground work interrupts it.
+  x.auth.mockRejectedValueOnce(new MaintenanceInterrupted());
+  await expect(x.owner.auditWarm(task)).rejects.toBeInstanceOf(MaintenanceInterrupted);
+  expect(read.mock.calls.length).toBeGreaterThanOrEqual(3);
+  read.mockClear();
+  // Decision 2026-10-12: a complete read before warm reuse after a return to the app.
+  await x.owner.loadAccount(task);
+  expect(read.mock.calls.length).toBeGreaterThanOrEqual(3);
+  read.mockClear();
+  await x.owner.loadAccount(task);
+  expect(read).not.toHaveBeenCalled(); // That completed read settled it.
+});
+it('an interrupted foreground read after a return to the app leaves the full read due', async () => {
+  const x = await fixture();
+  await x.owner.loadAccount(task);
+  x.owner.invalidateWarm();
+  x.auth.mockRejectedValueOnce(new MaintenanceInterrupted());
+  await expect(x.owner.loadAccount(task)).rejects.toBeInstanceOf(MaintenanceInterrupted);
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+  await x.owner.loadAccount(task);
+  expect(read.mock.calls.length).toBeGreaterThanOrEqual(3);
+});
+it('an interrupted maintenance reference read does not move onto the next foreground load', async () => {
+  const x = await fixture();
+  await x.owner.loadAccount(task);
+  // The ledger's semantic audit asks this way; a cancelled audit stays due on its own schedule.
+  x.owner.requestReferenceRead();
+  x.auth.mockRejectedValueOnce(new MaintenanceInterrupted());
+  await expect(x.owner.loadAccount(task)).rejects.toBeInstanceOf(MaintenanceInterrupted);
+  const read = vi.spyOn(IDBObjectStore.prototype, 'getAll');
+  await x.owner.loadAccount(task);
+  expect(read).not.toHaveBeenCalled();
+});
 it('authority replaced during a full read cannot seed a warm view under the new capability', async () => {
   const x = await fixture();
   x.owner.invalidateWarm();

@@ -1,0 +1,61 @@
+== webkit 26.5
+  grouped: accepts 2785276 chars, refuses 2785278 (valid input)
+  4 MiB chars: grouped=false 62 ms | flat=true 3 ms | pairs=true 21 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  16 MiB chars: grouped=false 64 ms | flat=true 11 ms | pairs=true 20 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  32 MiB chars: grouped=false 78 ms | flat=true 28 ms | pairs=true 40 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  64 MiB chars: grouped=false 71 ms | flat=true 45 ms | pairs=true 80 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  pairs empty refused=true
+  spread push 50000: true
+  spread push 65537: true
+  spread push 100000: true
+  spread push 200000: true
+  spread push 500000: true
+  spread push 1000000: THROW RangeError: Maximum call stack size exceeded.
+  hex join + JSON round trip, 16 MiB chars: true 71 ms
+  hex join + JSON round trip, 32 MiB chars: true 170 ms
+== webkit 26.5 (JSC_useJIT=false)
+  grouped: accepts 2785276 chars, refuses 2785278 (valid input)
+  4 MiB chars: grouped=false 58 ms | flat=true 3 ms | pairs=true 8 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  16 MiB chars: grouped=false 62 ms | flat=true 12 ms | pairs=true 19 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  32 MiB chars: grouped=false 67 ms | flat=true 24 ms | pairs=true 40 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  64 MiB chars: grouped=false 68 ms | flat=true 44 ms | pairs=true 79 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  pairs empty refused=true
+  spread push 50000: true
+  spread push 65537: true
+  spread push 100000: true
+  spread push 200000: true
+  spread push 500000: true
+  spread push 1000000: THROW RangeError: Maximum call stack size exceeded.
+  hex join + JSON round trip, 16 MiB chars: true 69 ms
+  hex join + JSON round trip, 32 MiB chars: true 163 ms
+  interpreter check: 9 ms for a 2e7 loop
+== chromium 151.0.7922.34
+  grouped: accepts 16777216 (no threshold below)
+  4 MiB chars: grouped=true 3 ms | flat=true 3 ms | pairs=true 11 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  16 MiB chars: grouped=true 9 ms | flat=true 14 ms | pairs=true 35 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  32 MiB chars: grouped=true 18 ms | flat=true 28 ms | pairs=true 71 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  64 MiB chars: grouped=true 37 ms | flat=true 55 ms | pairs=true 141 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  pairs empty refused=true
+  spread push 50000: true
+  spread push 65537: true
+  spread push 100000: true
+  spread push 200000: THROW RangeError: Maximum call stack size exceeded
+  spread push 500000: THROW RangeError: Maximum call stack size exceeded
+  spread push 1000000: THROW RangeError: Maximum call stack size exceeded
+  hex join + JSON round trip, 16 MiB chars: true 216 ms
+  hex join + JSON round trip, 32 MiB chars: true 359 ms
+== firefox 153.0
+  grouped: accepts 16777216 (no threshold below)
+  4 MiB chars: grouped=true 4 ms | flat=true 3 ms | pairs=true 9 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  16 MiB chars: grouped=true 8 ms | flat=true 15 ms | pairs=true 36 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  32 MiB chars: grouped=true 19 ms | flat=true 30 ms | pairs=true 97 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  64 MiB chars: grouped=true 35 ms | flat=true 55 ms | pairs=true 162 ms | pairs refuses start=true middle=true end=true odd=true upper=true
+  pairs empty refused=true
+  spread push 50000: true
+  spread push 65537: true
+  spread push 100000: true
+  spread push 200000: true
+  spread push 500000: true
+  spread push 1000000: THROW RangeError: too many function arguments
+  hex join + JSON round trip, 16 MiB chars: true 85 ms
+  hex join + JSON round trip, 32 MiB chars: true 185 ms

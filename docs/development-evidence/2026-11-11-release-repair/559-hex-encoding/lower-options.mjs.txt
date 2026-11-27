@@ -1,0 +1,32 @@
+// Scratch: two more lowerHexBytes options, one size per process. node lower-options.mjs <option> <bytes>
+const [opt, sz] = process.argv.slice(2); const SIZE = Number(sz);
+const digits = '0123456789abcdef';
+const nib = (c) => (c >= 48 && c <= 57 ? c - 48 : c >= 97 && c <= 102 ? c - 87 : -1);
+const old = (value) => { if (!value.length || value.length % 2) return undefined; const bytes = new Uint8Array(value.length / 2);
+  for (let i = 0; i < bytes.length; i++) { const h = nib(value.charCodeAt(2 * i)), l = nib(value.charCodeAt(2 * i + 1)); if (h < 0 || l < 0) { bytes.fill(0); return undefined; } bytes[i] = (h << 4) | l; } return bytes; };
+const PAIR = new Int16Array(65536).fill(-1);
+for (let h = 0; h < 16; h++) for (let l = 0; l < 16; l++) PAIR[(digits.charCodeAt(h) << 8) | digits.charCodeAt(l)] = (h << 4) | l;
+const pairCharCode = (value) => { if (!value.length || value.length % 2) return undefined; const bytes = new Uint8Array(value.length / 2);
+  for (let i = 0; i < bytes.length; i++) { const h = value.charCodeAt(2 * i), l = value.charCodeAt(2 * i + 1); const v = (h | l) > 255 ? -1 : PAIR[(h << 8) | l]; if (v < 0) { bytes.fill(0); return undefined; } bytes[i] = v; } return bytes; };
+const PAIR16 = new Int16Array(65536).fill(-1); { const k = new Uint8Array(2), k16 = new Uint16Array(k.buffer);
+  for (let h = 0; h < 16; h++) for (let l = 0; l < 16; l++) { k[0] = digits.charCodeAt(h); k[1] = digits.charCodeAt(l); PAIR16[k16[0]] = (h << 4) | l; } }
+const te = new TextEncoder();
+const pairEncodeInto = (value) => { if (!value.length || value.length % 2) return undefined; const ascii = new Uint16Array(value.length / 2);
+  const { read, written } = te.encodeInto(value, new Uint8Array(ascii.buffer)); if (read !== value.length || written !== value.length) return undefined;
+  const bytes = new Uint8Array(value.length / 2); for (let i = 0; i < bytes.length; i++) { const v = PAIR16[ascii[i]]; if (v < 0) { bytes.fill(0); return undefined; } bytes[i] = v; } return bytes; };
+const CH = 32768; const chunk16 = new Uint16Array(CH), chunk8 = new Uint8Array(chunk16.buffer);
+const pairChunked = (value) => { if (!value.length || value.length % 2) return undefined; const bytes = new Uint8Array(value.length / 2);
+  for (let start = 0; start < value.length; start += 2 * CH) { const end = Math.min(start + 2 * CH, value.length), len = end - start;
+    const { read, written } = te.encodeInto(value.substring(start, end), chunk8.subarray(0, len));
+    if (read !== len || written !== len) { bytes.fill(0); return undefined; }
+    for (let i = 0, o = start >> 1; i < len >> 1; i++, o++) { const v = PAIR16[chunk16[i]]; if (v < 0) { bytes.fill(0); return undefined; } bytes[o] = v; } }
+  return bytes; };
+const fn = { 'pair-chunked': pairChunked,  old, 'pair-charcode': pairCharCode, 'pair-encodeinto': pairEncodeInto }[opt];
+const b = new Uint8Array(SIZE); for (let i = 0; i < SIZE; i++) b[i] = (i * 131 + (i >>> 8)) & 255;
+const s = Buffer.from(b.buffer).toString('hex');
+const peak = () => Math.round(process.resourceUsage().maxRSS / 102.4) / 10;
+const p0 = peak(); let t = performance.now(); const r = fn(s); const first = performance.now() - t; const p1 = peak();
+if (!Buffer.from(r).equals(Buffer.from(b.buffer))) throw Error('wrong');
+for (const bad of ['', 'a', 'A0', '0g', 'abĀ', '〰〰']) if (fn(bad) !== undefined) throw Error('accepted ' + JSON.stringify(bad));
+const reps = []; for (let k = 0; k < 5; k++) { t = performance.now(); fn(s); reps.push(+(performance.now() - t).toFixed(1)); }
+console.log(JSON.stringify({ opt, SIZE, firstMs: +first.toFixed(1), peakRise: +(p1 - p0).toFixed(1), reps: reps.sort((a, b) => a - b) }));

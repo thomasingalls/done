@@ -1,0 +1,77 @@
+Phase 544 tests run against the base tree 9882e30cd (git archive), with this phase's test files copied in.
+
+== Vitest: the six new cases in existing or new UI/bridge/scheduler files, and test/historyInstallBound.test.ts ==
+   × a named receive size halt keeps the halt, shows its sizes, and a retry clears both (phase 544)
+   × names a receive halt caused by a history snapshot too large to install, with sizes (phase 544)
+   × names an installed service snapshot that no longer fits on re-check (phase 544)
+   × carries a snapshot too large to install and a named receive size halt, refusing or dropping malformed ones (phase 544)
+   × says which snapshot is too large to install, with sizes, for each role
+   × offers no action that the too-large snapshot would refuse, and keeps discard where it helps
+ FAIL  test/historyInstallBound.test.ts [ test/historyInstallBound.test.ts ]
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  6 failed (6)
+      Tests  6 failed | 40 passed (46)
+(test/historyInstallBound.test.ts does not load on the base: historyInstallBytes and historySnapshotTooLarge do not exist there.)
+
+== node --test test/account-history/{client,service,pruning}.test.mjs, base tree plus only the new measuring function (historyInstallBytes, HISTORY_INSTALL_LIMIT) appended to account-protocol/historyCheckpoint.ts ==
+✖ failing tests:
+✖ creation refuses a snapshot devices cannot install before saving or sending anything; the largest one is published and admitted
+  + actual - expected
+  +   sequence: 1
+  -   sequence: 0,
+  -   tooLarge: {
+  -     allowed: 4194304,
+  -     needed: 4194306,
+  -     snapshot: 'new'
+  -   }
+✖ resuming a saved proposal too large to install sends nothing, and it can be discarded
+  + actual - expected
+  +   canDiscard: false,
+  +   pending: 'none',
+  +   sequence: 1
+  -   canDiscard: true,
+  -   pending: 'resume',
+  -   sequence: 0,
+  -   tooLarge: {
+  -     allowed: 4194304,
+  -     needed: 4194306,
+  -     snapshot: 'saved'
+  -   }
+✖ verification never admits a pending snapshot too large to install, and inspection names it
+  + actual - expected
+  -   tooLarge: {
+  -     allowed: 4194304,
+  -     needed: 4194306,
+  -     snapshot: 'pending'
+  -   }
+✖ pruning is refused while the latest snapshot is too large to install
+  + actual - expected
+  -   tooLarge: {
+  -     allowed: 4194304,
+  -     needed: 4194603,
+  -     snapshot: 'latest'
+  -   }
+✖ pruning refuses while the latest snapshot is one an earlier build admitted too large to install
+  + actual - expected
+  +   ok: true,
+  +   page: {
+  +   }
+  -   ok: false,
+  -   refusal: 'checkpoint-too-large'
+✖ the service keeps and admits the largest installable snapshot and refuses one devices cannot install
+  + actual - expected
+  +   ok: true,
+  +   page: {
+  +   }
+  -   ok: false,
+  -   refusal: 'checkpoint-too-large'
+✖ a proposal an earlier build left too large to install cannot be admitted and can still be discarded
+  + actual - expected
+  +   ok: true,
+  +   page: {
+  +   }
+  -   ok: false,
+  -   refusal: 'checkpoint-too-large'
+ℹ tests 38
+ℹ pass 31
+ℹ fail 7

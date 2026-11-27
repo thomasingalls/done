@@ -1,0 +1,641 @@
+// COPY-ONLY probe (fold after a verified install): a device ahead on a peer stream it has reduced and behind on a
+// pruned stream. MODE=strand (tip without the fix: stays stranded until a newer snapshot),
+// MODE=recover (fix: the cut is verified by reading the peer's chain, the snapshot installs and the
+// device catches up at once), MODE=unverifiable (fix, with the peer's chain reads answered 409
+// `unavailable`: a named notice appears, stays while writing keeps arriving, and clears when a
+// newer snapshot installs). Copy-only seams in the build: `__holdHistory`, `__allowReduction`,
+// retention thresholds 1 / 3 s / 1 s / 2 s, and the export-state hook used for convergence.
+import { openMenuSection } from '../geometry/openApp';
+import { test, expect, type Page } from '@playwright/test';
+import { pairedEditors, openSaved, add } from './devices';
+import { pending, compared, unlock } from '../device-enrollment/helpers';
+import { startService, stopService, startApplication, stopProcess } from './server';
+import { documentOf } from './scenario';
+import { writeFileSync } from 'node:fs';
+import { resolve as resolvePath } from 'node:path';
+
+const MODE: string = process.env.MODE ?? 'compat';
+const NAMED = 'could not be checked against the history this device kept';
+const reads = (body: string) =>
+  [
+    ...body.matchAll(
+      /\["done\/private-read\/v2",2,"[^"]*","[^"]*","[0-9a-f]+","([0-9a-f]{32})","([0-9a-f]{32})","[0-9a-f]+","[0-9a-f]+",\d+,(\d+),(\d+)/g,
+    ),
+  ].map((m) => ({ reader: m[1]!, publisher: m[2]!, after: Number(m[3]), limit: Number(m[4]) }));
+const workers = async (p: Page, fn: () => void) => {
+  for (const w of p.workers()) await w.evaluate(fn).catch(() => {});
+};
+async function baseline(p: Page) {
+  return p.evaluate(async () => {
+    const out: { name: string; v: number; revision: number }[] = [];
+    for (const { name } of await indexedDB.databases()) {
+      if (!name) continue;
+      const db = await new Promise<IDBDatabase>((yes, no) => {
+        const r = indexedDB.open(name);
+        r.onsuccess = () => yes(r.result);
+        r.onerror = () => no(r.error);
+      });
+      try {
+        if (!db.objectStoreNames.contains('meta')) continue;
+        const c = await new Promise<any>((yes, no) => {
+          const tx = db.transaction('meta');
+          const g = tx.objectStore('meta').get('counter');
+          tx.oncomplete = () => yes(g.result);
+          tx.onabort = () => no(tx.error);
+        });
+        if (c && typeof c.v === 'number')
+          out.push({ name, v: c.v, revision: c.baseline?.revision ?? 0 });
+      } finally {
+        db.close();
+      }
+    }
+    return out;
+  });
+}
+
+test(`fold after a verified install: ${MODE}`, async ({ page, browser }, info) => {
+  test.setTimeout(1200000);
+  page.setDefaultTimeout(30000);
+  const service = await startService(
+    info.outputPath('service'),
+    process.env.DIST ? resolvePath(process.env.DIST) : undefined,
+    true,
+    true,
+  );
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  // No service worker: each load serves the build the app server currently holds.
+  const thirdContext = await browser.newContext({ acceptDownloads: true, serviceWorkers: 'block' }),
+    third = await thirdContext.newPage();
+  third.setDefaultTimeout(30000);
+  const errors: string[] = [];
+  const log: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  const observe = (p: typeof page) => {
+    p.on('pageerror', (e) => errors.push(e.message));
+    p.on('response', async (r) => {
+      const path = new URL(r.url()).pathname;
+      if (r.status() < 400 || (!path.startsWith('/account/') && !path.startsWith('/__account-setup/')))
+        return;
+      const body = await r.json().catch(() => ({}));
+      if (p === third)
+        note(`third refusal ${path} ${r.status()} ${body.refusal ?? body.reason ?? 'unavailable'}`);
+    });
+  };
+  observe(page);
+  observe(third);
+  try {
+    pair = await pairedEditors(page, browser, true);
+    pair.second.setDefaultTimeout(30000);
+    observe(pair.second);
+    await add(page, 'Original writing before the third connection');
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Original writing before the third connection',
+      { timeout: 30000 },
+    );
+    await page.route('**/account/delivery/submit', (route) => route.abort());
+    await add(page, 'Snapshot-only writing for generation-one third device');
+    const panel = (p: typeof page) =>
+      p.getByRole('region', { name: 'History maintenance', exact: true });
+    for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Data');
+      await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
+      await panel(p)
+        .getByRole('button', {
+          name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
+        })
+        .click();
+      await expect(panel(p)).toContainText(
+        p === page
+          ? 'Snapshot saved. Verify it from another approved device.'
+          : 'Verified snapshot 1 is saved.',
+        { timeout: 30000 },
+      );
+    }
+    await openMenuSection(pair.second, 'Account');
+    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+    await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
+    await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    await unlock(pair.second, pair.next.code);
+    const link = await pair.second.getByLabel('Device invitation link').inputValue();
+    const next = await pending(third, link, pair.next.auth);
+    const code = await compared(pair.second, third);
+    await third.reload();
+    await unlock(third, next.code);
+    await expect(third.getByLabel('Comparison code')).toHaveText(code, { timeout: 30000 });
+    await pair.second.getByLabel('Code on the new device').fill(code);
+    await pair.second.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+    await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toBeVisible({
+      timeout: 60000,
+    });
+    await third.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(third.locator('.shell')).toContainText(
+      'Snapshot-only writing for generation-one third device',
+      { timeout: 30000 },
+    );
+    await page.unroute('**/account/delivery/submit');
+    await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await pair.second.goto('/');
+    await openSaved(pair.second, pair.next.code, true);
+    await add(third, 'Third device writing reaches both existing devices');
+    for (const p of [page, pair.second])
+      await expect(p.locator('.shell')).toContainText(
+        'Third device writing reaches both existing devices',
+        { timeout: 30000 },
+      );
+    await add(pair.second, 'Joined device writing after approving the third');
+    for (const p of [page, third])
+      await expect(p.locator('.shell')).toContainText(
+        'Joined device writing after approving the third',
+        { timeout: 30000 },
+      );
+
+    const B = pair.second,
+      A = page,
+      Cd = third;
+    async function check(p: Page) {
+      await openMenuSection(p, 'Data');
+      if (!(await panel(p).isVisible().catch(() => false)))
+        await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled(
+        { timeout: 60000 },
+      );
+    }
+    async function snapshot(n: number, verify = true) {
+      await check(A);
+      const resume = panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true });
+      if (await resume.isVisible().catch(() => false)) {
+        await resume.click();
+        await expect(panel(A)).toContainText(`Verified snapshot ${n - 1} is saved.`, {
+          timeout: 60000,
+        });
+      }
+      await panel(A).getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(
+        'Snapshot saved. Verify it from another approved device.',
+        { timeout: 60000 },
+      );
+      if (verify) await admit(n);
+    }
+    async function admit(n: number) {
+      await check(B);
+      await panel(B).getByRole('button', { name: 'Verify history snapshot', exact: true }).click();
+      await expect(panel(B)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
+      await check(A);
+      await panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
+    }
+    const ids = new Map<string, string>();
+    for (const [name, p] of [
+      ['A', A],
+      ['B', B],
+      ['C', Cd],
+    ] as const)
+      p.on('request', (r) => {
+        if (!r.url().includes('/account/delivery/read-v2')) return;
+        for (const id of reads(r.postDataBuffer()?.toString('latin1') ?? '')) ids.set(name, id.reader);
+      });
+    await expect.poll(() => ids.size, { timeout: 90000 }).toBe(3);
+    note('ids ' + JSON.stringify(Object.fromEntries(ids)));
+    // Every B read the third device makes: before reduction (its frontier) and after (any check).
+    const bReads: { at: number; after: number; limit: number; phase: string }[] = [];
+    let phase = 'before';
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/delivery/read-v2')) return;
+      for (const x of reads(r.postDataBuffer()?.toString('latin1') ?? ''))
+        if (x.publisher === ids.get('B'))
+          bReads.push({ at: Date.now() - t0, after: x.after, limit: x.limit, phase });
+    });
+    let blockA = true;
+    await Cd.route('**/account/delivery/read-v2-batch', (route) =>
+      blockA ? route.fulfill({ status: 404, body: '{}' }) : route.continue(),
+    );
+    await Cd.route('**/account/delivery/read-v2', (route) => {
+      const read = reads(route.request().postDataBuffer()?.toString('latin1') ?? '');
+      if (blockA && read.some((r) => r.publisher === ids.get('A'))) return route.abort();
+      return route.continue();
+    });
+    await workers(Cd, () => {
+      (globalThis as any).__holdHistory = true;
+    });
+    note('third holds catalog checks and drops A reads');
+    await add(A, 'A writing the third device misses 1');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 1', {
+      timeout: 30000,
+    });
+    await snapshot(2);
+    note('snapshot 2 admitted');
+    await add(A, 'A writing the third device misses 2');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 2', {
+      timeout: 30000,
+    });
+    await snapshot(3, false);
+    note('snapshot 3 pending');
+    await B.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await add(B, 'B writing after snapshot 3 was prepared');
+    await add(B, 'B second writing after snapshot 3 was prepared');
+    await Cd.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await expect(Cd.locator('.shell')).toContainText(
+      'B second writing after snapshot 3 was prepared',
+      { timeout: 30000 },
+    );
+    await expect(Cd.locator('.shell')).not.toContainText('A writing the third device misses 1');
+    const frontierB = Math.max(...bReads.map((r) => r.after));
+    note('third received B past snapshot 3 cut, still behind on A; its B read cursor ' + frontierB);
+    await admit(3);
+    note('snapshot 3 admitted');
+    await check(A);
+    await panel(A).getByRole('button', { name: 'Prune covered history', exact: true }).click();
+    await expect(panel(A)).toContainText('Covered service history removed.', { timeout: 60000 });
+    note('pruned');
+
+    // ---------------- helpers for this probe ----------------
+    const counter = () =>
+      Cd.evaluate(async () => {
+        for (const { name } of await indexedDB.databases()) {
+          if (!name) continue;
+          const db = await new Promise<IDBDatabase>((yes, no) => {
+            const r = indexedDB.open(name);
+            r.onsuccess = () => yes(r.result);
+            r.onerror = () => no(r.error);
+          });
+          try {
+            if (!db.objectStoreNames.contains('meta')) continue;
+            const c = await new Promise<any>((yes, no) => {
+              const tx = db.transaction('meta');
+              const g = tx.objectStore('meta').get('counter');
+              tx.oncomplete = () => yes(g.result);
+              tx.onabort = () => no(tx.error);
+            });
+            if (c && typeof c.v === 'number') return { revision: c.baseline?.revision ?? 0, next: c.next_seq };
+          } finally {
+            db.close();
+          }
+        }
+        return { revision: -1, next: -1 };
+      });
+    const revision = async () => (await counter()).revision;
+    const builds: Record<string, string> = {
+      patched: resolvePath('dist'),
+      tip: resolvePath(process.env.TIP_DIST!),
+      released: resolvePath(process.env.REL_DIST!),
+    };
+    const scripts = async (build: string) =>
+      [
+        ...(await import('node:fs'))
+          .readFileSync(build + '/index.html', 'utf8')
+          .matchAll(/src="\/(assets\/[^"]+\.js)"/g),
+      ]
+        .map((m) => m[1]!)
+        .sort();
+    async function leave(lock = true) {
+      if (lock && (await Cd.locator('.shell').isVisible().catch(() => false))) {
+        await openMenuSection(Cd, 'Account');
+        await Cd.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+        await Cd.waitForTimeout(500);
+      }
+      await Cd.goto('/manifest.webmanifest');
+      await Cd.waitForTimeout(1000);
+    }
+    async function serve(name: string) {
+      await stopProcess(service.app);
+      service.app = await startApplication(builds[name]);
+    }
+    const sentence = () => Cd.locator('.sync-notice').allTextContents().then((t) => t.join(' | '));
+    async function open(name: string) {
+      await Cd.goto('/');
+      const loaded = (
+        await Cd.evaluate(() =>
+          Array.from(document.scripts, (x) => new URL(x.src || location.href).pathname.slice(1)),
+        )
+      )
+        .filter((n) => n.startsWith('assets/'))
+        .sort();
+      expect(loaded).toEqual(await scripts(builds[name]));
+      const codeEntry = Cd.getByLabel('Unlock code', { exact: true });
+      const saved = Cd.getByRole('button', { name: /Resume device connection/ });
+      await expect
+        .poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible()), { timeout: 30000 })
+        .toBe(true);
+      if (!(await codeEntry.isVisible())) await saved.click();
+      await codeEntry.fill(next.code);
+      await Cd.getByRole('button', {
+        name: /^(Unlock enrollment|Unlock and get invitation|Confirm code and unlock with passkey)$/,
+      }).click();
+      const ok = await expect(Cd.locator('.shell'))
+        .toBeVisible({ timeout: 30000 })
+        .then(() => true, () => false);
+      // Copy-only seam: a fresh worker starts with reduction withheld; this probe allows it.
+      if (ok && name === 'patched')
+        await workers(Cd, () => {
+          (globalThis as any).__allowReduction = true;
+        });
+      const alert = ok ? '' : (await Cd.getByRole('alert').allTextContents()).join(' | ');
+      note(`${name}: ${ok ? 'workspace open' : 'NOT open: ' + JSON.stringify(alert)}; revision ${await revision()}`);
+      return ok;
+    }
+    async function olderOpens(name: 'tip' | 'released') {
+      await leave();
+      await serve(name);
+      const ok = await open(name);
+      if (ok) {
+        await add(Cd, `Writing on ${name} after the fold`);
+        const sent = await expect(A.locator('.shell'))
+          .toContainText(`Writing on ${name} after the fold`, { timeout: 60000 })
+          .then(() => true, () => false);
+        await add(B, `B writing while the third runs ${name}`);
+        const got = await expect(Cd.locator('.shell'))
+          .toContainText(`B writing while the third runs ${name}`, { timeout: 60000 })
+          .then(() => true, () => false);
+        note(`${name}: sends ${sent}, receives ${got}`);
+      }
+      await leave();
+      await serve('patched');
+      expect(await open('patched')).toBe(true);
+      return ok;
+    }
+    const panelText = () =>
+      Cd.getByRole('region', { name: 'History on this device' }).allTextContents().then((t) => t.join(' '));
+    async function waitFold(since: number, from: number, timeout = 180000) {
+      const deadline = Date.now() + timeout;
+      while (Date.now() < deadline) {
+        if ((await revision().catch(() => from)) > from) return (Date.now() - since) / 1000;
+        await Cd.waitForTimeout(250);
+      }
+      return undefined;
+    }
+    // ---------------- reduce the third device past the snapshot cut ----------------
+    const reducedFrom = await revision();
+    await workers(Cd, () => {
+      (globalThis as any).__minRecords = 1;
+      (globalThis as any).__allowReduction = true;
+    });
+    await thirdContext.setOffline(true);
+    let reducedTo = reducedFrom;
+    for (let i = 0; i < 36 && reducedTo <= reducedFrom; i++) {
+      await Cd.waitForTimeout(5000);
+      reducedTo = await revision();
+    }
+    expect(reducedTo).toBeGreaterThan(reducedFrom);
+    // From here only a due fold can reduce: the growth threshold is back to 1,024 records and the
+    // 30-minute cooldown has just started.
+    // (Worker globals take literal functions: a test variable does not exist in the worker.)
+    await workers(Cd, () => {
+      (globalThis as any).__minRecords = undefined;
+      (globalThis as any).__holdHistory = false;
+    });
+    if (MODE === 'step')
+      await workers(Cd, () => {
+        (globalThis as any).__holdHistory = true;
+      });
+    if (MODE === 'capacity')
+      await workers(Cd, () => {
+        (globalThis as any).__forceCapacity = true;
+      });
+    const seams = await Promise.all(
+      Cd.workers().map((w) =>
+        w.evaluate(() => [(globalThis as any).__minRecords, (globalThis as any).__holdHistory, (globalThis as any).__allowReduction, (globalThis as any).__forceCapacity]).catch(() => null),
+      ),
+    );
+    note('worker seams [minRecords, holdHistory, allowReduction, forceCapacity]: ' + JSON.stringify(seams));
+    note(`third reduced: revision ${reducedFrom} -> ${reducedTo}`);
+    if (MODE === 'submission') {
+      await Cd.route('**/account/delivery/submit', (route) => route.abort());
+      await add(Cd, 'Unsent writing on the third device');
+      note('third holds an unsent submission');
+    }
+    blockA = false;
+    phase = 'after';
+    // The panel is opened before any measurement so no click counts as activity later.
+    await openMenuSection(Cd, 'Data');
+    if (MODE === 'hidden') {
+      await Cd.evaluate(() => {
+        Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'hidden' });
+        Object.defineProperty(document, 'hidden', { configurable: true, get: () => true });
+        document.dispatchEvent(new Event('visibilitychange'));
+      });
+      note('third page reports hidden');
+    }
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/history/v1/checkpoint')) return;
+      try {
+        const b = JSON.parse(r.postData() ?? '{}');
+        note(`third history ${b.action}:${typeof b.payload === 'string' ? b.payload : 'object'}`);
+      } catch {}
+    });
+    Cd.on('console', (m) => {
+      if (m.type() === 'error') note('third console error: ' + m.text().slice(0, 300));
+    });
+    Cd.on('worker', (w) =>
+      w.on('console', (m) => {
+        if (m.type() === 'error') note('third worker error: ' + m.text().slice(0, 300));
+      }),
+    );
+    const online = Date.now();
+    await thirdContext.setOffline(false);
+    note('third back online');
+    if (MODE === 'step') {
+      // A saved account step: the third device starts connecting another device.
+      await openMenuSection(Cd, 'Account');
+      await Cd.getByRole('button', { name: 'Devices', exact: true }).click();
+      await Cd.getByRole('button', { name: 'Connect another device', exact: true }).click();
+      await unlock(Cd, next.code);
+      await expect(Cd.getByLabel('Device invitation link')).toBeVisible({ timeout: 30000 });
+      note('third saved an unfinished device approval');
+      await Cd.getByRole('link', { name: 'Close and return to accounts' }).click();
+      await Cd.goto('/');
+      await openSaved(Cd, next.code, true);
+      await workers(Cd, () => {
+        (globalThis as any).__allowReduction = true;
+        (globalThis as any).__holdHistory = false;
+      });
+      await openMenuSection(Cd, 'Data');
+    }
+    const sawA = () =>
+      Cd.locator('.shell')
+        .textContent()
+        .then((t) => t!.includes('A writing the third device misses 1'));
+    const deferredCase = MODE === 'step' || MODE === 'hidden' || MODE === 'submission';
+    const committed = await expect
+      .poll(sawA, { timeout: deferredCase ? 45000 : 90000, intervals: [200] })
+      .toBe(true)
+      .then(() => true, () => false);
+    const tCommit = Date.now();
+    note(`install committed? ${committed} (${((tCommit - online) / 1000).toFixed(1)} s after online); revision ${await revision()}`);
+    note(`B reads after returning: ${JSON.stringify(bReads.filter((r) => r.phase === 'after').slice(0, 8))}`);
+    if (!committed) {
+      note(`notice ${JSON.stringify(await sentence())}`);
+      await openMenuSection(Cd, 'Account');
+      note(`sync details ${JSON.stringify(await Cd.locator('.sync-details').allTextContents())}`);
+      await openMenuSection(Cd, 'Data');
+    }
+    if (MODE === 'compat') {
+      const window = await waitFold(tCommit, reducedTo);
+      note(`fold window: ${window} s (commit to baseline revision ${await revision()}); panel: ${JSON.stringify(await panelText())}`);
+      expect(window).toBeDefined();
+      // Exactly one fold: nothing reduces again (cooldown and growth threshold apply again).
+      const r = await revision();
+      await Cd.waitForTimeout(70000);
+      note(`70 s later revision ${await revision()} (was ${r})`);
+      expect(await revision()).toBe(r);
+      for (const older of ['tip', 'released'] as const) expect(await olderOpens(older)).toBe(true);
+    }
+    if (MODE === 'window') {
+      // An older build opening inside the window, before the fold has run.
+      const at = (Date.now() - tCommit) / 1000;
+      await leave();
+      note(`left ${at.toFixed(1)} s after commit; revision ${await revision()} (fold pending: ${(await revision()) === reducedTo})`);
+      await serve('tip');
+      const ok = await open('tip');
+      note(`tip inside the window opens? ${ok}`);
+      await leave(false);
+      await serve('patched');
+      const reopened = Date.now();
+      expect(await open('patched')).toBe(true);
+      const w = await waitFold(reopened, reducedTo);
+      note(`after reopening the new build the fold ran in ${w} s`);
+      expect(w).toBeDefined();
+      for (const older of ['tip', 'released'] as const) expect(await olderOpens(older)).toBe(true);
+    }
+    if (MODE === 'midfold') {
+      // Close the page while the fold is running.
+      const running = /Finishing saved writing|Reading|Verifying|Building|Checking|Saving/;
+      const seen = await expect
+        .poll(panelText, { timeout: 60000, intervals: [20] })
+        .toMatch(running)
+        .then(() => true, () => false);
+      const text = await panelText();
+      await Cd.goto('/manifest.webmanifest');
+      const after = await revision();
+      note(`closed while the fold showed ${JSON.stringify(text)} (seen ${seen}); revision after closing ${after}`);
+      await serve('tip');
+      const ok = await open('tip');
+      note(`tip after a closed fold opens? ${ok}`);
+      await leave(false);
+      await serve('patched');
+      const reopened = Date.now();
+      expect(await open('patched')).toBe(true);
+      const w = await waitFold(reopened, reducedTo);
+      note(`reopened on the new build: fold done ${w} s after opening; revision ${await revision()}`);
+      expect(await revision()).toBeGreaterThan(reducedTo);
+      for (const older of ['tip', 'released'] as const) expect(await olderOpens(older)).toBe(true);
+    }
+    if (MODE === 'submission') {
+      // Held while this device has unsent writing: checked, not committed, older builds still open.
+      await Cd.waitForTimeout(35000);
+      note(`with an unsent submission: committed? ${await sawA()}; revision ${await revision()}; notice ${JSON.stringify(await sentence())}`);
+      expect(await sawA()).toBe(false);
+      expect(await olderOpens('tip')).toBe(true);
+      await openMenuSection(Cd, 'Data');
+      await Cd.unroute('**/account/delivery/submit');
+      const released = Date.now();
+      await expect(A.locator('.shell')).toContainText('Unsent writing on the third device', { timeout: 60000 });
+      note(`submission accepted ${((Date.now() - released) / 1000).toFixed(1)} s after the network allowed it`);
+      await expect.poll(sawA, { timeout: 90000, intervals: [200] }).toBe(true);
+      const tc = Date.now();
+      note(`installed ${((tc - released) / 1000).toFixed(1)} s after the submission could be sent`);
+      const w = await waitFold(tc, reducedTo, 240000);
+      note(`fold ${w} s after that installation`);
+      expect(w).toBeDefined();
+      expect(await olderOpens('tip')).toBe(true);
+    }
+    if (MODE === 'step' || MODE === 'hidden') {
+      // Held: the snapshot is checked but not committed; the store stays openable by older builds.
+      await Cd.waitForTimeout(35000);
+      note(`${MODE}: committed? ${await sawA()}; revision ${await revision()}; notice ${JSON.stringify(await sentence())}`);
+      expect(await sawA()).toBe(false);
+      if (MODE === 'hidden') {
+        await Cd.evaluate(() => {
+          Object.defineProperty(document, 'visibilityState', { configurable: true, get: () => 'visible' });
+          Object.defineProperty(document, 'hidden', { configurable: true, get: () => false });
+          document.dispatchEvent(new Event('visibilitychange'));
+        });
+      } else {
+        // Older builds open the held store.
+        expect(await olderOpens('tip')).toBe(true);
+        await workers(Cd, () => {
+          (globalThis as any).__allowReduction = true;
+        });
+        // Finish the step: cancel the saved approval.
+        await openMenuSection(Cd, 'Account');
+        await Cd.getByRole('button', { name: 'Devices', exact: true }).click();
+        await Cd.getByRole('button', { name: 'Connect another device', exact: true }).click();
+        const unlockField = Cd.getByLabel('Unlock code', { exact: true });
+        if (await unlockField.isVisible({ timeout: 5000 }).catch(() => false)) await unlock(Cd, next.code);
+        await Cd.getByRole('button', { name: 'Cancel connection', exact: true }).click({ timeout: 30000 });
+        note('third cancelled its saved approval');
+        await Cd.getByRole('link', { name: 'Close and return to accounts' }).click().catch(() => {});
+        await Cd.goto('/');
+        await openSaved(Cd, next.code, true);
+        await workers(Cd, () => {
+          (globalThis as any).__allowReduction = true;
+        });
+      }
+      const cleared = Date.now();
+      await expect.poll(sawA, { timeout: 90000, intervals: [200] }).toBe(true);
+      const tc = Date.now();
+      note(`${MODE}: installed ${((tc - cleared) / 1000).toFixed(1)} s after the block cleared`);
+      const w = await waitFold(tc, reducedTo);
+      note(`${MODE}: fold ${w} s after that installation`);
+      expect(w).toBeDefined();
+      expect(await olderOpens('tip')).toBe(true);
+    }
+    if (MODE === 'capacity') {
+      await Cd.waitForTimeout(40000);
+      note(`capacity: revision ${await revision()}; panel ${JSON.stringify(await panelText())}; notice ${JSON.stringify(await sentence())}`);
+      await leave();
+      await serve('tip');
+      note(`tip while the fold is parked for capacity opens? ${await open('tip')}`);
+      await leave(false);
+      await serve('patched');
+      expect(await open('patched')).toBe(true);
+      await workers(Cd, () => {
+        (globalThis as any).__allowReduction = true;
+      });
+      await Cd.waitForTimeout(20000);
+      note(`capacity after reopening: revision ${await revision()}`);
+      // The ceiling lifts (seam off): the parked fold runs after new history and the retry clock.
+      await workers(Cd, () => {
+        (globalThis as any).__forceCapacity = false;
+      });
+      await add(B, 'B writing after the ceiling lifted');
+      const lifted = Date.now();
+      const w = await waitFold(lifted, reducedTo, 240000);
+      note(`capacity: fold ${w} s after new history once the ceiling lifted`);
+    }
+    // Convergence: every device's text and exact Yjs state.
+    await add(A, 'Final writing from A');
+    for (const p of [B, Cd])
+      await expect(p.locator('.shell')).toContainText('Final writing from A', { timeout: 60000 });
+    await Cd.waitForTimeout(5000);
+    const docs = [];
+    for (const p of [A, B, Cd]) docs.push(await documentOf(p));
+    note(
+      'convergence: text ' +
+        (docs[0]!.text === docs[1]!.text && docs[1]!.text === docs[2]!.text) +
+        ', state ' +
+        (JSON.stringify(docs[0]!.state) === JSON.stringify(docs[1]!.state) &&
+          JSON.stringify(docs[1]!.state) === JSON.stringify(docs[2]!.state)),
+    );
+    expect(docs[2]!.text).toBe(docs[0]!.text);
+    expect(docs[2]!.state).toEqual(docs[0]!.state);
+  } finally {
+    writeFileSync(
+      info.outputPath('timeline.txt'),
+      log.join('\n') + '\n' + 'errors: ' + JSON.stringify(errors) + '\n',
+    );
+    try {
+      await thirdContext.close().catch(() => {});
+      await pair?.other.close().catch(() => {});
+    } finally {
+      await stopService(service);
+    }
+  }
+});

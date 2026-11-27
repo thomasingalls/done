@@ -1,0 +1,38 @@
+
+Running 1 test using 1 worker
+
+30.2s three devices ready
+30.2s production /config {"v":2,"pin":{"v":1,"serviceId":"6854e2759b6eb8e2e64d8eb8882100c4","origin":"https://localhost:53441","rpId":"localhost","authRoot":"c38e4b2474319713b9337663fbdedac19f94058867aa04bdf3d6aa08e59ec5d6"},"networkSessions":true,"membershipContinuation":true}
+32.4s C offline (it takes no part from here)
+32.5s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+43.3s C large card 0: 35 ms
+43.3s C large card 1: 36 ms
+43.4s C large card 2: 38 ms
+43.4s C holds its unsent writing
+79.0s snapshot 2 admitted
+93.2s A received C accepted writing after cutting
+123.2s snapshot 3 admitted
+125.3s prune 1 (floor: snapshot 2)
+212.7s A wrote 200 large cards of 5000 bytes (16715 ms saving)
+264.3s snapshot 4 admitted
+314.6s snapshot 5 admitted
+322.9s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+478.6s history written
+478.7s C online
+480.5s C fetched snapshot 5 and is reading its suffix slowly; pruning again now
+531.0s snapshot 6 admitted
+588.2s snapshot 7 admitted
+598.2s prune 3 landed (floor: snapshot 6); C still behind: false
+603.2s install-first first phase done=true
+618.6s C after second phase 15s both=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 1:11:10 AMReason: send:network-unavailableRetry sending"]
+633.8s C after second phase 30s both=false: notice=[]
+639.0s both directions arrived=true C catalog reads=11 C read requests=20 C read epochs=[5]
+639.2s C sync: ["Sending: idleLast accepted upload: 1:21:14 AMAccepted position: 9Receiving: workingLast successful receive check: 1:20:58 AMReceived positions: 576"]
+651.2s converged=true markers=936 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037971,1037971,1037971
+651.2s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (install-first, large) (10.9m)
+
+  Slow test file: test/packaged-account/lostphone.public.spec.ts (10.9m)
+  Consider running tests from slow files in parallel. See: https://playwright.dev/docs/test-parallel
+  1 passed (10.9m)
+exit 0

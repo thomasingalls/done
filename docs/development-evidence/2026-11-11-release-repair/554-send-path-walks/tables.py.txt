@@ -1,0 +1,36 @@
+"""Phase 554: before/after tables from summarise.py output (one table per device)."""
+import json, subprocess, sys
+scr = sys.argv[1]
+def load(label):
+    out = subprocess.run(['python3', f'{scr}/evidence/summarise.py', f'{scr}/sc/results/{label}'],
+                         capture_output=True, text=True, check=True).stdout
+    return {(g['device'], g['size'], g['peer']): g for g in json.loads(out)['groups']}
+before, after = load('step0'), load('f1')
+MOVED = ['indexUsage', 'receiptTurnWalk', 'extendLedger', 'loadElapsed', 'proposalCheck', 'installOwned',
+         'verifyCompare', 'verifyPrefix', 'selectProjection', 'warmShapeCheck', 'expectedChain', 'envelopeSelection']
+for device in ('unreduced', 'reduced'):
+    print(f'\n#### {device.capitalize()} device\n')
+    print('| Seed | Peer | Median local ms, before → after | p95 local ms, before → after | Whole-graph walks per send, before → after (objects per walk) | Runs × sends |')
+    print('|---:|---|---|---|---|---|')
+    for size in (300, 1000, 3000):
+        for peer in ('idle', 'typing'):
+            b, a = before.get((device, size, peer)), after.get((device, size, peer))
+            if not b or not a: continue
+            print(f"| {size:,} | {peer} | {b['localMedianMs']:,} → {a['localMedianMs']:,} | {b['localP95Ms']:,} → {a['localP95Ms']:,} | "
+                  f"{b['walksPerSend']} → {a['walksPerSend']} ({b['objectsPerWalk']:,}) | {b['runs']}×{b['sends']//b['runs']} and {a['runs']}×{a['sends']//a['runs']} |")
+    print(f'\nStep-0 timers per sent position, peer idle, ms (before → after):\n')
+    print('| Timer | ' + ' | '.join(f'{s:,}' for s in (300, 1000, 3000)) + ' |')
+    print('|---|' + '---|' * 3)
+    for t in MOVED:
+        cells = []
+        for size in (300, 1000, 3000):
+            b, a = before.get((device, size, 'idle')), after.get((device, size, 'idle'))
+            cells.append(f"{b['timersPerSendMs'][t]} → {a['timersPerSendMs'][t]}" if b and a else '')
+        print(f'| {t} | ' + ' | '.join(cells) + ' |')
+    print('\nWalks per send by site, peer idle (before → after): ' + '; '.join(
+        f"{size:,}: index usage {before[(device,size,'idle')]['workPerSend']['indexUsageWalks']} → {after[(device,size,'idle')]['workPerSend']['indexUsageWalks']}, "
+        f"receipt turn {before[(device,size,'idle')]['workPerSend']['receiptTurnWalks']} → {after[(device,size,'idle')]['workPerSend']['receiptTurnWalks']}, "
+        f"adoption erase {before[(device,size,'idle')]['workPerSend']['adoptionEraseWalks']} → {after[(device,size,'idle')]['workPerSend']['adoptionEraseWalks']}"
+        for size in (300, 1000, 3000) if (device,size,'idle') in before and (device,size,'idle') in after))
+    print('Reduction inside a measured window: before ' + str(any(g['reductionDuringRun'] for k,g in before.items() if k[0]==device)) +
+          ', after ' + str(any(g['reductionDuringRun'] for k,g in after.items() if k[0]==device)))

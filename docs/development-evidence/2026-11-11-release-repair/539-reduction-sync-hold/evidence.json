@@ -1,0 +1,114 @@
+{
+  "phase": 539,
+  "date": "2026-11-11",
+  "base": "33613a04ceb905ea9e61410ea101409f5b02774d",
+  "operatorDirected": "integrate the reduction draft into this branch, repair as needed, commit and push (2026-11-11)",
+  "draftOrigin": {
+    "branch": "claude/reduction-full-check-hold",
+    "base": "e9ec1e697fcc5cb0ab63448c7d1eec2d2b0fe065",
+    "committedThere": false,
+    "patchSha256": "5855422a7dfb280d9457a9d29cd643a4d13a827ad811e1290a7ffd0009ccedb1",
+    "patchFiles": 7,
+    "appliedCleanly": true
+  },
+  "repairAfterIntegration": {
+    "defect": "a hold that had parked the sender had no time limit until an attempt started",
+    "casesFailingOnDraft": 2,
+    "file": "test/retentionReductionHold.test.ts"
+  },
+  "sourceSha256": {
+    "src/crdt/accountReceive.ts": "b442620eafa2ed9f22f57778c60bd3c1526898f3682eadc35e9085db04297004",
+    "src/crdt/accountSyncDriver.ts": "02a366e37a0219fcd08f9cd341c091714233c8bd4bbc49c5c1a973e5c7e7648a",
+    "src/crdt/automaticLocalRetention.ts": "025ed7c70b5445097e90cc107cb49f2e23c69814756eca1a0f9636392bba941f",
+    "src/crdt/ledgerHints.ts": "6486d648f0a34ebc8d4735f89e88d5158bc4f51c3d264d6b6744ee05a8c88f54",
+    "test/ledgerHints.test.ts": "a6f49817108a7f18da86995a58bc63d070dce8e5f222b7049d05a0c0b09b6ee6",
+    "test/reductionSyncHold.test.ts": "7c7005d6fa01022b8f31a6256288b7a73abbefee6f6ff71edf7f3228eca5e694",
+    "test/retentionReductionHold.test.ts": "a9d026117a91707ec6549771720f43675744e62096853e07237c4d31004f07d1"
+  },
+  "schedulingBounds": {
+    "LOCAL_RETENTION_HOLD_MS": 300000,
+    "LOCAL_RETENTION_HOLD_YIELD_MS": 60000,
+    "measured": false
+  },
+  "newUnitCases": {
+    "test/ledgerHints.test.ts": 2,
+    "test/reductionSyncHold.test.ts": 6,
+    "test/retentionReductionHold.test.ts": 11
+  },
+  "inventory": {
+    "recorded": true,
+    "obligationsBefore": 1105,
+    "obligations": 1108,
+    "unresolved": 552,
+    "registeredReviewedVitestFiles": 3,
+    "caseDenominatorBefore": 2629,
+    "caseDenominator": 2648
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sourcesBefore": 515,
+    "sources": 516,
+    "newSource": "src/crdt/ledgerHints.ts",
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/account-ledger-reference-mismatch",
+        "path": "src/crdt/accountReceive.ts",
+        "from": 929,
+        "to": 941
+      }
+    ],
+    "constructionRegistryLineFollowed": true,
+    "registryFailures": 0,
+    "openConstructions": 16
+  },
+  "notRun": [
+    "browser suites",
+    "oxfmt",
+    "oxlint",
+    "any timing",
+    "any real device or account"
+  ],
+  "runtimeSchemaChanged": false,
+  "formatOrWireChanged": false,
+  "deployed": false,
+  "typecheckPassed": true,
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "finalTree": {
+      "files": 338,
+      "passed": 3265,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 271.34,
+      "hostLoadAverageAtStart": 10.88
+    },
+    "retainedFailedAttempt": {
+      "files": 338,
+      "passed": 3263,
+      "skipped": 1,
+      "failed": 2,
+      "seconds": 288.22,
+      "hostLoadAverage": 10.89,
+      "failures": [
+        "test/workspaceAdmission.test.ts: generated master and card selection snapshots follow an independent undo and recovery ledger (timed out at 5187 ms against 5000 ms)",
+        "test/workspaceAdmission.test.ts: private prepared histories remain unpublished under pressure and are disposed on discard and drained close (discard must dispose its private history)"
+      ],
+      "fileImportsAnyChangedModule": false,
+      "fileAloneAfterwards": "3 of 3 passes, 238 cases"
+    }
+  }
+}

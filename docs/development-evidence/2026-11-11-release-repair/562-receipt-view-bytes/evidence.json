@@ -1,0 +1,363 @@
+{
+  "phase": 562,
+  "date": "2026-11-13",
+  "base": {
+    "description": "phases 557 to 561, uncommitted",
+    "tree": "11e047c1c71117ed3655c7b90f5b969f48494966",
+    "onCommit": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935"
+  },
+  "requested": "coordinating session, 2026-11-13: repair CI-UNIT-BUDGET test-only on the 2026-10-16 decision 'Keep unit deadlines and exact bytes while bounding hosted contention' (implemented in faf465f72): replace the comparison at the sites that are the measured cost of the timed-out case with Node's strict deep equality, no weaker for these values, keeping the identity assertions, workload, sizes, fixtures and view count; no deadline, retry or configuration change; changed-byte and wrong-type controls; measure, not change, the next cases nearest the limit and record them in CI-UNIT-BUDGET",
+  "productCodeChanged": false,
+  "precedent": {
+    "decision": "docs/decisions.md, 2026-10-16, 'Keep unit deadlines and exact bytes while bounding hosted contention'",
+    "commit": "faf465f72",
+    "form": "import assert from 'node:assert/strict'; assert.deepStrictEqual(actual, expected) at the comparison sites, as in test/localBaselineAnchor.test.ts and test/pendingProjection.test.ts"
+  },
+  "case": "test/inboundReceiptViews.test.ts › all72 admitted extents expose exact positions, predecessor links and original bytes for two publishers (base line 41, final line 42)",
+  "diagnosis": {
+    "perLine": {
+      "record": "lines.jsonl",
+      "probe": "lines.test.ts.txt",
+      "runs": 5,
+      "page toEqual, base line 75": "2703 to 2861 ms, 93.0 to 93.3% of the loop",
+      "request toEqual, base line 74": "127 to 132 ms, 4.2 to 4.4%",
+      "both": "97.4 to 97.5%",
+      "rest": "71 to 74 ms",
+      "deepStrictEqualSameValuesSameRuns": "4.0 to 4.6 ms for both"
+    },
+    "profile": {
+      "record": "profile.md",
+      "runs": 1,
+      "underToEqualEquals": "97.1% of the samples under the case function",
+      "underChaiAssertionWrapper": "97.6%"
+    },
+    "sizes": {
+      "request": 536,
+      "page": 11483,
+      "views": 240,
+      "extents": 72,
+      "actualShape": "subviews at byte offsets 239 (request) and 775 (page) of a 12,258-byte copy owned by the decoder",
+      "expectedShape": "standalone Uint8Arrays at offset 0"
+    },
+    "whyToEqualIsSlow": "Vitest 4.1.10 iterableEquality compares a byte array element by element through the general recursive equals, then compares Object.entries(actual) with Object.entries(expected) through equals again (11,483 two-element arrays a side for the page)"
+  },
+  "change": {
+    "file": "test/inboundReceiptViews.test.ts",
+    "lines": [
+      "import assert from 'node:assert/strict';",
+      "assert.deepStrictEqual(view.event.request, record.request);",
+      "assert.deepStrictEqual(view.event.page, record.page);"
+    ],
+    "replaced": [
+      "expect(view.event.request).toEqual(record.request);",
+      "expect(view.event.page).toEqual(record.page);"
+    ],
+    "unchanged": "the two toBe identity assertions after them, every other assertion, the fixtures, both publishers, the 72 extents, the 240 views, the other seven cases of the file"
+  },
+  "matcherComparison": {
+    "record": "matrix.md",
+    "probe": "matrix.test.ts.txt",
+    "versions": "@vitest/expect 4.1.10; Node 26.13.1 node:assert/strict (kStrict; no skipPrototype option)",
+    "customEqualityTesters": "none registered in this repository",
+    "dimensions": {
+      "elementValues": [
+        "toEqual: every element through equals (Object.is), by iteration and again through Object.entries",
+        "deepStrictEqual: the two views' bytes compared as bytes"
+      ],
+      "length": [
+        "toEqual: both iterators end together; entry counts match",
+        "deepStrictEqual: byteLength matches"
+      ],
+      "type": [
+        "toEqual: constructor identity; a plain array or non-iterable side fails the Object.prototype.toString tag",
+        "deepStrictEqual: constructor identity (Uint8Array is a well-known constructor) and the intrinsic typed-array kind (TypedArray.prototype[Symbol.toStringTag] getter)"
+      ],
+      "prototypeObject": [
+        "toEqual: not compared beyond constructor",
+        "deepStrictEqual: not compared beyond constructor for a well-known constructor (Node 26)"
+      ],
+      "byteOffset": [
+        "not compared",
+        "not compared"
+      ],
+      "underlyingBuffer": [
+        "not compared",
+        "not compared"
+      ],
+      "extraOwnProperties": [
+        "toEqual: own enumerable string keys through Object.entries, including undefined-valued",
+        "deepStrictEqual: own enumerable non-index keys, strings and symbols, count and values"
+      ],
+      "nonEnumerableOwnProperties": [
+        "not compared",
+        "not compared"
+      ]
+    },
+    "matrixRows": 24,
+    "argumentOrders": 2,
+    "deepStrictEqualRefusesEverythingToEqualRefuses": true,
+    "deepStrictEqualAlsoRefuses": [
+      "an extra own enumerable symbol property",
+      "a Uint16Array of the same values whose own non-enumerable constructor is Uint8Array"
+    ],
+    "bothAccept": [
+      "the same bytes at another offset of another buffer (the case's own shape)",
+      "the same constructor with a different prototype object",
+      "an extra own non-enumerable property"
+    ]
+  },
+  "checksNarrowed": [],
+  "checksRunLessOftenOrDifferently": [
+    "the two byte comparisons are Node's assertion instead of Vitest's matcher: a failure reports Node's AssertionError and diff, and Vitest's assertion count no longer includes them (the case uses neither expect.assertions nor expect.hasAssertions); the same two values are compared at every one of the 240 views"
+  ],
+  "assertionsDeadlinesRetriesChanged": "two assertions change matcher; no deadline, retry or configuration changes",
+  "casesAddedRemovedOrSkipped": [],
+  "sourceSha256": {
+    "test/inboundReceiptViews.test.ts": "5791ac617149acff612c9ce85ca16304e88a496ace5104f72e49b3b0b05b7966"
+  },
+  "baseSourceSha256": {
+    "test/inboundReceiptViews.test.ts": "de152b8eecc17a6e5c1813694ffdbf5a185c777061e82f246c98d19ff5272a5b"
+  },
+  "probeSha256": {
+    "make_controls.py.txt": "88508af4802e2e6fe0545404084a77eddb12f55fb177435e2e68660d1e4c342f",
+    "matrix.test.ts.txt": "f7c79c699570491d5d4af4bf6f5b5a709d15ad3a68b1e9a91205ed5335990f5b",
+    "lines.test.ts.txt": "eadbe1838bad1669c3445ba6e9cee26a991b4c83c29c49ac7137fc1c42ecda1b",
+    "timeit.sh.txt": "854de14f917c83a8679097aa3b80e1b2fb16f2145e6e22adb33c51024633767a",
+    "profsplit.py.txt": "b4ab3e4e72e144dea3cd423014d87b5b9bb6594d1ae90f50a8755d90cafb4f61",
+    "matcher-timing.setup.ts.txt": "0d13aa3a67a1d66c0cbadfdea830074673270a8864beca6d20f93ad325158194",
+    "vitest.survey.config.mjs.txt": "c9a16a227d669809e09169d42e9a4d31742721567495af32f4ae3e867446a557",
+    "survey_table.py.txt": "91cd1515a9cc698572db45099c987481611e5458d797a5a2e20404a2033977b0",
+    "runs_table.py.txt": "555290f9d48b18841b0e2c0fff60dc374746845dae3b16fb8342ec5a172da7b7"
+  },
+  "timing": {
+    "record": "runs.txt",
+    "method": "node_modules/.bin/vitest run test/inboundReceiptViews.test.ts --maxWorkers=1 --reporter=json, repository config, whole file, six runs per text, ps snapshot before each (overlap.log)",
+    "baseMs": [
+      2906.8,
+      3009.7,
+      2935.8,
+      2868.8,
+      2925.0,
+      3025.7
+    ],
+    "finalMs": [
+      52.4,
+      52.3,
+      51.8,
+      52.4,
+      50.9,
+      51.9
+    ],
+    "baseMedianMs": 2930.4,
+    "finalMedianMs": 52.1,
+    "speedUpByMedians": 56.3,
+    "slowestFinalAgainstFastestBase": 54.7,
+    "otherSevenCasesMs": {
+      "base": [
+        98.4,
+        109.8
+      ],
+      "final": [
+        102.3,
+        108.0
+      ]
+    },
+    "allCasesPassedEveryRun": true,
+    "environment": "Node 26.13.1, Vitest 4.1.10, macOS on this Mac (10 cores)"
+  },
+  "controls": {
+    "record": "controls.txt",
+    "script": "make_controls.py.txt",
+    "texts": [
+      "final",
+      "base"
+    ],
+    "perText": 25,
+    "asExpected": 50,
+    "items": {
+      "unchanged": "passes on both texts",
+      "byte-actual-v001/v120/v240, request and page": "the decoded view's byte flipped before the comparison (view 1 byte 0, view 120 middle byte, view 240 last byte): 6 of 6 fail at that field's comparison on each text",
+      "byte-expected-v001/v120/v240, request and page": "the same flip in a copy of the expected bytes: 6 of 6 fail at that field's comparison on each text",
+      "type-array/buffer/clamped/shorter/longer/extra-property, request and page": "the actual replaced at every view by a plain Array, a Node Buffer, a Uint8ClampedArray, a Uint8Array one byte shorter (same prefix), one byte longer (actual as prefix), or the same bytes with an extra own enumerable property: 12 of 12 fail at that field's comparison on each text"
+    },
+    "failurePlacement": "failing statement mapped from the copy's stack line; time to failure places each flip at its view (final 21 to 39, 40 to 57, 57 to 74 ms; base 21 to 38, 1451 to 1462, 2859 to 2926 ms)",
+    "environment": "scratch copies with absolute imports, scratch Vitest config (repository root and setup file, node environment, one worker), filtered to all72, 300 s bound; repository not modified"
+  },
+  "survey": {
+    "record": "survey.md",
+    "method": "each file whole, five runs with --maxWorkers=1 and the repository config for times; three more with an added setup file timing toEqual, toStrictEqual and toMatchObject per case, classified outside the timed region; shares are of the instrumented case, means of three runs",
+    "changed": false,
+    "ciWorst": "from 561-stale-browser-tests/ci-history.md section 3 (runs 43214467976, 42566759458, 42425248962; other commits; Node 24.22.1)",
+    "cases": {
+      "inboundStaleTurnControl.test.ts:4": {
+        "hereMs": [
+          1799,
+          2029
+        ],
+        "ciWorstMs": 4263,
+        "binaryToEqualShare": 0,
+        "note": "6 other toEqual calls, 0.3 ms; its helper builds a module with Vite twice (read, not profiled)"
+      },
+      "inboundPageCodec.test.ts:26": {
+        "hereMs": [
+          1806,
+          1829
+        ],
+        "ciWorstMs": 3818,
+        "binaryToEqualShare": 0.49,
+        "objectHoldingBytesShare": 0.48,
+        "note": "expect(encodeInboundPageRecord(record)).toEqual(bytes): byte arrays up to 12,258 B, 72 calls; expect(decodeInboundPageRecord(bytes)).toEqual(record): the record holding the 11,483 B page, 72 calls"
+      },
+      "inboundMixedReplay.test.ts seed406": {
+        "hereMs": [
+          1233,
+          1252
+        ],
+        "ciWorstMs": 3138,
+        "smallBinaryToEqualShare": 0.22,
+        "note": "kept.envelope and kept.proof, at most 389 B, 874 calls"
+      },
+      "inboundMixedReplay.test.ts seed407": {
+        "hereMs": [
+          1378,
+          1399
+        ],
+        "ciWorstMs": 3653,
+        "smallBinaryToEqualShare": 0.22,
+        "note": "964 calls"
+      },
+      "inboundMixedReplay.test.ts seed408": {
+        "hereMs": [
+          1157,
+          1238
+        ],
+        "ciWorstMs": 2900,
+        "smallBinaryToEqualShare": 0.23,
+        "note": "866 calls"
+      },
+      "workspaceAdmission.test.ts:1256": {
+        "hereMs": [
+          895,
+          1051
+        ],
+        "slowestParametrization": "account-snapshots, 1026 to 1051",
+        "parametrizations": 5,
+        "ciWorstMs": 3385,
+        "binaryToEqualShare": 0,
+        "note": "5,796 non-binary toEqual calls, 3%"
+      },
+      "inboundMixedReaders.test.ts:124": {
+        "hereMs": [
+          1402,
+          1430
+        ],
+        "ciWorstMs": 3149,
+        "binaryToEqualShare": 0.68,
+        "note": "expect(saved).toEqual(c.raw): byte arrays up to 24,591 B, 62 calls"
+      },
+      "preparationReceiptJournal.test.ts all72": {
+        "hereMs": [
+          1269,
+          1362
+        ],
+        "ciWorstMs": 2736,
+        "binaryToEqualShare": 0.66,
+        "note": "expect(result.record).toEqual(compact.record): 12,258 B receipts, 72 calls"
+      }
+    },
+    "sameReplacementWouldMove": [
+      "inboundMixedReaders.test.ts:124 (68%)",
+      "preparationReceiptJournal.test.ts all72 (66%)",
+      "inboundPageCodec.test.ts:26, its byte line (49%); its record line (48%) compares an object, where strict equality is stricter than toEqual (undefined-valued keys, constructors), not the precedent's shape",
+      "inboundMixedReplay.test.ts seeds 406 to 408, about a fifth each, on small arrays"
+    ],
+    "wouldNotMove": [
+      "inboundStaleTurnControl.test.ts:4",
+      "workspaceAdmission.test.ts:1256"
+    ],
+    "ciToHereRatios": "CI worst over median here: 2.3 to 3.3 for the stale-turn, replay and admission cases; 2.1 to 2.2 for the three byte-comparison cases; 2.0 for all72 (mixes runner speed, Node 24 against 26, and code changes since CI's commits)"
+  },
+  "ci": {
+    "hostedRun": false,
+    "established": "the local result only: all72 2930 ms to 52 ms by medians on this Mac, Node 26.13.1",
+    "inferred": "at all72's recorded slow-runner ratio to this Mac (5545 to 5840 ms against a 2930 ms median, 1.9 to 2.0) about 0.1 s on a slow runner, assuming Node's byte comparison scales as Vitest's matcher did (not measured)",
+    "ciNode": "24.22.1; matrix, controls and the code reading are Node 26.13.1 only; Node 24's comparison code was not read",
+    "stillBlocking": [
+      "CI-JOB-LIMIT (decision): the 20-minute job limit cuts the packaged browser step",
+      "SETUP-CLOSING-STUCK: removal-regressions.spec.ts fails on a product defect"
+    ]
+  },
+  "overlap": "overlap.log: another project's (certo) Lean, Rust and Python builds at about 100% of one to three of ten cores throughout, load 4.4 to 7.6; no other Vitest, node --test or Playwright process during any timed run whose numbers are used; one sizing pass of the six survey files (survey-probe, unused) overlapped that project's Playwright run; the per-line probe, the profile and the instrumented survey runs were each preceded by one ps check, which found none",
+  "corrections": [
+    "the two compared arrays are 536 and 11,483 bytes, not both about 12 KB; the page comparison is 93% of the case",
+    "the strict form measures 50.9 to 52.4 ms here, not 56 to 60 ms",
+    "two of the six named next-nearest cases have no binary comparison, and the replay seeds compare only small arrays",
+    "workspaceAdmission.test.ts:1256 has five parametrizations (here and at 3b8394590), not six as ci-history.md says"
+  ],
+  "inventory": {
+    "caseDenominator": [
+      3092,
+      3092
+    ],
+    "obligations": [
+      1136,
+      1136
+    ],
+    "unresolved": [
+      561,
+      561
+    ],
+    "declarations": {
+      "test/inboundReceiptViews.test.ts": [
+        8,
+        8
+      ]
+    },
+    "recorded": "check.mjs --record once after review: only the hash of test/inboundReceiptViews.test.ts changed (de152b8e… to 5791ac61…); plan.mjs --record: only inventoryDigest changed (76d0a07b… to 6d8ab215…)",
+    "manifest": "the file stays blocked pending review of its runtime denominator"
+  },
+  "runtimeCensus": {
+    "recorded": false,
+    "reason": "no file under src, account-protocol or account-service changed"
+  },
+  "decision": "docs/decisions.md, 2026-11-13, phase 562; precedent the 2026-10-16 decision; amends nothing",
+  "backlogChanged": [
+    "CI-UNIT-BUDGET: now says what phase 562 did and what remains, holds the survey's measurements, and is marked decision for widening the replacement",
+    "Continuous integration introduction: names phase 562"
+  ],
+  "checks": {
+    "changedFile": "test/inboundReceiptViews.test.ts: 8 of 8 cases pass in each of six runs (runs.txt)",
+    "formatAndLint": "oxfmt --check and oxlint --react-plugin pass on test/inboundReceiptViews.test.ts; Markdown is never formatted (.prettierignore) and the JSON record follows the earlier phase records, which oxfmt also reports",
+    "typecheck": "tsc -b --noEmit passed (TypeScript 7.0.2, incremental), and tsc -p tsconfig.app.json --noEmit --composite false --incremental false passed",
+    "inventory": "check.mjs and plan.mjs pass after recording",
+    "validationInventory": "pnpm validation:inventory: 10 passed",
+    "releaseAdapters": "CI's nine adapter files: 178 passed, including the 3092-case denominator",
+    "ciContractChecks": "vectors:check, retention:check, status:check, limit:check, authority:check, recipient:check, admission:check, remediation:check, debts:check, wasm:verify: all exit 0",
+    "accountCryptoPrep": "pnpm account:crypto-prep: matched the pinned runtime census (526 sources), 6 passed; not recorded",
+    "traceCheck": "run last: 1 failure, check-origin-isolation's receipt, written inside pnpm build (09:12Z) against an earlier tree; the receipt needs minting on the final tree"
+  },
+  "notRun": [
+    "full unit suite",
+    "pnpm build"
+  ],
+  "notVerified": [
+    "any hosted CI run and the new form's time on a hosted runner",
+    "the matrix and the controls under Node 24.22.1",
+    "whether replacing the survey cases' comparisons would keep them passing, and by how much it would move them",
+    "where the stale-turn and admission cases spend their time"
+  ],
+  "deployed": false,
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-13",
+    "independentControl": "last byte of the last view's expected page changed in place: the case fails with Node's AssertionError at that comparison, the other 7 cases pass; file restored byte for byte",
+    "caseAsRepairedMs": 53,
+    "fullUnit": {
+      "files": 359,
+      "passed": 3746,
+      "skipped": 1,
+      "failed": 0
+    },
+    "notRepeated": "the matrix, the 48 recorded controls, the profile and the survey's measurements",
+    "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, and the CI session, authority and quarantine steps"
+  }
+}

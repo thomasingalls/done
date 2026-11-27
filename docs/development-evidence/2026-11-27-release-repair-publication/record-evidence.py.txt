@@ -1,0 +1,53 @@
+import pathlib,json,hashlib,gzip,subprocess,tarfile,shutil
+repo=pathlib.Path('/Users/thomasingalls/.codex/worktrees/c030/done');scratch=pathlib.Path('/private/tmp/done-release-913b58642');out=repo/'docs/development-evidence/2026-11-27-release-repair-publication';out.mkdir(parents=True,exist_ok=True)
+def digest(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+manifest=[]
+def keep(src,name=None,zip=False):
+ dst=out/(name or src.name)
+ if zip:dst=dst.with_name(dst.name+'.gz');dst.write_bytes(gzip.compress(src.read_bytes(),mtime=0))
+ else:shutil.copyfile(src,dst)
+ manifest.append({'path':dst.name,'bytes':dst.stat().st_size,'sha256':digest(dst),'inputBytes':src.stat().st_size,'inputSha256':digest(src)})
+for name in ['candidate-build.log','candidate-build-date-corrected.log','reader-build.log','container-smoke.log','reader-container-smoke.log','ci.log','baseline-existing-browser.log','removal-regressions.log','exact-frontend-browser.log','exact-frontend-browser-direct.log','exact-rollback.log','service-history.log','origin-check.log','trace-check.log','carrier-native-initial.log','carrier-native-compat.log','card-geometry.log']:
+ keep(scratch/name,zip=True)
+for name in ['ci.json','pr-final.json','public-preflight.json','candidate-build.json','reader-build.json','carrier-native.json','card-results.json']:
+ keep(scratch/name)
+for name in ['source.json','430-writer-0-assets.json','430-writer-1-assets.json']:
+ keep(scratch/name,zip=True)
+for name in ['prepare-native-fixture.mjs','carrier-worker.ts','carrier-old-worker.ts','carrier-native.mjs','card-config.mts']:
+ keep(scratch/name,name+'.txt')
+keep(scratch/'source/test-results/packaged-account/results.json','browser-results.json',True)
+keep(scratch/'source/test-results/inbound-rollback/results.json','rollback-results.json',True)
+for i,p in enumerate(sorted((scratch/'source/test-results/packaged-account/artifacts').rglob('error-context.md'))):
+ keep(p,f'removal-error-{i+1}.md',True)
+smokes=[]
+for p in (repo/'test-results/public-runtime').glob('*/container-smoke.json'):
+ d=json.loads(p.read_text())
+ if d.get('image') in ['done-public:913b58642','done-reader-rollback:913b58642']:
+  name='candidate-smoke.json' if d['image'].startswith('done-public') else 'reader-smoke.json';keep(p,name);smokes.append({'image':d['image'],'file':name,'checks':len(d.get('checks',[]))})
+keep(pathlib.Path(__file__),'record-evidence.py.txt')
+images=[]
+for role,filename in [('candidate','candidate.tar'),('compatibleReader','reader.tar')]:
+ p=repo/'test-results/release-repair-publication/913b58642'/filename
+ with tarfile.open(p) as tar:
+  def blob(d):
+   data=tar.extractfile('blobs/sha256/'+d.split(':')[1]).read();assert hashlib.sha256(data).hexdigest()==d.split(':')[1];return json.loads(data)
+  root=json.load(tar.extractfile('index.json'))['manifests'][0]['digest'];idx=blob(root)
+  runtime=next(m for m in idx['manifests'] if m.get('platform',{}).get('architecture')=='arm64')
+  runtimeManifest=blob(runtime['digest']);cfg=blob(runtimeManifest['config']['digest']);count=0
+  for member in tar:
+   if member.name.startswith('blobs/sha256/') and member.isfile():
+    data=tar.extractfile(member).read();assert hashlib.sha256(data).hexdigest()==member.name.rsplit('/',1)[1];count+=1
+  images.append({'role':role,'source':cfg['config']['Labels']['org.opencontainers.image.revision'],'indexDigest':root,'runtimeManifestDigest':runtime['digest'],'configDigest':runtimeManifest['config']['digest'],'architecture':cfg['architecture'],'user':cfg['config']['User'],'archive':str(p.relative_to(repo)),'archiveBytes':p.stat().st_size,'archiveSha256':digest(p),'verifiedArchiveBlobs':count})
+source=json.loads((scratch/'source.json').read_text());tree={}
+for line in subprocess.check_output(['git','ls-tree','-r',source['source']],cwd=repo,text=True).splitlines():
+ meta,path=line.split('\t',1);mode,kind,oid=meta.split();tree[path]=(mode,oid)
+for f in source['files']:
+ assert digest(scratch/'source'/f['path'])==f['sha256']
+ assert digest(repo/f['path'])==f['sha256']
+ assert hashlib.sha256(subprocess.check_output(['git','cat-file','blob',tree[f['path']][1]],cwd=repo)).hexdigest()==f['sha256']
+ assert bool((scratch/'source'/f['path']).stat().st_mode&0o111)==(tree[f['path']][0]=='100755')
+commits=subprocess.check_output(['git','log','--format=%H %G? %s','e9ec1e697..913b58642'],cwd=repo,text=True).splitlines();assert len(commits)==31 and all(c.split()[1]=='G' for c in commits)
+(out/'commits.txt').write_text('\n'.join(commits)+'\n'); manifest.append({'path':'commits.txt','bytes':(out/'commits.txt').stat().st_size,'sha256':digest(out/'commits.txt')})
+record={'date':'2026-11-27','source':source['source'],'base':source['base'],'branch':'codex/release-repair-publication','pullRequest':65,'signedCommits':31,'buildDate':'2026-11-27','inputs':{'count':len(source['files']),'bytes':sum(f['bytes'] for f in source['files']),'sourceManifest':'source.json.gz','gitAndWorkingSourceBytesAndExecutableModesVerified':True},'images':images,'flags':{'BASELINE_READ':'1','BASELINE_INSTALL':'1','RETENTION':'1','RETENTION_AUTO':'1','RETENTION_RESUME':'1','HISTORY_AUTO':'0','LEDGER':'incremental','BATCH':'coordinated-2000','RANGE_RECEIVE':{'candidate':'1','compatibleReader':'0'},'LEDGER_PROFILE':'unset'},'checks':{'hosted':{'unitFiles':359,'unitPasses':3746,'unitSkipped':1,'overall':'cancelled during browser step at job limit'},'buildStageCasesPerImage':38,'containerSmoke':smokes,'nativeCarrierBrowsers':['chromium','webkit'],'nativeCarrierScope':'unchanged storage/protocol modules in disposable dedicated Workers; fixture custody context; native IndexedDB; not packaged UI','cardGeometry':{'passed':8,'failed':0,'profiles':['desktop','Pixel 7 emulation']},'exactFrontendTextUndoOffline':'passed','exactFrontendKnownRemovalRegressions':'2 failed, closing-screen defect; not waived','exactImageDenseReaderRollback':'passed','serviceHistory':{'passed':51,'failed':0,'runtime':'Node 24.22.1'},'traceability':'passed after origin receipt refreshed on extracted frontend'},'runtime':{'node':'v24.22.1','age':'v1.3.2','uid':65532,'shell':False,'npm':False,'testFiles':False},'compatibility':{'largeCarrier':'done/local-baseline-carrier/draft-4','writeLimitBytes':8388608,'readLimitBytes':33554432,'oldReaderRefusesWithoutMutation':True,'requiresPhase550ForUnfoldedVerifiedInstallation':True,'sameSourceReaderIsNotFullRollbackOfRepairs':True,'productionAffectedAccountNotObserved':True},'published':False,'deployed':False,'releaseQualification':'paused','artifacts':manifest}
+(out/'evidence.json').write_text(json.dumps(record,indent=2)+'\n')
+print(json.dumps({'files':len(manifest),'images':images,'sourceFiles':len(source['files'])},indent=2))

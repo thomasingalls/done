@@ -1,0 +1,98 @@
+// @vitest-environment node
+// Phase 542 measurement: time and peak RSS for one baseline size per process (Node only).
+// MODE=micro: codec operations on a synthetic journal-era record. MODE=owner: a real Account
+// owner saves the text, reduces once (verify, build, encode, seal, write, readback, replay),
+// then a cold owner reopens and reads it back. CHARS sets the document size.
+import { it, vi } from 'vitest';
+import { appendFileSync, readFileSync } from 'node:fs';
+import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
+const W = process.cwd();
+const MODE = process.env.PROBE_MODE!, CHARS = Number(process.env.CHARS);
+const rss = () => Math.round(process.memoryUsage().rss / 1048576);
+const maxRss = () => Math.round(process.resourceUsage().maxRSS / 1024);
+const ms = (t: number) => Math.round(performance.now() - t);
+it('measure', async () => {
+  const out: Record<string, unknown> = { mode: MODE, chars: CHARS, startRssMiB: rss() };
+  if (MODE === 'micro') {
+    const rec = await import(W + '/src/crdt/localBaselineRecord');
+    const { hex } = await import(W + '/src/crdt/custodyCrypto');
+    const v = JSON.parse(readFileSync(W + '/test/local-baseline/released-baseline-vector.json', 'utf8'));
+    const b = rec.decodeLocalBaseline(new Uint8Array(Buffer.from(v.v5.payload, 'hex')));
+    const snapshot = new Uint8Array(CHARS);
+    for (let i = 0; i < snapshot.length; i++) snapshot[i] = (i * 131) & 255;
+    let t = performance.now();
+    const h = hex(snapshot);
+    out.hexMs = ms(t);
+    out.hexChars = h.length;
+    t = performance.now();
+    const payload = rec.encodeLocalBaseline({ ...b, snapshot });
+    out.encodeWithSelfDecodeMs = ms(t);
+    out.encodedBytes = payload.length;
+    t = performance.now();
+    rec.decodeLocalBaseline(payload);
+    out.decodeMs = ms(t);
+    t = performance.now();
+    rec.baselineAuthenticationPayload(payload);
+    out.authenticationPayloadMs = ms(t);
+  } else {
+    vi.stubGlobal('indexedDB', new IDBFactory());
+    vi.stubGlobal('IDBKeyRange', IDBKeyRange);
+    for (const n of ['VITE_ACCOUNT_RETENTION', 'VITE_ACCOUNT_BASELINE_READ', 'VITE_ACCOUNT_BASELINE_INSTALL'])
+      vi.stubEnv(n, '1');
+    const { createContentOwner } = await import(W + '/src/crdt/contentStore');
+    const { extendSpoolWitness } = await import(W + '/src/crdt/spoolRecord');
+    const { cryptFor, keys } = await import(W + '/test/local-baseline/anchor-fixture');
+    const { Y } = await import(W + '/src/crdt/yjs');
+    // @ts-expect-error JavaScript fixture.
+    const { memberFixture } = await import(W + '/test/local-baseline/fixtures.mjs');
+    const task = { signal: new AbortController().signal, step: (f: any) => f(), wait: async (f: any) => f() };
+    const f = await memberFixture();
+    const context = f.ctx;
+    const crypt = { ...cryptFor(context.identity, await keys()), reuseOpened: true, exactBaselineReuse: true,
+      readBaseline: true, baseline: async () => ({ ...context, identity: { ...context.identity }, route: { ...context.route } }) };
+    const owners: any[] = [];
+    const make = () => { const o = createContentOwner(context.identity, 1, crypt as any); owners.push(o); return o; };
+    const seed = make();
+    await seed.initialize(task as any, { intent: '04'.repeat(16), checkCreation() {} });
+    await seed.enableSpool(task as any);
+    await f.appendOwn();
+    await f.appendPeer();
+    for (const row of f.rows) {
+      const event = row.kind === 'heads' || (row.kind === 'outbound' && !new TextDecoder().decode(row.bytes).startsWith('["done/source-capture/v1"'));
+      if (event) {
+        const before = await seed.spoolWitness(task as any), after = await extendSpoolWitness(before, row.bytes, crypto.subtle);
+        await seed.appendSpool(task as any, row, { before, after });
+      } else await seed.append(task as any, [row]);
+    }
+    let t = performance.now();
+    const doc = new Y.Doc({ gc: false });
+    const step = 3 * 1024 * 1024;
+    for (let done = 0; done < CHARS; done += step) {
+      let u: Uint8Array | undefined;
+      const capture = (x: Uint8Array) => { u = new Uint8Array(x); };
+      doc.on('update', capture);
+      doc.getText('big').insert(done, 'y'.repeat(Math.min(step, CHARS - done)));
+      doc.off('update', capture);
+      await seed.append(task as any, [{ kind: 'update', bytes: u! }]);
+    }
+    doc.destroy();
+    out.saveMs = ms(t);
+    out.afterSaveRssMiB = rss();
+    t = performance.now();
+    out.result = await seed.removeHistory(task as any, async () => {}, () => {}, 0);
+    out.reduceMs = ms(t);
+    out.afterReduceRssMiB = rss();
+    seed.dispose();
+    t = performance.now();
+    const cold = make();
+    await cold.initialize(task as any);
+    const read = await cold.loadAccount(task as any);
+    out.coldReopenMs = ms(t);
+    out.readKind = read.kind;
+    cold.dispose();
+    f.clear();
+  }
+  out.endRssMiB = rss();
+  out.peakRssMiB = maxRss();
+  appendFileSync(process.env.PROBE_OUT!, JSON.stringify(out) + '\n');
+}, 1800000);

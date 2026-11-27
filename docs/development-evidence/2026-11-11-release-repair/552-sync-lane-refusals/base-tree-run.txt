@@ -1,0 +1,53 @@
+Phase 552 base-tree run: the seven edited sources at 51779e97d, the new modules, tests and fixtures
+kept (see base-run.sh.txt). Condensed: case lines, assertion values, summaries.
+
+=== node --test test/account-history/delivery-refusals.test.mjs
+✖ failing tests:
+✖ the service’s own refusals of a submission are named: out of order, future epoch, too large, invalid, unissued parent, parent required (116.128334ms)
+    actual: undefined,
+    expected: 'out-of-order',
+✖ a read the service cannot decode is named as a request from another version; one past the ledger as out of order (51.488667ms)
+    actual: undefined,
+    expected: 'invalid-request',
+✖ a ledger the service cannot trust and a store it cannot read are named, for submissions and reads (135.754375ms)
+    actual: undefined,
+    expected: 'ledger-integrity',
+✖ a submission from a device being removed is named, and so is the grant from before the fence (345.531041ms)
+    actual: undefined,
+    expected: 'authority-changed',
+✖ sign-in and grant refusals are named; a passkey request is left to the sign-in line (41.076625ms)
+    actual: [],
+    expected: [ 'access-refused' ],
+✖ controls: no reply, a timeout and a gateway page say check your connection (43.725ms)
+  AssertionError [ERR_ASSERTION]: no reply
+    actual: undefined,
+    expected: 'unreachable',
+✖ controls: a forged or unknown hint chooses only a sentence; nothing is recorded or returned (43.081167ms)
+  AssertionError [ERR_ASSERTION]: forged removal
+    actual: undefined,
+    expected: 'removal-pending',
+ℹ tests 7
+ℹ pass 0
+ℹ fail 7
+
+=== vitest run test/syncRefusal.test.ts test/syncNotice.test.tsx test/accountSessionBridge.test.ts
+   × says why a lane got no result, beside the unchanged reason, and names it in the reason line (phase 552) 7ms
+   × every explanation leaves next attempts, failure counts, phases, reasons and timers as phase 551 had them 7ms
+   × carries why a lane got no result beside network-unavailable, and drops it anywhere else (phase 552) 4ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/accountSessionBridge.test.ts > carries why a lane got no result beside network-unavailable, and drops it anywhere else (phase 552)
+ FAIL  test/syncNotice.test.tsx > says why a lane got no result, beside the unchanged reason, and names it in the reason line (phase 552)
+AssertionError: unreachable: expected [ …(4) ] to include 'This device could not reach the accou…'
+ FAIL  test/syncRefusal.test.ts > every explanation leaves next attempts, failure counts, phases, reasons and timers as phase 551 had them
+AssertionError: unreachable send 1: expected null to be 'unreachable' // Object.is equality
+ Test Files  3 failed (3)
+      Tests  3 failed | 19 passed (22)
+
+=== node --test test/account-sync/refusal-native.test.mjs
+✖ the composed sender names a refused submission and a lost one, then recovers (phase 552) (64792.3145ms)
+✖ the composed receiver names a refused read and recovers (phase 552) (64176.749708ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+  Error: Receive predicate timed out

@@ -1,0 +1,170 @@
+Phase 549: test/oracleReplayWindow.test.ts on the phase 548 source (d1a4a653e) with the base shim
+(base-shim.py.txt: the new interface with the base behaviour). node node_modules/vitest/vitest.mjs run
+test/oracleReplayWindow.test.ts --reporter=verbose, in a git-archive copy.
+
+fatal: not a git repository (or any of the parent directories): .git
+
+ RUN  v4.1.10 <base copy>
+
+ ✓ test/oracleReplayWindow.test.ts > the reduced device reads its realistic history in full on every oracle 1604ms
+ × test/oracleReplayWindow.test.ts > queued work arriving as the replay returns waits for the oracle to be recorded 1496ms
+   → expected true to be false // Object.is equality
+ × test/oracleReplayWindow.test.ts > queued work arriving at the authority re-check after the replay waits for the oracle to be recorded 1388ms
+   → expected true to be false // Object.is equality
+ × test/oracleReplayWindow.test.ts > queued work arriving during validation waits for the oracle to be recorded 1421ms
+   → expected true to be false // Object.is equality
+ × test/oracleReplayWindow.test.ts > queued work arriving during the continuation index pass waits for the oracle to be recorded 1481ms
+   → expected [ false ] to deeply equal [ true ]
+ × test/oracleReplayWindow.test.ts > continuous receive: every oracle attempt meets queued work as its replay returns 2823ms
+   → expected 5 to be 1 // Object.is equality
+ ✓ test/oracleReplayWindow.test.ts > queued work before the replay starts still interrupts the oracle, and leaves no window behind 2146ms
+ ✓ test/oracleReplayWindow.test.ts > queued work seen inside the replay still interrupts the oracle and discards the replay, as before 1413ms
+ ✓ test/oracleReplayWindow.test.ts > new local input seen inside the replay still interrupts the oracle and discards the replay, as before 1423ms
+ ✓ test/oracleReplayWindow.test.ts > new local input seen as the replay returns still interrupts the oracle and discards the replay, as before 1633ms
+ ✓ test/oracleReplayWindow.test.ts > a return-to-app read in the audit is not the oracle: queued work after its replay still interrupts it 1843ms
+ ✓ test/oracleReplayWindow.test.ts > a return to the app during the oracle gets no window of its own 2227ms
+ ✓ test/oracleReplayWindow.test.ts > a foreground full read never opens the window 1604ms
+ × test/oracleReplayWindow.test.ts > new local input during the window still interrupts the oracle 1605ms
+   → expected true to be false // Object.is equality
+ × test/oracleReplayWindow.test.ts > suspension during the window still interrupts the oracle 1528ms
+   → expected true to be false // Object.is equality
+ × test/oracleReplayWindow.test.ts > the owner closing during the window still interrupts the oracle 1516ms
+   → expected true to be false // Object.is equality
+ × test/oracleReplayWindow.test.ts > authority replaced during the window still refuses the replay 1529ms
+   → expected 'MaintenanceInterrupted: Content maint…' to contain 'Baseline authority changed during rep…'
+ ✓ test/oracleReplayWindow.test.ts > a handoff during the window still fails the authority check 1521ms
+ × test/oracleReplayWindow.test.ts > the audit guard ignores queued work only while a completed oracle replay is recorded 3ms
+   → expected [ 'priority', 'priority', …(3) ] to deeply equal [ 'priority', 'ran', 'other', …(2) ]
+
+⎯⎯⎯⎯⎯⎯ Failed Tests 10 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/oracleReplayWindow.test.ts > queued work arriving as the replay returns waits for the oracle to be recorded
+ FAIL  test/oracleReplayWindow.test.ts > queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+ FAIL  test/oracleReplayWindow.test.ts > queued work arriving during validation waits for the oracle to be recorded
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/oracleReplayWindow.test.ts:286:36
+    284|     // Recorded, from this one replay. Queued work interrupts again at…
+    285|     expect(H.replays - before).toBe(1);
+    286|     expect(x.owner.warmAuditDue()).toBe(false);
+       |                                    ^
+    287|     expect(x.owner.recordingOracle()).toBe(false);
+    288|     expect(outcome).toBeInstanceOf(MaintenanceInterrupted);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/10]⎯
+
+ FAIL  test/oracleReplayWindow.test.ts > queued work arriving during the continuation index pass waits for the oracle to be recorded
+AssertionError: expected [ false ] to deeply equal [ true ]
+
+- Expected
++ Received
+
+  [
+-   true,
++   false,
+  ]
+
+ ❯ test/oracleReplayWindow.test.ts:290:18
+    288|     expect(outcome).toBeInstanceOf(MaintenanceInterrupted);
+    289|     expect(isPriorityOnlyMaintenanceInterruption(outcome)).toBe(true);
+    290|     expect(open).toEqual([arrival.open]);
+       |                  ^
+    291|     // The queued job takes the warm path; nothing moved onto it.
+    292|     expect(await x.foreground()).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/10]⎯
+
+ FAIL  test/oracleReplayWindow.test.ts > continuous receive: every oracle attempt meets queued work as its replay returns
+AssertionError: expected 5 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 5
+
+ ❯ test/oracleReplayWindow.test.ts:311:30
+    309|     await x.foreground();
+    310|   }
+    311|   expect(H.replays - before).toBe(1);
+       |                              ^
+    312|   expect(due).toEqual([false, false, false, false, false]);
+    313| }, 60000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/10]⎯
+
+ FAIL  test/oracleReplayWindow.test.ts > new local input during the window still interrupts the oracle
+ FAIL  test/oracleReplayWindow.test.ts > suspension during the window still interrupts the oracle
+ FAIL  test/oracleReplayWindow.test.ts > the owner closing during the window still interrupts the oracle
+AssertionError: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/oracleReplayWindow.test.ts:450:60
+    448|     x.hooks.validate = () => {};
+    449|     expect(outcome).toBeInstanceOf(MaintenanceInterrupted);
+    450|     expect(isPriorityOnlyMaintenanceInterruption(outcome)).toBe(false);
+       |                                                            ^
+    451|     expect(x.owner.warmAuditDue()).toBe(true);
+    452|     expect(x.owner.recordingOracle()).toBe(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/10]⎯
+
+ FAIL  test/oracleReplayWindow.test.ts > authority replaced during the window still refuses the replay
+AssertionError: expected 'MaintenanceInterrupted: Content maint…' to contain 'Baseline authority changed during rep…'
+
+Expected: "Baseline authority changed during replay"
+Received: "MaintenanceInterrupted: Content maintenance yielded to foreground work."
+
+ ❯ test/oracleReplayWindow.test.ts:464:27
+    462|   const outcome = await x.attempt();
+    463|   H.replayEnd = () => {};
+    464|   expect(String(outcome)).toContain('Baseline authority changed during…
+       |                           ^
+    465|   expect(x.owner.recordingOracle()).toBe(false);
+    466| }, 60000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/10]⎯
+
+ FAIL  test/oracleReplayWindow.test.ts > the audit guard ignores queued work only while a completed oracle replay is recorded
+AssertionError: expected [ 'priority', 'priority', …(3) ] to deeply equal [ 'priority', 'ran', 'other', …(2) ]
+
+- Expected
++ Received
+
+  [
+    "priority",
+-   "ran",
++   "priority",
+    "other",
+    "other",
+    "priority",
+  ]
+
+ ❯ test/oracleReplayWindow.test.ts:515:16
+    513|   state.recording = false;
+    514|   run();
+    515|   expect(seen).toEqual(['priority', 'ran', 'other', 'other', 'priority…
+       |                ^
+    516| });
+    517|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/10]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  10 failed | 9 passed (19)
+   Start at  05:27:35
+   Duration  31.13s (transform 606ms, setup 34ms, import 760ms, tests 30.20s, environment 0ms)
+
+exit 1

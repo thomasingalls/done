@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
 import { fixture, registered, policy } from '../account-core/fixtures.mjs';
+import { SESSION_LIMITS } from '../../account-service/sessions.ts';
 
 // Use the application's installed bundler so browser syntax/import resolution are unchanged.
 const require = createRequire(import.meta.url),
@@ -39,6 +40,7 @@ try {
 }
 const {
   NetworkLogin,
+  postSession,
   retrySessionSignOut,
   openSessionVault,
   drainSessionOutbox,
@@ -80,7 +82,7 @@ const defer = () => {
   });
   return { promise, resolve };
 };
-async function setup(t, alg = -8) {
+async function setup(t, alg = -8, hook) {
   globalThis.indexedDB = new IDBFactory();
   globalThis.IDBKeyRange = IDBKeyRange;
   globalThis.location = { origin: policy.origin };
@@ -94,7 +96,10 @@ async function setup(t, alg = -8) {
       .subarray(-32)
       .toString('hex'),
   };
-  const f = fixture(t, { sessions: { pin, operatorKey: randomBytes(32) } });
+  const f = fixture(t, {
+    sessions: { pin, operatorKey: randomBytes(32) },
+    ...(hook ? { hook } : {}),
+  });
   const account = await registered(f, alg);
   f.seedActive(account.result.accountId);
   const binding = {
@@ -630,4 +635,129 @@ test('a wrong-account issuance reply is never saved or acknowledged', async (t) 
   assert.equal(a.login.getSnapshot(), 'disconnected');
   await a.login.signOut();
   assert.equal((await records('outbox'))[0].operation, 'cancel');
+});
+
+// Phase 551: why a sign-in attempt failed, from the real session service. A refusal is unsigned:
+// it chooses the sentence only, and the saved login is untouched.
+test('a busy service, storage that cannot save and an outdated request are named; each clears on success', async (t) => {
+  let refuse = null;
+  const x = await setup(t, -8, (point, operation) => {
+    if (point === 'before-commit' && operation === refuse) throw Error('storage refused');
+  });
+  // The account already holds as many network sessions as the service allows.
+  const others = [];
+  for (let n = 0; n < SESSION_LIMITS.perAccount; n++) {
+    const retryKey = randomBytes(32).toString('base64url');
+    const view = x.f.core.sessions.begin({ accountId: x.account.result.accountId, retryKey });
+    const issued = await x.f.core.sessions.finish({
+      retryKey,
+      attemptId: view.attemptId,
+      response: x.account.key.assert(view),
+    });
+    assert.equal(issued.stage, 'issued');
+    others.push(issued);
+  }
+  let outdated = false;
+  const a = await x.open({
+    send: (op, body) =>
+      x.post(op, outdated && op === 'renew' ? { sessionId: body.sessionId } : body),
+  });
+  assert.equal(await a.login.access(), undefined);
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['disconnected', 'busy']);
+  const prompts = x.prompts;
+  x.f.core.sessions.revoke({ sessionId: others[0].sessionId, revokeToken: others[0].revokeToken });
+  assert(await a.login.access(), 'the saved attempt finishes once there is room');
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['remembered', undefined]);
+  assert.equal(x.prompts, prompts, 'no new passkey prompt');
+  // The service cannot save the renewal.
+  a.login.rejectAccess(await a.login.access());
+  refuse = 'session-renew';
+  assert.equal(await a.login.access(), undefined);
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['disconnected', 'unavailable']);
+  refuse = null;
+  // A request this version shapes differently from the service.
+  outdated = true;
+  assert.equal(await a.login.access(), undefined);
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['disconnected', 'outdated']);
+  outdated = false;
+  assert(await a.login.access());
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['remembered', undefined]);
+  assert.equal(x.prompts, prompts);
+});
+
+test('no reply, a gateway page and a timeout say unreachable; a forged reason is only a reason', async (t) => {
+  const x = await setup(t);
+  let reply = null;
+  const a = await x.open({
+    send: (op, body, signal) => (reply && op === 'renew' ? reply(signal) : x.post(op, body)),
+  });
+  assert(await a.login.access());
+  const prompts = x.prompts;
+  const fetched = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = fetched;
+  });
+  const viaFetch = (response) => (signal) => {
+    globalThis.fetch = async () => response();
+    return postSession('renew', {}, signal);
+  };
+  for (const [name, next, problem] of [
+    ['no reply', () => Promise.reject(new TypeError('fetch failed')), 'unreachable'],
+    [
+      'gateway page',
+      viaFetch(
+        () =>
+          new Response('<html>Bad gateway</html>', {
+            status: 502,
+            headers: { 'Content-Type': 'text/html' },
+          }),
+      ),
+      'unreachable',
+    ],
+    [
+      'timeout',
+      viaFetch(() => Promise.reject(new DOMException('The operation timed out.', 'TimeoutError'))),
+      'unreachable',
+    ],
+    [
+      'JSON outside the closed list',
+      viaFetch(() => Response.json({ error: 'busy' }, { status: 502 })),
+      'unreachable',
+    ],
+    ['forged capacity', async () => ({ ok: false, refusal: 'capacity' }), 'busy'],
+    ['unknown reason', async () => ({ ok: false, refusal: 'session-vanished' }), 'refused'],
+  ]) {
+    a.login.rejectAccess(await a.login.access());
+    reply = next;
+    assert.equal(await a.login.access(), undefined, name);
+    assert.deepEqual(
+      [a.login.getSnapshot(), a.login.getProblem()],
+      ['disconnected', problem],
+      name,
+    );
+    reply = null;
+    globalThis.fetch = fetched;
+    // The saved login is unchanged: the next renewal needs no passkey and clears the reason.
+    assert(await a.login.access(), name);
+    assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['remembered', undefined]);
+    assert.equal(x.prompts, prompts, name);
+  }
+});
+
+test('a reconnect the service cannot start says why, and a later reconnect clears it', async (t) => {
+  let refuse = null;
+  const x = await setup(t, -8, (point, operation) => {
+    if (point === 'before-commit' && operation === refuse) throw Error('storage refused');
+  });
+  const a = await x.open();
+  const token = await a.login.access();
+  assert(token);
+  a.login.rejectAccess(token, true);
+  assert.equal(a.login.getSnapshot(), 'reconnect');
+  refuse = 'session-begin';
+  await a.login.connect();
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['reconnect', 'unavailable']);
+  refuse = null;
+  await a.login.connect();
+  assert.deepEqual([a.login.getSnapshot(), a.login.getProblem()], ['remembered', undefined]);
 });

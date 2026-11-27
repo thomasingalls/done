@@ -1,0 +1,110 @@
+{
+  "phase": 538,
+  "date": "2026-11-11",
+  "base": "6eb2fead15d7ac04f88ae114cc32700fa0ce938a",
+  "operatorApproved": "drop the retained-byte refusal (2026-11-11)",
+  "amends": "2026-11-04 decision, patch 401: retained buffer accounting and conservative fallback",
+  "sourceSha256": {
+    "src/crdt/incrementalAccountLedger.ts": "eb092588876a278110435e69ebb65c0093f623258dbf2f1071aca2ae536e24e7",
+    "vite/inboundIndexFixture.config.ts": "b14197f38c846facf6a917db660103c47362edaf610bbfdd745f7a5ed0f6df0d",
+    "test/accountLedgerIndexBudget.test.ts": "0b4b6548f0add39d416924ec46ef077bb415ec53aebba88b67b720fa87d529b8",
+    "test/accountLedgerCloneBudget.test.ts": "789978fb33bf99d5c678630b74dc1b0ea3245da6f02bc81a8abf49f5eee5ac80",
+    "test/inboundAppendIndex.test.ts": "1e93bfa48d9fb0a89984d94cc771bbd5d39dd1ecb80e0c22862018952c2fff88",
+    "test/inboundColdIndex.test.ts": "336b6164db0af2bdfe213953fd4e75f5aecba436181feb06dc1b1dd10eac483d"
+  },
+  "regressionCasesFailingOnReleasedRule": [
+    "test/accountLedgerIndexBudget.test.ts: owned bytes past32MiB are reported without refusing the index",
+    "test/accountLedgerIndexBudget.test.ts: the real legacy index stays available when retained ownership passes32MiB but raw record bytes do not",
+    "test/inboundAppendIndex.test.ts: an append stays incremental when retained proof bytes pass the old32MiB ceiling"
+  ],
+  "restatedCases": 4,
+  "addedCases": 2,
+  "typecheckPassed": true,
+  "focusedUnit": {
+    "files": 5,
+    "cases": 31,
+    "passed": 31
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "inventory": {
+    "recorded": true,
+    "obligations": 1105,
+    "unresolved": 552,
+    "newObligations": 0
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sourcesRefreshed": [
+      "src/crdt/days.ts",
+      "src/crdt/moves.ts",
+      "src/crdt/workspaceCommands.ts",
+      "src/ui/Card.tsx",
+      "src/ui/Collection.tsx",
+      "src/ui/DayPanel.tsx",
+      "src/crdt/incrementalAccountLedger.ts"
+    ],
+    "fromPhases535to537": 6,
+    "fromThisPhase": 1,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": 0,
+    "cryptoPrepCasesPassed": 6,
+    "censusCleanAt": [
+      "e04879704",
+      "e9ec1e697"
+    ]
+  },
+  "cryptoAudit": {
+    "passed": false,
+    "stopsAt": "16 open constructions",
+    "sameOnOriginMain": true
+  },
+  "notRun": [
+    "browser suites including test/inbound-index/past-index.spec.ts",
+    "oxfmt",
+    "oxlint",
+    "any timing",
+    "any real device or account"
+  ],
+  "accountRowAndByteCountsObserved": false,
+  "runtimeSchemaChanged": false,
+  "formatOrWireChanged": false,
+  "committed": false,
+  "deployed": false,
+  "fullUnit": {
+    "finalTreeCiCommand": {
+      "command": "pnpm test --maxWorkers=1",
+      "files": 335,
+      "passed": 3246,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 285.86
+    },
+    "retainedFailedAttempt": {
+      "command": "vitest run (two workers)",
+      "files": 335,
+      "passed": 3245,
+      "skipped": 1,
+      "failed": 1,
+      "failure": "test/inboundStaleTurnControl.test.ts timed out at 5009 ms against its 5000 ms limit",
+      "hostLoadAverage": 13.69,
+      "aloneAfterwards": "3 of 3 passes"
+    },
+    "earlierPassBeforeSingleLineEdit": {
+      "files": 335,
+      "passed": 3246,
+      "skipped": 1
+    }
+  }
+}

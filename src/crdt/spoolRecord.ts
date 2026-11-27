@@ -12,6 +12,7 @@ import {
 } from '../../account-protocol/positionDecision';
 import { generationKey, type GenerationKeys } from './generationKeys';
 import { utf8, hex, type Bytes } from './custodyCrypto';
+import { lowerHexBytes } from '../../account-protocol/recovery';
 import type { VerificationMemo } from './verificationMemo';
 import {
   MAX_BATCH_BYTES,
@@ -84,13 +85,9 @@ export const positionSources = (p: Pick<SpoolPosition, 'source' | 'additional'>)
 ];
 const id = (v: unknown): v is string => typeof v === 'string' && /^[0-9a-f]{32}$/.test(v);
 const positive = (v: unknown): v is number => Number.isSafeInteger(v) && Number(v) > 0;
-const hexValue = (v: unknown, max: number): Bytes => {
-  if (typeof v !== 'string' || !v.length || v.length > max * 2 || !/^(?:[0-9a-f]{2})+$/.test(v))
-    return captureError('Invalid spool hex');
-  const bytes = new Uint8Array(v.length / 2);
-  for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(v.slice(i * 2, i * 2 + 2), 16);
-  return bytes;
-};
+const hexValue = (v: unknown, max: number): Bytes =>
+  (typeof v === 'string' && v.length <= max * 2 ? lowerHexBytes(v) : undefined) ??
+  captureError('Invalid spool hex');
 export const networkRoute = (r: CaptureRoute, epoch = r.epoch): EnvelopeRoute => {
   const context = captureRouteAt(r, epoch);
   return {

@@ -1,0 +1,30 @@
+import re, subprocess, json, sys, os
+os.chdir('/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1')
+files = subprocess.run(['rg','-l',r'\b(hex|unhex|lowerHexBytes)\(','-g','*.ts','-g','*.tsx','-g','*.mjs','src','account-protocol','account-service'],capture_output=True,text=True).stdout.split()
+imp = re.compile(r'import\s*(type\s*)?\{([^}]*)\}\s*from\s*[\'"]([^\'"]+)[\'"]', re.S)
+res = {}
+for f in sorted(files):
+    s = open(f).read()
+    src = {}
+    for m in imp.finditer(s):
+        names = [n.strip() for n in m.group(2).split(',')]
+        for n in names:
+            parts = n.split(' as ')
+            orig = parts[0].strip(); local = parts[-1].strip()
+            if local in ('hex','unhex','lowerHexBytes'):
+                src[local] = (orig, m.group(3))
+    for name in ('hex','unhex','lowerHexBytes'):
+        if re.search(r'(const|function)\s+'+name+r'\b', s):
+            src[name] = ('local', f)
+    calls = {}
+    for name in ('hex','unhex','lowerHexBytes'):
+        n = len(re.findall(r'(?<![\w.])'+name+r'\(', s)) - (1 if src.get(name,('',''))[0]=='local' else 0)
+        if n: calls[name]=n
+    res[f] = {'src':src,'calls':calls}
+agg = {}
+for f,v in res.items():
+    for name,n in v['calls'].items():
+        key = (name,)+tuple(v['src'].get(name,('?','?')))
+        agg.setdefault(key,[0,0]); agg[key][0]+=n; agg[key][1]+=1
+for k,v in sorted(agg.items(), key=lambda x:-x[1][0]): print(v[0],'calls in',v[1],'files:',k)
+json.dump({f:{'src':{k:list(v) for k,v in r['src'].items()},'calls':r['calls']} for f,r in res.items()}, open(sys.argv[1],'w'), indent=1)

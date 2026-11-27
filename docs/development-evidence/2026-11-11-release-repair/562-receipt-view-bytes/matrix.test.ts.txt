@@ -1,0 +1,56 @@
+// Probe (scratch only): what Vitest toEqual and node:assert/strict deepStrictEqual each accept
+// for Uint8Array values shaped like the all72 case's (an actual subview at a nonzero offset of a
+// larger owned buffer, an expected standalone Uint8Array), on the case's real page bytes.
+import { expect, it } from 'vitest';
+import assert from 'node:assert/strict';
+import { appendFileSync, writeFileSync } from 'node:fs';
+import { A } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/account-inbound/fixtures';
+import { pageFixture } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/inbound-page/fixtures';
+const out = '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/562/matrix.jsonl';
+function outcome(f: () => void) {
+  try { f(); return 'accepts'; } catch (e) { return 'refuses'; }
+}
+it('matcher matrix', () => {
+  writeFileSync(out, '');
+  const expected = pageFixture(A).record.page; // 11,483 bytes, offset 0, own buffer
+  const n = expected.length;
+  const sub = (bytes: Uint8Array, at = 775, pad = 300) => {
+    const backing = new Uint8Array(at + bytes.length + pad).fill(0xa5);
+    backing.set(bytes, at);
+    return backing.subarray(at, at + bytes.length);
+  };
+  const flip = (i: number) => { const c = sub(expected); c[i]! ^= 1; return c; };
+  const rows: [string, string, () => unknown][] = [
+    ['same bytes, subview at offset 775 of a larger buffer (the case shape)', 'none', () => sub(expected)],
+    ['same bytes, offset 0, own buffer', 'none', () => new Uint8Array(expected)],
+    ['same bytes, offset 0 vs 1 of differently padded buffers', 'byte offset / underlying buffer', () => sub(expected, 1, 9)],
+    ['first byte changed', 'element values', () => flip(0)],
+    ['middle byte changed', 'element values', () => flip(n >> 1)],
+    ['last byte changed', 'element values', () => flip(n - 1)],
+    ['one byte shorter, same prefix', 'length', () => sub(expected).subarray(0, n - 1)],
+    ['one byte longer, same prefix', 'length', () => { const c = new Uint8Array(n + 1); c.set(expected); return c; }],
+    ['plain Array of the same values', 'type', () => Array.from(expected)],
+    ['Node Buffer of the same bytes', 'type', () => Buffer.from(expected)],
+    ['Uint8ClampedArray of the same values', 'type', () => new Uint8ClampedArray(expected)],
+    ['Int16Array of the same values', 'type', () => new Int16Array(expected)],
+    ['subclass of Uint8Array, same bytes', 'type', () => { class Sub extends Uint8Array {} return new Sub(expected); }],
+    ['ArrayBuffer of the same bytes', 'type', () => new Uint8Array(expected).buffer],
+    ['DataView over the same bytes', 'type', () => new DataView(new Uint8Array(expected).buffer)],
+    ['array-like object {0..n-1, length}', 'type', () => Object.assign({ length: n }, Array.from(expected))],
+    ['same constructor, different prototype object', 'prototype', () => Object.setPrototypeOf(sub(expected), Object.create(Uint8Array.prototype))],
+    ['extra own enumerable string property', 'extra own properties', () => Object.assign(sub(expected), { extra: 1 })],
+    ['extra own enumerable string property, value undefined', 'extra own properties', () => Object.assign(sub(expected), { extra: undefined })],
+    ['extra own enumerable symbol property', 'extra own properties', () => Object.assign(sub(expected), { [Symbol('extra')]: 1 })],
+    ['extra own non-enumerable property', 'extra own properties', () => Object.defineProperty(sub(expected), 'extra', { value: 1, enumerable: false })],
+    ['undefined', 'type', () => undefined],
+    ['Uint16Array of the same values, own non-enumerable constructor = Uint8Array', 'type', () => Object.defineProperty(new Uint16Array(expected), 'constructor', { value: Uint8Array, enumerable: false })],
+    ['Uint8Array of the same bytes, own non-enumerable constructor = Buffer', 'type', () => Object.defineProperty(sub(expected), 'constructor', { value: Buffer, enumerable: false })],
+  ];
+  for (const [name, dimension, make] of rows) {
+    const toEqual = outcome(() => expect(make()).toEqual(expected));
+    const toEqualReversed = outcome(() => expect(expected).toEqual(make()));
+    const strict = outcome(() => assert.deepStrictEqual(make(), expected));
+    const strictReversed = outcome(() => assert.deepStrictEqual(expected, make() as Uint8Array));
+    appendFileSync(out, JSON.stringify({ name, dimension, toEqual, toEqualReversed, deepStrictEqual: strict, deepStrictEqualReversed: strictReversed }) + '\n');
+  }
+}, 120_000);

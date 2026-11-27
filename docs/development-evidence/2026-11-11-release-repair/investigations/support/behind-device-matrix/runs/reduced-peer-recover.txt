@@ -1,0 +1,50 @@
+
+Running 1 test using 1 worker
+
+First two editors open
+Joined Devices open
+Joined invitation unlock route
+Joined invitation unlock submitted
+19.6s third refusal /account/membership/v2/ceremony 409 authority-changed
+26.5s third refusal /account/membership/v2/ceremony 409 authority-changed
+28.0s third refusal /account/membership/v2/ceremony 409 authority-changed
+54.2s ids {"A":"7c3fbfee06e50e35523c1a165b35ba89","C":"9f3285cb4bfcfe58203b31ada1123f53","B":"867c22d9217714b9bdb3fed44062a5bf"}
+54.2s third holds catalog checks and drops A reads
+54.6s third refusal /account/delivery/read-v2-batch 404 unavailable
+60.7s snapshot 2 admitted
+63.2s snapshot 3 pending
+70.6s third received B past snapshot 3 cut, still behind on A
+73.3s snapshot 3 admitted
+74.9s pruned
+74.9s third baseline before [{"name":"done.09e525330218a4e58765c04d94c0e4fe","v":2,"revision":0}]
+74.9s third workers ["http://localhost:53431/assets/enrollmentOwner.worker-5CcoOaRz.js"]
+74.9s worker global true
+80.0s third local history: ["History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."] reduced=true
+80.0s third reduced [{"name":"done.09e525330218a4e58765c04d94c0e4fe","v":5,"revision":1}]
+80.0s third back online with catalog checks and A reads allowed
+80.2s third history read:catalog
+80.3s third history read:latest
+98.6s third history read:catalog
+116.1s third history read:catalog
+125.0s after 45 s: shows A writing? true
+125.0s third notice: []
+125.1s third sync details: ["Sending: idleLast accepted upload: 11:44:21 PMAccepted position: 2Receiving: idleLast successful receive check: 11:45:45 PMReceived positions: 14"]
+125.1s B wrote again (tomorrow list)
+125.6s third history read:catalog
+125.9s third receives new B writing? true
+126.8s third writing reaches A? true
+126.8s no retry button visible
+128.0s third history read:catalog
+145.5s third history read:catalog
+158.0s after reopen: shows A writing? true
+158.0s third notice after reopen: []
+159.7s third history read:catalog
+161.3s third history read:catalog
+161.4s third history read:latest
+162.4s snapshot 4 admitted
+162.4s after snapshot 4: third shows A writing? true
+162.4s A reads dropped while blocked: 7
+  ✓  1 test/packaged-account/reduced-peer.spec.ts:48:1 › three devices: ahead on a reduced peer, behind on a pruned one (2.7m)
+
+  1 passed (2.7m)
+exit 0

@@ -1,0 +1,636 @@
+{
+  "phase": 557,
+  "date": "2026-11-13",
+  "base": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935",
+  "requested": "coordinating session, 2026-11-13: profile the uncached pass coverage stage; remove its square only without changing what the check proves or amending a recorded decision",
+  "built": true,
+  "gate": {
+    "squareLocated": "per-row whole-document fork (forkDoc) and comparison (sameDocState) in the plan coverage loop",
+    "verdictKept": "argument in README, items 1 to 8; differential and adversarial tests",
+    "decisionsAmended": [],
+    "formatsWireLimitsChanged": []
+  },
+  "amends": [],
+  "pointers": [
+    "docs/account-local-retention-preparation.md: one sentence after the deletion planner paragraph",
+    "src/crdt/inboundLedger.ts: comment above contentCoverage reworded"
+  ],
+  "checksNarrowed": [],
+  "checksRunLessOftenOrDifferently": [
+    "the whole-document comparison and fork run once per batch, not once per content row",
+    "rows of a batch are applied 64 to a Yjs transaction; transaction cleanup runs once per group",
+    "the per-row fork, apply and comparison runs only for rows of a batch that is not proven, or every row when the view holds pending parts",
+    "coverage progress counts a content row when it is held, before its batch is proven; a refusal is raised when the batch holding the row settles",
+    "the ledger's coverageCheck diagnostic timer counts applied groups and settles instead of checked rows"
+  ],
+  "sourceSha256": {
+    "src/crdt/inboundLedger.ts": "29ece88f08bfaae372f4947697382ce08635ccda2473cf9d27ee6ea04cc961b1",
+    "src/crdt/localRetentionPlan.ts": "890cafb6abf44a01e2eb35a00622b1e31bdfafaedadd20536a937c1148a86997",
+    "test/coverageBatches.test.ts": "efdf1b770956c7c38d605758f62b7caf3cda27cfbad1eaefbb63fa517a4caee3"
+  },
+  "timedSourceNote": "the grouped timed runs used src/crdt/inboundLedger.ts before three comment edits; code lines are identical (checked with comment lines removed)",
+  "probe": {
+    "files": {
+      "scripts/performance/reduction-cost/reduction.probe.ts": "f3a4df2180571c6bb364571b62032f3ac52c62a1a937dc26933a4057febacb9e",
+      "scripts/performance/reduction-cost/vitest.config.ts": "af278401a4e96225e1962114f22fe18c035430064b566fe9dd2d50d871190c32",
+      "scripts/performance/reduction-cost/run.sh": "94dcfb168cb57a81ff28e03b94ef1e104c7b50e7d950e7c4311b21ccfa09dc45",
+      "scripts/performance/reduction-cost/summarise.py": "f0fce7f1c5cd40788027879c9d3827292ba9b9df62dbbb7c6501e0d306b6681c",
+      "scripts/performance/reduction-cost/cpuprofile.py": "0b339ba564f3918828e91d5e78f3a1ce2b514464b3970e99624484514e1fcb6e",
+      "scripts/performance/reduction-cost/coverage-mutation-controls.py": "e3a07862ef7f72f3e929eaeac677275a385e437d0fe0eccff03410751e99dae3"
+    },
+    "added": "fork and comparison counters and timers at the src/crdt/yjs module boundary; per-stage counter copies; the coverage-loop mark; PROFILE=1 CPU profiles of the verifying stage and coverage loop",
+    "environment": "Node v26.13.1, fake in-memory IndexedDB, real WebCrypto, one Mac with load averages of 4 to 10 from other work; ps showed no other vitest, Playwright or node test process before any timed run (overlap.log)",
+    "fixture": "memberFixture: each pair is one own position (update, capsule, spool position, attempt, envelope, delivery submission and response) and one received peer receipt (update and inbound record), 9 rows a pair, one Yjs client per own position",
+    "runs": "uncached arm only; one history size per process; 3 runs per size up to 2,048 pairs, 1 at 4,096; medians"
+  },
+  "uncachedByStage": {
+    "phase556Source": {
+      "512": {
+        "runs": 3,
+        "rows": 4608,
+        "totalMs": 3669,
+        "cpuMs": 3700,
+        "openingMs": 157,
+        "verifyingMs": 1630,
+        "buildingMs": 55,
+        "coverageMs": 1628,
+        "coverageLoopMs": 1596,
+        "finalReplayMs": 30,
+        "commitMs": 135,
+        "coverageRangeMs": [
+          1619,
+          1628,
+          1662
+        ],
+        "loopCountsMedianRun": {
+          "forks": 1024,
+          "forkMs": 538.2,
+          "compares": 1024,
+          "compareMs": 722.1,
+          "coverageChecks": 1024,
+          "coverageCheckMs": 1339.1,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 5178
+      },
+      "1024": {
+        "runs": 3,
+        "rows": 9216,
+        "totalMs": 10333,
+        "cpuMs": 10535,
+        "openingMs": 282,
+        "verifyingMs": 3280,
+        "buildingMs": 181,
+        "coverageMs": 6247,
+        "coverageLoopMs": 6191,
+        "finalReplayMs": 58,
+        "commitMs": 234,
+        "coverageRangeMs": [
+          6163,
+          6247,
+          6368
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2048,
+          "forkMs": 2093.5,
+          "compares": 2048,
+          "compareMs": 2914.8,
+          "coverageChecks": 2048,
+          "coverageCheckMs": 5321.3,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 21837
+      },
+      "2048": {
+        "runs": 3,
+        "rows": 18432,
+        "totalMs": 33548,
+        "cpuMs": 34139,
+        "openingMs": 603,
+        "verifyingMs": 7740,
+        "buildingMs": 745,
+        "coverageMs": 23866,
+        "coverageLoopMs": 23760,
+        "finalReplayMs": 106,
+        "commitMs": 537,
+        "coverageRangeMs": [
+          23472,
+          23866,
+          23944
+        ],
+        "loopCountsMedianRun": {
+          "forks": 4096,
+          "forkMs": 8378.7,
+          "compares": 4096,
+          "compareMs": 11102.5,
+          "coverageChecks": 4096,
+          "coverageCheckMs": 20797.7,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 111289
+      },
+      "4096": {
+        "runs": 1,
+        "rows": 36864,
+        "totalMs": 126436,
+        "cpuMs": 127790,
+        "openingMs": 1302,
+        "verifyingMs": 20968,
+        "buildingMs": 3177,
+        "coverageMs": 99386,
+        "coverageLoopMs": 99123,
+        "finalReplayMs": 263,
+        "commitMs": 1065,
+        "coverageRangeMs": [
+          99386
+        ],
+        "loopCountsMedianRun": {
+          "forks": 8192,
+          "forkMs": 35717.2,
+          "compares": 8192,
+          "compareMs": 47945.2,
+          "coverageChecks": 8192,
+          "coverageCheckMs": 89168.5,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 754345
+      }
+    },
+    "batchesOneTransactionPerRow": {
+      "512": {
+        "runs": 3,
+        "rows": 4608,
+        "totalMs": 1936,
+        "cpuMs": 2168,
+        "openingMs": 132,
+        "verifyingMs": 1442,
+        "buildingMs": 54,
+        "coverageMs": 168,
+        "coverageLoopMs": 138,
+        "finalReplayMs": 29,
+        "commitMs": 109,
+        "coverageRangeMs": [
+          167,
+          168,
+          200
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 1.3,
+          "compares": 2,
+          "compareMs": 1.6,
+          "coverageChecks": 1026,
+          "coverageCheckMs": 66.0,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 5042
+      },
+      "1024": {
+        "runs": 3,
+        "rows": 9216,
+        "totalMs": 4482,
+        "cpuMs": 5151,
+        "openingMs": 267,
+        "verifyingMs": 3188,
+        "buildingMs": 182,
+        "coverageMs": 483,
+        "coverageLoopMs": 426,
+        "finalReplayMs": 59,
+        "commitMs": 231,
+        "coverageRangeMs": [
+          480,
+          483,
+          546
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 2.2,
+          "compares": 2,
+          "compareMs": 3.0,
+          "coverageChecks": 2050,
+          "coverageCheckMs": 265.8,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 17220
+      },
+      "2048": {
+        "runs": 3,
+        "rows": 18432,
+        "totalMs": 11332,
+        "cpuMs": 13771,
+        "openingMs": 520,
+        "verifyingMs": 7508,
+        "buildingMs": 736,
+        "coverageMs": 1724,
+        "coverageLoopMs": 1612,
+        "finalReplayMs": 105,
+        "commitMs": 530,
+        "coverageRangeMs": [
+          1613,
+          1724,
+          1798
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 4.3,
+          "compares": 2,
+          "compareMs": 5.8,
+          "coverageChecks": 4098,
+          "coverageCheckMs": 1111.1,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 106377
+      }
+    },
+    "final": {
+      "512": {
+        "runs": 3,
+        "rows": 4608,
+        "totalMs": 1891,
+        "cpuMs": 2147,
+        "openingMs": 131,
+        "verifyingMs": 1442,
+        "buildingMs": 54,
+        "coverageMs": 94,
+        "coverageLoopMs": 66,
+        "finalReplayMs": 28,
+        "commitMs": 130,
+        "coverageRangeMs": [
+          92,
+          94,
+          97
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 1.3,
+          "compares": 2,
+          "compareMs": 1.8,
+          "coverageChecks": 19,
+          "coverageCheckMs": 5.5,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 5026
+      },
+      "1024": {
+        "runs": 3,
+        "rows": 9216,
+        "totalMs": 4138,
+        "cpuMs": 4901,
+        "openingMs": 274,
+        "verifyingMs": 3180,
+        "buildingMs": 183,
+        "coverageMs": 194,
+        "coverageLoopMs": 134,
+        "finalReplayMs": 61,
+        "commitMs": 275,
+        "coverageRangeMs": [
+          183,
+          194,
+          196
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 2.1,
+          "compares": 2,
+          "compareMs": 2.8,
+          "coverageChecks": 35,
+          "coverageCheckMs": 11.7,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 17173
+      },
+      "2048": {
+        "runs": 3,
+        "rows": 18432,
+        "totalMs": 9596,
+        "cpuMs": 12042,
+        "openingMs": 469,
+        "verifyingMs": 7260,
+        "buildingMs": 711,
+        "coverageMs": 458,
+        "coverageLoopMs": 349,
+        "finalReplayMs": 102,
+        "commitMs": 520,
+        "coverageRangeMs": [
+          363,
+          458,
+          478
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 6.3,
+          "compares": 2,
+          "compareMs": 5.9,
+          "coverageChecks": 67,
+          "coverageCheckMs": 36.2,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 92479
+      },
+      "4096": {
+        "runs": 1,
+        "rows": 36864,
+        "totalMs": 27123,
+        "cpuMs": 34865,
+        "openingMs": 1146,
+        "verifyingMs": 19985,
+        "buildingMs": 3150,
+        "coverageMs": 1008,
+        "coverageLoopMs": 800,
+        "finalReplayMs": 209,
+        "commitMs": 1273,
+        "coverageRangeMs": [
+          1008
+        ],
+        "loopCountsMedianRun": {
+          "forks": 2,
+          "forkMs": 8.9,
+          "compares": 2,
+          "compareMs": 11.5,
+          "coverageChecks": 131,
+          "coverageCheckMs": 117.1,
+          "coverageRebuilds": 0,
+          "coverageRebuildMs": 0.0
+        },
+        "seedMs": 530625
+      }
+    }
+  },
+  "stopCondition": {
+    "rule": "coverage stage grows no more than about 2.3 times per doubling from 512 to 2,048 pairs with every check intact",
+    "phase556Source": [
+      3.84,
+      3.82
+    ],
+    "final": [
+      2.07,
+      2.36
+    ],
+    "met": true,
+    "final4096": 2.2,
+    "note": "ratios of the unrounded medians (summarise.py); stage values in uncachedByStage are rounded"
+  },
+  "newTestFiles": [
+    "test/coverageBatches.test.ts"
+  ],
+  "newUnitCases": 13,
+  "failedOnBase": {
+    "cases": 13,
+    "detail": "cost case on its assertion (192 forks against a bound of 49); position and order cases because no row is held on that source; differential and fallback cases because checkInBatches does not exist",
+    "record": "base-tree-run.txt"
+  },
+  "mutationControls": {
+    "the comparison skipped": 11,
+    "the comparison only at the end of the pass": 8,
+    "the reverse: a comparison after every row": 10,
+    "a failed batch's fork reused": 12,
+    "content rows left unsettled until after the other rows are classified": 1,
+    "every row in its own Yjs transaction": 1,
+    "a view with pending parts allowed to prove a batch": 1,
+    "record": "mutation-controls.txt",
+    "sourcesRestoredByteForByte": true
+  },
+  "deployed": false,
+  "scratch": "probe JSON, CPU profiles and helper scripts under the session scratchpad; no copy of the repository",
+  "profiles": {
+    "phase556Source": {
+      "1024": {
+        "coverageLoopMs": 6808,
+        "forks": 2048,
+        "forkMs": 2409,
+        "compares": 2048,
+        "compareMs": 3305,
+        "applyMs": 372,
+        "outsideChecksMs": 723,
+        "finalReplayMs": 66
+      },
+      "2048": {
+        "coverageLoopMs": 25188,
+        "forks": 4096,
+        "forkMs": 8961,
+        "compares": 4096,
+        "compareMs": 12592,
+        "applyMs": 1482,
+        "outsideChecksMs": 2153,
+        "finalReplayMs": 123,
+        "comparisonInclusive": {
+          "twoV1EncodingsMs": 7614,
+          "equalBytesMs": 2788,
+          "snapshotsMs": 1458
+        },
+        "positivesIndexMs": 17,
+        "rowDecodingMs": 18,
+        "gcSelfMs": 633,
+        "idleYieldsMs": 1568,
+        "getStateVectorUnderApplyMs": 971,
+        "applyUpdateMs": 1299
+      }
+    },
+    "verifyingStage": {
+      "1024": {
+        "ms": 3443,
+        "idleMs": 1302,
+        "applyUpdateMs": 484,
+        "coverageRebuildMs": 344,
+        "getStateVectorMs": 316,
+        "censusMs": 350,
+        "verifyInboundLedgerMs": 259,
+        "verifyDeliveryMs": 227
+      },
+      "2048": {
+        "ms": 8402,
+        "idleMs": 2972,
+        "applyUpdateMs": 2235,
+        "coverageRebuildMs": 1566,
+        "getStateVectorMs": 1556,
+        "censusMs": 784,
+        "verifyInboundLedgerMs": 932,
+        "verifyDeliveryMs": 405
+      },
+      "reading": "mostly linear crypto-bound work with a large constant, plus a quadratic term from one Yjs transaction per content row (state vectors over every client) while building its receipt-coverage document; not changed"
+    },
+    "final2048": {
+      "coverageLoopMs": 362,
+      "inspectInboundReceiptMs": 194,
+      "parseStoredRecordMs": 34,
+      "coverageViewMs": 40,
+      "idleYieldsMs": 32,
+      "gcSelfMs": 26
+    },
+    "sampling": "V8 CPU profiler through the process's own node:inspector session, 0.5 ms interval; one profiled run each, not timed runs"
+  },
+  "relatedFilesPassed": {
+    "files": 55,
+    "cases": 572,
+    "record": "related-run.txt"
+  },
+  "changedExistingCases": [],
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": "oxfmt and oxlint pass on the two sources, the new test and the probe; the new test was reformatted once by oxfmt",
+  "fullUnit": "not run by this seat; the coordinating session runs it once before the commit",
+  "inventory": {
+    "recorded": true,
+    "obligations": 1134,
+    "obligationsBefore": 1133,
+    "unresolved": 561,
+    "caseDenominatorBefore": 3044,
+    "caseDenominator": 3057,
+    "vitestReviewedFilesBefore": 119,
+    "vitestReviewedFiles": 120,
+    "generalStagesBefore": 304,
+    "generalStages": 305,
+    "vitestReviewedStagesBefore": 138,
+    "vitestReviewedStages": 139
+  },
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 526,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/source-capture/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 504,
+        "to": 521
+      },
+      {
+        "label": "done/account-spool/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 510,
+        "to": 527
+      },
+      {
+        "label": "done/account-delivery/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 511,
+        "to": 528
+      }
+    ],
+    "constructionRegistryLinesFollowed": 3
+  },
+  "anchors": {
+    "checked": 58,
+    "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the two edited sources occurs the same number of times now",
+    "exceptions": "'performance.now()' occurs 4 times in inboundLedger.ts instead of 2; elsewhere it appears only inside comments, not as a split anchor",
+    "harnessAnchorsUntouched": [
+      "PREPARATION_SLICE_MS = 2000;",
+      "LOCAL_RETENTION_MIN_RECORDS = 1024;"
+    ]
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "notRun": [
+    "the full unit suite",
+    "pnpm build, trace:check and account:crypto-audit",
+    "browser and native suites",
+    "the sliced (production) arms of the probe after this phase",
+    "any real device or account"
+  ],
+  "review": {
+    "by": "coordinating session, 2026-11-13",
+    "read": "the source diff, the new test file, the fork and comparison in src/crdt/yjs.ts, the repository's Yjs patch, the plan's coverage loop and its cleanup",
+    "fullUnit": {
+      "files": 357,
+      "passed": 3712,
+      "skipped": 1,
+      "failed": 0
+    },
+    "independentControl": "batch comparison weakened to the state vector alone on the final tree: 4 of 13 cases fail (pending dependency, deletion-only row, origin inside a surrogate pair, the differential); source restored byte for byte",
+    "randomisedDifferential": {
+      "kept": false,
+      "histories": 400,
+      "scenarios": 1200,
+      "comparisons": 4800,
+      "budgets": [
+        "1 byte",
+        "a third of the rows' bytes",
+        "the candidate's length",
+        "unbounded"
+      ],
+      "referenceRefused": 872,
+      "refusedAtRow64OrLater": 505,
+      "coveredScenariosProvenByBatchesAlone": "312 of 312",
+      "pendingCandidates": 143,
+      "differences": 0,
+      "againstWeakenedComparison": "267 differences in 480 comparisons"
+    },
+    "remeasured": {
+      "runs": 1,
+      "coverageMs": {
+        "512": 92,
+        "2048": 373
+      },
+      "passMs": {
+        "512": 1882,
+        "2048": 9857
+      }
+    },
+    "noted": [
+      "the number of batches is about the content rows' bytes divided by the snapshot's; at worst one per row, the cost before this phase; not measured on such a history",
+      "the coverage stage is not saved between attempts and queued input can cut it at any row, so the attempt that finishes must get through all of it (read from the code, not measured)",
+      "settle's timed span includes the last group's apply, which applyWaiting has already timed, so the coverageCheck total counts that group twice; the record's stage times come from progress marks",
+      "the randomised differential is not in the repository; a kept property suite remains a backlog item"
+    ],
+    "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, and the CI session, authority and quarantine steps",
+    "slicedRemeasured": {
+      "runs": 1,
+      "wallMs": {
+        "1024": {
+          "uncached": 3877,
+          "sliced": 7012,
+          "sliced500": 6814
+        },
+        "2048": {
+          "uncached": 9288,
+          "sliced": 15842,
+          "sliced500": 16051
+        }
+      },
+      "cpuMs": {
+        "1024": {
+          "uncached": 4627,
+          "sliced": 9623,
+          "sliced500": 9892
+        },
+        "2048": {
+          "uncached": 11499,
+          "sliced": 24781,
+          "sliced500": 26452
+        }
+      },
+      "attempts": 2,
+      "fencedSaves": 1,
+      "ratioToUncached": {
+        "wall": {
+          "1024": 1.81,
+          "2048": 1.71
+        },
+        "cpu": {
+          "1024": 2.08,
+          "2048": 2.16
+        }
+      },
+      "phase556StopCondition": "not met against the new floor at 1,024 or 2,048 pairs; the seconds over the uncached pass are about unchanged"
+    }
+  }
+}

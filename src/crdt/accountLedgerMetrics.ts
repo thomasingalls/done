@@ -49,6 +49,14 @@ const workNames = [
   'finalApplyActivityMisses',
   'finalApplyFallbacks',
   'finalApplySkipped',
+  // Send-path observation (phase 554): whole-graph walks by site, and the objects they visited.
+  'indexUsageWalks',
+  'receiptTurnWalks',
+  'adoptionEraseWalks',
+  'graphWalkObjects',
+  'verifyCompares',
+  'verifyPrefixes',
+  'acceptedSends',
 ] as const;
 const work = Object.fromEntries(workNames.map((name) => [name, 0])) as Record<
   (typeof workNames)[number],
@@ -106,13 +114,49 @@ type WorkTiming =
   | 'waitFlush'
   | 'startupPreflightCensus'
   | 'startupRecheckCensus'
-  | 'startupCustodyAndLedger';
+  | 'startupCustodyAndLedger'
+  // Send-path observation (phase 554). Op timers include storage-queue waits.
+  | 'verifyCompare'
+  | 'verifyPrefix'
+  | 'selectProjection'
+  | 'indexUsage'
+  | 'receiptTurnWalk'
+  | 'extendLedger'
+  | 'proposalCheck'
+  | 'expectedChain'
+  | 'sendNetwork'
+  | 'opDeliveryStatus'
+  | 'opSpoolStatus'
+  | 'opPrepareEnvelope'
+  | 'opPrepareSubmission'
+  | 'opSubmit'
+  | 'sendStep';
 const costs: Partial<Record<WorkTiming, { calls: number; totalMs: number; maxMs: number }>> = {};
 /** Bounded numeric-only development counters. Names are internal literals, never input. */
 export const countLedgerWork = (name: keyof typeof work, count = 1) => {
   if (ledgerProfiling) work[name] = (work[name] ?? 0) + count;
 };
 export const ledgerWorkStart = () => (ledgerProfiling ? performance.now() : 0);
+/** One traversal of a whole retained graph, by site; objects is the traversal's own seen count. */
+export const countGraphWalk = (
+  site: 'indexUsageWalks' | 'receiptTurnWalks' | 'adoptionEraseWalks',
+  objects: number,
+) => {
+  if (!ledgerProfiling) return;
+  work[site]++;
+  work.graphWalkObjects += objects;
+};
+/** Profiling only: the accumulated time of one timer, so a caller can take a delta. */
+export const ledgerCostTotal = (name: WorkTiming) =>
+  ledgerProfiling ? (costs[name]?.totalMs ?? 0) : 0;
+/** Bounded per-position samples: a send step that got a new position accepted, and its HTTP wait. */
+const acceptedSends: { stepMs: number; networkMs: number }[] = [];
+export const recordAcceptedSend = (stepMs: number, networkMs: number) => {
+  if (!ledgerProfiling) return;
+  work.acceptedSends++;
+  if (acceptedSends.length >= 4096) acceptedSends.shift();
+  acceptedSends.push({ stepMs, networkMs });
+};
 export const measureLedgerWork = (name: WorkTiming, since: number) => {
   if (!ledgerProfiling) return;
   const ms = performance.now() - since;
@@ -153,6 +197,7 @@ export const accountLedgerMetrics = () => ({
   timings: structuredClone(timings),
   work: { ...work },
   costs: structuredClone(costs),
+  acceptedSends: acceptedSends.map((s) => ({ ...s })),
 });
 if (import.meta.env?.['VITE_ACCOUNT_LEDGER_PROFILE'] === '1') {
   Object.defineProperty(globalThis, '__doneLedgerMetrics', {

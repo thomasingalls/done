@@ -1,0 +1,60 @@
+## the comparison skipped (a batch is proven without comparing its fork)
+   × a plan holding an uncovered insertion is refused at that row, first, in the middle, last and on each side of a batch boundary 108ms
+   × a plan holding a missing dependency left pending is refused at that row, first, in the middle, last and on each side of a batch boundary 45ms
+   × a plan holding two uncovered rows, the later supplying the earlier one’s dependency is refused at that row, first, in the middle, last and on each side of a batch boundary 44ms
+   × a plan holding a deletion-only row is refused at that row, first, in the middle, last and on each side of a batch boundary 44ms
+   × a plan holding a row covered only in part is refused at that row, first, in the middle, last and on each side of a batch boundary 42ms
+   × a plan holding the same uncovered row twice is refused at that row, first, in the middle, last and on each side of a batch boundary 44ms
+   × a plan holding an uncovered insertion followed by a row deleting it is refused at that row, first, in the middle, last and on each side of a batch boundary 48ms
+   × a plan holding a known item re-sent with an origin inside a surrogate pair is refused at that row, first, in the middle, last and on each side of a batch boundary 46ms
+   × content rows settle before any other row is classified, so an uncovered last row refuses before a later damaged row 40ms
+   × every verdict and refusal matches the per-call reference over constructed histories, batch sizes and placements 11ms
+   × a batch that is not proven is checked again one row at a time, yielding before each 1ms
+   Tests  11 failed | 2 passed (13)
+## the comparison made only at the end of the pass, not per batch
+   × a plan holding an uncovered insertion is refused at that row, first, in the middle, last and on each side of a batch boundary 102ms
+   × a plan holding a missing dependency left pending is refused at that row, first, in the middle, last and on each side of a batch boundary 42ms
+   × a plan holding two uncovered rows, the later supplying the earlier one’s dependency is refused at that row, first, in the middle, last and on each side of a batch boundary 41ms
+   × a plan holding a deletion-only row is refused at that row, first, in the middle, last and on each side of a batch boundary 41ms
+   × a plan holding a row covered only in part is refused at that row, first, in the middle, last and on each side of a batch boundary 40ms
+   × a plan holding the same uncovered row twice is refused at that row, first, in the middle, last and on each side of a batch boundary 41ms
+   × a plan holding an uncovered insertion followed by a row deleting it is refused at that row, first, in the middle, last and on each side of a batch boundary 40ms
+   × a plan holding a known item re-sent with an origin inside a surrogate pair is refused at that row, first, in the middle, last and on each side of a batch boundary 42ms
+   Tests  8 failed | 5 passed (13)
+## the reverse: the comparison made after every row (one fork per row again)
+   × a reduction makes about a constant number of whole-document forks and comparisons while history grows fourfold 789ms
+   × a plan holding an uncovered insertion is refused at that row, first, in the middle, last and on each side of a batch boundary 103ms
+   × a plan holding a missing dependency left pending is refused at that row, first, in the middle, last and on each side of a batch boundary 42ms
+   × a plan holding two uncovered rows, the later supplying the earlier one’s dependency is refused at that row, first, in the middle, last and on each side of a batch boundary 41ms
+   × a plan holding a deletion-only row is refused at that row, first, in the middle, last and on each side of a batch boundary 41ms
+   × a plan holding a row covered only in part is refused at that row, first, in the middle, last and on each side of a batch boundary 39ms
+   × a plan holding the same uncovered row twice is refused at that row, first, in the middle, last and on each side of a batch boundary 40ms
+   × a plan holding an uncovered insertion followed by a row deleting it is refused at that row, first, in the middle, last and on each side of a batch boundary 39ms
+   × a plan holding a known item re-sent with an origin inside a surrogate pair is refused at that row, first, in the middle, last and on each side of a batch boundary 41ms
+   × a batch that is not proven is checked again one row at a time, yielding before each 2ms
+   Tests  10 failed | 3 passed (13)
+## a failed batch's fork reused for the rows checked alone, and for the next batch
+   × a plan holding an uncovered insertion is refused at that row, first, in the middle, last and on each side of a batch boundary 140ms
+   × a plan holding a missing dependency left pending is refused at that row, first, in the middle, last and on each side of a batch boundary 80ms
+   × a plan holding two uncovered rows, the later supplying the earlier one’s dependency is refused at that row, first, in the middle, last and on each side of a batch boundary 85ms
+   × a plan holding a deletion-only row is refused at that row, first, in the middle, last and on each side of a batch boundary 84ms
+   × a plan holding a row covered only in part is refused at that row, first, in the middle, last and on each side of a batch boundary 80ms
+   × a plan holding the same uncovered row twice is refused at that row, first, in the middle, last and on each side of a batch boundary 86ms
+   × a plan holding an uncovered insertion followed by a row deleting it is refused at that row, first, in the middle, last and on each side of a batch boundary 125ms
+   × a plan holding a known item re-sent with an origin inside a surrogate pair is refused at that row, first, in the middle, last and on each side of a batch boundary 84ms
+   × a plan holding an uncovered row followed by a malformed one is refused at that row, first, in the middle, last and on each side of a batch boundary 78ms
+   × content rows settle before any other row is classified, so an uncovered last row refuses before a later damaged row 39ms
+   × every verdict and refusal matches the per-call reference over constructed histories, batch sizes and placements 14ms
+   × a batch that is not proven is checked again one row at a time, yielding before each 1ms
+   Tests  12 failed | 1 passed (13)
+## content rows left unsettled until the end of the loop, after the other rows are classified
+   × content rows settle before any other row is classified, so an uncovered last row refuses before a later damaged row 45ms
+   Tests  1 failed | 12 passed (13)
+## every row applied in its own Yjs transaction (groups of one)
+   × a reduction makes about a constant number of whole-document forks and comparisons while history grows fourfold 722ms
+   Tests  1 failed | 12 passed (13)
+## a view with pending parts allowed to prove a batch
+   × a batch that is not proven is checked again one row at a time, yielding before each 6ms
+   Tests  1 failed | 12 passed (13)
+
+7 of 7 mutations tripped at least one case.

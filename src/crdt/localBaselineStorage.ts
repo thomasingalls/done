@@ -21,12 +21,15 @@ import {
 import {
   baselineAuthenticationPayload,
   decodeLocalBaseline,
+  LOCAL_BASELINE_LIMIT,
+  LocalBaselineCapacityError,
   type BaselineAnchor,
 } from './localBaselineRecord';
 import {
   BASELINE_CARRIER,
   ERA_BASELINE_CARRIER,
   baselineVersion,
+  baselineChunkBytes,
   BASELINE_CHUNK_BYTES,
   baselineChunkKey,
   baselineChunkPrefix,
@@ -201,6 +204,13 @@ export async function anchorLocalBaseline(
   input: { baseline: AuthenticatedLocalBaseline; anchor: BaselineAnchor },
   previousAnchor?: BaselineAnchor,
 ): Promise<BaselineAnchor> {
+  // Complete-history carriers keep the released record bound; only reduction writes larger.
+  if (input.baseline.payload.length > LOCAL_BASELINE_LIMIT)
+    throw new LocalBaselineCapacityError({
+      cause: 'snapshot-size',
+      needed: input.baseline.payload.length,
+      allowed: LOCAL_BASELINE_LIMIT,
+    });
   const owner = { ...ownerInput, identity: { ...ownerInput.identity } };
   const census = task.step(() => structuredClone(censusInput));
   const baseline = task.step(() => ({
@@ -414,8 +424,9 @@ export async function readEncryptedBaselineSnapshot(
               const request = store.get(baselineChunkKey(i));
               request.onsuccess = () =>
                 guard(() => {
-                  const prefix = baselineChunkPrefix(owner.identity, p, i),
-                    length = Math.min(BASELINE_CHUNK_BYTES, p.bytes - i * BASELINE_CHUNK_BYTES);
+                  const size = baselineChunkBytes(p),
+                    prefix = baselineChunkPrefix(owner.identity, p, i),
+                    length = Math.min(size, p.bytes - i * size);
                   // Bound ciphertext before the closed parser makes its detached copy.
                   if (
                     !(request.result?.ct instanceof Uint8Array) ||
@@ -447,7 +458,8 @@ export async function openEncryptedBaselineSnapshot(
   if (snapshot.chunks.length !== snapshot.counter.baseline.chunks)
     return corrupt('Baseline chunk inventory differs.');
   const { counter, chunks } = snapshot,
-    p = counter.baseline;
+    p = counter.baseline,
+    size = baselineChunkBytes(p);
   if (
     counter.active_gen !== owner.generation ||
     !(await task.wait(() =>
@@ -463,7 +475,7 @@ export async function openEncryptedBaselineSnapshot(
     for (let i = 0; i < chunks.length; i++) {
       const row = chunks[i]!,
         prefix = baselineChunkPrefix(owner.identity, p, i),
-        length = Math.min(BASELINE_CHUNK_BYTES, p.bytes - i * BASELINE_CHUNK_BYTES);
+        length = Math.min(size, p.bytes - i * size);
       if (
         row.seq !== p.firstSequence + i ||
         row.gen !== p.generation ||
@@ -478,7 +490,7 @@ export async function openEncryptedBaselineSnapshot(
           !sameBytes(plain.subarray(0, prefix.length), prefix)
         )
           return corrupt('Baseline chunk scope differs.');
-        packed.set(plain.subarray(prefix.length), i * BASELINE_CHUNK_BYTES);
+        packed.set(plain.subarray(prefix.length), i * size);
       } finally {
         plain.fill(0);
       }

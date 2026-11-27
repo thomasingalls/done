@@ -31,8 +31,8 @@ import {
 import { compareBaselineReplay } from './localBaselineShadow';
 import { createCpuBudget } from './cpuBudget';
 import { reportRetentionProgress, type RetentionProgressSink } from './contentMaintenance';
-import { createInboundCoverage } from './inboundLedger';
-import { isHistoryInstallTag } from './historyInstall';
+import { checkInBatches, createInboundCoverage } from './inboundLedger';
+import { HistoryInstallSizeError, isHistoryInstallTag } from './historyInstall';
 import { eraseVerified, sameBytes } from './verifiedRecords';
 import { hex, type Bytes } from './custodyCrypto';
 import type { SessionTask } from './writeSession';
@@ -254,9 +254,15 @@ export async function planLocalRetention(
   // expiring preparation task. Context/task checks still govern every preparation effect.
   retainCurrent: () => void = () => context.assertCurrent(),
   progress?: RetentionProgressSink,
-  preparation?: (counter: ContentCounter) => Promise<PreparationVerification>,
+  // Resolves without a journal when none can be bound; the pass then runs uncached.
+  preparation?: (counter: ContentCounter) => Promise<PreparationVerification | undefined>,
 ): Promise<
-  LocalRetentionPlan | { kind: 'skipped'; reason: 'capacity' | 'ineligible' | 'history-required' }
+  | LocalRetentionPlan
+  | {
+      kind: 'skipped';
+      reason: 'capacity' | 'ineligible' | 'history-required';
+      detail?: import('./localRetentionDetail').LocalRetentionDetail;
+    }
 > {
   const inventory = clone(input),
     scope = { ...context.identity };
@@ -351,15 +357,11 @@ export async function planLocalRetention(
       )
         corrupt('Retention row placement differs.');
       seen.add(r.seq);
-      const bytes = reuse
-        ? await reuse.memo.check(
-            'opened:' + r.seq,
-            JSON.stringify([r.v, r.kind, r.gen, r.seq]),
-            [r.nonce, r.ct],
-            () => crypt.open(r),
-            context.assertCurrent,
-          )
-        : await crypt.open(r);
+      // Every attempt opens every row itself (phase 556). A saved `opened:` receipt cost a hash
+      // of the same ciphertext to reuse, about what authenticated decryption costs, plus its share
+      // of every save, load and readback of the journal; it saved nothing. Old receipts of that
+      // kind may still be imported from a journal and are never consulted.
+      const bytes = await crypt.open(r);
       records.push({ seq: r.seq, kind: r.kind, gen: r.gen, bytes });
       if (records.length % 32 === 0 || records.length === inventory.rows.length)
         reportRetentionProgress(progress, {
@@ -446,7 +448,11 @@ export async function planLocalRetention(
       // from that boundary as failures even though the builder now returns both results together.
       if (!buildingCandidate) throw error;
       if (error instanceof LocalBaselineCapacityError)
-        return { kind: 'skipped', reason: 'capacity' };
+        return {
+          kind: 'skipped',
+          reason: 'capacity',
+          ...(error.detail ? { detail: error.detail } : {}),
+        };
       if (
         error instanceof LocalBaselineError &&
         (error.reason === 'ineligible' || error.reason === 'history-required')
@@ -466,9 +472,17 @@ export async function planLocalRetention(
       gen: decoded.generation,
       bytes: decoded.snapshot,
     };
-    // The candidate snapshot is private and immutable throughout this exact plan.
+    // The candidate snapshot is private and immutable throughout this exact plan. Content rows
+    // are checked a batch at a time with the same verdict for each (phase 557); a batch closes
+    // once its rows hold as many bytes as the snapshot, so a pass makes about a constant number
+    // of whole-document forks and comparisons however long the history is.
     const content = [state],
-      checking = coverage.bind(content);
+      checking = checkInBatches(
+        coverage.bind(content),
+        content,
+        Math.max(1, state.bytes.length),
+        checkpoint,
+      );
     const bySequence = new Map(records.map((r) => [r.seq, r]));
     const deleteRows: DeleteRow[] = [];
     const dispositions: RetentionPlanReport['dispositions'] = {};
@@ -477,6 +491,7 @@ export async function planLocalRetention(
       completed: 0,
       total: inventory.rows.length,
     });
+    let unsettled = false;
     for (const row of inventory.rows) {
       const pause = checkpoint();
       if (pause) await pause;
@@ -484,9 +499,17 @@ export async function planLocalRetention(
         opened = bySequence.get(value.seq)!;
       let disposition: RetentionDisposition;
       if (value.kind === 'update' || value.kind === 'state') {
-        checking.check(content, [opened.bytes]);
+        const settling = checking.add(opened.bytes);
+        if (settling) await settling;
+        unsettled = true;
         disposition = 'content-covered';
       } else {
+        // Content rows sort first. Settle them before classifying any other row, so refusals
+        // come in the order that checking each content row alone gives.
+        if (unsettled) {
+          unsettled = false;
+          await checking.finish();
+        }
         const tag: unknown =
           opened.bytes[0] === 91
             ? JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(opened.bytes))[0]
@@ -516,6 +539,7 @@ export async function planLocalRetention(
         });
       dispositions[disposition] = (dispositions[disposition] ?? 0) + 1;
     }
+    await checking.finish();
     // Execute the exact list only on detached arrays; never use a numeric range or a live store.
     const selected = new Set(deleteRows.map((r) => r.store + ':' + r.key));
     const survivors = inventory.rows.filter((r) => !selected.has(r.store + ':' + String(r.key)));
@@ -561,6 +585,16 @@ export async function planLocalRetention(
     });
     delivered = true;
     return plan;
+  } catch (error) {
+    // Raised only after the installed record authenticated (`verifyHistoryInstall`): a size
+    // condition, not an integrity failure. Retrying the same history cannot change it.
+    if (error instanceof HistoryInstallSizeError)
+      return {
+        kind: 'skipped',
+        reason: 'capacity',
+        detail: { cause: 'installed-snapshot', needed: error.needed, allowed: error.allowed },
+      };
+    throw error;
   } finally {
     coverage.clear();
     eraseVerified(records);

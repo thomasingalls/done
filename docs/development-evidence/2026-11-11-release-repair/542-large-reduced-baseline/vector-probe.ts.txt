@@ -1,0 +1,289 @@
+// @vitest-environment node
+// Phase 542 probe, run on the unmodified tree 6a8de4bac. Generates a draft-3/v5 store and a
+// draft-2 record with fixed keys, measures baseline components, and records how the
+// released parsers treat a hand-made larger carrier pointer. Not a product test.
+import { it, expect, vi } from 'vitest';
+import { writeFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
+const W = process.cwd(); // run from the repository root
+const OUT = process.env.PROBE_OUT!;
+// @ts-expect-error JavaScript fixture.
+const { memberFixture } = await import(W + '/test/local-baseline/fixtures.mjs');
+const { inspectInbound } = await import(W + '/src/crdt/inboundLedger');
+const { extendSpoolWitness } = await import(W + '/src/crdt/spoolRecord');
+const cr = await import(W + '/src/crdt/contentRecord');
+const { openContentDb } = await import(W + '/src/crdt/contentDatabase');
+const plans = await import(W + '/src/crdt/localRetentionPlan');
+const { removePlannedLocalHistory } = await import(W + '/src/crdt/localRetentionStorage');
+const { readEncryptedBaseline } = await import(W + '/src/crdt/localBaselineStorage');
+const anchor = await import(W + '/src/crdt/localBaselineAnchor');
+const rec = await import(W + '/src/crdt/localBaselineRecord');
+const { createBaselineMetadata } = await import(W + '/src/crdt/localBaselineMetadata');
+const { contentCensus } = await import(W + '/src/crdt/startupClassification');
+const { startupRefusal } = await import(W + '/src/crdt/ownedStartup');
+const replay = await import(W + '/src/crdt/localBaselineReplay');
+
+const hex = (b: Uint8Array) => Buffer.from(b).toString('hex');
+const task = {
+  signal: new AbortController().signal,
+  step: <T>(f: () => T) => f(),
+  wait: <T>(f: () => T | Promise<T>) => Promise.resolve(f()),
+};
+const AES = new Uint8Array(32).fill(0x5a),
+  HMAC = new Uint8Array(32).fill(0xa5);
+async function fixedCrypt(scope: { principalId: string; workspaceId: string; storeId: string }) {
+  const aes = await crypto.subtle.importKey('raw', AES, 'AES-GCM', false, ['encrypt', 'decrypt']);
+  const hmac = await crypto.subtle.importKey('raw', HMAC, { name: 'HMAC', hash: 'SHA-256' }, false, [
+    'sign',
+    'verify',
+  ]);
+  return {
+    allowSpoolCounter: true,
+    validate: () => {},
+    sign: (t: typeof task, b: Uint8Array) =>
+      t.wait(async () => new Uint8Array(await crypto.subtle.sign('HMAC', hmac, b))),
+    verify: (t: typeof task, b: Uint8Array, m: Uint8Array) =>
+      t.wait(() => crypto.subtle.verify('HMAC', hmac, m, b)),
+    seal: (t: typeof task, h: any, b: Uint8Array) =>
+      t.wait(async () => {
+        const nonce = crypto.getRandomValues(new Uint8Array(12));
+        return {
+          ...h,
+          nonce,
+          ct: new Uint8Array(
+            await crypto.subtle.encrypt(
+              { name: 'AES-GCM', iv: nonce, additionalData: cr.recordAAD(scope as any, h) },
+              aes,
+              b,
+            ),
+          ),
+        };
+      }),
+    open: (t: typeof task, r: any) =>
+      t.wait(
+        async () =>
+          new Uint8Array(
+            await crypto.subtle.decrypt(
+              { name: 'AES-GCM', iv: r.nonce, additionalData: cr.recordAAD(scope as any, r) },
+              aes,
+              r.ct,
+            ),
+          ),
+      ),
+  };
+}
+const put = (db: IDBDatabase, store: string, key: IDBValidKey, value: unknown) =>
+  new Promise<void>((yes, no) => {
+    const tx = db.transaction(store, 'readwrite');
+    tx.objectStore(store).put(value, key);
+    tx.oncomplete = () => yes();
+    tx.onabort = () => no(tx.error);
+  });
+const dump = (db: IDBDatabase) =>
+  new Promise<{ key: IDBValidKey; value: any }[]>((yes) => {
+    const tx = db.transaction('meta'),
+      s = tx.objectStore('meta'),
+      k = s.getAllKeys(),
+      v = s.getAll();
+    tx.oncomplete = () => yes(k.result.map((key, i) => ({ key, value: v.result[i] })));
+  });
+const census = (db: IDBDatabase) =>
+  new Promise<any>((yes) => {
+    const tx = db.transaction([...cr.CONTENT_STORES]),
+      result: any = { rows: [], metadata: [] };
+    for (const name of cr.CONTENT_STORES) {
+      const s = tx.objectStore(name),
+        k = s.getAllKeys(),
+        v = s.getAll();
+      v.onsuccess = () =>
+        k.result.forEach((key, i) =>
+          name === 'meta'
+            ? result.metadata.push({ key, value: v.result[i] })
+            : result.rows.push({ store: name, key, value: v.result[i] }),
+        );
+    }
+    tx.oncomplete = () => yes(result);
+  });
+const ser = (v: any): any =>
+  v instanceof Uint8Array
+    ? { $hex: hex(v) }
+    : Array.isArray(v)
+      ? v.map(ser)
+      : v && typeof v === 'object'
+        ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, ser(x)]))
+        : v;
+
+it('generates vectors and observations', async () => {
+  vi.stubGlobal('indexedDB', new IDBFactory());
+  vi.stubGlobal('IDBKeyRange', IDBKeyRange);
+  const out: any = { generatedAt: '6a8de4bac', keys: { aes: hex(AES), hmac: hex(HMAC) } };
+  // --- draft-3 v5 store through the real planner and writer.
+  const f = await memberFixture();
+  await f.appendOwn();
+  await f.appendPeer();
+  await f.appendHistory();
+  const ctx = f.ctx,
+    rows = f.rows;
+  const c = inspectInbound(rows, ctx.route, ctx.inbound);
+  let spool = cr.emptySpoolWitness();
+  for (const e of c.delivery.spool.events) spool = await extendSpoolWitness(spool, e, crypto.subtle);
+  const next = rows.at(-1).seq + 4;
+  const counter: any = {
+    v: 2,
+    store_id: ctx.identity.storeId,
+    intent: '04'.repeat(16),
+    active_gen: 1,
+    next_seq: next,
+    reserved: { 1: next - 1 },
+    spool,
+    mac: new Uint8Array(32),
+  };
+  const crypt = await fixedCrypt(ctx.identity);
+  counter.mac = await crypt.sign(task, cr.counterPayload(ctx.identity, counter));
+  const db = await openContentDb(task as any, 'vector-unit', true);
+  await put(db, 'meta', 'counter', counter);
+  for (const r of rows)
+    await put(
+      db,
+      cr.recordStore(r.kind),
+      r.seq,
+      await crypt.seal(task, { v: 1, seq: r.seq, gen: r.gen, kind: r.kind }, r.bytes),
+    );
+  const auth = {
+    sign: (b: Uint8Array) => crypt.sign(task, b),
+    verify: (b: Uint8Array, m: Uint8Array) => crypt.verify(task, b, m),
+  };
+  const owner: any = {
+    db,
+    identity: ctx.identity,
+    intent: counter.intent,
+    generation: 1,
+    crypt,
+    allowReduced: true,
+    assertCurrent: async () => {},
+    checkCommit: () => {},
+  };
+  const binding = { lifetime: {}, intent: counter.intent, allowReduced: true };
+  const p = await plans.planLocalRetention(
+    task as any,
+    await census(db),
+    ctx,
+    { open: (r: any) => crypt.open(task, r), verify: auth.verify, auth },
+    binding,
+  );
+  if (p.kind === 'skipped') throw Error(p.reason);
+  await removePlannedLocalHistory(task as any, owner, p, binding);
+  const held = await readEncryptedBaseline(task as any, owner);
+  const meta = await dump(db);
+  const decoded = rec.decodeLocalBaseline(held.baseline.payload);
+  expect(decoded.journalEra).toBeDefined();
+  const replayed = await replay.replayLocalBaseline(
+    held.baseline,
+    held.anchor,
+    { records: [], counter: { ...(({ baseline: _b, ...a }) => a)(held.counter), v: 2 } },
+    ctx,
+    auth,
+  );
+  out.v5 = {
+    identity: ctx.identity,
+    intent: counter.intent,
+    generation: 1,
+    meta: ser(meta),
+    payload: hex(held.baseline.payload),
+    mac: hex(held.baseline.mac),
+    anchor: held.anchor,
+    counterPayload: hex(anchor.baselineCounterPayload(ctx.identity, held.counter)),
+    chunkPrefix0: hex(anchor.baselineChunkPrefix(ctx.identity, held.counter.baseline, 0)),
+    authMessageSha256: createHash('sha256')
+      .update(rec.baselineAuthenticationPayload(held.baseline.payload))
+      .digest('hex'),
+    replayedSnapshotSha256: createHash('sha256').update(replayed.snapshot).digest('hex'),
+    pointer: held.counter.baseline,
+  };
+  // Component sizes (small fixture): how each field contributes to the encoded record.
+  const installJson = JSON.parse(Buffer.from(decoded.history!.bytes).toString());
+  out.sizes = {
+    encoded: held.baseline.payload.length,
+    snapshotRaw: decoded.snapshot.length,
+    historyRecordRaw: decoded.history!.bytes.length,
+    checkpointCtHexChars: installJson[8].ct.length,
+    manifestSvDsHexChars: installJson[8].manifest.sv.length + installJson[8].manifest.ds.length,
+    admissionSvDsHexChars: installJson[9].derivedSv.length + installJson[9].derivedDs.length,
+    streams: decoded.streams.map((s: any) => ({
+      envelope: s.receipt?.envelope.length ?? 0,
+      proof: s.receipt?.proof.length ?? 0,
+    })),
+    ownReceipt: decoded.own.receipt
+      ? { envelope: decoded.own.receipt.envelope.length, proof: decoded.own.receipt.proof.length }
+      : null,
+    sources: decoded.sources.map((s: any) => s.record.bytes.length),
+  };
+  // --- draft-2 record vector (no era), as the v3 anchor fixture builds it.
+  const zero = '0'.repeat(64);
+  const d2 = rec.encodeLocalBaseline({
+    identity: ctx.identity,
+    generation: 1,
+    revision: 1,
+    predecessor: zero,
+    authority: zero,
+    authorityState: { epoch: 1, head: zero, generation: 1, cutsHash: zero },
+    cut: { intent: counter.intent, sequence: 1, nextSequence: 3, reserved: [[1, 2]], witness: cr.emptySpoolWitness() },
+    snapshot: new Uint8Array([0, 0]),
+    own: { position: 0, link: zero, attempts: 0, receipt: null },
+    sources: [],
+    streams: [],
+    history: null,
+  });
+  out.draft2 = {
+    payload: hex(d2),
+    mac: hex(await crypt.sign(task, rec.baselineAuthenticationPayload(d2))),
+    authMessageSha256: createHash('sha256').update(rec.baselineAuthenticationPayload(d2)).digest('hex'),
+  };
+  // --- How the released parsers treat a hand-made larger carrier (no MAC needed).
+  const v5 = structuredClone(held.counter) as any;
+  const larger = (format: string, bytes: number, chunkBytes: number) => ({
+    ...v5,
+    baseline: { ...v5.baseline, format, bytes, chunks: Math.ceil(bytes / chunkBytes) },
+  });
+  const attempt = (fn: () => unknown) => {
+    try {
+      fn();
+      return { ok: true };
+    } catch (e: any) {
+      return { name: e?.name, code: e?.code, message: e?.message, startup: startupRefusal(e) };
+    }
+  };
+  const big = larger('done/local-baseline-carrier/draft-4', 8 * 1024 * 1024, 2 * 1024 * 1024);
+  const sameFormatBig = larger(anchor.REDUCED_BASELINE_CARRIER, 8 * 1024 * 1024, 256 * 1024);
+  out.olderParser = {
+    newFormatParse: attempt(() => anchor.parseBaselineCounter(big, ctx.identity, counter.intent, true)),
+    newFormatReaderDisabled: attempt(() =>
+      anchor.parseBaselineCounter(big, ctx.identity, counter.intent, false),
+    ),
+    newFormatMetadata: attempt(() => createBaselineMetadata(ctx.identity, true).parse(big, counter.intent)),
+    sameFormatLargerBytes: attempt(() =>
+      anchor.parseBaselineCounter(sameFormatBig, ctx.identity, counter.intent, true),
+    ),
+  };
+  // Startup census on stores with 1 + 4 chunk keys versus 1 + 33 chunk keys (8 MiB in 256 KiB).
+  const censusFor = async (name: string, chunks: number) => {
+    const d = await openContentDb(task as any, name, true);
+    await put(d, 'meta', 'counter', big);
+    for (let i = 0; i < chunks; i++) await put(d, 'meta', ['local-baseline', i], { stub: i });
+    d.close();
+    try {
+      const r: any = await contentCensus(task as any, name, true);
+      return { ok: true, metadataKeys: r.metadataKeys.length };
+    } catch (e: any) {
+      return { name: e?.name, startup: startupRefusal(e) };
+    }
+  };
+  out.olderCensus = {
+    fourLargeChunks: await censusFor('census-4', 4),
+    thirtyThreeSmallChunks: await censusFor('census-33', 33),
+  };
+  writeFileSync(OUT, JSON.stringify(out, null, 1));
+  db.close();
+  f.clear();
+}, 60000);

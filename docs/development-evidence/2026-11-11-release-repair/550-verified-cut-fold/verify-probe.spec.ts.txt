@@ -1,0 +1,396 @@
+// COPY-ONLY probe (verify-the-cut): a device ahead on a peer stream it has reduced and behind on a
+// pruned stream. MODE=strand (tip without the fix: stays stranded until a newer snapshot),
+// MODE=recover (fix: the cut is verified by reading the peer's chain, the snapshot installs and the
+// device catches up at once), MODE=unverifiable (fix, with the peer's chain reads answered 409
+// `unavailable`: a named notice appears, stays while writing keeps arriving, and clears when a
+// newer snapshot installs). Copy-only seams in the build: `__holdHistory`, `__allowReduction`,
+// retention thresholds 1 / 3 s / 1 s / 2 s, and the export-state hook used for convergence.
+import { openMenuSection } from '../geometry/openApp';
+import { test, expect, type Page } from '@playwright/test';
+import { pairedEditors, openSaved, add } from './devices';
+import { pending, compared, unlock } from '../device-enrollment/helpers';
+import { startService, stopService } from './server';
+import { documentOf } from './scenario';
+import { writeFileSync } from 'node:fs';
+import { resolve as resolvePath } from 'node:path';
+
+const MODE = process.env.MODE ?? 'recover';
+const NAMED = 'could not be checked against the history this device kept';
+const reads = (body: string) =>
+  [
+    ...body.matchAll(
+      /\["done\/private-read\/v2",2,"[^"]*","[^"]*","[0-9a-f]+","([0-9a-f]{32})","([0-9a-f]{32})","[0-9a-f]+","[0-9a-f]+",\d+,(\d+),(\d+)/g,
+    ),
+  ].map((m) => ({ reader: m[1]!, publisher: m[2]!, after: Number(m[3]), limit: Number(m[4]) }));
+const workers = async (p: Page, fn: () => void) => {
+  for (const w of p.workers()) await w.evaluate(fn).catch(() => {});
+};
+async function baseline(p: Page) {
+  return p.evaluate(async () => {
+    const out: { name: string; v: number; revision: number }[] = [];
+    for (const { name } of await indexedDB.databases()) {
+      if (!name) continue;
+      const db = await new Promise<IDBDatabase>((yes, no) => {
+        const r = indexedDB.open(name);
+        r.onsuccess = () => yes(r.result);
+        r.onerror = () => no(r.error);
+      });
+      try {
+        if (!db.objectStoreNames.contains('meta')) continue;
+        const c = await new Promise<any>((yes, no) => {
+          const tx = db.transaction('meta');
+          const g = tx.objectStore('meta').get('counter');
+          tx.oncomplete = () => yes(g.result);
+          tx.onabort = () => no(tx.error);
+        });
+        if (c && typeof c.v === 'number')
+          out.push({ name, v: c.v, revision: c.baseline?.revision ?? 0 });
+      } finally {
+        db.close();
+      }
+    }
+    return out;
+  });
+}
+
+test(`three devices, reduced past a snapshot cut: ${MODE}`, async ({ page, browser }, info) => {
+  test.setTimeout(1200000);
+  page.setDefaultTimeout(30000);
+  const service = await startService(
+    info.outputPath('service'),
+    process.env.DIST ? resolvePath(process.env.DIST) : undefined,
+    true,
+    true,
+  );
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  const thirdContext = await browser.newContext({ acceptDownloads: true }),
+    third = await thirdContext.newPage();
+  third.setDefaultTimeout(30000);
+  const errors: string[] = [];
+  const log: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  const observe = (p: typeof page) => {
+    p.on('pageerror', (e) => errors.push(e.message));
+    p.on('response', async (r) => {
+      const path = new URL(r.url()).pathname;
+      if (r.status() < 400 || (!path.startsWith('/account/') && !path.startsWith('/__account-setup/')))
+        return;
+      const body = await r.json().catch(() => ({}));
+      if (p === third)
+        note(`third refusal ${path} ${r.status()} ${body.refusal ?? body.reason ?? 'unavailable'}`);
+    });
+  };
+  observe(page);
+  observe(third);
+  try {
+    pair = await pairedEditors(page, browser, true);
+    pair.second.setDefaultTimeout(30000);
+    observe(pair.second);
+    await add(page, 'Original writing before the third connection');
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Original writing before the third connection',
+      { timeout: 30000 },
+    );
+    await page.route('**/account/delivery/submit', (route) => route.abort());
+    await add(page, 'Snapshot-only writing for generation-one third device');
+    const panel = (p: typeof page) =>
+      p.getByRole('region', { name: 'History maintenance', exact: true });
+    for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Data');
+      await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled();
+      await panel(p)
+        .getByRole('button', {
+          name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
+        })
+        .click();
+      await expect(panel(p)).toContainText(
+        p === page
+          ? 'Snapshot saved. Verify it from another approved device.'
+          : 'Verified snapshot 1 is saved.',
+        { timeout: 30000 },
+      );
+    }
+    await openMenuSection(pair.second, 'Account');
+    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+    await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
+    await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    await unlock(pair.second, pair.next.code);
+    const link = await pair.second.getByLabel('Device invitation link').inputValue();
+    const next = await pending(third, link, pair.next.auth);
+    const code = await compared(pair.second, third);
+    await third.reload();
+    await unlock(third, next.code);
+    await expect(third.getByLabel('Comparison code')).toHaveText(code, { timeout: 30000 });
+    await pair.second.getByLabel('Code on the new device').fill(code);
+    await pair.second.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+    await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toBeVisible({
+      timeout: 60000,
+    });
+    await third.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(third.locator('.shell')).toContainText(
+      'Snapshot-only writing for generation-one third device',
+      { timeout: 30000 },
+    );
+    await page.unroute('**/account/delivery/submit');
+    await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await pair.second.goto('/');
+    await openSaved(pair.second, pair.next.code, true);
+    await add(third, 'Third device writing reaches both existing devices');
+    for (const p of [page, pair.second])
+      await expect(p.locator('.shell')).toContainText(
+        'Third device writing reaches both existing devices',
+        { timeout: 30000 },
+      );
+    await add(pair.second, 'Joined device writing after approving the third');
+    for (const p of [page, third])
+      await expect(p.locator('.shell')).toContainText(
+        'Joined device writing after approving the third',
+        { timeout: 30000 },
+      );
+
+    const B = pair.second,
+      A = page,
+      Cd = third;
+    async function check(p: Page) {
+      await openMenuSection(p, 'Data');
+      if (!(await panel(p).isVisible().catch(() => false)))
+        await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled(
+        { timeout: 60000 },
+      );
+    }
+    async function snapshot(n: number, verify = true) {
+      await check(A);
+      const resume = panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true });
+      if (await resume.isVisible().catch(() => false)) {
+        await resume.click();
+        await expect(panel(A)).toContainText(`Verified snapshot ${n - 1} is saved.`, {
+          timeout: 60000,
+        });
+      }
+      await panel(A).getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(
+        'Snapshot saved. Verify it from another approved device.',
+        { timeout: 60000 },
+      );
+      if (verify) await admit(n);
+    }
+    async function admit(n: number) {
+      await check(B);
+      await panel(B).getByRole('button', { name: 'Verify history snapshot', exact: true }).click();
+      await expect(panel(B)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
+      await check(A);
+      await panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
+    }
+    const ids = new Map<string, string>();
+    for (const [name, p] of [
+      ['A', A],
+      ['B', B],
+      ['C', Cd],
+    ] as const)
+      p.on('request', (r) => {
+        if (!r.url().includes('/account/delivery/read-v2')) return;
+        for (const id of reads(r.postDataBuffer()?.toString('latin1') ?? '')) ids.set(name, id.reader);
+      });
+    await expect.poll(() => ids.size, { timeout: 90000 }).toBe(3);
+    note('ids ' + JSON.stringify(Object.fromEntries(ids)));
+    // Every B read the third device makes: before reduction (its frontier) and after (any check).
+    const bReads: { at: number; after: number; limit: number; phase: string }[] = [];
+    let phase = 'before';
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/delivery/read-v2')) return;
+      for (const x of reads(r.postDataBuffer()?.toString('latin1') ?? ''))
+        if (x.publisher === ids.get('B'))
+          bReads.push({ at: Date.now() - t0, after: x.after, limit: x.limit, phase });
+    });
+    let blockA = true;
+    await Cd.route('**/account/delivery/read-v2-batch', (route) =>
+      blockA ? route.fulfill({ status: 404, body: '{}' }) : route.continue(),
+    );
+    await Cd.route('**/account/delivery/read-v2', (route) => {
+      const read = reads(route.request().postDataBuffer()?.toString('latin1') ?? '');
+      if (blockA && read.some((r) => r.publisher === ids.get('A'))) return route.abort();
+      return route.continue();
+    });
+    await workers(Cd, () => {
+      (globalThis as any).__holdHistory = true;
+    });
+    note('third holds catalog checks and drops A reads');
+    await add(A, 'A writing the third device misses 1');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 1', {
+      timeout: 30000,
+    });
+    await snapshot(2);
+    note('snapshot 2 admitted');
+    await add(A, 'A writing the third device misses 2');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 2', {
+      timeout: 30000,
+    });
+    await snapshot(3, false);
+    note('snapshot 3 pending');
+    await B.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await add(B, 'B writing after snapshot 3 was prepared');
+    await add(B, 'B second writing after snapshot 3 was prepared');
+    await Cd.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await expect(Cd.locator('.shell')).toContainText(
+      'B second writing after snapshot 3 was prepared',
+      { timeout: 30000 },
+    );
+    await expect(Cd.locator('.shell')).not.toContainText('A writing the third device misses 1');
+    const frontierB = Math.max(...bReads.map((r) => r.after));
+    note('third received B past snapshot 3 cut, still behind on A; its B read cursor ' + frontierB);
+    await admit(3);
+    note('snapshot 3 admitted');
+    await check(A);
+    await panel(A).getByRole('button', { name: 'Prune covered history', exact: true }).click();
+    await expect(panel(A)).toContainText('Covered service history removed.', { timeout: 60000 });
+    note('pruned');
+    const before = await baseline(Cd);
+    await workers(Cd, () => {
+      (globalThis as any).__allowReduction = true;
+    });
+    await thirdContext.setOffline(true);
+    let reduced = false;
+    for (let i = 0; i < 36 && !reduced; i++) {
+      await Cd.waitForTimeout(5000);
+      reduced = (await baseline(Cd)).some(
+        (b) => b.v === 5 && b.revision > (before.find((x) => x.name === b.name)?.revision ?? 0),
+      );
+    }
+    expect(reduced).toBe(true);
+    note('third reduced ' + JSON.stringify(await baseline(Cd)));
+    await workers(Cd, () => {
+      (globalThis as any).__allowReduction = false;
+      (globalThis as any).__holdHistory = false;
+    });
+    blockA = false;
+    const refused: number[] = [];
+    if (MODE === 'unverifiable')
+      // The service answers the chain check as if it held no such history; ordinary reads continue.
+      await Cd.route('**/account/delivery/read-v2', (route) => {
+        const read = reads(route.request().postDataBuffer()?.toString('latin1') ?? '');
+        if (read.some((r) => r.publisher === ids.get('B') && r.after < frontierB)) {
+          refused.push(Date.now() - t0);
+          return route.fulfill({
+            status: 409,
+            contentType: 'application/json',
+            body: JSON.stringify({ v: 1, kind: 'unknown', reason: 'unavailable' }),
+          });
+        }
+        return route.fallback();
+      });
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/history/v1/checkpoint')) return;
+      try {
+        const b = JSON.parse(r.postData() ?? '{}');
+        note(`third history ${b.action}:${typeof b.payload === 'string' ? b.payload : 'object'}`);
+      } catch {}
+    });
+    phase = 'after';
+    const online = Date.now();
+    await thirdContext.setOffline(false);
+    note('third back online with catalog checks and A reads allowed');
+    const sawA = () =>
+      Cd.locator('.shell')
+        .textContent()
+        .then((t) => t!.includes('A writing the third device misses 1'));
+    const notice = () => Cd.locator('.sync-notice').allTextContents().then((t) => t.join(' | '));
+    const verification = () => bReads.filter((r) => r.phase === 'after' && r.after < frontierB);
+    if (MODE === 'recover') {
+      await expect.poll(sawA, { timeout: 60000, intervals: [500] }).toBe(true);
+      note(`recovered ${((Date.now() - online) / 1000).toFixed(1)} s after returning online`);
+      note('verification reads of B: ' + JSON.stringify(verification()));
+      expect(verification().length).toBeGreaterThan(0);
+    } else {
+      await Cd.waitForTimeout(45000);
+      note('after 45 s: shows A writing? ' + (await sawA()));
+      expect(await sawA()).toBe(false);
+      note('notice: ' + (await notice()));
+      note('verification reads of B: ' + JSON.stringify(verification()));
+      if (MODE === 'unverifiable') {
+        await expect.poll(notice, { timeout: 60000, intervals: [1000] }).toContain(NAMED);
+        note('named notice shown');
+      } else expect(verification()).toHaveLength(0);
+    }
+    await openMenuSection(Cd, 'Account');
+    note('third sync details: ' + JSON.stringify(await Cd.locator('.sync-details').allTextContents()));
+    await add(B, 'B writing after the third returned');
+    await expect(Cd.locator('.shell')).toContainText('B writing after the third returned', {
+      timeout: 60000,
+    });
+    note('third receives new B writing');
+    if (MODE === 'unverifiable') {
+      // Writing from another device arrived; the condition is unchanged, so the notice stays.
+      await Cd.waitForTimeout(10000);
+      note('notice after B writing arrived: ' + (await notice()));
+      expect(await notice()).toContain(NAMED);
+    }
+    await add(Cd, 'Third writing after returning');
+    await expect(A.locator('.shell')).toContainText('Third writing after returning', {
+      timeout: 60000,
+    });
+    note('third writing reaches A');
+    // Cold reopen: the committed installation replays without the network.
+    await openMenuSection(Cd, 'Account');
+    await Cd.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await Cd.goto('/');
+    await openSaved(Cd, next.code, true);
+    await Cd.waitForTimeout(15000);
+    note('after reopen: shows A writing? ' + (await sawA()) + '; notice: ' + (await notice()));
+    if (MODE === 'recover') {
+      expect(await sawA()).toBe(true);
+      expect(await notice()).toBe('');
+    }
+    await snapshot(4);
+    note('snapshot 4 admitted');
+    await expect(Cd.locator('.shell')).toContainText('A writing the third device misses 2', {
+      timeout: 120000,
+    });
+    note('after snapshot 4: third shows A writing');
+    if (MODE === 'unverifiable') {
+      await expect.poll(notice, { timeout: 60000, intervals: [1000] }).not.toContain(NAMED);
+      note('named notice cleared after snapshot 4: ' + JSON.stringify(await notice()));
+    }
+    // Convergence: every device's text and exact Yjs state.
+    await add(A, 'Final writing from A');
+    for (const p of [B, Cd])
+      await expect(p.locator('.shell')).toContainText('Final writing from A', { timeout: 60000 });
+    await Cd.waitForTimeout(5000);
+    const docs = [];
+    for (const p of [A, B, Cd]) docs.push(await documentOf(p));
+    note(
+      'convergence: text ' +
+        (docs[0]!.text === docs[1]!.text && docs[1]!.text === docs[2]!.text) +
+        ', state ' +
+        (JSON.stringify(docs[0]!.state) === JSON.stringify(docs[1]!.state) &&
+          JSON.stringify(docs[1]!.state) === JSON.stringify(docs[2]!.state)) +
+        `, ${docs[2]!.text.length} characters`,
+    );
+    expect(docs[2]!.text).toBe(docs[0]!.text);
+    expect(docs[1]!.text).toBe(docs[0]!.text);
+    expect(docs[2]!.state).toEqual(docs[0]!.state);
+    expect(docs[1]!.state).toEqual(docs[0]!.state);
+    if (MODE === 'unverifiable') note('chain checks answered unavailable: ' + refused.length);
+    expect(errors).toEqual([]);
+  } finally {
+    writeFileSync(
+      info.outputPath('timeline.txt'),
+      log.join('\n') + '\n' + 'errors: ' + JSON.stringify(errors) + '\n',
+    );
+    try {
+      await thirdContext.close().catch(() => {});
+      await pair?.other.close().catch(() => {});
+    } finally {
+      await stopService(service);
+    }
+  }
+});

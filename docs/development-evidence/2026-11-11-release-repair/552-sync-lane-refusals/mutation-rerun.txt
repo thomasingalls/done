@@ -1,0 +1,4 @@
+M6 a malformed-request reply reads as no answer: exit 1; ℹ pass 6; ℹ fail 1
+    ✖ a read the service cannot decode is named as a request from another version; one past the ledger as out of order, one past the route limit as malformed (72.31725ms)
+M10 the explanation is shown beside any reason: exit 1; Tests  1 failed | 2 passed (3)
+    × a halt, the sign-in gate or local storage shown instead hides the explanation, which returns with the reason 3ms

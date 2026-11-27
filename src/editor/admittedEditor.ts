@@ -7,6 +7,7 @@ import { indentUnit } from '@codemirror/language';
 import { livePreview } from './livePreview';
 import { cardTheme, editorTheme } from './theme';
 import type { AdmittedTextSurface, TextAction, TextSelection } from './admittedText';
+import { TOO_LARGE_FOR_ONE_ACTION, TOO_LARGE_FOR_ONE_ACTION_MESSAGE } from '../crdt/actionSize';
 
 export interface AdmittedEditorOptions {
   readonly parent: HTMLElement;
@@ -42,10 +43,20 @@ export const createAdmittedEditor = (options: AdmittedEditorOptions) => {
   };
   const input = (action: TextAction, at = selection) => {
     try {
-      document.input(action, at);
+      const ticket = document.input(action, at);
       selection = undefined;
       localError = '';
       renderStatus();
+      // Too much text for one action: nothing changed and editing continues; say why.
+      void ticket?.accepted?.then(
+        (receipt) => {
+          if (destroyed || (receipt as { value?: unknown }).value !== TOO_LARGE_FOR_ONE_ACTION)
+            return;
+          localError = TOO_LARGE_FOR_ONE_ACTION_MESSAGE;
+          renderStatus();
+        },
+        () => {},
+      );
     } catch (error) {
       report(error);
     }

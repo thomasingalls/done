@@ -105,6 +105,30 @@ it('a port without an actual proof-byte observation keeps binary reference fallb
     ),
   ).toBeUndefined();
 });
+it('an append stays incremental when retained proof bytes pass the old32MiB ceiling', async () => {
+  // Regression for the 2026-11-08 release. An owned-byte refusal here dropped the index, and
+  // every later ledger change on that device then ran the full reference check.
+  const f = await setup(),
+    previous = await f.indexed(),
+    records = f.add(f.rows, f.f.producer.raw);
+  const memo = { ...f.memo, ownedBytes: () => 64 * 1024 * 1024 };
+  expect(accountLedgerIndexUsage(previous, records, memo.ownedBytes()).ownedBytes).toBeGreaterThan(
+    32 * 1024 * 1024,
+  );
+  const next = await extendAccountLedger(
+    previous,
+    f.rows,
+    records,
+    f.route,
+    await f.counter(records),
+    f.base,
+    f.signer,
+    crypto.subtle,
+    { memo, current() {} },
+  );
+  expect(next).toBeDefined();
+  expect(next!.indexes).toBeDefined();
+});
 it('expanded work exceeding32768 falls back before any full signed-frame decode even below the physical row limit', async () => {
   const f = await setup();
   const before: OpenedRecord[] = Array.from({ length: 32755 }, (_, i) => ({

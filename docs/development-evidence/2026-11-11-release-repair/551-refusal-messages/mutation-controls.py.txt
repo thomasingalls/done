@@ -1,0 +1,76 @@
+# Phase 551 mutation controls. Each mutation removes one piece of the change, in the worktree,
+# runs the tests that guard it, and restores the file. The named tests must fail under it.
+import subprocess, os
+T = '<worktree>'
+REF = ['node', '--test', 'test/account-history/refusals.test.mjs']
+SES = ['node', '--test', 'test/account-sessions/client.test.mjs']
+VIT = lambda *f: ['node', 'node_modules/vitest/vitest.mjs', 'run', *f]
+M = [
+ ('M1 route refusals are not named (every 409 reads as no answer)', 'src/account/historyHttp.ts',
+  "    if (response.status === 409 && (HISTORY_ROUTE_REFUSALS as readonly unknown[]).includes(reason))",
+  "    if (response.status === 409 && (HISTORY_ROUTE_REFUSALS as readonly unknown[]).includes(reason) && false)", REF),
+ ('M2 any JSON object counts as a refusal envelope', 'src/account/historyHttp.ts',
+  "      Object.keys(body).sort().join() !== 'ok,refusal' ||", "", REF),
+ ('M3 an unknown reason reads as no answer', 'src/account/historyHttp.ts',
+  "    return 'history-refused';\n  } catch {", "    return 'history-unreachable';\n  } catch {", REF),
+ ('M4 a timeout reads as no reply', 'src/account/historyHttp.ts',
+  "(cause instanceof Error && cause.name === 'TimeoutError')", "false", REF),
+ ('M5 sign-in and authorization refusals are not named', 'src/account/historyHttp.ts',
+  "        code: namedHistoryFailure(cause) ?? 'history-unreachable',", "        code: 'history-unreachable',", REF),
+ ('M6 an unverifiable answer has no code', 'src/account/historyHttp.ts',
+  "  readonly code: HistoryFailureCode = 'history-reply-unverified';", "", REF),
+ ('M7 the login gives no reason for having no access', 'src/account/scopedTransport.ts',
+  "          throw new NetworkLoginUnavailable(binding.login.getProblem?.());", "          throw Error('Account connection unavailable');", REF),
+ ('M8 the classifier ignores a login with no access', 'src/account/historyFailure.ts',
+  "  if (cause instanceof NetworkLoginUnavailable) return loginFailure(cause.problem);\n", "", REF),
+ ('M9 HIST-OTHER: a refused resend of a kept cancellation is not checked on a fresh catalog', 'src/account/historyMaintenance.ts',
+  "          namedHistoryFailure(cause) !== 'history-checkpoint-conflict' ||", "          true ||", REF),
+ ('M10 HIST-OTHER: the refusal decides instead of the fresh catalog', 'src/account/historyMaintenance.ts',
+  "          namedHistoryFailure(cause) !== 'history-checkpoint-conflict' ||\n          !deferred(await exchange('read', 'catalog'))",
+  "          namedHistoryFailure(cause) !== 'history-checkpoint-conflict'", REF),
+ ('M11 HIST-OTHER: the attempt being cancelled still shows as resume', 'src/account/historyMaintenance.ts',
+  "          : retained?.attempt && !moot", "          : retained?.attempt", REF),
+ ('M12 HIST-OTHER: discard with a kept cancellation tries the other device’s snapshot', 'src/account/historyMaintenance.ts',
+  "    if (retained?.discard && deferred(pending)) return describe(pending, latest.checkpoint);\n", "", REF),
+ ('M13 the login keeps no reason for a renewal refusal', 'src/account/networkLogin.ts',
+  "        else this.#publish('disconnected', loginProblem(r.refusal) ?? 'refused');", "        else this.#publish('disconnected');", SES),
+ ('M14 the login keeps no reason for a finish refusal', 'src/account/networkLogin.ts',
+  "            loginProblem(r.refusal),\n", "", SES),
+ ('M15 no reply is not told apart from other failures', 'src/account/networkLogin.ts',
+  "      throw new LoginTrouble('unreachable', { cause });", "      throw cause;", SES),
+ ('M16 a reconnect forgets why its challenge failed', 'src/account/networkLogin.ts',
+  "      if (!p) throw new LoginTrouble(this.#warmProblem);", "      if (!p) throw new LoginTrouble(undefined);", SES),
+ ('M17 the login notice ignores the reason', 'src/ui/NetworkLoginNotice.tsx',
+  "  return problem && ['connect', 'reconnect', 'disconnected'].includes(status)", "  return false && problem && ['connect', 'reconnect', 'disconnected'].includes(status)", VIT('test/syncNotice.test.tsx')),
+ ('M18 the sync notice ignores the reason', 'src/ui/SyncNotice.tsx',
+  "      {signInRequired && loginProblem && (", "      {signInRequired && loginProblem && false && (", VIT('test/syncNotice.test.tsx')),
+ ('M19 the bridge drops the reason', 'src/crdt/accountSessionBridge.ts',
+  "    ...(problem ? { loginProblem: problem } : {}),\n", "", VIT('test/accountSessionBridge.test.ts')),
+ ('M20 the history view ignores the code', 'src/ui/AccountHistory.tsx',
+  "      setError(historyFailureMessage(cause));", "      setError(historyFailureMessage(null));", VIT('test/accountHistory.test.tsx')),
+ ('M21 no reply stops saying check your connection', 'src/ui/historyFailureMessages.ts',
+  "  'history-unreachable': `History maintenance could not reach the account service. ${KEPT} Check your connection, then check history or resume.`,",
+  "  'history-unreachable': `History maintenance could not reach the account service. ${KEPT} Check history or resume.`,",
+  VIT('test/accountHistory.test.tsx')),
+ ('M22 the waiting sentence keeps examples that do not fit every build', 'src/ui/SyncNotice.tsx',
+  "until this device can finish history maintenance. A history",
+  "until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history",
+  VIT('test/syncNotice.test.tsx')),
+]
+for name, f, a, b, cmd in M:
+    p = os.path.join(T, f); s = open(p).read()
+    assert s.count(a) == 1, (name, a)
+    open(p, 'w').write(s.replace(a, b))
+    try:
+        r = subprocess.run(cmd, cwd=T, capture_output=True, text=True, timeout=900)
+        out = r.stdout + r.stderr
+        if cmd[0] == 'node' and cmd[1] == '--test':
+            failed = sorted({l.strip() for l in out.splitlines() if l.startswith('✖ ') and 'failing tests' not in l})
+            summary = [l.strip() for l in out.splitlines() if l.startswith('ℹ fail') or l.startswith('ℹ pass')]
+        else:
+            failed = [l.strip() for l in out.splitlines() if l.strip().startswith('×')]
+            summary = [l.strip() for l in out.splitlines() if l.strip().startswith('Tests ')]
+        print(f'{name}: exit {r.returncode}; {"; ".join(summary[-2:]) if summary else "?"}', flush=True)
+        for l in failed: print('   ', l[:170], flush=True)
+    finally:
+        open(p, 'w').write(s)

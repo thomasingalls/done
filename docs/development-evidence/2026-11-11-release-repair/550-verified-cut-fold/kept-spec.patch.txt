@@ -1,0 +1,655 @@
+diff --git a/scripts/history-fold/run.mjs b/scripts/history-fold/run.mjs
+new file mode 100644
+index 0000000..20927a8
+--- /dev/null
++++ b/scripts/history-fold/run.mjs
+@@ -0,0 +1,69 @@
++/** Builds this tree (with test hooks) and the older apps a folded store must still open, then runs
++ * test/packaged-account/history-fold-compat.spec.ts. Never touches the author's dist/. */
++import { execFileSync, spawn } from 'node:child_process';
++import { mkdirSync, symlinkSync, writeFileSync } from 'node:fs';
++import { resolve } from 'node:path';
++
++const output = resolve('test-results/history-fold', new Date().toISOString().replaceAll(':', '-'));
++mkdirSync(output, { recursive: true });
++console.log(`History fold evidence: ${output}`);
++// The older builds: the tip before the fold and the released source. Override with commits.
++const [tip, released] = (process.env.HISTORY_FOLD_OLDER ?? '7e6aff636,759890ca0').split(',');
++const flags = {
++  VITE_ACCOUNT_RETENTION_AUTO: '1',
++  VITE_ACCOUNT_RETENTION_RESUME: '1',
++  VITE_ACCOUNT_LEDGER: 'incremental',
++  VITE_ACCOUNT_BATCH: 'coordinated-2000',
++};
++const date = new Date().toISOString().slice(0, 10);
++const run = (command, args, options) =>
++  new Promise((accept, reject) => {
++    const child = spawn(command, args, { stdio: 'inherit', ...options });
++    child.once('error', reject);
++    child.once('exit', (code) =>
++      code === 0 ? accept() : reject(Error(`${command} exited ${code}`)),
++    );
++  });
++const vite = (cwd, outDir, env) =>
++  run(process.execPath, ['node_modules/vite/bin/vite.js', 'build', '--outDir', outDir], {
++    cwd,
++    env: { ...process.env, ...flags, APP_BUILD_DATE: date, ...env },
++  });
++
++const head = execFileSync('git', ['rev-parse', 'HEAD']).toString().trim();
++await vite(resolve('.'), resolve(output, 'current'), {
++  VITE_ACCOUNT_TEST_HOOKS: '1',
++  APP_BUILD_REVISION: `${head}-dirty`,
++});
++const older = {};
++for (const commit of [tip, released]) {
++  const sha = execFileSync('git', ['rev-parse', commit]).toString().trim();
++  const source = resolve(output, `source-${sha.slice(0, 9)}`);
++  mkdirSync(resolve(source, 'docs/account-crypto'), { recursive: true });
++  execFileSync('sh', ['-c', `git archive ${sha} -- . ':!docs' | tar -x -C "${source}"`]);
++  writeFileSync(
++    resolve(source, 'docs/account-crypto/first-authority.json'),
++    execFileSync('git', ['show', `${sha}:docs/account-crypto/first-authority.json`]),
++  );
++  symlinkSync(resolve('node_modules'), resolve(source, 'node_modules'));
++  older[commit] = resolve(output, sha.slice(0, 9));
++  await vite(source, older[commit], { APP_BUILD_REVISION: sha });
++}
++await run(
++  process.execPath,
++  [
++    'node_modules/@playwright/test/cli.js',
++    'test',
++    '--config',
++    'playwright.packaged-account.config.ts',
++    'history-fold-compat',
++  ],
++  {
++    env: {
++      ...process.env,
++      DIST: resolve(output, 'current'),
++      HISTORY_FOLD_TIP_DIST: older[tip],
++      HISTORY_FOLD_RELEASED_DIST: older[released],
++    },
++  },
++);
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index dcf7ca8..9a07dfa 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -27,6 +27,7 @@ import {
+ } from '../account/automaticHistoryMaintenance';
+ import { createRetentionReads } from './retentionReads';
+ import { RetiredHistoryRequired, type RetiredCut } from './retainedHistory';
++import { testHoldsHistory } from './testHooks';
+ import type { PreparedReceiveFinish } from './admissionQueue';
+ import type { createLocalBaselineShadow, BaselineShadowResult } from './localBaselineShadow';
+ import { createCpuBudget, cpuCheckpoint } from './cpuBudget';
+@@ -1731,6 +1732,7 @@ async function openAccountReceiveOwner(
+   let historyRequired = false;
+   const fetchHistory = () =>
+     runNetworkTask(async (network) => {
++      if (testHoldsHistory()) return null;
+       if (!access || account.detached || !canReceive() || Date.now() < historyDue) return null;
+       const stamp = retentionReads.capture();
+       const prepared = await runCaptureTask(async (task, owner, route) => {
+diff --git a/src/crdt/automaticLocalRetention.ts b/src/crdt/automaticLocalRetention.ts
+index 9ba0198..6b39441 100644
+--- a/src/crdt/automaticLocalRetention.ts
++++ b/src/crdt/automaticLocalRetention.ts
+@@ -9,6 +9,7 @@ import {
+ import { PreparationCapacity } from './preparationCapacity';
+ import { LocalBaselineError } from './localBaselineError';
+ import { copyRetentionDetail, type LocalRetentionDetail } from './localRetentionDetail';
++import { testMinRecords } from './testHooks';
+ export type { LocalRetentionCause, LocalRetentionDetail } from './localRetentionDetail';
+ export interface LocalRetentionHint {
+   readonly revision: number;
+@@ -255,7 +256,7 @@ export function createAutomaticLocalRetention(options: {
+       Number.isSafeInteger(hint.revision) &&
+       hint.revision >= 0 &&
+       Number.isSafeInteger(hint.records) &&
+-      (hint.records >= LOCAL_RETENTION_MIN_RECORDS || fold);
++      (hint.records >= (testMinRecords() ?? LOCAL_RETENTION_MIN_RECORDS) || fold);
+     // A hint withdrawn by an in-flight validation, or pending input, never releases a hold.
+     // Only the owner's stable hold observation, outcomes, the budget and lifecycle do.
+     if (hold !== true) releaseHold();
+diff --git a/src/crdt/testHooks.ts b/src/crdt/testHooks.ts
+new file mode 100644
+index 0000000..ede8ca0
+--- /dev/null
++++ b/src/crdt/testHooks.ts
+@@ -0,0 +1,19 @@
++/** Test builds only (`VITE_ACCOUNT_TEST_HOOKS=1`): browser specs that must reach a state real use
++ * reaches slowly, such as a device reduced past a snapshot cut. A release build never sets the
++ * flag, so every hook reads as absent there. Hooks only withhold or allow scheduling; no check,
++ * proof or commit is skipped by them. */
++interface TestHooks {
++  /** Receive passes run without a history catalog check. */
++  holdHistory?: boolean;
++  /** Growth threshold for automatic local reduction, in place of 1,024 records. */
++  minRecords?: number;
++}
++const hooks = (): TestHooks | undefined =>
++  import.meta.env?.['VITE_ACCOUNT_TEST_HOOKS'] === '1'
++    ? (globalThis as { __doneTestHooks?: TestHooks }).__doneTestHooks
++    : undefined;
++export const testHoldsHistory = () => hooks()?.holdHistory === true;
++export const testMinRecords = () => {
++  const n = hooks()?.minRecords;
++  return typeof n === 'number' && Number.isSafeInteger(n) && n >= 1 ? n : undefined;
++};
+diff --git a/test/packaged-account/history-fold-compat.spec.ts b/test/packaged-account/history-fold-compat.spec.ts
+new file mode 100644
+index 0000000..c4c05c9
+--- /dev/null
++++ b/test/packaged-account/history-fold-compat.spec.ts
+@@ -0,0 +1,508 @@
++// Older builds open a store after a verified snapshot installation has been folded into the local
++// baseline, and every device still converges. Needs three builds, made by
++// `node scripts/history-fold/run.mjs`: this tree with VITE_ACCOUNT_TEST_HOOKS=1 (DIST), and the tip
++// before the fold and the released source (HISTORY_FOLD_TIP_DIST, HISTORY_FOLD_RELEASED_DIST).
++// The hooks only withhold the third device's catalog checks and lower its growth threshold for one
++// reduction; every verification, eligibility and commit check runs as in a release build.
++import { openMenuSection } from '../geometry/openApp';
++import { test, expect, type Page } from '@playwright/test';
++import { pairedEditors, openSaved, add } from './devices';
++import { pending, compared, unlock } from '../device-enrollment/helpers';
++import { startService, stopService, startApplication, stopProcess } from './server';
++import { readFileSync, writeFileSync } from 'node:fs';
++import { resolve as resolvePath } from 'node:path';
++
++const reads = (body: string) =>
++  [
++    ...body.matchAll(
++      /\["done\/private-read\/v2",2,"[^"]*","[^"]*","[0-9a-f]+","([0-9a-f]{32})","([0-9a-f]{32})","[0-9a-f]+","[0-9a-f]+",\d+,(\d+),(\d+)/g,
++    ),
++  ].map((m) => ({ reader: m[1]!, publisher: m[2]!, after: Number(m[3]), limit: Number(m[4]) }));
++/** The export is a stored (uncompressed) zip: its entries' text, in name order. */
++function storedZipText(buf: Buffer) {
++  const out: [string, string][] = [];
++  let at = 0;
++  while (at + 30 <= buf.length && buf.readUInt32LE(at) === 0x04034b50) {
++    if (buf.readUInt16LE(at + 8) !== 0) throw Error('compressed entry');
++    const size = buf.readUInt32LE(at + 18),
++      nameLength = buf.readUInt16LE(at + 26),
++      extra = buf.readUInt16LE(at + 28);
++    const name = buf.subarray(at + 30, at + 30 + nameLength).toString();
++    const start = at + 30 + nameLength + extra;
++    out.push([name, buf.subarray(start, start + size).toString()]);
++    at = start + size;
++  }
++  return out
++    .sort(([a], [b]) => a.localeCompare(b))
++    .map(([, text]) => text)
++    .join('\n');
++}
++const workers = async (p: Page, fn: () => void) => {
++  for (const w of p.workers()) await w.evaluate(fn).catch(() => {});
++};
++
++test.skip(
++  !process.env['HISTORY_FOLD_TIP_DIST'] || !process.env['HISTORY_FOLD_RELEASED_DIST'],
++  'Run through scripts/history-fold/run.mjs, which builds the three apps',
++);
++test('older builds open a store after its verified snapshot installation is folded', async ({
++  page,
++  browser,
++}, info) => {
++  test.setTimeout(1200000);
++  page.setDefaultTimeout(30000);
++  const service = await startService(
++    info.outputPath('service'),
++    process.env['DIST'] ? resolvePath(process.env['DIST']) : undefined,
++    true,
++    true,
++  );
++  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
++  // No service worker: each load serves the build the app server currently holds.
++  const thirdContext = await browser.newContext({ acceptDownloads: true, serviceWorkers: 'block' }),
++    third = await thirdContext.newPage();
++  third.setDefaultTimeout(30000);
++  const errors: string[] = [];
++  const log: string[] = [];
++  const t0 = Date.now();
++  const note = (s: string) => {
++    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s ${s}`;
++    log.push(line);
++    console.log(line);
++  };
++  const observe = (p: typeof page) => {
++    p.on('pageerror', (e) => errors.push(e.message));
++    p.on('response', async (r) => {
++      const path = new URL(r.url()).pathname;
++      if (
++        r.status() < 400 ||
++        (!path.startsWith('/account/') && !path.startsWith('/__account-setup/'))
++      )
++        return;
++      const body = await r.json().catch(() => ({}));
++      if (p === third)
++        note(`third refusal ${path} ${r.status()} ${body.refusal ?? body.reason ?? 'unavailable'}`);
++    });
++  };
++  observe(page);
++  observe(third);
++  try {
++    pair = await pairedEditors(page, browser, true);
++    pair.second.setDefaultTimeout(30000);
++    observe(pair.second);
++    await add(page, 'Original writing before the third connection');
++    await expect(pair.second.locator('.shell')).toContainText(
++      'Original writing before the third connection',
++      { timeout: 30000 },
++    );
++    await page.route('**/account/delivery/submit', (route) => route.abort());
++    await add(page, 'Snapshot-only writing for generation-one third device');
++    const panel = (p: typeof page) =>
++      p.getByRole('region', { name: 'History maintenance', exact: true });
++    for (const p of [page, pair.second]) {
++      await openMenuSection(p, 'Data');
++      await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
++      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
++      await expect(
++        panel(p).getByRole('button', { name: 'Check history', exact: true }),
++      ).toBeEnabled();
++      await panel(p)
++        .getByRole('button', {
++          name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
++        })
++        .click();
++      await expect(panel(p)).toContainText(
++        p === page
++          ? 'Snapshot saved. Verify it from another approved device.'
++          : 'Verified snapshot 1 is saved.',
++        { timeout: 30000 },
++      );
++    }
++    await openMenuSection(pair.second, 'Account');
++    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
++    await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
++    await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
++    await unlock(pair.second, pair.next.code);
++    const link = await pair.second.getByLabel('Device invitation link').inputValue();
++    const next = await pending(third, link, pair.next.auth);
++    const code = await compared(pair.second, third);
++    await third.reload();
++    await unlock(third, next.code);
++    await expect(third.getByLabel('Comparison code')).toHaveText(code, { timeout: 30000 });
++    await pair.second.getByLabel('Code on the new device').fill(code);
++    await pair.second.getByRole('button', { name: 'Compare and approve', exact: true }).click();
++    await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toBeVisible(
++      {
++        timeout: 60000,
++      },
++    );
++    await third.getByRole('button', { name: 'Open your writing', exact: true }).click();
++    await expect(third.locator('.shell')).toContainText(
++      'Snapshot-only writing for generation-one third device',
++      { timeout: 30000 },
++    );
++    await page.unroute('**/account/delivery/submit');
++    await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
++    await pair.second.goto('/');
++    await openSaved(pair.second, pair.next.code, true);
++    await add(third, 'Third device writing reaches both existing devices');
++    for (const p of [page, pair.second])
++      await expect(p.locator('.shell')).toContainText(
++        'Third device writing reaches both existing devices',
++        { timeout: 30000 },
++      );
++    await add(pair.second, 'Joined device writing after approving the third');
++    for (const p of [page, third])
++      await expect(p.locator('.shell')).toContainText(
++        'Joined device writing after approving the third',
++        { timeout: 30000 },
++      );
++
++    const B = pair.second,
++      A = page,
++      Cd = third;
++    async function check(p: Page) {
++      await openMenuSection(p, 'Data');
++      if (
++        !(await panel(p)
++          .isVisible()
++          .catch(() => false))
++      )
++        await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
++      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
++      await expect(
++        panel(p).getByRole('button', { name: 'Check history', exact: true }),
++      ).toBeEnabled({ timeout: 60000 });
++    }
++    async function snapshot(n: number, verify = true) {
++      await check(A);
++      const resume = panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true });
++      if (await resume.isVisible().catch(() => false)) {
++        await resume.click();
++        await expect(panel(A)).toContainText(`Verified snapshot ${n - 1} is saved.`, {
++          timeout: 60000,
++        });
++      }
++      await panel(A).getByRole('button', { name: 'Create history snapshot', exact: true }).click();
++      await expect(panel(A)).toContainText(
++        'Snapshot saved. Verify it from another approved device.',
++        { timeout: 60000 },
++      );
++      if (verify) await admit(n);
++    }
++    async function admit(n: number) {
++      await check(B);
++      await panel(B).getByRole('button', { name: 'Verify history snapshot', exact: true }).click();
++      await expect(panel(B)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
++      await check(A);
++      await panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true }).click();
++      await expect(panel(A)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 60000 });
++    }
++    const ids = new Map<string, string>();
++    for (const [name, p] of [
++      ['A', A],
++      ['B', B],
++      ['C', Cd],
++    ] as const)
++      p.on('request', (r) => {
++        if (!r.url().includes('/account/delivery/read-v2')) return;
++        for (const id of reads(r.postDataBuffer()?.toString('latin1') ?? ''))
++          ids.set(name, id.reader);
++      });
++    await expect.poll(() => ids.size, { timeout: 90000 }).toBe(3);
++    note('ids ' + JSON.stringify(Object.fromEntries(ids)));
++    // Every B read the third device makes: before reduction (its frontier) and after (any check).
++    const bReads: { at: number; after: number; limit: number; phase: string }[] = [];
++    let phase = 'before';
++    Cd.on('request', (r) => {
++      if (!r.url().includes('/account/delivery/read-v2')) return;
++      for (const x of reads(r.postDataBuffer()?.toString('latin1') ?? ''))
++        if (x.publisher === ids.get('B'))
++          bReads.push({ at: Date.now() - t0, after: x.after, limit: x.limit, phase });
++    });
++    let blockA = true;
++    await Cd.route('**/account/delivery/read-v2-batch', (route) =>
++      blockA ? route.fulfill({ status: 404, body: '{}' }) : route.continue(),
++    );
++    await Cd.route('**/account/delivery/read-v2', (route) => {
++      const read = reads(route.request().postDataBuffer()?.toString('latin1') ?? '');
++      if (blockA && read.some((r) => r.publisher === ids.get('A'))) return route.abort();
++      return route.continue();
++    });
++    await workers(Cd, () => {
++      (globalThis as any).__doneTestHooks = { holdHistory: true };
++    });
++    note('third holds catalog checks and drops A reads');
++    await add(A, 'A writing the third device misses 1');
++    await expect(B.locator('.shell')).toContainText('A writing the third device misses 1', {
++      timeout: 30000,
++    });
++    await snapshot(2);
++    note('snapshot 2 admitted');
++    await add(A, 'A writing the third device misses 2');
++    await expect(B.locator('.shell')).toContainText('A writing the third device misses 2', {
++      timeout: 30000,
++    });
++    await snapshot(3, false);
++    note('snapshot 3 pending');
++    await B.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
++    await add(B, 'B writing after snapshot 3 was prepared');
++    await add(B, 'B second writing after snapshot 3 was prepared');
++    await Cd.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
++    await expect(Cd.locator('.shell')).toContainText(
++      'B second writing after snapshot 3 was prepared',
++      { timeout: 30000 },
++    );
++    await expect(Cd.locator('.shell')).not.toContainText('A writing the third device misses 1');
++    const frontierB = Math.max(...bReads.map((r) => r.after));
++    note('third received B past snapshot 3 cut, still behind on A; its B read cursor ' + frontierB);
++    await admit(3);
++    note('snapshot 3 admitted');
++    await check(A);
++    await panel(A).getByRole('button', { name: 'Prune covered history', exact: true }).click();
++    await expect(panel(A)).toContainText('Covered service history removed.', { timeout: 60000 });
++    note('pruned');
++
++    // ---------------- helpers for this probe ----------------
++    const counter = () =>
++      Cd.evaluate(async () => {
++        for (const { name } of await indexedDB.databases()) {
++          if (!name) continue;
++          const db = await new Promise<IDBDatabase>((yes, no) => {
++            const r = indexedDB.open(name);
++            r.onsuccess = () => yes(r.result);
++            r.onerror = () => no(r.error);
++          });
++          try {
++            if (!db.objectStoreNames.contains('meta')) continue;
++            const c = await new Promise<any>((yes, no) => {
++              const tx = db.transaction('meta');
++              const g = tx.objectStore('meta').get('counter');
++              tx.oncomplete = () => yes(g.result);
++              tx.onabort = () => no(tx.error);
++            });
++            if (c && typeof c.v === 'number')
++              return { revision: c.baseline?.revision ?? 0, next: c.next_seq };
++          } finally {
++            db.close();
++          }
++        }
++        return { revision: -1, next: -1 };
++      });
++    const revision = async () => (await counter()).revision;
++    const builds: Record<'patched' | 'tip' | 'released', string> = {
++      patched: resolvePath(process.env['DIST'] ?? 'dist'),
++      tip: resolvePath(process.env['HISTORY_FOLD_TIP_DIST']!),
++      released: resolvePath(process.env['HISTORY_FOLD_RELEASED_DIST']!),
++    };
++    const scripts = async (build: string) =>
++      [
++        ...(await import('node:fs'))
++          .readFileSync(build + '/index.html', 'utf8')
++          .matchAll(/src="\/(assets\/[^"]+\.js)"/g),
++      ]
++        .map((m) => m[1]!)
++        .sort();
++    async function leave(lock = true) {
++      if (
++        lock &&
++        (await Cd.locator('.shell')
++          .isVisible()
++          .catch(() => false))
++      ) {
++        await openMenuSection(Cd, 'Account');
++        await Cd.getByRole('button', { name: 'Lock workspace', exact: true }).click();
++        await Cd.waitForTimeout(500);
++      }
++      await Cd.goto('/manifest.webmanifest');
++      await Cd.waitForTimeout(1000);
++    }
++    async function serve(name: keyof typeof builds) {
++      await stopProcess(service.app);
++      service.app = await startApplication(builds[name]);
++    }
++    const sentence = () =>
++      Cd.locator('.sync-notice')
++        .allTextContents()
++        .then((t) => t.join(' | '));
++    async function open(name: keyof typeof builds) {
++      await Cd.goto('/');
++      const loaded = (
++        await Cd.evaluate(() =>
++          Array.from(document.scripts, (x) => new URL(x.src || location.href).pathname.slice(1)),
++        )
++      )
++        .filter((n) => n.startsWith('assets/'))
++        .sort();
++      expect(loaded).toEqual(await scripts(builds[name]));
++      const codeEntry = Cd.getByLabel('Unlock code', { exact: true });
++      const saved = Cd.getByRole('button', { name: /Resume device connection/ });
++      await expect
++        .poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible()), {
++          timeout: 30000,
++        })
++        .toBe(true);
++      if (!(await codeEntry.isVisible())) await saved.click();
++      await codeEntry.fill(next.code);
++      await Cd.getByRole('button', {
++        name: /^(Unlock enrollment|Unlock and get invitation|Confirm code and unlock with passkey)$/,
++      }).click();
++      const ok = await expect(Cd.locator('.shell'))
++        .toBeVisible({ timeout: 30000 })
++        .then(
++          () => true,
++          () => false,
++        );
++      const alert = ok ? '' : (await Cd.getByRole('alert').allTextContents()).join(' | ');
++      note(
++        `${name}: ${ok ? 'workspace open' : 'NOT open: ' + JSON.stringify(alert)}; revision ${await revision()}`,
++      );
++      return ok;
++    }
++    async function olderOpens(name: 'tip' | 'released') {
++      await leave();
++      await serve(name);
++      const ok = await open(name);
++      if (ok) {
++        await add(Cd, `Writing on ${name} after the fold`);
++        const sent = await expect(A.locator('.shell'))
++          .toContainText(`Writing on ${name} after the fold`, { timeout: 60000 })
++          .then(
++            () => true,
++            () => false,
++          );
++        await add(B, `B writing while the third runs ${name}`);
++        const got = await expect(Cd.locator('.shell'))
++          .toContainText(`B writing while the third runs ${name}`, { timeout: 60000 })
++          .then(
++            () => true,
++            () => false,
++          );
++        note(`${name}: sends ${sent}, receives ${got}`);
++      }
++      await leave();
++      await serve('patched');
++      expect(await open('patched')).toBe(true);
++      return ok;
++    }
++    const panelText = () =>
++      Cd.getByRole('region', { name: 'History on this device' })
++        .allTextContents()
++        .then((t) => t.join(' '));
++    async function waitFold(since: number, from: number, timeout = 180000) {
++      const deadline = Date.now() + timeout;
++      while (Date.now() < deadline) {
++        if ((await revision().catch(() => from)) > from) return (Date.now() - since) / 1000;
++        await Cd.waitForTimeout(250);
++      }
++      return undefined;
++    }
++    // ---------------- reduce the third device past the snapshot cut ----------------
++    const reducedFrom = await revision();
++    await workers(Cd, () => {
++      (globalThis as any).__doneTestHooks = { holdHistory: true, minRecords: 1 };
++    });
++    await thirdContext.setOffline(true);
++    let reducedTo = reducedFrom;
++    for (let i = 0; i < 36 && reducedTo <= reducedFrom; i++) {
++      await Cd.waitForTimeout(5000);
++      reducedTo = await revision();
++    }
++    expect(reducedTo).toBeGreaterThan(reducedFrom);
++    // From here only a due fold can reduce: the growth threshold is back to 1,024 records and the
++    // 30-minute cooldown has just started.
++    await workers(Cd, () => {
++      (globalThis as any).__doneTestHooks = {};
++    });
++    note(`third reduced: revision ${reducedFrom} -> ${reducedTo}`);
++    blockA = false;
++    phase = 'after';
++    // The panel is opened before any measurement so no click counts as activity later.
++    await openMenuSection(Cd, 'Data');
++    Cd.on('request', (r) => {
++      if (!r.url().includes('/account/history/v1/checkpoint')) return;
++      try {
++        const b = JSON.parse(r.postData() ?? '{}');
++        note(`third history ${b.action}:${typeof b.payload === 'string' ? b.payload : 'object'}`);
++      } catch {}
++    });
++    Cd.on('console', (m) => {
++      if (m.type() === 'error') note('third console error: ' + m.text().slice(0, 300));
++    });
++    Cd.on('worker', (w) =>
++      w.on('console', (m) => {
++        if (m.type() === 'error') note('third worker error: ' + m.text().slice(0, 300));
++      }),
++    );
++    const online = Date.now();
++    await thirdContext.setOffline(false);
++    note('third back online');
++    const sawA = () =>
++      Cd.locator('.shell')
++        .textContent()
++        .then((t) => t!.includes('A writing the third device misses 1'));
++    const committed = await expect
++      .poll(sawA, { timeout: 90000, intervals: [200] })
++      .toBe(true)
++      .then(
++        () => true,
++        () => false,
++      );
++    const tCommit = Date.now();
++    note(
++      `install committed? ${committed} (${((tCommit - online) / 1000).toFixed(1)} s after online); revision ${await revision()}`,
++    );
++    note(
++      `B reads after returning: ${JSON.stringify(bReads.filter((r) => r.phase === 'after').slice(0, 8))}`,
++    );
++    if (!committed) {
++      note(`notice ${JSON.stringify(await sentence())}`);
++      await openMenuSection(Cd, 'Account');
++      note(`sync details ${JSON.stringify(await Cd.locator('.sync-details').allTextContents())}`);
++      await openMenuSection(Cd, 'Data');
++    }
++    {
++      const window = await waitFold(tCommit, reducedTo);
++      note(
++        `fold window: ${window} s (commit to baseline revision ${await revision()}); panel: ${JSON.stringify(await panelText())}`,
++      );
++      expect(window).toBeDefined();
++      // Exactly one fold: nothing reduces again (cooldown and growth threshold apply again).
++      const r = await revision();
++      await Cd.waitForTimeout(70000);
++      note(`70 s later revision ${await revision()} (was ${r})`);
++      expect(await revision()).toBe(r);
++      for (const older of ['tip', 'released'] as const) expect(await olderOpens(older)).toBe(true);
++    }
++    // Convergence: the three devices export the same text.
++    await add(A, 'Final writing from A');
++    for (const p of [B, Cd])
++      await expect(p.locator('.shell')).toContainText('Final writing from A', { timeout: 60000 });
++    const texts: string[] = [];
++    for (const p of [A, B, Cd]) {
++      await openMenuSection(p, 'Data');
++      const [download] = await Promise.all([
++        p.waitForEvent('download'),
++        p
++          .getByRole('region', { name: 'Data', exact: true })
++          .getByRole('button', { name: 'Export markdown', exact: true })
++          .click(),
++      ]);
++      texts.push(storedZipText(readFileSync((await download.path())!)));
++    }
++    expect(texts[1]).toBe(texts[0]);
++    expect(texts[2]).toBe(texts[0]);
++    note(`convergence: the three exports are equal (${texts[0]!.length} characters)`);
++  } finally {
++    writeFileSync(
++      info.outputPath('timeline.txt'),
++      log.join('\n') + '\n' + 'errors: ' + JSON.stringify(errors) + '\n',
++    );
++    try {
++      await thirdContext.close().catch(() => {});
++      await pair?.other.close().catch(() => {});
++    } finally {
++      await stopService(service);
++    }
++  }
++});

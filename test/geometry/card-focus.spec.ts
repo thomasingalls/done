@@ -44,8 +44,9 @@ const split = async (page: Page) => {
 };
 
 const merge = async (page: Page) => {
-  await add(page, 'head');
+  // Ordinary arrivals prepend; seed the same head/tail document in reverse.
   await add(page, 'tail');
+  await add(page, 'head');
   await scheduled(page).nth(1).locator('.card-surface').click();
   const editor = scheduled(page).nth(1).locator('.cm-content');
   await editor.press('Home');

@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""Base-tree shim for running phase 549's new tests on d1a4a653e. It adds the new interface with
+the base behaviour: warmAuditInterruptible is accountCapture.ts's original check (queued work
+always interrupts; the owner's recordingOracle is never consulted) and the owner never records an oracle
+window. Usage: base-shim.py <copy root>"""
+import sys, pathlib
+root = pathlib.Path(sys.argv[1])
+p = root / 'src/crdt/contentMaintenance.ts'; s = p.read_text()
+old = 'export const isMaintenanceTask = (task: SessionTask): boolean => maintenanceTasks.has(task);\n'
+assert s.count(old) == 1
+s = s.replace(old, old + '''
+// BASE SHIM (phase 549 base-tree run): accountCapture.ts's original warm-audit check.
+export interface WarmAuditGuards {
+  readonly suspended: () => boolean;
+  readonly inputSince: () => boolean;
+  readonly foregroundPending: () => boolean;
+}
+export function warmAuditInterruptible(
+  parent: SessionTask,
+  _owner: { recordingOracle(): boolean },
+  guards: WarmAuditGuards,
+): SessionTask {
+  const check = () => {
+    const foreground = guards.foregroundPending();
+    if (guards.suspended() || guards.inputSince() || foreground)
+      throw new MaintenanceInterrupted([
+        { suspended: guards.suspended(), shadowActivity: guards.inputSince(), queuePriority: foreground },
+      ]);
+  };
+  return {
+    signal: parent.signal,
+    step: (effect) => parent.step(() => { check(); return effect(); }),
+    wait: (start) => parent.wait(() => { check(); return start(); }),
+  };
+}
+''')
+p.write_text(s)
+p = root / 'src/crdt/contentStore.ts'; s = p.read_text()
+old = '    hasReducedHistory: () => metadata?.reduced() === true,\n'
+assert s.count(old) == 1
+s = s.replace(old, old + '    recordingOracle: () => false, // BASE SHIM (phase 549 base-tree run)\n')
+p.write_text(s)
+print('shimmed', root)

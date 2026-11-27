@@ -1,0 +1,45 @@
+#!/bin/sh
+# Phase 551 base-tree run: the ten edited sources at 3b8394590, the new tests and fixtures kept.
+# historyFailure.ts and historyFailureMessages.ts are new files no base source imports; the first
+# is shimmed so it builds against the base scopedTransport, which exports neither GrantDenied nor
+# NetworkLoginUnavailable. Restores the phase 551 files from the backup afterwards.
+set -u
+cd <worktree>
+S=<scratch>
+BASE=3b8394590
+for f in src/account/historyHttp.ts src/account/historyMaintenance.ts src/account/networkLogin.ts \
+  src/account/scopedTransport.ts src/crdt/accountReceive.ts src/crdt/accountSessionBridge.ts \
+  src/crdt/historyOwner.ts src/ui/AccountHistory.tsx src/ui/NetworkLoginNotice.tsx src/ui/SyncNotice.tsx; do
+  git show "$BASE:$f" > "$f"
+done
+python3 - <<'EOF'
+p='src/account/historyFailure.ts'
+s=open(p).read()
+old="""import {
+  GrantDenied,
+  NetworkAuthorityChanged,
+  NetworkLoginUnavailable,
+  NetworkSignInRequired,
+  NetworkThrottled,
+} from './scopedTransport';"""
+new="""import { NetworkAuthorityChanged, NetworkSignInRequired, NetworkThrottled } from './scopedTransport';
+// Base-run shim: the base transport exports neither class.
+class GrantDenied extends Error {
+  reason = '';
+}
+class NetworkLoginUnavailable extends Error {
+  problem = undefined;
+}"""
+assert s.count(old)==1
+open(p,'w').write(s.replace(old,new))
+EOF
+git diff --stat
+echo "=== node --test test/account-history/refusals.test.mjs"
+timeout 900 node --test test/account-history/refusals.test.mjs > $S/base-refusals.txt 2>&1; echo "exit $?" >> $S/base-refusals.txt
+echo "=== node --test test/account-sessions/client.test.mjs"
+timeout 600 node --test test/account-sessions/client.test.mjs > $S/base-sessions-client.txt 2>&1; echo "exit $?" >> $S/base-sessions-client.txt
+echo "=== vitest"
+timeout 600 npx vitest run test/accountHistory.test.tsx test/syncNotice.test.tsx test/accountSessionBridge.test.ts > $S/base-vitest.txt 2>&1; echo "exit $?" >> $S/base-vitest.txt
+# Restore phase 551.
+tar xf $S/final/tree.tar
+git diff | shasum | diff - $S/final/diff.sha && echo "restored"

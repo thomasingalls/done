@@ -1,0 +1,264 @@
+{
+  "phase": 558,
+  "date": "2026-11-13",
+  "base": {
+    "description": "phase 557, staged and not committed",
+    "indexTree": "44f4ba6abeda7ddd08f55ea0ab84ad4fe1b41a86",
+    "stagedOnCommit": "bfb512c7091aae5f5e3dbd3384b64e4c8c143935"
+  },
+  "requested": "coordinating session, 2026-11-13: survey every argument spread in src, account-service and account-protocol; replace those whose operand can grow without a stated bound by something with no argument limit and the same result",
+  "built": true,
+  "amends": [],
+  "storedFormatsWireLimitsChanged": [],
+  "checksNarrowed": [],
+  "checksRunLessOftenOrDifferently": [],
+  "behaviourAboveTheLimit": [
+    "a complete read that reuses the opened view returns its rows instead of throwing a RangeError and clearing the view",
+    "an append past the limit extends the warm view instead of throwing after its commit and clearing the view",
+    "the receive owner's incremental coverage view appends every added row instead of throwing and clearing itself",
+    "export and the legacy import's canonical check serialize a card past the limit",
+    "a failed local flush puts its batch back and reports the IndexedDB error, instead of a RangeError that dropped the batch from the queue",
+    "the gentle-context measurement completes with that many visible ranges"
+  ],
+  "sourceSha256": {
+    "src/crdt/contentStore.ts": "994b869381cc40e597ff9e65cfe6dd688a6409580d76f84660b4661356866865",
+    "src/crdt/inboundLedger.ts": "5c9e9ba7d14675e25e937e71177089ce39df681145cdee25f3a5675a083beacf",
+    "src/crdt/serialize.ts": "5c8b0c160a02cccb4c63203a8e1043bb84523be0debe440db25c6118e613ce33",
+    "src/crdt/persistence.ts": "d1a161821e48b5ee617481f9502bd7246e6788554cda5ed8d9ca5377153b924f",
+    "src/editor/gentleContext.ts": "27eb2f6b0abfce71f0ab8fa1ff316dc669b149f6d558aac3165aa030a16debdc",
+    "test/argumentSpreads.test.ts": "dbd35899a017deb9afc7d0ee9b83378e1df52fd2af72a87325b28c3c77165ea4"
+  },
+  "baseSourceSha256": {
+    "src/crdt/contentStore.ts": "3fd24f0fba6452576ff78b92eb290cf90733babf3fb22d430a0db55ba9b66501",
+    "src/crdt/inboundLedger.ts": "29ece88f08bfaae372f4947697382ce08635ccda2473cf9d27ee6ea04cc961b1",
+    "src/crdt/serialize.ts": "b2d909c3d9ef5b7a7e5a1aab82a7c0216d6569eb645174ee5053b63a0fb482f2",
+    "src/crdt/persistence.ts": "00a6aa0128231f8d8d6bd633bb1093f0638f3038c32d3091b90b76e6d5f3d8af",
+    "src/editor/gentleContext.ts": "0f1b05068a6ef127240a59402232eeb1d345b97fdf6f55d1daf2c650c1470116"
+  },
+  "survey": {
+    "method": "Babel syntax tree of every non-test .ts, .tsx, .mts, .cts, .js, .mjs and .cjs file under src, account-service and account-protocol: every call or construction with a spread argument, and every .apply(thisArg, args)",
+    "sourceFiles": 526,
+    "argumentSpreads": 67,
+    "changed": 7,
+    "left": 60,
+    "table": "survey.md",
+    "scripts": [
+      "survey.mjs.txt",
+      "survey-table.py.txt"
+    ],
+    "notCounted": "f.apply() (src/crdt/windowWorkspaceQueues.ts:101) and receiving.apply() (src/crdt/accountWorkerClient.ts:371) are methods named apply called with no arguments",
+    "briefCount": "about 34, by text search",
+    "changedSites": [
+      "src/crdt/contentStore.ts:423",
+      "src/crdt/contentStore.ts:806",
+      "src/crdt/contentStore.ts:808",
+      "src/crdt/inboundLedger.ts:704",
+      "src/crdt/serialize.ts:99",
+      "src/crdt/persistence.ts:242",
+      "src/editor/gentleContext.ts:316"
+    ],
+    "lineNumbersAre": "the phase 557 text's",
+    "boundedByCallersOnly": {
+      "src/crdt/contentStore.ts:806": "one append batch; every current caller caps it at MAX_BATCH_RECORDS = 256, but append and appendRecords do not check it; changed"
+    }
+  },
+  "engineLimits": {
+    "record": "engine-limits.txt",
+    "probes": [
+      "limit-node.mjs.txt",
+      "limit-browsers.cjs.txt"
+    ],
+    "smallestThrowingLength": {
+      "node 26.13.1 main thread": 124278,
+      "node 26.13.1 main thread, 200 frames deeper": 122254,
+      "node 26.13.1 worker_threads Worker": 494378,
+      "chromium 151.0.7922.34 page": 123580,
+      "chromium 151.0.7922.34 dedicated Worker": 63512,
+      "webkit 26.5 page": 638677,
+      "webkit 26.5 dedicated Worker": 50291
+    },
+    "phase542": "Chromium page: 100,000 passed, 200,000 threw; WebKit and Firefox page: 500,000 passed, 1,000,000 threw",
+    "firefox": "not measured in this phase",
+    "browsersHow": "Playwright's bundled builds, a bare page served by page.route (no application, no server), a dedicated Worker started from it; 60 s bound per browser; closed after"
+  },
+  "rowsPerOwnPositionEstimate": {
+    "fixture": "phase 554: 21,602 physical rows at 3,000 own positions",
+    "rowsPerPosition": 7.2,
+    "webkitWorkerLimitNearPositions": 7000,
+    "chromiumWorkerLimitNearPositions": 8800,
+    "status": "estimate from one fixture's shape; not measured on a device"
+  },
+  "replacementCost": {
+    "record": "push-cost.txt",
+    "medianMs": {
+      "21602": {
+        "spreadPush": 0.165,
+        "loopPush": 0.059,
+        "copyRecordsShapedCopy": 1.119
+      },
+      "100000": {
+        "spreadPush": 0.748,
+        "loopPush": 0.677,
+        "copyRecordsShapedCopy": 11.447
+      }
+    }
+  },
+  "newTestFiles": [
+    "test/argumentSpreads.test.ts"
+  ],
+  "newUnitCases": 9,
+  "controlCases": 2,
+  "rows": 150000,
+  "testFileSeconds": 32,
+  "failedOnBase": {
+    "cases": 7,
+    "passedOnBase": 2,
+    "passedOnBaseAre": "the two controls",
+    "firstSourceFrames": {
+      "contentStore openSnapshot": "src/crdt/contentStore.ts:423",
+      "contentStore appendRecords": "src/crdt/contentStore.ts:806",
+      "inboundLedger prepare": "src/crdt/inboundLedger.ts:704",
+      "serialize collectionLines": "src/crdt/serialize.ts:99",
+      "gentleContext write": "src/editor/gentleContext.ts:314",
+      "persistence startFlush": "assertion: whenDurable rejected with the RangeError instead of the IndexedDB error",
+      "guard": "assertion: argument spreads found in the five files"
+    },
+    "record": "base-tree-run.txt",
+    "how": "staged text of the five sources written over them with git show :<path>, final test text run, sources restored and checked with cmp"
+  },
+  "coverageLevels": {
+    "realPathInNodeMainThread": [
+      "src/crdt/contentStore.ts:423",
+      "src/crdt/contentStore.ts:806",
+      "src/crdt/contentStore.ts:808",
+      "src/crdt/inboundLedger.ts:704",
+      "src/crdt/serialize.ts:99",
+      "src/crdt/persistence.ts:242",
+      "src/editor/gentleContext.ts:316"
+    ],
+    "harnessParts": [
+      "gentle context: visible ranges come from the fixed-geometry fake view of gentleContextIncremental.test.ts, not from CodeMirror printing",
+      "persistence: the first flush's transaction failure and the retry's recorded (not stored) adds are stubs over fake IndexedDB"
+    ],
+    "notDriven": "any browser or the composed Account Worker"
+  },
+  "mutationControls": {
+    "total": 33,
+    "tripped": 33,
+    "allByAssertion": true,
+    "oldSpreadPerSite": 7,
+    "reviewControls": 2,
+    "wrongResultLoops": 24,
+    "record": "mutation-controls.txt",
+    "script": "mutation-controls.py.txt",
+    "sourcesRestoredByteForByte": true,
+    "history": [
+      "before review: 14 controls, all tripped; the whole failed batch reversed was left out because it crashed the run (whenDurable looped until the heap ran out)",
+      "at review the coordinating session's two controls went undetected: entries that arrived during the flush put back before the failed batch, and the caret dropped from the gentle-context fold",
+      "after strengthening: a first run of 33 had 32 trip; reversing the reused rows at contentStore.ts:423 did not, because a load sorts its rows before returning them and the fixture's validator accepted any order; the validator now requires sequence order and the final run trips 33 of 33"
+    ]
+  },
+  "relatedFilesPassed": {
+    "files": 76,
+    "passed": 1242,
+    "skipped": 1,
+    "record": "related-run.txt"
+  },
+  "changedExistingCases": [],
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": "oxfmt and oxlint pass on the five sources and the new test",
+  "fullUnit": "not run by this seat; the coordinating session runs it once before the commit",
+  "inventory": {
+    "recorded": true,
+    "obligationsBefore": 1134,
+    "obligations": 1135,
+    "unresolved": 561,
+    "caseDenominatorBefore": 3057,
+    "caseDenominator": 3066,
+    "vitestReviewedFilesBefore": 120,
+    "vitestReviewedFiles": 121,
+    "generalStagesBefore": 305,
+    "generalStages": 306,
+    "vitestReviewedStagesBefore": 139,
+    "vitestReviewedStages": 140,
+    "testFiles": 771,
+    "requiredTestFiles": 765,
+    "drift": "test/argumentSpreads.test.ts added; scripts/release-validation/general-tests.json, test/release-validation/general-tests.test.mjs and generated-tests.test.mjs changed",
+    "testFileHashRerecordedAfterReview": true
+  },
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 526,
+    "sourceHashesChanged": 5,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [],
+    "constructionRegistryLinesFollowed": 0
+  },
+  "anchors": {
+    "checked": 186,
+    "changed": 0,
+    "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base text of the five edited sources occurs the same number of times now",
+    "excluded": "test/argumentSpreads.test.ts, which quotes the old expressions as its control",
+    "script": "anchors.py.txt"
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "releaseAdapterAndInventoryTests": {
+    "files": 10,
+    "passed": 188
+  },
+  "accountCryptoPrepTests": {
+    "passed": 6
+  },
+  "productBacklog": "no held item affected; none added",
+  "notRun": [
+    "the full unit suite",
+    "pnpm build, trace:check and account:crypto-audit",
+    "browser and native suites",
+    "the changed code in any browser, Worker or device"
+  ],
+  "overlap": "overlap.log",
+  "scratch": "probe outputs, raw test reports and helper scripts under the session scratchpad; no copy of the repository",
+  "deployed": false,
+  "review": {
+    "by": "coordinating session, 2026-11-13",
+    "undetectedControls": [
+      "src/crdt/persistence.ts: entries that arrived during the flush put back before the failed batch",
+      "src/editor/gentleContext.ts: the caret replaced by 0 as the fold's first value"
+    ],
+    "testChanges": [
+      "case 2 (and every owner case): the fixture's validator requires its rows in sequence order, since a load sorts what it returns only after validation",
+      "case 3: the warm view holds 3 rows before the batch, so the batch must land after them",
+      "case 4: the caller erases its own rows and the same rows read again must still be 'same' (the cache holds copies); the refusal check moved last because a refusal clears the view",
+      "case 6: two real document edits arrive after the first flush takes its batch and before it fails; the retry must write the batch first, then the edits in order; each add is checked as made and the count at commit, so a wrong order or a missing entry fails the retry instead of hanging whenDurable",
+      "case 7: a second view whose ROWS ranges all end before the caret; the unchanged view measured again must reuse its plan (no Tree.resolveInner), which happens only if the fold included the caret; the state is given its complete syntax tree by one empty transaction"
+    ],
+    "caseCountChanged": false,
+    "sourcesChanged": false,
+    "defectFound": false,
+    "gentleContextNote": "the decorations cannot show a dropped caret, because gentleContextPlan plans through max(head, through) itself; the plugin's plan cache is the closest observable, as its span ends at through + 1",
+    "unpinnedProperty": "contentStore.ts:806 puts the clones in `added` (shared with warm.appended) in the sealed view, not the `records` objects; no current caller changes the returned records, so the two cannot be told apart",
+    "afterStrengthening": {
+      "fullUnit": {
+        "files": 358,
+        "passed": 3721,
+        "skipped": 1,
+        "failed": 0
+      },
+      "bothControlsTogether": "the persistence case and the gentle-context case fail, the other 7 pass; sources restored byte for byte",
+      "browserLimitsRemeasured": "the recorded script gave the same eight figures (Chromium Worker 63,512, WebKit Worker 50,291); both are for a shallow call stack",
+      "failurePathRead": "openSnapshot: the spread sat inside the try whose handler clears the view for anything but an interruption and rethrows; what the caller shows the user was not traced",
+      "alsoRun": "typecheck, build, contract and bookkeeping checks, the history, service delivery and service inbound node tests, and the CI session, authority and quarantine steps"
+    }
+  }
+}

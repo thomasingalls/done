@@ -1,0 +1,16 @@
+#!/bin/zsh
+# Usage: run-matrix.sh <label>. Runs the probe matrix from the worktree root.
+set -u
+W=/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+S=/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/warm-view
+L=$1
+cd $W
+for cfg in "single 1000000" "single 2000000" "single 4000000" "fragmented 700000"; do
+  set -- ${=cfg}
+  out=$S/out/phase545-$L-$1-$2.jsonl
+  rm -f $out
+  echo "== $L $1 $2 $(uptime)"
+  PROBE_SHAPE=$1 PROBE_CHARS=$2 PROBE_STEPS=0,50,200 PROBE_REPS=3 PROBE_OUT=$out VITE_ACCOUNT_LEDGER_PROFILE=1 \
+    node_modules/.bin/vitest run --config $S/vitest.config.mjs --configLoader runner 2>&1 | grep -E "Tests|FAIL|Error" 
+done
+echo "MATRIX DONE $L"

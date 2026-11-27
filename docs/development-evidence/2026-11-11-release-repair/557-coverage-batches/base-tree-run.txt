@@ -1,0 +1,37 @@
+# Phase 557 tests on the phase 556 source (bfb512c70): src/crdt/inboundLedger.ts and src/crdt/localRetentionPlan.ts restored to HEAD, final test text in place. 2026-11-13T00:59:03Z
+$ pnpm exec vitest run test/coverageBatches.test.ts --maxWorkers=1
+(both sources identical to HEAD)
+× a reduction makes about a constant number of whole-document forks and comparisons while history grows fourfold 791ms
+× a plan holding an uncovered insertion is refused at that row, first, in the middle, last and on each side of a batch boundary 106ms
+× a plan holding a missing dependency left pending is refused at that row, first, in the middle, last and on each side of a batch boundary 46ms
+× a plan holding two uncovered rows, the later supplying the earlier one’s dependency is refused at that row, first, in the middle, last and on each side of a batch boundary 46ms
+× a plan holding a deletion-only row is refused at that row, first, in the middle, last and on each side of a batch boundary 49ms
+× a plan holding a row covered only in part is refused at that row, first, in the middle, last and on each side of a batch boundary 46ms
+× a plan holding the same uncovered row twice is refused at that row, first, in the middle, last and on each side of a batch boundary 49ms
+× a plan holding an uncovered insertion followed by a row deleting it is refused at that row, first, in the middle, last and on each side of a batch boundary 46ms
+× a plan holding a known item re-sent with an origin inside a surrogate pair is refused at that row, first, in the middle, last and on each side of a batch boundary 46ms
+× a plan holding an uncovered row followed by a malformed one is refused at that row, first, in the middle, last and on each side of a batch boundary 45ms
+× content rows settle before any other row is classified, so an uncovered last row refuses before a later damaged row 43ms
+× every verdict and refusal matches the per-call reference over constructed histories, batch sizes and placements 3ms
+× a batch that is not proven is checked again one row at a time, yielding before each 1ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 13 ⎯⎯⎯⎯⎯⎯⎯
+FAIL  test/coverageBatches.test.ts > a reduction makes about a constant number of whole-document forks and comparisons while history grows fourfold
+AssertionError: expected 192 to be less than or equal to 49
+FAIL  test/coverageBatches.test.ts > a plan holding an uncovered insertion is refused at that row, first, in the middle, last and on each side of a batch boundary
+AssertionError: promise resolved "{ kind: 'local-retention-dry-run' }" instead of rejecting
+FAIL  test/coverageBatches.test.ts > a plan holding a missing dependency left pending is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding two uncovered rows, the later supplying the earlier one’s dependency is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding a deletion-only row is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding a row covered only in part is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding the same uncovered row twice is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding an uncovered insertion followed by a row deleting it is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding a known item re-sent with an origin inside a surrogate pair is refused at that row, first, in the middle, last and on each side of a batch boundary
+FAIL  test/coverageBatches.test.ts > a plan holding an uncovered row followed by a malformed one is refused at that row, first, in the middle, last and on each side of a batch boundary
+AssertionError: promise resolved "{ kind: 'local-retention-dry-run' }" instead of rejecting
+FAIL  test/coverageBatches.test.ts > content rows settle before any other row is classified, so an uncovered last row refuses before a later damaged row
+AssertionError: expected [Function] to throw error including 'Inbound content coverage is missing' but got 'injected classification fault'
+FAIL  test/coverageBatches.test.ts > every verdict and refusal matches the per-call reference over constructed histories, batch sizes and placements
+TypeError: actual.checkInBatches is not a function
+FAIL  test/coverageBatches.test.ts > a batch that is not proven is checked again one row at a time, yielding before each
+TypeError: actual.checkInBatches is not a function
+Tests  13 failed (13)

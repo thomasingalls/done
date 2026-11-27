@@ -1874,13 +1874,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 72,
+          "line": 70,
           "label": "done/private-read/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 95,
+          "line": 93,
           "label": "done/private-read/v1",
           "kind": "literal"
         }
@@ -1971,13 +1971,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 134,
+          "line": 132,
           "label": "done/private-read-page/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 161,
+          "line": 159,
           "label": "done/private-read-page/v1",
           "kind": "literal"
         }
@@ -2068,13 +2068,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 59,
+          "line": 56,
           "label": "done/private-read/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 83,
+          "line": 80,
           "label": "done/private-read/v2",
           "kind": "literal"
         }
@@ -2165,13 +2165,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 117,
+          "line": 114,
           "label": "done/private-read-page/v2",
           "kind": "literal"
         },
         {
           "path": "account-protocol/inboundTransport.ts",
-          "line": 136,
+          "line": 133,
           "label": "done/private-read-page/v2",
           "kind": "literal"
         }
@@ -2302,13 +2302,13 @@
       "sourceSites": [
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 56,
+          "line": 54,
           "label": "done/private-submit/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/deliveryTransport.ts",
-          "line": 60,
+          "line": 58,
           "label": "done/private-submit/v1",
           "kind": "literal"
         }
@@ -2461,37 +2461,37 @@
       "sourceSites": [
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 353,
+          "line": 384,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 397,
+          "line": 428,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 498,
+          "line": 521,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 102,
+          "line": 103,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/sourceCapture.ts",
-          "line": 130,
+          "line": 131,
           "label": "done/source-capture/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 264,
+          "line": 261,
           "label": "done/source-capture/v1",
           "kind": "literal"
         }
@@ -2556,43 +2556,43 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 189,
+          "line": 188,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 224,
+          "line": 247,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 267,
+          "line": 290,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 353,
+          "line": 384,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 504,
+          "line": 527,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 164,
+          "line": 161,
           "label": "done/account-spool/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 189,
+          "line": 186,
           "label": "done/account-spool/v1",
           "kind": "literal"
         }
@@ -2677,43 +2677,43 @@
       "sourceSites": [
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 104,
+          "line": 103,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 131,
+          "line": 130,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/deliveryRecord.ts",
-          "line": 177,
+          "line": 176,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 268,
+          "line": 291,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 353,
+          "line": 384,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/incrementalAccountLedger.ts",
-          "line": 433,
+          "line": 464,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localRetentionPlan.ts",
-          "line": 505,
+          "line": 528,
           "label": "done/account-delivery/v1",
           "kind": "literal"
         }
@@ -2878,7 +2878,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/spoolRecord.ts",
-          "line": 501,
+          "line": 498,
           "label": "done/account-spool-chain/v1\u0000",
           "kind": "literal"
         }
@@ -3515,13 +3515,13 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 104,
+          "line": 128,
           "label": "done/devicelock/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 120,
+          "line": 144,
           "label": "done/devicelock/v1",
           "kind": "literal"
         }
@@ -3600,7 +3600,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 167,
+          "line": 191,
           "label": "done/keyenv/v1",
           "kind": "literal"
         }
@@ -3661,7 +3661,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 223,
+          "line": 247,
           "label": "done/custody-credential/v2",
           "kind": "literal"
         }
@@ -3728,7 +3728,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/custodyCrypto.ts",
-          "line": 343,
+          "line": 367,
           "label": "done/custody-key-check/v2",
           "kind": "literal"
         }
@@ -4364,7 +4364,7 @@
       "sourceSites": [
         {
           "path": "src/crdt/legacySource.ts",
-          "line": 177,
+          "line": 175,
           "label": "done/legacy-source-observation/v1",
           "kind": "literal"
         }
@@ -4511,7 +4511,7 @@
         },
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 929,
+          "line": 973,
           "label": "done/account-ledger-reference-mismatch",
           "kind": "literal"
         },
@@ -4646,7 +4646,7 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 142,
+          "line": 165,
           "label": "done/account-recovery-confirm/v1",
           "kind": "literal"
         }
@@ -4702,25 +4702,25 @@
       "sourceSites": [
         {
           "path": "account-protocol/recovery.ts",
-          "line": 132,
+          "line": 155,
           "label": "done/account-recovery-draft/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 79,
+          "line": 102,
           "label": "done/pkg-root/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 112,
+          "line": 135,
           "label": "done/recovery-envelope/v1",
           "kind": "literal"
         },
         {
           "path": "account-protocol/recovery.ts",
-          "line": 121,
+          "line": 144,
           "label": "done/recovery-state/v1",
           "kind": "literal"
         }
@@ -4909,7 +4909,7 @@
         },
         {
           "path": "src/crdt/historySource.ts",
-          "line": 266,
+          "line": 282,
           "label": "done/checkpoint/v1",
           "kind": "literal"
         },
@@ -6132,13 +6132,13 @@
         },
         {
           "path": "src/crdt/historyInstall.ts",
-          "line": 30,
+          "line": 31,
           "label": "done/history-install/v1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/historyInstall.ts",
-          "line": 31,
+          "line": 32,
           "label": "done/history-install/v2",
           "kind": "literal"
         },
@@ -6195,6 +6195,7 @@
         "done/local-baseline-carrier/draft-1",
         "done/local-baseline-carrier/draft-2",
         "done/local-baseline-carrier/draft-3",
+        "done/local-baseline-carrier/draft-4",
         "done/local-baseline-scope/draft-2",
         "done/upload-bootstrap-census/v1",
         "done/upload-bootstrap/v1"
@@ -6208,13 +6209,13 @@
         },
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 271,
+          "line": 311,
           "label": "done/account-local-baseline-auth/draft-2\u0000",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineRecord.ts",
-          "line": 272,
+          "line": 312,
           "label": "done/account-local-baseline-auth/draft-3\u0000",
           "kind": "literal"
         },
@@ -6232,38 +6233,44 @@
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 144,
+          "line": 166,
           "label": "done/content-counter/local-baseline-draft-1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 143,
+          "line": 165,
           "label": "done/content-counter/local-baseline-draft-2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 141,
+          "line": 163,
           "label": "done/content-counter/local-baseline-draft-3",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 14,
+          "line": 18,
           "label": "done/local-baseline-carrier/draft-1",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 15,
+          "line": 19,
           "label": "done/local-baseline-carrier/draft-2",
           "kind": "literal"
         },
         {
           "path": "src/crdt/localBaselineAnchor.ts",
-          "line": 16,
+          "line": 20,
           "label": "done/local-baseline-carrier/draft-3",
+          "kind": "literal"
+        },
+        {
+          "path": "src/crdt/localBaselineAnchor.ts",
+          "line": 22,
+          "label": "done/local-baseline-carrier/draft-4",
           "kind": "literal"
         },
         {

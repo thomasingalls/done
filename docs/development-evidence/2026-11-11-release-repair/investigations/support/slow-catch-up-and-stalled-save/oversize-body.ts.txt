@@ -1,0 +1,46 @@
+// COPY-ONLY PROBE (oddities): commands whose single prepared update exceeds MAX_JOURNAL_UPDATE.
+const settle = async <T,>(p: Promise<T>, ms = 1000) =>
+  Promise.race([
+    p.then((v) => ({ settled: 'resolved' as const, v }), (e) => ({ settled: 'rejected' as const, e: String(e?.code ?? e?.message ?? e) })),
+    new Promise<{ settled: 'pending' }>((y) => setTimeout(() => y({ settled: 'pending' }), ms)),
+  ]);
+const big = (n: number, c = 'x') => c.repeat(n);
+type Case = { name: string; setup?: (w: AdmittedWorkspace) => Promise<unknown>; run: (w: AdmittedWorkspace, ctx: any) => Promise<unknown> };
+const largeCard = async (w: AdmittedWorkspace, size: number, to = next) => {
+  const id = await create(w, 'seed', to);
+  // Text input slices itself; this builds a large card without a large single update.
+  const r = await settle(w.text({ kind: 'card', id }).input({ name: 'insert', text: big(size, 'y') }, selection(4)).accepted, 5000);
+  if (r.settled !== 'resolved') throw Error('setup text insert ' + JSON.stringify(r));
+  return id;
+};
+const cases: Case[] = [
+  { name: 'compose 15000', run: (w) => w.command({ kind: 'compose', to: next, text: big(15000) }).accepted },
+  { name: 'compose 16200', run: (w) => w.command({ kind: 'compose', to: next, text: big(16200) }).accepted },
+  { name: 'compose 17000', run: (w) => w.command({ kind: 'compose', to: next, text: big(17000) }).accepted },
+  { name: 'text insert 17000 into card', setup: (w) => create(w, 'seed'), run: (w, id) => w.text({ kind: 'card', id }).input({ name: 'insert', text: big(17000) }, selection(4)).accepted },
+  { name: 'duplicate 17000 card', setup: (w) => largeCard(w, 17000, { ...next, section: 'scheduled' as const }), run: (w, id) => w.command({ kind: 'duplicate', id }).accepted },
+  { name: 'done-for-now 17000 card', setup: (w) => largeCard(w, 17000), run: (w, id) => w.command({ kind: 'done-for-now', id }).accepted },
+  { name: 'file 17000 card to Goals', setup: (w) => largeCard(w, 17000), run: (w, id) => w.command({ kind: 'file', id, to: 'master' }).accepted },
+  { name: 'merge onto 17000 card', setup: async (w) => { await largeCard(w, 17000); return create(w, 'tail'); }, run: (w, id) => w.command({ kind: 'merge', id }).accepted },
+  { name: 'bulk 20 x 1000 Next to Goals', setup: async (w) => { for (let i = 0; i < 20; i++) await create(w, big(1000, String.fromCharCode(97 + i))); }, run: (w) => w.command({ kind: 'bulk', from: next.date, to: 'master' }).accepted },
+  { name: 'copy one 17000 Goals line', setup: async (w) => { const r = await settle(master(w).input({ name: 'insert', text: big(17000, 'g') }, selection(0)).accepted, 5000); if (r.settled !== 'resolved') throw Error('setup'); }, run: (w) => w.command({ kind: 'copy', to: next, lines: [big(17000, 'g')] }).accepted },
+];
+describe.each(['reference', 'account-text'] as const)('oversize probe %s', (preparation) => {
+  it.each(cases.map((c) => [c.name, c] as const))('%s', async (_name, c) => {
+    const f = await makeFixture(undefined, preparation);
+    try {
+      const ctx = c.setup ? await c.setup(f.doc) : undefined;
+      const first = await settle(c.run(f.doc, ctx));
+      const status = f.doc.status;
+      let retried: unknown = 'n/a';
+      if (first.settled === 'pending') {
+        try { f.doc.retry(); } catch (e) { retried = 'retry threw ' + String(e); }
+        await new Promise((y) => setTimeout(y, 200));
+        retried = retried === 'n/a' ? { state: f.doc.status.state, pressure: f.doc.status.pressure?.code, pendingItems: f.doc.status.pendingItems } : retried;
+      }
+      console.log(JSON.stringify({ preparation, case: c.name, first: first.settled, ...(first.settled === 'rejected' ? { e: first.e } : {}), value: first.settled === 'resolved' ? (first.v as any).value : undefined, state: status.state, pressure: status.pressure?.code, pendingItems: status.pendingItems, afterRetry: retried }));
+    } finally {
+      await f.doc.close().catch(() => {});
+    }
+  });
+});

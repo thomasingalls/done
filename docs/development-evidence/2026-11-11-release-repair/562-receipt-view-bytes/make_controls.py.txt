@@ -1,0 +1,158 @@
+"""Phase 562: mutation controls for test/inboundReceiptViews.test.ts › all72.
+
+Usage: python3 -I make_controls.py <scratch dir> <repo dir> <base tree id>
+
+Writes copies of the case's file to <scratch>/probes-controls/, each with absolute imports and one
+change, for two texts: `final` (the working tree, assert.deepStrictEqual) and `base` (the file at
+the base tree, Vitest toEqual). Runs each copy alone with Vitest filtered to the all72 case, one
+worker, a scratch config whose root, setup file and environment are the repository's, and the
+JSON reporter, under a 300 s bound. Prints one line per control: its outcome, the statement the
+case failed at (mapped from the copy's line number), and the first line of the failure message.
+The repository is not modified.
+
+Controls, each applied to `request` and, separately, to `page`:
+- byte-actual-vNNN: one byte of the decoded view's bytes is flipped (XOR 1) just before the
+  comparison, at view NNN of the case's 240 (view 1: byte 0; view 120: the middle byte; view 240:
+  the last byte). The two identity assertions still hold, since the receipt's own array changed.
+- byte-expected-vNNN: the same flip in a copy of the expected bytes used only in that comparison.
+- type-*: at every view, the comparison's actual is replaced by a value with the right bytes and
+  the wrong type or length: a plain Array, a Node Buffer, a Uint8ClampedArray, a Uint8Array one
+  byte shorter (same prefix), a Uint8Array one byte longer (the actual as its prefix), and a
+  Uint8Array of the same bytes with an extra own enumerable property.
+- unchanged: absolute imports only.
+"""
+import json
+import os
+import re
+import subprocess
+import sys
+
+S, R, BASE = sys.argv[1], sys.argv[2], sys.argv[3]
+REL = 'test/inboundReceiptViews.test.ts'
+OUT = os.path.join(S, 'probes-controls')
+os.makedirs(OUT, exist_ok=True)
+for f in os.listdir(OUT):
+    os.remove(os.path.join(OUT, f))
+
+texts = {
+    'final': open(os.path.join(R, REL)).read(),
+    'base': subprocess.run(['git', '-C', R, 'show', f'{BASE}:{REL}'], check=True,
+                           capture_output=True, text=True).stdout,
+}
+COMPARE = {
+    'final': {f: f'          assert.deepStrictEqual(view.event.{f}, record.{f});\n' for f in ('request', 'page')},
+    'base': {f: f'          expect(view.event.{f}).toEqual(record.{f});\n' for f in ('request', 'page')},
+}
+
+
+def absolute(text):
+    return re.sub(r"from '\.\./", f"from '{R}/", text).replace("from './", f"from '{R}/test/")
+
+
+def compare_line(kind, field, actual, expected):
+    if kind == 'final':
+        return f'          assert.deepStrictEqual({actual}, {expected});\n'
+    return f'          expect({actual}).toEqual({expected});\n'
+
+
+VIEWS = {1: 'bytes => 0', 120: 'bytes => bytes.length >> 1', 240: 'bytes => bytes.length - 1'}
+TYPES = {
+    'array': 'Array.from({a})',
+    'buffer': 'Buffer.from({a})',
+    'clamped': 'new Uint8ClampedArray({a})',
+    'shorter': '{a}.subarray(0, {a}.length - 1)',
+    'longer': '((c) => (c.set({a}), c))(new Uint8Array({a}.length + 1))',
+    'extra-property': 'Object.assign(new Uint8Array({a}), {{ extra: 1 }})',
+}
+
+
+def controls(kind):
+    yield 'unchanged', None, None
+    for field in ('request', 'page'):
+        for v, at in VIEWS.items():
+            yield f'byte-actual-v{v:03d}-{field}', field, ('actual', v, at)
+            yield f'byte-expected-v{v:03d}-{field}', field, ('expected', v, at)
+        for t, expr in TYPES.items():
+            yield f'type-{t}-{field}', field, ('type', expr, None)
+
+
+config = os.path.join(S, 'vitest.controls.config.mjs')
+with open(config, 'w') as c:
+    c.write(
+        '// Scratch-only Vitest config for the phase 562 controls.\n'
+        'export default {\n'
+        f"  root: '{R}',\n"
+        '  test: {\n'
+        "    environment: 'node',\n"
+        f"    setupFiles: ['{R}/test/setup.ts'],\n"
+        f"    include: ['{OUT}/**/*.test.ts'],\n"
+        '    maxWorkers: 1,\n'
+        '  },\n'
+        '};\n'
+    )
+
+results = []
+for kind, text in texts.items():
+    for name, field, change in controls(kind):
+        body = absolute(text)
+        body = body.replace("type View = ", "let controlViews = 0;\ntype View = ", 1)
+        counter = '          const controlView = ++controlViews;\n'
+        first = COMPARE[kind]['request']
+        assert body.count(first) == 1, (kind, 'request comparison not found once')
+        assert body.count(COMPARE[kind]['page']) == 1, (kind, 'page comparison not found once')
+        if change is None:
+            body = body.replace(first, counter + first)
+        elif change[0] == 'actual':
+            _, v, at = change
+            flip = (f'          if (controlView === {v}) {{\n'
+                    f'            const bytes = view.event.{field}, at = ({at})(bytes);\n'
+                    f'            bytes[at] = bytes[at]! ^ 1;\n'
+                    '          }\n')
+            body = body.replace(first, counter + flip + first)
+        elif change[0] == 'expected':
+            _, v, at = change
+            flipped = (f'(controlView === {v} ? ((bytes) => (bytes[({at})(bytes)] ^= 1, bytes))'
+                       f'(new Uint8Array(record.{field})) : record.{field})')
+            body = body.replace(first, counter + first)
+            body = body.replace(COMPARE[kind][field],
+                                compare_line(kind, field, f'view.event.{field}', flipped))
+        else:
+            expr = change[1].format(a=f'view.event.{field}')
+            body = body.replace(first, counter + first)
+            body = body.replace(COMPARE[kind][field],
+                                compare_line(kind, field, expr, f'record.{field}'))
+        fname = f'{kind}--{name}.test.ts'
+        path = os.path.join(OUT, fname)
+        open(path, 'w').write(body)
+        lines = body.split('\n')
+        where = {}
+        for i, l in enumerate(lines, 1):
+            s = l.strip()
+            if s.startswith(('assert.deepStrictEqual(', 'expect(')) and 'record.request' in s and 'toBe(' not in s:
+                where[i] = 'request comparison'
+            elif s.startswith(('assert.deepStrictEqual(', 'expect(')) and 'record.page' in s and 'toBe(' not in s:
+                where[i] = 'page comparison'
+            elif 'toBe(source.receipt.record.request)' in s:
+                where[i] = 'request identity'
+            elif 'toBe(source.receipt.record.page)' in s:
+                where[i] = 'page identity'
+        report = os.path.join(S, 'controls-json', f'{kind}--{name}.json')
+        os.makedirs(os.path.dirname(report), exist_ok=True)
+        proc = subprocess.run(
+            ['timeout', '300', 'node_modules/.bin/vitest', 'run', '--config', config, fname,
+             '-t', 'all72', '--reporter=json', f'--outputFile={report}'],
+            cwd=R, capture_output=True, text=True)
+        d = json.load(open(report))
+        case = [a for f in d['testResults'] for a in f['assertionResults'] if a['status'] != 'skipped']
+        assert len(case) == 1, (fname, len(case))
+        a = case[0]
+        at, msg = '', ''
+        if a['status'] == 'failed':
+            fm = a['failureMessages'][0]
+            msg = fm.split('\n')[0][:150]
+            m = re.search(re.escape(fname) + r':(\d+):\d+', fm)
+            at = where.get(int(m.group(1)), f'line {m.group(1)}') if m else 'unknown'
+        results.append((kind, name, a['status'], round(a.get('duration') or 0), at, msg))
+        print(f'{kind:5} {name:34} {a["status"]:6} {round(a.get("duration") or 0):>5} ms  {at:20} {msg}', flush=True)
+
+json.dump(results, open(os.path.join(S, 'controls.json'), 'w'), indent=1)

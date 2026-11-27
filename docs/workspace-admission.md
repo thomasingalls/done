@@ -41,9 +41,14 @@ initialization shutdown. It is not evidence of corrupted storage or authority to
 state scans/copies still need performance and memory acceptance.
 
 Typing and card/Goals paste use the existing Markdown commands. Paste slices preserve surrogate pairs,
-contain at most 1000 UTF-16 units and share one undo step. The 16 KiB encoded-delta guard remains. Large
-structural/bulk, deletion, formatting or undo commands can exceed it and block visibly; general large-command
-slicing remains owed. Native composition/device acceptance and layout-dependent editing shortcuts remain
+contain at most 1000 UTF-16 units and share one undo step. The 16 KiB encoded-delta guard remains. Since
+phase 548 (2026-11-12) the workspace adapter keeps every prepared change within it: a compose longer than
+14 KiB of UTF-8 creates its card from the first text slice and completes it with text slices in the same
+undo step, and any other command whose change would exceed the guard (duplicate, Done for now, merge, split,
+copy or move from Goals, Next to Goals, undo/redo, formatting over many lines) completes as a refused no-op
+with the result `too-large-for-one-action`, so the queue never blocks on it. One action carries at most
+1,048,576 UTF-16 units of text and at most an encoded intent the 4 MiB queue reservation can hold; larger
+input is refused before queueing. Native composition/device acceptance and layout-dependent editing shortcuts remain
 the phase-six gates. This checkpoint mounts real Goals and card editors in the browser harness; the
 application React card/day controls and startup have not yet switched to this facade.
 

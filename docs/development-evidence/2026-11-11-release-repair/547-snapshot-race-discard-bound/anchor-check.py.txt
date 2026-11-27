@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+"""Every string literal of 16+ characters in the base versions of the edited sources that occurs in
+vite/, test/ or scripts/ must occur the same number of times in the edited sources now."""
+import os, re, subprocess, json
+W = '<worktree>'
+EDITED = ['src/account/historyMaintenance.ts', 'src/crdt/accountSessionBridge.ts',
+          'src/crdt/historyOwner.ts', 'src/crdt/historySource.ts', 'src/ui/AccountHistory.tsx']
+lit = re.compile(r"'((?:[^'\\\n]|\\.){16,})'|\"((?:[^\"\\\n]|\\.){16,})\"|`([^`\n]{16,})`")
+corpus = []
+for top in ['vite', 'test', 'scripts']:
+    for root, _, files in os.walk(os.path.join(W, top)):
+        for f in files:
+            if f.endswith(('.ts', '.tsx', '.mjs', '.js', '.json', '.cjs')):
+                try:
+                    corpus.append(open(os.path.join(root, f), encoding='utf8').read())
+                except Exception:
+                    pass
+text = '\n'.join(corpus)
+checked, changed = 0, []
+for path in EDITED:
+    base = subprocess.run(['git', 'show', f'7e6aff636:{path}'], cwd=W, capture_output=True, text=True).stdout
+    now = open(os.path.join(W, path)).read()
+    seen = set()
+    for m in lit.finditer(base):
+        s = next(g for g in m.groups() if g)
+        if s in seen or s not in text:
+            continue
+        seen.add(s)
+        checked += 1
+        if base.count(s) != now.count(s):
+            changed.append({'path': path, 'literal': s, 'base': base.count(s), 'now': now.count(s)})
+print(json.dumps({'checked': checked, 'changed': changed}, indent=1, ensure_ascii=False))

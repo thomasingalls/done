@@ -1,0 +1,64 @@
+"""Split a V8 .cpuprofile of one Vitest case by what the case's own function calls.
+
+Usage: python3 -I profsplit.py <file.cpuprofile> <test file basename> <case function line>
+Finds the case's function node(s) (url ends with the basename, 1-based line given), then
+attributes every sample under it to the direct child of the case function it falls under
+(its matcher or helper), with the case function's own self time listed separately.
+"""
+import json
+import os
+import sys
+from collections import defaultdict
+
+path, base, line = sys.argv[1], sys.argv[2], int(sys.argv[3])
+DEPTH = int(sys.argv[4]) if len(sys.argv) > 4 else 1
+p = json.load(open(path))
+nodes = {n['id']: n for n in p['nodes']}
+parent = {}
+for n in p['nodes']:
+    for ch in n.get('children', []):
+        parent[ch] = n['id']
+
+
+def label(n):
+    f = n['callFrame']
+    url = os.path.basename(f.get('url', '')) or '(native)'
+    return f"{f.get('functionName') or '(anonymous)'} {url}:{f.get('lineNumber', -1) + 1}"
+
+
+def is_case(n):
+    f = n['callFrame']
+    return f.get('url', '').endswith(base) and f.get('lineNumber', -1) + 1 == line
+
+
+samples, deltas = p['samples'], p['timeDeltas']
+dur = [deltas[i + 1] if i + 1 < len(deltas) else 0 for i in range(len(samples))]
+total = sum(dur) / 1000
+case_ms = 0.0
+by_child = defaultdict(float)
+self_lines = defaultdict(int)
+for s, d in zip(samples, dur):
+    ms = d / 1000
+    chain = []
+    cur = s
+    while cur is not None:
+        chain.append(cur)
+        cur = parent.get(cur)
+    # chain[0] is the leaf; find the outermost case node
+    idx = None
+    for i, nid in enumerate(chain):
+        if is_case(nodes[nid]):
+            idx = i
+    if idx is None:
+        continue
+    case_ms += ms
+    if idx == 0:
+        by_child['(case function self)'] += ms
+    else:
+        by_child[" > ".join(label(nodes[chain[j]]) for j in range(idx - 1, max(idx - 1 - DEPTH, -1), -1))] += ms
+
+print(f'# {os.path.basename(path)}: {total:.0f} ms sampled; under the case function: {case_ms:.0f} ms')
+print('| ms | share of case | direct callee of the case function |')
+print('|---:|---:|---|')
+for lab, ms in sorted(by_child.items(), key=lambda kv: -kv[1])[:20]:
+    print(f'| {ms:.0f} | {100 * ms / case_ms:.1f}% | `{lab}` |')

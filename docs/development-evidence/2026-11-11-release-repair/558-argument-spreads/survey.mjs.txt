@@ -1,0 +1,75 @@
+// Phase 558 survey: every call or construction that spreads an argument, plus .apply calls,
+// under src, account-service and account-protocol (test files excluded).
+// Usage: node survey.mjs <repo root>
+import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { join, relative } from 'node:path';
+import { createRequire } from 'node:module';
+
+const root = process.argv[2];
+const require = createRequire(join(root, 'node_modules/.pnpm/@babel+parser@8.0.4/node_modules/@babel/parser/package.json'));
+const { parse } = require('./lib/index.js');
+
+const exts = /\.(ts|tsx|mts|cts|js|mjs|cjs)$/;
+const skip = /(^|\/)(node_modules|dist|test|tests|__tests__)(\/|$)|\.test\.|\.spec\.|\.d\.ts$/;
+const files = [];
+const walk = (dir) => {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    const rel = relative(root, p);
+    if (skip.test(rel)) continue;
+    const s = statSync(p);
+    if (s.isDirectory()) walk(p);
+    else if (exts.test(name)) files.push(p);
+  }
+};
+for (const d of ['src', 'account-service', 'account-protocol']) walk(join(root, d));
+
+const out = [];
+for (const file of files.sort()) {
+  const text = readFileSync(file, 'utf8');
+  let ast;
+  try {
+    ast = parse(text, {
+      sourceType: 'module',
+      plugins: [['typescript', {}], 'jsx'].filter((p) => !(p === 'jsx' && /\.(ts|mts|cts)$/.test(file))),
+      errorRecovery: true,
+    });
+  } catch (e) {
+    out.push({ file: relative(root, file), error: String(e.message) });
+    continue;
+  }
+  const visit = (node) => {
+    if (!node || typeof node.type !== 'string') return;
+    if (node.type === 'CallExpression' || node.type === 'NewExpression' || node.type === 'OptionalCallExpression') {
+      const callee = text.slice(node.callee.start, node.callee.end);
+      for (const a of node.arguments) {
+        if (a.type === 'SpreadElement') {
+          out.push({
+            file: relative(root, file),
+            line: a.loc.start.line,
+            kind: node.type === 'NewExpression' ? 'new' : 'call',
+            callee,
+            operand: text.slice(a.argument.start, a.argument.end).replace(/\s+/g, ' '),
+          });
+        }
+      }
+      if (/\.apply$/.test(callee) && node.arguments.length >= 2) {
+        out.push({
+          file: relative(root, file),
+          line: node.loc.start.line,
+          kind: 'apply',
+          callee,
+          operand: text.slice(node.arguments[1].start, node.arguments[1].end).replace(/\s+/g, ' '),
+        });
+      }
+    }
+    for (const key of Object.keys(node)) {
+      if (key === 'loc' || key === 'leadingComments' || key === 'trailingComments') continue;
+      const v = node[key];
+      if (Array.isArray(v)) v.forEach(visit);
+      else if (v && typeof v.type === 'string') visit(v);
+    }
+  };
+  visit(ast.program);
+}
+console.log(JSON.stringify({ files: files.length, sites: out }, null, 1));

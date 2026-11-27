@@ -1,0 +1,321 @@
+// COPY-ONLY probe (phase 544 follow-up): a device ahead on a peer stream it has reduced and
+// behind on a pruned stream. Uses two copy-only seams in the build: `__holdHistory` (receive passes
+// run without a catalog check, as inside one long pass) and `__allowReduction` (only the chosen
+// device reduces; growth threshold 1, quiet 3 s, cooldown 1 s).
+import { openMenuSection } from '../geometry/openApp';
+import { test, expect, type Page } from '@playwright/test';
+import { pairedEditors, openSaved, add } from './devices';
+import { pending, compared, unlock } from '../device-enrollment/helpers';
+import { startService, stopService } from './server';
+import { writeFileSync } from 'node:fs';
+import { resolve as resolvePath } from 'node:path';
+
+const readIds = (body: string) =>
+  [...body.matchAll(/\["done\/private-read\/v2",2,"[^"]*","[^"]*","[0-9a-f]+","([0-9a-f]{32})","([0-9a-f]{32})"/g)].map(
+    (m) => ({ reader: m[1]!, publisher: m[2]! }),
+  );
+const workers = async (p: Page, fn: () => void) => {
+  for (const w of p.workers()) await w.evaluate(fn).catch(() => {});
+};
+async function baseline(p: Page) {
+  return p.evaluate(async () => {
+    const out: { name: string; v: number; revision: number }[] = [];
+    for (const { name } of await indexedDB.databases()) {
+      if (!name) continue;
+      const db = await new Promise<IDBDatabase>((yes, no) => {
+        const r = indexedDB.open(name);
+        r.onsuccess = () => yes(r.result);
+        r.onerror = () => no(r.error);
+      });
+      try {
+        if (!db.objectStoreNames.contains('meta')) continue;
+        const c = await new Promise<any>((yes, no) => {
+          const tx = db.transaction('meta');
+          const g = tx.objectStore('meta').get('counter');
+          tx.oncomplete = () => yes(g.result);
+          tx.onabort = () => no(tx.error);
+        });
+        if (c && typeof c.v === 'number')
+          out.push({ name, v: c.v, revision: c.baseline?.revision ?? 0 });
+      } finally {
+        db.close();
+      }
+    }
+    return out;
+  });
+}
+
+test('three devices: ahead on a reduced peer, behind on a pruned one', async ({ page, browser }, info) => {
+  test.setTimeout(900000);
+  page.setDefaultTimeout(20000);
+  const service = await startService(info.outputPath('service'), process.env.DIST ? resolvePath(process.env.DIST) : undefined, true, true);
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  const thirdContext = await browser.newContext(),
+    third = await thirdContext.newPage();
+  third.setDefaultTimeout(20000);
+  const errors: string[] = [];
+  const log: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  const observe = (p: typeof page) => {
+    p.on('pageerror', (e) => errors.push(e.message));
+    p.on('response', async (r) => {
+      const path = new URL(r.url()).pathname;
+      if (
+        r.status() < 400 ||
+        (!path.startsWith('/account/') && !path.startsWith('/__account-setup/'))
+      )
+        return;
+      const body = await r.json().catch(() => ({}));
+      if (p === third)
+        note(`third refusal ${path} ${r.status()} ${body.refusal ?? body.reason ?? 'unavailable'}`);
+    });
+  };
+  observe(page);
+  observe(third);
+  try {
+    pair = await pairedEditors(page, browser, true);
+    pair.second.setDefaultTimeout(15000);
+    console.log('First two editors open');
+    observe(pair.second);
+    await add(page, 'Original writing before the third connection');
+    await expect(pair.second.locator('.shell')).toContainText(
+      'Original writing before the third connection',
+      { timeout: 15000 },
+    );
+    // Carry writing that ordinary update delivery never accepted through a generation-one handoff.
+    await page.route('**/account/delivery/submit', (route) => route.abort());
+    await add(page, 'Snapshot-only writing for generation-one third device');
+    const panel = (p: typeof page) =>
+      p.getByRole('region', { name: 'History maintenance', exact: true });
+    for (const p of [page, pair.second]) {
+      await openMenuSection(p, 'Data');
+      await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(
+        panel(p).getByRole('button', { name: 'Check history', exact: true }),
+      ).toBeEnabled();
+      await panel(p)
+        .getByRole('button', {
+          name: p === page ? 'Create history snapshot' : 'Verify history snapshot',
+        })
+        .click();
+      await expect(panel(p)).toContainText(
+        p === page
+          ? 'Snapshot saved. Verify it from another approved device.'
+          : 'Verified snapshot 1 is saved.',
+        { timeout: 15000 },
+      );
+    }
+    await openMenuSection(pair.second, 'Account');
+    await pair.second.getByRole('button', { name: 'Devices', exact: true }).click();
+    console.log('Joined Devices open');
+    await expect(pair.second.locator('.account-device-list li')).toHaveCount(2);
+    await pair.second.getByRole('button', { name: 'Connect another device', exact: true }).click();
+    console.log('Joined invitation unlock route');
+    await unlock(pair.second, pair.next.code);
+    console.log('Joined invitation unlock submitted');
+    const link = await pair.second.getByLabel('Device invitation link').inputValue();
+    expect(JSON.parse(atob(new URL(link).searchParams.get('invitation')!)).v).toBe(2);
+    const next = await pending(third, link, pair.next.auth);
+    const code = await compared(pair.second, third);
+    // Closing the joining page must retain its exact comparison and its saved invitation route.
+    await third.reload();
+    await unlock(third, next.code);
+    await expect(third.getByLabel('Comparison code')).toHaveText(code, { timeout: 15000 });
+    await pair.second.getByLabel('Code on the new device').fill(code);
+    await pair.second.getByRole('button', { name: 'Compare and approve', exact: true }).click();
+    await expect(third.getByRole('button', { name: 'Open your writing', exact: true })).toBeVisible(
+      { timeout: 30000 },
+    );
+    await expect(pair.second.getByText('The device is connected.', { exact: false })).toBeVisible({
+      timeout: 30000,
+    });
+    await third.getByRole('button', { name: 'Open your writing', exact: true }).click();
+    await expect(third.locator('.shell')).toContainText('Keep the first device writing', {
+      timeout: 20000,
+    });
+    await expect(third.locator('.shell')).toContainText(
+      'Original writing before the third connection',
+    );
+    await expect(third.locator('.shell')).toContainText(
+      'Snapshot-only writing for generation-one third device',
+    );
+    await page.unroute('**/account/delivery/submit');
+    await pair.second.getByRole('link', { name: 'Close and return to accounts' }).click();
+    await pair.second.goto('/');
+    await openSaved(pair.second, pair.next.code, true);
+    await add(third, 'Third device writing reaches both existing devices');
+    for (const p of [page, pair.second])
+      await expect(p.locator('.shell')).toContainText(
+        'Third device writing reaches both existing devices',
+        { timeout: 20000 },
+      );
+    await add(pair.second, 'Joined device writing after approving the third');
+    for (const p of [page, third])
+      await expect(p.locator('.shell')).toContainText(
+        'Joined device writing after approving the third',
+        { timeout: 20000 },
+      );
+
+    const B = pair.second, A = page, Cd = third;
+    // panel() from the setup above
+    async function check(p: Page) {
+      await openMenuSection(p, 'Data');
+      if (!(await panel(p).isVisible().catch(() => false)))
+        await p.getByRole('button', { name: 'History maintenance', exact: true }).click();
+      await panel(p).getByRole('button', { name: 'Check history', exact: true }).click();
+      await expect(panel(p).getByRole('button', { name: 'Check history', exact: true })).toBeEnabled({ timeout: 30000 });
+    }
+    async function snapshot(n: number, verify = true) {
+      await check(A);
+      const resume = panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true });
+      if (await resume.isVisible().catch(() => false)) {
+        await resume.click();
+        await expect(panel(A)).toContainText(`Verified snapshot ${n - 1} is saved.`, { timeout: 30000 });
+      }
+      await panel(A).getByRole('button', { name: 'Create history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText('Snapshot saved. Verify it from another approved device.', { timeout: 30000 });
+      if (!verify) return;
+      await admit(n);
+    }
+    async function admit(n: number) {
+      await check(B);
+      await panel(B).getByRole('button', { name: 'Verify history snapshot', exact: true }).click();
+      await expect(panel(B)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 30000 });
+      await check(A);
+      await panel(A).getByRole('button', { name: 'Resume history snapshot', exact: true }).click();
+      await expect(panel(A)).toContainText(`Verified snapshot ${n} is saved.`, { timeout: 30000 });
+    }
+    // Credential identities, from each device's own signed read requests.
+    const ids = new Map<string, string>();
+    for (const [name, p] of [['A', A], ['B', B], ['C', Cd]] as const)
+      p.on('request', (r) => {
+        if (!r.url().includes('/account/delivery/read-v2')) return;
+        for (const id of readIds(r.postDataBuffer()?.toString('latin1') ?? '')) ids.set(name, id.reader);
+      });
+    await expect.poll(() => ids.size, { timeout: 60000 }).toBe(3);
+    note('ids ' + JSON.stringify(Object.fromEntries(ids)));
+    // The third device stops receiving A's stream only; batched reads fall back to single reads.
+    let blockA = true;
+    const aBlocked: number[] = [];
+    await Cd.route('**/account/delivery/read-v2-batch', (route) =>
+      blockA ? route.fulfill({ status: 404, body: '{}' }) : route.continue(),
+    );
+    await Cd.route('**/account/delivery/read-v2', (route) => {
+      const read = readIds(route.request().postDataBuffer()?.toString('latin1') ?? '');
+      if (blockA && read.some((r) => r.publisher === ids.get('A'))) {
+        aBlocked.push(Date.now());
+        return route.abort();
+      }
+      return route.continue();
+    });
+    await workers(Cd, () => {
+      (globalThis as any).__holdHistory = true;
+    });
+    note('third holds catalog checks and drops A reads');
+    await add(A, 'A writing the third device misses 1');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 1', { timeout: 30000 });
+    await snapshot(2);
+    note('snapshot 2 admitted');
+    await add(A, 'A writing the third device misses 2');
+    await expect(B.locator('.shell')).toContainText('A writing the third device misses 2', { timeout: 30000 });
+    await snapshot(3, false);
+    note('snapshot 3 pending');
+    // Tomorrow's list is a new day entry, so this writing does not depend on A's newest cards; the
+    // third device can keep a complete document (no pending updates) while it misses them.
+    await B.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await add(B, 'B writing after snapshot 3 was prepared');
+    await Cd.getByRole('button', { name: 'Tomorrow', exact: true }).first().click();
+    await expect(Cd.locator('.shell')).toContainText('B writing after snapshot 3 was prepared', { timeout: 30000 });
+    await expect(Cd.locator('.shell')).not.toContainText('A writing the third device misses 1');
+    note('third received B past snapshot 3 cut, still behind on A');
+    await admit(3);
+    note('snapshot 3 admitted');
+    await check(A);
+    await panel(A).getByRole('button', { name: 'Prune covered history', exact: true }).click();
+    await expect(panel(A)).toContainText('Covered service history removed.', { timeout: 30000 });
+    note('pruned');
+    // The third device reduces while offline (offline counts as quiet).
+    const before = await baseline(Cd);
+    note('third baseline before ' + JSON.stringify(before));
+    await workers(Cd, () => {
+      (globalThis as any).__allowReduction = true;
+    });
+    note('third workers ' + JSON.stringify(Cd.workers().map((w) => w.url())));
+    for (const w of Cd.workers())
+      note('worker global ' + (await w.evaluate(() => String((globalThis as any).__allowReduction)).catch((e) => 'err ' + e)));
+    await thirdContext.setOffline(true);
+    await openMenuSection(Cd, 'Data');
+    const local = Cd.getByRole('region', { name: 'History on this device' });
+    let reduced = false;
+    for (let i = 0; i < 24 && !reduced; i++) {
+      await Cd.waitForTimeout(5000);
+      reduced = (await baseline(Cd)).some((b) => b.v === 5 && b.revision > (before.find((x) => x.name === b.name)?.revision ?? 0));
+      note('third local history: ' + JSON.stringify(await local.allTextContents().catch(() => [])) + ' reduced=' + reduced);
+    }
+    expect(reduced).toBe(true);
+    note('third reduced ' + JSON.stringify(await baseline(Cd)));
+    await workers(Cd, () => {
+      (globalThis as any).__allowReduction = false;
+      (globalThis as any).__holdHistory = false;
+    });
+    blockA = false;
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/history/v1/checkpoint')) return;
+      try {
+        const b = JSON.parse(r.postData() ?? '{}');
+        note(`third history ${b.action}:${typeof b.payload === 'string' ? b.payload : 'object'}`);
+      } catch {}
+    });
+    await thirdContext.setOffline(false);
+    note('third back online with catalog checks and A reads allowed');
+    const sawA = () => Cd.locator('.shell').textContent().then((t) => t!.includes('A writing the third device misses 1'));
+    await Cd.waitForTimeout(45000);
+    note('after 45 s: shows A writing? ' + (await sawA()));
+    note('third notice: ' + JSON.stringify(await Cd.locator('.sync-notice').allTextContents()));
+    await openMenuSection(Cd, 'Account');
+    note('third sync details: ' + JSON.stringify(await Cd.locator('.sync-details').allTextContents()));
+    if (process.env.EXPECT === 'recover') expect(await sawA()).toBe(true);
+    if (process.env.EXPECT === 'strand') expect(await sawA()).toBe(false);
+    await add(B, 'B writing after the third returned');
+    note('B wrote again (tomorrow list)');
+    const gotB = await expect(Cd.locator('.shell')).toContainText('B writing after the third returned', { timeout: 30000 }).then(() => true, () => false);
+    note('third receives new B writing? ' + gotB);
+    await add(Cd, 'Third writing while stranded');
+    const sent = await expect(A.locator('.shell')).toContainText('Third writing while stranded', { timeout: 30000 }).then(() => true, () => false);
+    note('third writing reaches A? ' + sent);
+    // Retry receiving, then reopen.
+    const retry = Cd.getByRole('button', { name: 'Retry receiving' });
+    if (await retry.isVisible().catch(() => false)) {
+      await retry.click();
+      await Cd.waitForTimeout(15000);
+      note('after retry: shows A writing? ' + (await sawA()));
+    } else note('no retry button visible');
+    await openMenuSection(Cd, 'Account');
+    await Cd.getByRole('button', { name: 'Lock workspace', exact: true }).click();
+    await Cd.goto('/');
+    await openSaved(Cd, next.code, true);
+    await Cd.waitForTimeout(30000);
+    note('after reopen: shows A writing? ' + (await sawA()));
+    note('third notice after reopen: ' + JSON.stringify(await Cd.locator('.sync-notice').allTextContents()));
+    // A newer snapshot whose cuts are at or past the third device's frontiers.
+    await snapshot(4);
+    note('snapshot 4 admitted');
+    const recovered = await expect(Cd.locator('.shell')).toContainText('A writing the third device misses 2', { timeout: 90000 }).then(() => true, () => false);
+    note('after snapshot 4: third shows A writing? ' + recovered);
+    note('A reads dropped while blocked: ' + aBlocked.length);
+  } finally {
+    writeFileSync(info.outputPath('timeline.txt'), log.join('\n') + '\n' + 'errors: ' + JSON.stringify(errors) + '\n');
+    try {
+      await thirdContext.close().catch(() => {});
+      await pair?.other.close().catch(() => {});
+    } finally {
+      await stopService(service);
+    }
+  }
+});

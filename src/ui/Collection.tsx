@@ -12,7 +12,7 @@
  * an error after the fact.
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { NEXT_CAP, type Section } from '../crdt/days';
 import type { WorkspaceSnapshot } from '../crdt/admittedWorkspace';
 import { useWorkspaceUi } from './workspaceUi';
@@ -50,12 +50,17 @@ const ArchivedCard = ({
   );
 };
 
+export type CardFocusRequest = { id: string; at: number | 'end' };
+
 export interface CollectionProps {
   date: ISODate;
   section: Section;
   frozen: boolean;
   /** False for a neighbouring day: content renders, nothing edits. */
   active: boolean;
+  focusCard: CardFocusRequest | null;
+  onFocusCard: (date: ISODate, request: CardFocusRequest) => void;
+  onLeaveCard: (id: string) => void;
 }
 
 export const Collection = ({
@@ -63,6 +68,9 @@ export const Collection = ({
   section,
   frozen,
   active,
+  focusCard,
+  onFocusCard,
+  onLeaveCard,
 }: CollectionProps): React.ReactElement | null => {
   const { snapshot, execute } = useWorkspaceUi();
   const day = snapshot.days.find((value) => value.date === date);
@@ -71,9 +79,6 @@ export const Collection = ({
   const cards = ids.flatMap((id) => (byId.get(id) ? [byId.get(id)!] : []));
   const archived = day?.archived?.[section] ?? [];
   const nextIsFull = (day?.next.length ?? 0) >= NEXT_CAP;
-
-  // Set after a split so the card that was created opens with the caret in it.
-  const [focusCard, setFocusCard] = useState<{ id: string; at: number } | null>(null);
 
   const reorder = useCardReorder({
     cards,
@@ -84,7 +89,7 @@ export const Collection = ({
     (id: string): CardHooks => ({
       split: (at, tailFrom) => {
         void execute({ kind: 'split', id, at, tailFrom }).then((created) => {
-          if (typeof created === 'string') setFocusCard({ id: created, at: 0 });
+          if (typeof created === 'string') onFocusCard(date, { id: created, at: 0 });
         });
         return true;
       },
@@ -93,13 +98,13 @@ export const Collection = ({
         const previous = index > 0 ? cards[index - 1] : undefined;
         if (!previous) return null;
         void execute({ kind: 'merge', id }).then((at) => {
-          if (typeof at === 'number') setFocusCard({ id: previous.id, at });
+          if (typeof at === 'number') onFocusCard(date, { id: previous.id, at });
         });
         return 0;
       },
-      leave: () => setFocusCard((current) => (current?.id === id ? null : current)),
+      leave: () => onLeaveCard(id),
     }),
-    [execute, cards],
+    [execute, cards, date, onFocusCard, onLeaveCard],
   );
 
   const actionsFor = useCallback(
@@ -130,8 +135,14 @@ export const Collection = ({
             hint: 'Move to Scheduled',
             run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
           },
-          duplicate,
-          remove,
+          {
+            label: 'Done for now',
+            hint: 'Done for now',
+            run: () =>
+              void execute({ kind: 'done-for-now', id }).then((created) => {
+                if (typeof created === 'string') onFocusCard(date, { id: created, at: 'end' });
+              }),
+          },
         ];
       }
 
@@ -165,19 +176,17 @@ export const Collection = ({
           hint: 'Move to Next',
           run: () => void execute({ kind: 'move', id, to: { date, section: 'next' } }),
           disabled: nextIsFull,
-          requiresUnlock: true,
         },
         {
           label: 'Later',
           hint: 'Move to Scheduled',
           run: () => void execute({ kind: 'move', id, to: { date, section: 'scheduled' } }),
-          requiresUnlock: true,
         },
         duplicate,
         remove,
       ];
     },
-    [execute, date, section, nextIsFull],
+    [execute, date, section, nextIsFull, onFocusCard],
   );
 
   // Writable days keep both quick-entry fields visible, even before the first

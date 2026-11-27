@@ -1,5 +1,5 @@
 /** Public presentation and explicit actions only. No credential, proof, journal or arbitrary RPC. */
-import type { NetworkLogin, LoginStatus } from '../account/networkLogin';
+import type { NetworkLogin, LoginStatus, LoginProblem } from '../account/networkLogin';
 import type { DeviceRoster, DeviceRosterSnapshot } from '../account/deviceRoster';
 import type {
   HistoryMaintenanceCommand,
@@ -7,12 +7,16 @@ import type {
 } from '../account/historyMaintenance';
 import type { AutomaticHistoryStatus } from '../account/automaticHistoryMaintenance';
 import type { LocalRetentionStatus } from './automaticLocalRetention';
+import { copyRetentionDetail } from './localRetentionDetail';
+import { isSyncRefusal } from '../account/syncRefusal';
 import type { SyncRuntime, SyncStatus, SyncLane } from './accountSyncDriver';
+import type { ReceiveHaltDetail } from './accountReceiveDriver';
 import type { WorkerChannel } from './workerChannel';
 export type NetworkLoginView = Pick<
   NetworkLogin,
   'getSnapshot' | 'subscribe' | 'connect' | 'signOut'
->;
+> &
+  Partial<Pick<NetworkLogin, 'getProblem'>>;
 export interface AccountSessionSource {
   login: NetworkLoginView;
   sync?: SyncRuntime | undefined;
@@ -20,6 +24,8 @@ export interface AccountSessionSource {
 }
 interface SessionState {
   login: LoginStatus;
+  /** Phase 551: why the last sign-in attempt failed, when the status alone does not say. */
+  loginProblem?: LoginProblem;
   sync: SyncStatus | null;
   local: LocalRetentionStatus | null;
   automatic: AutomaticHistoryStatus | null;
@@ -58,18 +64,63 @@ const loginStates = [
   'sign-out-pending',
   'signed-out',
 ];
+const loginProblems = ['unreachable', 'busy', 'unavailable', 'outdated', 'refused'];
 const commands = ['inspect', 'create', 'resume', 'verify', 'discard', 'prune'];
+const savedSnapshots = ['sendable', 'waiting', 'blocked', 'superseded', 'stale', 'cancelling'];
 function history(input: unknown): HistoryMaintenanceStatus {
-  fields(input, ['sequence', 'pending', 'canDiscard'], ['pruned']);
+  fields(
+    input,
+    ['sequence', 'pending', 'canDiscard'],
+    ['pruned', 'tooLarge', 'saved', 'positions', 'replay', 'raced'],
+  );
   const v = input as HistoryMaintenanceStatus;
   if (
     !number(v.sequence) ||
     !['none', 'resume', 'verify', 'waiting', 'stale'].includes(v.pending) ||
     typeof v.canDiscard !== 'boolean' ||
-    (Object.hasOwn(v, 'pruned') && v.pruned !== true)
+    (Object.hasOwn(v, 'pruned') && v.pruned !== true) ||
+    (Object.hasOwn(v, 'raced') && v.raced !== true) ||
+    (Object.hasOwn(v, 'saved') && !savedSnapshots.includes(v.saved!))
   )
     throw fail();
-  return Object.freeze({ ...v });
+  const out: HistoryMaintenanceStatus = { ...v };
+  if (Object.hasOwn(v, 'tooLarge')) {
+    const t = v.tooLarge!;
+    fields(t, ['snapshot', 'needed', 'allowed']);
+    if (
+      !['new', 'saved', 'pending', 'latest'].includes(t.snapshot) ||
+      !number(t.needed) ||
+      !number(t.allowed)
+    )
+      throw fail();
+    out.tooLarge = Object.freeze({ ...t });
+  }
+  // Phase 547: positions since the latest admitted snapshot, and a replay-bound refusal.
+  if (Object.hasOwn(v, 'positions')) {
+    const n = v.positions!;
+    fields(n, ['since', 'allowed']);
+    if (!number(n.since) || !number(n.allowed)) throw fail();
+    out.positions = Object.freeze({ ...n });
+  }
+  if (Object.hasOwn(v, 'replay')) {
+    const r = v.replay!;
+    fields(r, ['snapshot', 'needed', 'allowed']);
+    if (!['new', 'pending'].includes(r.snapshot) || !number(r.needed) || !number(r.allowed))
+      throw fail();
+    out.replay = Object.freeze({ ...r });
+  }
+  return Object.freeze(out);
+}
+function haltDetail(input: unknown): ReceiveHaltDetail | undefined {
+  try {
+    fields(input, ['cause', 'needed', 'allowed']);
+  } catch {
+    return undefined;
+  }
+  const d = input as ReceiveHaltDetail;
+  return d.cause === 'history-snapshot' && number(d.needed) && number(d.allowed)
+    ? Object.freeze({ cause: d.cause, needed: d.needed, allowed: d.allowed })
+    : undefined;
 }
 function sync(input: unknown): SyncStatus {
   fields(input, ['send', 'receive']);
@@ -77,7 +128,11 @@ function sync(input: unknown): SyncStatus {
   for (const name of ['send', 'receive'] as const) {
     const v = (input as SyncStatus)[name],
       pos = name === 'send' ? 'acceptedThrough' : 'receivedThrough';
-    fields(v, ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos]);
+    fields(
+      v,
+      ['phase', 'failures', 'nextAttemptAt', 'reason', 'issueSince', 'lastSuccessAt', pos],
+      ['detail', 'refusal'],
+    );
     if (
       !['starting', 'working', 'idle', 'retrying', 'offline', 'blocked', 'closed'].includes(
         v.phase,
@@ -101,16 +156,32 @@ function sync(input: unknown): SyncStatus {
           'sign-in-required',
           'request-expired',
           'network-unavailable',
+          'history-unverified',
+          'history-waiting',
         ].includes(v.reason))
     )
       throw fail();
-    Object.assign(out, { [name]: Object.freeze({ ...v }) });
+    // Presentation only: a malformed or misplaced detail is dropped and the page falls back.
+    const { detail: raw, refusal: why, ...rest } = v;
+    const detail = name === 'receive' && v.reason === 'inbound-size' ? haltDetail(raw) : undefined;
+    // Phase 552, the same rule: only beside network-unavailable, and only a known code.
+    const refusal = v.reason === 'network-unavailable' && isSyncRefusal(why) ? why : undefined;
+    Object.assign(out, {
+      [name]: Object.freeze({
+        ...rest,
+        ...(detail ? { detail } : {}),
+        ...(refusal ? { refusal } : {}),
+      }),
+    });
   }
   return Object.freeze(out);
 }
 function local(input: unknown): LocalRetentionStatus {
-  fields(input, ['phase', 'reason'], ['progress']);
-  const v = input as LocalRetentionStatus;
+  fields(input, ['phase', 'reason'], ['progress', 'detail']);
+  const { detail: raw, ...rest } = input as LocalRetentionStatus;
+  // Presentation only: an unknown or malformed detail is dropped and the page falls back.
+  const detail = rest.reason === 'capacity' ? copyRetentionDetail(raw) : undefined;
+  const v: LocalRetentionStatus = { ...rest, ...(detail ? { detail } : {}) };
   if (!phases.includes(v.phase) || (v.reason !== undefined && !text(v.reason))) throw fail();
   if (v.progress !== undefined) {
     const p = v.progress;
@@ -149,18 +220,20 @@ function automatic(input: unknown): AutomaticHistoryStatus {
   return Object.freeze({ ...v, ...(v.history ? { history: history(v.history) } : {}) });
 }
 export function captureAccountSessionState(input: unknown): Readonly<SessionState> {
-  fields(input, ['login', 'sync', 'local', 'automatic', 'devices']);
+  fields(input, ['login', 'sync', 'local', 'automatic', 'devices'], ['loginProblem']);
   const v = input as SessionState,
     d = v.devices;
   fields(d, ['remove', 'history', 'detached'], ['transition']);
   if (
     !loginStates.includes(v.login) ||
+    (Object.hasOwn(v, 'loginProblem') && !loginProblems.includes(v.loginProblem!)) ||
     ['remove', 'history', 'detached'].some((k) => typeof d[k as 'remove'] !== 'boolean') ||
     (d.transition !== undefined && !text(d.transition))
   )
     throw fail();
   return Object.freeze({
     login: v.login,
+    ...(v.loginProblem ? { loginProblem: v.loginProblem } : {}),
     sync: v.sync === null ? null : sync(v.sync),
     local: v.local === null ? null : local(v.local),
     automatic: v.automatic === null ? null : automatic(v.automatic),
@@ -168,8 +241,10 @@ export function captureAccountSessionState(input: unknown): Readonly<SessionStat
   });
 }
 function snapshot(source: AccountSessionSource) {
+  const problem = source.login.getProblem?.();
   return captureAccountSessionState({
     login: source.login.getSnapshot(),
+    ...(problem ? { loginProblem: problem } : {}),
     sync: source.sync?.status ?? null,
     local: source.devices.localHistory?.status ?? null,
     automatic: source.devices.automaticHistory?.status ?? null,
@@ -411,6 +486,7 @@ export function createWindowAccountSession(
   };
   const login: NetworkLoginView = Object.freeze({
     getSnapshot: () => (closed ? 'closed' : read().login),
+    getProblem: () => (closed ? undefined : read().loginProblem),
     subscribe,
     connect: async () => {
       await request({ kind: 'connect' });

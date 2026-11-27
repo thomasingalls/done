@@ -1,0 +1,13 @@
+import { resolve, dirname } from 'node:path';
+import { build } from '/Users/thomasingalls/.codex/worktrees/c030/done/node_modules/vite/dist/node/index.js';
+import { writeFileSync } from 'node:fs';
+const root='/private/tmp/done-release-913b58642';
+await build({configFile:false,logLevel:'error',plugins:[{name:'fixture-file-urls',enforce:'pre',transform(code,id){if(!id.includes('/test/'))return;return code.replace(/new URL\((['"])([^'"]+)\1, import.meta.url\)/g,(_m,_q,path)=>JSON.stringify(resolve(dirname(id),path)));}}],build:{outDir:root+'/fixture-node',emptyOutDir:true,minify:false,lib:{entry:process.cwd()+'/test/local-baseline/fixtures.mjs',formats:['es'],fileName:()=> 'fixture.mjs'},rollupOptions:{external:[/^node:/]}}});
+const {memberFixture}=await import(root+'/fixture-node/fixture.mjs');
+const f=await memberFixture();
+await f.appendOwn(); await f.appendPeer();
+const {signer, assertCurrent, ...context}=f.ctx;
+const data={context,proofs:f.proofs,base:f.f.f.base,rows:f.rows};
+const json=JSON.stringify(data,(_k,v)=>v instanceof Uint8Array ? {$bytes:[...v]}:v);
+writeFileSync(root+'/fixture.json',json); f.clear();
+console.log('Disposable fixture bytes',json.length);

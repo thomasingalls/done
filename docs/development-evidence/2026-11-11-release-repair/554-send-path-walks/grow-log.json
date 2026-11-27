@@ -1,0 +1,152 @@
+[
+  {
+    "position": 100,
+    "editToAcceptedMs": 490,
+    "medianLocalMs": 178.79999923706055
+  },
+  {
+    "position": 200,
+    "editToAcceptedMs": 576,
+    "medianLocalMs": 204
+  },
+  {
+    "position": 300,
+    "editToAcceptedMs": 576,
+    "medianLocalMs": 260.0999984741211
+  },
+  {
+    "position": 400,
+    "editToAcceptedMs": 670,
+    "medianLocalMs": 279.79999923706055
+  },
+  {
+    "position": 500,
+    "editToAcceptedMs": 659,
+    "medianLocalMs": 328.29999923706055
+  },
+  {
+    "position": 600,
+    "editToAcceptedMs": 741,
+    "medianLocalMs": 411.1999988555908
+  },
+  {
+    "position": 700,
+    "editToAcceptedMs": 933,
+    "medianLocalMs": 430.1000003814697
+  },
+  {
+    "position": 800,
+    "editToAcceptedMs": 826,
+    "medianLocalMs": 517.4000015258789
+  },
+  {
+    "position": 900,
+    "editToAcceptedMs": 997,
+    "medianLocalMs": 641.6000003814697
+  },
+  {
+    "position": 1000,
+    "editToAcceptedMs": 1007,
+    "medianLocalMs": 677.4999980926514
+  },
+  {
+    "position": 1100,
+    "editToAcceptedMs": 1006,
+    "medianLocalMs": 666.8999996185303
+  },
+  {
+    "position": 1200,
+    "editToAcceptedMs": 773,
+    "medianLocalMs": 751.6000003814697
+  },
+  {
+    "position": 1300,
+    "editToAcceptedMs": 1171,
+    "medianLocalMs": 752.1999988555908
+  },
+  {
+    "position": 1400,
+    "editToAcceptedMs": 1254,
+    "medianLocalMs": 925.5
+  },
+  {
+    "position": 1500,
+    "editToAcceptedMs": 1340,
+    "medianLocalMs": 957.7999992370605
+  },
+  {
+    "position": 1600,
+    "editToAcceptedMs": 1419,
+    "medianLocalMs": 1064.599998474121
+  },
+  {
+    "position": 1700,
+    "editToAcceptedMs": 1599,
+    "medianLocalMs": 1202.2999992370605
+  },
+  {
+    "position": 1800,
+    "editToAcceptedMs": 1166,
+    "medianLocalMs": 1178.2999992370605
+  },
+  {
+    "position": 1900,
+    "editToAcceptedMs": 1588,
+    "medianLocalMs": 1335.3999996185303
+  },
+  {
+    "position": 2000,
+    "editToAcceptedMs": 1677,
+    "medianLocalMs": 1320
+  },
+  {
+    "position": 2100,
+    "editToAcceptedMs": 1865,
+    "medianLocalMs": 1442.900001525879
+  },
+  {
+    "position": 2200,
+    "editToAcceptedMs": 1604,
+    "medianLocalMs": 1561.8999996185303
+  },
+  {
+    "position": 2300,
+    "editToAcceptedMs": 1946,
+    "medianLocalMs": 1597.6999988555908
+  },
+  {
+    "position": 2400,
+    "editToAcceptedMs": 2028,
+    "medianLocalMs": 1633.8999996185303
+  },
+  {
+    "position": 2500,
+    "editToAcceptedMs": 1800,
+    "medianLocalMs": 1725.8999996185303
+  },
+  {
+    "position": 2600,
+    "editToAcceptedMs": 2210,
+    "medianLocalMs": 1772.700002670288
+  },
+  {
+    "position": 2700,
+    "editToAcceptedMs": 2203,
+    "medianLocalMs": 1927.400001525879
+  },
+  {
+    "position": 2800,
+    "editToAcceptedMs": 2465,
+    "medianLocalMs": 1963.5
+  },
+  {
+    "position": 2900,
+    "editToAcceptedMs": 2475,
+    "medianLocalMs": 2023.1999988555908
+  },
+  {
+    "position": 3000,
+    "editToAcceptedMs": 2558,
+    "medianLocalMs": 2163.8999996185303
+  }
+]

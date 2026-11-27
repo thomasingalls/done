@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Phase 558 source-text anchor check (phase 556's rule): every string literal of 16 or more
+characters in vite/, test/ and scripts/ that occurs in the base text of an edited source occurs the
+same number of times in its current text. Usage: python3 -I anchors.py <repo root> <base dir>"""
+import re
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+base = Path(sys.argv[2])
+EDITED = ['src/crdt/contentStore.ts', 'src/crdt/inboundLedger.ts', 'src/crdt/serialize.ts',
+          'src/crdt/persistence.ts', 'src/editor/gentleContext.ts']
+literal = re.compile(r"'((?:[^'\\\n]|\\.){16,})'|\"((?:[^\"\\\n]|\\.){16,})\"|`((?:[^`\\$]|\\.){16,})`")
+literals = set()
+for d in ['vite', 'test', 'scripts']:
+    for p in (root / d).rglob('*'):
+        if p.name == 'argumentSpreads.test.ts':
+            continue  # this phase's own test quotes the old expressions as its control
+        if p.is_file() and p.suffix in {'.ts', '.tsx', '.mjs', '.js', '.cjs', '.py', '.json', '.sh'}:
+            try:
+                text = p.read_text()
+            except UnicodeDecodeError:
+                continue
+            for m in literal.finditer(text):
+                s = next(g for g in m.groups() if g is not None)
+                # Unescape the common escapes so the literal matches source text.
+                literals.add(s.replace("\\'", "'").replace('\\"', '"').replace('\\n', '\n'))
+checked = 0
+changed = []
+for rel in EDITED:
+    old = (base / Path(rel).name).read_text()
+    new = (root / rel).read_text()
+    for s in literals:
+        a = old.count(s)
+        if a:
+            checked += a
+            b = new.count(s)
+            if a != b:
+                changed.append((rel, s, a, b))
+print(f'literals of 16+ characters in vite/, test/, scripts/: {len(literals)}')
+print(f'occurrences in the base text of the five edited sources: {checked}')
+for rel, s, a, b in changed:
+    print(f'CHANGED {rel}: {s!r} {a} -> {b}')
+if not changed:
+    print('every one occurs the same number of times now')

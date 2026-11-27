@@ -1,0 +1,145 @@
+// Phase 559 browser probe: the base and current `hex` routines, taken from the sources themselves
+// (the base tree through git, the working tree from disk, TypeScript stripped by Node), compared
+// and timed in Playwright's bundled Chromium and WebKit, on a bare page and in a dedicated Worker.
+// Started from the coordinating session's review script.
+//
+// Usage, from the repository root: node <this file> select|final
+// - select: base against the current routine with HEX_SLOTS_FROM set to 0 (every length on the
+//   16-bit slot path, as phase 559 was first written), 32, 48 and 64, to choose the threshold.
+// - final: base against the current routines of both files as they are (seven rounds per cell).
+// Each browser is launched headless, bounded by timeouts and closed afterwards.
+const { createRequire, stripTypeScriptTypes } = require('node:module');
+const { execFileSync } = require('node:child_process');
+const { readFileSync } = require('node:fs');
+const pw = createRequire(process.cwd() + '/')('@playwright/test');
+const BASE = '4ef09a61b8da0101e356e1c9dd5e69f29dfbd476';
+const mode = process.argv[2];
+if (!['select', 'final'].includes(mode)) throw Error('Usage: node hex-browsers.cjs select|final');
+
+const base = (path) => execFileSync('git', ['show', `${BASE}:${path}`], { encoding: 'utf8' });
+const current = (path) => readFileSync(path, 'utf8');
+/** A module's text as a classic-script function body that returns its `hex`. */
+const asScope = (name, ts) => {
+  const js = stripTypeScriptTypes(ts).replace(/^export /gmu, '');
+  if (/^\s*export\b|^\s*import\b/mu.test(js)) throw Error(name + ' still has imports or exports');
+  return `const ${name} = (() => {\n${js}\nreturn hex;\n})();\n`;
+};
+const withThreshold = (ts, n) => {
+  const pattern = /const HEX_SLOTS_FROM = \d+;/u;
+  if (!pattern.test(ts)) throw Error('HEX_SLOTS_FROM not found');
+  return ts.replace(pattern, `const HEX_SLOTS_FROM = ${n};`);
+};
+const custody = 'src/crdt/custodyCrypto.ts',
+  protocol = 'account-protocol/recovery.ts';
+const routines =
+  mode === 'select'
+    ? [
+        ['base', base(custody)],
+        ['slotsAlways', withThreshold(current(custody), 0)],
+        ['from32', withThreshold(current(custody), 32)],
+        ['from48', withThreshold(current(custody), 48)],
+        ['from64', withThreshold(current(custody), 64)],
+      ]
+    : [
+        ['base', base(custody)],
+        ['custodyNow', current(custody)],
+        ['protocolBase', base(protocol)],
+        ['protocolNow', current(protocol)],
+      ];
+const sizes = [1, 8, 12, 16, 20, 24, 32, 40, 48, 56, 63, 64, 65, 128, 1024, 1 << 20, 8 << 20];
+// The final run takes seven rounds, so its median sits further inside the run-to-run spread.
+const ROUNDS = mode === 'final' ? 7 : 5;
+
+const probeSource = `
+${routines.map(([name, ts]) => asScope(name, ts)).join('')}
+const routines = { ${routines.map(([name]) => name).join(', ')} };
+const reference = (b) => routines[${JSON.stringify(routines[0][0])}](b);
+const fill = (n, seed) => { const a = new Uint8Array(n); let x = seed | 1; for (let i = 0; i < n; i++) { x = (Math.imul(x, 1103515245) + 12345) | 0; a[i] = x >>> 16; } return a; };
+const runProbe = () => {
+  // Identity against the base routine: every byte value alone and together, lengths 0 to 130,
+  // offset views, the timed pools, and an 8 MiB + 1 input.
+  const checks = { compared: 0, differing: [] };
+  const compare = (label, b) => {
+    const want = reference(b);
+    for (const [name, f] of Object.entries(routines)) {
+      checks.compared++;
+      if (f(b) !== want) checks.differing.push(name + ' ' + label);
+    }
+  };
+  for (let v = 0; v < 256; v++) compare('byte ' + v, new Uint8Array([v]));
+  compare('all values', new Uint8Array(256).map((_, i) => i));
+  for (let n = 0; n <= 130; n++) compare('length ' + n, fill(n, n + 3));
+  const backing = fill(4099, 7);
+  for (const [o, l] of [[1, 0], [1, 1], [3, 31], [3, 32], [5, 63], [5, 64], [7, 65], [9, 4090]])
+    compare('view ' + o + '+' + l, backing.subarray(o, o + l));
+  compare('8 MiB + 1', fill((8 << 20) + 1, 11));
+  let sink = 0;
+  const rows = [];
+  for (const size of ${JSON.stringify(sizes)}) {
+    const poolSize = size <= 1024 ? 256 : size <= 65536 ? 8 : 1;
+    const pool = Array.from({ length: poolSize }, (_, i) => fill(size, 31 * i + size));
+    for (const p of pool.slice(0, 4)) compare('pool ' + size, p);
+    const batch = size <= 1024 ? 2000 : 1;
+    const time = (f) => {
+      let calls = 0; const start = performance.now(); let now = start;
+      while (now - start < 200) { for (let i = 0; i < batch; i++) sink += f(pool[(calls + i) % poolSize]).length; calls += batch; now = performance.now(); }
+      return (now - start) / calls * 1e6; // ns per call
+    };
+    const samples = Object.fromEntries(Object.keys(routines).map((n) => [n, []]));
+    const names = Object.keys(routines);
+    for (let round = 0; round < ${ROUNDS}; round++) {
+      // Rotate the order each round so no routine always runs first.
+      for (let k = 0; k < names.length; k++) { const name = names[(k + round) % names.length]; samples[name].push(time(routines[name])); }
+    }
+    const med = (a) => a.slice().sort((x, y) => x - y)[a.length >> 1];
+    const row = { size };
+    for (const name of names) row[name] = { ns: Math.round(med(samples[name])), min: Math.round(Math.min(...samples[name])), max: Math.round(Math.max(...samples[name])) };
+    rows.push(row);
+  }
+  return { checks, sink: sink > 0, rows };
+};
+`;
+// The page defines the probe and runs it only when asked, after load, so navigation never waits
+// on it; the Worker is started after the page's own run.
+const page = `<!doctype html><meta charset="utf-8"><script>${probeSource}
+  window.runPage = runProbe;
+  window.runWorker = () => new Promise((resolve) => {
+    const w = new Worker('/worker.js');
+    w.onmessage = (e) => resolve(e.data);
+    w.onerror = (e) => resolve({ error: 'worker error: ' + e.message });
+  });
+</script>`;
+const worker = `${probeSource}\npostMessage(runProbe());`;
+const withTimeout = (p, ms, what) =>
+  Promise.race([p, new Promise((_, reject) => setTimeout(() => reject(new Error(what + ' timed out')), ms))]);
+const fmt = (ns) => (ns >= 1e6 ? (ns / 1e6).toFixed(2) + ' ms' : ns >= 1e4 ? (ns / 1e3).toFixed(1) + ' us' : ns + ' ns');
+(async () => {
+  console.log(`hex browser probe, mode ${mode}; routines: ${routines.map(([n]) => n).join(', ')}; ratios are to ${routines[0][0]}; median of ${ROUNDS} rounds of about 200 ms, [min-max] over rounds`);
+  for (const name of ['chromium', 'webkit']) {
+    let browser;
+    try {
+      browser = await withTimeout(pw[name].launch({ headless: true }), 30000, 'launch');
+      const p = await browser.newPage();
+      await p.route('http://probe.test/**', (route) => {
+        const url = new URL(route.request().url());
+        if (url.pathname === '/worker.js') return route.fulfill({ contentType: 'text/javascript', body: worker });
+        return route.fulfill({ contentType: 'text/html', body: page });
+      });
+      await withTimeout(p.goto('http://probe.test/'), 60000, 'goto');
+      const main = await withTimeout(p.evaluate(() => window.runPage()), 600000, 'page run');
+      const inWorker = await withTimeout(p.evaluate(() => window.runWorker()), 600000, 'worker run');
+      for (const [where, r] of [['page', main], ['dedicated Worker', inWorker]]) {
+        if (r.error) { console.log(`== ${name} ${browser.version()}, ${where}: ${r.error}`); continue; }
+        console.log(`== ${name} ${browser.version()}, ${where}: ${r.checks.compared} comparisons with ${routines[0][0]}, ${r.checks.differing.length} differing${r.checks.differing.length ? ': ' + r.checks.differing.slice(0, 5).join('; ') : ''}`);
+        for (const row of r.rows) {
+          const ref = row[routines[0][0]].ns;
+          console.log(`  ${String(row.size).padStart(8)} B  ` + routines.map(([n]) => `${n} ${fmt(row[n].ns)} [${fmt(row[n].min)}-${fmt(row[n].max)}]${n === routines[0][0] ? '' : ' x' + (row[n].ns / ref).toFixed(2)}`).join('  '));
+        }
+      }
+    } catch (e) {
+      console.log(`== ${name}: could not run: ${String(e.message).split('\n')[0]}`);
+    } finally {
+      await browser?.close().catch(() => {});
+    }
+  }
+})();

@@ -1,0 +1,68 @@
+// @vitest-environment node
+// Phase 542 probe: an owner-level reduction under the measured WebKit grouped-pattern behaviour.
+import { it, vi } from 'vitest';
+import { writeFileSync } from 'node:fs';
+import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
+const W = process.cwd();
+const { createContentOwner } = await import(W + '/src/crdt/contentStore');
+const { openContentDb } = await import(W + '/src/crdt/contentDatabase');
+const { deriveStoreName } = await import(W + '/src/crdt/storeName');
+const { extendSpoolWitness } = await import(W + '/src/crdt/spoolRecord');
+const { cryptFor, keys } = await import(W + '/test/local-baseline/anchor-fixture');
+const { Y } = await import(W + '/src/crdt/yjs');
+// @ts-expect-error JavaScript fixture.
+const { memberFixture } = await import(W + '/test/local-baseline/fixtures.mjs');
+const task = { signal: new AbortController().signal, step: (f: any) => f(), wait: async (f: any) => f() };
+const real = RegExp.prototype.test;
+const meta = (db: IDBDatabase) =>
+  new Promise<any[]>((yes) => {
+    const tx = db.transaction('meta'), s = tx.objectStore('meta'), k = s.getAllKeys(), v = s.getAll();
+    tx.oncomplete = () => yes(k.result.map((key, i) => ({ key, v: (v.result[i] as any)?.v })));
+  });
+async function run(chars: number, webkit: boolean) {
+  vi.stubGlobal('indexedDB', new IDBFactory());
+  vi.stubGlobal('IDBKeyRange', IDBKeyRange);
+  for (const n of ['VITE_ACCOUNT_RETENTION', 'VITE_ACCOUNT_BASELINE_READ', 'VITE_ACCOUNT_BASELINE_INSTALL']) vi.stubEnv(n, '1');
+  const f = await memberFixture();
+  const context = f.ctx;
+  const crypt = { ...cryptFor(context.identity, await keys()), reuseOpened: true, exactBaselineReuse: true, readBaseline: true,
+    baseline: async () => ({ ...context, identity: { ...context.identity }, route: { ...context.route } }) };
+  const seed = createContentOwner(context.identity, 1, crypt as any);
+  await seed.initialize(task as any, { intent: '04'.repeat(16), checkCreation() {} });
+  await seed.enableSpool(task as any);
+  await f.appendOwn();
+  await f.appendPeer();
+  for (const row of f.rows) {
+    const event = row.kind === 'heads' || (row.kind === 'outbound' && !new TextDecoder().decode(row.bytes).startsWith('["done/source-capture/v1"'));
+    if (event) {
+      const before = await seed.spoolWitness(task as any), after = await extendSpoolWitness(before, row.bytes, crypto.subtle);
+      await seed.appendSpool(task as any, row, { before, after });
+    } else await seed.append(task as any, [row]);
+  }
+  const doc = new Y.Doc({ gc: false });
+  doc.getText('big').insert(0, 'y'.repeat(chars));
+  await seed.append(task as any, [{ kind: 'state', bytes: new Uint8Array(Y.encodeStateAsUpdate(doc)) }]);
+  doc.destroy();
+  const db = await openContentDb(task as any, await deriveStoreName(context.identity.principalId, context.identity.workspaceId), false);
+  const before = await meta(db);
+  if (webkit)
+    vi.spyOn(RegExp.prototype, 'test').mockImplementation(function (this: RegExp, s: string) {
+      if (this.source === '^(?:[0-9a-f]{2})+$' && String(s).length > 2785276) return false;
+      return real.call(this, s);
+    });
+  let outcome: unknown;
+  try {
+    outcome = await seed.removeHistory(task as any, async () => {}, () => {}, 0);
+  } catch (e: any) {
+    outcome = { threw: e?.constructor?.name, code: e?.code ?? null, message: String(e?.message).slice(0, 80) };
+  }
+  vi.restoreAllMocks();
+  const after = await meta(db);
+  db.close(); seed.dispose(); f.clear(); vi.unstubAllEnvs(); vi.unstubAllGlobals();
+  return { chars, webkit, outcome, metaBefore: before, metaAfter: after };
+}
+it('owner-level reduction under the WebKit grouped-pattern limit', async () => {
+  const rows = [];
+  for (const chars of [1.6 * 1024 * 1024, 2.25 * 1024 * 1024]) for (const webkit of [false, true]) rows.push(await run(chars, webkit));
+  writeFileSync(process.env.PROBE_OUT!, JSON.stringify(rows, null, 1));
+}, 300000);

@@ -1,0 +1,95 @@
+Phase 551 base-tree run: the ten edited sources at 3b8394590, the new and edited tests kept,
+historyFailure.ts shimmed (see base-run.sh.txt). Condensed: case lines, assertion values, summaries.
+
+=== node --test test/account-history/refusals.test.mjs
+✖ failing tests:
+✖ busy: a snapshot sent while another device’s waits is refused by name, and resending changes nothing (732.257625ms)
+    actual: 'history-failed',
+    expected: 'history-checkpoint-busy',
+✖ cancelled: progress from before a discard is refused by name when resent; discarding it here ends it (688.950875ms)
+    actual: 'history-failed',
+    expected: 'history-checkpoint-cancelled',
+✖ conflict: discarding a snapshot another device verified meanwhile is refused by name, then ends cleanly (1010.771875ms)
+    actual: 'history-failed',
+    expected: 'history-checkpoint-conflict',
+✖ boundary changed: pruning after a newer snapshot was verified is refused by name and removes nothing (1667.809833ms)
+    actual: 'history-failed',
+    expected: 'history-retention-boundary-changed',
+✖ too large: a snapshot an earlier build sends past the install bound is refused by name and not kept (2309.912ms)
+    actual: 'history-failed',
+    expected: 'history-checkpoint-too-large',
+✖ sign-in required: a session ended on the service is named, and nothing changes until it is renewed (524.682958ms)
+    actual: 'history-failed',
+    expected: 'history-sign-in-required',
+✖ capacity: a busy service is named after the transport’s own retries, and nothing changes (3467.86425ms)
+    actual: 'history-failed',
+    expected: 'history-capacity',
+✖ controls: no reply, a timeout and a non-JSON reply still say check your connection; nothing changes (568.429208ms)
+    actual: 'history-failed',
+    expected: 'history-unreachable',
+✖ controls: a forged or unknown refusal body chooses only a sentence; saved state and classification are unchanged (562.669208ms)
+    actual: 'history-failed',
+    expected: 'history-checkpoint-cancelled',
+✖ a discard whose reply was lost, then another device publishing: inspect keeps the cancellation and offers verifying (HIST-OTHER) (916.24175ms)
+    actual: { pending: 'resume', saved: 'cancelling', canDiscard: false },
+    expected: { pending: 'verify', saved: 'cancelling', canDiscard: false },
+✖ a discard whose reply was lost, then another device publishing: discard keeps the cancellation and offers verifying (HIST-OTHER) (851.73425ms)
+  Error: History service reply unavailable. Saved progress can be retried.
+✖ a forged conflict on a kept cancellation only prompts a fresh catalog; the cancellation is sent next time (532.904292ms)
+    actual: 'history-failed',
+    expected: 'history-checkpoint-conflict',
+✖ a login with no access says why: not connected, or the service’s own reason (32.967125ms)
+    actual: 'history-failed',
+    expected: 'history-sync-disconnected',
+ℹ tests 13
+ℹ pass 0
+ℹ fail 13
+
+=== node --test test/account-sessions/client.test.mjs
+✔ one -8 assertion opens local writing and signs in; lock/reopen uses one local prompt (36.137084ms)
+✔ one -7 assertion opens local writing and signs in; lock/reopen uses one local prompt (21.037125ms)
+✔ twenty rapid cold owners resume one remembered login without restarting the service (51.309083ms)
+✔ slow challenge falls back immediately to the offline verifier, with no surprise later prompt (10.930291ms)
+✔ lost finish reply survives restart using the exact sealed proof; no second session or passkey (18.021ms)
+✔ offline sign-out retires the local generation; reopening cannot resume it; outbox only revokes (20.462625ms)
+✔ sign-out racing an unknown finish cancels only that attempt and ignores the late credentials (15.400625ms)
+✔ late renewal after sign-out cannot reinstall access and other slots retain their own login (17.546667ms)
+✔ local combined verification rejects substituted context, unsigned binding and ordinary challenges (13.571625ms)
+✔ carrier scope and stale-owner checks reject wrong root/account/pin and concurrent stale writes (10.537125ms)
+✔ failed encryption burns its reservation; cold reopen keeps the previous complete value (9.345375ms)
+✔ tampered carrier and refused storage cannot block a valid offline unlock or claim remembered login (13.882875ms)
+✔ outbox loss/failure never changes the signed-out carrier and forged destinations are not contacted (14.994334ms)
+✔ two people on the same origin keep distinct sessions when one signs out (19.34175ms)
+✔ sign-out cancels an outstanding reconnect passkey without installing its result (12.050417ms)
+✔ cancelled first connection still identifies a required passkey (9.370791ms)
+✔ cancelled reconnect still identifies a required passkey (14.062625ms)
+✔ a wrong-account issuance reply is never saved or acknowledged (12.264708ms)
+✖ a busy service, storage that cannot save and an outdated request are named; each clears on success (50.559ms)
+✖ no reply, a gateway page and a timeout say unreachable; a forged reason is only a reason (13.2025ms)
+✖ a reconnect the service cannot start says why, and a later reconnect clears it (12.673875ms)
+✖ failing tests:
+  TypeError [Error]: a.login.getProblem is not a function
+  TypeError [Error]: a.login.getProblem is not a function
+  TypeError [Error]: a.login.getProblem is not a function
+ℹ tests 21
+ℹ pass 18
+ℹ fail 3
+
+=== vitest run test/accountHistory.test.tsx test/syncNotice.test.tsx test/accountSessionBridge.test.ts
+   × says what each failure is and what to do; only no answer says to check the connection (phase 551) 13ms
+   × names an unverified history snapshot, says what resolves it, and offers no ineffective retry 5ms
+   × says why a reconnect did not finish, and only no answer says to check the connection 3ms
+   × carries why the last sign-in attempt failed to the page, and refuses an unknown reason (phase 551) 3ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/accountHistory.test.tsx > says what each failure is and what to do; only no answer says to check the connection (phase 551)
+AssertionError: history-unreachable: expected 'History maintenance could not finish.…' to be 'History maintenance could not reach t…' // Object.is equality
+Expected: "History maintenance could not reach the account service. Your writing and saved progress are kept. Check your connection, then check history or resume."
+Received: "History maintenance could not finish. Your writing and saved progress are kept. Check your connection, then check history or resume."
+ FAIL  test/accountSessionBridge.test.ts > carries why the last sign-in attempt failed to the page, and refuses an unknown reason (phase 551)
+ FAIL  test/syncNotice.test.tsx > names an unverified history snapshot, says what resolves it, and offers no ineffective retry
+AssertionError: expected 'Changes from your other devices may s…' to be 'Changes from your other devices may s…' // Object.is equality
+Expected: "Changes from your other devices may stop arriving here until this device can finish history maintenance. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept."
+Received: "Changes from your other devices may stop arriving here until this device can finish history maintenance, for example once its unsent writing is sent or an unfinished account step on it is completed. A history snapshot saved on the service is checked and installs then. Your writing on this device is kept."
+ FAIL  test/syncNotice.test.tsx > says why a reconnect did not finish, and only no answer says to check the connection
+ Test Files  3 failed (3)
+      Tests  4 failed | 22 passed (26)

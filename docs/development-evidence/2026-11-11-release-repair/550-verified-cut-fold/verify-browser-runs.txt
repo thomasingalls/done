@@ -1,0 +1,351 @@
+Phase 550 browser probes for the verified cut (copy-only; specs in verify-probe.spec.ts.txt). Built on a 7e6aff636 copy with the copy-only seams in verify-probe-seams.py.txt; three devices, packaged app, real in-process service. Not on 422ff6c36: the rebase changed no line these runs exercise.
+
+===== R1 tip 7e6aff636 without the fix: the reduced-peer strand (r1-base-strand.txt) =====
+
+Running 1 test using 1 worker
+
+25.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.3s third refusal /account/membership/v2/transfer 409 authority-changed
+38.2s third refusal /account/membership/v2/ceremony 409 authority-changed
+63.8s ids {"A":"b10515806594939bcbad3e056a3ebec3","B":"29f211e2eaa5627d519fac561b10e50e","C":"6118af82f655be6abd0af8e5ca4e8460"}
+63.8s third holds catalog checks and drops A reads
+64.3s third refusal /account/delivery/read-v2-batch 404 unavailable
+73.0s snapshot 2 admitted
+75.5s snapshot 3 pending
+81.0s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+85.1s snapshot 3 admitted
+86.7s pruned
+91.7s third reduced [{"name":"done.0ed52918553ccf271c76074504289526","v":5,"revision":1}]
+91.7s third back online with catalog checks and A reads allowed
+91.9s third history read:catalog
+92.0s third history read:latest
+92.4s third refusal /account/delivery/read-v2 409 unavailable
+100.5s third history read:catalog
+100.7s third refusal /account/delivery/read-v2 409 unavailable
+116.8s third history read:catalog
+117.0s third refusal /account/delivery/read-v2 409 unavailable
+136.7s after 45 s: shows A writing? false
+136.8s notice: Changes from your other devices are not arriving here.Last successful receive check: 2:09:51 AMReason: receive:network-unavailableRetry receiving
+136.8s verification reads of B: []
+136.8s third sync details: ["Sending: idleLast accepted upload: 2:09:14 AMAccepted position: 2Receiving: retryingLast successful receive check: 2:09:51 AMReceived positions: 12Reason: receive:network-unavailableRetry receiving"]
+147.1s third history read:catalog
+147.3s third receives new B writing
+147.4s third refusal /account/delivery/read-v2 409 unavailable
+148.7s third writing reaches A
+148.7s third refusal /account/delivery/read-v2 409 unavailable
+150.6s third history read:catalog
+150.7s third history read:latest
+151.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+151.2s third refusal /account/delivery/read-v2 409 unavailable
+153.2s third refusal /account/delivery/read-v2-batch 409 unavailable
+157.4s third history read:catalog
+157.5s third refusal /account/delivery/read-v2-batch 409 unavailable
+165.7s third history read:catalog
+165.7s after reopen: shows A writing? false; notice: 
+166.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+174.1s snapshot 4 admitted
+182.3s third history read:catalog
+182.5s third history read:latest
+183.2s after snapshot 4: third shows A writing
+189.9s convergence: text true, state true, 577 characters
+  ✓  1 test/packaged-account/reduced-peer-verify.spec.ts:56:1 › three devices, reduced past a snapshot cut: strand (3.2m)
+
+  1 passed (3.2m)
+exit 0
+
+===== R1 timeline (r1-base-strand.timeline) =====
+25.7s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.3s third refusal /account/membership/v2/transfer 409 authority-changed
+38.2s third refusal /account/membership/v2/ceremony 409 authority-changed
+63.8s ids {"A":"b10515806594939bcbad3e056a3ebec3","B":"29f211e2eaa5627d519fac561b10e50e","C":"6118af82f655be6abd0af8e5ca4e8460"}
+63.8s third holds catalog checks and drops A reads
+64.3s third refusal /account/delivery/read-v2-batch 404 unavailable
+73.0s snapshot 2 admitted
+75.5s snapshot 3 pending
+81.0s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+85.1s snapshot 3 admitted
+86.7s pruned
+91.7s third reduced [{"name":"done.0ed52918553ccf271c76074504289526","v":5,"revision":1}]
+91.7s third back online with catalog checks and A reads allowed
+91.9s third history read:catalog
+92.0s third history read:latest
+92.4s third refusal /account/delivery/read-v2 409 unavailable
+100.5s third history read:catalog
+100.7s third refusal /account/delivery/read-v2 409 unavailable
+116.8s third history read:catalog
+117.0s third refusal /account/delivery/read-v2 409 unavailable
+136.7s after 45 s: shows A writing? false
+136.8s notice: Changes from your other devices are not arriving here.Last successful receive check: 2:09:51 AMReason: receive:network-unavailableRetry receiving
+136.8s verification reads of B: []
+136.8s third sync details: ["Sending: idleLast accepted upload: 2:09:14 AMAccepted position: 2Receiving: retryingLast successful receive check: 2:09:51 AMReceived positions: 12Reason: receive:network-unavailableRetry receiving"]
+147.1s third history read:catalog
+147.3s third receives new B writing
+147.4s third refusal /account/delivery/read-v2 409 unavailable
+148.7s third writing reaches A
+148.7s third refusal /account/delivery/read-v2 409 unavailable
+150.6s third history read:catalog
+150.7s third history read:latest
+151.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+151.2s third refusal /account/delivery/read-v2 409 unavailable
+153.2s third refusal /account/delivery/read-v2-batch 409 unavailable
+157.4s third history read:catalog
+157.5s third refusal /account/delivery/read-v2-batch 409 unavailable
+165.7s third history read:catalog
+165.7s after reopen: shows A writing? false; notice: 
+166.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+174.1s snapshot 4 admitted
+182.3s third history read:catalog
+182.5s third history read:latest
+183.2s after snapshot 4: third shows A writing
+189.9s convergence: text true, state true, 577 characters
+errors: []
+
+===== R2 verified cut: recovers (r2-fix-recover.txt) =====
+
+Running 1 test using 1 worker
+
+50.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+67.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+73.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+103.4s ids {"B":"4e4cbdb56860d4b4a84a40375dd3a87b","C":"bc08c988ba028a26eaab28c55f5eca5a","A":"9fd27a5dd053e055ca33b2a939fe11fd"}
+103.4s third holds catalog checks and drops A reads
+108.6s third refusal /account/delivery/read-v2-batch 404 unavailable
+114.1s snapshot 2 admitted
+116.0s snapshot 3 pending
+124.4s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+127.2s snapshot 3 admitted
+128.8s pruned
+133.8s third reduced [{"name":"done.3e60aac507d9b0177ff0f5cbb58e3ff2","v":5,"revision":1}]
+133.9s third back online with catalog checks and A reads allowed
+134.0s third history read:catalog
+134.5s third history read:latest
+134.9s recovered 1.0 s after returning online
+134.9s verification reads of B: [{"at":134636,"after":2,"limit":2,"phase":"after"}]
+135.0s third sync details: ["Sending: idleLast accepted upload: 2:06:53 AMAccepted position: 2Receiving: workingLast successful receive check: 2:07:46 AMReceived positions: 14"]
+135.8s third receives new B writing
+136.6s third writing reaches A
+137.8s third history read:catalog
+152.9s after reopen: shows A writing? true; notice: 
+154.6s third history read:catalog
+156.2s third history read:catalog
+156.3s third history read:latest
+157.3s snapshot 4 admitted
+157.3s after snapshot 4: third shows A writing
+163.2s convergence: text true, state true, 577 characters
+  ✓  1 test/packaged-account/reduced-peer-verify.spec.ts:56:1 › three devices, reduced past a snapshot cut: recover (2.7m)
+
+  1 passed (2.8m)
+exit 0
+
+===== R2 timeline (r2-fix-recover.timeline) =====
+50.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+67.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+73.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+103.4s ids {"B":"4e4cbdb56860d4b4a84a40375dd3a87b","C":"bc08c988ba028a26eaab28c55f5eca5a","A":"9fd27a5dd053e055ca33b2a939fe11fd"}
+103.4s third holds catalog checks and drops A reads
+108.6s third refusal /account/delivery/read-v2-batch 404 unavailable
+114.1s snapshot 2 admitted
+116.0s snapshot 3 pending
+124.4s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+127.2s snapshot 3 admitted
+128.8s pruned
+133.8s third reduced [{"name":"done.3e60aac507d9b0177ff0f5cbb58e3ff2","v":5,"revision":1}]
+133.9s third back online with catalog checks and A reads allowed
+134.0s third history read:catalog
+134.5s third history read:latest
+134.9s recovered 1.0 s after returning online
+134.9s verification reads of B: [{"at":134636,"after":2,"limit":2,"phase":"after"}]
+135.0s third sync details: ["Sending: idleLast accepted upload: 2:06:53 AMAccepted position: 2Receiving: workingLast successful receive check: 2:07:46 AMReceived positions: 14"]
+135.8s third receives new B writing
+136.6s third writing reaches A
+137.8s third history read:catalog
+152.9s after reopen: shows A writing? true; notice: 
+154.6s third history read:catalog
+156.2s third history read:catalog
+156.3s third history read:latest
+157.3s snapshot 4 admitted
+157.3s after snapshot 4: third shows A writing
+163.2s convergence: text true, state true, 577 characters
+errors: []
+
+===== R3a unverifiable, first run: the named state hidden behind a retry reason (r3a-fix-unverifiable-masked.txt) =====
+
+Running 1 test using 1 worker
+
+29.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+42.6s third refusal /account/membership/v2/transfer 409 authority-changed
+46.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+76.7s ids {"C":"035f5eea7ac4002441055ff8accc9a89","B":"bc05322c471cf050f9e822bea7a317cc","A":"22a5316b32c204ef4a7a2ff946be26c2"}
+76.7s third holds catalog checks and drops A reads
+77.4s third refusal /account/delivery/read-v2-batch 404 unavailable
+86.6s snapshot 2 admitted
+89.1s snapshot 3 pending
+94.5s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+97.3s snapshot 3 admitted
+98.9s pruned
+104.0s third reduced [{"name":"done.cccf586b16588bb26858c82afaccffec","v":5,"revision":1}]
+104.0s third back online with catalog checks and A reads allowed
+104.2s third history read:catalog
+104.3s third history read:latest
+104.4s third refusal /account/delivery/read-v2 409 unavailable
+104.7s third refusal /account/delivery/read-v2 409 unavailable
+112.8s third history read:catalog
+113.0s third refusal /account/delivery/read-v2 409 unavailable
+129.1s third history read:catalog
+129.3s third refusal /account/delivery/read-v2 409 unavailable
+149.0s after 45 s: shows A writing? false
+149.0s notice: Changes from your other devices are not arriving here.Last successful receive check: 2:13:17 AMReason: receive:network-unavailableRetry receiving
+149.0s verification reads of B: [{"at":104399,"after":2,"limit":2,"phase":"after"}]
+159.4s third history read:catalog
+159.6s third refusal /account/delivery/read-v2 409 unavailable
+189.6s third history read:catalog
+189.9s third refusal /account/delivery/read-v2 409 unavailable
+  ✘  1 test/packaged-account/reduced-peer-verify.spec.ts:56:1 › three devices, reduced past a snapshot cut: unverifiable (3.5m)
+
+
+  1) test/packaged-account/reduced-peer-verify.spec.ts:56:1 › three devices, reduced past a snapshot cut: unverifiable 
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "could not be checked against the history this device kept"
+    Received string:    "Changes from your other devices are not arriving here.Last successful receive check: 2:13:17 AMReason: receive:network-unavailableRetry receiving"
+
+    Call Log:
+    - Timeout 60000ms exceeded while waiting on the predicate
+
+      318 |       note('verification reads of B: ' + JSON.stringify(verification()));
+      319 |       if (MODE === 'unverifiable') {
+    > 320 |         await expect.poll(notice, { timeout: 60000, intervals: [1000] }).toContain(NAMED);
+          |                                                                          ^
+      321 |         note('named notice shown');
+      322 |       } else expect(verification()).toHaveLength(0);
+      323 |     }
+        at <scratch>/verified-cut/build-fix/test/packaged-account/reduced-peer-verify.spec.ts:320:74
+
+    Error Context: test-results/packaged-account/artifacts/reduced-peer-verify-three--9683b-a-snapshot-cut-unverifiable/error-context.md
+
+  1 failed
+    test/packaged-account/reduced-peer-verify.spec.ts:56:1 › three devices, reduced past a snapshot cut: unverifiable 
+exit 1
+
+===== R3 unverifiable after the precedence fix (r3-fix-unverifiable.txt) =====
+
+Running 1 test using 1 worker
+
+24.1s third refusal /account/membership/v2/ceremony 409 authority-changed
+31.1s third refusal /account/membership/v2/ceremony 409 authority-changed
+32.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+60.0s ids {"B":"0d18e70da423bc7c3fa7bd1312d6b7a3","C":"58d614e7072738eaf42fe93705b3677f","A":"6fdd2e160d1465359734ebacb83c84d3"}
+60.0s third holds catalog checks and drops A reads
+60.4s third refusal /account/delivery/read-v2-batch 404 unavailable
+67.4s snapshot 2 admitted
+69.9s snapshot 3 pending
+76.8s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+80.2s third refusal /account/membership/v2/discover 409 unavailable
+80.5s third refusal /account/grant/v1/begin 403 unavailable
+80.7s snapshot 3 admitted
+82.3s pruned
+87.4s third reduced [{"name":"done.a9da71df5148a98ab7d8ece68dcd6e57","v":5,"revision":1}]
+87.4s third back online with catalog checks and A reads allowed
+87.6s third history read:catalog
+87.8s third history read:latest
+87.9s third refusal /account/delivery/read-v2 409 unavailable
+88.1s third refusal /account/delivery/read-v2 409 unavailable
+96.2s third history read:catalog
+96.4s third refusal /account/delivery/read-v2 409 unavailable
+112.5s third history read:catalog
+112.6s third refusal /account/delivery/read-v2 409 unavailable
+132.4s after 45 s: shows A writing? false
+132.4s notice: Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.Last successful receive check: 2:17:24 AMReason: receive:history-unverified
+132.4s verification reads of B: [{"at":87905,"after":2,"limit":2,"phase":"after"}]
+132.5s named notice shown
+132.5s third sync details: ["Sending: idleLast accepted upload: 2:16:44 AMAccepted position: 2Receiving: retryingChanges from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.Last successful receive check: 2:17:24 AMReceived positions: 12Reason: receive:history-unverified"]
+142.7s third history read:catalog
+142.9s third receives new B writing
+143.0s third refusal /account/delivery/read-v2 409 unavailable
+144.2s third refusal /account/delivery/read-v2 409 unavailable
+146.3s third refusal /account/delivery/read-v2 409 unavailable
+150.4s third history read:catalog
+150.5s third refusal /account/delivery/read-v2 409 unavailable
+152.9s notice after B writing arrived: Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.Last successful receive check: 2:18:30 AMReason: receive:history-unverified
+153.8s third writing reaches A
+155.5s third history read:catalog
+155.5s third history read:latest
+155.6s third refusal /account/delivery/read-v2 409 unavailable
+155.7s third refusal /account/delivery/read-v2-batch 409 unavailable
+155.8s third refusal /account/delivery/read-v2 409 unavailable
+157.9s third refusal /account/delivery/read-v2-batch 409 unavailable
+162.0s third history read:catalog
+162.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+170.1s third history read:catalog
+170.2s third refusal /account/delivery/read-v2-batch 409 unavailable
+170.6s after reopen: shows A writing? false; notice: 
+175.4s snapshot 4 admitted
+186.3s third history read:catalog
+186.4s third history read:latest
+186.9s after snapshot 4: third shows A writing
+186.9s named notice cleared after snapshot 4: ""
+192.9s convergence: text true, state true, 577 characters
+192.9s chain checks answered unavailable: 2
+  ✓  1 test/packaged-account/reduced-peer-verify.spec.ts:56:1 › three devices, reduced past a snapshot cut: unverifiable (3.2m)
+
+  1 passed (3.2m)
+exit 0
+
+===== R3 timeline (r3-fix-unverifiable.timeline) =====
+24.1s third refusal /account/membership/v2/ceremony 409 authority-changed
+31.1s third refusal /account/membership/v2/ceremony 409 authority-changed
+32.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+60.0s ids {"B":"0d18e70da423bc7c3fa7bd1312d6b7a3","C":"58d614e7072738eaf42fe93705b3677f","A":"6fdd2e160d1465359734ebacb83c84d3"}
+60.0s third holds catalog checks and drops A reads
+60.4s third refusal /account/delivery/read-v2-batch 404 unavailable
+67.4s snapshot 2 admitted
+69.9s snapshot 3 pending
+76.8s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+80.2s third refusal /account/membership/v2/discover 409 unavailable
+80.5s third refusal /account/grant/v1/begin 403 unavailable
+80.7s snapshot 3 admitted
+82.3s pruned
+87.4s third reduced [{"name":"done.a9da71df5148a98ab7d8ece68dcd6e57","v":5,"revision":1}]
+87.4s third back online with catalog checks and A reads allowed
+87.6s third history read:catalog
+87.8s third history read:latest
+87.9s third refusal /account/delivery/read-v2 409 unavailable
+88.1s third refusal /account/delivery/read-v2 409 unavailable
+96.2s third history read:catalog
+96.4s third refusal /account/delivery/read-v2 409 unavailable
+112.5s third history read:catalog
+112.6s third refusal /account/delivery/read-v2 409 unavailable
+132.4s after 45 s: shows A writing? false
+132.4s notice: Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.Last successful receive check: 2:17:24 AMReason: receive:history-unverified
+132.4s verification reads of B: [{"at":87905,"after":2,"limit":2,"phase":"after"}]
+132.5s named notice shown
+132.5s third sync details: ["Sending: idleLast accepted upload: 2:16:44 AMAccepted position: 2Receiving: retryingChanges from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.Last successful receive check: 2:17:24 AMReceived positions: 12Reason: receive:history-unverified"]
+142.7s third history read:catalog
+142.9s third receives new B writing
+143.0s third refusal /account/delivery/read-v2 409 unavailable
+144.2s third refusal /account/delivery/read-v2 409 unavailable
+146.3s third refusal /account/delivery/read-v2 409 unavailable
+150.4s third history read:catalog
+150.5s third refusal /account/delivery/read-v2 409 unavailable
+152.9s notice after B writing arrived: Changes from your other devices may stop arriving here, because a history snapshot saved on the service could not be checked against the history this device kept. This clears when your other devices save and check a newer snapshot. Your writing on this device is kept.Last successful receive check: 2:18:30 AMReason: receive:history-unverified
+153.8s third writing reaches A
+155.5s third history read:catalog
+155.5s third history read:latest
+155.6s third refusal /account/delivery/read-v2 409 unavailable
+155.7s third refusal /account/delivery/read-v2-batch 409 unavailable
+155.8s third refusal /account/delivery/read-v2 409 unavailable
+157.9s third refusal /account/delivery/read-v2-batch 409 unavailable
+162.0s third history read:catalog
+162.0s third refusal /account/delivery/read-v2-batch 409 unavailable
+170.1s third history read:catalog
+170.2s third refusal /account/delivery/read-v2-batch 409 unavailable
+170.6s after reopen: shows A writing? false; notice: 
+175.4s snapshot 4 admitted
+186.3s third history read:catalog
+186.4s third history read:latest
+186.9s after snapshot 4: third shows A writing
+186.9s named notice cleared after snapshot 4: ""
+192.9s convergence: text true, state true, 577 characters
+192.9s chain checks answered unavailable: 2
+errors: []

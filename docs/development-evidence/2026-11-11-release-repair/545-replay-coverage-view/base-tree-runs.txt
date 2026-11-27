@@ -1,0 +1,30 @@
+# New tests run against the base source (phase 545 source changes reverted, tests kept)
+# Command: pnpm exec vitest run test/baselineReplayBuilds.test.ts test/localBaselineWarm.test.ts test/warmContent.test.ts test/baselineReplayCoverage.test.ts
+   × a return to the app stays due when an audit absorbs its full read and is interrupted 147ms
+   × an interrupted foreground read after a return to the app leaves the full read due 79ms
+   × an interrupted maintenance reference read does not move onto the next foreground load 77ms
+   × an interrupted read after resume leaves the complete read due, so damage is still found 17ms
+   × whole-document builds per replay stay constant as capsules accumulate, warm-forced and cold 2769ms
+   × one coverage view per check sequence gives each per-call verdict, through refusal, reuse and erasure 14ms
+   × generated baseline replays give identical results and refusals with one view and with per-call rebuilds 9641ms
+   × a carried source, an installed history and a receipt each refuse identically at their own check 280ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  test/baselineReplayBuilds.test.ts > whole-document builds per replay stay constant as capsules accumulate, warm-forced and cold
+AssertionError: expected [ { forced: 6, cold: 6 }, …(2) ] to deeply equal [ { forced: 4, cold: 4 }, …(2) ]
+ FAIL  test/baselineReplayCoverage.test.ts > one coverage view per check sequence gives each per-call verdict, through refusal, reuse and erasure
+Error: Property failed after 1 tests
+Caused by: TypeError: actual.createPassCoverage is not a function
+ FAIL  test/baselineReplayCoverage.test.ts > generated baseline replays give identical results and refusals with one view and with per-call rebuilds
+AssertionError: expected 0 to be greater than 150
+ FAIL  test/baselineReplayCoverage.test.ts > a carried source, an installed history and a receipt each refuse identically at their own check
+AssertionError: expected +0 to be 1 // Object.is equality
+ FAIL  test/localBaselineWarm.test.ts > a return to the app stays due when an audit absorbs its full read and is interrupted
+AssertionError: expected 0 to be greater than or equal to 3
+ FAIL  test/localBaselineWarm.test.ts > an interrupted foreground read after a return to the app leaves the full read due
+AssertionError: expected 0 to be greater than or equal to 3
+ FAIL  test/localBaselineWarm.test.ts > an interrupted maintenance reference read does not move onto the next foreground load
+TypeError: x.owner.requestReferenceRead is not a function
+ FAIL  test/warmContent.test.ts > an interrupted read after resume leaves the complete read due, so damage is still found
+AssertionError: promise resolved "[ …(40) ]" instead of rejecting
+ Test Files  4 failed (4)
+      Tests  8 failed | 46 passed (54)

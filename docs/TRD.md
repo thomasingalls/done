@@ -371,6 +371,14 @@ master document or otherwise exposed as user-facing identifiers.
 Completion is `- [x]` and nothing more. **There is no `📅` scheduled-date syntax and no `✅` completion-timestamp
 syntax** — both are deadline-tracking scaffolding for a system this explicitly isn't.
 
+**Card controls.** The right grip slot is reserved independently of collection size and editing state.
+The writing, optional heading context and action-label ink share the content inset. A Done card
+keeps one fixed-width Unlock/Lock button mounted across editor transitions. Other actions render
+only while it is unlocked; its existing reorder controller remains present but disabled while editing.
+Explicit Lock consumes the transient focus request and retains the caret without returning focus to
+the text surface. Enter/Escape still return focus to the surface; external blur still relocks. These
+are presentation state only, with no changes to admission, freeze or stored card data.
+
 ### 4.7 Movement operations
 
 | Operation                       | Implementation                                                                           |
@@ -497,6 +505,13 @@ encoded in the update bytes. What the bytes carry is the writing document's Yjs 
 
 **Test.** §11, undo scoping; attribution authenticity.
 
+**Partial completion.** `done-for-now` resolves the current Next source inside the admitted predecessor.
+One human transaction registers a fresh Done copy (current author, original ID as provenance,
+complete text and Goals context) and moves the original to Scheduled at index zero. One Undo
+restores the original and removes the copy together. The page requests editing focus only after
+acceptance, shared across collections and discarded on day navigation; focus uses the admitted
+copy's text end. No schema or additional persisted field is needed.
+
 ### 4.9 Section order, and where an arrival lands
 
 Two different orders, and they must not be allowed to become one.
@@ -507,9 +522,11 @@ every iteration over a day's contents takes.
 **Reading order** is `next, done, scheduled` (PRD §4.1). It is a property of the day panel and of nothing else —
 rearranging the layout must not be able to change the file format.
 
-Within a collection, **Done takes an arrival at index 0** and the other two append. That is the only place
-ordering is a rule rather than a user action. A multi-line copy into Done is reversed on the way in, so a run of
-lines still reads in the order it had in the master list.
+Within every collection, **ordinary arrivals insert at index 0**. Creation, filing and ordinary moves
+share this default; explicit move/reorder indices and split adjacency remain explicit. Existing arrays are
+not migrated or re-sorted, and text edits do not move a card. No timestamp or schema changes. Multi-card
+transfers prepend their block while retaining the existing internal order policy (including Done's reversed
+insertion); this change does not reorder the selected block.
 
 **Order has to survive replication**, and a sequence CRDT gives that for free while the array survives. The case
 where it does not is a day _neither_ device has written to before: both mint a `Y.Map` for the date, one wins the
@@ -519,8 +536,9 @@ back by the membership repair, which is therefore the one place an order is _rec
 Everything from here to the end of this section is a **mitigation for a schema problem**, not a property of the
 data model, and §10.8 records the problem, the fix, and why it is deferred.
 
-It recomputes from the section's own rule. Next and Scheduled are ordered by intent, intent is not stored, and a
-returning card appends. Done is ordered by time, so its order can be restored: a returning card goes back above
+The existing repair fallback remains separate from ordinary insertion. Lost manual positions and last-arrival
+times are not stored, so returning Next and Scheduled cards append without sorting surviving cards. Done keeps
+its creation-time approximation: a returning card goes back above
 everything completed before it. Two constraints make that safe to run independently on every replica: the
 ordering key is replicated data rather than anything local, and returning cards are processed oldest-first.
 

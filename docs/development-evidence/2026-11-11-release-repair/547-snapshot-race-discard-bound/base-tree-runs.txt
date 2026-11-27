@@ -1,0 +1,200 @@
+# Phase 547 base-tree runs
+
+Base: 7e6aff636 (git archive of the tree, docs/account-crypto included for fixtures), with the phase 547 test files copied in and the base test/account-history/client-entry.ts kept (it lacks the new exports). node_modules symlinked; node run directly. Host load average 9 to 16; other sessions' Playwright runs were active.
+
+## node --test test/account-history/client.test.mjs (with race and source files; the latter two could not load here until docs/account-crypto was added, see the next run)
+✔ client reopens exact publish attempt after a lost reply and service restart (188.759541ms)
+✔ client reopens exact admit attempt after a lost reply and service restart (175.394541ms)
+✔ failed progress persistence never publishes, while later attempts remain repeatable (182.659458ms)
+✔ untrusted replies and wrong-owner progress cannot clear a retained attempt (113.573542ms)
+✔ stale attempts preserve progress until explicitly cancelled; a lost cancellation reply resumes cancellation (213.766708ms)
+✔ cancelling an unsent proposal fences a delayed original publication (133.028708ms)
+✔ catalog rollback and progress changes during async signing refuse (92.785834ms)
+✔ explicit pruning requires two snapshots and retries an uncertain reply without losing saved progress (307.091458ms)
+✔ a retained old admission resolves after its snapshot ciphertext has been pruned (345.635208ms)
+✔ creation refuses a snapshot devices cannot install before saving or sending anything; the largest one is published and admitted (6990.832834ms)
+✔ resuming a saved proposal too large to install sends nothing, and it can be discarded (3527.869625ms)
+✖ verification never admits a pending snapshot too large to install, and inspection names it (2699.29225ms)
+✖ pruning is refused while the latest snapshot is too large to install (3331.108708ms)
+✖ a saved snapshot left behind by a membership change is named stale, offered for discard and cancelled (phase 547) (139.179542ms)
+✖ test/account-history/race.test.mjs (534.992541ms)
+✖ test/account-history/replay-bound-source.test.mjs (245.368792ms)
+ℹ tests 16
+ℹ pass 11
+ℹ fail 5
+✖ failing tests:
+
+test at test/account-history/client.test.mjs:303:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  -   positions: {
+  -     allowed: 4096,
+  -     since: 0
+  -   },
+    actual: { tooLarge: { snapshot: 'pending', needed: 4194306, allowed: 4194304 }, sequence: 0, pending: 'verify', canDiscard: true },
+    expected: { tooLarge: { snapshot: 'pending', needed: 4194306, allowed: 4194304 }, positions: { since: 0, allowed: 4096 }, sequence: 0, pending: 'verify', canDiscard: true },
+test at test/account-history/client.test.mjs:333:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  -   positions: {
+  -     allowed: 4096,
+  -     since: 0
+  -   },
+    actual: { tooLarge: { snapshot: 'latest', needed: 4194603, allowed: 4194304 }, sequence: 2, pending: 'none', canDiscard: false },
+    expected: { tooLarge: { snapshot: 'latest', needed: 4194603, allowed: 4194304 }, positions: { since: 0, allowed: 4096 }, sequence: 2, pending: 'none', canDiscard: false },
+test at test/account-history/client.test.mjs:365:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + undefined
+  - 'stale'
+    actual: undefined,
+    expected: 'stale',
+test at test/account-history/race.test.mjs:1:1
+test at test/account-history/replay-bound-source.test.mjs:1:1
+
+## node --test test/account-history/race.test.mjs test/account-history/replay-bound-source.test.mjs
+✖ two devices creating at once: the one that finishes preparing second saves and sends nothing, then verifies the other (958.176917ms)
+✖ the two-device deadlock resolves: the device holding a snapshot it cannot send sees it, discards it here and verifies the other (792.859375ms)
+✖ a cancellation kept for later is recorded once the other device discards its snapshot instead (1095.783416ms)
+✖ three devices: a snapshot verified by the third leaves the loser superseded; it discards it here and verifies the next (2216.040417ms)
+✖ every saved snapshot of this device that no device admitted can be discarded: not sent, and waiting (506.549917ms)
+✖ an admitted snapshot, or another device’s waiting snapshot, is never discarded from here (1590.048708ms)
+✔ a replay of exactly 4,096 positions completes (3930.926708ms)
+✔ a replay of exactly 4,096 positions completes after an admitted snapshot (4079.359458ms)
+✖ a replay of 4,097 positions is refused before any position is read (3648.574708ms)
+✖ a replay of 4,097 positions is refused before any position is read after an admitted snapshot (3861.94225ms)
+ℹ tests 10
+ℹ pass 2
+ℹ fail 8
+✖ failing tests:
+
+test at test/account-history/race.test.mjs:13:1
+  Error: checkpoint-busy
+test at test/account-history/race.test.mjs:52:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  +   canDiscard: false,
+  -   canDiscard: true,
+  +   saved: undefined
+  -   saved: 'blocked'
+    actual: { pending: 'resume', saved: undefined, canDiscard: false },
+    expected: { pending: 'resume', saved: 'blocked', canDiscard: true },
+test at test/account-history/race.test.mjs:99:1
+  Error: Only the producer can cancel this checkpoint
+test at test/account-history/race.test.mjs:124:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  +   canDiscard: false,
+  -   canDiscard: true,
+  +   saved: undefined
+  -   saved: 'superseded'
+    actual: { pending: 'resume', saved: undefined, canDiscard: false },
+    expected: { pending: 'resume', saved: 'superseded', canDiscard: true },
+test at test/account-history/race.test.mjs:167:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  +   canDiscard: false,
+  -   canDiscard: true,
+  +   saved: undefined
+  -   saved: 'sendable'
+    actual: { pending: 'resume', saved: undefined, canDiscard: false },
+    expected: { pending: 'resume', saved: 'sendable', canDiscard: true },
+test at test/account-history/race.test.mjs:201:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  +   'discard:'
+  -   'publish:'
+    actual: [ 'discard:' ],
+    expected: [ 'publish:' ],
+test at test/account-history/replay-bound-source.test.mjs:126:3
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + undefined
+  - 4097
+      at expectsError (node:assert:672:21)
+    actual: undefined,
+    expected: 4097,
+test at test/account-history/replay-bound-source.test.mjs:126:3
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  + undefined
+  - 4097
+      at expectsError (node:assert:672:21)
+    actual: undefined,
+    expected: 4097,
+
+## node --test test/account-history/replay-bound.test.mjs
+✖ 3072 positions: a first snapshot and the next are made and verified (25416.292375ms)
+✖ 3073 positions: a first snapshot and the next are made and verified (18977.281708ms)
+✖ 4096 positions: a first snapshot and the next are made and verified (25776.862041ms)
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (51853.068584ms)
+✖ 4,097 positions after an admitted snapshot: creating and verifying stop before any replay (93519.572291ms)
+✖ a replay that meets the bound inside preparation or verification is a named outcome, not a failure (400.942125ms)
+ℹ tests 6
+ℹ pass 0
+ℹ fail 6
+✖ failing tests:
+
+test at test/account-history/replay-bound.test.mjs:71:3
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { since: 3072, allowed: 4096 },
+test at test/account-history/replay-bound.test.mjs:71:3
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { since: 3073, allowed: 4096 },
+test at test/account-history/replay-bound.test.mjs:71:3
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { since: 4096, allowed: 4096 },
+test at test/account-history/replay-bound.test.mjs:75:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { since: 4097, allowed: 4096 },
+test at test/account-history/replay-bound.test.mjs:82:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { since: 4097, allowed: 4096 },
+test at test/account-history/replay-bound.test.mjs:97:1
+  TypeError [Error]: c.HistoryReplayLimit is not a constructor
+
+## Probe on base: the two 4,097 cases with the positions assertions removed (replay-bound-nopositions.probe.mjs.txt), to show what base does next
+✖ 4,097 positions with no admitted snapshot: creating and verifying stop before any replay (29352.27975ms)
+✖ 4,097 positions after an admitted snapshot: creating and verifying stop before any replay (36039.809542ms)
+ℹ tests 2
+ℹ pass 0
+ℹ fail 2
+✖ failing tests:
+
+test at test/account-history/replay-bound-nopositions.test.mjs:75:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { snapshot: 'new', needed: 4097, allowed: 4096 },
+test at test/account-history/replay-bound-nopositions.test.mjs:82:1
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+    actual: undefined,
+    expected: { snapshot: 'new', needed: 4097, allowed: 4096 },
+
+## Vitest: test/accountHistory.test.tsx test/accountSessionBridge.test.ts test/historyReplayBound.test.ts
+   × says how many positions were accepted, warns past three quarters of the bound and says plainly past it 8ms
+   × names a replay past the bound, with both numbers, for creating and for verifying 0ms
+   × says where this device’s saved snapshot stands and what discarding affects 3ms
+   × offers Discard for every saved snapshot of this device that is not admitted, and only actions that can help 34ms
+   × carries where a saved snapshot stands, positions since the last one and a replay-bound refusal, refusing malformed ones (phase 547) 5ms
+ FAIL  test/historyReplayBound.test.ts [ test/historyReplayBound.test.ts ]
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  5 failed | 14 passed (19)
+
+ FAIL  test/accountHistory.test.tsx > says how many positions were accepted, warns past three quarters of the bound and says plainly past it
+TypeError: historyPositionsMessage is not a function
+ FAIL  test/accountHistory.test.tsx > names a replay past the bound, with both numbers, for creating and for verifying
+TypeError: historyReplayMessage is not a function
+ FAIL  test/accountHistory.test.tsx > says where this device’s saved snapshot stands and what discarding affects
+AssertionError: expected undefined to be 'Discarding removes only this unfinish…' // Object.is equality
+ FAIL  test/accountHistory.test.tsx > offers Discard for every saved snapshot of this device that is not admitted, and only actions that can help
+AssertionError: blocked: expected [ 'Resume history snapshot', …(1) ] to deeply equal [ 'Discard unfinished snapshot' ]
+    215|       expect(buttons(), saved).toEqual(expected);
+ FAIL  test/accountSessionBridge.test.ts > carries where a saved snapshot stands, positions since the last one and a replay-bound refusal, refusing malformed ones (phase 547)
+Error: Worker session presentation changed
+     34| const fail = () => Error('Worker session presentation changed');
+Error: Cannot find module '../src/account/historyReplayBound' imported from <base copy>/test/historyReplayBound.test.ts

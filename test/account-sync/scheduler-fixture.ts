@@ -5,6 +5,7 @@ import {
   type SyncGate,
 } from '../../src/crdt/accountSyncDriver';
 import type { ReceiveStep } from '../../src/crdt/accountReceiveDriver';
+import type { SyncRefusal } from '../../src/account/syncRefusal';
 export const flush = async () => {
   for (let n = 0; n < 30; n++) await Promise.resolve();
 };
@@ -23,6 +24,8 @@ export function fixture(factory = createSyncScheduler) {
     finish: (
       kind: 'idle' | 'progress' | 'unknown' | 'expired' | 'paused' | 'blocked' | 'error',
       position?: number,
+      /** Phase 552: why the step got no result, as the composition attaches it. */
+      refusal?: SyncRefusal,
     ) => void;
   }[] = [];
   const step = (lane: SyncLane) => {
@@ -32,8 +35,9 @@ export function fixture(factory = createSyncScheduler) {
       calls.push({
         lane,
         at: now,
-        finish(kind, position = 0) {
+        finish(kind, position = 0, refusal) {
           active--;
+          const why = refusal === undefined ? {} : { refusal };
           if (kind === 'error') {
             no(Error('controlled failure'));
             return;
@@ -42,9 +46,9 @@ export function fixture(factory = createSyncScheduler) {
             lane === 'send' ? { acceptedThrough: position } : { receivedThrough: position };
           if (kind === 'expired') {
             if (lane !== 'receive') throw Error('Expiry is a receive outcome');
-            yes({ kind, receivedThrough: position });
-          } else if (kind === 'blocked') yes({ kind, ...progress, reason: 'conflict' });
-          else yes({ kind, ...progress });
+            yes({ kind, receivedThrough: position, ...why });
+          } else if (kind === 'blocked') yes({ kind, ...progress, reason: 'conflict', ...why });
+          else yes({ kind, ...progress, ...why });
         },
       });
     });

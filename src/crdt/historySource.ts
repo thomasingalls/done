@@ -45,7 +45,8 @@ import { fields, hkdf, hex, random, type Bytes } from './custodyCrypto';
 import { unhex } from '../../account-protocol/recovery';
 import { Y, genesisCoverage, genesisCoverageParts, hasPendingUpdates, type YDoc } from './yjs';
 import { actors } from './promotionGenesis';
-export const HISTORY_REPLAY_EVENTS = 4096;
+import { HISTORY_REPLAY_EVENTS, HistoryReplayLimit } from '../account/historyReplayBound';
+export { HISTORY_REPLAY_EVENTS };
 export const HISTORY_REPLAY_BYTES = 64 * 1024 * 1024;
 export interface HistorySourceInput {
   base: Parameters<typeof verifyCheckpointTimeline>[0];
@@ -66,6 +67,21 @@ export interface HistorySourceInput {
   readBatch?(requests: readonly Bytes[]): Promise<readonly Bytes[]>;
   exchange(request: HistoryExchange): Promise<unknown>;
   progress?: (progress: HistoryReplayProgress) => void;
+}
+/** The cuts `readHistorySource` starts its position replay from, in its own order: the previous
+ * snapshot when this device holds its generation, else a recovery or replacement baseline, else
+ * genesis. A count for the replay bound only (phase 547); the replay still verifies everything. */
+export function historyReplayStart(input: {
+  previous: HistoryCheckpoint | null;
+  keys: ReadonlyMap<number, unknown>;
+  recovery?: Pick<RecoveryReading, 'successor'>;
+  replacement?: { checkpoint: Pick<ReplacementCheckpoint, 'heads'> };
+}): HistoryCheckpoint['heads'] {
+  const { previous, keys, recovery, replacement } = input;
+  if (previous && keys.has(previous.manifest.generation)) return previous.heads;
+  if (recovery) return recovery.successor.epoch.heads;
+  if (replacement) return replacement.checkpoint.heads;
+  return [];
 }
 /** Returns a caller-owned doc only after every source and cut verifies. All failures erase key/plain buffers.
  * A recovery baseline substitutes for unavailable old openers only with signed exact coverage. */
@@ -394,6 +410,9 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
           (baselineHeads.find((h) => h.credentialId === cut.credentialId)?.position ?? 0)),
       0,
     );
+    // Refuse before any position is read (phase 547). The loop keeps its own check as a backstop.
+    if (remaining > HISTORY_REPLAY_EVENTS)
+      throw new HistoryReplayLimit(remaining, HISTORY_REPLAY_EVENTS);
     // A display count must not round a sum of individually safe authenticated positions.
     const total = Number.isSafeInteger(remaining) ? remaining : null;
     let events = 0,
@@ -427,7 +446,8 @@ export async function readHistorySource(input: HistorySourceInput): Promise<YDoc
       };
       while (context.prefix.position < cut.position) {
         guard();
-        if (events >= HISTORY_REPLAY_EVENTS) throw Error('History replay exceeds its event bound');
+        if (events >= HISTORY_REPLAY_EVENTS)
+          throw new HistoryReplayLimit(remaining, HISTORY_REPLAY_EVENTS);
         const limit = Math.min(
           READ_COUNT_LIMIT,
           cut.position - context.prefix.position,

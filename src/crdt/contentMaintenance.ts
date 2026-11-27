@@ -115,6 +115,45 @@ export function isPriorityOnlyMaintenanceInterruption(cause: unknown): boolean {
 const maintenanceTasks = new WeakSet<SessionTask>();
 export const isMaintenanceTask = (task: SessionTask): boolean => maintenanceTasks.has(task);
 
+/** What stops a warm audit before its next step or wait. */
+export interface WarmAuditGuards {
+  readonly suspended: () => boolean;
+  /** Local input was journalled since the pass began. */
+  readonly inputSince: () => boolean;
+  readonly foregroundPending: () => boolean;
+}
+/** The warm audit's interruptible task. Suspension, new local input and queued foreground work
+ * interrupt it, except that queued work does not interrupt the content owner while it records a
+ * completed oracle replay (phase 549): the replay already held the serialized queue, so yielding
+ * then returns no time to that work and only discards the replay. The owner closing aborts
+ * through the signal maintenanceTask observes. */
+export function warmAuditInterruptible(
+  parent: SessionTask,
+  owner: { recordingOracle(): boolean },
+  guards: WarmAuditGuards,
+): SessionTask {
+  const check = () => {
+    const suspended = guards.suspended(),
+      shadowActivity = guards.inputSince(),
+      queuePriority = guards.foregroundPending() && !owner.recordingOracle();
+    if (suspended || shadowActivity || queuePriority)
+      throw new MaintenanceInterrupted([{ suspended, shadowActivity, queuePriority }]);
+  };
+  return {
+    signal: parent.signal,
+    step: (effect) =>
+      parent.step(() => {
+        check();
+        return effect();
+      }),
+    wait: (start) =>
+      parent.wait(() => {
+        check();
+        return start();
+      }),
+  };
+}
+
 /** Keep the writer lifetime and native settlement ownership. Cancellation prevents the next
  * effect; it does not release admission while an earlier transaction or crypto job is in flight.
  * Yield only before starting async work, never inside an active IDB transaction callback. */

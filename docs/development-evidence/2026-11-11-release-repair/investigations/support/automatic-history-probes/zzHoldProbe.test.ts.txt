@@ -1,0 +1,52 @@
+// @vitest-environment node
+// Scratch probe (not in the repository): a retained history attempt makes local reduction skip
+// with 'durable-attempt'. On a full-check device (hold wanted), how much of the time is sync held?
+import { afterEach, it, vi } from 'vitest';
+import {
+  createAutomaticLocalRetention,
+  LOCAL_RETENTION_MIN_RECORDS as MIN,
+} from '../src/crdt/automaticLocalRetention';
+
+afterEach(() => vi.useRealTimers());
+const out = (...v: unknown[]) => process.stderr.write('\nPROBE ' + JSON.stringify(v) + '\n');
+
+it('hold occupancy while every attempt skips as durable-attempt', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  let removes = 0;
+  const controller = new AbortController();
+  const r = createAutomaticLocalRetention({
+    signal: controller.signal,
+    observe: () => ({
+      ready: true,
+      hint: { revision: 0, records: MIN * 2 },
+      synchronized: true,
+      hold: true,
+      deferPolls: true,
+    }),
+    remove: async () => {
+      removes++;
+      return { kind: 'skipped', reason: 'durable-attempt' };
+    },
+  });
+  r.wake();
+  let sendHeld = 0,
+    receiveHeld = 0;
+  const samples = 6 * 60; // one hour in 10 s steps
+  for (let i = 0; i < samples; i++) {
+    await vi.advanceTimersByTimeAsync(10000);
+    const h = r.hold;
+    if (h?.send) sendHeld++;
+    if (h?.receive) receiveHeld++;
+    // Sync stays quiet under the hold: lanes report no change. Nudge as the owner would.
+    r.refresh();
+  }
+  out({
+    minutes: 60,
+    removes,
+    sendHeldFraction: sendHeld / samples,
+    receiveHeldFraction: receiveHeld / samples,
+    status: r.status,
+  });
+  controller.abort();
+});

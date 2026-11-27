@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { setup } from './service-fixture.mjs';
+import { setup, largestInstallable } from './service-fixture.mjs';
 import { client as c } from './client.mjs';
 import { mutate } from '../account-successor/service-fixtures.mjs';
 import { same } from '../../account-protocol/admission.ts';
@@ -240,4 +240,150 @@ test('a retained old admission resolves after its snapshot ciphertext has been p
     assert.equal(completed.sequence, 3);
     assert.equal(f.saved().attempt, null);
   }
+});
+
+test('creation refuses a snapshot devices cannot install before saving or sending anything; the largest one is published and admitted', async (t) => {
+  const f = await client(t);
+  const largest = await largestInstallable(f);
+  let snapshot = await f.sized(largest + 1);
+  f.owner.prepare = async () => snapshot.cp;
+  const refused = await f.run('create');
+  assert.deepEqual(refused, {
+    sequence: 0,
+    pending: 'none',
+    canDiscard: false,
+    tooLarge: {
+      snapshot: 'new',
+      needed: c.historyInstallBytes(snapshot.cp),
+      allowed: c.HISTORY_INSTALL_LIMIT,
+    },
+  });
+  assert(refused.tooLarge.needed > refused.tooLarge.allowed);
+  assert.deepEqual(
+    f.sent.map((r) => r.action + ':' + r.payload),
+    ['read:latest', 'read:pending'],
+  );
+  assert.equal(f.saved().attempt, null);
+  assert.equal(f.saved().discard, null);
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+  snapshot = await f.sized(largest);
+  f.owner.prepare = async () => snapshot.cp;
+  assert.deepEqual(await f.run('create'), { sequence: 1, pending: 'none', canDiscard: false });
+  assert.equal(f.f.rows('history_checkpoint_records').length, 1);
+  assert.equal(f.saved().attempt, null);
+});
+test('resuming a saved proposal too large to install sends nothing, and it can be discarded', async (t) => {
+  const f = await client(t);
+  const over = await f.sized((await largestInstallable(f)) + 1);
+  await f.run('inspect');
+  // An earlier build saved this proposal before publishing it.
+  f.replaceSaved({ ...f.saved(), attempt: { checkpoint: over.cp, admission: null } });
+  const n = f.sent.length;
+  const status = await f.run('resume');
+  assert.deepEqual(status, {
+    sequence: 0,
+    pending: 'resume',
+    canDiscard: true,
+    tooLarge: {
+      snapshot: 'saved',
+      needed: c.historyInstallBytes(over.cp),
+      allowed: c.HISTORY_INSTALL_LIMIT,
+    },
+  });
+  assert.deepEqual(f.sent.slice(n), []);
+  assert.equal((await f.run('discard')).pending, 'none');
+  assert.deepEqual(
+    f.sent.slice(n).map((r) => r.action),
+    ['read', 'read', 'discard'],
+  );
+  assert.equal(f.saved().attempt, null);
+  const late = await f.makeRequest('publish', over.cp);
+  assert.equal((await f.exchange(late)).refusal, 'checkpoint-cancelled');
+});
+test('verification never admits a pending snapshot too large to install, and inspection names it', async (t) => {
+  const f = await client(t);
+  const over = await f.sized((await largestInstallable(f)) + 1);
+  await f.legacy([over], { pending: over.hash });
+  const tooLarge = {
+    snapshot: 'pending',
+    needed: c.historyInstallBytes(over.cp),
+    allowed: c.HISTORY_INSTALL_LIMIT,
+  };
+  assert.deepEqual(await f.run('inspect'), {
+    tooLarge,
+    // Phase 547: checking history also reports positions since the last admitted snapshot.
+    positions: { since: 0, allowed: 4096 },
+    sequence: 0,
+    pending: 'verify',
+    canDiscard: true,
+  });
+  assert.deepEqual(await f.run('verify'), {
+    tooLarge,
+    sequence: 0,
+    pending: 'verify',
+    canDiscard: true,
+  });
+  assert(!f.sent.some((r) => r.action === 'admit'));
+  assert.equal(f.stats().admits, 0);
+  assert.equal(f.saved().attempt, null);
+  assert.equal(f.f.rows('history_checkpoint_records')[0].admission, null);
+  assert.equal((await f.run('discard')).pending, 'none');
+  assert.equal(f.f.rows('history_checkpoint_records').length, 0);
+});
+test('pruning is refused while the latest snapshot is too large to install', async (t) => {
+  const f = await client(t);
+  await f.run('create');
+  const first = JSON.parse(f.f.rows('history_checkpoint_records')[0].checkpoint);
+  const over = await f.sized((await largestInstallable(f)) + 100, first);
+  await f.legacy([{ ...over, admitted: true }], {
+    sequence: 2,
+    latest: over.hash,
+    previous: await c.historyCheckpointHash(first),
+  });
+  const tooLarge = {
+    snapshot: 'latest',
+    needed: c.historyInstallBytes(over.cp),
+    allowed: c.HISTORY_INSTALL_LIMIT,
+  };
+  assert.deepEqual(await f.run('inspect'), {
+    tooLarge,
+    // Phase 547: checking history also reports positions since the last admitted snapshot.
+    positions: { since: 0, allowed: 4096 },
+    sequence: 2,
+    pending: 'none',
+    canDiscard: false,
+  });
+  const n = f.sent.length;
+  assert.deepEqual(await f.run('prune'), {
+    sequence: 2,
+    pending: 'none',
+    canDiscard: false,
+    tooLarge,
+  });
+  assert(!f.sent.slice(n).some((r) => r.action === 'prune'));
+});
+test('a saved snapshot left behind by a membership change is named stale, offered for discard and cancelled (phase 547)', async (t) => {
+  const f = await client(t);
+  const original = f.io.exchange;
+  f.io.exchange = async (request) => {
+    if (request.action === 'publish') throw Error('not sent');
+    return original(request);
+  };
+  await assert.rejects(f.run('create'), /not sent/);
+  const cp = f.saved().attempt.checkpoint;
+  f.io.exchange = original;
+  await f.advance();
+  const seen = await f.run('inspect');
+  assert.equal(seen.pending, 'resume');
+  assert.equal(seen.saved, 'stale');
+  assert.equal(seen.canDiscard, true);
+  const n = f.sent.length;
+  assert.equal((await f.run('discard')).pending, 'none');
+  assert.deepEqual(
+    f.sent.slice(n).map((r) => r.action),
+    ['read', 'read', 'discard'],
+  );
+  assert.deepEqual([f.saved().attempt, f.saved().discard], [null, null]);
+  assert.equal((await f.exchange(await f.makeRequest('publish', cp))).ok, false);
+  assert.equal((await f.run('create')).sequence, 1);
 });

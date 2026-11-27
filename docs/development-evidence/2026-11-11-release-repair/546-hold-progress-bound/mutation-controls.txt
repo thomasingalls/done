@@ -1,0 +1,32 @@
+# Mutation controls on the final tree (each mutation applied alone, then restored). 2026-11-11T23:26:32Z
+## M1 retentionFence maps nothing
+   × an outstanding prepared receive at progress save time skips the attempt instead of halting it 11ms
+   × an outstanding prepared receive at commit time skips the attempt instead of halting it 2ms
+   × the mapped interruption is not priority-only, and nothing after the slot is taken is mapped 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 1 passed (4)
+## M2 a window without progress marks nothing
+   × with every attempt skipped as pending-promotion, six hours hold sync for at most one budget 60ms
+   × with every attempt skipped as activity-or-journal, six hours hold sync for at most one budget 61ms
+   × the budget starts when sync is parked under the hold, bounds even a running attempt, then yields 5ms
+   × a hold that parked sync but cannot start its attempt yields after the same budget 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed | 28 passed (32)
+## M3 a saved attempt never blocks the hold
+   × a saved attempt that never settles holds sync at most once, even while history keeps changing 42ms
+   × once the saved attempt settles, an unheld check makes progress and the hold returns 15ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 11 passed (13)
+## M4 durable-attempt not parked
+   × a saved attempt that never settles holds sync at most once, even while history keeps changing 111ms
+   × once the saved attempt settles, an unheld check makes progress and the hold returns 13ms
+   × a saved account attempt parks until history changes or a manual check (phase 546) 5ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 30 passed (33)
+## M5 busy slot refuses untyped
+   × a busy slot refuses with a typed error and the same message; other refusals are unchanged 5ms
+   × an outstanding prepared receive at progress save time skips the attempt instead of halting it 9ms
+   × an outstanding prepared receive at commit time skips the attempt instead of halting it 1ms
+   × the mapped interruption is not priority-only, and nothing after the slot is taken is mapped 2ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed (4)

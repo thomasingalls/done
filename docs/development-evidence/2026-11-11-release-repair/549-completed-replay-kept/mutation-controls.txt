@@ -1,0 +1,116 @@
+Phase 549 mutation controls (mutation-controls.py.txt). Each mutation applied alone to a git-archive copy of the final
+tree; test/oracleReplayWindow.test.ts run in full; the file restored after each.
+
+Final pass, on the final test file. Host load at start and end:
+ 6:45  up 153 days,  8:22, 67 users, load averages: 5.13 6.03 6.24
+ 6:48  up 153 days,  8:25, 67 users, load averages: 3.43 4.90 5.71
+
+M1 the window never opens after the oracle replay | src/crdt/contentStore.ts | exit 1 | 30 s | Test Files  1 failed (1) / Tests  9 failed | 10 passed (19) /  Failed Tests 9  | load 4.86
+    failed: authority replaced during the window still refuses the replay
+    failed: continuous receive: every oracle attempt meets queued work as its replay returns
+    failed: new local input during the window still interrupts the oracle
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+    failed: suspension during the window still interrupts the oracle
+    failed: the owner closing during the window still interrupts the oracle
+M2 the window stays open past the recording | src/crdt/contentStore.ts | exit 1 | 28 s | Test Files  1 failed (1) / Tests  4 failed | 15 passed (19) /  Failed Tests 4  | load 5.22
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+M3 a refused or interrupted window is not closed | src/crdt/contentStore.ts | exit 1 | 28 s | Test Files  1 failed (1) / Tests  6 failed | 13 passed (19) /  Failed Tests 6  | load 4.32
+    failed: a handoff during the window still fails the authority check
+    failed: authority replaced during the window still refuses the replay
+    failed: new local input during the window still interrupts the oracle
+    failed: new local input seen as the replay returns still interrupts the oracle and discards the replay, as before
+    failed: suspension during the window still interrupts the oracle
+    failed: the owner closing during the window still interrupts the oracle
+M4 any completed full replay opens the window | src/crdt/contentStore.ts | exit 1 | 27 s | Test Files  1 failed (1) / Tests  4 failed | 15 passed (19) /  Failed Tests 4  | load 4.08
+    failed: a foreground full read never opens the window
+    failed: a return to the app during the oracle gets no window of its own
+    failed: a return-to-app read in the audit is not the oracle: queued work after its replay still interrupts it
+    failed: queued work before the replay starts still interrupts the oracle, and leaves no window behind
+M5 an oracle load that ends early leaves its mark | src/crdt/contentStore.ts | exit 1 | 28 s | Test Files  1 failed (1) / Tests  1 failed | 18 passed (19) /  Failed Tests 1  | load 4.42
+    failed: queued work before the replay starts still interrupts the oracle, and leaves no window behind
+M6 the mark is not consumed by the first completed replay | src/crdt/contentStore.ts | exit 1 | 28 s | Test Files  1 failed (1) / Tests  1 failed | 18 passed (19) /  Failed Tests 1  | load 4.43
+    failed: a return to the app during the oracle gets no window of its own
+M7 the audit guard ignores the window | src/crdt/contentMaintenance.ts | exit 1 | 29 s | Test Files  1 failed (1) / Tests  10 failed | 9 passed (19) /  Failed Tests 10  | load 4.00
+    failed: authority replaced during the window still refuses the replay
+    failed: continuous receive: every oracle attempt meets queued work as its replay returns
+    failed: new local input during the window still interrupts the oracle
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+    failed: suspension during the window still interrupts the oracle
+    failed: the audit guard ignores queued work only while a completed oracle replay is recorded
+    failed: the owner closing during the window still interrupts the oracle
+M8 the oracle load is not marked | src/crdt/contentStore.ts | exit 1 | 29 s | Test Files  1 failed (1) / Tests  9 failed | 10 passed (19) /  Failed Tests 9  | load 3.43
+    failed: authority replaced during the window still refuses the replay
+    failed: continuous receive: every oracle attempt meets queued work as its replay returns
+    failed: new local input during the window still interrupts the oracle
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+    failed: suspension during the window still interrupts the oracle
+    failed: the owner closing during the window still interrupts the oracle
+MUTATIONS DONE
+
+First pass, before one case was strengthened. M5 survived: 'queued work before the replay starts ... leaves no window
+behind' observed only outcomes that are the same with or without the leaked mark. The case now records the window at
+the re-check after the replay, and M5 fails it in the final pass.
+
+M1 the window never opens after the oracle replay | src/crdt/contentStore.ts | exit 1 | 37 s | Test Files  1 failed (1) / Tests  9 failed | 10 passed (19) /  Failed Tests 9  | load 7.18
+    failed: authority replaced during the window still refuses the replay
+    failed: continuous receive: every oracle attempt meets queued work as its replay returns
+    failed: new local input during the window still interrupts the oracle
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+    failed: suspension during the window still interrupts the oracle
+    failed: the owner closing during the window still interrupts the oracle
+M2 the window stays open past the recording | src/crdt/contentStore.ts | exit 1 | 32 s | Test Files  1 failed (1) / Tests  4 failed | 15 passed (19) /  Failed Tests 4  | load 7.35
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+M3 a refused or interrupted window is not closed | src/crdt/contentStore.ts | exit 1 | 34 s | Test Files  1 failed (1) / Tests  6 failed | 13 passed (19) /  Failed Tests 6  | load 7.93
+    failed: a handoff during the window still fails the authority check
+    failed: authority replaced during the window still refuses the replay
+    failed: new local input during the window still interrupts the oracle
+    failed: new local input seen as the replay returns still interrupts the oracle and discards the replay, as before
+    failed: suspension during the window still interrupts the oracle
+    failed: the owner closing during the window still interrupts the oracle
+M4 any completed full replay opens the window | src/crdt/contentStore.ts | exit 1 | 32 s | Test Files  1 failed (1) / Tests  3 failed | 16 passed (19) /  Failed Tests 3  | load 7.40
+    failed: a foreground full read never opens the window
+    failed: a return to the app during the oracle gets no window of its own
+    failed: a return-to-app read in the audit is not the oracle: queued work after its replay still interrupts it
+M5 an oracle load that ends early leaves its mark | src/crdt/contentStore.ts | exit 0 | 38 s | Test Files  1 passed (1) / Tests  19 passed (19) | load 8.93
+M6 the mark is not consumed by the first completed replay | src/crdt/contentStore.ts | exit 1 | 36 s | Test Files  1 failed (1) / Tests  1 failed | 18 passed (19) /  Failed Tests 1  | load 11.20
+    failed: a return to the app during the oracle gets no window of its own
+M7 the audit guard ignores the window | src/crdt/contentMaintenance.ts | exit 1 | 36 s | Test Files  1 failed (1) / Tests  10 failed | 9 passed (19) /  Failed Tests 10  | load 10.23
+    failed: authority replaced during the window still refuses the replay
+    failed: continuous receive: every oracle attempt meets queued work as its replay returns
+    failed: new local input during the window still interrupts the oracle
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+    failed: suspension during the window still interrupts the oracle
+    failed: the audit guard ignores queued work only while a completed oracle replay is recorded
+    failed: the owner closing during the window still interrupts the oracle
+M8 the oracle load is not marked | src/crdt/contentStore.ts | exit 1 | 38 s | Test Files  1 failed (1) / Tests  9 failed | 10 passed (19) /  Failed Tests 9  | load 8.74
+    failed: authority replaced during the window still refuses the replay
+    failed: continuous receive: every oracle attempt meets queued work as its replay returns
+    failed: new local input during the window still interrupts the oracle
+    failed: queued work arriving as the replay returns waits for the oracle to be recorded
+    failed: queued work arriving at the authority re-check after the replay waits for the oracle to be recorded
+    failed: queued work arriving during the continuation index pass waits for the oracle to be recorded
+    failed: queued work arriving during validation waits for the oracle to be recorded
+    failed: suspension during the window still interrupts the oracle
+    failed: the owner closing during the window still interrupts the oracle
+MUTATIONS DONE

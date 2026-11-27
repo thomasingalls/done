@@ -1,0 +1,289 @@
+{
+  "phase": 545,
+  "date": "2026-11-11",
+  "base": "2277ef5db",
+  "requested": "coordinating session, operator agreement 2026-11-11: build a baseline replay's coverage view once with a proved and tested equivalence and a count guard; keep a return-to-app full read due until one completes; options E and F not approved",
+  "sourceSha256": {
+    "scripts/release-validation/general-tests.json": "d507c35ef66068751ca256ae7d603f6071eaaf42788e211cf547ae5879232d86",
+    "src/crdt/accountReceive.ts": "253334d675466568074fc90fdab364ca9cc6a33d0256b7101ce4f61cbf9b053a",
+    "src/crdt/contentStore.ts": "9fa848baec50c2340c2eb11e5bfe6ba548036d79397c1c42094ab0a247ee75ba",
+    "src/crdt/inboundLedger.ts": "b909a9b2f3d8e235201c2bd496c42bc6c89667c779b8069774e0750a75a7715b",
+    "src/crdt/localBaselineReplay.ts": "b8a8fff52c1c845ec2cad290a8c5f0aed8e5f412cab4c8d15741ac594341e084",
+    "test/baselineReplayBuilds.test.ts": "9a161e028c1f7c626170b8b9155f0a6cf7df28069fd17c3112db37f7c1f2ad17",
+    "test/baselineReplayCoverage.test.ts": "3a246059ecc8d87a7e4603c7da6a60101dd5a8892d1985286ce17238bd68c6cc",
+    "test/localBaselineWarm.test.ts": "c81f6c3f0424f167b2d1d94d5d118e2b5104023a38fe8e6db21769d991473fbe",
+    "test/release-validation/general-tests.test.mjs": "ce86f8dfac80781d6767d08454e4099fa2ad5558c862154d4630c007c9bc741a",
+    "test/release-validation/generated-tests.test.mjs": "7e3fc073e6203b4a9d311a6993646ed5791c7038cf2926e5267d5a0d566dac88",
+    "test/warmContent.test.ts": "e72ead1bb66c673cd1f660e513b3dd8e643f336ee8debe849ee5d963e07057f6",
+    "README.md": "ba872ab9daad62c44c8b5bb808ad05ff543df13923d1b438ddd62e7f4a5ba7aa",
+    "forced-read-probe.ts.txt": "49a3faeebab2df0471329a9f1574b76c2fce2bea53846332d069464cd05eb8b7",
+    "probe-config.mjs.txt": "1c2985cb31aadbb337139faf024598734ead240a1a650f44f98284636d471beb",
+    "probe-matrix.sh.txt": "7b00da272fdb5dc5a233a62ad507a06aa48d0705feac34eb2db978a3f92fe1fc",
+    "probe-table.py.txt": "a020eea0e933f14e239f96c8ed00dbcb32a15c3014626bb8b313287e3e27967f",
+    "probe-before.txt": "ff0a9ab0a14e552d596bdce9653b2ca4cb1583ae6ec48b2ce92c85ecf612f926",
+    "probe-after.txt": "97a7c0a1c88a987ede649f6cbe6a960a304f5ede2af3abc776a7305231e0c515",
+    "probe-summary.md.txt": "79a18011f7645316ff45c35a270eb288c6eb95e30b4e970e647c5d463b2441f9",
+    "base-tree-runs.txt": "b5e7f8cffbefc5a76ea11b9ce0206a9b83502553f0ab5b7b01fdb6907b13b816"
+  },
+  "part1": {
+    "change": "replayLocalBaseline creates createPassCoverage(records) once and passes its check to every coverage site (carried sources, installed history, stream and own receipts via verifyReceipt, self-receive advance, census sources); createPassCoverage binds createInboundCoverage() (same contentCoverage flags as verifyInboundCoverage) at the first check from a private copy of the content rows; verifyInboundCoverage unchanged and kept as the per-call reference",
+    "unchanged": [
+      "createBaselineReuse: builds no document on creation; advance already binds one incremental view (localBaselineReuse.ts around 216-258)",
+      "verifyInboundLedger's own view (direct-proof mode), one per replay",
+      "full() (already one view)",
+      "documentState encodings (two per replay)"
+    ],
+    "buildsPerReplayBefore": "7 + N with N >= 1 suffix capsules and no carried sources (6 at N = 0): 3 receipt checks, 1 self-receive check, N census sources, 1 inbound-ledger view, 2 document-state encodings; plus 1 per carried source and 1 for an installed history",
+    "buildsPerReplayAfter": 4,
+    "equivalence": {
+      "argument": "README, 'Equivalence argument': per-call verdict depends only on content-row bytes and update bytes; the shared document is built from a private copy with the same flags and order and is never mutated (forkDoc, sameDocState); originals fixed; positives are byte copies of proven updates (memo only); records is one const array whose update/state rows nothing in the pass writes; verdicts are order-independent; the first refusal throws the same error and no replay path continues after it; the build happens at the first check, as before",
+      "recordSetDifferingBetweenCalls": "cannot occur in a replay (one const array); the bound view refuses another array",
+      "primitiveProperty": {
+        "runs": 150,
+        "seed": 545011
+      },
+      "replayProperty": {
+        "runs": 60,
+        "seed": 545012,
+        "identicalResults": 39,
+        "identicalCoverageRefusals": 17,
+        "identicalOtherRefusals": 4,
+        "carriedSources": 21,
+        "installedHistory": 26,
+        "suffixCapsules": 41,
+        "referenceChecks": 296,
+        "skipped": 0,
+        "tampers": [
+          "none",
+          "drop a suffix content row",
+          "alter an update row",
+          "duplicate a capsule",
+          "reorder a capsule",
+          "re-signed snapshot missing one independent original",
+          "duplicate an update row"
+        ]
+      },
+      "perSite": {
+        "carriedSource": "refuses at check 1",
+        "installedHistory": "refuses at check 1",
+        "historyAfterCarried": "refuses at check 2",
+        "ownReceipt": "refuses at a receipt check"
+      },
+      "mutationControl": "a shared view checking only its first call failed all three tests",
+      "importCycleNote": "inboundLedger reaches localBaselineReplay through historyInstall, custody and contentStore; the tests import the replay first so it binds the mock, and assert the reference ran"
+    },
+    "countGuard": {
+      "file": "test/baselineReplayBuilds.test.ts",
+      "capsules": [
+        0,
+        2,
+        8
+      ],
+      "sharedForcedAndCold": [
+        4,
+        4,
+        4
+      ],
+      "referenceForcedAndCold": [
+        6,
+        9,
+        15
+      ]
+    }
+  },
+  "probe": {
+    "environment": "Node 26, fake in-memory IndexedDB, vitest config outside the tree, run from the worktree root; host load average 7 to 9 with other agents",
+    "before": "phase 545 source reverted on the same tree (base 2277ef5db)",
+    "after": "phase 545 source",
+    "repetitions": 3,
+    "summary": "probe-summary.md.txt",
+    "forcedMedianMs": {
+      "single 2 MiB": {
+        "N0": [
+          121,
+          117.5
+        ],
+        "N50": [
+          530.5,
+          209.1
+        ],
+        "N200": [
+          2291.9,
+          515.7
+        ]
+      },
+      "single 4 MiB": {
+        "N0": [
+          253.9,
+          232.2
+        ],
+        "N50": [
+          948.1,
+          598.6
+        ],
+        "N200": [
+          3751.3,
+          619.7
+        ]
+      },
+      "single 8 MiB": {
+        "N0": [
+          519.2,
+          468.4
+        ],
+        "N50": [
+          1797.4,
+          590.4
+        ],
+        "N200": [
+          6321.3,
+          1063.3
+        ]
+      },
+      "fragmented 2.8 MiB": {
+        "N0": [
+          827,
+          576.4
+        ],
+        "N50": [
+          4984.5,
+          812.2
+        ],
+        "N200": [
+          15447.7,
+          1191.4
+        ]
+      }
+    },
+    "coldMedianMs": {
+      "single 8 MiB": {
+        "N200": [
+          6448,
+          1141.2
+        ]
+      },
+      "fragmented 2.8 MiB": {
+        "N200": [
+          16205.7,
+          1244.2
+        ]
+      }
+    },
+    "fullBuilds": {
+      "before": [
+        6,
+        57,
+        207
+      ],
+      "after": [
+        4,
+        4,
+        4
+      ]
+    },
+    "coverageBuilds": {
+      "before": [
+        4,
+        55,
+        205
+      ],
+      "after": [
+        2,
+        2,
+        2
+      ]
+    },
+    "fixtureCaveat": "suffix capsules each come from a new Yjs client inserting at one position; suffix application costs more than real single-device edits; build counts do not depend on it"
+  },
+  "part2": {
+    "gap": "load() cleared forceFullRead before the read; an interrupted read keeps the view; an audit that absorbed a return-to-app read and was interrupted left later loads warm",
+    "change": "resumeFullRead set by invalidateWarm(); any load ending without completing re-arms forceFullRead while it is set; a completed full read clears it unless another invalidation arrived during it",
+    "referenceRead": "accountReceive semantic audit calls the new requestReferenceRead(); auditWarm internal oracle requests set only forceFullRead; both keep the rule that an interrupted reference read does not move onto foreground loads",
+    "keptTest": "test/localBaselineWarm.test.ts 'semantic audit is due independently of disk slices and remains retryable after interruption' passes unchanged",
+    "secondFullRead": "not avoided: re-read happens only for an invalidation after the read began; skipping needs event times the forwarded events do not carry",
+    "decisionAlignment": "2026-10-12: full verification before reuse after hidden/frozen-page resumption"
+  },
+  "newUnitCases": {
+    "test/baselineReplayCoverage.test.ts": 3,
+    "test/baselineReplayBuilds.test.ts": 1,
+    "test/localBaselineWarm.test.ts": 3,
+    "test/warmContent.test.ts": 1
+  },
+  "newTestFiles": [
+    "test/baselineReplayCoverage.test.ts",
+    "test/baselineReplayBuilds.test.ts"
+  ],
+  "failedOnBase": {
+    "cases": 8,
+    "note": "all 8 new cases fail with only the tests in place; the coverage file cannot exercise a shared view because createPassCoverage is absent",
+    "record": "base-tree-runs.txt"
+  },
+  "relatedFilesPassed": {
+    "files": 29,
+    "cases": 324
+  },
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": true,
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "files": 344,
+    "passed": 3324,
+    "skipped": 1,
+    "failed": 0,
+    "seconds": 334.27,
+    "hostLoadAverage": "about 8 to 10, with a Playwright packaged-account run in this worktree started by another session",
+    "knownLoadTimeoutsFailed": []
+  },
+  "build": {
+    "command": "pnpm build",
+    "passed": true,
+    "initialJsGzippedKb": 309.0,
+    "budgetKb": 350.0
+  },
+  "inventory": {
+    "recorded": true,
+    "obligations": 1114,
+    "unresolved": 552,
+    "caseDenominatorBefore": 2683,
+    "caseDenominator": 2687,
+    "vitestReviewedFilesBefore": 107,
+    "vitestReviewedFiles": 109,
+    "generalStagesBefore": 292,
+    "generalStages": 294,
+    "vitestReviewedStagesBefore": 126,
+    "vitestReviewedStages": 128
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 517,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [],
+    "constructionRegistryLinesFollowed": 0
+  },
+  "anchors": {
+    "checked": 187,
+    "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the four edited sources occurs the same number of times now",
+    "exception": "this phase's own test of 'Coverage view was invalidated' (now twice in inboundLedger.ts)"
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "traceCheckPassed": true,
+  "accountCryptoAudit": "stops at 16 open constructions, as on main",
+  "concurrentActivity": "a Playwright run of test/packaged-account/reduced-peer.spec.ts in this worktree, not started by this seat, ran during the full unit suite and afterwards",
+  "notRun": [
+    "browser suites and native suites by this seat",
+    "any real device or account"
+  ],
+  "deployed": false
+}

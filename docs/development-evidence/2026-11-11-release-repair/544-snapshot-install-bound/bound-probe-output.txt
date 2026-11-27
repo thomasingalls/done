@@ -1,0 +1,7 @@
+{"label":"small","P":134,"U":134,"real":2300,"wide":2315,"boundEvent":2315,"bound":2449,"verified":"ok 134","ms":5,"sv":7,"ds":2}
+{"label":"edits","P":105842,"U":105842,"real":224484,"wide":224499,"boundEvent":224499,"bound":330341,"verified":"ok 105842","ms":42,"sv":14,"ds":2687}
+{"label":"n=1000000","P":1000131,"U":1000131,"real":2002302,"wide":2002317,"boundEvent":2002317,"bound":3002448,"verified":"ok 1000131","ms":146,"sv":9,"ds":2}
+{"label":"n=1000100","P":1000231,"U":1000231,"real":2002502,"wide":2002517,"boundEvent":2002517,"bound":3002748,"verified":"ok 1000231","ms":157,"sv":9,"ds":2}
+{"slope":3,"c0":2448,"nStar":1397285}
+{"label":"n=1397285","P":1397416,"U":1397416,"real":2796872,"wide":2796887,"boundEvent":2796887,"bound":4194303,"verified":"ok 1397416","ms":201,"sv":9,"ds":2}
+{"label":"n=1397286","P":1397417,"U":1397417,"real":2796874,"wide":2796889,"boundEvent":2796889,"bound":4194306,"verified":"ok 1397417","ms":219,"sv":9,"ds":2}

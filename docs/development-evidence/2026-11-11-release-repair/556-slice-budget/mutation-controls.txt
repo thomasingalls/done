@@ -1,0 +1,29 @@
+# Phase 556 mutation controls on the final tree. 2026-11-12T23:01:08Z
+## fixed 2 s budget (setup ignored)
+   × fenced saves and full reads stay nearly flat while history grows fourfold 47025ms
+   × a slice pays for the last fenced save as well as its own setup 107096ms
+   × an interrupted long slice loses at most the ratio times its setup, and the next attempt progresses 54760ms
+   × a device interrupted in every long slice still finishes, with long slices again after it saves 4951ms
+   × queued input stops a long slice at its next guarded step, as it stops a short one 3184ms
+   × a slice never plans past the window that keeps routine sync off it 1835ms
+   Tests  6 failed | 10 passed (16)
+## budget ignores the last save's duration
+   × a slice pays for the last fenced save as well as its own setup 12881ms
+   Tests  1 failed | 15 passed (16)
+## budget ignores the window that holds routine sync off
+   × a slice never plans past the window that keeps routine sync off it 3262ms
+   Tests  1 failed | 15 passed (16)
+## no plain slice after an interruption
+   × an interrupted long slice loses at most the ratio times its setup, and the next attempt progresses 3587ms
+   × a device interrupted in every long slice still finishes, with long slices again after it saves 54385ms
+   Tests  2 failed | 14 passed (16)
+## scheduler does not say when routine sync resumes
+   × the scheduler tells each attempt when routine sync resumes 11ms
+   Tests  1 failed | 15 passed (16)
+## a cached row accepted without its check (opened rows reused from the journal)
+   × every attempt opens every saved row itself; no decrypted row comes from the journal 4569ms
+   × a journal in progress across an update restarts cleanly and finishes 4826ms
+   × a slice never plans past the window that keeps routine sync off it 4594ms
+   × a paused read task returns only a sealed handoff; fresh task persists without changing logical rows and cold owner completes 138ms
+   Tests  4 failed | 12 passed (16)
+exit 0

@@ -1,0 +1,21 @@
+# Phase 553 static checks on the candidate service sources
+
+## Lines the diff adds that open a connection, start a worker or process, or await
+(none)
+
+## Awaits between a BEGIN and its COMMIT or ROLLBACK (line heuristic, changed files)
+(none)
+
+## Whole-cache clears left in the service (error paths, held as SVC-ERROR-CLEARS)
+account-service/delivery.ts:1163:        reuse?.clear();
+account-service/delivery.ts:1291:        reuse?.clear();
+account-service/delivery.ts:1425:        reuse?.clear();
+account-service/delivery.ts:1614:        reuse?.clear();
+account-service/discovery.ts:110:      reuse?.clear();
+account-service/successor.ts:234:      reuse?.clear();
+
+## History route: what it now retires
+10:/** Durable proposal/admission and explicit covered-ciphertext pruning; decision ledgers remain complete. */
+142:  let pruning: string | undefined;
+228:      if (r.action === 'prune') pruning = before.original.account.id;
+691:      if (pruning) reuse?.tips?.invalidateAccount(pruning);

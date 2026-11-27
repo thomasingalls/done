@@ -536,8 +536,11 @@ test('publication authority cache never revives an in-flight proof after clear',
   await arrived;
   h.reuse.clear();
   release();
-  assert.equal((await pending).kind, 'unknown');
-  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 4);
+  // The clear retired the in-flight proof. The submission verifies afresh on its retry and is
+  // accepted, as reads have since phase 30 (phase 553): a second proof, never the revived one.
+  assert.equal((await pending).kind, 'decision');
+  assert.equal(offers, 2);
+  assert.equal(h.db.prepare('SELECT count(*) AS n FROM delivery_decisions').get().n, 5);
   assert.equal((await h.submit(wire)).kind, 'decision');
   assert.equal((await h.submit(h.x.make(6))).kind, 'decision');
   assert.equal(offers, 2);

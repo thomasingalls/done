@@ -67,3 +67,19 @@ test('frozen baseline accepts sparse credentials/genesis and coerced index metad
   }
   report('baseline-shapes', { baselineRef, cases, old: 'accepted', current: 'refused' });
 });
+
+test('frozen baseline refuses a loaded file that differs by one byte from the signed commit', async () => {
+  const changed = [];
+  await assert.rejects(
+    loadBaseline((path, bytes) => {
+      if (path !== 'src/crdt/spoolRecord.ts') return bytes;
+      // One space becomes a tab: still the same TypeScript, so only the identity check can refuse.
+      const copy = Buffer.from(bytes);
+      copy[copy.indexOf(0x20)] = 0x09;
+      changed.push(path);
+      return copy;
+    }),
+    new RegExp('Frozen baseline file src/crdt/spoolRecord.ts differs from ' + baselineRef),
+  );
+  assert.deepEqual(changed, ['src/crdt/spoolRecord.ts']);
+});

@@ -4,6 +4,15 @@ import type { DriverClock, DriverGate } from './accountDriver';
 export const RECEIVE_POLL_MS = 5000;
 export const RECEIVE_YIELD_MS = 50;
 export type ReceiveHalt = 'conflict' | 'operation-failed' | 'inbound-size' | 'response-too-large';
+/** Which size refusal halted receive, beside the unchanged `inbound-size` reason (phase 544).
+ * Presentation only: the halt and its retry read the reason, never this. */
+export interface ReceiveHaltDetail {
+  readonly cause: 'history-snapshot';
+  /** Bytes installing the service's latest history snapshot needs. */
+  readonly needed: number;
+  /** What this build installs. */
+  readonly allowed: number;
+}
 export interface ReceiveDriverStatus {
   readonly phase: 'starting' | 'working' | 'idle' | 'retrying' | 'offline' | 'blocked' | 'closed';
   readonly receivedThrough: number;
@@ -13,7 +22,7 @@ export interface ReceiveDriverStatus {
 }
 export type ReceiveStep =
   | { kind: 'idle' | 'progress' | 'unknown' | 'expired' | 'paused'; receivedThrough: number }
-  | { kind: 'blocked'; receivedThrough: number; reason: ReceiveHalt };
+  | { kind: 'blocked'; receivedThrough: number; reason: ReceiveHalt; detail?: ReceiveHaltDetail };
 export type ReceiveWake = 'start' | 'gate' | 'online' | 'retry';
 const realClock: DriverClock = {
   now: () => Date.now(),

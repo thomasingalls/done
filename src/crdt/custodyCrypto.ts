@@ -20,16 +20,40 @@ export interface KeyEnvelope {
 }
 export const utf8 = (s: string): Bytes => new TextEncoder().encode(s);
 const hexByte = Array.from({ length: 256 }, (_, n) => n.toString(16).padStart(2, '0'));
+/** Each byte value's two lowercase hex digits as ASCII, written through a byte view so that one
+ * 16-bit slot holds them in order whatever the platform's byte order. */
+const hexPairs = (() => {
+  const pairs = new Uint16Array(256),
+    ascii = new Uint8Array(pairs.buffer);
+  for (let n = 0; n < 256; n++) {
+    ascii[2 * n] = '0123456789abcdef'.charCodeAt(n >> 4);
+    ascii[2 * n + 1] = '0123456789abcdef'.charCodeAt(n & 15);
+  }
+  return pairs;
+})();
+const asciiText = new TextDecoder();
+/** Below this the base join is kept as it was. In WebKit 26.5, which phones run, one TextDecoder
+ * call costs about as much as joining 32 bytes' strings, so the slots ran up to ten times slower
+ * on short inputs; from 64 bytes they were at least 30% faster in WebKit and Chromium, page and
+ * Worker, which leaves margin for devices not measured (phase 559 browser review). */
+const HEX_SLOTS_FROM = 64;
 export const hex = (b: Uint8Array): string => {
   // Preserve the original iterator's refusal of detached buffers, including zero-length views.
   if (!b.length) {
     b.subarray(0, 0);
     return '';
   }
-  // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the byte count; every slot is filled below.
-  const parts = new Array<string>(b.length);
-  for (let i = 0; i < b.length; i++) parts[i] = hexByte[b[i]!]!;
-  return parts.join('');
+  if (b.length < HEX_SLOTS_FROM) {
+    // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the byte count; every slot is filled below.
+    const parts = new Array<string>(b.length);
+    for (let i = 0; i < b.length; i++) parts[i] = hexByte[b[i]!]!;
+    return parts.join('');
+  }
+  // One 16-bit slot per byte, decoded once. An array of one string per byte cost many times the
+  // input in memory and time at baseline sizes (phase 559).
+  const ascii = new Uint16Array(b.length);
+  for (let i = 0; i < b.length; i++) ascii[i] = hexPairs[b[i]!]!;
+  return asciiText.decode(ascii);
 };
 export const random = (n: number): Bytes => crypto.getRandomValues(new Uint8Array(n));
 export const concat = (...parts: Uint8Array[]): Bytes => {

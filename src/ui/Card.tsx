@@ -30,7 +30,6 @@ export interface CardAction {
   hint: string;
   run: () => void;
   disabled?: boolean;
-  requiresUnlock?: boolean;
 }
 
 export interface CardReorder {
@@ -56,8 +55,8 @@ export interface CardProps {
   editable: boolean;
   /** Present for live cards on the active, writable day. */
   reorder?: CardReorder;
-  /** Set after a split/merge so editing resumes at the structural join. */
-  autoFocusAt?: number;
+  /** Set after a structural action; 'end' resolves against the admitted copy. */
+  autoFocusAt?: number | 'end';
 }
 
 /** Long enough to be deliberate, matching the gesture layer's own hold (TRD §8.4). */
@@ -95,7 +94,7 @@ export const Card = ({
   const editorHost = useRef<HTMLDivElement>(null);
   const view = useRef<EditorView | null>(null);
   const pendingCaret = useRef<{ x: number; y: number } | null>(null);
-  const pendingPosition = useRef<number | null>(autoFocusAt ?? null);
+  const pendingPosition = useRef<number | 'end' | null>(autoFocusAt ?? null);
   const hold = useRef<number | undefined>(undefined);
   const pointer = useRef<ReorderPointer | null>(null);
 
@@ -105,6 +104,13 @@ export const Card = ({
   latestHooks.current = hooks;
   const latestReorder = useRef(reorder);
   latestReorder.current = reorder;
+
+  const finishEditing = useCallback((focusSurface = false) => {
+    pendingPosition.current = view.current?.state.selection.main.head ?? null;
+    returnFocus.current = focusSurface;
+    setEditing(false);
+    latestHooks.current.leave();
+  }, []);
 
   useEffect(() => {
     if (editing) return;
@@ -146,12 +152,7 @@ export const Card = ({
     const bridge: CardHooks = {
       split: (at, tailFrom) => latestHooks.current.split(at, tailFrom),
       mergeBackwards: () => latestHooks.current.mergeBackwards(),
-      leave: () => {
-        pendingPosition.current = view.current?.state.selection.main.head ?? null;
-        returnFocus.current = true;
-        setEditing(false);
-        latestHooks.current.leave();
-      },
+      leave: () => finishEditing(true),
     };
 
     const handle = mountEditor(parent, { kind: 'card', id }, [
@@ -180,16 +181,18 @@ export const Card = ({
     const pointed = at ? handle.view.posAtCoords({ x: at.x, y: at.y }) : null;
     const requested = pendingPosition.current;
     pendingPosition.current = null;
-    const position = pointed ?? requested ?? handle.view.state.doc.length;
+    const position =
+      pointed ?? (requested === 'end' ? null : requested) ?? handle.view.state.doc.length;
     handle.view.dispatch({
       selection: { anchor: Math.min(Math.max(position, 0), handle.view.state.doc.length) },
+      scrollIntoView: requested !== null,
     });
 
     return () => {
       handle.destroy();
       view.current = null;
     };
-  }, [editing, id, mountEditor]);
+  }, [editing, id, mountEditor, finishEditing]);
 
   useEffect(() => {
     if (autoFocusAt === undefined || editing || frozen || !editable) return;
@@ -431,47 +434,58 @@ export const Card = ({
 
       {!frozen && actions.length > 0 && (
         <div className="card-actions">
-          {reorder && !editing && (
-            <button
-              type="button"
-              className="card-action card-reorder-handle"
-              title="Drag to reorder; use arrow keys to move"
-              aria-label={`Reorder ${label}`}
-              onClick={(event) => event.preventDefault()}
-              onKeyDown={(event) => {
-                if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
-                event.preventDefault();
-                reorder.moveBy(event.key === 'ArrowUp' ? -1 : 1);
-              }}
-              onPointerDownCapture={onHandlePointerDown}
-              onPointerMoveCapture={onReorderPointerMove}
-              onPointerUp={onReorderPointerUp}
-              onPointerCancel={onReorderPointerCancel}
-              onLostPointerCapture={onLostPointerCapture}
-            >
-              <GripIcon />
-            </button>
-          )}
-          {guarded && !editing && (
-            <button type="button" className="card-action" onClick={() => open()}>
-              Unlock
-            </button>
-          )}
-          {actions
-            .filter((action) => !action.requiresUnlock || !guarded || editing)
-            .map((action) => (
+          <div className="card-reorder-slot">
+            {reorder && (
               <button
-                key={action.label}
                 type="button"
-                className="card-action"
-                title={action.hint}
-                aria-label={`${action.hint}: ${label}`}
-                disabled={action.disabled === true}
-                onClick={action.run}
+                className="card-action card-reorder-handle"
+                title="Drag to reorder; use arrow keys to move"
+                aria-label={`Reorder ${label}`}
+                disabled={editing}
+                onClick={(event) => event.preventDefault()}
+                onKeyDown={(event) => {
+                  if (editing) return;
+                  if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+                  event.preventDefault();
+                  reorder.moveBy(event.key === 'ArrowUp' ? -1 : 1);
+                }}
+                onPointerDownCapture={onHandlePointerDown}
+                onPointerMoveCapture={onReorderPointerMove}
+                onPointerUp={onReorderPointerUp}
+                onPointerCancel={onReorderPointerCancel}
+                onLostPointerCapture={onLostPointerCapture}
               >
-                {action.label}
+                <GripIcon />
               </button>
-            ))}
+            )}
+          </div>
+          <div className="card-action-buttons">
+            {guarded && (
+              <button
+                type="button"
+                className="card-action card-lock-toggle"
+                aria-pressed={editing}
+                onClick={() => (editing ? finishEditing() : open())}
+              >
+                {editing ? 'Lock' : 'Unlock'}
+              </button>
+            )}
+            {actions
+              .filter(() => !guarded || editing)
+              .map((action) => (
+                <button
+                  key={action.label}
+                  type="button"
+                  className="card-action"
+                  title={action.hint}
+                  aria-label={`${action.hint}: ${label}`}
+                  disabled={action.disabled === true}
+                  onClick={action.run}
+                >
+                  {action.label}
+                </button>
+              ))}
+          </div>
         </div>
       )}
     </article>

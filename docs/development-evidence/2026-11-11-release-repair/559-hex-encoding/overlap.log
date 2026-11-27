@@ -1,0 +1,61 @@
+== 2026-11-13 05:07:23 before the phase 559 matrix
+ 5:07  up 154 days,  6:44, 67 users, load averages: 1.96 2.25 2.99
+== 2026-11-13 05:09:53 after the phase 559 matrix
+ 5:09  up 154 days,  6:46, 67 users, load averages: 3.13 2.65 3.03
+== 2026-11-13 05:10:51 before the second (recorded) phase 559 matrix
+ 5:10  up 154 days,  6:47, 67 users, load averages: 2.56 2.57 2.97
+== 2026-11-13 05:13:30 after the second (recorded) phase 559 matrix
+ 5:13  up 154 days,  6:50, 67 users, load averages: 6.04 3.52 3.25
+== 2026-11-13 05:13:56 before the decoder options
+ 5:13  up 154 days,  6:50, 67 users, load averages: 5.80 3.65 3.30
+== 2026-11-13 05:32:41 before the legacy-source hex cells
+ 5:32  up 154 days,  7:09, 67 users, load averages: 4.37 5.09 4.53
+== 2026-11-13 05:33:27 after the legacy-source hex cells
+ 5:33  up 154 days,  7:10, 67 users, load averages: 3.86 4.83 4.47
+== 2026-11-13 05:51:08 before the browser threshold selection run
+ 5:51  up 154 days,  7:27, 67 users, load averages: 1.97 3.23 3.96
+== 2026-11-13 05:53:35 before the browser threshold selection run (second attempt; the first stopped at the 30 s navigation timeout)
+ 5:53  up 154 days,  7:30, 67 users, load averages: 2.72 3.26 3.87
+== 2026-11-13 06:01:40 after the browser threshold selection run
+ 6:01  up 154 days,  7:38, 67 users, load averages: 3.47 4.01 4.11
+== 2026-11-13 06:02:05 before the final browser run
+ 6:02  up 154 days,  7:38, 67 users, load averages: 3.25 3.91 4.07
+== 2026-11-13 06:07:56 after the browser threshold selection run
+ 6:07  up 154 days,  7:44, 67 users, load averages: 5.39 5.22 4.65
+76438        02:36   0.0   8560 bash /Users/thomasingalls/Library/Caches/ms-playwright/webkit-2336/pw_run.sh --inspector-pipe --headless --no-startup-window
+76443        02:36   0.0 108032 /Users/thomasingalls/Library/Caches/ms-playwright/webkit-2336/Playwright.app/Contents/MacOS/Playwright --inspector-pipe --headless --no-startup-window
+76444        02:35   0.0  58480 /Users/thomasingalls/Library/Caches/ms-playwright/webkit-2336/com.apple.WebKit.Networking.xpc/Contents/MacOS/com.apple.WebKit.Networking.Development
+76445        02:35   0.0  67392 /Users/thomasingalls/Library/Caches/ms-playwright/webkit-2336/com.apple.WebKit.GPU.xpc/Contents/MacOS/com.apple.WebKit.GPU.Development
+76447        02:35 100.2 3678720 /Users/thomasingalls/Library/Caches/ms-playwright/webkit-2336/com.apple.WebKit.WebContent.xpc/Contents/MacOS/com.apple.WebKit.WebContent.Development
+77070        00:11   0.0 681808 lake env lean Tests/Report/Main.lean
+77073        00:11   0.0 534736 lean Tests/Report/Main.lean
+77108        00:00  20.8 109600 /Users/thomasingalls/.t3/worktrees/certo/t3-014fbde2/.work/P02/toolchain/lean-4.34.0-darwin_aarch64/bin/lean --run /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/
+== 2026-11-13 06:11:55 after the final browser run
+ 6:11  up 154 days,  7:48, 67 users, load averages: 3.72 5.17 4.83
+78130        00:11   0.0 681456 lake env lean Tests/Integration/Main.lean
+78133        00:10  99.1 525696 lean Tests/Integration/Main.lean
+== 2026-11-13 06:12:23 before the Node final-routine and codec matrix
+ 6:12  up 154 days,  7:49, 67 users, load averages: 4.33 5.21 4.86
+== 2026-11-13 06:14:24 after the Node final-routine and codec matrix
+ 6:14  up 154 days,  7:51, 67 users, load averages: 5.63 5.40 4.98
+79553        00:49   0.0  21072 /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python /Users/thomasingalls/.t3/worktrees/certo/t3
+79581        00:48   0.0 681424 lake env lean /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/P130/audit/Current-83de413c274e11e05c6afa5ab26a1d37d6be53a40f746656c8bfa8b01a970ce1.lean
+79588        00:48  99.3 1431968 lean /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/P130/audit/Current-83de413c274e11e05c6afa5ab26a1d37d6be53a40f746656c8bfa8b01a970ce1.lean
+== 2026-11-13 06:15:07 before the codec rerun (arm label fix)
+ 6:15  up 154 days,  7:51, 67 users, load averages: 4.46 5.10 4.89
+79553        01:32   0.0  21072 /opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python /Users/thomasingalls/.t3/worktrees/certo/t3
+79581        01:31   0.0 681424 lake env lean /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/P130/audit/Current-83de413c274e11e05c6afa5ab26a1d37d6be53a40f746656c8bfa8b01a970ce1.lean
+79588        01:31 100.0 1432000 lean /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/.work/P130/audit/Current-83de413c274e11e05c6afa5ab26a1d37d6be53a40f746656c8bfa8b01a970ce1.lean
+== 2026-11-13 06:16:25 after the codec rerun
+ 6:16  up 154 days,  7:53, 67 users, load averages: 7.18 5.70 5.12
+82699        00:15   0.0  23536 pnpm --filter @certo/web exec playwright test
+82707        00:15   0.0  27296 /Users/thomasingalls/Library/pnpm/package-manager-store/v11/links/@/pnpm/12.16.1/177199dddaba12854fdefa96d317163806bbf4fbcf69b3f3dd606d954eaf25be/node_modules/pnpm/pnpm
+82727        00:15   0.3 161808 node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/apps/certo-web/node_modules/.bin/../../../../node_modules/.pnpm/@playwright+test@1.56.1/node_modules/@playwrig
+82797        00:14  14.8 197888 /opt/homebrew/Cellar/node/26.13.1/bin/node /Users/thomasingalls/.t3/worktrees/certo/t3-6dd9a303/node_modules/.pnpm/playwright@1.56.1/node_modules/playwright/lib/common/
+82819        00:14  67.3 276400 /Applications/Google Chrome.app/Contents/MacOS/Google Chrome --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disabl
+82841        00:13   9.8 129216 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif GPU).app/Contents/Ma
+82842        00:13  25.2  72880 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/
+82843        00:13   0.0  41088 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif).app/Contents/MacOS/
+83013        00:02   0.0 111632 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Conten
+83014        00:02   0.0  61760 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Conten
+83015        00:02  32.2 168576 /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/157.0.8103.79/Helpers/Google Chrome Helper (Aperitif Renderer).app/Conten

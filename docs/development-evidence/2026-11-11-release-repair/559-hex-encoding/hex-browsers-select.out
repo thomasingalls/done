@@ -1,0 +1,75 @@
+hex browser probe, mode select; routines: base, slotsAlways, from32, from48, from64; ratios are to base; median of 5 rounds of about 200 ms, [min-max] over rounds
+== chromium 151.0.7922.34, page: 2295 comparisons with base, 0 differing
+         1 B  base 33 ns [32 ns-34 ns]  slotsAlways 106 ns [106 ns-108 ns] x3.21  from32 32 ns [31 ns-33 ns] x0.97  from48 32 ns [31 ns-34 ns] x0.97  from64 32 ns [32 ns-33 ns] x0.97
+         8 B  base 115 ns [113 ns-117 ns]  slotsAlways 118 ns [118 ns-156 ns] x1.03  from32 112 ns [111 ns-115 ns] x0.97  from48 116 ns [112 ns-118 ns] x1.01  from64 115 ns [112 ns-117 ns] x1.00
+        12 B  base 159 ns [157 ns-166 ns]  slotsAlways 126 ns [120 ns-130 ns] x0.79  from32 157 ns [154 ns-158 ns] x0.99  from48 157 ns [154 ns-158 ns] x0.99  from64 158 ns [157 ns-159 ns] x0.99
+        16 B  base 203 ns [202 ns-208 ns]  slotsAlways 132 ns [130 ns-134 ns] x0.65  from32 202 ns [202 ns-205 ns] x1.00  from48 204 ns [200 ns-207 ns] x1.00  from64 201 ns [201 ns-207 ns] x0.99
+        20 B  base 246 ns [243 ns-254 ns]  slotsAlways 140 ns [139 ns-143 ns] x0.57  from32 244 ns [243 ns-250 ns] x0.99  from48 245 ns [244 ns-251 ns] x1.00  from64 246 ns [245 ns-251 ns] x1.00
+        24 B  base 286 ns [285 ns-293 ns]  slotsAlways 144 ns [143 ns-146 ns] x0.50  from32 286 ns [285 ns-302 ns] x1.00  from48 288 ns [286 ns-293 ns] x1.01  from64 286 ns [284 ns-290 ns] x1.00
+        32 B  base 364 ns [361 ns-374 ns]  slotsAlways 152 ns [149 ns-157 ns] x0.42  from32 152 ns [151 ns-157 ns] x0.42  from48 360 ns [360 ns-374 ns] x0.99  from64 361 ns [360 ns-365 ns] x0.99
+        40 B  base 454 ns [452 ns-456 ns]  slotsAlways 404 ns [371 ns-417 ns] x0.89  from32 389 ns [371 ns-412 ns] x0.86  from48 457 ns [454 ns-463 ns] x1.01  from64 455 ns [453 ns-464 ns] x1.00
+        48 B  base 530 ns [529 ns-534 ns]  slotsAlways 402 ns [391 ns-418 ns] x0.76  from32 438 ns [408 ns-469 ns] x0.83  from48 442 ns [425 ns-482 ns] x0.83  from64 530 ns [529 ns-551 ns] x1.00
+        56 B  base 616 ns [612 ns-619 ns]  slotsAlways 429 ns [426 ns-471 ns] x0.70  from32 431 ns [411 ns-476 ns] x0.70  from48 453 ns [413 ns-485 ns] x0.74  from64 621 ns [613 ns-627 ns] x1.01
+        63 B  base 681 ns [676 ns-689 ns]  slotsAlways 435 ns [419 ns-484 ns] x0.64  from32 459 ns [421 ns-490 ns] x0.67  from48 447 ns [431 ns-514 ns] x0.66  from64 681 ns [678 ns-688 ns] x1.00
+        64 B  base 697 ns [694 ns-737 ns]  slotsAlways 479 ns [450 ns-542 ns] x0.69  from32 468 ns [430 ns-509 ns] x0.67  from48 466 ns [410 ns-493 ns] x0.67  from64 455 ns [451 ns-511 ns] x0.65
+        65 B  base 705 ns [703 ns-734 ns]  slotsAlways 460 ns [430 ns-500 ns] x0.65  from32 470 ns [423 ns-541 ns] x0.67  from48 461 ns [441 ns-519 ns] x0.65  from64 481 ns [475 ns-552 ns] x0.68
+       128 B  base 1364 ns [1357 ns-1398 ns]  slotsAlways 524 ns [506 ns-533 ns] x0.38  from32 567 ns [520 ns-627 ns] x0.42  from48 578 ns [516 ns-619 ns] x0.42  from64 536 ns [499 ns-581 ns] x0.39
+      1024 B  base 10.9 us [10.8 us-11.0 us]  slotsAlways 1894 ns [1874 ns-1914 ns] x0.17  from32 1866 ns [1851 ns-1878 ns] x0.17  from48 1869 ns [1857 ns-2018 ns] x0.17  from64 1908 ns [1856 ns-1926 ns] x0.17
+   1048576 B  base 11.63 ms [11.48 ms-11.94 ms]  slotsAlways 1.62 ms [1.61 ms-1.64 ms] x0.14  from32 1.62 ms [1.58 ms-1.66 ms] x0.14  from48 1.62 ms [1.58 ms-1.63 ms] x0.14  from64 1.63 ms [1.62 ms-1.64 ms] x0.14
+   8388608 B  base 120.95 ms [116.10 ms-123.80 ms]  slotsAlways 12.86 ms [12.66 ms-13.64 ms] x0.11  from32 12.94 ms [12.50 ms-13.12 ms] x0.11  from48 12.81 ms [12.66 ms-13.10 ms] x0.11  from64 12.82 ms [12.66 ms-13.33 ms] x0.11
+== chromium 151.0.7922.34, dedicated Worker: 2295 comparisons with base, 0 differing
+         1 B  base 33 ns [33 ns-34 ns]  slotsAlways 112 ns [110 ns-123 ns] x3.39  from32 32 ns [32 ns-34 ns] x0.97  from48 32 ns [32 ns-33 ns] x0.97  from64 32 ns [32 ns-33 ns] x0.97
+         8 B  base 116 ns [115 ns-118 ns]  slotsAlways 117 ns [115 ns-123 ns] x1.01  from32 114 ns [113 ns-118 ns] x0.98  from48 114 ns [114 ns-117 ns] x0.98  from64 114 ns [111 ns-114 ns] x0.98
+        12 B  base 159 ns [158 ns-161 ns]  slotsAlways 128 ns [123 ns-129 ns] x0.81  from32 157 ns [156 ns-158 ns] x0.99  from48 158 ns [155 ns-158 ns] x0.99  from64 157 ns [156 ns-158 ns] x0.99
+        16 B  base 208 ns [201 ns-211 ns]  slotsAlways 136 ns [133 ns-140 ns] x0.65  from32 203 ns [201 ns-208 ns] x0.98  from48 203 ns [201 ns-207 ns] x0.98  from64 206 ns [200 ns-210 ns] x0.99
+        20 B  base 245 ns [242 ns-250 ns]  slotsAlways 142 ns [141 ns-146 ns] x0.58  from32 244 ns [242 ns-249 ns] x1.00  from48 246 ns [243 ns-249 ns] x1.00  from64 246 ns [241 ns-249 ns] x1.00
+        24 B  base 286 ns [285 ns-294 ns]  slotsAlways 146 ns [145 ns-148 ns] x0.51  from32 286 ns [285 ns-289 ns] x1.00  from48 288 ns [285 ns-294 ns] x1.01  from64 286 ns [285 ns-287 ns] x1.00
+        32 B  base 363 ns [362 ns-378 ns]  slotsAlways 152 ns [150 ns-159 ns] x0.42  from32 152 ns [151 ns-157 ns] x0.42  from48 363 ns [362 ns-369 ns] x1.00  from64 360 ns [359 ns-368 ns] x0.99
+        40 B  base 455 ns [454 ns-458 ns]  slotsAlways 388 ns [379 ns-428 ns] x0.85  from32 385 ns [378 ns-393 ns] x0.85  from48 455 ns [452 ns-460 ns] x1.00  from64 450 ns [449 ns-458 ns] x0.99
+        48 B  base 542 ns [529 ns-550 ns]  slotsAlways 399 ns [386 ns-452 ns] x0.74  from32 418 ns [399 ns-453 ns] x0.77  from48 418 ns [404 ns-473 ns] x0.77  from64 542 ns [541 ns-551 ns] x1.00
+        56 B  base 632 ns [628 ns-651 ns]  slotsAlways 446 ns [410 ns-465 ns] x0.71  from32 438 ns [424 ns-486 ns] x0.69  from48 436 ns [412 ns-468 ns] x0.69  from64 631 ns [626 ns-636 ns] x1.00
+        63 B  base 685 ns [678 ns-689 ns]  slotsAlways 423 ns [419 ns-449 ns] x0.62  from32 430 ns [414 ns-461 ns] x0.63  from48 457 ns [416 ns-516 ns] x0.67  from64 686 ns [677 ns-690 ns] x1.00
+        64 B  base 696 ns [692 ns-705 ns]  slotsAlways 474 ns [425 ns-478 ns] x0.68  from32 478 ns [419 ns-479 ns] x0.69  from48 458 ns [434 ns-529 ns] x0.66  from64 457 ns [428 ns-544 ns] x0.66
+        65 B  base 705 ns [705 ns-715 ns]  slotsAlways 469 ns [425 ns-471 ns] x0.67  from32 471 ns [451 ns-612 ns] x0.67  from48 477 ns [422 ns-545 ns] x0.68  from64 460 ns [429 ns-541 ns] x0.65
+       128 B  base 1352 ns [1351 ns-1357 ns]  slotsAlways 508 ns [500 ns-582 ns] x0.38  from32 569 ns [535 ns-597 ns] x0.42  from48 530 ns [497 ns-608 ns] x0.39  from64 554 ns [535 ns-590 ns] x0.41
+      1024 B  base 10.3 us [10.3 us-10.4 us]  slotsAlways 1692 ns [1681 ns-1722 ns] x0.16  from32 1709 ns [1691 ns-1868 ns] x0.17  from48 1709 ns [1697 ns-1862 ns] x0.17  from64 1686 ns [1684 ns-1693 ns] x0.16
+   1048576 B  base 11.14 ms [11.07 ms-11.24 ms]  slotsAlways 1.53 ms [1.50 ms-1.55 ms] x0.14  from32 1.52 ms [1.49 ms-1.55 ms] x0.14  from48 1.49 ms [1.48 ms-1.55 ms] x0.13  from64 1.54 ms [1.49 ms-1.57 ms] x0.14
+   8388608 B  base 118.10 ms [108.70 ms-122.10 ms]  slotsAlways 12.38 ms [12.03 ms-12.48 ms] x0.10  from32 12.11 ms [12.05 ms-12.23 ms] x0.10  from48 12.21 ms [12.17 ms-12.41 ms] x0.10  from64 12.41 ms [12.05 ms-12.73 ms] x0.11
+== webkit 26.5, page: 2295 comparisons with base, 0 differing
+         1 B  base 21 ns [19 ns-21 ns]  slotsAlways 221 ns [210 ns-229 ns] x10.52  from32 21 ns [21 ns-22 ns] x1.00  from48 21 ns [20 ns-23 ns] x1.00  from64 20 ns [20 ns-20 ns] x0.95
+         8 B  base 78 ns [78 ns-82 ns]  slotsAlways 220 ns [203 ns-226 ns] x2.82  from32 81 ns [78 ns-91 ns] x1.04  from48 79 ns [78 ns-84 ns] x1.01  from64 79 ns [78 ns-79 ns] x1.01
+        12 B  base 103 ns [102 ns-105 ns]  slotsAlways 211 ns [211 ns-216 ns] x2.05  from32 112 ns [101 ns-118 ns] x1.09  from48 102 ns [101 ns-115 ns] x0.99  from64 102 ns [102 ns-106 ns] x0.99
+        16 B  base 133 ns [132 ns-140 ns]  slotsAlways 224 ns [218 ns-231 ns] x1.68  from32 138 ns [130 ns-142 ns] x1.04  from48 133 ns [133 ns-147 ns] x1.00  from64 134 ns [133 ns-134 ns] x1.01
+        20 B  base 158 ns [158 ns-159 ns]  slotsAlways 230 ns [220 ns-243 ns] x1.46  from32 171 ns [157 ns-181 ns] x1.08  from48 161 ns [158 ns-168 ns] x1.02  from64 159 ns [158 ns-159 ns] x1.01
+        24 B  base 184 ns [183 ns-185 ns]  slotsAlways 237 ns [235 ns-242 ns] x1.29  from32 187 ns [179 ns-189 ns] x1.02  from48 185 ns [183 ns-196 ns] x1.01  from64 185 ns [184 ns-185 ns] x1.01
+        32 B  base 238 ns [238 ns-250 ns]  slotsAlways 231 ns [228 ns-252 ns] x0.97  from32 251 ns [238 ns-252 ns] x1.05  from48 253 ns [248 ns-262 ns] x1.06  from64 240 ns [240 ns-262 ns] x1.01
+        40 B  base 292 ns [291 ns-295 ns]  slotsAlways 244 ns [233 ns-259 ns] x0.84  from32 251 ns [237 ns-254 ns] x0.86  from48 317 ns [295 ns-329 ns] x1.09  from64 293 ns [292 ns-316 ns] x1.00
+        48 B  base 355 ns [353 ns-364 ns]  slotsAlways 269 ns [268 ns-281 ns] x0.76  from32 268 ns [262 ns-296 ns] x0.75  from48 278 ns [274 ns-280 ns] x0.78  from64 364 ns [364 ns-368 ns] x1.03
+        56 B  base 412 ns [410 ns-433 ns]  slotsAlways 272 ns [262 ns-284 ns] x0.66  from32 274 ns [266 ns-292 ns] x0.67  from48 287 ns [282 ns-289 ns] x0.70  from64 446 ns [417 ns-452 ns] x1.08
+        63 B  base 463 ns [463 ns-508 ns]  slotsAlways 300 ns [294 ns-322 ns] x0.65  from32 309 ns [294 ns-323 ns] x0.67  from48 308 ns [304 ns-309 ns] x0.67  from64 476 ns [457 ns-493 ns] x1.03
+        64 B  base 478 ns [467 ns-485 ns]  slotsAlways 292 ns [284 ns-302 ns] x0.61  from32 279 ns [279 ns-285 ns] x0.58  from48 292 ns [290 ns-318 ns] x0.61  from64 291 ns [290 ns-313 ns] x0.61
+        65 B  base 481 ns [472 ns-508 ns]  slotsAlways 299 ns [286 ns-300 ns] x0.62  from32 287 ns [275 ns-311 ns] x0.60  from48 297 ns [295 ns-322 ns] x0.62  from64 298 ns [296 ns-322 ns] x0.62
+       128 B  base 935 ns [914 ns-1005 ns]  slotsAlways 382 ns [377 ns-417 ns] x0.41  from32 380 ns [360 ns-407 ns] x0.41  from48 377 ns [376 ns-380 ns] x0.40  from64 400 ns [379 ns-405 ns] x0.43
+      1024 B  base 7500 ns [7250 ns-8077 ns]  slotsAlways 1763 ns [1741 ns-1933 ns] x0.24  from32 1639 ns [1639 ns-1639 ns] x0.22  from48 1750 ns [1741 ns-1772 ns] x0.23  from64 1754 ns [1741 ns-1763 ns] x0.23
+   1048576 B  base 7.39 ms [7.07 ms-22.80 ms]  slotsAlways 1.35 ms [1.35 ms-1.41 ms] x0.18  from32 1.22 ms [1.22 ms-1.23 ms] x0.16  from48 1.34 ms [1.34 ms-1.40 ms] x0.18  from64 1.34 ms [1.33 ms-1.35 ms] x0.18
+   8388608 B  base 59.25 ms [59.00 ms-61.00 ms]  slotsAlways 10.84 ms [10.79 ms-11.17 ms] x0.18  from32 9.90 ms [9.81 ms-9.95 ms] x0.17  from48 10.89 ms [10.79 ms-10.95 ms] x0.18  from64 10.79 ms [10.79 ms-10.95 ms] x0.18
+== webkit 26.5, dedicated Worker: 2295 comparisons with base, 0 differing
+         1 B  base 21 ns [18 ns-21 ns]  slotsAlways 197 ns [173 ns-198 ns] x9.38  from32 22 ns [21 ns-24 ns] x1.05  from48 21 ns [21 ns-23 ns] x1.00  from64 20 ns [20 ns-20 ns] x0.95
+         8 B  base 80 ns [80 ns-82 ns]  slotsAlways 227 ns [177 ns-232 ns] x2.84  from32 81 ns [80 ns-90 ns] x1.01  from48 78 ns [77 ns-82 ns] x0.97  from64 79 ns [79 ns-80 ns] x0.99
+        12 B  base 106 ns [104 ns-110 ns]  slotsAlways 238 ns [233 ns-246 ns] x2.25  from32 106 ns [104 ns-114 ns] x1.00  from48 101 ns [100 ns-113 ns] x0.95  from64 104 ns [103 ns-104 ns] x0.98
+        16 B  base 146 ns [145 ns-147 ns]  slotsAlways 253 ns [249 ns-257 ns] x1.73  from32 147 ns [146 ns-150 ns] x1.01  from48 147 ns [144 ns-148 ns] x1.01  from64 146 ns [146 ns-147 ns] x1.00
+        20 B  base 164 ns [162 ns-165 ns]  slotsAlways 247 ns [244 ns-249 ns] x1.51  from32 168 ns [164 ns-175 ns] x1.02  from48 164 ns [159 ns-165 ns] x1.00  from64 164 ns [158 ns-165 ns] x1.00
+        24 B  base 189 ns [188 ns-190 ns]  slotsAlways 251 ns [249 ns-253 ns] x1.33  from32 189 ns [188 ns-191 ns] x1.00  from48 184 ns [183 ns-184 ns] x0.97  from64 183 ns [182 ns-185 ns] x0.97
+        32 B  base 251 ns [243 ns-254 ns]  slotsAlways 261 ns [254 ns-266 ns] x1.04  from32 256 ns [252 ns-267 ns] x1.02  from48 240 ns [237 ns-247 ns] x0.96  from64 236 ns [235 ns-253 ns] x0.94
+        40 B  base 304 ns [301 ns-310 ns]  slotsAlways 268 ns [267 ns-272 ns] x0.88  from32 272 ns [267 ns-279 ns] x0.89  from48 296 ns [294 ns-307 ns] x0.97  from64 299 ns [294 ns-304 ns] x0.98
+        48 B  base 361 ns [360 ns-365 ns]  slotsAlways 286 ns [284 ns-292 ns] x0.79  from32 289 ns [287 ns-292 ns] x0.80  from48 280 ns [279 ns-284 ns] x0.78  from64 355 ns [351 ns-357 ns] x0.98
+        56 B  base 420 ns [417 ns-422 ns]  slotsAlways 293 ns [291 ns-293 ns] x0.70  from32 295 ns [294 ns-295 ns] x0.70  from48 285 ns [282 ns-288 ns] x0.68  from64 413 ns [408 ns-415 ns] x0.98
+        63 B  base 481 ns [478 ns-488 ns]  slotsAlways 325 ns [322 ns-330 ns] x0.68  from32 322 ns [322 ns-329 ns] x0.67  from48 314 ns [314 ns-316 ns] x0.65  from64 469 ns [467 ns-474 ns] x0.98
+        64 B  base 488 ns [488 ns-490 ns]  slotsAlways 313 ns [309 ns-316 ns] x0.64  from32 313 ns [312 ns-316 ns] x0.64  from48 299 ns [299 ns-300 ns] x0.61  from64 301 ns [299 ns-302 ns] x0.62
+        65 B  base 498 ns [495 ns-500 ns]  slotsAlways 318 ns [312 ns-326 ns] x0.64  from32 319 ns [315 ns-328 ns] x0.64  from48 309 ns [307 ns-317 ns] x0.62  from64 309 ns [307 ns-309 ns] x0.62
+       128 B  base 971 ns [966 ns-971 ns]  slotsAlways 408 ns [405 ns-412 ns] x0.42  from32 410 ns [407 ns-413 ns] x0.42  from48 392 ns [388 ns-395 ns] x0.40  from64 391 ns [386 ns-395 ns] x0.40
+      1024 B  base 7607 ns [7393 ns-7846 ns]  slotsAlways 1870 ns [1852 ns-1961 ns] x0.25  from32 1880 ns [1836 ns-1942 ns] x0.25  from48 1795 ns [1733 ns-1804 ns] x0.24  from64 1813 ns [1733 ns-1852 ns] x0.24
+   1048576 B  base 8.87 ms [7.36 ms-12.06 ms]  slotsAlways 1.44 ms [1.43 ms-1.48 ms] x0.16  from32 1.44 ms [1.43 ms-1.46 ms] x0.16  from48 1.31 ms [1.30 ms-1.33 ms] x0.15  from64 1.31 ms [1.30 ms-1.36 ms] x0.15
+   8388608 B  base 60.50 ms [60.25 ms-65.50 ms]  slotsAlways 11.39 ms [11.17 ms-11.67 ms] x0.19  from32 11.33 ms [11.22 ms-11.44 ms] x0.19  from48 10.35 ms [10.30 ms-10.35 ms] x0.17  from64 10.20 ms [10.15 ms-10.45 ms] x0.17
+exit=0
+exit=0

@@ -1,0 +1,32 @@
+34.8s three devices ready
+34.8s production /config {"v":2,"pin":{"v":1,"serviceId":"1966434feb6e5ceee9f1a06b1f02581c","origin":"https://localhost:53441","rpId":"localhost","authRoot":"ac2e2b5c709522dc303c8f3bb6d775f525f68f809375c95bd71a0ba1d60e12e0"},"networkSessions":true,"membershipContinuation":true}
+38.5s C offline (it takes no part from here)
+38.8s A deleted [bravo] [charlie] and C wrote inside [charlie] while offline
+50.3s C large card 0: 41 ms
+50.3s C large card 1: 40 ms
+50.3s C large card 2: 51 ms
+50.3s C holds its unsent writing
+86.5s snapshot 2 admitted
+100.7s A received C accepted writing after cutting
+133.9s snapshot 3 admitted
+136.2s prune 1 (floor: snapshot 2)
+230.2s A wrote 200 large cards of 5000 bytes (22071 ms saving)
+288.4s snapshot 4 admitted
+341.5s snapshot 5 admitted
+354.4s prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts
+510.7s history written
+510.7s C online
+513.6s C fetched snapshot 5 and is reading its suffix slowly; pruning again now
+557.3s snapshot 6 admitted
+614.5s snapshot 7 admitted
+626.0s prune 3 landed (floor: snapshot 6); C still behind: false
+631.1s install-first first phase done=true
+646.5s C after second phase 15s both=false: notice=["Changes on this device are not reaching your other devices.Last accepted upload: 12:48:04 AMReason: send:network-unavailableRetry sending"]
+661.8s C after second phase 30s both=false: notice=[]
+666.9s both directions arrived=true C catalog reads=14 C read requests=33 C read epochs=[5]
+667.1s C sync: ["Sending: idleLast accepted upload: 12:58:29 AMAccepted position: 9Receiving: idleLast successful receive check: 12:58:35 AMReceived positions: 574"]
+678.9s converged=true markers=936 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037971,1037971,1037971
+678.9s shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+  ✓  1 test/packaged-account/lostphone.public.spec.ts:28:1 › lost phone returns after two prune cycles (install-first, large) (11.4m)
+  1 passed (11.4m)
+exit 0

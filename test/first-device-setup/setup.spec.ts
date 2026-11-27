@@ -250,6 +250,7 @@ test('password-manager app switching preserves code-saving and confirmation step
     });
     expect(await page.evaluate(() => (window as any).setupPageInstance)).toBe(instance);
   };
+  await expect(page.locator('.shell')).toBeVisible();
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await page.getByRole('button', { name: 'Create a new account', exact: true }).click();
@@ -285,6 +286,7 @@ test('homepage opens the app, account choice stays explicit, and a first account
   page,
 }) => {
   await page.goto('/');
+  await expect(page.locator('.shell')).toBeVisible();
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   await phase(page, 'account-choice');
@@ -553,6 +555,7 @@ test('existing writing survives recovery reload, wrong code, lost admission repl
   await reopen(page, code);
   await expect(page.locator('.shell')).toBeVisible({ timeout: 20000 });
   await expect(page.locator('.day-panel[data-active="true"] .card')).toHaveCount(2);
+  await openMenuSection(page, 'Sync');
   await expect(
     page.getByText('Account connected. Approved devices can sync writing.'),
   ).toBeVisible();
@@ -963,6 +966,7 @@ test('browser Back redisplays recovery only within its unfinished ceremony and w
   page,
 }) => {
   await page.goto('/');
+  await expect(page.locator('.shell')).toBeVisible();
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   const code = await startNewAccount(page, 'Recovery navigation');
@@ -1032,6 +1036,7 @@ test('Back during registration drains the owner and resumes the saved passkey pr
   page,
 }) => {
   await page.goto('/');
+  await expect(page.locator('.shell')).toBeVisible();
   await openMenuSection(page, 'Account');
   await page.getByRole('button', { name: 'Use another account', exact: true }).click();
   const code = await startNewAccount(page, 'Pending registration');

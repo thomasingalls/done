@@ -1,0 +1,96 @@
+{
+  "phase": 540,
+  "date": "2026-11-11",
+  "base": "dab256e45b0fb9b090a1f6b023f9decb060e6970",
+  "operatorDirected": "fix poll cancellation for reduced devices too, drafted by a delegated agent and integrated here (2026-11-11)",
+  "sourceSha256": {
+    "src/crdt/accountReceive.ts": "27f8206d5dbea1ca43cbe7a74e15109bf5fffe795be2f14bf573a5535f060515",
+    "src/crdt/accountSyncDriver.ts": "3b445550ff44fd8577ba1de8b8f2a022e2bfee96f86fb89dfa4986cfa4dac3c6",
+    "src/crdt/automaticLocalRetention.ts": "95c1a6a89902fd5134a1e4274846d413d84fb9bc1b8f386df3de54a2e137022a",
+    "test/reductionSyncHold.test.ts": "5000c7913b32db8f81ded5f46bfd30d2c643692a16fbda6297bc13dfdf681415",
+    "test/retentionReductionHold.test.ts": "a369e0121257119f9121b2af54197442aac138f7ceb1384c2cbfc4a05d88d425"
+  },
+  "schedulingBounds": {
+    "LOCAL_RETENTION_POLL_HOLD_MS": 60000,
+    "yieldReuses": "LOCAL_RETENTION_HOLD_YIELD_MS",
+    "measured": false,
+    "basis": "phase 309: one lab desktop reduction finished in 36 s with polls paused"
+  },
+  "newUnitCases": {
+    "test/retentionReductionHold.test.ts": 7,
+    "test/reductionSyncHold.test.ts": 5
+  },
+  "casesFailingOnPhase539Behaviour": 9,
+  "guardCasesPassingOnBoth": 3,
+  "existingAssertionsChanged": 0,
+  "reviewerRerun": {
+    "files": 5,
+    "cases": 69,
+    "passed": 69,
+    "typecheckPassed": true,
+    "accountSyncSourceAnchorControlsPassed": 5
+  },
+  "inventory": {
+    "recorded": true,
+    "obligations": 1108,
+    "unresolved": 552,
+    "newObligations": 0,
+    "caseDenominatorBefore": 2648,
+    "caseDenominator": 2660
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 516,
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/account-ledger-reference-mismatch",
+        "path": "src/crdt/accountReceive.ts",
+        "from": 941,
+        "to": 942
+      }
+    ],
+    "constructionRegistryLineFollowed": true,
+    "registryFailures": 0,
+    "openConstructions": 16
+  },
+  "notRun": [
+    "browser suites",
+    "native suites",
+    "any timing",
+    "any real device or account"
+  ],
+  "runtimeSchemaChanged": false,
+  "formatOrWireChanged": false,
+  "deployed": false,
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "finalTree": {
+      "files": 338,
+      "passed": 3277,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 272.55
+    },
+    "draftingAgentRunBeforeRegistration": {
+      "files": 338,
+      "passed": 3277,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 280.41
+    }
+  }
+}

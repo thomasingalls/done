@@ -1,0 +1,184 @@
+{
+  "phase": 546,
+  "date": "2026-11-11",
+  "base": "ee211a6a6",
+  "requested": "coordinating session, 2026-11-11: bound phase 539's sync hold by progress for every outcome, park and explain durable-attempt, keep phases 539 to 541's held window, capacity spend and ineligible handling; map a busy Worker handoff slot at reduction's progress save and commit to an interruption; slice sizing and cached opened rows are not part of this phase",
+  "amends": "phase 539 (2026-11-11): the hold is no longer kept through every refusal; a window without progress is not repeated on the same history, and a saved account attempt blocks it",
+  "sourceSha256": {
+    "src/crdt/accountReceive.ts": "72254df40f6f8f99c4a68fe52f2be3a7736380e7e55d5db991f94b84c850ccb5",
+    "src/crdt/automaticLocalRetention.ts": "29dff4538c12ed62da9f98165d365a5cdfd5a65b293fdcce96d7015ca90bd2fc",
+    "src/crdt/workerWorkspaceQueues.ts": "7602a251586ea5863e3708210e64ec62ba6ec1a4de633b9d51a7a0aff2b1f3ba",
+    "src/crdt/retentionFence.ts": "e466bc254ef3a70200a5ec27bb72f98c2dff5fba6508912ee33e734cfdd3a099",
+    "src/ui/LocalHistoryMaintenance.tsx": "d9ceed82d75c6e1901629194ac1b7bb12229757068b2817d20e95016a18c9b61",
+    "test/reductionHoldDutyCycle.test.ts": "0810b3a686804a756793137d50fc6bf99cf898c6fb76169bfd981662e3ea7427",
+    "test/retentionFenceCollision.test.ts": "ae02e29b6b5b64e10536f76b15214f1cc94ed50c406616d95167d10d1e82150c",
+    "test/automaticLocalRetention.test.ts": "a8595f6c43984c4797d174724443c2650481a015518a886ea9fae91800c332f6",
+    "test/localHistoryMaintenance.test.tsx": "a4f208b998cf836d6e1809f9545528a2f7540557833dbb5d64a8a9809b18d253",
+    "test/retentionReductionHold.test.ts": "285f0e4a28315d68941bb644f647292c93a4bead023910420d2135aeaf13ea3e"
+  },
+  "part1": {
+    "baseDutyCycle": {
+      "simulatedHours": 6,
+      "durable-attempt": { "heldMs": 18000000, "fraction": 0.8333, "attempts": 360 },
+      "pending-promotion": { "heldMs": 18000000, "fraction": 0.8333 },
+      "activity-or-journal": { "heldMs": 18000000, "fraction": 0.8333 },
+      "already-preparing": { "heldMs": 18000000, "fraction": 0.8333 },
+      "unknown reason": { "heldMs": 18000000, "fraction": 0.8333 },
+      "durable-attempt with history changing every 10 min": {
+        "heldMs": 18000000,
+        "fraction": 0.8333
+      },
+      "ineligible, capacity, history-required (unchanged history)": { "heldMs": 0 }
+    },
+    "finalDutyCycle": {
+      "durable-attempt": { "heldMs": 0, "attempts": 1 },
+      "pending-promotion": { "heldMs": 300000, "fraction": 0.0139 },
+      "activity-or-journal": { "heldMs": 300000, "fraction": 0.0139 },
+      "already-preparing": { "heldMs": 0 },
+      "unknown reason": { "heldMs": 0 },
+      "durable-attempt with history changing every 10 min": { "heldMs": 0, "attempts": 36 },
+      "bound asserted": "at most one budget (300000 ms) in six hours"
+    },
+    "progress": ["preparation-saved", "removed", "already-removed"],
+    "windowKeptBy": ["activity-or-journal", "pending-promotion"],
+    "windowEndedBy": [
+      "durable-attempt",
+      "ineligible",
+      "capacity",
+      "history-required",
+      "already-preparing",
+      "any other skip reason"
+    ],
+    "parkedUntilNewHistory": ["capacity", "history-required", "ineligible", "durable-attempt"],
+    "spentUntilManualOrReopen": ["capacity", "history-required"],
+    "blocksEveryHistoryUntilAnotherOutcome": ["durable-attempt"],
+    "resets": {
+      "historyMark": [
+        "progress",
+        "new history (owner hint revision:records)",
+        "Check again",
+        "reopening"
+      ],
+      "savedAttemptBlock": [
+        "any outcome other than durable-attempt (progress included)",
+        "Check again",
+        "reopening"
+      ],
+      "spent": ["Check again", "reopening"]
+    },
+    "message": "An unfinished account step saved on this device, such as a service history snapshot, a device approval or a device removal, has to finish before history here can be reduced. Your existing history is still in place. It will check again after new writing or sync changes this device’s history, or when you choose Check again.",
+    "savedAttemptChannels": ["history", "approval", "rotation"],
+    "changedAssertions": [
+      "test/retentionReductionHold.test.ts: the budget starts when sync is parked under the hold, bounds even a running attempt, then yields (hold no longer returns on the same history after a fruitless window; returns on new history)",
+      "test/retentionReductionHold.test.ts: a hold that parked sync but cannot start its attempt yields after the same budget (same)",
+      "test/automaticLocalRetention.test.ts: paces a transient refusal only after another event, even if the hint is unchanged (example reason durable-attempt replaced by pending-promotion; durable-attempt now parks)",
+      "test/localHistoryMaintenance.test.tsx: keeps ordinary deferrals quiet and preserves native collapsed Data (durable-attempt removed from the quiet list)"
+    ],
+    "residual": "where history keeps changing and every window is cut short (sustained writing on a full-check device, or a never-settling ineligible cut on a busy account), windows can repeat once per change of history, as phase 539 allowed"
+  },
+  "part2": {
+    "busyClass": "WorkspaceQueueBusy (src/crdt/workerWorkspaceQueues.ts), same message, thrown only from begin's busy branch after its input checks",
+    "fence": "enterRetentionFence (src/crdt/retentionFence.ts): a synchronous WorkspaceQueueBusy becomes MaintenanceInterrupted([{ other: true }]); anything else, and anything after a flight begins, is unchanged",
+    "sites": [
+      "accountReceive.ts progress save: contextQueue.run(persist)",
+      "accountReceive.ts commit: enqueue(...) in removeLocalHistory"
+    ],
+    "outcome": "skipped, activity-or-journal; retry after 60 s; no halt",
+    "baseComposition": "both sites halt with owner-error (base-collision.probe.ts.txt, output in base-tree-runs.txt)",
+    "optionalSaveWaitIncluded": false,
+    "optionalSaveWaitReason": "needs a settle signal plumbed from the Worker queues through the workspace composition and the context queue; not small"
+  },
+  "newUnitCases": {
+    "test/reductionHoldDutyCycle.test.ts": 13,
+    "test/retentionFenceCollision.test.ts": 4,
+    "test/automaticLocalRetention.test.ts": 1,
+    "test/localHistoryMaintenance.test.tsx": 1
+  },
+  "newTestFiles": ["test/reductionHoldDutyCycle.test.ts", "test/retentionFenceCollision.test.ts"],
+  "failedOnBase": {
+    "cases": 11,
+    "detail": "6 duty cycles at 83.33%, the settled-attempt case, the park case, the sentence and the two restated hold assertions fail with src/ restored to ee211a6a6; the collision file cannot load there (retentionFence absent), and the base-composition probe shows both fenced sites halting",
+    "controlsPassingOnBase": 6,
+    "record": "base-tree-runs.txt"
+  },
+  "mutationControls": {
+    "fence maps nothing": 3,
+    "window marks nothing": 4,
+    "no saved-attempt block": 2,
+    "durable-attempt unparked": 3,
+    "busy refusal untyped": 4,
+    "record": "mutation-controls.txt"
+  },
+  "relatedFilesPassed": { "files": 20, "cases": 177 },
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": true,
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "files": 346,
+    "passed": 3343,
+    "skipped": 1,
+    "failed": 0,
+    "seconds": 497.44,
+    "hostLoadAverage": "about 11 to 12",
+    "knownLoadTimeoutsFailed": [],
+    "earlierRun": "an identical-count run (346 files, 3343 passed, 1 skipped, 367.70 s) finished before a final one-expression edit to holdable; the recorded run is on the final tree"
+  },
+  "inventory": {
+    "recorded": true,
+    "obligations": 1116,
+    "unresolved": 552,
+    "caseDenominatorBefore": 2687,
+    "caseDenominator": 2704,
+    "vitestReviewedFilesBefore": 109,
+    "vitestReviewedFiles": 111,
+    "generalStagesBefore": 294,
+    "generalStages": 296,
+    "vitestReviewedStagesBefore": 128,
+    "vitestReviewedStages": 130
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 518,
+    "newSources": ["src/crdt/retentionFence.ts"],
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/account-ledger-reference-mismatch",
+        "path": "src/crdt/accountReceive.ts",
+        "from": 942,
+        "to": 943
+      }
+    ],
+    "constructionRegistryLinesFollowed": 1
+  },
+  "anchors": {
+    "checked": 125,
+    "rule": "every string literal of 16 or more characters in vite/, test/ and scripts/ that occurs in the base versions of the four edited sources occurs the same number of times now",
+    "exceptions": "reason strings 'history-required' and 'activity-or-journal' in automaticLocalRetention.ts and the handoff message in workerWorkspaceQueues.ts occur once more; none is used as a split anchor",
+    "harnessAnchorsUntouched": [
+      "remove: result.removeLocalHistory,",
+      "LOCAL_RETENTION_MIN_RECORDS = 1024;"
+    ]
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "accountCryptoAudit": "stops at 16 open constructions, as on main",
+  "concurrentActivity": "a Playwright run of test/packaged-account/lostphone.public.spec.ts, not started by this seat, ran during the unit suites; host load average about 10 to 12",
+  "notRun": [
+    "browser suites and native suites",
+    "pnpm build and trace:check",
+    "any real device or account"
+  ],
+  "deployed": false
+}

@@ -1,0 +1,20 @@
+
+ RUN  v4.1.10 <worktree>
+
+stdout | test/sendPathWalks.test.ts > a send-only continuation on a 1,024-position history walks no retained graph (F1)
+{"positions":1024,"rows":6144,"owned":3372016,"objects":25628,"walkMs":5.072415999999976}
+
+ ✓ test/sendPathWalks.test.ts > a send-only continuation on a 1,024-position history walks no retained graph (F1) 1705ms
+ ✓ test/sendPathWalks.test.ts > a complete check builds its indexes without walking the retained graph (F1) 315ms
+ ✓ test/sendPathWalks.test.ts > the live owner gates its continuation on row bounds, not on a retained-graph walk (F1) 1ms
+ ✓ test/sendPathWalks.test.ts > a turn that captured nothing completes and disposes without walking a 1,024-position result (F1b) 1196ms
+ ✓ test/sendPathWalks.test.ts > a receipt turn walks and erases exactly when it captured something (F1b) 1582ms
+ ✓ test/sendPathMetrics.test.ts > without the profile flag, the send-path observation reads no clock and counts nothing 816ms
+ ✓ test/sendPathMetrics.test.ts > with the profile flag, every send-path timer and walk counter records 471ms
+ ✓ test/sendPathMetrics.test.ts > stop condition (a): send-only continuations on a 1,024-position history walk no whole graph 1301ms
+
+ Test Files  2 passed (2)
+      Tests  8 passed (8)
+   Start at  20:27:10
+   Duration  9.00s (transform 1.04s, setup 68ms, import 1.24s, tests 7.39s, environment 0ms)
+

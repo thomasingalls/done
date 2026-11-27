@@ -5,6 +5,7 @@
  */
 import { fromBase64, toBase64 } from 'lib0/buffer';
 import { contentTransaction } from './contentDatabase';
+import { hex } from './custodyCrypto';
 import { probeDatabase } from './startupStorage';
 import type { SessionTask } from './writeSession';
 import { hasPendingUpdates, Y } from './yjs';
@@ -119,9 +120,6 @@ export const readLegacyUpdates = (task: SessionTask): Promise<LegacyUpdate[] | n
       ),
     );
   });
-
-const hex = (bytes: Uint8Array): string =>
-  Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
 
 /**
  * Captures WAL before the native readonly disk transaction, then detects observed

@@ -1,0 +1,128 @@
+{
+  "phase": 535,
+  "base": "e04879704667683908da745684177a20a65dbef3",
+  "newUnitCases": 5,
+  "before": {
+    "failed": 3,
+    "passed": 2
+  },
+  "focusedAfter": 70,
+  "focusedAfterAllFixtureCorrections": 88,
+  "typecheckPassed": true,
+  "adapterCasesPassed": 17,
+  "fullUnitAttempt": {
+    "command": [
+      "pnpm",
+      "test"
+    ],
+    "clientDate": "2026-11-09",
+    "startedAt": "2026-11-09T22:53:36.054774+00:00",
+    "deadlineSeconds": 240,
+    "performanceCredit": false,
+    "exit": 1,
+    "timedOut": false,
+    "elapsedSeconds": 151.73427287489176
+  },
+  "oldManifestObligationsRetained": 1102,
+  "newManifestObligations": 1103,
+  "unresolvedStillBlocked": 551,
+  "oldFormattingLeftUntouched": {
+    "commit": "e04879704667683908da745684177a20a65dbef3",
+    "path": "test/store.test.ts",
+    "lines": [
+      264,
+      391
+    ]
+  },
+  "localArtifacts": [
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-adapter-checks.log",
+      "bytes": 2369,
+      "sha256": "445a181a655ab90a93a760782767130aacaee83d0db56fcf553576d641f92b61"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-after-first.log",
+      "bytes": 3828,
+      "sha256": "24b899090dcbc627539ea93b5712e73c212933cb7e6eef8240f342bc1d4202ff"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-after-fixtures.log",
+      "bytes": 238,
+      "sha256": "f77812e6b45ad16961f6254a523fd375ec067ec7d18af6cdfcce5426b7cba3f1"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-after.log",
+      "bytes": 238,
+      "sha256": "c92d257c29bcbbafc9d6e08c3d99b6fbeab60415fe7e38b2a1bb73fe1fb377e6"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-before.log",
+      "bytes": 2281,
+      "sha256": "bd24936ab02e2a6a0e4445496b0ab8ef8bc9c2d502caec80d6647b8f24b4e2c4"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-format-final.log",
+      "bytes": 167,
+      "sha256": "189c8f8e67313728f75015386d0d094b51557fd2cadab7d6cdc236d9f129c627"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-format-fix.log",
+      "bytes": 46,
+      "sha256": "954bb44f772ccfde70b9c1ecf3f3d34b87e8ff255ab515b121019e3ce0181fbe"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-format.log",
+      "bytes": 196,
+      "sha256": "8d8d5cfc1c0b7f5071bdf06fcce23b02f481c9750e7764da124b25d908a0ddc5"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-full-unit.log",
+      "bytes": 4535,
+      "sha256": "f877efdb869ff5aa4f82ad46b8bc5862831d48371e6063616235c7cffcf4e2fc"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-inventory-check.log",
+      "bytes": 323,
+      "sha256": "46b76033bb72c8ab52a6a4de449b551c7edeff9db657a6b9915eb3a26445c8a6"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-inventory-final-r1.log",
+      "bytes": 324,
+      "sha256": "6189b553184c98a220998d491a8022cb7c8f1f2050e33f3c719b57e25a7cb720"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-inventory-final.log",
+      "bytes": 324,
+      "sha256": "6189b553184c98a220998d491a8022cb7c8f1f2050e33f3c719b57e25a7cb720"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-inventory-record.log",
+      "bytes": 324,
+      "sha256": "6189b553184c98a220998d491a8022cb7c8f1f2050e33f3c719b57e25a7cb720"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-manifest-check.log",
+      "bytes": 101,
+      "sha256": "85fc6895a0a09470b28ffb8a9c2719a3d49872e3e946fe03400e66d90bba1265"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-manifest-final.log",
+      "bytes": 101,
+      "sha256": "85fc6895a0a09470b28ffb8a9c2719a3d49872e3e946fe03400e66d90bba1265"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-manifest-record.log",
+      "bytes": 101,
+      "sha256": "f36623041aece35f46e0fb202b046093a2e6a5f8e79195b39f8fc5c4eca25286"
+    },
+    {
+      "localPath": "/private/tmp/done-card-ux-20261109/535-typecheck.log",
+      "bytes": 18,
+      "sha256": "98ae1f57bd1b2899b7205cb5ce3a75a863489600a6539d608774dd930a859535"
+    }
+  ],
+  "runtimeSchemaChanged": false,
+  "newPersistedFields": false,
+  "aggregateQualificationCredit": false,
+  "deployed": false
+}

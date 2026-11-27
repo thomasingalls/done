@@ -1,0 +1,59 @@
+// Disposable native IndexedDB/Worker probe. The fixture's custody context is supplied,
+// but membership proofs, content rows, baseline, counter and replay are verified normally.
+import { createContentOwner } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/contentStore';
+import { openContentDb } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/contentDatabase';
+import { deriveStoreName } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/storeName';
+import { withExclusiveSlot } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/writeSession';
+import { extendSpoolWitness } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/spoolRecord';
+import { verifyMembershipChain } from '/private/tmp/done-release-913b58642/predecessor/account-protocol/membershipLocator';
+import { historyPublisher } from '/private/tmp/done-release-913b58642/predecessor/account-protocol/admissionHistory';
+import { cryptFor, keys } from '/private/tmp/done-release-913b58642/predecessor/test/local-baseline/anchor-fixture';
+import { Y } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/yjs';
+import { hex } from '/private/tmp/done-release-913b58642/predecessor/src/crdt/custodyCrypto';
+const revive = (v:any):any => Array.isArray(v) ? v.map(revive) : v && typeof v==='object' ? '$bytes' in v ? new Uint8Array(v.$bytes) : Object.fromEntries(Object.entries(v).map(([k,x])=>[k,revive(x)])) : v;
+const fromHex=(s:string)=>Uint8Array.from(s.match(/../g)!,x=>parseInt(x,16));
+async function material(create=false){
+ const db=await new Promise<IDBDatabase>((yes,no)=>{const q=indexedDB.open('disposable-carrier-probe-keys',1);q.onupgradeneeded=()=>q.result.createObjectStore('keys');q.onsuccess=()=>yes(q.result);q.onerror=()=>no(q.error)});
+ try { const value=create ? await keys() : undefined; return await new Promise<any>((yes,no)=>{const tx=db.transaction('keys',create?'readwrite':'readonly');const q=create?tx.objectStore('keys').put(value,'keys'):tx.objectStore('keys').get('keys');tx.oncomplete=()=>yes(value??q.result);tx.onabort=()=>no(tx.error)}); }finally{db.close()}
+}
+async function census(db:IDBDatabase){
+ const data=await new Promise<any>((yes,no)=>{const tx=db.transaction(['meta','content','heads','outbound']);const rows:any={};for(const name of ['meta','content','heads','outbound']){const s=tx.objectStore(name),k=s.getAllKeys(),v=s.getAll();v.onsuccess=()=>rows[name]=k.result.map((key,i)=>[key,v.result[i]])}tx.oncomplete=()=>yes(rows);tx.onabort=()=>no(tx.error)});
+ const bytes=new TextEncoder().encode(JSON.stringify(data,(_k,v)=>v instanceof Uint8Array?hex(v):v));
+ return {counter:data.meta.find((x:any)=>x[0]==='counter')[1],counts:Object.fromEntries(Object.entries(data).map(([k,v]:any)=>[k,v.length])),digest:hex(new Uint8Array(await crypto.subtle.digest('SHA-256',bytes)))};
+}
+async function run(input:any){
+ const f=revive(await (await fetch('/fixture.json')).json());
+ const {history:root}=await verifyMembershipChain(f.proofs,f.base);
+ const history=historyPublisher(root,f.context.route.credential);
+ const context={...f.context,route:{...f.context.route,history},inbound:{...f.context.inbound,history,authority:history.current},signer:await crypto.subtle.importKey('raw',fromHex(f.context.inbound.publisher.publicKey),'Ed25519',false,['verify']),assertCurrent(){}};
+ const crypt={...cryptFor(context.identity,await material(input.action==='seed')),reuseOpened:true as const,exactBaselineReuse:true as const,readBaseline:true as const,baseline:async()=>context};
+ return withExclusiveSlot(context.identity.slotId,async task=>{
+  const owner=createContentOwner(context.identity,1,crypt);
+  let db:IDBDatabase|undefined;
+  try {
+   await owner.initialize(task,input.action==='seed'?{intent:'04'.repeat(16),checkCreation(){}}:undefined);
+   if(input.action==='seed'){
+    await owner.enableSpool(task);
+    for(const row of f.rows){
+     const event=row.kind==='heads'||(row.kind==='outbound'&&!new TextDecoder().decode(row.bytes).startsWith('["done/source-capture/v1"'));
+     if(event){const before=await owner.spoolWitness(task),after=await extendSpoolWitness(before,row.bytes,crypto.subtle);await owner.appendSpool(task,row,{before,after});}else await owner.append(task,[row]);
+    }
+    const doc=new Y.Doc({gc:false});doc.getText('big').insert(0,'y'.repeat(input.chars));
+    await owner.append(task,[{kind:'state',bytes:new Uint8Array(Y.encodeStateAsUpdate(doc))}]);doc.destroy();
+   }
+   db=await openContentDb(task,await deriveStoreName(context.identity.principalId,context.identity.workspaceId),false);
+   let result:any=null;
+   if(input.action==='reduce'||input.action==='abort'){
+    const put=IDBObjectStore.prototype.put;let aborted=false;
+    if(input.action==='abort')IDBObjectStore.prototype.put=function(value,key){const q=put.call(this,value,key!);if(this.name==='meta'&&key==='counter'&&value?.v===5){aborted=true;this.transaction.abort()}return q;};
+    try{result=await owner.removeHistory(task,async()=>{},()=>{},input.revision??0)}catch(e){if(input.action!=='abort'||!aborted)throw e;result={kind:'aborted',reason:(e as Error).message}}finally{IDBObjectStore.prototype.put=put}
+   }
+   const disk=await census(db);
+   const view=await owner.loadAccount(task);const doc=new Y.Doc({gc:false});
+   for(const row of view.records)if(row.kind==='state'||row.kind==='update')Y.applyUpdate(doc,row.bytes);
+   const text=doc.getText('big').toString(),textHash=hex(new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(text))));doc.destroy();
+   return {result,view:view.kind,disk,chars:text.length,textHash};
+  }finally{db?.close();owner.dispose()}
+ });
+}
+self.onmessage=async(e)=>{try{self.postMessage({ok:true,value:await run(e.data)})}catch(error){self.postMessage({ok:false,error:String(error),stack:(error as Error).stack})}};

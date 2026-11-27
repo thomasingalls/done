@@ -13,12 +13,35 @@ export interface RecoveryDraft extends RecoveryContext {
   envelope: { v: 1; salt: string; nonce: string; ct: string };
 }
 const HEX_BYTES = Array.from({ length: 256 }, (_, byte) => byte.toString(16).padStart(2, '0'));
+/** Each byte value's two lowercase hex digits as ASCII, written through a byte view so that one
+ * 16-bit slot holds them in order whatever the platform's byte order. */
+const HEX_PAIRS = (() => {
+  const pairs = new Uint16Array(256),
+    ascii = new Uint8Array(pairs.buffer);
+  for (let byte = 0; byte < 256; byte++) {
+    ascii[2 * byte] = '0123456789abcdef'.charCodeAt(byte >> 4);
+    ascii[2 * byte + 1] = '0123456789abcdef'.charCodeAt(byte & 15);
+  }
+  return pairs;
+})();
+const ASCII_TEXT = new TextDecoder();
+/** Below this the base join is kept as it was. In WebKit 26.5, which phones run, one TextDecoder
+ * call costs about as much as joining 32 bytes' strings, so the slots ran up to ten times slower
+ * on short inputs; from 64 bytes they were at least 30% faster in WebKit and Chromium, page and
+ * Worker, which leaves margin for devices not measured (phase 559 browser review). */
+const HEX_SLOTS_FROM = 64;
 export const hex = (value: Uint8Array): string => {
   if (!value.length) value.subarray(0, 0); // Keep detached-buffer failure, including empty views.
-  // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the exact byte count; every slot is assigned below.
-  const parts = new Array<string>(value.length);
-  for (let i = 0; i < value.length; i++) parts[i] = HEX_BYTES[value[i]!]!;
-  return parts.join('');
+  if (value.length < HEX_SLOTS_FROM) {
+    // oxlint-disable-next-line unicorn/no-new-array -- Preallocate the exact byte count; every slot is assigned below.
+    const parts = new Array<string>(value.length);
+    for (let i = 0; i < value.length; i++) parts[i] = HEX_BYTES[value[i]!]!;
+    return parts.join('');
+  }
+  // One 16-bit slot per byte, decoded once; no array of one string per byte (phase 559).
+  const ascii = new Uint16Array(value.length);
+  for (let i = 0; i < value.length; i++) ascii[i] = HEX_PAIRS[value[i]!]!;
+  return ASCII_TEXT.decode(ascii);
 };
 export const unhex = (value: unknown, size: number): Uint8Array<ArrayBuffer> => {
   if (typeof value !== 'string' || value.length !== size * 2 || !/^[0-9a-f]+$/.test(value))
@@ -140,3 +163,22 @@ export const draftDigest = async (draft: RecoveryDraft): Promise<string> =>
   );
 export const confirmationBytes = (challenge: string, draftHash: string): Uint8Array<ArrayBuffer> =>
   lp('done/account-recovery-confirm/v1', challenge, draftHash);
+const nibble = (code: number) =>
+  code >= 48 && code <= 57 ? code - 48 : code >= 97 && code <= 102 ? code - 87 : -1;
+/** Non-empty, even-length lowercase hex, checked by character code. WebKit reports no match for
+ * /^(?:[0-9a-f]{2})+$/ on valid input past about 2.78 million characters (phase 542), so long
+ * fields must not depend on a regular expression. Returns undefined, never partial bytes. */
+export const lowerHexBytes = (value: string): Uint8Array<ArrayBuffer> | undefined => {
+  if (!value.length || value.length % 2) return undefined;
+  const bytes = new Uint8Array(value.length / 2);
+  for (let i = 0; i < bytes.length; i++) {
+    const high = nibble(value.charCodeAt(2 * i)),
+      low = nibble(value.charCodeAt(2 * i + 1));
+    if (high < 0 || low < 0) {
+      bytes.fill(0);
+      return undefined;
+    }
+    bytes[i] = (high << 4) | low;
+  }
+  return bytes;
+};

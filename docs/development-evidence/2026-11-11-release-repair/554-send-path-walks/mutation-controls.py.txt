@@ -1,0 +1,67 @@
+"""Phase 554 mutation controls. Each mutation is applied alone to the candidate, the named tests run,
+and the file is restored byte for byte (sha256 checked). A control is detected when a test fails."""
+import hashlib, subprocess, sys
+root = sys.argv[1]
+WALKS = 'test/sendPathWalks.test.ts'
+METRICS = 'test/sendPathMetrics.test.ts'
+M = [
+  # F1: put a retained-graph walk back on the owner path.
+  ('F1-a', 'continuation gates on the reporting call again', 'src/crdt/incrementalAccountLedger.ts',
+   '  const usage = accountLedgerIndexBounds(\n', '  const usage = accountLedgerIndexUsage(\n', [WALKS, METRICS]),
+  ('F1-b', 'complete-check index build gates on the reporting call again', 'src/crdt/incrementalAccountLedger.ts',
+   'if (!accountLedgerIndexBounds(view, records, proofBytes, recordOwnership).eligible) return;',
+   'if (!accountLedgerIndexUsage(view, records, proofBytes, recordOwnership).eligible) return;', [WALKS]),
+  ('F1-c', 'the owner recheck walks again', 'src/crdt/accountReceive.ts',
+   '!accountLedgerIndexBounds(result, records, memo.ownedBytes(), recordOwnership)',
+   '!accountLedgerIndexUsage(result, records, memo.ownedBytes(), recordOwnership)', [WALKS]),
+  ('F1-d', 'the bounds gate reports ownership by walking', 'src/crdt/incrementalAccountLedger.ts',
+   '  return { logicalRows, eligible: true };\n}',
+   '  ownedByteCapacity([records, view]);\n  return { logicalRows, eligible: true };\n}', [WALKS, METRICS]),
+  # F1b: remove the early returns, or let them fire when the turn captured something.
+  ('F1b-a', 'complete walks an empty turn again', 'src/crdt/accountInbound.ts',
+   "        if (!captured()) {\n          retained = value;", "        if (false) {\n          retained = value;", [WALKS, METRICS]),
+  ('F1b-b', 'dispose walks an empty turn again', 'src/crdt/accountInbound.ts',
+   "    if (!captured()) {\n      inputRows.clear();", "    if (false) {\n      inputRows.clear();", [WALKS, METRICS]),
+  ('F1b-c', 'complete skips when there is no output, though a row and parsers were captured', 'src/crdt/accountInbound.ts',
+   "        if (!captured()) {\n          retained = value;", "        if (outputs.length === 0) {\n          retained = value;", [WALKS]),
+  ('F1b-d', 'dispose skips when there is no output, though a row and parsers were captured', 'src/crdt/accountInbound.ts',
+   "    if (!captured()) {\n      inputRows.clear();", "    if (outputs.length === 0) {\n      inputRows.clear();", [WALKS]),
+  ('F1b-e', 'complete always skips', 'src/crdt/accountInbound.ts',
+   "        if (!captured()) {\n          retained = value;", "        if (true) {\n          retained = value;", [WALKS]),
+  ('F1b-f', 'dispose always skips', 'src/crdt/accountInbound.ts',
+   "    if (!captured()) {\n      inputRows.clear();", "    if (true) {\n      inputRows.clear();", [WALKS]),
+  # Step 0: a timer or counter that runs without the profile flag.
+  ('S0-a', 'the unchanged-load compare reads the clock unprofiled', 'src/crdt/verifiedRecords.ts',
+   '          const compared = ledgerWorkStart();', '          const compared = performance.now();', [METRICS]),
+  ('S0-b', 'the submit wait reads the clock unprofiled', 'src/crdt/accountDelivery.ts',
+   '        const networkAt = ledgerWorkStart();', '        const networkAt = performance.now();', [METRICS]),
+  ('S0-c', 'walk counts are kept unprofiled', 'src/crdt/accountLedgerMetrics.ts',
+   "  objects: number,\n) => {\n  if (!ledgerProfiling) return;", "  objects: number,\n) => {\n  if (!ledgerProfiling) {\n    work[site]++;\n    return;\n  }", [METRICS]),
+  ('S0-d', 'the driver takes an accepted-send sample unprofiled', 'src/crdt/accountSyncDriver.ts',
+   '  if (ledgerProfiling && next.acceptedThrough > status.acceptedThrough) {',
+   '  if (next.acceptedThrough > status.acceptedThrough) {', [METRICS]),
+  ('S0-e', 'driver op timers run unprofiled', 'src/crdt/accountSyncDriver.ts',
+   '    if (!ledgerProfiling) return run();', '    if (!ledgerProfiling) return run().finally(() => performance.now());', [METRICS]),
+  ('S0-f', 'the expected-chain timer is dropped', 'src/crdt/accountDelivery.ts',
+   "    measureLedgerWork('expectedChain', chainAt);\n", '', [METRICS]),
+]
+def sha(p): return hashlib.sha256(open(p,'rb').read()).hexdigest()
+results = []
+for name, desc, path, old, new, tests in M:
+    p = f'{root}/{path}'
+    original = open(p).read(); before = sha(p)
+    assert original.count(old) == 1, (name, 'site not unique')
+    open(p, 'w').write(original.replace(old, new))
+    try:
+        r = subprocess.run(['timeout', '600', 'pnpm', 'exec', 'vitest', 'run', *tests, '--maxWorkers=1'],
+                           cwd=root, capture_output=True, text=True)
+        out = r.stdout + r.stderr
+        failed = [l.strip() for l in out.splitlines() if l.strip().startswith('×')]
+    finally:
+        open(p, 'w').write(original)
+    assert sha(p) == before, (name, 'not restored')
+    detected = r.returncode != 0 and bool(failed)
+    results.append((name, desc, detected, failed))
+    print(f'{name} {"DETECTED" if detected else "MISSED"} — {desc}', flush=True)
+    for f in failed: print('    ' + f, flush=True)
+print(f'{sum(1 for r in results if r[2])} of {len(results)} detected; every file restored by sha256')

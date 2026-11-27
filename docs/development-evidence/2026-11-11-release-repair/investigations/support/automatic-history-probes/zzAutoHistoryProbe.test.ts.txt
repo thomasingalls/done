@@ -1,0 +1,169 @@
+// @vitest-environment node
+// Scratch probe (not part of the repository): scheduler behaviour under phase-544 statuses and races.
+import { afterEach, expect, it, vi } from 'vitest';
+import {
+  createAutomaticServiceHistory,
+  SERVICE_HISTORY_QUIET_MS as QUIET,
+  SERVICE_HISTORY_MIN_RECORDS as MIN,
+  SERVICE_HISTORY_INTERVAL_MS as INTERVAL,
+  SERVICE_HISTORY_RETRY_MS as RETRY,
+} from '../src/account/automaticHistoryMaintenance';
+import type {
+  HistoryMaintenanceStatus,
+  HistoryMaintenanceCommand,
+} from '../src/account/historyMaintenance';
+
+afterEach(() => vi.useRealTimers());
+class Unavailable extends Error {}
+function lifetime(
+  answer: (c: HistoryMaintenanceCommand) => Promise<HistoryMaintenanceStatus>,
+  records = 0,
+) {
+  let hint = { revision: 0, records };
+  const commands: string[] = [];
+  const controller = new AbortController();
+  const run = createAutomaticServiceHistory({
+    signal: controller.signal,
+    observe: () => ({ ready: true, hint }),
+    run: async (c) => {
+      commands.push(c);
+      return answer(c);
+    },
+    retryable: (e) => e instanceof Unavailable,
+  });
+  return {
+    run,
+    commands,
+    grow: (n: number) => {
+      hint = { revision: 0, records: hint.records + n };
+    },
+    close: () => controller.abort(),
+  };
+}
+const out = (...v: unknown[]) => process.stderr.write('\nPROBE ' + JSON.stringify(v) + '\n');
+const tick = (n: number) => vi.advanceTimersByTimeAsync(n);
+
+it('P1: every new owner lifetime issues a prune for an unchanged sequence >= 2', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  const answer = async (c: HistoryMaintenanceCommand): Promise<HistoryMaintenanceStatus> =>
+    c === 'prune'
+      ? { sequence: 2, pending: 'none', canDiscard: false, pruned: true }
+      : { sequence: 2, pending: 'none', canDiscard: false };
+  const a = lifetime(answer);
+  a.run.refresh();
+  await tick(QUIET);
+  const first = [...a.commands];
+  a.close();
+  const b = lifetime(answer);
+  b.run.refresh();
+  await tick(QUIET);
+  out('P1 lifetime1', first, 'lifetime2', b.commands);
+  expect(first).toEqual(['inspect', 'prune']);
+  expect(b.commands).toEqual(['inspect', 'prune']);
+  b.close();
+});
+
+it('P2: a prune refused because the latest snapshot is too large halts as owner-error, every lifetime', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  const tooLarge = { snapshot: 'latest' as const, needed: 5e6, allowed: 4194304 };
+  const answer = async (c: HistoryMaintenanceCommand): Promise<HistoryMaintenanceStatus> =>
+    c === 'prune'
+      ? { sequence: 3, pending: 'none', canDiscard: false, tooLarge }
+      : { sequence: 3, pending: 'none', canDiscard: false, tooLarge };
+  for (let i = 0; i < 2; i++) {
+    const a = lifetime(answer, MIN * 4);
+    a.run.refresh();
+    await tick(QUIET);
+    a.run.hint();
+    await tick(INTERVAL * 3);
+    out('P2 lifetime', i, a.commands, a.run.status);
+    expect(a.run.status.phase).toBe('halted');
+    expect(a.run.status.reason).toBe('owner-error');
+    expect('tooLarge' in (a.run.status.history ?? {})).toBe(false);
+    a.close();
+  }
+});
+
+it('P3: create refused as too large is retried after an hour plus 1,024 records of growth', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  const tooLarge = { snapshot: 'new' as const, needed: 5e6, allowed: 4194304 };
+  const answer = async (): Promise<HistoryMaintenanceStatus> => ({
+    sequence: 0,
+    pending: 'none',
+    canDiscard: false,
+    tooLarge,
+  });
+  const a = lifetime(answer, MIN);
+  a.run.refresh();
+  await tick(QUIET);
+  for (let h = 0; h < 3; h++) {
+    a.grow(MIN);
+    a.run.refresh();
+    await tick(INTERVAL);
+    a.run.refresh();
+    await tick(QUIET);
+  }
+  const creates = a.commands.filter((c) => c === 'create').length;
+  out('P3 commands', a.commands, 'creates', creates, a.run.status);
+  expect(creates).toBeGreaterThanOrEqual(3);
+  a.close();
+});
+
+it('P4: a peer snapshot too large to verify is re-requested four times per turn, then parks silently', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  const tooLarge = { snapshot: 'pending' as const, needed: 5e6, allowed: 4194304 };
+  const answer = async (): Promise<HistoryMaintenanceStatus> => ({
+    sequence: 1,
+    pending: 'verify',
+    canDiscard: false,
+    tooLarge,
+  });
+  const a = lifetime(answer);
+  a.run.refresh();
+  await tick(QUIET);
+  const firstTurn = [...a.commands];
+  await tick(INTERVAL * 5);
+  const afterIdle = a.commands.length;
+  a.run.hint();
+  await tick(QUIET);
+  out('P4 first turn', firstTurn, 'after idle', afterIdle, 'after hint', a.commands, a.run.status);
+  expect(firstTurn).toEqual(['inspect', 'verify', 'verify', 'verify']);
+  a.close();
+});
+
+it('P5: concurrent creation; the loser keeps a saved proposal and retries resume against a busy service forever', async () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(0);
+  // Device B: its create is refused (service 409 checkpoint-busy -> HistoryTransportUnavailable),
+  // after it saved its attempt. From then on inspection says 'resume' (retained attempt has
+  // precedence over verifying A's pending proposal) and resume is refused the same way.
+  let saved = false;
+  const answer = async (c: HistoryMaintenanceCommand): Promise<HistoryMaintenanceStatus> => {
+    if (c === 'create') {
+      saved = true;
+      throw new Unavailable('History service reply unavailable. Saved progress can be retried.');
+    }
+    if (c === 'resume') throw new Unavailable('History service reply unavailable.');
+    return saved
+      ? { sequence: 0, pending: 'resume', canDiscard: false }
+      : { sequence: 0, pending: 'none', canDiscard: false };
+  };
+  const b = lifetime(answer, MIN);
+  b.run.refresh();
+  await tick(QUIET);
+  const afterRace = [...b.commands];
+  await tick(INTERVAL * 24);
+  const noEvent = b.commands.length;
+  for (let i = 0; i < 6; i++) {
+    b.run.hint();
+    await tick(RETRY * 32);
+  }
+  out('P5 after race', afterRace, 'commands with no event in 24h', noEvent, 'after six hints', b.commands, b.run.status);
+  expect(b.commands).not.toContain('discard');
+  expect(b.commands).not.toContain('verify');
+  b.close();
+});

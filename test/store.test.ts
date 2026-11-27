@@ -117,8 +117,8 @@ describe('bulk stale-item resolution stays out of the undo stack', () => {
     const store = await openStore({ persist: false });
     const { me, system, past } = workspaces(store);
 
-    compose(past, { date: YESTERDAY, section: 'next' }, 'unfinished one');
     compose(past, { date: YESTERDAY, section: 'next' }, 'unfinished two');
+    compose(past, { date: YESTERDAY, section: 'next' }, 'unfinished one');
     compose(me, { date: TODAY, section: 'done' }, 'typed by me');
 
     expect(moveAllNextTo(system, YESTERDAY, { date: TODAY, section: 'scheduled' })).toBe(2);

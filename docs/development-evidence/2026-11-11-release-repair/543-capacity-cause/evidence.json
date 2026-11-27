@@ -1,0 +1,219 @@
+{
+  "phase": 543,
+  "date": "2026-11-11",
+  "base": "ff8578cd0",
+  "requested": "coordinating session: when reduction parks, the device says which limit or condition stopped it (2026-11-11)",
+  "sourceSha256": {
+    "src/crdt/localRetentionDetail.ts": "22e787188b7508972489a30708726b13f4f9c7e7147f8a939fbeb26d92b38eb3",
+    "src/crdt/automaticLocalRetention.ts": "470059ab6b8934b797266762d1ffb609c1ebec1e968a5eed6427f6e157c883cf",
+    "src/crdt/accountSessionBridge.ts": "6373ddd013537a15c7ab5558c2364ea9aeb2298c568774baf772efc883606638",
+    "src/ui/LocalHistoryMaintenance.tsx": "a050fbe3df84499e18874368d59328ed136539d986457eeec39da71674bc2796",
+    "src/crdt/localBaselineRecord.ts": "3016d909658b75bdb04f784f458e43a262ec522dec32c3fb37cb0e9f51088604",
+    "src/crdt/localBaselineStorage.ts": "a9ac8a4d1f1fcd497ce9886fc4054b6d7ffd57c00dbea6acd6065db3cd933b37",
+    "src/crdt/localRetentionPlan.ts": "4958918fa85d32bd5c2e8f8cdeef64344cbc3265a126d24b560ebbf2715ffc92",
+    "src/crdt/contentStore.ts": "7d20acf19b37597c3752ae0f68224e290e16f57a95c8145b4a3e365df5fb3bd7",
+    "src/crdt/preparationCapacity.ts": "dbcf38eea03969fed12202037f06204cdda85d8a298f4eb93524efc9c082ea59",
+    "src/crdt/retentionPreparationStorage.ts": "3d06cbc8f36f6cdfe37e62d067d795767b51cfeabb04ef4ba8774244f73c0d66",
+    "src/crdt/retentionPreparationBinding.ts": "c633b9d4f268c917366f7881968f31a882d9f10230b8526622358ae9e3245d54",
+    "test/automaticLocalRetention.test.ts": "b464335161b3c4eaaa660b43ff8a5549e4c8522ba9985b840580254d3bb45240",
+    "test/accountSessionBridge.test.ts": "95d01ec2534e16cfd5b20f05f4218ebdfece9b8ff8d16fca1c0cdd750ff38990",
+    "test/localHistoryMaintenance.test.tsx": "cab5f4a011e8daf8d73d0ab9518b22068d864c012e8fdc0085b93a6b4db1ef27",
+    "test/localBaselineLargeCarrier.test.ts": "d27d4d4f0eff59b5f319124e830594338feeeb29b47d3dfee9794bf76150b98e",
+    "test/localBaseline.test.ts": "263211881b1cfc0177aeb72ba8325450d9686d7818364d2c7f3f9cae3c21eb2a",
+    "test/preparationCapacitySites.test.ts": "9e2a5d1827e4f2fd80b6d98497a1ab28f12f092a5ea114bfb4440cd6930e1519",
+    "test/retentionPreparationOwner.test.ts": "dbd5355d44d2b277d12aec50717f4f3e54c52f52e58cb603573e6028730cc2cf",
+    "install-size-probe.ts.txt": "749a42eb9673d0fa952c2837301aef6e43218bb3e749641fe0e611d7d287e1f1",
+    "install-size-output.json": "c1a053b41b5767244dd4e2b7d0b033731078fe8b28ec3244e05b36d5fc7747c7"
+  },
+  "causes": {
+    "snapshot-size": {
+      "raisedAt": [
+        "src/crdt/localBaselineRecord.ts encodeLocalBaseline (encoded record, or snapshot alone, past the write ceiling)",
+        "src/crdt/localBaselineStorage.ts anchorLocalBaseline (complete-history writer, 4 MiB; off the reduction path)"
+      ],
+      "unit": "bytes",
+      "needed": "exact encoded size the record would have had",
+      "allowed": "8 MiB for a journal-era candidate, 4 MiB otherwise"
+    },
+    "snapshot-sources": {
+      "raisedAt": ["src/crdt/localBaselineRecord.ts encodeLocalBaseline"],
+      "unit": "capsules",
+      "allowed": 4096
+    },
+    "snapshot-publishers": {
+      "raisedAt": ["src/crdt/localBaselineRecord.ts encodeLocalBaseline"],
+      "unit": "publishers",
+      "allowed": 128
+    },
+    "resume-progress": {
+      "raisedAt": ["src/crdt/retentionPreparationStorage.ts savePreparationDelta"],
+      "unit": "bytes",
+      "note": "sizes only when the 32 MiB total fired; none for the slice-count bounds"
+    },
+    "resume-index": {
+      "raisedAt": ["src/crdt/retentionPreparationStorage.ts savePreparationDelta (head encoding)"],
+      "unit": "bytes",
+      "allowed": 262128
+    },
+    "resume-history": {
+      "raisedAt": ["src/crdt/retentionPreparationBinding.ts capturePreparationPrefix"],
+      "unit": "bytes",
+      "allowed": 67108864,
+      "note": "needed is a floor: counting stops at the first row over the bound"
+    },
+    "interrupted": {
+      "raisedAt": [
+        "src/crdt/contentStore.ts prepareHistoryRemoval (uncached pass cut short by routine queued work, phase 541)"
+      ],
+      "sizes": false
+    }
+  },
+  "channel": "skipped outcome (planner or content store) or PreparationCapacity.detail -> automaticLocalRetention status.detail beside reason capacity -> accountSessionBridge local() closed copy -> LocalHistoryMaintenance",
+  "timingChanged": false,
+  "reasonChanged": false,
+  "restatedShapeAssertions": 6,
+  "sentences": {
+    "suffix": "Your existing history is still in place. It will check again after new writing or sync changes this device’s history.",
+    "snapshot-size": "The smaller history snapshot would need 9.4 MiB, and this version saves snapshots of up to 8.0 MiB.",
+    "snapshot-sources": "More writing is waiting to be sent from this device than a smaller history snapshot can hold (4100 batches; up to 4096).",
+    "snapshot-publishers": "This workspace has more writing devices than a smaller history snapshot can record (130; up to 128).",
+    "resume-progress": "The progress this device saves to resume history maintenance is full (33.0 MiB; up to 32.0 MiB).",
+    "resume-index": "The list of saved history maintenance progress is full (0.3 MiB; up to 0.2 MiB).",
+    "resume-history": "Saved history on this device is too large to mark a point where maintenance can resume (more than 64.0 MiB).",
+    "interrupted": "History maintenance was interrupted by other work on this device and had no saved progress to resume from. Your existing history is still in place. It will try again after new writing or sync changes this device’s history, or when you choose Check again.",
+    "fallback": "History maintenance reached a preparation or snapshot size limit. Your existing history is still in place. It will check again after new writing or sync changes this device’s history."
+  },
+  "compatibility": {
+    "olderOwner": "no detail; the earlier sentence",
+    "unknownOrMalformedDetail": "dropped by the bridge; the earlier sentence",
+    "newerWorkerOlderPage": "does not arise within a page load (Worker URL resolved from the page's bundle); an older page's closed check would refuse the field"
+  },
+  "historyInstallSizeError": {
+    "mapped": false,
+    "probe": "install-size-probe.ts.txt: verifyHistoryInstall made to throw during planning; planLocalRetention rejected with HistoryInstallSizeError from the full reference replay (inboundLedger.ts); the scheduler halted as owner-error (diagnostic code 'Error'), shown as the generic halt sentence",
+    "otherRaiseSite": "localBaselineReplay.ts replayLocalBaseline for a baseline's history record; planLocalRetention rethrows it",
+    "reachability": "not expected for a record this build installed: the receive path admits only under the same 4 MiB bound and re-derivation is deterministic; it would surface if the bound or the encoding changed",
+    "fixed": false,
+    "owner": "the snapshot-guard phase"
+  },
+  "otherGenericHaltsForKnownLimits": "none found by reading the catch sites on this path; the spread-argument engine limit noted in phase 542 is separate",
+  "newUnitCases": {
+    "test/automaticLocalRetention.test.ts": 2,
+    "test/accountSessionBridge.test.ts": 1,
+    "test/localHistoryMaintenance.test.tsx": 1,
+    "test/localBaselineLargeCarrier.test.ts": 1
+  },
+  "newTestFiles": 0,
+  "neighbouringFiles": {
+    "files": 27,
+    "cases": 276,
+    "passed": 276
+  },
+  "typecheckPassed": true,
+  "formatAndLintOnChangedFiles": true,
+  "inventory": {
+    "recorded": true,
+    "obligations": 1110,
+    "unresolved": 552,
+    "newObligations": 0,
+    "caseDenominatorBefore": 2676,
+    "caseDenominator": 2677
+  },
+  "adapterCasesPassed": 178,
+  "runtimeCensus": {
+    "recorded": true,
+    "sources": 517,
+    "sourcesAdded": ["src/crdt/localRetentionDetail.ts"],
+    "domainLabelsOrCryptoCallsInChangedLines": 0,
+    "domainSitesMoved": [
+      {
+        "label": "done/account-delivery/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 506,
+        "to": 515
+      },
+      {
+        "label": "done/account-spool/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 505,
+        "to": 514
+      },
+      {
+        "label": "done/source-capture/v1",
+        "path": "src/crdt/localRetentionPlan.ts",
+        "from": 499,
+        "to": 508
+      },
+      {
+        "label": "done/account-local-baseline-auth/draft-2\u0000",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "from": 285,
+        "to": 311
+      },
+      {
+        "label": "done/account-local-baseline-auth/draft-3\u0000",
+        "path": "src/crdt/localBaselineRecord.ts",
+        "from": 286,
+        "to": 312
+      }
+    ],
+    "constructionRegistryLinesFollowed": 5,
+    "openConstructions": 16
+  },
+  "anchors": {
+    "vite": "none of the edited files is anchored",
+    "browserSpecTransform": "accountReceive.ts not edited",
+    "testHarnessAnchorsStillUnique": [
+      "automaticLocalRetention.ts LOCAL_RETENTION_MIN_RECORDS",
+      "contentStore.ts read probe, lifecycle probe, counter contract",
+      "retentionPreparationStorage.ts and retentionPreparationBinding.ts capacity-fault injection points"
+    ]
+  },
+  "ciContractChecksPassed": [
+    "vectors:check",
+    "retention:check",
+    "status:check",
+    "limit:check",
+    "authority:check",
+    "recipient:check",
+    "admission:check",
+    "remediation:check",
+    "debts:check",
+    "wasm:verify"
+  ],
+  "notRun": [
+    "browser suites (ports 53221 and 53222 left to another session)",
+    "native suites",
+    "any real device or account",
+    "a real 32 MiB preparation save for the resume-progress bytes branch"
+  ],
+  "deployed": false,
+  "fullUnit": {
+    "command": "pnpm test --maxWorkers=1",
+    "finalTree": {
+      "files": 340,
+      "passed": 3307,
+      "skipped": 1,
+      "failed": 0,
+      "seconds": 352.08
+    },
+    "hostLoadAverage": "about 9: a Chrome renderer near 100% CPU and an unrelated Lean process from another worktree near 90%",
+    "reviewRerun": {
+      "files": 340,
+      "passed": 3305,
+      "skipped": 1,
+      "failed": 2,
+      "seconds": 453.95,
+      "hostLoadAverage": "about 15, with five investigation agents running alongside",
+      "failures": "test/inboundMixedReplay.test.ts, seeds 406 and 407, each timed out at 5000 ms",
+      "alone": "the file passed 3 of 3 runs alone, about 6 s of tests for three cases; it imports none of the changed modules; no deadline was changed"
+    }
+  },
+  "build": {
+    "command": "pnpm build",
+    "passed": true,
+    "initialJsGzippedKb": 308.7,
+    "budgetKb": 350.0
+  },
+  "traceCheckPassed": true
+}

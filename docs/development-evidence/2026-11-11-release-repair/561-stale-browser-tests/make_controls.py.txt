@@ -1,0 +1,121 @@
+"""Phase 561: write one-change copies of welcome.spec.ts for the :252 controls.
+
+Each copy is the repaired test file with absolute imports and exactly one change.
+The repository is not modified. Run with python3 -I.
+"""
+import subprocess
+import sys
+from pathlib import Path
+
+REPO = Path('/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1')
+OUT = Path(__file__).resolve().parent
+BASE_TREE = '619798eacad4be6fb68731fa93b6e436cbe38d62'
+
+IMPORTS = {
+    "'../geometry/openApp'": f"'{REPO}/test/geometry/openApp.ts'",
+    "'../device-enrollment/helpers'": f"'{REPO}/test/device-enrollment/helpers.ts'",
+    "'./server'": f"'{REPO}/test/packaged-account/server.ts'",
+}
+
+
+def absolute(text: str) -> str:
+    for old, new in IMPORTS.items():
+        assert text.count(old) == 1, old
+        text = text.replace(old, new)
+    return text
+
+
+def once(text: str, old: str, new: str) -> str:
+    assert text.count(old) == 1, (old, text.count(old))
+    return text.replace(old, new)
+
+
+final = (REPO / 'test/packaged-account/welcome.spec.ts').read_text()
+base = subprocess.run(
+    ['git', '-C', str(REPO), 'show', f'{BASE_TREE}:test/packaged-account/welcome.spec.ts'],
+    check=True,
+    capture_output=True,
+    text=True,
+).stdout
+
+ROUTE_START = "      // Only the first localStartup Worker started from here, the one protection opens, refuses.\n"
+ROUTE_END = "      });\n      await openMenuSection(page, 'Account');\n      await page.getByRole('button', { name: 'Add an unlock code' }).click();"
+start = final.index(ROUTE_START)
+end = final.index(ROUTE_END)
+route_block = final[start : end + len("      });\n")]
+
+PAGE_PATCH = """      await page.evaluate(() => {
+        const native = indexedDB.deleteDatabase.bind(indexedDB);
+        let refused = false;
+        indexedDB.deleteDatabase = (name) => {
+          if (/^done\\.[a-f0-9]{32}$/.test(name) && !refused) {
+            refused = true;
+            const request = {} as IDBOpenDBRequest;
+            queueMicrotask(() => request.onerror?.call(request, new Event('error')));
+            return request;
+          }
+          return native(name);
+        };
+      });
+"""
+
+INSTRUMENT_AT = "      await openApp(page);\n      await add(page, 'Keep through a refused deletion');\n"
+INSTRUMENT = """      const t0 = Date.now();
+      const log = (s: string) => console.log(`I561 +${Date.now() - t0}ms ${s}`);
+      page.on('worker', (w) => {
+        log('worker start ' + w.url().replace(/^.*\\//, ''));
+        w.on('close', () => log('worker close ' + w.url().replace(/^.*\\//, '')));
+      });
+      page.on('response', async (r) => {
+        if (!/localStartup\\.worker/.test(r.url())) return;
+        const body = await r.text().catch(() => '<unavailable>');
+        log(`script ${r.url().replace(/^.*\\//, '')} fromSW=${r.fromServiceWorker()} patched=${body.startsWith('(function refuseOneDeletion') || body.startsWith('(function')  && body.includes('refused = true')}`);
+      });
+      page.on('framenavigated', (f) => { if (f === page.mainFrame()) log('navigated ' + f.url()); });
+"""
+
+variants = {
+    # Sanity: the repaired file, imports made absolute.
+    'final-copy': final,
+    # The repaired file with logging of each localStartup Worker and its script.
+    'final-instrumented': once(final, INSTRUMENT_AT, INSTRUMENT_AT + INSTRUMENT),
+    # The base text: the refusal patched into the page realm, service worker allowed.
+    'base-text': base,
+    # The route removed; nothing refuses.
+    'no-injection': once(final, route_block, ''),
+    # The old page-realm patch in place of the route, service worker still blocked.
+    'page-only-sw-blocked': once(final, route_block, PAGE_PATCH),
+    # Permanent: every localStartup Worker is patched and refuses every matching deletion.
+    'permanent': once(
+        once(final, "/.test(name) && !refused) {", "/.test(name)) {"),
+        "        armed = false;\n",
+        "",
+    ),
+    # Permanent inside the first patched Worker only; later Workers are unpatched.
+    'permanent-in-first-worker': once(final, "/.test(name) && !refused) {", "/.test(name)) {"),
+    # One refusal per Worker, but every localStartup Worker is patched (never disarmed).
+    'one-shot-every-worker': once(final, "        armed = false;\n", ""),
+    # Service worker allowed and awaited before arming: the precache worker answers the script.
+    'sw-allowed-ready': once(
+        once(final, "  test.use({ serviceWorkers: 'block' });\n", ""),
+        ROUTE_START,
+        "      await page.evaluate(() => navigator.serviceWorker.ready.then(() => true));\n"
+        + ROUTE_START,
+    ),
+    # Service worker allowed, not awaited: a race between its installation and protection.
+    'sw-allowed-race': once(final, "  test.use({ serviceWorkers: 'block' });\n", ""),
+}
+# Probes (not controls): the two service-worker variants with the same logging.
+variants['sw-allowed-ready-instrumented'] = once(
+    variants['sw-allowed-ready'], INSTRUMENT_AT, INSTRUMENT_AT + INSTRUMENT
+)
+variants['sw-allowed-race-instrumented'] = once(
+    variants['sw-allowed-race'], INSTRUMENT_AT, INSTRUMENT_AT + INSTRUMENT
+)
+variants['permanent-instrumented'] = once(variants['permanent'], INSTRUMENT_AT, INSTRUMENT_AT + INSTRUMENT)
+
+for name, text in variants.items():
+    path = OUT / f'ctl-{name}.spec.ts'
+    path.write_text(absolute(text))
+    print(path.name)
+sys.exit(0)

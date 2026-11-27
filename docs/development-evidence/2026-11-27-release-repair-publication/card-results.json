@@ -1,0 +1,381 @@
+{
+  "config": {
+    "argv": [
+      "/private/tmp/done-release-20261107/node-v24.22.1-darwin-arm64/bin/node",
+      "/private/tmp/done-release-913b58642/source/node_modules/@playwright/test/cli.js",
+      "test",
+      "--config",
+      "/private/tmp/done-release-913b58642/card-config.mts"
+    ],
+    "configFile": "/private/tmp/done-release-913b58642/card-config.mts",
+    "rootDir": "/private/tmp/done-release-913b58642/source/test/geometry",
+    "failOnFlakyTests": false,
+    "forbidOnly": false,
+    "fullyParallel": true,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/private/tmp/done-release-913b58642/card-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "desktop",
+        "name": "desktop",
+        "testDir": "/private/tmp/done-release-913b58642/source/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "card-controls.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/private/tmp/done-release-913b58642/card-artifacts",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "android",
+        "name": "android",
+        "testDir": "/private/tmp/done-release-913b58642/source/test/geometry",
+        "testIgnore": [],
+        "testMatch": [
+          "card-controls.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "/private/tmp/done-release-913b58642/card-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.62.0",
+    "workers": 1,
+    "webServer": {
+      "command": "/private/tmp/done-release-20261107/node-v24.22.1-darwin-arm64/bin/node node_modules/vite/bin/vite.js preview --host 127.0.0.1 --port 53225 --strictPort",
+      "cwd": "/private/tmp/done-release-913b58642/source",
+      "url": "http://localhost:53225",
+      "reuseExistingServer": false,
+      "timeout": 120000
+    }
+  },
+  "suites": [
+    {
+      "title": "card-controls.spec.ts",
+      "file": "card-controls.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Next offers Done, Later and Done for now, with no Remove or Duplicate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 590,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:35.161Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-ec819bd924aadbac477f",
+          "file": "card-controls.spec.ts",
+          "line": 50,
+          "column": 1
+        },
+        {
+          "title": "Done toggles Unlock and Lock in place, hides locked actions and disables the retained grip",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 747,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:35.922Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-06111997d8e80920111c",
+          "file": "card-controls.spec.ts",
+          "line": 68,
+          "column": 1
+        },
+        {
+          "title": "card text and action labels keep their inset as the grip appears, disables and disappears",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:36.675Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-a645831a22af7dc7ddb6",
+          "file": "card-controls.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "heading breadcrumbs share the text and action inset, including on a narrow card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "desktop",
+              "projectName": "desktop",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 596,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:37.304Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-2f48d1a781f742ee06b0",
+          "file": "card-controls.spec.ts",
+          "line": 154,
+          "column": 1
+        },
+        {
+          "title": "Next offers Done, Later and Done for now, with no Remove or Duplicate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 594,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:38.171Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-d23ca5409454f5700648",
+          "file": "card-controls.spec.ts",
+          "line": 50,
+          "column": 1
+        },
+        {
+          "title": "Done toggles Unlock and Lock in place, hides locked actions and disables the retained grip",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 762,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:38.924Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-3cbc216dce9ff2d70879",
+          "file": "card-controls.spec.ts",
+          "line": 68,
+          "column": 1
+        },
+        {
+          "title": "card text and action labels keep their inset as the grip appears, disables and disappears",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 623,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:39.692Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-485ecc4eb83a295a8efa",
+          "file": "card-controls.spec.ts",
+          "line": 131,
+          "column": 1
+        },
+        {
+          "title": "heading breadcrumbs share the text and action inset, including on a narrow card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "android",
+              "projectName": "android",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 572,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-11-27T10:38:40.322Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "0af3400a1113d98c45a5-598fda766c6bcfe196c7",
+          "file": "card-controls.spec.ts",
+          "line": 154,
+          "column": 1
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-11-27T10:38:34.250Z",
+    "duration": 6688.469999999999,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

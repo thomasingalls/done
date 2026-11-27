@@ -1,0 +1,910 @@
+[
+  {
+    "browser": "chromium",
+    "version": "151.0.7922.34",
+    "seed": {
+      "result": null,
+      "view": "complete",
+      "disk": {
+        "counter": {
+          "v": 2,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 11,
+          "reserved": {
+            "1": 10
+          },
+          "mac": {
+            "0": 237,
+            "1": 201,
+            "2": 119,
+            "3": 130,
+            "4": 75,
+            "5": 189,
+            "6": 72,
+            "7": 151,
+            "8": 80,
+            "9": 172,
+            "10": 113,
+            "11": 207,
+            "12": 115,
+            "13": 119,
+            "14": 50,
+            "15": 249,
+            "16": 99,
+            "17": 215,
+            "18": 200,
+            "19": 243,
+            "20": 2,
+            "21": 253,
+            "22": 191,
+            "23": 47,
+            "24": 221,
+            "25": 211,
+            "26": 195,
+            "27": 24,
+            "28": 146,
+            "29": 222,
+            "30": 51,
+            "31": 8
+          }
+        },
+        "counts": {
+          "meta": 1,
+          "content": 3,
+          "heads": 4,
+          "outbound": 3
+        },
+        "digest": "6e228174c873e690664aaaeb870ddcff40319be8f6e08d87d7e5d425326ba900"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "abort": {
+      "result": {
+        "kind": "aborted",
+        "reason": "The content transaction did not complete."
+      },
+      "view": "complete",
+      "disk": {
+        "counter": {
+          "v": 2,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 14,
+          "reserved": {
+            "1": 13
+          },
+          "mac": {
+            "0": 49,
+            "1": 62,
+            "2": 188,
+            "3": 129,
+            "4": 202,
+            "5": 68,
+            "6": 134,
+            "7": 181,
+            "8": 140,
+            "9": 187,
+            "10": 89,
+            "11": 246,
+            "12": 91,
+            "13": 68,
+            "14": 112,
+            "15": 251,
+            "16": 182,
+            "17": 55,
+            "18": 19,
+            "19": 135,
+            "20": 186,
+            "21": 146,
+            "22": 19,
+            "23": 211,
+            "24": 129,
+            "25": 74,
+            "26": 82,
+            "27": 0,
+            "28": 222,
+            "29": 135,
+            "30": 233,
+            "31": 73
+          }
+        },
+        "counts": {
+          "meta": 1,
+          "content": 3,
+          "heads": 4,
+          "outbound": 3
+        },
+        "digest": "9a1d7bd560881c525af68c0bbb9ff0dd4cb8c398a3f1a52254f0d93d4d37bd71"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "reduced": {
+      "result": {
+        "kind": "removed",
+        "revision": 1,
+        "removed": 10
+      },
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 17,
+          "reserved": {
+            "1": 16
+          },
+          "mac": {
+            "0": 115,
+            "1": 215,
+            "2": 164,
+            "3": 83,
+            "4": 247,
+            "5": 209,
+            "6": 3,
+            "7": 64,
+            "8": 114,
+            "9": 216,
+            "10": 183,
+            "11": 131,
+            "12": 211,
+            "13": 175,
+            "14": 86,
+            "15": 117,
+            "16": 107,
+            "17": 93,
+            "18": 93,
+            "19": 69,
+            "20": 195,
+            "21": 159,
+            "22": 57,
+            "23": 181,
+            "24": 2,
+            "25": 133,
+            "26": 43,
+            "27": 166,
+            "28": 137,
+            "29": 223,
+            "30": 36,
+            "31": 146
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "e798287f6e995785fbbe9391f5deb4660d273414dcf2c70df9502b46e6b36dc3",
+              "previous": null,
+              "revision": 1
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 1,
+            "commitment": "c1756714ec00e29f00b2a3687f04b49d00e132dc971f0adc42a9647be3857b9a",
+            "generation": 1,
+            "firstSequence": 14,
+            "chunks": 3,
+            "bytes": 4724348
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "892f52f8d00c7da54c0a6cc0c12b35eb2d2ba9926962f4a7f8858eeb4fd5f775"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "cold": {
+      "result": null,
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 17,
+          "reserved": {
+            "1": 16
+          },
+          "mac": {
+            "0": 115,
+            "1": 215,
+            "2": 164,
+            "3": 83,
+            "4": 247,
+            "5": 209,
+            "6": 3,
+            "7": 64,
+            "8": 114,
+            "9": 216,
+            "10": 183,
+            "11": 131,
+            "12": 211,
+            "13": 175,
+            "14": 86,
+            "15": 117,
+            "16": 107,
+            "17": 93,
+            "18": 93,
+            "19": 69,
+            "20": 195,
+            "21": 159,
+            "22": 57,
+            "23": 181,
+            "24": 2,
+            "25": 133,
+            "26": 43,
+            "27": 166,
+            "28": 137,
+            "29": 223,
+            "30": 36,
+            "31": 146
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "e798287f6e995785fbbe9391f5deb4660d273414dcf2c70df9502b46e6b36dc3",
+              "previous": null,
+              "revision": 1
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 1,
+            "commitment": "c1756714ec00e29f00b2a3687f04b49d00e132dc971f0adc42a9647be3857b9a",
+            "generation": 1,
+            "firstSequence": 14,
+            "chunks": 3,
+            "bytes": 4724348
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "892f52f8d00c7da54c0a6cc0c12b35eb2d2ba9926962f4a7f8858eeb4fd5f775"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "oldReaderRefusedWithoutMutation": true,
+    "afterRefusal": {
+      "result": null,
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 17,
+          "reserved": {
+            "1": 16
+          },
+          "mac": {
+            "0": 115,
+            "1": 215,
+            "2": 164,
+            "3": 83,
+            "4": 247,
+            "5": 209,
+            "6": 3,
+            "7": 64,
+            "8": 114,
+            "9": 216,
+            "10": 183,
+            "11": 131,
+            "12": 211,
+            "13": 175,
+            "14": 86,
+            "15": 117,
+            "16": 107,
+            "17": 93,
+            "18": 93,
+            "19": 69,
+            "20": 195,
+            "21": 159,
+            "22": 57,
+            "23": 181,
+            "24": 2,
+            "25": 133,
+            "26": 43,
+            "27": 166,
+            "28": 137,
+            "29": 223,
+            "30": 36,
+            "31": 146
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "e798287f6e995785fbbe9391f5deb4660d273414dcf2c70df9502b46e6b36dc3",
+              "previous": null,
+              "revision": 1
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 1,
+            "commitment": "c1756714ec00e29f00b2a3687f04b49d00e132dc971f0adc42a9647be3857b9a",
+            "generation": 1,
+            "firstSequence": 14,
+            "chunks": 3,
+            "bytes": 4724348
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "892f52f8d00c7da54c0a6cc0c12b35eb2d2ba9926962f4a7f8858eeb4fd5f775"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "repeat": {
+      "result": {
+        "kind": "removed",
+        "revision": 2,
+        "removed": 0
+      },
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 20,
+          "reserved": {
+            "1": 19
+          },
+          "mac": {
+            "0": 170,
+            "1": 13,
+            "2": 194,
+            "3": 76,
+            "4": 181,
+            "5": 116,
+            "6": 139,
+            "7": 47,
+            "8": 230,
+            "9": 83,
+            "10": 242,
+            "11": 126,
+            "12": 148,
+            "13": 131,
+            "14": 249,
+            "15": 57,
+            "16": 209,
+            "17": 54,
+            "18": 170,
+            "19": 156,
+            "20": 62,
+            "21": 103,
+            "22": 106,
+            "23": 186,
+            "24": 223,
+            "25": 144,
+            "26": 144,
+            "27": 217,
+            "28": 171,
+            "29": 105,
+            "30": 59,
+            "31": 132
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "b3ca698efb240ddf4cfbbb1680442e8ddc5aeaa46df04fff48b70bb4155163b8",
+              "previous": "e798287f6e995785fbbe9391f5deb4660d273414dcf2c70df9502b46e6b36dc3",
+              "revision": 2
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 2,
+            "commitment": "4f12039d32c07df9fe8dfd427b8b055c236f1e3866aa3f4b1bcf03cdf05f1e89",
+            "generation": 1,
+            "firstSequence": 17,
+            "chunks": 3,
+            "bytes": 4724410
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "70a25e07ffdb048e525ced71c411df440aca1dc9ff3a221129a0ce5ebd25ccea"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    }
+  },
+  {
+    "browser": "webkit",
+    "version": "26.5",
+    "seed": {
+      "result": null,
+      "view": "complete",
+      "disk": {
+        "counter": {
+          "v": 2,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 11,
+          "reserved": {
+            "1": 10
+          },
+          "mac": {
+            "0": 181,
+            "1": 251,
+            "2": 138,
+            "3": 150,
+            "4": 253,
+            "5": 215,
+            "6": 15,
+            "7": 65,
+            "8": 135,
+            "9": 54,
+            "10": 87,
+            "11": 92,
+            "12": 135,
+            "13": 2,
+            "14": 242,
+            "15": 243,
+            "16": 175,
+            "17": 33,
+            "18": 49,
+            "19": 141,
+            "20": 174,
+            "21": 82,
+            "22": 31,
+            "23": 228,
+            "24": 251,
+            "25": 240,
+            "26": 209,
+            "27": 86,
+            "28": 249,
+            "29": 50,
+            "30": 156,
+            "31": 223
+          }
+        },
+        "counts": {
+          "meta": 1,
+          "content": 3,
+          "heads": 4,
+          "outbound": 3
+        },
+        "digest": "87ffbddb30cf49cd518fd85f2391d39fe4cff058f9e748853706f2e0e608f464"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "abort": {
+      "result": {
+        "kind": "aborted",
+        "reason": "The content transaction did not complete."
+      },
+      "view": "complete",
+      "disk": {
+        "counter": {
+          "v": 2,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 14,
+          "reserved": {
+            "1": 13
+          },
+          "mac": {
+            "0": 125,
+            "1": 22,
+            "2": 152,
+            "3": 57,
+            "4": 37,
+            "5": 248,
+            "6": 161,
+            "7": 78,
+            "8": 141,
+            "9": 173,
+            "10": 73,
+            "11": 190,
+            "12": 22,
+            "13": 104,
+            "14": 145,
+            "15": 241,
+            "16": 84,
+            "17": 226,
+            "18": 216,
+            "19": 14,
+            "20": 25,
+            "21": 107,
+            "22": 227,
+            "23": 224,
+            "24": 131,
+            "25": 169,
+            "26": 244,
+            "27": 105,
+            "28": 224,
+            "29": 55,
+            "30": 144,
+            "31": 255
+          }
+        },
+        "counts": {
+          "meta": 1,
+          "content": 3,
+          "heads": 4,
+          "outbound": 3
+        },
+        "digest": "855cdc7c04419838aacec53eaf3841ef6f5fccf024171ace2342ea7334f00826"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "reduced": {
+      "result": {
+        "kind": "removed",
+        "revision": 1,
+        "removed": 10
+      },
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 17,
+          "reserved": {
+            "1": 16
+          },
+          "mac": {
+            "0": 68,
+            "1": 7,
+            "2": 156,
+            "3": 253,
+            "4": 48,
+            "5": 161,
+            "6": 97,
+            "7": 43,
+            "8": 136,
+            "9": 228,
+            "10": 72,
+            "11": 62,
+            "12": 182,
+            "13": 251,
+            "14": 36,
+            "15": 28,
+            "16": 179,
+            "17": 67,
+            "18": 80,
+            "19": 146,
+            "20": 116,
+            "21": 177,
+            "22": 237,
+            "23": 84,
+            "24": 0,
+            "25": 85,
+            "26": 89,
+            "27": 45,
+            "28": 36,
+            "29": 238,
+            "30": 14,
+            "31": 229
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "d5eb169f45688dd2d5c6df80f62562a7bbf470ad0720ca4dcdd5dfbebb5242b3",
+              "previous": null,
+              "revision": 1
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 1,
+            "commitment": "967ef0fc8966511b1415374aa2255df07628b0c40cabd660271dc50fd91a5d73",
+            "generation": 1,
+            "firstSequence": 14,
+            "chunks": 3,
+            "bytes": 4724348
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "0bd587662b328b008407a268d1b2901c36234d9c795320f5d4267e043dfb959c"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "cold": {
+      "result": null,
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 17,
+          "reserved": {
+            "1": 16
+          },
+          "mac": {
+            "0": 68,
+            "1": 7,
+            "2": 156,
+            "3": 253,
+            "4": 48,
+            "5": 161,
+            "6": 97,
+            "7": 43,
+            "8": 136,
+            "9": 228,
+            "10": 72,
+            "11": 62,
+            "12": 182,
+            "13": 251,
+            "14": 36,
+            "15": 28,
+            "16": 179,
+            "17": 67,
+            "18": 80,
+            "19": 146,
+            "20": 116,
+            "21": 177,
+            "22": 237,
+            "23": 84,
+            "24": 0,
+            "25": 85,
+            "26": 89,
+            "27": 45,
+            "28": 36,
+            "29": 238,
+            "30": 14,
+            "31": 229
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "d5eb169f45688dd2d5c6df80f62562a7bbf470ad0720ca4dcdd5dfbebb5242b3",
+              "previous": null,
+              "revision": 1
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 1,
+            "commitment": "967ef0fc8966511b1415374aa2255df07628b0c40cabd660271dc50fd91a5d73",
+            "generation": 1,
+            "firstSequence": 14,
+            "chunks": 3,
+            "bytes": 4724348
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "0bd587662b328b008407a268d1b2901c36234d9c795320f5d4267e043dfb959c"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "oldReaderRefusedWithoutMutation": true,
+    "afterRefusal": {
+      "result": null,
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 17,
+          "reserved": {
+            "1": 16
+          },
+          "mac": {
+            "0": 68,
+            "1": 7,
+            "2": 156,
+            "3": 253,
+            "4": 48,
+            "5": 161,
+            "6": 97,
+            "7": 43,
+            "8": 136,
+            "9": 228,
+            "10": 72,
+            "11": 62,
+            "12": 182,
+            "13": 251,
+            "14": 36,
+            "15": 28,
+            "16": 179,
+            "17": 67,
+            "18": 80,
+            "19": 146,
+            "20": 116,
+            "21": 177,
+            "22": 237,
+            "23": 84,
+            "24": 0,
+            "25": 85,
+            "26": 89,
+            "27": 45,
+            "28": 36,
+            "29": 238,
+            "30": 14,
+            "31": 229
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "d5eb169f45688dd2d5c6df80f62562a7bbf470ad0720ca4dcdd5dfbebb5242b3",
+              "previous": null,
+              "revision": 1
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 1,
+            "commitment": "967ef0fc8966511b1415374aa2255df07628b0c40cabd660271dc50fd91a5d73",
+            "generation": 1,
+            "firstSequence": 14,
+            "chunks": 3,
+            "bytes": 4724348
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "0bd587662b328b008407a268d1b2901c36234d9c795320f5d4267e043dfb959c"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    },
+    "repeat": {
+      "result": {
+        "kind": "removed",
+        "revision": 2,
+        "removed": 0
+      },
+      "view": "baseline-plus-suffix",
+      "disk": {
+        "counter": {
+          "v": 5,
+          "spool": {
+            "events": 6,
+            "hash": "ea7f7ef2eace8b3bfb8887d6281f1e851bb1d340078e89d994afc7758947b262"
+          },
+          "store_id": "02020202020202020202020202020202",
+          "intent": "04040404040404040404040404040404",
+          "active_gen": 1,
+          "next_seq": 20,
+          "reserved": {
+            "1": 19
+          },
+          "mac": {
+            "0": 40,
+            "1": 236,
+            "2": 210,
+            "3": 42,
+            "4": 164,
+            "5": 255,
+            "6": 197,
+            "7": 65,
+            "8": 142,
+            "9": 152,
+            "10": 133,
+            "11": 120,
+            "12": 138,
+            "13": 52,
+            "14": 249,
+            "15": 150,
+            "16": 45,
+            "17": 111,
+            "18": 12,
+            "19": 163,
+            "20": 240,
+            "21": 229,
+            "22": 79,
+            "23": 199,
+            "24": 177,
+            "25": 228,
+            "26": 217,
+            "27": 20,
+            "28": 162,
+            "29": 128,
+            "30": 89,
+            "31": 215
+          },
+          "baseline": {
+            "format": "done/local-baseline-carrier/draft-4",
+            "journalEra": {
+              "current": "9211a47243183f647945518d2cdbf9c88c77f757478a742978eca1ab0770e7d1",
+              "previous": "d5eb169f45688dd2d5c6df80f62562a7bbf470ad0720ca4dcdd5dfbebb5242b3",
+              "revision": 2
+            },
+            "history": "baseline-plus-suffix",
+            "revision": 2,
+            "commitment": "61cd8f71fddc86f0e180b3b31718d800d1fc1e6d2156fab7de2a18c6c0db5e7e",
+            "generation": 1,
+            "firstSequence": 17,
+            "chunks": 3,
+            "bytes": 4724410
+          }
+        },
+        "counts": {
+          "meta": 4,
+          "content": 0,
+          "heads": 0,
+          "outbound": 0
+        },
+        "digest": "be1b1d03820a0b2fea1ba310efe923141ade0a91d2102afd25c0ab64fdbd37af"
+      },
+      "chars": 2359296,
+      "textHash": "f623f858e26fdd3af7f75e317c9a914e78917e9ae1415c3af907bc11b3879b00"
+    }
+  }
+]

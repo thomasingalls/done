@@ -1,0 +1,141 @@
+Phase 550: the kept browser spec (kept-spec.patch.txt) and its control. Not applied: test hooks compiled into production code are undecided (HIST-TEST-HOOKS).
+
+===== kept spec on this tree with the test hooks (kept-spec.txt) =====
+
+Running 1 test using 1 worker
+
+19.8s third refusal /account/membership/v2/ceremony 409 authority-changed
+25.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+26.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.2s ids {"C":"ca9cb7340de13d9444526f30ea3ee856","B":"799a45e39a84f04b4a7b28a8e9767951","A":"d1024e6eb0f38b4dd8713d87f220e7e2"}
+36.2s third holds catalog checks and drops A reads
+36.6s third refusal /account/delivery/read-v2-batch 404 unavailable
+41.8s snapshot 2 admitted
+44.0s third refusal /account/membership/v2/discover 409 unavailable
+44.1s third refusal /account/grant/v1/begin 403 insufficient-scope
+44.2s snapshot 3 pending
+52.7s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+55.4s snapshot 3 admitted
+57.0s pruned
+67.0s third reduced: revision 0 -> 1
+67.0s third back online
+67.2s third history read:catalog
+67.3s third history read:latest
+67.9s install committed? true (0.8 s after online); revision 1
+67.9s B reads after returning: [{"at":67457,"after":2,"limit":2,"phase":"after"},{"at":67699,"after":4,"limit":1,"phase":"after"}]
+78.2s fold window: 10.284 s (commit to baseline revision 2); panel: "History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."
+83.9s third history read:catalog
+100.5s third history read:catalog
+117.3s third history read:catalog
+132.8s third history read:catalog
+148.2s 70 s later revision 2 (was 2)
+151.5s third history read:catalog
+151.6s tip: workspace open; revision 2
+153.3s tip: sends true, receives true
+156.5s third history read:catalog
+156.7s patched: workspace open; revision 2
+160.1s third history read:catalog
+160.2s released: workspace open; revision 2
+163.9s released: sends true, receives true
+167.1s third history read:catalog
+167.3s patched: workspace open; revision 2
+172.3s convergence: the three exports are equal (658 characters)
+  ✓  1 test/packaged-account/history-fold-compat.spec.ts:48:1 › older builds open a store after its verified snapshot installation is folded (2.9m)
+
+  1 passed (2.9m)
+exit 0
+
+===== timeline (kept-spec.timeline) =====
+19.8s third refusal /account/membership/v2/ceremony 409 authority-changed
+25.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+26.9s third refusal /account/membership/v2/ceremony 409 authority-changed
+36.2s ids {"C":"ca9cb7340de13d9444526f30ea3ee856","B":"799a45e39a84f04b4a7b28a8e9767951","A":"d1024e6eb0f38b4dd8713d87f220e7e2"}
+36.2s third holds catalog checks and drops A reads
+36.6s third refusal /account/delivery/read-v2-batch 404 unavailable
+41.8s snapshot 2 admitted
+44.0s third refusal /account/membership/v2/discover 409 unavailable
+44.1s third refusal /account/grant/v1/begin 403 insufficient-scope
+44.2s snapshot 3 pending
+52.7s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+55.4s snapshot 3 admitted
+57.0s pruned
+67.0s third reduced: revision 0 -> 1
+67.0s third back online
+67.2s third history read:catalog
+67.3s third history read:latest
+67.9s install committed? true (0.8 s after online); revision 1
+67.9s B reads after returning: [{"at":67457,"after":2,"limit":2,"phase":"after"},{"at":67699,"after":4,"limit":1,"phase":"after"}]
+78.2s fold window: 10.284 s (commit to baseline revision 2); panel: "History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."
+83.9s third history read:catalog
+100.5s third history read:catalog
+117.3s third history read:catalog
+132.8s third history read:catalog
+148.2s 70 s later revision 2 (was 2)
+151.5s third history read:catalog
+151.6s tip: workspace open; revision 2
+153.3s tip: sends true, receives true
+156.5s third history read:catalog
+156.7s patched: workspace open; revision 2
+160.1s third history read:catalog
+160.2s released: workspace open; revision 2
+163.9s released: sends true, receives true
+167.1s third history read:catalog
+167.3s patched: workspace open; revision 2
+172.3s convergence: the three exports are equal (658 characters)
+errors: []
+
+===== control: the same build with the fold never reported (kept-nofold-spec.txt) =====
+
+Running 1 test using 1 worker
+
+20.3s third refusal /account/membership/v2/ceremony 409 authority-changed
+27.4s third refusal /account/membership/v2/ceremony 409 authority-changed
+28.5s third refusal /account/membership/v2/ceremony 409 authority-changed
+54.6s ids {"C":"beb7ae57012db70a83da11699e2e9a3b","A":"9166af09e522e5008c0e4907e336a549","B":"a7e62542f519f61fa8ed66cb436233be"}
+54.6s third holds catalog checks and drops A reads
+55.0s third refusal /account/delivery/read-v2-batch 404 unavailable
+60.1s snapshot 2 admitted
+62.6s snapshot 3 pending
+71.0s third received B past snapshot 3 cut, still behind on A; its B read cursor 4
+73.9s snapshot 3 admitted
+75.5s pruned
+85.5s third reduced: revision 0 -> 1
+85.5s third back online
+85.7s third history read:catalog
+85.8s third history read:latest
+86.2s install committed? true (0.7 s after online); revision 1
+86.2s B reads after returning: [{"at":85894,"after":2,"limit":2,"phase":"after"},{"at":86242,"after":4,"limit":1,"phase":"after"}]
+105.0s third history read:catalog
+121.0s third history read:catalog
+139.9s third history read:catalog
+159.9s third history read:catalog
+175.7s third history read:catalog
+193.8s third history read:catalog
+210.5s third history read:catalog
+226.2s third history read:catalog
+246.4s third history read:catalog
+264.5s third history read:catalog
+266.4s fold window: undefined s (commit to baseline revision 1); panel: "History on this deviceAutomatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes."
+  ✘  1 test/packaged-account/history-fold-compat.spec.ts:48:1 › older builds open a store after its verified snapshot installation is folded (4.5m)
+
+
+  1) test/packaged-account/history-fold-compat.spec.ts:48:1 › older builds open a store after its verified snapshot installation is folded 
+
+    Error: expect(received).toBeDefined()
+
+    Received: undefined
+
+      467 |         `fold window: ${window} s (commit to baseline revision ${await revision()}); panel: ${JSON.stringify(await panelText())}`,
+      468 |       );
+    > 469 |       expect(window).toBeDefined();
+          |                      ^
+      470 |       // Exactly one fold: nothing reduces again (cooldown and growth threshold apply again).
+      471 |       const r = await revision();
+      472 |       await Cd.waitForTimeout(70000);
+        at <control copy>/test/packaged-account/history-fold-compat.spec.ts:469:22
+
+    Error Context: test-results/packaged-account/artifacts/history-fold-compat-older--b2e46-shot-installation-is-folded/error-context.md
+
+  1 failed
+    test/packaged-account/history-fold-compat.spec.ts:48:1 › older builds open a store after its verified snapshot installation is folded 
+exit 1

@@ -123,22 +123,38 @@ it('expanded logical rows hit32768 even when physical rows are far below the cei
   physical.push(rows[0]!);
   expect(usage(view, physical).eligible).toBe(false);
 });
-it('owned bytes preserve the exact32MiB boundary and reject invalid proof-byte observations', () => {
+it('owned bytes past32MiB are reported without refusing the index, and invalid proof-byte observations are rejected', () => {
   const { rows, view } = fixture();
   const bytes = capacity([rows, view]);
   expect(usage(view, rows, MAX_BYTES - bytes).eligible).toBe(true);
-  expect(usage(view, rows, MAX_BYTES - bytes + 1).eligible).toBe(false);
+  const over = usage(view, rows, MAX_BYTES - bytes + 1);
+  expect(over.ownedBytes).toBe(MAX_BYTES + 1);
+  expect(over.eligible).toBe(true);
   for (const value of [-1, NaN, Infinity, 0.5, Number.MAX_SAFE_INTEGER + 1])
     expect(() => usage(view, rows, value)).toThrow();
 });
-it('the real legacy index falls back before parsing when a small visible subview owns an over-cap backing buffer', async () => {
+it('the real legacy index stays available when retained ownership passes32MiB but raw record bytes do not', async () => {
+  // The reference path retains the same graph, so an owned-byte refusal only selected a full
+  // check for every later ledger change. Raw record bytes remain the byte gate.
   const raw = sources().baseline,
     backing = new Uint8Array(MAX_BYTES + 1);
   backing.set(raw);
   const f = fixture(backing.subarray(0, raw.length));
   expect(f.rows[0]!.bytes.length).toBeLessThan(MAX_BYTES);
+  expect(usage(f.view, f.rows).ownedBytes).toBeGreaterThan(MAX_BYTES);
   expect(
     await ledger.indexVerifiedLedger(f.view, f.rows, route, f.counter, crypto.subtle),
+  ).toBeDefined();
+});
+it('the real legacy index still falls back when raw record bytes pass32MiB', async () => {
+  const f = fixture();
+  const rows: OpenedRecord[] = [
+    ...f.rows,
+    { seq: 2, gen: 1, kind: 'state', bytes: new Uint8Array(MAX_BYTES) },
+  ];
+  expect(rows.reduce((n, r) => n + r.bytes.length, 0)).toBeGreaterThan(MAX_BYTES);
+  expect(
+    await ledger.indexVerifiedLedger(f.view, rows, route, f.counter, crypto.subtle),
   ).toBeUndefined();
 });
 it('a normal bounded legacy index remains available and its completeness witness stays physical', async () => {

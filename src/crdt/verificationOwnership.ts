@@ -14,20 +14,36 @@ function visitBytes(value: unknown, visit: (bytes: Uint8Array) => void, seen = n
 }
 
 /** An adopted result may share entire objects or subarray buffers with its predecessor. */
-export function eraseUnretained(previous: unknown, retained?: unknown): void {
-  const protectedBuffers = new Set<ArrayBufferLike>();
-  visitBytes(retained, (bytes) => protectedBuffers.add(bytes.buffer));
+export function eraseUnretained(
+  previous: unknown,
+  retained?: unknown,
+  /** Profiling observer only (phase 554): objects each traversal visited. */
+  observe?: (retainedObjects: number, previousObjects: number) => void,
+): void {
+  const protectedBuffers = new Set<ArrayBufferLike>(),
+    retainedSeen = new Set<object>(),
+    previousSeen = new Set<object>();
+  visitBytes(retained, (bytes) => protectedBuffers.add(bytes.buffer), retainedSeen);
   const erased = new Set<ArrayBufferLike>();
-  visitBytes(previous, (bytes) => {
-    if (protectedBuffers.has(bytes.buffer) || erased.has(bytes.buffer)) return;
-    erased.add(bytes.buffer);
-    new Uint8Array(bytes.buffer).fill(0);
-  });
+  visitBytes(
+    previous,
+    (bytes) => {
+      if (protectedBuffers.has(bytes.buffer) || erased.has(bytes.buffer)) return;
+      erased.add(bytes.buffer);
+      new Uint8Array(bytes.buffer).fill(0);
+    },
+    previousSeen,
+  );
+  observe?.(retainedSeen.size, previousSeen.size);
 }
 
 /** Count retained buffer capacity, including subview backing storage, once per owned graph.
  * Object/string overhead and process RAM are outside this byte-budget observation. */
-export function ownedByteCapacity(value: unknown): number {
+export function ownedByteCapacity(
+  value: unknown,
+  /** Profiling observer only (phase 554): objects this traversal visited. */
+  observe?: (objects: number) => void,
+): number {
   const objects = new Set<object>(),
     buffers = new Set<ArrayBufferLike>();
   const charge = (buffer: ArrayBufferLike) => {
@@ -48,5 +64,7 @@ export function ownedByteCapacity(value: unknown): number {
     if (v instanceof Set) return [...v].reduce((n, item) => n + visit(item), 0);
     return Object.values(v).reduce<number>((n, item) => n + visit(item), 0);
   };
-  return visit(value);
+  const total = visit(value);
+  observe?.(objects.size);
+  return total;
 }

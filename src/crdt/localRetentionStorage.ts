@@ -11,8 +11,8 @@ import {
   type ContentCounter,
 } from './contentRecord';
 import {
-  REDUCED_BASELINE_CARRIER,
-  BASELINE_CHUNK_BYTES,
+  reducedBaselineCarrier,
+  baselineChunkBytes,
   baselineVersion,
   baselineCounterPayload,
   baselineChunkKey,
@@ -194,15 +194,18 @@ export async function removePlannedLocalHistory(
     if (era.previous !== (prior?.baseline.journalEra?.current ?? null))
       corrupt('Retention era predecessor differs.');
     packed = concat(evidence.candidate.baseline.mac, evidence.candidate.baseline.payload);
+    // Released draft-3 whenever it fits; the large carrier only for what draft-3 cannot hold.
+    const format = reducedBaselineCarrier(packed.length),
+      size = baselineChunkBytes({ format });
     const pointer: BaselinePointer = {
-      format: REDUCED_BASELINE_CARRIER,
+      format,
       history: 'baseline-plus-suffix',
       journalEra: era,
       revision: b.revision,
       commitment: hex(evidence.candidate.baseline.mac),
       generation: owner.generation,
       firstSequence: counter.next_seq,
-      chunks: Math.ceil(packed.length / BASELINE_CHUNK_BYTES),
+      chunks: Math.ceil(packed.length / size),
       bytes: packed.length,
     };
     const stored = (c: ContentCounter): ContentCounter | BaselineCounter =>
@@ -239,7 +242,7 @@ export async function removePlannedLocalHistory(
       for (let i = 0; i < pointer.chunks; i++) {
         const plain = concat(
           baselineChunkPrefix(owner.identity, pointer, i),
-          packed.subarray(i * BASELINE_CHUNK_BYTES, (i + 1) * BASELINE_CHUNK_BYTES),
+          packed.subarray(i * size, (i + 1) * size),
         );
         try {
           const header = {

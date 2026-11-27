@@ -15,7 +15,8 @@ predecessor's caret; explicit selections use relative positions captured against
 Ordinary typing, paste, cut, formatting, list actions and undo/redo enter this boundary. Paste slices
 contain at most 1000 UTF-16 code units, preserving surrogate pairs, and use the owner's forced content
 path. The 16 KiB encoded-update guard still applies; high-fragmentation deletions or multi-selection
-commands that exceed it block with pressure rather than acknowledging an oversized update. Other
+commands that exceed it are refused as one action (phase 548) rather than acknowledging an oversized
+update or blocking the queue, and the editor says the text is too long for one action. Other
 extension commands require semantic adapters and are refused visibly. Native composition is provisional;
 its final text passes admission. The browser harness probes Blink composition, not a native IME population.
 CodeMirror reconciliation can cancel Blink's native preedit without `compositionend`; the adapter also

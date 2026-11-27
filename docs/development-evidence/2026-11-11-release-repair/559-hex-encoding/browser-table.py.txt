@@ -1,0 +1,69 @@
+"""Phase 559: Markdown tables from hex-browsers.cjs output.
+Usage: python3 -I browser-table.py <final.out> [<select.out>]
+Final: per size, base and each current routine in each realm, with the ratio to its own base
+(custodyNow to base, protocolNow to protocolBase). Select: per size, the ratio of each candidate to base."""
+import re
+import sys
+
+ROW = re.compile(r'^\s+(\d+) B  (.*)$')
+CELL = re.compile(r'(\w+) ([\d.]+ (?:ns|us|ms)) \[([\d.]+ (?:ns|us|ms))-([\d.]+ (?:ns|us|ms))\]')
+
+
+def ns(text):
+    v, unit = text.split()
+    return float(v) * {'ns': 1, 'us': 1e3, 'ms': 1e6}[unit]
+
+
+def parse(path):
+    realms, current = {}, None
+    for line in open(path):
+        m = re.match(r'^== (\w+) [\d.]+, (page|dedicated Worker): (\d+) comparisons with base, (\d+) differing', line)
+        if m:
+            current = f"{m.group(1)} {'page' if m.group(2) == 'page' else 'Worker'}"
+            realms[current] = {'compared': int(m.group(3)), 'differing': int(m.group(4)), 'rows': {}}
+            continue
+        m = ROW.match(line)
+        if m and current:
+            realms[current]['rows'][int(m.group(1))] = {
+                c.group(1): (ns(c.group(2)), ns(c.group(3)), ns(c.group(4))) for c in CELL.finditer(m.group(2))
+            }
+    return realms
+
+
+def size(n):
+    return f'{n >> 20} MiB' if n >= 1 << 20 else f'{n >> 10} KiB' if n >= 1024 and n % 1024 == 0 else f'{n} B'
+
+
+def show(v):
+    return f'{v / 1e6:.2f} ms' if v >= 1e6 else f'{v / 1e3:.1f} µs' if v >= 1e4 else f'{v:.0f} ns'
+
+
+final = parse(sys.argv[1])
+print('Identity: ' + '; '.join(f"{r}: {d['compared']} comparisons, {d['differing']} differing" for r, d in final.items()) + '.\n')
+names = list(final)
+for routine, ref in [('custodyNow', 'base'), ('protocolNow', 'protocolBase')]:
+    if routine not in next(iter(next(iter(final.values()))['rows'].values())):
+        continue
+    print(f'**{routine} against {ref}** (median of 7 rounds; ratio below 1 is faster)\n')
+    print('| bytes | ' + ' | '.join(names) + ' |')
+    print('|---|' + '---|' * len(names))
+    for n in sorted(next(iter(final.values()))['rows']):
+        cells = []
+        for r in names:
+            row = final[r]['rows'][n]
+            cells.append(f"{show(row[ref][0])} → {show(row[routine][0])} ({row[routine][0] / row[ref][0]:.2f})")
+        print(f'| {size(n)} | ' + ' | '.join(cells) + ' |')
+    print()
+if len(sys.argv) > 2:
+    select = parse(sys.argv[2])
+    cands = ['slotsAlways', 'from32', 'from48', 'from64']
+    print('**Threshold candidates against base** (median of 5 rounds; ratio to base)\n')
+    print('| bytes | ' + ' | '.join(f'{r}: {", ".join(cands)}' for r in select) + ' |')
+    print('|---|' + '---|' * len(select))
+    for n in sorted(next(iter(select.values()))['rows']):
+        cells = []
+        for r in select:
+            row = select[r]['rows'][n]
+            cells.append(' / '.join(f"{row[c][0] / row['base'][0]:.2f}" for c in cands))
+        print(f'| {size(n)} | ' + ' | '.join(cells) + ' |')
+    print('\nIdentity: ' + '; '.join(f"{r}: {d['compared']} comparisons, {d['differing']} differing" for r, d in select.items()) + '.')

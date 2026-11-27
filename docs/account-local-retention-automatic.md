@@ -35,6 +35,10 @@ pointer activity, visibility, accepted workspace changes and admission-status ev
 Offline local maintenance is allowed: network reachability is not a deletion proof or prerequisite.
 There is at most one scheduled timer and one attempt. Successful removal has a 30-minute cooldown;
 new growth must still reach the threshold. These are conservative starting values, not measured optima.
+*Amended 2026-11-12 (phase 550):* a reduction due because the adopted view holds a verified
+snapshot installation older builds cannot replay (`fold` in the hint) has no growth threshold and
+no cooldown; the quiet window, readiness, holds, parking and retry clocks still apply, and at most
+three such reductions in a row skip the cooldown, each after the one-minute retry clock.
 
 A skipped attempt backs off at least one minute and requires another event to retry. Capacity,
 ineligible and history-required refusals park the unchanged revision/count until the hint changes.

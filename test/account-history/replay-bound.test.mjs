@@ -1,0 +1,121 @@
+// Phase 547: a snapshot replays every position accepted since the latest admitted snapshot, at most
+// 4,096 (HISTORY_REPLAY_EVENTS). Checking history reports the count; creating or verifying past the
+// bound stops before any replay, with both numbers, and saves and sends nothing. Two real devices
+// against the real service, at 3,072, 3,073, 4,096 and 4,097 positions, for a first snapshot and
+// for one after an admitted snapshot, on the creating and on the verifying device.
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { devices } from './devices-fixture.mjs';
+import { client as c } from './client.mjs';
+
+const ALLOWED = 4096;
+const actions = (d, from) => d.sent.slice(from).filter((s) => !s.startsWith('read'));
+
+/** A device joined by a handoff starts its replay at the handoff's cut, later than genesis. */
+const joinedAt = (d, position) => d.replayFrom([{ credentialId: d.id, position, link: '' }]);
+
+/** Creating and verifying both stop at `count` past the bound; nothing is saved, sent or admitted. */
+async function refusedAt(f, count, sequence, base) {
+  const [A, B] = f.devices;
+  assert.deepEqual((await B.run('inspect')).positions, { since: count, allowed: ALLOWED });
+  let n = A.sent.length;
+  const before = A.stats().prepares;
+  const made = await A.run('create');
+  assert.deepEqual(made.replay, { snapshot: 'new', needed: count, allowed: ALLOWED });
+  assert.equal(made.pending, 'none');
+  assert.equal(made.sequence, sequence);
+  assert.equal(A.stats().prepares, before, 'no replay started');
+  assert.deepEqual(actions(A, n), [], 'nothing sent');
+  assert.equal(A.saved().attempt, null, 'nothing saved');
+  // A proposal this device cannot make can still come from a device whose replay starts later,
+  // or from a build without this check. The verifying device stops before replaying it.
+  joinedAt(A, base + count - ALLOWED);
+  assert.equal((await A.run('create')).pending, 'waiting');
+  joinedAt(A, null);
+  n = B.sent.length;
+  const admits = B.stats().admits;
+  const verified = await B.run('verify');
+  assert.deepEqual(verified.replay, { snapshot: 'pending', needed: count, allowed: ALLOWED });
+  assert.equal(verified.pending, 'verify');
+  assert.equal(verified.canDiscard, false);
+  assert.equal(B.stats().admits, admits, 'no replay started');
+  assert.deepEqual(actions(B, n), [], 'nothing sent');
+  assert.equal(B.saved()?.attempt ?? null, null, 'nothing saved');
+  assert.equal(f.rows().at(-1).admission, null);
+  // The device that made it is offered Discard for it.
+  const own = await A.run('inspect');
+  assert.equal(own.canDiscard, true);
+  assert.equal((await A.run('discard')).pending, 'none');
+}
+
+/** Both a first snapshot and the next one at `count` positions are made and verified. */
+async function madeAt(t, count) {
+  const f = await devices(t, 2);
+  const [A, B] = f.devices;
+  await f.upload(count);
+  for (const sequence of [1, 2]) {
+    assert.deepEqual((await A.run('inspect')).positions, { since: count, allowed: ALLOWED });
+    const made = await A.run('create');
+    assert.equal(made.pending, 'waiting', JSON.stringify(made));
+    assert.equal(made.replay, undefined);
+    const verified = await B.run('verify');
+    assert.equal(verified.sequence, sequence, JSON.stringify(verified));
+    assert.equal(verified.replay, undefined);
+    assert.equal((await A.run('resume')).pending, 'none');
+    assert.deepEqual((await B.run('inspect')).positions, { since: 0, allowed: ALLOWED });
+    if (sequence === 1) await f.upload(count);
+  }
+}
+
+for (const count of [3072, 3073, 4096])
+  test(`${count} positions: a first snapshot and the next are made and verified`, async (t) => {
+    await madeAt(t, count);
+  });
+
+test('4,097 positions with no admitted snapshot: creating and verifying stop before any replay', async (t) => {
+  const f = await devices(t, 2);
+  await f.upload(4097);
+  await refusedAt(f, 4097, 0, 0);
+  assert.equal(f.rows().length, 0);
+});
+
+test('4,097 positions after an admitted snapshot: creating and verifying stop before any replay', async (t) => {
+  const f = await devices(t, 2);
+  const [A, B] = f.devices;
+  await f.upload(1);
+  assert.equal((await A.run('create')).pending, 'waiting');
+  assert.equal((await B.run('verify')).sequence, 1);
+  assert.equal((await A.run('resume')).pending, 'none');
+  await f.upload(4097);
+  await refusedAt(f, 4097, 1, 1);
+  assert.deepEqual(
+    f.rows().map((r) => [r.sequence, r.admission !== null]),
+    [[1, true]],
+  );
+});
+
+test('a replay that meets the bound inside preparation or verification is a named outcome, not a failure', async (t) => {
+  const f = await devices(t, 2);
+  const [A, B] = f.devices;
+  await f.upload(2);
+  // The device's own replay may start elsewhere than the count before it predicts. Whatever the
+  // replay meets, preparation and verification return the outcome with nothing saved or sent.
+  const thrown = new c.HistoryReplayLimit(5000, ALLOWED);
+  assert.equal(thrown.message, 'History replay exceeds its event bound');
+  A.failPrepare(thrown);
+  let n = A.sent.length;
+  const made = await A.run('create');
+  assert.deepEqual(made.replay, { snapshot: 'new', needed: 5000, allowed: ALLOWED });
+  assert.deepEqual(actions(A, n), []);
+  assert.equal(A.saved().attempt, null);
+  A.failPrepare(null);
+  assert.equal((await A.run('create')).pending, 'waiting');
+  B.failAdmit(thrown);
+  n = B.sent.length;
+  const verified = await B.run('verify');
+  assert.deepEqual(verified.replay, { snapshot: 'pending', needed: 5000, allowed: ALLOWED });
+  assert.deepEqual(actions(B, n), []);
+  assert.equal(B.saved()?.attempt ?? null, null);
+  B.failAdmit(null);
+  assert.equal((await B.run('verify')).sequence, 1);
+});

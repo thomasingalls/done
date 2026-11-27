@@ -1,4 +1,5 @@
-/** Test-only refusal injection at the five real capacity guards. Never imported by the app. */
+/** Test-only injection at the five real capacity guards: each forces its guard's own condition,
+ * so the guard's real handling runs (a refusal, or caching that stops). Never imported by the app. */
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
@@ -9,7 +10,7 @@ export const capacitySites = [
   [
     'retentionPreparation.ts',
     'journal-check',
-    '        if ((!prior && entries.size >= PREPARATION_ENTRIES) || nextBytes > PREPARATION_VALUE_BYTES)',
+    '        if (\n          (!prior && entries.size >= PREPARATION_ENTRIES) ||',
   ],
   [
     'retentionPreparation.ts',
@@ -29,6 +30,8 @@ export const capacitySites = [
   ['retentionPreparationBinding.ts', 'physical-prefix', '      if (bytes > 64 * 1024 * 1024)'],
 ] as const;
 export type CapacityFaultSite = (typeof capacitySites)[number][1];
+/** Guards that stop caching instead of refusing; the other three still refuse. */
+export const uncachedSites: readonly CapacityFaultSite[] = ['journal-check', 'journal-import'];
 type Api = typeof import('../../src/crdt/automaticLocalRetention') &
   typeof import('../../src/crdt/retentionPreparation') &
   typeof import('../../src/crdt/retentionPreparationStorage') &
@@ -62,13 +65,16 @@ export async function capacityFaultModule() {
           transform(code, id) {
             for (const [file, site, anchor] of capacitySites) {
               if (id !== join(src, file)) continue;
-              if (code.split(anchor).length !== 2)
+              if (code.split(anchor).length !== 2 || !anchor.trimStart().startsWith('if ('))
                 throw Error('Capacity guard anchor changed: ' + site);
               seen.add(site);
+              const name = JSON.stringify(site);
               code = code.replace(
                 anchor,
-                `if (globalThis.__capacityRegressionSite === ${JSON.stringify(site)}) { globalThis.__capacityRegressionReached = ${JSON.stringify(site)}; throw new PreparationCapacity(); }\n` +
-                  anchor,
+                anchor.replace(
+                  'if (',
+                  `if ((globalThis.__capacityRegressionSite === ${name} && (globalThis.__capacityRegressionReached = ${name})) || `,
+                ),
               );
             }
             return code;

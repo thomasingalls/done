@@ -1,0 +1,116 @@
+// Phase 542 probe: hex validation and long-input behaviour in Playwright's bundled engines.
+// Run from the repository root: node <this file>. No page, network or storage is touched.
+const { createRequire } = require('node:module');
+const pw = createRequire(process.cwd() + '/')('@playwright/test');
+const probe = () => {
+  const grouped = /^(?:[0-9a-f]{2})+$/,
+    flat = /^[0-9a-f]+$/;
+  const guard = (f) => {
+    try {
+      return f();
+    } catch (e) {
+      return 'THROW ' + e.constructor.name + ': ' + String(e.message).slice(0, 60);
+    }
+  };
+  // The candidate: one pass, char codes only, returns bytes or undefined.
+  const pairs = (v) => {
+    if (typeof v !== 'string' || !v.length || v.length % 2) return undefined;
+    const out = new Uint8Array(v.length / 2);
+    for (let i = 0, j = 0; i < v.length; i += 2, j++) {
+      const a = v.charCodeAt(i),
+        b = v.charCodeAt(i + 1);
+      const h = a >= 48 && a <= 57 ? a - 48 : a >= 97 && a <= 102 ? a - 87 : -1;
+      const l = b >= 48 && b <= 57 ? b - 48 : b >= 97 && b <= 102 ? b - 87 : -1;
+      if (h < 0 || l < 0) return undefined;
+      out[j] = (h << 4) | l;
+    }
+    return out;
+  };
+  const rows = [];
+  let lo = 1 << 20,
+    hi = 1 << 24;
+  if (grouped.test('ab'.repeat(hi / 2))) rows.push('grouped: accepts ' + hi + ' (no threshold below)');
+  else {
+    while (hi - lo > 2) {
+      const mid = ((lo + hi) >> 2) << 1;
+      if (grouped.test('ab'.repeat(mid / 2))) lo = mid;
+      else hi = mid;
+    }
+    rows.push(`grouped: accepts ${lo} chars, refuses ${hi} (valid input)`);
+  }
+  for (const mib of [4, 16, 32, 64]) {
+    const n = mib * 1024 * 1024,
+      s = 'a5'.repeat(n / 2);
+    let t = performance.now();
+    const g = guard(() => grouped.test(s));
+    const tg = Math.round(performance.now() - t);
+    t = performance.now();
+    const f = guard(() => flat.test(s));
+    const tf = Math.round(performance.now() - t);
+    t = performance.now();
+    const p = guard(() => {
+      const b = pairs(s);
+      return !!b && b.length === n / 2 && b[0] === 0xa5 && b[b.length - 1] === 0xa5;
+    });
+    const tp = Math.round(performance.now() - t);
+    const bad = [
+      ['start', 'g' + s.slice(1)],
+      ['middle', s.slice(0, n / 2) + 'G' + s.slice(n / 2 + 1)],
+      ['end', s.slice(0, -1) + 'z'],
+      ['odd', s.slice(0, -1)],
+      ['upper', s.slice(0, -1) + 'A'],
+    ].map(([k, v]) => k + '=' + guard(() => pairs(v) === undefined));
+    rows.push(
+      `${mib} MiB chars: grouped=${g} ${tg} ms | flat=${f} ${tf} ms | pairs=${p} ${tp} ms | pairs refuses ${bad.join(' ')}`,
+    );
+  }
+  rows.push('pairs empty refused=' + (pairs('') === undefined));
+  for (const n of [50000, 65537, 100000, 200000, 500000, 1000000]) {
+    const src = new Array(n).fill(0);
+    rows.push(`spread push ${n}: ` + guard(() => [].push(...src) === n));
+  }
+  for (const mib of [16, 32]) {
+    const n = mib * 1024 * 1024,
+      table = Array.from({ length: 256 }, (_, k) => k.toString(16).padStart(2, '0'));
+    const t = performance.now();
+    const r = guard(() => {
+      const parts = new Array(n / 2);
+      for (let i = 0; i < parts.length; i++) parts[i] = table[i & 255];
+      const text = JSON.stringify(['x', parts.join('')]);
+      const back = JSON.parse(text);
+      return back[1].length === n && JSON.stringify(back) === text;
+    });
+    rows.push(`hex join + JSON round trip, ${mib} MiB chars: ${r} ${Math.round(performance.now() - t)} ms`);
+  }
+  return rows;
+};
+(async () => {
+  const runs = [
+    ['webkit', {}],
+    ['webkit', { env: { ...process.env, JSC_useJIT: 'false' } }],
+    ['chromium', {}],
+    ['firefox', {}],
+  ];
+  for (const [name, options] of runs) {
+    try {
+      const b = await pw[name].launch({ headless: true, ...options });
+      const p = await b.newPage();
+      const rows = await p.evaluate(probe);
+      const jit = options.env ? ' (JSC_useJIT=false)' : '';
+      console.log(`== ${name} ${b.version()}${jit}`);
+      rows.forEach((r) => console.log('  ' + r));
+      if (name === 'webkit' && options.env) {
+        const jitState = await p.evaluate(() => {
+          const t = performance.now();
+          let x = 0;
+          for (let i = 0; i < 2e7; i++) x = (x + i) | 0;
+          return Math.round(performance.now() - t) + ' ms for a 2e7 loop';
+        });
+        console.log('  interpreter check: ' + jitState);
+      }
+      await b.close();
+    } catch (e) {
+      console.log(`== ${name}: could not run: ${String(e.message).split('\n')[0]}`);
+    }
+  }
+})();

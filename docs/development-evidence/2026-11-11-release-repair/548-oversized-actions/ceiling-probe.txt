@@ -1,0 +1,5 @@
+Phase 548 ceiling timing probe (not part of the suite): one compose per case through the real workspace and admission owner, account-text preparation, in-memory carrier, Node 26, in a copy of the final tree. Host load at start and end:
+ 4:18  up 153 days,  5:54, 67 users, load averages: 7.38 5.91 5.63 (start)
+{"label":"1,048,576 single-byte","ms":113790,"slices":1049,"saved":true,"maxUpdate":1396}
+ 4:43  up 153 days,  6:19, 67 users, load averages: 4.20 4.80 5.05
+The second case (696,000 three-byte characters, a 2,088,000-byte intent, just under the encoded-intent bound) had not finished when the 1,500 s command timeout stopped the run, about 23 minutes after it began.

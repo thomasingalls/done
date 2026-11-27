@@ -1,0 +1,358 @@
+Phase 549 browser runs: the lost-phone spec from investigation 16 (send-first, large), with the service started the production way in git-archive copies; two builds with VITE_ACCOUNT_RETENTION_AUTO=1 VITE_ACCOUNT_LEDGER_PROFILE=1.
+base = d1a4a653e; final = d1a4a653e plus the phase 549 sources (contentStore.ts, contentMaintenance.ts, accountCapture.ts). Both builds carry the same copy-only seams: investigation 16's reduction, hold and trace seams (its support files) and instrument549.py.txt (replay return, where openSnapshot stopped, post-replay recording time, storage-queue waits over 20 ms).
+REDUCED=1: C reduces its history while offline. C_RTT_MS=300: every account request C makes in the catch-up phase waits 300 ms before it is sent; the spec copies are identical. The spec's catch-up phase gives up after 180 s.
+Spec seam (both copies), inserted after 'second phase starts (route removed)':
+    // COPY-ONLY (phase 549): a returning device on a slower network. Every account request C makes
+    // from here on waits C_RTT_MS before it is sent (the lab otherwise has no round-trip time).
+    const rtt = Number(process.env.C_RTT_MS ?? 0);
+    if (rtt > 0) {
+      await Cd.route('**/account/**', async (r) => {
+        await new Promise((y) => setTimeout(y, rtt));
+        await r.continue().catch(() => {});
+      });
+      note(`C round-trip delay ${rtt} ms on every account request`);
+    }
+Times in the summaries are seconds of the test's own clock. 'receive reached its final position' is the first 1 s sample at the last sampled position.
+
+================ b1-base-send-reduced
+base b1-base-send-reduced lostphone VARIANT=send-first SIZE=large REDUCED=1
+-- load (first, last):
+05:15:59 { 5.26 5.94 5.78 }
+05:24:40 { 7.37 6.81 6.22 }
+-- playwright:
+  1 passed (8.7m)
+-- summary:
+run b1-base-send-reduced
+second phase start 481.5 | last "both=false" sample [496.6] | second phase state at [509.3]
+both directions arrived=true C catalog reads=6 C read requests=70 C read epochs=[5]
+converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+receive reached its final position 619 at 505.63 s, 24.1 s into the second phase
+second phase: replays started 3, worker blocked >1 s: 3 samples / 8.8 s, load 6.77 6.58 6.11 .. 8.18 6.94 6.25
+long auditWarm 1 interrupted 1 completed 0 other 0
+  ms [3772]
+  due after [True]
+replays returned 5 of them in the oracle load 2 ms [449, 885, 2390, 3733, 3693]
+openSnapshot stopped: {('before', True, True): 14, ('after-return', True, True): 1}
+  after return, ms from return to the stop [7]
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [] other [19, 55, 45]
+foreground jobs waiting >20 ms: 0; wait ms p50 None p90 None max None
+  of them overlapping an oracle window: 0 waits []
+-- timeline from C's return:
+476.5s [7.10 6.64 6.13] C online
+481.5s [6.77 6.58 6.11] send-first first phase done=true
+481.5s [6.77 6.58 6.11] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794457442356,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":2,"nextAttemptAt":1794457443
+481.5s [6.77 6.58 6.11] second phase starts (route removed)
+496.6s [7.42 6.73 6.17] C after second phase 15s both=false: notice=[]
+509.3s [8.18 6.94 6.25] second phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794457450790,"reason":null,"acceptedThrough":10},"receive":{"phase":"idle","failures":0,"nextAttemptAt":179445748286
+509.3s [8.18 6.94 6.25] trace entries 936
+509.3s [8.18 6.94 6.25] both directions arrived=true C catalog reads=6 C read requests=70 C read epochs=[5]
+509.5s [8.18 6.94 6.25] C sync: ["Sending: idleLast accepted upload: 5:24:10 AMAccepted position: 10Receiving: idleLast successful receive check: 5:24:26 AMReceived positions: 619"]
+521.3s [7.37 6.81 6.22] converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+521.3s [7.37 6.81 6.22] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ b2-base-send-reduced
+base b2-base-send-reduced lostphone VARIANT=send-first SIZE=large REDUCED=1
+-- load (first, last):
+05:26:02 { 5.70 6.36 6.09 }
+05:34:53 { 6.58 7.52 6.74 }
+-- playwright:
+  1 passed (8.9m)
+-- summary:
+run b2-base-send-reduced
+second phase start 487.2 | last "both=false" sample [502.3] | second phase state at [517.9]
+both directions arrived=true C catalog reads=7 C read requests=69 C read epochs=[5]
+converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+receive reached its final position 610 at 514.832 s, 27.6 s into the second phase
+second phase: replays started 3, worker blocked >1 s: 3 samples / 7.7 s, load 8.44 7.94 6.84 .. 7.06 7.64 6.77
+long auditWarm 1 interrupted 1 completed 0 other 0
+  ms [3589]
+  due after [True]
+replays returned 5 of them in the oracle load 2 ms [447, 547, 2254, 3536, 3734]
+openSnapshot stopped: {('before', True, True): 18, ('after-return', True, True): 1}
+  after return, ms from return to the stop [6]
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [] other [14, 17, 39]
+foreground jobs waiting >20 ms: 0; wait ms p50 None p90 None max None
+  of them overlapping an oracle window: 0 waits []
+-- timeline from C's return:
+482.1s [8.74 7.99 6.85] C online
+487.2s [8.44 7.94 6.84] send-first first phase done=true
+487.2s [8.44 7.94 6.84] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794458049389,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":3,"nextAttemptAt":1794458055
+487.2s [8.44 7.94 6.84] second phase starts (route removed)
+502.3s [7.64 7.78 6.80] C after second phase 15s both=false: notice=[]
+517.6s [7.06 7.64 6.77] C after second phase 30s both=true: notice=[]
+517.9s [7.06 7.64 6.77] second phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794458061886,"reason":null,"acceptedThrough":10},"receive":{"phase":"idle","failures":0,"nextAttemptAt":179445809721
+518.0s [7.06 7.64 6.77] trace entries 923
+518.0s [7.06 7.64 6.77] both directions arrived=true C catalog reads=7 C read requests=69 C read epochs=[5]
+518.1s [7.06 7.64 6.77] C sync: ["Sending: idleLast accepted upload: 5:34:21 AMAccepted position: 10Receiving: idleLast successful receive check: 5:34:38 AMReceived positions: 610"]
+529.9s [6.58 7.52 6.74] converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+529.9s [6.58 7.52 6.74] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ f1-final-send-reduced
+final f1-final-send-reduced lostphone VARIANT=send-first SIZE=large REDUCED=1
+-- load (first, last):
+05:36:32 { 3.40 6.11 6.27 }
+05:45:14 { 6.10 5.82 6.00 }
+-- playwright:
+  1 passed (8.7m)
+-- summary:
+run f1-final-send-reduced
+second phase start 484.5 | last "both=false" sample [499.8] | second phase state at [510.0]
+both directions arrived=true C catalog reads=6 C read requests=71 C read epochs=[5]
+converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+receive reached its final position 618 at 508.71 s, 24.2 s into the second phase
+second phase: replays started 2, worker blocked >1 s: 2 samples / 4.3 s, load 5.79 5.76 5.99 .. 6.01 5.80 6.00
+long auditWarm 1 interrupted 1 completed 0 other 0
+  ms [3521]
+  due after [False]
+replays returned 4 of them in the oracle load 1 ms [490, 569, 2391, 3391]
+openSnapshot stopped: {('before', True, True): 12}
+  after return, ms from return to the stop []
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [95] other [16, 23, 40]
+foreground jobs waiting >20 ms: 1; wait ms p50 89 p90 89 max 89
+  of them overlapping an oracle window: 1 waits [89]
+-- timeline from C's return:
+479.4s [5.86 5.77 6.00] C online
+484.4s [5.79 5.76 5.99] send-first first phase done=true
+484.4s [5.79 5.76 5.99] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794458678242,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":2,"nextAttemptAt":1794458679
+484.5s [5.79 5.76 5.99] second phase starts (route removed)
+499.8s [5.80 5.76 5.98] C after second phase 15s both=false: notice=[]
+510.0s [6.01 5.80 6.00] second phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794458687330,"reason":null,"acceptedThrough":10},"receive":{"phase":"idle","failures":0,"nextAttemptAt":179445871904
+510.8s [5.77 5.75 5.98] trace entries 580
+510.8s [5.77 5.75 5.98] both directions arrived=true C catalog reads=6 C read requests=71 C read epochs=[5]
+510.9s [5.77 5.75 5.98] C sync: ["Sending: idleLast accepted upload: 5:44:47 AMAccepted position: 10Receiving: idleLast successful receive check: 5:45:03 AMReceived positions: 618"]
+522.7s [5.78 5.76 5.98] converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+522.7s [5.78 5.76 5.98] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ b3-base-send-reduced-rtt300
+base b3-base-send-reduced-rtt300 lostphone VARIANT=send-first SIZE=large REDUCED=1 C_RTT_MS=300
+-- load (first, last):
+05:45:41 { 8.89 6.37 6.18 }
+05:56:52 { 5.73 7.00 6.63 }
+-- playwright:
+  ✘  1 test/packaged-account/lostphone.public.spec.ts:29:1 › lost phone returns after two prune cycles (send-first, large) (11.2m)
+  1 failed
+-- summary:
+run b3-base-send-reduced-rtt300
+second phase start 474.4 | last "both=false" sample [656.1] | second phase state at [659.9]
+both directions arrived=false C catalog reads=15 C read requests=49 C read epochs=[5]
+converged=false markers=916 missing=[0,0,199] duplicated=[0,0,0] text bytes=1037422,1037422,1032276
+receive reached its final position 522 at 648.558 s, 174.2 s into the second phase
+second phase: replays started 22, worker blocked >1 s: 22 samples / 118.3 s, load 8.48 7.32 6.57 .. 6.40 7.17 6.69
+long auditWarm 20 interrupted 20 completed 0 other 0
+  ms [6381, 6092, 6132, 6087, 7062, 6135, 6373, 6110, 6009, 6094, 6207, 6227, 6311, 6186, 6109, 6066, 6063, 6047, 6205, 6162]
+  due after [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+replays returned 24 of them in the oracle load 21 ms [631, 758, 6006, 6335, 6049, 6092, 6016, 7027, 6068, 6338, 6073, 5937, 6063, 6169, 6167, 6269, 6149, 6074, 6014, 6018, 6007, 6169, 6101, 5904]
+openSnapshot stopped: {('before', True, True): 1, ('after-return', True, True): 20}
+  after return, ms from return to the stop [6, 13, 9, 9, 6, 36, 5, 8, 34, 3, 9, 29, 12, 6, 6, 20, 5, 11, 8, 35]
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [] other [15, 15, 47]
+foreground jobs waiting >20 ms: 1; wait ms p50 50 p90 50 max 50
+  of them overlapping an oracle window: 0 waits []
+-- timeline from C's return:
+469.4s [8.44 7.29 6.56] C online
+474.4s [8.48 7.32 6.57] send-first first phase done=true
+474.4s [8.48 7.32 6.57] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794459216446,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":2,"nextAttemptAt":1794459217
+474.4s [8.48 7.32 6.57] second phase starts (route removed)
+474.4s [8.48 7.32 6.57] C round-trip delay 300 ms on every account request
+489.5s [8.90 7.48 6.64] C after second phase 15s both=false: notice=[]
+504.7s [9.29 7.64 6.71] C after second phase 30s both=false: notice=[]
+519.8s [9.69 7.80 6.79] C after second phase 45s both=false: notice=[]
+535.0s [9.75 7.91 6.84] C after second phase 60s both=false: notice=[]
+550.1s [8.17 7.65 6.77] C after second phase 75s both=false: notice=[]
+565.3s [7.17 7.45 6.72] C after second phase 90s both=false: notice=[]
+580.4s [8.12 7.68 6.81] C after second phase 105s both=false: notice=[]
+595.6s [6.85 7.42 6.73] C after second phase 120s both=false: notice=[]
+610.7s [6.57 7.33 6.71] C after second phase 135s both=false: notice=[]
+625.8s [6.05 7.17 6.67] C after second phase 150s both=false: notice=[]
+641.0s [6.63 7.25 6.70] C after second phase 165s both=false: notice=[]
+656.1s [6.70 7.24 6.71] C after second phase 180s both=false: notice=[]
+659.9s [6.40 7.17 6.69] second phase state {"sync":{"send":{"phase":"working","failures":0,"nextAttemptAt":1794459391278,"issueSince":null,"lastSuccessAt":1794459391228,"reason":null,"acceptedThrough":18},"receive":{"phase":"working","failures":0,"nextAttemptA
+660.0s [6.40 7.17 6.69] trace entries 741
+660.0s [6.40 7.17 6.69] both directions arrived=false C catalog reads=15 C read requests=49 C read epochs=[5]
+660.1s [6.40 7.17 6.69] C sync: ["Sending: workingLast accepted upload: 5:56:31 AMAccepted position: 18Receiving: workingLast successful receive check: 5:56:06 AMReceived positions: 522"]
+671.6s [5.73 7.00 6.63] converged=false markers=916 missing=[0,0,199] duplicated=[0,0,0] text bytes=1037422,1037422,1032276
+671.6s [5.73 7.00 6.63] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ b4-base-send-reduced-rtt300
+base b4-base-send-reduced-rtt300 lostphone VARIANT=send-first SIZE=large REDUCED=1 C_RTT_MS=300
+-- load (first, last):
+06:22:45 { 6.31 6.78 6.68 }
+06:33:56 { 6.06 6.95 6.86 }
+-- playwright:
+  ✘  1 test/packaged-account/lostphone.public.spec.ts:29:1 › lost phone returns after two prune cycles (send-first, large) (11.2m)
+  1 failed
+-- summary:
+run b4-base-send-reduced-rtt300
+second phase start 477.1 | last "both=false" sample [658.8] | second phase state at [660.7]
+both directions arrived=false C catalog reads=20 C read requests=61 C read epochs=[5]
+converged=false markers=916 missing=[0,0,110] duplicated=[0,0,0] text bytes=1037422,1037422,1034590
+receive reached its final position 557 at 654.963 s, 177.9 s into the second phase
+second phase: replays started 47, worker blocked >1 s: 47 samples / 106.3 s, load 6.69 7.02 6.84 .. 6.52 7.07 6.90
+long auditWarm 46 interrupted 46 completed 0 other 0
+  ms [3093, 2957, 3390, 2995, 2984, 2995, 3093, 3044, 3195, 3060, 3010, 3066, 3153, 3183, 3143, 3077, 3056, 3043, 3229, 3217, 3361, 3255, 3287, 3187, 3101, 3114, 3084, 3148, 3159, 3265, 3135, 3136, 3121, 3195, 3217, 3291, 3170, 3156, 3159, 3170, 3455, 3320, 3198, 3226, 3289, 3180]
+  due after [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+replays returned 49 of them in the oracle load 46 ms [470, 529, 2370, 3055, 2925, 3352, 2929, 2947, 2960, 3019, 2997, 3162, 3016, 2976, 3001, 3121, 3146, 3072, 3040, 3022, 3007, 3195, 3144, 3326, 3216, 3220, 3155, 3064, 3046, 3050, 3116, 3124, 3210, 3055, 3102, 3086, 3127, 3180, 3224, 3098, 3121, 3123, 3135, 3420, 3234, 3161, 3193, 3214, 3147]
+openSnapshot stopped: {('before', True, True): 1, ('after-return', True, True): 46}
+  after return, ms from return to the stop [8, 4, 4, 36, 5, 4, 34, 6, 3, 2, 5, 36, 3, 5, 38, 7, 5, 5, 5, 38, 3, 6, 35, 3, 5, 39, 2, 3, 5, 3, 41, 2, 5, 36, 7, 5, 38, 6, 5, 5, 4, 36, 8, 3, 42, 3]
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [] other [15, 21, 39]
+foreground jobs waiting >20 ms: 0; wait ms p50 None p90 None max None
+  of them overlapping an oracle window: 0 waits []
+-- timeline from C's return:
+472.0s [5.79 6.85 6.78] C online
+477.0s [6.69 7.02 6.84] send-first first phase done=true
+477.0s [6.69 7.02 6.84] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794461442485,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":3,"nextAttemptAt":1794461448
+477.1s [6.69 7.02 6.84] second phase starts (route removed)
+477.1s [6.69 7.02 6.84] C round-trip delay 300 ms on every account request
+492.2s [6.50 6.95 6.82] C after second phase 15s both=false: notice=[]
+507.4s [5.20 6.64 6.71] C after second phase 30s both=false: notice=[]
+522.5s [7.60 7.14 6.89] C after second phase 45s both=false: notice=[]
+537.7s [6.90 7.02 6.85] C after second phase 60s both=false: notice=[]
+552.8s [7.37 7.10 6.88] C after second phase 75s both=false: notice=[]
+567.9s [8.16 7.28 6.95] C after second phase 90s both=false: notice=[]
+583.1s [8.29 7.37 6.99] C after second phase 105s both=false: notice=[]
+598.2s [8.01 7.37 6.99] C after second phase 120s both=false: notice=[]
+613.4s [7.23 7.22 6.95] C after second phase 135s both=false: notice=[]
+628.5s [7.87 7.36 7.00] C after second phase 150s both=false: notice=[]
+643.6s [7.04 7.19 6.95] C after second phase 165s both=false: notice=[]
+658.8s [6.52 7.07 6.90] C after second phase 180s both=false: notice=[]
+660.7s [6.52 7.07 6.90] second phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794461457937,"reason":null,"acceptedThrough":10},"receive":{"phase":"working","failures":0,"nextAttemptAt":null,"iss
+660.7s [6.52 7.07 6.90] trace entries 1502
+660.7s [6.52 7.07 6.90] both directions arrived=false C catalog reads=20 C read requests=61 C read epochs=[5]
+660.8s [6.52 7.07 6.90] C sync: ["Sending: idleLast accepted upload: 6:30:57 AMAccepted position: 10Receiving: workingLast successful receive check: 6:33:41 AMReceived positions: 557"]
+672.7s [5.89 6.90 6.85] converged=false markers=916 missing=[0,0,110] duplicated=[0,0,0] text bytes=1037422,1037422,1034590
+672.7s [5.89 6.90 6.85] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ f2-final-send-reduced-rtt300
+final f2-final-send-reduced-rtt300 lostphone VARIANT=send-first SIZE=large REDUCED=1 C_RTT_MS=300
+-- load (first, last):
+05:57:13 { 5.62 6.89 6.60 }
+06:06:24 { 5.57 6.80 6.60 }
+-- playwright:
+  1 passed (9.3m)
+-- summary:
+run f2-final-send-reduced-rtt300
+second phase start 476.5 | last "both=false" sample [537.2] | second phase state at [542.4]
+both directions arrived=true C catalog reads=12 C read requests=83 C read epochs=[5]
+converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+receive reached its final position 620 at 542.02 s, 65.5 s into the second phase
+second phase: replays started 3, worker blocked >1 s: 3 samples / 8.5 s, load 10.84 7.69 6.87 .. 5.80 6.86 6.62
+long auditWarm 2 interrupted 2 completed 0 other 0
+  ms [3042, 3681]
+  due after [False, False]
+replays returned 5 of them in the oracle load 2 ms [443, 515, 2542, 2935, 3552]
+openSnapshot stopped: {('before', True, True): 3}
+  after return, ms from return to the stop []
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [69, 93] other [18, 16, 52]
+foreground jobs waiting >20 ms: 2; wait ms p50 92 p90 92 max 92
+  of them overlapping an oracle window: 2 waits [69, 92]
+-- timeline from C's return:
+471.4s [11.52 7.77 6.89] C online
+476.5s [10.84 7.69 6.87] send-first first phase done=true
+476.5s [10.84 7.69 6.87] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794459910193,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":3,"nextAttemptAt":179445991
+476.5s [10.84 7.69 6.87] second phase starts (route removed)
+476.5s [10.84 7.69 6.87] C round-trip delay 300 ms on every account request
+491.6s [10.01 7.66 6.87] C after second phase 15s both=false: notice=[]
+506.7s [8.15 7.36 6.78] C after second phase 30s both=false: notice=[]
+521.9s [7.07 7.16 6.72] C after second phase 45s both=false: notice=[]
+537.2s [6.04 6.93 6.64] C after second phase 60s both=false: notice=[]
+542.4s [5.80 6.86 6.62] second phase state {"sync":{"send":{"phase":"working","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794459925966,"reason":null,"acceptedThrough":10},"receive":{"phase":"working","failures":0,"nextAttemptAt":179445
+543.0s [5.80 6.86 6.62] trace entries 289
+543.0s [5.80 6.86 6.62] both directions arrived=true C catalog reads=12 C read requests=83 C read epochs=[5]
+543.2s [5.80 6.86 6.62] C sync: ["Sending: workingLast accepted upload: 6:06:18 AMAccepted position: 11Receiving: workingLast successful receive check: 6:06:17 AMReceived positions: 621"]
+555.0s [5.61 6.78 6.59] converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+555.1s [5.61 6.78 6.59] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ f3-final-send-reduced-rtt300
+final f3-final-send-reduced-rtt300 lostphone VARIANT=send-first SIZE=large REDUCED=1 C_RTT_MS=300
+-- load (first, last):
+06:34:00 { 5.89 6.90 6.85 }
+06:44:21 { 6.09 6.43 6.40 }
+-- playwright:
+  1 passed (10.5m)
+-- summary:
+run f3-final-send-reduced-rtt300
+second phase start 478.0 | last "both=false" sample [599.3] | second phase state at [614.5]
+both directions arrived=true C catalog reads=20 C read requests=110 C read epochs=[5]
+converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+receive reached its final position 663 at 613.515 s, 135.5 s into the second phase
+second phase: replays started 3, worker blocked >1 s: 3 samples / 16.3 s, load 8.41 6.21 6.29 .. 6.28 6.47 6.41
+long auditWarm 2 interrupted 2 completed 0 other 0
+  ms [6199, 6702]
+  due after [False, False]
+replays returned 5 of them in the oracle load 2 ms [623, 741, 5505, 6061, 6572]
+openSnapshot stopped: {('before', True, True): 2}
+  after return, ms from return to the stop []
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [74, 88] other [15, 20, 46]
+foreground jobs waiting >20 ms: 5; wait ms p50 36 p90 84 max 84
+  of them overlapping an oracle window: 2 waits [71, 84]
+-- timeline from C's return:
+473.0s [8.45 6.18 6.28] C online
+478.0s [8.41 6.21 6.29] send-first first phase done=true
+478.0s [8.41 6.21 6.29] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794462119545,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":2,"nextAttemptAt":1794462120
+478.0s [8.41 6.21 6.29] second phase starts (route removed)
+478.0s [8.41 6.21 6.29] C round-trip delay 300 ms on every account request
+493.1s [9.08 6.47 6.39] C after second phase 15s both=false: notice=[]
+508.4s [8.11 6.38 6.36] C after second phase 30s both=false: notice=[]
+523.6s [9.42 6.76 6.49] C after second phase 45s both=false: notice=[]
+538.7s [9.17 6.84 6.53] C after second phase 60s both=false: notice=[]
+553.8s [8.13 6.74 6.49] C after second phase 75s both=false: notice=[]
+569.0s [8.27 6.83 6.53] C after second phase 90s both=false: notice=[]
+584.1s [6.96 6.61 6.46] C after second phase 105s both=false: notice=[]
+599.3s [6.50 6.53 6.43] C after second phase 120s both=false: notice=[]
+614.5s [6.28 6.47 6.41] C after second phase 135s both=true: notice=[]
+614.5s [6.28 6.47 6.41] second phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794462254746,"reason":null,"acceptedThrough":31},"receive":{"phase":"working","failures":0,"nextAttemptAt":null,"iss
+614.5s [6.28 6.47 6.41] trace entries 474
+614.5s [6.28 6.47 6.41] both directions arrived=true C catalog reads=20 C read requests=110 C read epochs=[5]
+614.7s [6.28 6.47 6.41] C sync: ["Sending: idleLast accepted upload: 6:44:14 AMAccepted position: 31Receiving: workingLast successful receive check: 6:44:16 AMReceived positions: 667"]
+626.2s [5.92 6.39 6.38] converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037422,1037422,1037422
+626.2s [5.92 6.39 6.38] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+
+================ u1-base-send-unreduced-rtt300
+base u1-base-send-unreduced-rtt300 lostphone VARIANT=send-first SIZE=large C_RTT_MS=300
+-- load (first, last):
+06:13:07 { 4.37 5.99 6.29 }
+06:22:38 { 6.86 6.90 6.72 }
+-- playwright:
+  1 passed (9.6m)
+-- summary:
+run u1-base-send-unreduced-rtt300
+second phase start 472.3 | last "both=false" sample [548.0] | second phase state at [563.2]
+both directions arrived=true C catalog reads=16 C read requests=103 C read epochs=[5]
+converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037421,1037421,1037421
+receive reached its final position 642 at 562.419 s, 90.1 s into the second phase
+second phase: replays started 0, worker blocked >1 s: 0 samples / 0.0 s, load 7.89 7.16 6.79 .. 6.53 6.84 6.69
+long auditWarm 0 interrupted 0 completed 0 other 0
+  ms []
+  due after []
+replays returned 0 of them in the oracle load 0 ms []
+openSnapshot stopped: {('before', True, False): 93}
+  after return, ms from return to the stop []
+  during replay, ms from replay start to the stop []
+recorded (post-replay steps, ms): oracle [] other []
+foreground jobs waiting >20 ms: 1; wait ms p50 45 p90 45 max 45
+  of them overlapping an oracle window: 0 waits []
+-- timeline from C's return:
+467.3s [8.23 7.20 6.80] C online
+472.3s [8.05 7.18 6.79] send-first first phase done=true
+472.3s [8.05 7.18 6.79] first phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794460858920,"reason":null,"acceptedThrough":9},"receive":{"phase":"retrying","failures":3,"nextAttemptAt":1794460865
+472.3s [8.05 7.18 6.79] second phase starts (route removed)
+472.3s [8.05 7.18 6.79] C round-trip delay 300 ms on every account request
+487.5s [7.28 7.06 6.76] C after second phase 15s both=false: notice=[]
+502.6s [6.80 6.96 6.72] C after second phase 30s both=false: notice=[]
+517.7s [6.68 6.92 6.72] C after second phase 45s both=false: notice=[]
+532.9s [6.14 6.78 6.67] C after second phase 60s both=false: notice=[]
+548.0s [6.82 6.91 6.72] C after second phase 75s both=false: notice=[]
+563.2s [6.32 6.79 6.68] C after second phase 90s both=true: notice=[]
+563.2s [6.32 6.79 6.68] second phase state {"sync":{"send":{"phase":"idle","failures":0,"nextAttemptAt":null,"issueSince":null,"lastSuccessAt":1794460952225,"reason":null,"acceptedThrough":28},"receive":{"phase":"working","failures":0,"nextAttemptAt":null,"iss
+563.6s [6.32 6.79 6.68] trace entries 5493
+563.6s [6.32 6.79 6.68] both directions arrived=true C catalog reads=16 C read requests=103 C read epochs=[5]
+563.7s [6.32 6.79 6.68] C sync: ["Sending: idleLast accepted upload: 6:22:32 AMAccepted position: 28Receiving: workingLast successful receive check: 6:22:32 AMReceived positions: 644"]
+575.3s [6.31 6.78 6.68] converged=true markers=916 missing=[0,0,0] duplicated=[0,0,0] text bytes=1037421,1037421,1037421
+575.3s [6.31 6.78 6.68] shared text counts [[1,1,1,1,1,0,0],[1,1,1,1,1,0,0],[1,1,1,1,1,0,0]]
+

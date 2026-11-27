@@ -26,6 +26,10 @@ process-local capability is minted only after authenticating and parsing that de
 allowed only before checks start; result/byte ownership is detached; disposal, failed checks and
 late results cannot add success. A two-second slice target pauses before starting new unchecked
 work once some useful work has completed. It does not preempt one crypto/native/Yjs operation.
+Phase 556 amends the target: a slice's fresh-work budget is the larger of two seconds and twice
+what its attempt paid before its first fresh check plus the last fenced save, never planned past
+the window that holds routine sync off, and opened rows are no longer kept as receipts (see the
+2026-11-12 decision).
 
 Semantic ordering, actor/source relationships, current authorization, witness completeness,
 coverage against actual content and final cut/commit guards still run. Reusing a signed response's

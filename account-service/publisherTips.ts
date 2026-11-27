@@ -155,6 +155,14 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     tips.delete(key);
     queued.delete(key);
   };
+  // One account's stored decisions changed (a prune, phase 553). Retire every one of its keys:
+  // tips, queued audits and capture owners, so its live captures fail their guard and a late
+  // audit or census cannot reinstall them. Other accounts, quarantine and cold lanes are untouched.
+  const invalidateAccount = (account: string) => {
+    const prefix = account + ':';
+    for (const key of new Set([...owners.keys(), ...tips.keys(), ...queued.keys()]))
+      if (key.startsWith(prefix)) invalidatePublisher(key);
+  };
   const captureOwner = (key: string) => {
     let owner = owners.get(key);
     if (owner) owners.delete(key);
@@ -284,6 +292,7 @@ export function createPublisherTips(db: DatabaseSync, path: string, signal: () =
     ]);
   return {
     invalidate,
+    invalidateAccount,
     close() {
       closed = true;
       for (const lane of coldLanes.values())

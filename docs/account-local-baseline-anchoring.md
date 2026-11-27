@@ -143,3 +143,17 @@ and live undo without exposing raw signing or counter-downgrade capabilities.
 The remaining full-history-only readers, replacement/rotation transition, historical-flight/checkpoint
 policy and journal/restore boundary must be resolved before an atomic deletion phase. No history
 removal or deployment is authorized by the carrier primitive alone.
+
+## Larger reduced carrier — 2026-11-11 (phase 542)
+
+The deliberate extension named above, approved by the operator on 2026-11-11. A journal-era record is
+read up to 32 MiB but written only up to 8 MiB, so a later raise of the write limit needs no format
+change; a record without an era keeps the 4 MiB limit for both. The reduced writer still uses `done/local-baseline-carrier/draft-3` with
+256 KiB chunks whenever the packed MAC and payload fit 4 MiB + 32 bytes. Only a larger one uses
+`done/local-baseline-carrier/draft-4`: counter v5, `history: "baseline-plus-suffix"`, 2 MiB chunks
+and the same 17-chunk maximum, so the metadata key count stays within what released readers accept.
+Its parser refuses a draft-4 pointer that would fit draft-3. The record tags, authentication domains
+and counter MAC tag are unchanged; the carrier name is bound by the counter MAC tuple and each chunk's
+encrypted prefix, which includes the history mode as draft-3's does. A released reader refuses the
+new carrier as `app-update-required` without writing. The complete-history writers keep 4 MiB. See the
+[phase 542 record](./development-evidence/2026-11-11-release-repair/542-large-reduced-baseline/README.md).

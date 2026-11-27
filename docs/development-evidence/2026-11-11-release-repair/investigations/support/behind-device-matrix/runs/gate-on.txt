@@ -1,0 +1,16 @@
+
+Running 1 test using 1 worker
+
+16.1s config {"v":2,"pin":{"v":1,"serviceId":"9379e8c845e07bbf81507b96ec16a16d","origin":"https://localhost:53441","rpId":"localhost","authRoot":"95f11ceec85d49c6281235fa4aea2d4723dc99d5ab881eeedbf573f4139c79aa"},"networkSessions":true,"membershipContinuation":true}
+44.0s snapshot 1 admitted
+64.4s snapshot 2 admitted
+66.0s pruned
+77.4s B returns
+82.4s B read epochs [3]
+82.4s B unsent writing reached A
+82.5s B sync: ["Sending: idleLast accepted upload: 11:52:32 PMAccepted position: 2Receiving: idleLast successful receive check: 11:52:33 PMReceived positions: 136"]
+82.5s converged=true missing on B=0 duplicated=0
+  ✓  1 test/packaged-account/gate.public.spec.ts:12:1 › gate: a returning two-device reader after pruning (continuation config on) (1.4m)
+
+  1 passed (1.4m)
+exit 0

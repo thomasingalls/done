@@ -1,0 +1,103 @@
+// COPY-ONLY. Built to expose: a returning device that never fetches history after its positions
+// were pruned. Production entry (scripts/public-account.mjs) behind HTTPS. CONFIG=off starts the same
+// entry with /config advertising no continuation (copy-only seam) while history is still served.
+import { test, expect, type Page } from '@playwright/test';
+import { writeFileSync } from 'node:fs';
+import { pairedEditors, add } from './devices';
+import { startPublic } from './public-server';
+import { writeMany, workers, snapshot, prune, documentOf, count, mark, series } from './scenario';
+import { openMenuSection } from '../geometry/openApp';
+
+const off = process.env.CONFIG === 'off';
+test(`gate: a returning two-device reader after pruning (continuation config ${off ? 'off' : 'on'})`, async ({
+  page,
+  browser,
+}, info) => {
+  page.setDefaultTimeout(30000);
+  const svc = await startPublic(info.outputPath('public'), undefined, off ? { COPY_CONFIG_CONTINUATION_OFF: '1' } : {});
+  const log: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  let pair: Awaited<ReturnType<typeof pairedEditors>> | undefined;
+  try {
+    pair = await pairedEditors(page, browser, true);
+    const A = page,
+      B = pair.second;
+    B.setDefaultTimeout(30000);
+    const config = await B.evaluate(async () => (await fetch('/__account-setup/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }).then((r) => r.json()).catch((e) => String(e))));
+    note('config ' + JSON.stringify(config));
+    let catalogReads = 0;
+    const epochs = new Set<number>();
+    B.on('request', (r) => {
+      if (r.url().includes('/account/history/v1/checkpoint')) {
+        try {
+          if (JSON.parse(r.postData() ?? '{}').payload === 'catalog') catalogReads++;
+        } catch {}
+      }
+      if (r.url().includes('/account/delivery/read-v2')) {
+        const m = /"done\/private-read\/v2",2,(?:"[^"]*",){7}(\d+)/.exec(r.postDataBuffer()?.toString('latin1') ?? '');
+        if (m) epochs.add(Number(m[1]));
+      }
+    });
+    // B's receive is away; its writing cannot be sent. It still verifies through History maintenance.
+    await workers(B, () => {
+      (globalThis as any).__holdReceive = true;
+    });
+    await B.route('**/account/delivery/submit', (route) => route.abort());
+    await writeMany(B, 'B unsent', 5, 100);
+    await writeMany(A, 'A before floor', 60);
+    note('snapshot 1 ' + (await snapshot(A, B, 1)));
+    await writeMany(A, 'A between snapshots', 40);
+    note('snapshot 2 ' + (await snapshot(A, B, 2)));
+    await prune(A);
+    note('pruned');
+    await writeMany(A, 'A after prune', 30);
+    const before = catalogReads;
+    await workers(B, () => {
+      (globalThis as any).__holdReceive = false;
+    });
+    await B.unroute('**/account/delivery/submit');
+    note('B returns');
+    let caught = false;
+    for (let i = 0; i < 24 && !caught; i++) {
+      await B.waitForTimeout(5000);
+      caught = ((await B.locator('.shell').textContent()) ?? '').includes(mark('A before floor', 0));
+      if (i % 4 === 3)
+        note(`B after ${(i + 1) * 5}s caught=${caught} catalog reads=${catalogReads - before} notice=${JSON.stringify(await B.locator('.sync-notice').allTextContents())}`);
+    }
+    note('B read epochs ' + JSON.stringify([...epochs]));
+    await expect(A.locator('.shell')).toContainText(mark('B unsent', 4), { timeout: 60000 });
+    note('B unsent writing reached A');
+    await openMenuSection(B, 'Sync');
+    note('B sync: ' + JSON.stringify(await B.getByRole('region', { name: 'Sync', exact: true }).allTextContents()));
+    const a = await documentOf(A),
+      b = await documentOf(B);
+    const markers = [
+      ...series('A before floor', 60),
+      ...series('A between snapshots', 40),
+      ...series('A after prune', 30),
+      ...series('B unsent', 5),
+    ];
+    const converged = JSON.stringify(a.state) === JSON.stringify(b.state) && a.text === b.text;
+    const missingOnB = markers.filter((m) => count(b.text, m) === 0);
+    const duplicated = markers.filter((m) => count(a.text, m) > 1 || count(b.text, m) > 1);
+    note(`converged=${converged} missing on B=${missingOnB.length} duplicated=${duplicated.length}`);
+    if (off) {
+      expect(catalogReads - before).toBe(0);
+      expect(caught).toBe(false);
+      expect(converged).toBe(false);
+    } else {
+      expect(caught).toBe(true);
+      expect(converged).toBe(true);
+      for (const m of markers) for (const d of [a, b]) expect(count(d.text, m), m).toBe(1);
+    }
+  } finally {
+    writeFileSync(info.outputPath('timeline.txt'), log.join('\n') + '\n');
+    await pair?.other.close().catch(() => {});
+    await svc.stop();
+  }
+});

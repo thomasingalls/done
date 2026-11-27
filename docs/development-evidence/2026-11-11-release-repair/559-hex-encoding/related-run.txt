@@ -1,0 +1,69 @@
+Phase 559 related Vitest run on the final tree: every test file that imports src/crdt/custodyCrypto, account-protocol/recovery or src/crdt/legacySource, run together with the repository's Vitest config (pnpm exec vitest run <files>).
+Files (55):
+  test/accountConsumerPrimitives.test.ts
+  test/accountWorkspacePort.test.ts
+  test/admissionJournalFence.test.ts
+  test/admissionQueue.test.ts
+  test/argumentSpreads.test.ts
+  test/baselineReplayBuilds.test.ts
+  test/baselineReplayCoverage.test.ts
+  test/boundedInboundPreparation.test.ts
+  test/contentCompaction.test.ts
+  test/contentRecord.test.ts
+  test/coverageBatches.test.ts
+  test/coveredLocalJournal.test.ts
+  test/custodyCrypto.test.ts
+  test/custodyRecord.test.ts
+  test/envelopePreparationProjection.test.ts
+  test/hexEncoding.test.ts
+  test/hexFieldValidation.test.ts
+  test/historyInstallBound.test.ts
+  test/inboundAuditUnits.test.ts
+  test/inboundDensePreparation.test.ts
+  test/inboundHandoffPage.test.ts
+  test/inboundLoadTurn.test.ts
+  test/inboundReplacementPage.test.ts
+  test/inboundStoredReceiptMemo.test.ts
+  test/journalCodec.test.ts
+  test/legacyCleanup.test.ts
+  test/legacyCleanupBounds.test.ts
+  test/legacySource.test.ts
+  test/localBaseline.test.ts
+  test/localBaselineAnchor.test.ts
+  test/localBaselineLargeCarrier.test.ts
+  test/localBaselineLifecycle.test.ts
+  test/localGenesis.test.ts
+  test/localRecovery.test.ts
+  test/localRetentionSharedProof.test.ts
+  test/localRetentionStorage.test.ts
+  test/maintenanceFence.test.ts
+  test/networkEnvelope.test.ts
+  test/onboardingStorage.test.ts
+  test/ownedReceiveQueue.test.ts
+  test/positionDecision.test.ts
+  test/preparationCapacitySites.test.ts
+  test/preparationReceiptJournal.test.ts
+  test/promotionOpening.test.ts
+  test/receiveQuietPages.test.ts
+  test/receiveRangeTail.test.ts
+  test/retentionPreparation.test.ts
+  test/retentionPreparationFreshSlice.test.ts
+  test/retentionPreparationReplay.test.ts
+  test/retentionSliceBudget.test.ts
+  test/sourceCapture.test.ts
+  test/spoolBatch.test.ts
+  test/spoolRecord.test.ts
+  test/windowAccountMirror.test.ts
+  test/workspacePreparation.test.ts
+
+Output:
+
+ RUN  v4.1.10 /Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+
+
+ Test Files  55 passed (55)
+      Tests  644 passed (644)
+   Start at  06:18:42
+   Duration  72.02s (transform 2.87s, setup 779ms, import 8.76s, tests 127.99s, environment 3ms)
+
+exit 0

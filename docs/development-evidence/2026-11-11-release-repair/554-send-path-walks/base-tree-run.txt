@@ -1,0 +1,179 @@
+36070a9c487c32d33b215f77189f52537263b11847b47b86ef31bad27667f64e  src/crdt/accountDelivery.ts
+9f5beb8d72c7370314f7accd819455c46021031fc83d4522c8ca1684135b0c09  src/crdt/accountInbound.ts
+2643afc21a77f521f428286861f5d9ca9c98038f0ca44084f8a4d32a54e1c2b8  src/crdt/accountLedgerMetrics.ts
+21d89266032911eba176d814c2a6144d7d5183a20dc36496a6c4b7953dc28b45  src/crdt/accountReceive.ts
+7a8c1bce8b42249105ab421b9e448b82e74cad4f71ca9fe4872bc39b27141666  src/crdt/accountSyncDriver.ts
+eb092588876a278110435e69ebb65c0093f623258dbf2f1071aca2ae536e24e7  src/crdt/incrementalAccountLedger.ts
+36b893c953dfc697a7d4237e17510f475ffa81b2764ca43c775d58a66515e555  src/crdt/verificationOwnership.ts
+0baed12c5477ab41a89b5ebd1d0edf1af41f1081493dd8efd830131f8fc9aab6  src/crdt/verifiedRecords.ts
+
+ RUN  v4.1.10 <worktree>
+
+stdout | test/sendPathWalks.test.ts > a send-only continuation on a 1,024-position history walks no retained graph (F1)
+{"positions":1024,"rows":6144,"owned":3372016,"objects":0,"walkMs":5.748583000000053}
+
+ ❯ test/sendPathWalks.test.ts (5 tests | 5 failed) 3386ms
+   × a send-only continuation on a 1,024-position history walks no retained graph (F1) 1398ms
+   × a complete check builds its indexes without walking the retained graph (F1) 362ms
+   × the live owner gates its continuation on row bounds, not on a retained-graph walk (F1) 4ms
+   × a turn that captured nothing completes and disposes without walking a 1,024-position result (F1b) 1193ms
+   × a receipt turn walks and erases exactly when it captured something (F1b) 428ms
+ ❯ test/sendPathMetrics.test.ts (3 tests | 3 failed) 3053ms
+   × without the profile flag, the send-path observation reads no clock and counts nothing 1146ms
+   × with the profile flag, every send-path timer and walk counter records 437ms
+   × stop condition (a): send-only continuations on a 1,024-position history walk no whole graph 1468ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/sendPathMetrics.test.ts > without the profile flag, the send-path observation reads no clock and counts nothing
+AssertionError: expected undefined to deeply equal []
+
+- Expected:
+[]
+
++ Received:
+undefined
+
+ ❯ test/sendPathMetrics.test.ts:248:34
+    246|     expect(reads, 'clock reads inside the bracketed send-path operatio…
+    247|     expect(result.costs).toEqual({});
+    248|     expect(result.acceptedSends).toEqual([]);
+       |                                  ^
+    249|     for (const name of [
+    250|       'indexUsageWalks',
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  test/sendPathMetrics.test.ts > with the profile flag, every send-path timer and walk counter records
+AssertionError: verifyCompare: expected 0 to be greater than 0
+ ❯ test/sendPathMetrics.test.ts:287:52
+    285|       'sendStep',
+    286|     ] as const)
+    287|       expect(result.costs[name]?.calls ?? 0, name).toBeGreaterThan(0);
+       |                                                    ^
+    288|     expect(result.work.verifyCompares).toBe(1);
+    289|     expect(result.work.verifyPrefixes).toBe(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  test/sendPathMetrics.test.ts > stop condition (a): send-only continuations on a 1,024-position history walk no whole graph
+AssertionError: index usage walks: expected NaN to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ NaN
+
+ ❯ test/sendPathMetrics.test.ts:328:83
+    326|       expect(continuations).toBe(10);
+    327|       expect(view.indexes).toBeDefined();
+    328|       expect(after.indexUsageWalks - before.indexUsageWalks, 'index us…
+       |                                                                                   ^
+    329|       expect(after.receiptTurnWalks - before.receiptTurnWalks, 'receip…
+    330|     } finally {
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  test/sendPathWalks.test.ts > a send-only continuation on a 1,024-position history walks no retained graph (F1)
+AssertionError: continuation and its index recheck: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ test/sendPathWalks.test.ts:85:71
+     83|         const before = hits(),
+     84|           next = await f.extend(view, step, turn);
+     85|         expect(hits() - before, 'continuation and its index recheck').…
+       |                                                                       ^
+     86|         turn.complete(next.view);
+     87|         view = next.view;
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  test/sendPathWalks.test.ts > a complete check builds its indexes without walking the retained graph (F1)
+AssertionError: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/sendPathWalks.test.ts:132:20
+    130|     );
+    131|     expect(rebuilt).toBeDefined();
+    132|     expect(hits()).toBe(0);
+       |                    ^
+    133|   },
+    134| );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  test/sendPathWalks.test.ts > the live owner gates its continuation on row bounds, not on a retained-graph walk (F1)
+AssertionError: reporting call on the owner path: expected true to be false // Object.is equality
+
+- Expected
++ Received
+
+- false
++ true
+
+ ❯ test/sendPathWalks.test.ts:140:91
+    138|   // must be the bounds check. The same call shape is exercised by the…
+    139|   const source = readFileSync(new URL('../src/crdt/accountReceive.ts',…
+    140|   expect(/accountLedgerIndexUsage\s*\(/.test(source), 'reporting call …
+       |                                                                                           ^
+    141|     false,
+    142|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  test/sendPathWalks.test.ts > a turn that captured nothing completes and disposes without walking a 1,024-position result (F1b)
+AssertionError: complete: expected 1 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 1
+
+ ❯ test/sendPathWalks.test.ts:161:34
+    159|         adopted = { ...next, probe };
+    160|       turn.complete(adopted);
+    161|       expect(hits(), 'complete').toBe(0);
+       |                                  ^
+    162|       const retained = checksum(next);
+    163|       turn.dispose();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  test/sendPathWalks.test.ts > a receipt turn walks and erases exactly when it captured something (F1b)
+AssertionError: empty turn: expected 2 to be +0 // Object.is equality
+
+- Expected
++ Received
+
+- 0
++ 2
+
+ ❯ test/sendPathWalks.test.ts:241:36
+    239|       empty.complete(adopted);
+    240|       empty.dispose();
+    241|       expect(hits(), 'empty turn').toBe(0);
+       |                                    ^
+    242|       expect(erase).not.toHaveBeenCalled();
+    243|       turn.dispose();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  2 failed (2)
+      Tests  8 failed (8)
+   Start at  20:23:44
+   Duration  8.97s (transform 1.91s, setup 81ms, import 2.15s, tests 6.44s, environment 0ms)
+
+candidate restored

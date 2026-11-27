@@ -21,6 +21,7 @@ import {
 } from './days';
 import {
   compose,
+  doneForNow,
   moveCard,
   reorderCard,
   removeCard,
@@ -47,6 +48,7 @@ export type TextTarget =
 export type WorkspaceCommand =
   | { readonly kind: 'compose'; readonly to: Ref; readonly text: string }
   | { readonly kind: 'duplicate'; readonly id: string }
+  | { readonly kind: 'done-for-now'; readonly id: string }
   | { readonly kind: 'move'; readonly id: string; readonly to: Ref; readonly index?: number }
   | { readonly kind: 'reorder'; readonly id: string; readonly index: number }
   | { readonly kind: 'remove'; readonly id: string }
@@ -85,8 +87,37 @@ export type WorkspaceIntent = {
     | { kind: 'text'; target: TextTarget; action: TextAction; selection?: RelativeSelection };
   readonly split?: { at: Y.RelativePosition; tail: Y.RelativePosition };
   readonly masterMove?: RelativeSelection;
+  /** A later slice of a split command: the receipt keeps the first slice's business result. */
+  readonly continuation?: true;
 };
 export type CommandValue = boolean | number | string | null | { readonly id: string };
+/** Text insertion slices: at most 1000 UTF-16 units, never ending between a surrogate pair. */
+export const TEXT_SLICE_UNITS = 1000;
+export const sliceInsertText = (text: string): readonly [head: string, rest: string] => {
+  let end = Math.min(TEXT_SLICE_UNITS, text.length);
+  if (end < text.length && /[\uD800-\uDBFF]/u.test(text[end - 1]!)) end--;
+  return [text.slice(0, end), text.slice(end)];
+};
+/** A composed card whose text is longer than this in UTF-8 is created from its first text slice
+ * and completed by text slices. 2 KiB below the 16 KiB admission update limit, which leaves room
+ * for the card's own fields (about 400 bytes measured); anything still over is refused, not sealed. */
+export const COMPOSE_WHOLE_BYTES = 14 * 1024;
+const utf8Length = (text: string) => {
+  let bytes = 0;
+  for (let i = 0; i < text.length; i++) {
+    const unit = text.charCodeAt(i);
+    if (unit < 0x80) bytes += 1;
+    else if (unit < 0x800) bytes += 2;
+    else if (unit >= 0xd800 && unit <= 0xdbff && i + 1 < text.length) {
+      const next = text.charCodeAt(i + 1);
+      if (next >= 0xdc00 && next <= 0xdfff) {
+        bytes += 4;
+        i++;
+      } else bytes += 3;
+    } else bytes += 3;
+  }
+  return bytes;
+};
 export interface CommandContext {
   readonly identity: WorkspaceActorIdentity;
   readonly deviceLabelId?: string;
@@ -196,11 +227,9 @@ export function planWorkspaceText(
   let transaction: Transaction | undefined,
     rest = '';
   if (command.action.name === 'insert') {
-    let end = Math.min(1000, command.action.text.length);
-    if (end < command.action.text.length && /[\uD800-\uDBFF]/u.test(command.action.text[end - 1]!))
-      end--;
-    rest = command.action.text.slice(end);
-    transaction = state.update(state.replaceSelection(command.action.text.slice(0, end)));
+    const [head, tail] = sliceInsertText(command.action.text);
+    rest = tail;
+    transaction = state.update(state.replaceSelection(head));
   } else {
     if (command.action.name === 'undo' || command.action.name === 'redo')
       throw Error('Undo is workspace-scoped.');
@@ -256,6 +285,7 @@ const executeWorkspaceCommand = (
   if (command.kind !== 'text' || !knownRepaired) repairCardMemberships(doc, context.system);
   const from = 'id' in command ? cardLocation(doc, command.id) : null;
   let value: CommandValue = false;
+  let remaining: WorkspaceIntent | undefined;
   switch (command.kind) {
     case 'text': {
       if (!editableTarget(doc, command.target, context.today)) return { value: false };
@@ -280,6 +310,7 @@ const executeWorkspaceCommand = (
           ? {
               remaining: {
                 group: intent.group,
+                ...(intent.continuation ? { continuation: true as const } : {}),
                 command: {
                   kind: 'text' as const,
                   target: command.target,
@@ -298,10 +329,29 @@ const executeWorkspaceCommand = (
       break;
     case 'compose': {
       const old = new Set(cardsMap(doc).keys());
-      value = compose(workspace, command.to, command.text);
+      // Too long for one update: create the card from its first text slice and append the rest
+      // as text slices into it, in the same undo step, as a paste into a card is.
+      const [head, rest] =
+        utf8Length(command.text) > COMPOSE_WHOLE_BYTES
+          ? sliceInsertText(command.text)
+          : [command.text, ''];
+      value = compose(workspace, command.to, head, { open: rest !== '' });
       if (value) {
         const id = [...cardsMap(doc).keys()].find((id) => !old.has(id))!;
         value = { id };
+        if (rest) {
+          const target = { kind: 'card' as const, id };
+          const text = targetText(doc, target);
+          selections.set(
+            targetKey(target),
+            relativeSelection(text, EditorSelection.single(text.length).toJSON()),
+          );
+          remaining = {
+            group: intent.group,
+            continuation: true,
+            command: { kind: 'text', target, action: { name: 'insert', text: rest } },
+          };
+        }
       }
       break;
     }
@@ -318,6 +368,9 @@ const executeWorkspaceCommand = (
       );
       break;
     }
+    case 'done-for-now':
+      value = from ? doneForNow(workspace, from, command.id) : null;
+      break;
     case 'move':
       value = from ? moveCard(workspace, from, command.id, command.to, command.index) : false;
       break;
@@ -414,5 +467,5 @@ const executeWorkspaceCommand = (
       break;
   }
   repairCardMemberships(doc, context.system);
-  return { value };
+  return { value, ...(remaining ? { remaining } : {}) };
 };

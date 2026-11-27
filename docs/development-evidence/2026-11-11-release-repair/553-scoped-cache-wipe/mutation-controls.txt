@@ -1,0 +1,57 @@
+# Phase 553 mutation controls, run on the candidate tree (each applied alone and restored).
+# Script: mutation-controls.py.txt. Repeated failure lines are the runner's own summary.
+M1 DETECTED: publish, admit and discard clear every account again at entry
+  test/account-history/cache-scope.test.mjs :: publish, admit, discard and prune: exit 1, 34 s, pass 0 fail 1
+    ✖ one account's publish, admit, discard and prune leave another account's verification; its prune re-verifies only its own streams (32950.047375ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +       fullCensuses: 2, | -       fullCensuses: 0, | +       verifiedRows: 768 | -       verifiedRows: 'suffix' | +       authorityProofs: 1, | +       fullCensuses: 1, | +       held: 0 | -       authorityProofs: 0, | -       fullCensuses: 0, | -       held: 3 | +       fullCensuses: 2, | -       fullCensuses: 0, | +       verifiedRows: 768 | -       verifiedRows: 'suffix' | +       authorityProofs: 1, | +       fullCensuses: 1, | +       held: 0 | -       authorityProofs: 0, | -       fullCens
+M2 DETECTED: every non-read attempt clears every account again in its finally
+  test/account-history/cache-scope.test.mjs :: writes and reads straight through: exit 1, 23 s, pass 0 fail 1
+    ✖ another account writes and reads straight through a prune: no lock across its await, no retry and no census (21982.163042ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   censuses: 1, | -   censuses: 0, | +     'read-guard' | +   guards: 2, | -   guards: 1, | +   wipes: 1 | -   wipes: 0 | 
+M3 DETECTED: prune invalidates nothing
+  test/account-history/cache-scope.test.mjs :: capture in flight across its own: exit 1, 20 s, pass 0 fail 1
+    ✖ a capture in flight across its own account's prune fails its guard and the read retries; another account's capture stays valid (19441.603208ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   censuses: 0, | -   censuses: 1, | -     'read-guard' | +     unprunedRow: true | -     unprunedRow: false | +   guards: 1, | -   guards: 2, | 
+M4 DETECTED: prune invalidates every other account instead of its own
+  test/account-history/cache-scope.test.mjs :: writes and reads straight through: exit 1, 20 s, pass 0 fail 1
+    ✖ another account writes and reads straight through a prune: no lock across its await, no retry and no census (19719.394ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   censuses: 1, | -   censuses: 0, | +     'read-guard' | +   guards: 2, | +   held: 3, | -   guards: 1, | -   held: 1, | 
+M5 DETECTED: prune names its account by workspace id, which matches no key
+  test/account-history/cache-scope.test.mjs :: publish, admit, discard and prune: exit 1, 22 s, pass 0 fail 1
+    ✖ one account's publish, admit, discard and prune leave another account's verification; its prune re-verifies only its own streams (21649.856083ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +       fullCensuses: 0, | -       fullCensuses: 2, | +       verifiedRows: 0 | -       verifiedRows: 1544 | +       held: 3 | -       held: 1 | 
+M6 DETECTED: account invalidation retires tips but keeps capture owners
+  test/account-history/cache-scope.test.mjs :: capture in flight across its own: exit 1, 19 s, pass 0 fail 1
+    ✖ a capture in flight across its own account's prune fails its guard and the read retries; another account's capture stays valid (18896.493542ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   censuses: 0, | -   censuses: 1, | -     'read-guard' | +     unprunedRow: true | -     unprunedRow: false | +   guards: 1, | -   guards: 2, | 
+M7 DETECTED: only a prune that answered invalidates its account
+  test/account-history/cache-scope.test.mjs :: commits and then fails to answer: exit 1, 20 s, pass 0 fail 1
+    ✖ a prune that commits and then fails to answer still retires its account's tips, and only those (19498.684916ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   aCensuses: 0, | -   aCensuses: 2, | +   held: 3, | -   held: 1, | 
+M8 DETECTED: publish, admit and discard invalidate their own account too
+  test/account-history/cache-scope.test.mjs :: publish, admit, discard and prune: exit 1, 37 s, pass 0 fail 1
+    ✖ one account's publish, admit, discard and prune leave another account's verification; its prune re-verifies only its own streams (36020.1665ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +       fullCensuses: 2, | -       fullCensuses: 0, | +       verifiedRows: 768 | -       verifiedRows: 'suffix' | +       held: 1 | -       held: 3 | +       fullCensuses: 2, | -       fullCensuses: 0, | +       verifiedRows: 768 | -       verifiedRows: 'suffix' | +       held: 1 | -       held: 3 | +       fullCensuses: 2, | -       fullCensuses: 0, | +       verifiedRows: 1536 | -       verifiedRows: 'suffix' | +       held: 1 | -       held: 3 | +       fullCensuses: 2, | -       fullCensuses
+M9 DETECTED: a submission answers unavailable on a cleared authority proof again
+  test/account-history/cache-scope.test.mjs :: cleared authority proof: exit 1, 10 s, pass 0 fail 1
+    ✖ a submission that meets a cleared authority proof retries and is accepted, without wiping again (9006.268792ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   fences: 0, | +   kind: 'unknown', | +   reason: 'unavailable', | +   wipes: 2 | -   fences: 1, | -   kind: 'decision', | -   reason: undefined, | -   wipes: 1 | 
+M10 DETECTED: a submission retries a cleared authority proof but wipes first
+  test/account-history/cache-scope.test.mjs :: cleared authority proof: exit 1, 10 s, pass 0 fail 1
+    ✖ a submission that meets a cleared authority proof retries and is accepted, without wiping again (9244.422375ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   wipes: 2 | -   wipes: 1 | 
+M11 DETECTED: account invalidation lifts the account's quarantine
+  test/account-history/cache-scope.test.mjs :: quarantine as it was: exit 1, 19 s, pass 0 fail 1
+    ✖ a prune leaves quarantine as it was, even after the damaged bytes are restored (18787.979125ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   quarantined: 0, | -   quarantined: 1, | +     bytes: Uint8Array(1641) [ | +       91, | +       34, | +       100, | +       111, | +       110, | +       101, | +       47, | +       112, | +       114, | +       105, | +       118, | +       97, | +       116, | +       101, | +       45, | +       114, | +       101, | +       97, | +       100, | +       45, | +       112, | +       97, | +       103, | +       101, | +       47, | +       118, | +       50, | +       34, | +       44, | 
+M12 DETECTED: the prune holds its write transaction across its last await
+  test/account-history/cache-scope.test.mjs :: writes and reads straight through: exit 1, 19 s, pass 0 fail 1
+    ✖ another account writes and reads straight through a prune: no lock across its await, no retry and no census (18691.893125ms)
+    first diff: AssertionError [ERR_ASSERTION]: the prune holds no transaction across its await | 
+M13 DETECTED: the commit fence skips its byte comparison (existing tests are its detector)
+  publisher-tips + publisher-commit-races: exit 1, 6 s, pass 55 fail 4
+    ✖ an unannounced same-connection commit still destroys the raced preliminary prefix (70.334208ms)
+    ✖ publication authority cache never revives an in-flight proof after clear (57.504166ms)
+    ✖ stable read authority retains fresh final native checks and the four-attempt fence (61.526542ms)
+    first diff: AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: | AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: | + actual - expected | + 'decision' | - 'unknown' | AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal: | + actual - expected | +   bytes: Uint8Array(1627) [ | +     91, | +     34, | +     100, | +     111, | +     110, | +     101, | +     47, | +     112, | +     114, | +     105, | +     118, | +     97, | +     116, | +     101, | +     45, | +     114, | +     101, | +     97, | +     100, | +     45, | +     112, | +     97
+  test/account-history/cache-scope.test.mjs :: capture in flight across its own: exit 0, 19 s, pass 1 fail 0

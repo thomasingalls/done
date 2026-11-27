@@ -1,0 +1,223 @@
+// @vitest-environment node
+import { accountTextPreparation } from '../src/crdt/accountTextPreparation';
+import { describe, it, expect, vi } from 'vitest';
+import * as fc from 'fast-check';
+import {
+  localWorkspacePreparation,
+  type PreparedWorkspaceState,
+  type PreparationScope,
+} from '../src/crdt/workspacePreparation';
+import { createAdmittedWorkspace, type AdmittedWorkspace } from '../src/crdt/admittedWorkspace';
+import { createAdmissionOwner, type OwnedPreparedReceiveQueue } from '../src/crdt/admissionQueue';
+import type { JournalSession } from '../src/crdt/custody';
+import { Y, createDoc, applyUpdate, encodeState, newMap, newText, newArray } from '../src/crdt/yjs';
+import { targetText } from '../src/crdt/workspaceCommands';
+import { serializeCollections } from '../src/crdt/serialize';
+import * as historySeam from '../src/crdt/yjs';
+const identity = {
+  id: 'human-one',
+  actor: { kind: 'human' as const, name: 'Alice', color: '#3f8fd6' },
+  device: { id: 'device-one', name: 'test device' },
+};
+const next = { date: '2026-09-08', section: 'next' as const },
+  done = { ...next, section: 'done' as const };
+const selection = (anchor: number, head = anchor) => ({ ranges: [{ anchor, head }], main: 0 });
+const master = (w: AdmittedWorkspace) => w.text({ kind: 'master' });
+const create = async (w: AdmittedWorkspace, text = 'card', to = next) => {
+  const receipt = await w.command({ kind: 'compose', to, text }).accepted;
+  return (receipt.value as { id: string }).id;
+};
+const remote = (w: AdmittedWorkspace, fn: (d: ReturnType<typeof createDoc>) => void) => {
+  const d = createDoc();
+  applyUpdate(d, w.snapshot());
+  let update!: Uint8Array;
+  d.on('update', (u) => {
+    update = u;
+  });
+  d.transact(() => fn(d));
+  d.destroy();
+  return new Uint8Array(update);
+};
+const until = async (condition: () => boolean) => {
+  for (let i = 0; i < 100; i++) {
+    if (condition()) return;
+    await new Promise((r) => setTimeout(r, 0));
+  }
+  throw Error('Condition not reached');
+};
+const makeFixture = async (
+  seed?: Uint8Array,
+  preparation:
+    | 'reference'
+    | 'local-handoff'
+    | 'local-snapshots'
+    | 'account-snapshots'
+    | 'account-text' = 'reference',
+  deviceLabelId?: string,
+) => {
+  let date = '2026-09-08';
+  let refuse = false,
+    fail = false,
+    release: (() => void) | undefined,
+    gate: Promise<void> | undefined;
+  const account = preparation.startsWith('account-');
+  const sources: import('../src/crdt/sourceCapture').SourceUpdate[][] = [];
+  const direct: Uint8Array[] = [];
+  let beforeAppend: (() => void) | undefined;
+  const owned: { state: PreparedWorkspaceState; scope: PreparationScope }[] = [],
+    retired: PreparedWorkspaceState[] = [];
+  const preparations: number[] = [],
+    writeReferences: Uint8Array[] = [];
+  let corrupt = false;
+  const abort = new AbortController(),
+    disk: Uint8Array[] = seed ? [seed] : [],
+    wal: Uint8Array[] = [];
+  const carrier = {
+    ...(account
+      ? {
+          captureLocal(
+            update: Uint8Array,
+            captured: import('../src/crdt/sourceCapture').SourceUpdate[],
+          ) {
+            sources.push(captured.map((s) => ({ ...s, bytes: s.bytes.slice() })));
+            return update.slice();
+          },
+        }
+      : {}),
+    state: 'active',
+    signal: abort.signal,
+    loadRecovery: async () => ({
+      records: disk.map((bytes) => ({ kind: 'update', bytes: bytes.slice() })),
+      journal: wal.map((bytes) => ({ bytes: bytes.slice() })),
+    }),
+    appendLocal(bytes: Uint8Array) {
+      beforeAppend?.();
+      if (refuse) return { status: 'refused', reason: 'quota' };
+      wal.push(bytes.slice());
+      return { status: 'journalled' };
+    },
+    async appendBatch(records: { bytes: Uint8Array }[]) {
+      writeReferences.push(...records.map((r) => r.bytes));
+      await gate;
+      if (fail) {
+        fail = false;
+        throw Error('disk fault');
+      }
+      disk.push(...records.map((r) => r.bytes.slice()));
+      return {};
+    },
+    async flushJournal() {
+      disk.push(...wal.splice(0));
+      return { retained: 0 };
+    },
+    async close() {
+      release?.();
+    },
+  } as unknown as JournalSession;
+  let prepareRemote!: OwnedPreparedReceiveQueue;
+  const doc = await createAdmittedWorkspace(
+    (options) => {
+      const local = options[localWorkspacePreparation];
+      return createAdmissionOwner(
+        carrier,
+        {
+          ...options,
+          ...(options[accountTextPreparation]
+            ? {
+                [accountTextPreparation]: {
+                  prepare(input, head) {
+                    const result = options[accountTextPreparation]!.prepare(input, head);
+                    if (result) {
+                      preparations.push(head.writer);
+                      direct.push(result.update);
+                    }
+                    return result;
+                  },
+                },
+              }
+            : {}),
+          prepare: (...args) => {
+            preparations.push(args[0].clientID);
+            return options.prepare(...args);
+          },
+          ...(local
+            ? {
+                [localWorkspacePreparation]: {
+                  ...local,
+                  accept(state, revision) {
+                    const previous = local.accept(state, revision);
+                    if (previous) retired.push(previous);
+                    return previous;
+                  },
+                  command(context, input, scope) {
+                    preparations.push(context.writer);
+                    let candidate: PreparedWorkspaceState | undefined;
+                    const result = local.command(context, input, {
+                      ...scope,
+                      ownState(state) {
+                        scope.ownState(state);
+                        owned.push({ state, scope });
+                        candidate = state;
+                      },
+                    });
+                    if (corrupt) candidate!.history.doc.getText('uncovered').insert(0, 'drift');
+                    return result;
+                  },
+                },
+              }
+            : {}),
+        },
+        (_receive, prepare) => {
+          prepareRemote = prepare;
+        },
+      );
+    },
+    {
+      identity,
+      ...(deviceLabelId ? { deviceLabelId } : {}),
+      ...(account ? { captureSources: true, suppressEmptySources: true } : {}),
+      validateReceive: () => {},
+      today: () => date,
+    },
+    preparation,
+  );
+  const emitted: Uint8Array[] = [];
+  doc.outgoing((b) => emitted.push(b));
+  return {
+    doc,
+    prepareRemote,
+    sources,
+    direct,
+    beforeAppend: (fn: () => void) => {
+      beforeAppend = fn;
+    },
+    owned,
+    retired,
+    preparations,
+    writeReferences,
+    corrupt: () => {
+      corrupt = true;
+    },
+    setDate: (value: string) => {
+      date = value;
+    },
+    disk,
+    wal,
+    emitted,
+    refuse: () => {
+      refuse = true;
+    },
+    fail: () => {
+      fail = true;
+    },
+    pause: () => {
+      gate = new Promise((r) => {
+        release = r;
+      });
+    },
+    resume: () => {
+      release?.();
+      gate = undefined;
+    },
+  };
+};

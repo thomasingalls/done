@@ -55,7 +55,13 @@ import { decodeInboundRecord, isInboundRecordTag, inboundReceiptByteWork } from 
 import { isHistoryInstallTag } from './historyInstall';
 import { hex, type Bytes } from './custodyCrypto';
 import type { VerificationMemo } from './verificationMemo';
-import { countLedger } from './accountLedgerMetrics';
+import {
+  countGraphWalk,
+  countLedger,
+  ledgerProfiling,
+  ledgerWorkStart,
+  measureLedgerWork,
+} from './accountLedgerMetrics';
 import { membershipEventEpoch } from './accountMembership';
 
 type Expected = NonNullable<Awaited<ReturnType<typeof expectedPosition>>> & { next: string };
@@ -87,16 +93,16 @@ export interface AccountLedgerView {
 // Large views use the reference, rather than accumulate an additional unbounded cache.
 const INDEX_MAX_ROWS = 32768,
   INDEX_MAX_BYTES = 32 * 1024 * 1024;
-/** Retained buffer capacity only. Object/string overhead and transient task copies are not RAM.
- * The caller supplies the separately owned proof memo charge; raw aliases in this graph count once.
- * A row refusal stops this bounded walk, so ownedBytes is absent when it was not measured. */
 export type AccountRecordOwnership = 'shared' | 'cloned';
-export function accountLedgerIndexUsage(
+/** The index gate (phase 554): the logical and physical row bounds only, with no graph walk.
+ * Since phase 538 retained bytes are reported, never a gate; the raw record byte bound stays in
+ * the callers. Inputs are validated exactly as the reporting call validates them. */
+export function accountLedgerIndexBounds(
   view: AccountLedgerView,
   records: readonly OpenedRecord[],
   proofBytes = 0,
   recordOwnership: AccountRecordOwnership = 'shared',
-): { logicalRows: number; ownedBytes?: number; eligible: boolean } {
+): { logicalRows: number; eligible: boolean } {
   if (recordOwnership !== 'shared' && recordOwnership !== 'cloned')
     captureError('Invalid record ownership observation');
   if (!Number.isSafeInteger(proofBytes) || proofBytes < 0)
@@ -107,13 +113,30 @@ export function accountLedgerIndexUsage(
     logicalRows += inboundEntryExtent(entry).count - 1;
     if (logicalRows > INDEX_MAX_ROWS) return { logicalRows, eligible: false };
   }
+  return { logicalRows, eligible: true };
+}
+/** Retained ownership on request (tests and diagnostics; decisions 2026-11-12): the gate above,
+ * then one walk of the retained graph. Retained buffer capacity only. Object/string overhead and
+ * transient task copies are not RAM. The caller supplies the separately owned proof memo charge;
+ * raw aliases in this graph count once. A row refusal skips the walk, so ownedBytes is absent. */
+export function accountLedgerIndexUsage(
+  view: AccountLedgerView,
+  records: readonly OpenedRecord[],
+  proofBytes = 0,
+  recordOwnership: AccountRecordOwnership = 'shared',
+): { logicalRows: number; ownedBytes?: number; eligible: boolean } {
+  const bounds = accountLedgerIndexBounds(view, records, proofBytes, recordOwnership);
+  if (!bounds.eligible) return bounds;
   // The non-owning cache structured-clones the value and independently slice-copies each
   // record. Shared mode adopts this exact graph, including aliases, after exact comparison.
+  const at = ledgerWorkStart(),
+    walked = (objects: number) => countGraphWalk('indexUsageWalks', objects);
   const ownedBytes =
     (recordOwnership === 'cloned'
-      ? ownedByteCapacity(view) + records.reduce((n, row) => n + row.bytes.length, 0)
-      : ownedByteCapacity([records, view])) + proofBytes;
-  return { logicalRows, ownedBytes, eligible: ownedBytes <= INDEX_MAX_BYTES };
+      ? ownedByteCapacity(view, walked) + records.reduce((n, row) => n + row.bytes.length, 0)
+      : ownedByteCapacity([records, view], walked)) + proofBytes;
+  measureLedgerWork('indexUsage', at);
+  return { ...bounds, ownedBytes }; // reported, not a gate: decisions 2026-11-11
 }
 const text = new TextDecoder('utf-8', { fatal: true });
 const fields = (r: OpenedRecord): unknown[] => {
@@ -204,7 +227,7 @@ export async function indexVerifiedLedger(
     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
   )
     return;
-  if (!accountLedgerIndexUsage(view, records, proofBytes, recordOwnership).eligible) return;
+  if (!accountLedgerIndexBounds(view, records, proofBytes, recordOwnership).eligible) return;
   const spool = view.census.delivery.spool;
   const sources = new Map<string, SourceIndex>();
   let sourceCount = 0;
@@ -284,7 +307,15 @@ export async function indexVerifiedLedger(
   };
 }
 
-export async function extendAccountLedger(
+/** Profiling wrapper only (phase 554); the continuation itself is unchanged below. */
+export function extendAccountLedger(
+  ...args: Parameters<typeof extendLedgerContinuation>
+): ReturnType<typeof extendLedgerContinuation> {
+  if (!ledgerProfiling) return extendLedgerContinuation(...args);
+  const at = ledgerWorkStart();
+  return extendLedgerContinuation(...args).finally(() => measureLedgerWork('extendLedger', at));
+}
+async function extendLedgerContinuation(
   previous: Readonly<AccountLedgerView>,
   before: readonly OpenedRecord[],
   records: OpenedRecord[],
@@ -316,7 +347,7 @@ export async function extendAccountLedger(
     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
   )
     return;
-  const usage = accountLedgerIndexUsage(
+  const usage = accountLedgerIndexBounds(
     previous,
     records,
     reuse.memo.ownedBytes?.() ?? 0,

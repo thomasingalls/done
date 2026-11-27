@@ -1,0 +1,284 @@
+// COPY-ONLY. The lost phone: three devices, A produces snapshots, B verifies, C is offline for all of
+// it with unsent writing, across two prune cycles (the snapshot C could have fallen back to is gone).
+// Built to expose: a device that took no part cannot catch up, loses or duplicates writing, or
+// diverges; and (own-stream) a producer that cut C's stream before receiving C's accepted writing.
+// VARIANT=install-first|send-first; SIZE=small|large; NEG=1 holds C's history fetch (must fail).
+import { test, expect, type Page } from '@playwright/test';
+import { writeFileSync } from 'node:fs';
+import { add } from './devices';
+import { startPublic } from './public-server';
+import {
+  writeMany,
+  bigCard,
+  workers,
+  snapshot,
+  prune,
+  documentOf,
+  count,
+  mark,
+  series,
+  threeDevices,
+} from './scenario';
+import { openMenuSection } from '../geometry/openApp';
+import { netLog, sampler, dumpTrace, workerState, load } from './probe';
+
+const variant = process.env.VARIANT ?? 'install-first';
+const neg = process.env.NEG === '1';
+const large = process.env.SIZE === 'large';
+const n = (small: number, big: number) => (large ? big : small);
+test(`lost phone returns after two prune cycles (${variant}${neg ? ', history held' : ''}, ${large ? 'large' : 'small'})`, async ({
+  page,
+  browser,
+}, info) => {
+  page.setDefaultTimeout(30000);
+  const svc = await startPublic(info.outputPath('public'));
+  const log: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => {
+    const line = `${((Date.now() - t0) / 1000).toFixed(1)}s [${load()}] ${s}`;
+    log.push(line);
+    console.log(line);
+  };
+  let setup: Awaited<ReturnType<typeof threeDevices>> | undefined;
+  const markers: string[] = [];
+  const write = async (p: Page, prefix: string, k: number, gap?: number) => {
+    await writeMany(p, prefix, k, gap);
+    markers.push(...series(prefix, k));
+  };
+  let stopSampling = async () => {};
+  try {
+    setup = await threeDevices(page, browser, add);
+    const A = page,
+      B = setup.pair.second,
+      Cd = setup.third;
+    note('three devices ready');
+    netLog(Cd, info.outputPath('c-net.jsonl'), t0);
+    const metrics = async (label: string) => note(label + ' state ' + JSON.stringify(await workerState(Cd)));
+    note('production /config ' + JSON.stringify(await A.evaluate(async () => (await fetch('/__account-setup/config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })).json())));
+    const epochs = new Set<number>();
+    Cd.on('request', (r) => {
+      if (!r.url().includes('/account/delivery/read-v2')) return;
+      const m = /"done\/private-read\/v2",2,(?:"[^"]*",){7}(\d+)/.exec(r.postDataBuffer()?.toString('latin1') ?? '');
+      if (m) epochs.add(Number(m[1]));
+    });
+    let catalog = 0,
+      pages = 0;
+    Cd.on('request', (r) => {
+      if (r.url().includes('/account/history/v1/checkpoint') && r.postData()?.includes('"catalog"')) catalog++;
+      if (r.url().includes('/account/delivery/read-v2')) pages++;
+    });
+    // Own stream: C's writing the service accepts while A (the producer) has not received it.
+    await workers(A, () => {
+      (globalThis as any).__holdReceive = true;
+    });
+    await write(Cd, 'C accepted before the cut', 3, 400);
+    await expect(B.locator('.shell')).toContainText(mark('C accepted before the cut', 2), { timeout: 60000 });
+    // Shared text both A and the returning device will change: A deletes words C edits inside.
+    const goals = (p: Page) => p.locator('.goals .cm-content');
+    await goals(A).click();
+    await A.keyboard.press('ControlOrMeta+End');
+    await A.keyboard.insertText(' [alpha] [bravo] [charlie] [delta];');
+    await expect(goals(Cd)).toContainText('[alpha] [bravo] [charlie] [delta];', { timeout: 60000 });
+    await setup.thirdContext.setOffline(true);
+    note('C offline (it takes no part from here)');
+    // C, offline: writes inside a word A is about to delete, and at the end where A also writes.
+    await goals(Cd).click();
+    await Cd.keyboard.press('ControlOrMeta+End');
+    for (let i = 0; i < '] [delta];'.length; i++) await Cd.keyboard.press('ArrowLeft');
+    await Cd.keyboard.insertText('C-INSIDE');
+    await Cd.keyboard.press('ControlOrMeta+End');
+    await Cd.keyboard.insertText(' C-tail;');
+    // A, before its snapshot: deletes the words around C's insertion and writes at the end.
+    await goals(A).click();
+    await A.keyboard.press('ControlOrMeta+End');
+    for (let i = 0; i < '[delta];'.length; i++) await A.keyboard.press('ArrowLeft');
+    for (let i = 0; i < '[bravo] [charlie] '.length; i++) await A.keyboard.press('Shift+ArrowLeft');
+    await A.keyboard.press('Backspace');
+    await A.keyboard.press('ControlOrMeta+End');
+    await A.keyboard.insertText(' A-tail;');
+    await expect(goals(A)).toContainText('[alpha] [delta]; A-tail;');
+    note('A deleted [bravo] [charlie] and C wrote inside [charlie] while offline');
+    await write(Cd, 'C unsent', n(15, 150), 50);
+    for (let i = 0; i < n(1, 3); i++) {
+      note(`C large card ${i}: ${await bigCard(Cd, mark('C unsent large', i), Number(process.env.BIG ?? 5000))} ms`);
+      markers.push(mark('C unsent large', i));
+    }
+    note('C holds its unsent writing');
+    if (process.env.REDUCED === '1') {
+      // The returning device has reduced its own history while offline (offline counts as quiet).
+      const revision = () =>
+        Cd.evaluate(async () => {
+          let best = 0;
+          for (const { name } of await indexedDB.databases()) {
+            if (!name) continue;
+            const db = await new Promise<IDBDatabase>((y, n) => {
+              const r = indexedDB.open(name);
+              r.onsuccess = () => y(r.result);
+              r.onerror = () => n(r.error);
+            });
+            try {
+              if (!db.objectStoreNames.contains('meta')) continue;
+              const c = await new Promise<any>((y, n) => {
+                const tx = db.transaction('meta');
+                const g = tx.objectStore('meta').get('counter');
+                tx.oncomplete = () => y(g.result);
+                tx.onabort = () => n(tx.error);
+              });
+              if (c?.v === 5) best = Math.max(best, c.baseline?.revision ?? 0);
+            } finally {
+              db.close();
+            }
+          }
+          return best;
+        });
+      await workers(Cd, () => {
+        (globalThis as any).__allowReduction = true;
+      });
+      await Cd.locator('.goals .cm-content').click();
+      await Cd.keyboard.insertText(' ');
+      await expect.poll(revision, { timeout: 180000 }).toBeGreaterThan(0);
+      await workers(Cd, () => {
+        (globalThis as any).__allowReduction = false;
+      });
+      note('C reduced its local history while offline (baseline revision ' + (await revision()) + ')');
+    }
+    let sequence = 1;
+    await write(A, 'A cycle one before floor', n(10, 80));
+    note('snapshot 2 ' + (await snapshot(A, B, ++sequence)));
+    await workers(A, () => {
+      (globalThis as any).__holdReceive = false;
+    });
+    await expect(A.locator('.shell')).toContainText(mark('C accepted before the cut', 2), { timeout: 60000 });
+    note('A received C accepted writing after cutting');
+    await write(A, 'A cycle one after floor', n(8, 60));
+    note('snapshot 3 ' + (await snapshot(A, B, ++sequence)));
+    await prune(A);
+    note('prune 1 (floor: snapshot 2)');
+    let largeMs = 0;
+    for (let i = 0; i < n(2, Number(process.env.LARGE_CARDS ?? 200)); i++) {
+      largeMs += await bigCard(A, mark('A large', i), Number(process.env.BIG ?? 5000));
+      markers.push(mark('A large', i));
+      await A.waitForTimeout(350);
+    }
+    note(`A wrote ${n(2, Number(process.env.LARGE_CARDS ?? 200))} large cards of ${process.env.BIG ?? 5000} bytes (${largeMs} ms saving)`);
+    await write(A, 'A cycle two before floor', n(8, 60));
+    note('snapshot 4 ' + (await snapshot(A, B, ++sequence)));
+    await write(A, 'A cycle two after floor', n(6, 40));
+    note('snapshot 5 ' + (await snapshot(A, B, ++sequence)));
+    await prune(A);
+    note('prune 2 (floor: snapshot 4); snapshots 2 and 3 now pruned receipts');
+    await write(A, 'A past the floor', n(24, 300));
+    await write(B, 'B past the floor', n(4, 20));
+    note('history written');
+    // C returns.
+    if (neg)
+      await workers(Cd, () => {
+        (globalThis as any).__holdHistory = true;
+      });
+    let lastA = mark('A past the floor', n(24, 300) - 1);
+    const lastC = mark('C unsent', n(15, 150) - 1);
+    const sample = async (label: string) =>
+      note(`${label}: notice=${JSON.stringify(await Cd.locator('.sync-notice').allTextContents())}`);
+    if (variant === 'install-first') await Cd.route('**/account/delivery/submit', (r) => r.abort());
+    else
+      await Cd.route('**/account/history/v1/checkpoint', (r) =>
+        r.request().postDataJSON().payload === 'catalog' ? r.abort() : r.continue(),
+      );
+    const midprune = process.env.MIDPRUNE === '1';
+    // From the moment C returns, its stream reads wait until prune 3 has landed: C installs snapshot 5
+    // (history route) but cannot read the suffix past it, so the prune catches it behind the new floor.
+    let holding = midprune,
+      release = () => {};
+    const held = new Promise<void>((y) => (release = y));
+    let slow = midprune;
+    if (midprune) {
+      // C reads its suffix slowly, so the next prune lands while it is mid-receive.
+      await Cd.route('**/account/delivery/read-v2-batch', (r) => (slow ? r.fulfill({ status: 404, body: '{}' }) : r.continue()));
+      await Cd.route('**/account/delivery/read-v2', async (r) => {
+        if (slow) await new Promise((y) => setTimeout(y, Number(process.env.READ_DELAY ?? 2000)));
+        // Hold C's suffix reads from just after it fetched snapshot 5 until prune 3 has landed.
+        if (holding) await held;
+        await r.continue().catch(() => {});
+      });
+    }
+    let unavailable = 0;
+    Cd.on('response', async (r) => {
+      if (r.status() === 409 && r.url().includes('/account/delivery/read-v2')) {
+        unavailable++;
+        note('C read refused: ' + JSON.stringify(await r.json().catch(() => ({}))));
+      }
+    });
+    let installedLatest = 0;
+    Cd.on('request', (r) => {
+      if (r.url().includes('/account/history/v1/checkpoint') && r.postData()?.includes('"latest"')) installedLatest++;
+    });
+    await metrics('before return');
+    stopSampling = sampler(Cd, info.outputPath('c-samples.jsonl'), t0);
+    await setup.thirdContext.setOffline(false);
+    note('C online');
+    if (midprune) {
+      await expect.poll(() => installedLatest, { timeout: 120000 }).toBeGreaterThan(0);
+      note('C fetched snapshot 5 and is reading its suffix slowly; pruning again now');
+      note('snapshot 6 ' + (await snapshot(A, B, ++sequence)));
+      await write(A, 'A during C catch-up', n(4, 20));
+      lastA = mark('A during C catch-up', n(4, 20) - 1);
+      note('snapshot 7 ' + (await snapshot(A, B, ++sequence)));
+      await prune(A);
+      note(`prune 3 landed (floor: snapshot 6); C still behind: ${!((await Cd.locator('.shell').textContent()) ?? '').includes(mark('A past the floor', n(24, 300) - 1))}`);
+      slow = false;
+      holding = false;
+      release();
+    }
+    const first = variant === 'install-first' ? () => Cd.locator('.shell').textContent().then((t) => !!t?.includes(lastA)) : () => A.locator('.shell').textContent().then((t) => !!t?.includes(lastC));
+    let done = false;
+    for (let i = 0; i < 36 && !done; i++) {
+      await Cd.waitForTimeout(5000);
+      done = await first();
+      if (i % 3 === 2) await sample(`C after ${(i + 1) * 5}s first-phase-done=${done}`);
+    }
+    note(`${variant} first phase done=${done}`);
+    await metrics('first phase');
+    if (variant === 'install-first') await Cd.unroute('**/account/delivery/submit');
+    else await Cd.unroute('**/account/history/v1/checkpoint');
+    note('second phase starts (route removed)');
+    let both = false;
+    for (let i = 0; i < 36 && !both; i++) {
+      await Cd.waitForTimeout(5000);
+      both =
+        ((await Cd.locator('.shell').textContent()) ?? '').includes(lastA) &&
+        ((await A.locator('.shell').textContent()) ?? '').includes(lastC);
+      if (i % 3 === 2) await sample(`C after second phase ${(i + 1) * 5}s both=${both}`);
+    }
+    await metrics('second phase');
+    await stopSampling();
+    note('trace entries ' + (await dumpTrace(Cd, info.outputPath('c-trace.jsonl'))));
+    note(`both directions arrived=${both} C catalog reads=${catalog} C read requests=${pages} C read epochs=${JSON.stringify([...epochs])}`);
+    await openMenuSection(Cd, 'Sync');
+    note('C sync: ' + JSON.stringify(await Cd.getByRole('region', { name: 'Sync', exact: true }).allTextContents()));
+    await Cd.waitForTimeout(10000);
+    const docs = [await documentOf(A), await documentOf(B), await documentOf(Cd)];
+    const same =
+      docs.every((d) => JSON.stringify(d.state) === JSON.stringify(docs[0]!.state)) &&
+      docs.every((d) => d.text === docs[0]!.text);
+    const missing = docs.map((d) => markers.filter((m) => count(d.text, m) === 0).length);
+    const duplicated = docs.map((d) => markers.filter((m) => count(d.text, m) > 1).length);
+    note(`converged=${same} markers=${markers.length} missing=${JSON.stringify(missing)} duplicated=${JSON.stringify(duplicated)} text bytes=${docs.map((d) => d.text.length)}`);
+    const shared = ['C-INSIDE', 'C-tail;', 'A-tail;', '[alpha]', '[delta];', '[bravo]', '[charlie]'];
+    note('shared text counts ' + JSON.stringify(docs.map((d) => shared.map((w) => count(d.text, w)))));
+    if (neg) {
+      expect(same).toBe(false);
+    } else {
+      expect(both).toBe(true);
+      expect(same).toBe(true);
+      expect(missing).toEqual([0, 0, 0]);
+      expect(duplicated).toEqual([0, 0, 0]);
+      for (const d of docs) expect(shared.map((w) => count(d.text, w))).toEqual([1, 1, 1, 1, 1, 0, 0]);
+    }
+  } finally {
+    await stopSampling().catch(() => {});
+    writeFileSync(info.outputPath('timeline.txt'), log.join('\n') + '\n');
+    await setup?.thirdContext.close().catch(() => {});
+    await setup?.pair.other.close().catch(() => {});
+    await svc.stop();
+  }
+});

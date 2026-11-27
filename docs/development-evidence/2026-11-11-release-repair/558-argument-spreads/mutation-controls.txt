@@ -1,0 +1,188 @@
+== 423: old spread of the reused rows (src/crdt/contentStore.ts); cases: contentStore openSnapshot, fixed parameter list; vitest exit 1
+  FAILED a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot) 10710ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 59ms
+    → Maximum call stack size exceeded
+    → expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+    RangeError: Maximum call stack size exceeded
+    AssertionError: expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+== 806: old spread of the sealed batch (src/crdt/contentStore.ts); cases: contentStore appendRecords, fixed parameter list; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 15219ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 62ms
+    → Maximum call stack size exceeded
+    → expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+    RangeError: Maximum call stack size exceeded
+    AssertionError: expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+== 808: old spread of the opened batch (src/crdt/contentStore.ts); cases: contentStore appendRecords, fixed parameter list; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 15356ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 59ms
+    → Maximum call stack size exceeded
+    → expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+    RangeError: Maximum call stack size exceeded
+    AssertionError: expected { …(5) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) }
+== 704: old spread of the appended content rows (src/crdt/inboundLedger.ts); cases: inboundLedger prepare, fixed parameter list; vitest exit 1
+  FAILED an incremental prepare appends every new row in order (inboundLedger prepare) 1126ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 64ms
+    → Maximum call stack size exceeded
+    → expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, 
+    RangeError: Maximum call stack size exceeded
+    AssertionError: expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inbo
+== 99: old spread of a card's lines (src/crdt/serialize.ts); cases: serialize collectionLines, fixed parameter list; vitest exit 1
+  FAILED serializes and parses back a card with ROWS lines (serialize collectionLines) 31ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 57ms
+    → Maximum call stack size exceeded
+    → expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, 
+    RangeError: Maximum call stack size exceeded
+    AssertionError: expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inbo
+== 242: old unshift spread of the failed batch (src/crdt/persistence.ts); cases: persistence startFlush, fixed parameter list; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2316ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 58ms
+    → expected RangeError: Maximum call stack size excee… to be DOMException{ stack: 'InvalidStateEr…' } // Object.is equality
+    → expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, 
+    AssertionError: expected RangeError: Maximum call stack size excee… to be DOMException{ stack: 'InvalidStateEr…' } // Object.is equality
+    AssertionError: expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inbo
+== 316: old Math.max spread of the visible ranges (src/editor/gentleContext.ts); cases: gentleContext write, fixed parameter list; vitest exit 1
+  FAILED dims the same lines as a fresh projection (gentleContext write) 50ms
+  FAILED the five changed files spread arguments only where the call has a fixed parameter list 65ms
+    → Maximum call stack size exceeded
+    → expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, 
+    RangeError: Maximum call stack size exceeded
+    AssertionError: expected { Object (src/crdt/contentStore.ts, src/crdt/inboundLedger.ts, ...) } to deeply equal { Object (src/crdt/contentStore.ts, src/crdt/inbo
+== 423: reused rows aliased, not copied (src/crdt/contentStore.ts); cases: contentStore openSnapshot; vitest exit 1
+  FAILED a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot) 11356ms
+    → row 1 has the wrong bytes
+    Error: row 1 has the wrong bytes
+== 806: first sealed row of the batch dropped (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 15992ms
+    → row 4 has the wrong bytes
+    Error: row 4 has the wrong bytes
+== 808: opened batch pushed in reverse (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 15210ms
+    → validate was handed row 4 out of sequence order
+    Error: validate was handed row 4 out of sequence order
+== 704: appended content rows pushed in reverse (src/crdt/inboundLedger.ts); cases: inboundLedger prepare; vitest exit 1
+  FAILED an incremental prepare appends every new row in order (inboundLedger prepare) 2032ms
+    → expected 'equivalent' to be 'same' // Object.is equality
+    AssertionError: expected 'equivalent' to be 'same' // Object.is equality
+== 99: a card's lines pushed in reverse (src/crdt/serialize.ts); cases: serialize collectionLines; vitest exit 1
+  FAILED serializes and parses back a card with ROWS lines (serialize collectionLines) 69ms
+    → Noncanonical card list.
+    Error: Noncanonical card list.
+== 242: first two entries of the failed batch swapped (src/crdt/persistence.ts); cases: persistence startFlush; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2305ms
+    → promise rejected "Error: update 0 was written out of order" instead of resolving
+    AssertionError: promise rejected "Error: update 0 was written out of order" instead of resolving
+== 316: fold takes the smallest end, not the largest (src/editor/gentleContext.ts); cases: gentleContext write; vitest exit 1
+  FAILED dims the same lines as a fresh projection (gentleContext write) 62ms
+    → expected [ +0, 7, 150016, 150050, 150061, …(1) ] to deeply equal [ +0, 7, 150016, 150061, 150068 ]
+    AssertionError: expected [ +0, 7, 150016, 150050, 150061, …(1) ] to deeply equal [ +0, 7, 150016, 150061, 150068 ]
+== 242: entries that arrived meanwhile put back before the failed batch (review) (src/crdt/persistence.ts); cases: persistence startFlush; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2322ms
+    → promise rejected "Error: update 0 was written out of order" instead of resolving
+    AssertionError: promise rejected "Error: update 0 was written out of order" instead of resolving
+== 316: the caret dropped from the fold, 0 as its first value (review) (src/editor/gentleContext.ts); cases: gentleContext write; vitest exit 1
+  FAILED dims the same lines as a fresh projection (gentleContext write) 87ms
+    → the plan was not computed through the caret: expected true to be false // Object.is equality
+    AssertionError: the plan was not computed through the caret: expected true to be false // Object.is equality
+== 423: first reused row dropped (src/crdt/contentStore.ts); cases: contentStore openSnapshot; vitest exit 1
+  FAILED a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot) 10745ms
+    → expected [ …(149999) ] to have a length of 150000 but got 149999
+    AssertionError: expected [ …(149999) ] to have a length of 150000 but got 149999
+== 806: sealed batch put in front of the rows the view already held (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 16334ms
+    → row 0 has the wrong bytes
+    Error: row 0 has the wrong bytes
+== 808: opened batch put in front of the rows the view already held (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 15198ms
+    → validate was handed row 150000 out of sequence order
+    Error: validate was handed row 150000 out of sequence order
+== 808: opened rows alias the plaintexts the append erases, not copies (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 15869ms
+    → row 3 has the wrong bytes
+    Error: row 3 has the wrong bytes
+== 704: cached rows alias the caller's rows, not the copies (src/crdt/inboundLedger.ts); cases: inboundLedger prepare; vitest exit 1
+  FAILED an incremental prepare appends every new row in order (inboundLedger prepare) 2058ms
+    → expected 'equivalent' to be 'same' // Object.is equality
+    AssertionError: expected 'equivalent' to be 'same' // Object.is equality
+== 704: appended rows put in front of the rows already cached (src/crdt/inboundLedger.ts); cases: inboundLedger prepare; vitest exit 1
+  FAILED an incremental prepare appends every new row in order (inboundLedger prepare) 1986ms
+    → expected 'equivalent' to be 'same' // Object.is equality
+    AssertionError: expected 'equivalent' to be 'same' // Object.is equality
+== 99: a card's lines put before the earlier cards (src/crdt/serialize.ts); cases: serialize collectionLines; vitest exit 1
+  FAILED serializes and parses back a card with ROWS lines (serialize collectionLines) 73ms
+    → Noncanonical card list.
+    Error: Noncanonical card list.
+== 242: whole failed batch put back in reverse (src/crdt/persistence.ts); cases: persistence startFlush; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2372ms
+    → promise rejected "Error: update 0 was written out of order" instead of resolving
+    AssertionError: promise rejected "Error: update 0 was written out of order" instead of resolving
+== 242: entries that arrived meanwhile put back in reverse (src/crdt/persistence.ts); cases: persistence startFlush; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2371ms
+    → promise rejected "Error: update 150000 was written out of o…" instead of resolving
+    AssertionError: promise rejected "Error: update 150000 was written out of o…" instead of resolving
+== 316: fold over where each range starts, not where it ends (src/editor/gentleContext.ts); cases: gentleContext write; vitest exit 1
+  FAILED dims the same lines as a fresh projection (gentleContext write) 62ms
+    → expected [ +0, 7, 150016, 150050, 150061, …(1) ] to deeply equal [ +0, 7, 150016, 150061, 150068 ]
+    AssertionError: expected [ +0, 7, 150016, 150050, 150061, …(1) ] to deeply equal [ +0, 7, 150016, 150061, 150068 ]
+== 423: reused rows pushed in reverse (src/crdt/contentStore.ts); cases: contentStore openSnapshot; vitest exit 1
+  FAILED a full read after resume reuses the opened view of ROWS rows (contentStore openSnapshot) 10928ms
+    → validate was handed row 1 out of sequence order
+    Error: validate was handed row 1 out of sequence order
+== 806: sealed batch pushed in reverse (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 17359ms
+    → row 3 has the wrong bytes
+    Error: row 3 has the wrong bytes
+== 808: first opened row of the batch dropped (src/crdt/contentStore.ts); cases: contentStore appendRecords; vitest exit 1
+  FAILED one append of ROWS rows extends the warm view (contentStore appendRecords) 16280ms
+    → expected [ …(150002) ] to have a length of 150003 but got 150002
+    AssertionError: expected [ …(150002) ] to have a length of 150003 but got 150002
+== 704: first appended content row dropped (src/crdt/inboundLedger.ts); cases: inboundLedger prepare; vitest exit 1
+  FAILED an incremental prepare appends every new row in order (inboundLedger prepare) 2093ms
+    → expected 'equivalent' to be 'same' // Object.is equality
+    AssertionError: expected 'equivalent' to be 'same' // Object.is equality
+== 99: first line of each card dropped (src/crdt/serialize.ts); cases: serialize collectionLines; vitest exit 1
+  FAILED serializes and parses back a card with ROWS lines (serialize collectionLines) 43ms
+    → expected [ '', '  line 1', …(149999) ] to have a length of 150004 but got 150001
+    AssertionError: expected [ '', '  line 1', …(149999) ] to have a length of 150004 but got 150001
+== 242: failed batch dropped (src/crdt/persistence.ts); cases: persistence startFlush; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2309ms
+    → promise rejected "Error: update 0 was written out of order" instead of resolving
+    AssertionError: promise rejected "Error: update 0 was written out of order" instead of resolving
+== 242: entries that arrived meanwhile dropped (src/crdt/persistence.ts); cases: persistence startFlush; vitest exit 1
+  FAILED a failed flush of ROWS recovered updates is retried whole (persistence startFlush) 2378ms
+    → promise rejected "Error: 150000 of 150002 updates were writ…" instead of resolving
+    AssertionError: promise rejected "Error: 150000 of 150002 updates were writ…" instead of resolving
+== summary
+  tripped: 423: old spread of the reused rows
+  tripped: 806: old spread of the sealed batch
+  tripped: 808: old spread of the opened batch
+  tripped: 704: old spread of the appended content rows
+  tripped: 99: old spread of a card's lines
+  tripped: 242: old unshift spread of the failed batch
+  tripped: 316: old Math.max spread of the visible ranges
+  tripped: 423: reused rows aliased, not copied
+  tripped: 806: first sealed row of the batch dropped
+  tripped: 808: opened batch pushed in reverse
+  tripped: 704: appended content rows pushed in reverse
+  tripped: 99: a card's lines pushed in reverse
+  tripped: 242: first two entries of the failed batch swapped
+  tripped: 316: fold takes the smallest end, not the largest
+  tripped: 242: entries that arrived meanwhile put back before the failed batch (review)
+  tripped: 316: the caret dropped from the fold, 0 as its first value (review)
+  tripped: 423: first reused row dropped
+  tripped: 806: sealed batch put in front of the rows the view already held
+  tripped: 808: opened batch put in front of the rows the view already held
+  tripped: 808: opened rows alias the plaintexts the append erases, not copies
+  tripped: 704: cached rows alias the caller's rows, not the copies
+  tripped: 704: appended rows put in front of the rows already cached
+  tripped: 99: a card's lines put before the earlier cards
+  tripped: 242: whole failed batch put back in reverse
+  tripped: 242: entries that arrived meanwhile put back in reverse
+  tripped: 316: fold over where each range starts, not where it ends
+  tripped: 423: reused rows pushed in reverse
+  tripped: 806: sealed batch pushed in reverse
+  tripped: 808: first opened row of the batch dropped
+  tripped: 704: first appended content row dropped
+  tripped: 99: first line of each card dropped
+  tripped: 242: failed batch dropped
+  tripped: 242: entries that arrived meanwhile dropped
+all sources restored byte for byte

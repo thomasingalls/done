@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+"""Phase 548 mutation controls. Usage: mutation-controls.py <copy of the final tree> <out file>.
+Each mutation is applied alone to the copy, the named tests run, and the file is restored."""
+import pathlib, subprocess, sys, time, os
+root = pathlib.Path(sys.argv[1]); out = open(sys.argv[2], 'w')
+AW = 'src/crdt/admittedWorkspace.ts'; WC = 'src/crdt/workspaceCommands.ts'
+UI = 'src/ui/workspaceUi.tsx'; ED = 'src/editor/admittedEditor.ts'
+T = 'test/oversizedActions.test.ts'; TU = 'test/oversizedActionsUi.test.tsx'
+mutations = [
+  ('M1 no refusal of an oversized command', AW,
+   'if (update.length > MAX_JOURNAL_UPDATE) {', 'if (false && update.length > MAX_JOURNAL_UPDATE) {',
+   [T, '-t', 'duplicate just over']),
+  ('M2 compose never splits', WC,
+   'utf8Length(command.text) > COMPOSE_WHOLE_BYTES', 'false && utf8Length(command.text) > COMPOSE_WHOLE_BYTES',
+   [T, '-t', 'compose just over']),
+  ('M3 a split compose closes its undo step', WC,
+   "{ open: rest !== '' }", '{ open: false }',
+   [T, '-t', 'compose 64 KiB']),
+  ('M4 later slices replace the compose result', AW,
+   'state.value = intent.continuation ? basis.value : result.value;', 'state.value = result.value;',
+   [T, '-t', 'compose 200 KiB']),
+  ('M5 no ceiling before queueing', AW,
+   'if (bytes.length * 2 + MAX_JOURNAL_UPDATE > MAX_PENDING_BYTES) throw new ActionTooLarge();', '',
+   [T, '-t', 'one action ceiling']),
+  ('M6 direct text path without its size guard', AW,
+   'if (!update || update.length > MAX_JOURNAL_UPDATE) return undefined;', 'if (!update) return undefined;',
+   [T]),
+  ('M7 the scope owns the history before the command runs', AW,
+   '    } else state = fork();\n', '    } else state = fork();\n    scope?.ownState(state);\n    owned = true;\n',
+   [T, '-t', 'local-snapshots preparation']),
+  ('M8 execute ignores the refusal result', UI,
+   'if (result.value === TOO_LARGE_FOR_ONE_ACTION) {', 'if (false && result.value === TOO_LARGE_FOR_ONE_ACTION) {',
+   [TU]),
+  ('M9 execute reports the ceiling as a storage failure', UI,
+   'if (cause instanceof ActionTooLarge) {', 'if (false && cause instanceof ActionTooLarge) {',
+   [TU]),
+  ('M10 the editor ignores the refusal result', ED,
+   '(receipt as { value?: unknown }).value !== TOO_LARGE_FOR_ONE_ACTION', '(receipt as { value?: unknown }).value !== "never"',
+   [TU]),
+]
+for name, rel, old, new, args in mutations:
+    p = root / rel; original = p.read_text()
+    if original.count(old) != 1: raise SystemExit(f'{name}: anchor count {original.count(old)}')
+    # M7 also needs the later ownership to stay single.
+    text = original.replace(old, new)
+    if name.startswith('M7'): text = text.replace('      scope?.ownState(state);\n      owned = true;\n      if (selectionHistory && scope) {', '      if (!owned) scope?.ownState(state);\n      owned = true;\n      if (selectionHistory && scope) {')
+    p.write_text(text)
+    try:
+        t = time.time()
+        r = subprocess.run(['node', 'node_modules/vitest/vitest.mjs', 'run', *args], cwd=root, capture_output=True, text=True, timeout=1500)
+        lines = [l for l in (r.stdout + r.stderr).splitlines() if 'Tests ' in l or 'Test Files' in l]
+        out.write(f'{name} | {rel} | tests: {" ".join(args)} | exit {r.returncode} | {round(time.time()-t)} s | {" / ".join(x.strip() for x in lines)} | load {os.getloadavg()[0]:.2f}\n'); out.flush()
+    finally:
+        p.write_text(original)
+out.write('MUTATIONS DONE\n'); out.close()

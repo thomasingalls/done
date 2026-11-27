@@ -1,0 +1,50 @@
+final unchanged                          passed    52 ms                       
+final byte-actual-v001-request           failed    21 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-expected-v001-request         failed    22 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-actual-v120-request           failed    40 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-expected-v120-request         failed    40 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-actual-v240-request           failed    59 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-expected-v240-request         failed    57 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-array-request                 failed    21 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-buffer-request                failed    23 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-clamped-request               failed    23 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-shorter-request               failed    22 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-longer-request                failed    22 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-extra-property-request        failed    22 ms  request comparison   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-actual-v001-page              failed    39 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-expected-v001-page            failed    39 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-actual-v120-page              failed    57 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-expected-v120-page            failed    57 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-actual-v240-page              failed    74 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final byte-expected-v240-page            failed    74 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-array-page                    failed    33 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-buffer-page                   failed    43 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-clamped-page                  failed    41 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-shorter-page                  failed    41 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-longer-page                   failed    40 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+final type-extra-property-page           failed    39 ms  page comparison      AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+base  unchanged                          passed  2906 ms                       
+base  byte-actual-v001-request           failed    22 ms  request comparison   AssertionError: expected Uint8Array[ 90, 34, 100, 111, …(427) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  byte-expected-v001-request         failed    21 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(427) ] to deeply equal Uint8Array[ 90, 34, 100, 111, …(427) ]
+base  byte-actual-v120-request           failed  1462 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(427) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  byte-expected-v120-request         failed  1453 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(427) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  byte-actual-v240-request           failed  2926 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(427) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  byte-expected-v240-request         failed  2859 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(427) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  type-array-request                 failed    20 ms  request comparison   AssertionError: expected [ 91, 34, 100, 111, 110, 101, …(530) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  type-buffer-request                failed    22 ms  request comparison   AssertionError: expected Buffer[ 91, 34, 100, 111, 110, …(436) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  type-clamped-request               failed    21 ms  request comparison   AssertionError: expected Uint8ClampedArray[ 91, 34, 100, …(426) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  type-shorter-request               failed    22 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(426) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  type-longer-request                failed    21 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(428) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  type-extra-property-request        failed    21 ms  request comparison   AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(427), extra: 1 ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(427) ]
+base  byte-actual-v001-page              failed    38 ms  page comparison      AssertionError: expected Uint8Array[ 90, 34, 100, 111, …(11374) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  byte-expected-v001-page            failed    38 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11374) ] to deeply equal Uint8Array[ 90, 34, 100, 111, …(11374) ]
+base  byte-actual-v120-page              failed  1451 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11374) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  byte-expected-v120-page            failed  1460 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11374) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  byte-actual-v240-page              failed  2870 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11374) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  byte-expected-v240-page            failed  2865 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11374) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  type-array-page                    failed    28 ms  page comparison      AssertionError: expected [ Array(11483) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  type-buffer-page                   failed    45 ms  page comparison      AssertionError: expected Buffer[ 91, 34, 100, 111, 110, …(11383) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  type-clamped-page                  failed    41 ms  page comparison      AssertionError: expected Uint8ClampedArray[ 91, 34, 100, …(11373) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  type-shorter-page                  failed    40 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11373) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  type-longer-page                   failed    42 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11375) ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]
+base  type-extra-property-page           failed    40 ms  page comparison      AssertionError: expected Uint8Array[ 91, 34, 100, 111, …(11374), extra: 1 ] to deeply equal Uint8Array[ 91, 34, 100, 111, …(11374) ]

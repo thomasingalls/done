@@ -1,5 +1,5 @@
 /** Private bounded transport framing. Keys and trust anchors are always resolved by owners. */
-import { hex, unhex } from './recovery.ts';
+import { hex, lowerHexBytes, unhex } from './recovery.ts';
 import { SUBMISSION_LIMIT } from './submission.ts';
 import { ENVELOPE_WIRE_LIMIT } from './envelope.ts';
 import { RESPONSE_LIMIT, type Bytes, type DecisionAuthority } from './positionDecision.ts';
@@ -39,10 +39,8 @@ const fixed = (v: unknown, size: number): string => {
   unhex(v, size);
   return v as string;
 };
-const boundedHex = (v: unknown, max: number): Bytes => {
-  if (typeof v !== 'string' || v.length > max * 2 || !/^(?:[0-9a-f]{2})+$/.test(v)) invalid();
-  return unhex(v, (v as string).length / 2);
-};
+const boundedHex = (v: unknown, max: number): Bytes =>
+  (typeof v === 'string' && v.length <= max * 2 ? lowerHexBytes(v) : undefined) ?? invalid();
 function parse(bytes: Bytes, max: number): unknown[] {
   if (!(bytes instanceof Uint8Array) || bytes.length > max) return invalid();
   const text = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes);

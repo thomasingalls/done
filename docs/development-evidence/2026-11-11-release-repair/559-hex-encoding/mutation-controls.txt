@@ -1,0 +1,144 @@
+== custodyCrypto: the join path for every length (the base routine) (src/crdt/custodyCrypto.ts); vitest exit 1; 3 failed, 22 passed
+  FAILED hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source) 252ms
+  FAILED hex builds no array with one element per input byte > custodyCrypto joins below 64 bytes and not from 64 (fails on the base source) 0ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 210ms
+== recovery: the join path for every length (the base routine) (account-protocol/recovery.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source) 274ms
+  FAILED hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source) 0ms
+== custodyCrypto: the slot path for every length (phase 559 as first written) (src/crdt/custodyCrypto.ts); vitest exit 1; 1 failed, 24 passed
+  FAILED hex builds no array with one element per input byte > custodyCrypto joins below 64 bytes and not from 64 (fails on the base source) 5ms
+== recovery: the slot path for every length (phase 559 as first written) (account-protocol/recovery.ts); vitest exit 1; 1 failed, 24 passed
+  FAILED hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source) 4ms
+== custodyCrypto: the threshold comparison inverted (src/crdt/custodyCrypto.ts); vitest exit 1; 3 failed, 22 passed
+  FAILED hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source) 253ms
+  FAILED hex builds no array with one element per input byte > custodyCrypto joins below 64 bytes and not from 64 (fails on the base source) 1ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 213ms
+== recovery: the threshold comparison inverted (account-protocol/recovery.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source) 266ms
+  FAILED hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source) 0ms
+== custodyCrypto: the threshold one byte late (<=) (src/crdt/custodyCrypto.ts); vitest exit 1; 1 failed, 24 passed
+  FAILED hex builds no array with one element per input byte > custodyCrypto joins below 64 bytes and not from 64 (fails on the base source) 5ms
+== recovery: the threshold one byte early (< 63) (account-protocol/recovery.ts); vitest exit 1; 1 failed, 24 passed
+  FAILED hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source) 4ms
+== custodyCrypto: a wrong digit for byte 0xab in the string table only (src/crdt/custodyCrypto.ts); vitest exit 1; 5 failed, 20 passed
+  FAILED custodyCrypto hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 7ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 0ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > hashes to the digest computed with Node's encoder (control) 157ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 132ms
+== recovery: upper-case digits in the string table only (account-protocol/recovery.ts); vitest exit 1; 5 failed, 20 passed
+  FAILED recovery hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 5ms
+  FAILED recovery hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 0ms
+  FAILED recovery hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 2ms
+== custodyCrypto: the join path reads the whole buffer, not the view (src/crdt/custodyCrypto.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED custodyCrypto hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 3ms
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 2ms
+== recovery: the join path drops its last byte (account-protocol/recovery.ts); vitest exit 1; 6 failed, 19 passed
+  FAILED recovery hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 22ms
+  FAILED recovery hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 0ms
+  FAILED recovery hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 1ms
+  FAILED hex builds no array with one element per input byte > recovery joins below 64 bytes and not from 64 (fails on the base source) 0ms
+== custodyCrypto: a wrong digit for byte 0xab in the pair table only (src/crdt/custodyCrypto.ts); vitest exit 1; 6 failed, 19 passed
+  FAILED custodyCrypto hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 8ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 2ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > an input of 8388609 bytes 233ms
+  FAILED hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source) 116ms
+== recovery: a wrong digit for byte 0xab in the pair table only (account-protocol/recovery.ts); vitest exit 1; 6 failed, 19 passed
+  FAILED recovery hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 8ms
+  FAILED recovery hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 1ms
+  FAILED recovery hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED recovery hex returns what the base routine returned (control) > an input of 8388609 bytes 31ms
+  FAILED hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source) 115ms
+== custodyCrypto: the two digits of a pair swapped (src/crdt/custodyCrypto.ts); vitest exit 1; 9 failed, 16 passed
+  FAILED custodyCrypto hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 9ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 2ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 390ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 2ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > an input of 8388609 bytes 231ms
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 2ms
+  FAILED hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source) 114ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > hashes to the digest computed with Node's encoder (control) 157ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 143ms
+== recovery: upper-case digits in the pair table only (account-protocol/recovery.ts); vitest exit 1; 7 failed, 18 passed
+  FAILED recovery hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 10ms
+  FAILED recovery hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 68ms
+  FAILED recovery hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED recovery hex returns what the base routine returned (control) > an input of 8388609 bytes 31ms
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 1ms
+  FAILED hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source) 114ms
+== custodyCrypto: the slot path drops its last byte (src/crdt/custodyCrypto.ts); vitest exit 1; 9 failed, 16 passed
+  FAILED custodyCrypto hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 12ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 3ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 1ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED custodyCrypto hex returns what the base routine returned (control) > an input of 8388609 bytes 266ms
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 2ms
+  FAILED hex builds no array with one element per input byte > custodyCrypto at 8388609 bytes (fails on the base source) 117ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > hashes to the digest computed with Node's encoder (control) 168ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 156ms
+== recovery: the slot path has one slot too many (account-protocol/recovery.ts); vitest exit 1; 7 failed, 18 passed
+  FAILED recovery hex returns what the base routine returned (control) > every byte value, alone (the join path) and together and reversed (the slot path) 9ms
+  FAILED recovery hex returns what the base routine returned (control) > lengths from 0 to 1 MiB, either side of every power of two used 1ms
+  FAILED recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 1ms
+  FAILED recovery hex returns what the base routine returned (control) > either side of the threshold, with every byte value at every position 1ms
+  FAILED recovery hex returns what the base routine returned (control) > an input of 8388609 bytes 33ms
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 1ms
+  FAILED hex builds no array with one element per input byte > recovery at 8388609 bytes (fails on the base source) 118ms
+== custodyCrypto: the slot path reads the whole buffer, not the view (src/crdt/custodyCrypto.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED custodyCrypto hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 5ms
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 2ms
+== recovery: the slot path reads the whole buffer, not the view (account-protocol/recovery.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED recovery hex returns what the base routine returned (control) > views with a byte offset, at odd offsets, over a larger buffer, and Node Buffers 4ms
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 2ms
+== custodyCrypto: no detached-buffer refusal for empty views (src/crdt/custodyCrypto.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > views over a detached buffer, of every length, refuse with the same error 9ms
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 1ms
+== recovery: no detached-buffer refusal for empty views (account-protocol/recovery.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a detached buffer, of every length, refuse with the same error 4ms
+  FAILED recovery hex keeps every refusal of the base routine (control) > views over a resizable buffer: out of bounds after a shrink, and length-tracking 0ms
+== custodyCrypto: missing input returns empty instead of refusing (src/crdt/custodyCrypto.ts); vitest exit 1; 1 failed, 24 passed
+  FAILED custodyCrypto hex keeps every refusal of the base routine (control) > a missing input refuses with the same error 4ms
+== legacySource: its base per-byte toString helper restored (src/crdt/legacySource.ts); vitest exit 1; 1 failed, 24 passed
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 708ms
+== legacySource: rows hashed without their first byte (src/crdt/legacySource.ts); vitest exit 1; 2 failed, 23 passed
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > hashes to the digest computed with Node's encoder (control) 154ms
+  FAILED the legacy source observation over more than 8 MiB of legacy rows > joins no array with one element per row byte (fails on the base source) 129ms
+== custodyCrypto: little-endian-only pair table (survives on this little-endian host) (src/crdt/custodyCrypto.ts); vitest exit 0; 0 failed, 25 passed
+== custodyCrypto: Node Buffer in place of TextDecoder (survives in Node) (src/crdt/custodyCrypto.ts); vitest exit 0; 0 failed, 25 passed
+== summary
+  tripped (3 cases): custodyCrypto: the join path for every length (the base routine)
+  tripped (2 cases): recovery: the join path for every length (the base routine)
+  tripped (1 cases): custodyCrypto: the slot path for every length (phase 559 as first written)
+  tripped (1 cases): recovery: the slot path for every length (phase 559 as first written)
+  tripped (3 cases): custodyCrypto: the threshold comparison inverted
+  tripped (2 cases): recovery: the threshold comparison inverted
+  tripped (1 cases): custodyCrypto: the threshold one byte late (<=)
+  tripped (1 cases): recovery: the threshold one byte early (< 63)
+  tripped (5 cases): custodyCrypto: a wrong digit for byte 0xab in the string table only
+  tripped (5 cases): recovery: upper-case digits in the string table only
+  tripped (2 cases): custodyCrypto: the join path reads the whole buffer, not the view
+  tripped (6 cases): recovery: the join path drops its last byte
+  tripped (6 cases): custodyCrypto: a wrong digit for byte 0xab in the pair table only
+  tripped (6 cases): recovery: a wrong digit for byte 0xab in the pair table only
+  tripped (9 cases): custodyCrypto: the two digits of a pair swapped
+  tripped (7 cases): recovery: upper-case digits in the pair table only
+  tripped (9 cases): custodyCrypto: the slot path drops its last byte
+  tripped (7 cases): recovery: the slot path has one slot too many
+  tripped (2 cases): custodyCrypto: the slot path reads the whole buffer, not the view
+  tripped (2 cases): recovery: the slot path reads the whole buffer, not the view
+  tripped (2 cases): custodyCrypto: no detached-buffer refusal for empty views
+  tripped (2 cases): recovery: no detached-buffer refusal for empty views
+  tripped (1 cases): custodyCrypto: missing input returns empty instead of refusing
+  tripped (1 cases): legacySource: its base per-byte toString helper restored
+  tripped (2 cases): legacySource: rows hashed without their first byte
+  NOT TRIPPED: custodyCrypto: little-endian-only pair table (survives on this little-endian host)
+  NOT TRIPPED: custodyCrypto: Node Buffer in place of TextDecoder (survives in Node)
+all sources restored byte for byte

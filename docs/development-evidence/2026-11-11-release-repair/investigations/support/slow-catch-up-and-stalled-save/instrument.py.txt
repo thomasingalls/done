@@ -1,0 +1,85 @@
+#!/usr/bin/env python3
+"""COPY-ONLY trace seams for the oddities investigation. Usage: instrument.py <copy root>"""
+import sys, pathlib
+
+root = pathlib.Path(sys.argv[1])
+
+
+def edit(rel, old, new, count=1):
+    p = root / rel
+    s = p.read_text()
+    n = s.count(old)
+    if n != count:
+        raise SystemExit(f"{rel}: expected {count} match(es), found {n} for {old[:60]!r}")
+    p.write_text(s.replace(old, new))
+
+
+TRACE = "((globalThis as { __doneTrace?: unknown[] }).__doneTrace ??= [])"
+PUSH = (
+    "const __push = (e: Record<string, unknown>) => { const a = " + TRACE + "; a.push(e); "
+    "if (a.length > 40000) a.splice(0, 10000); };"
+)
+
+# A. Every lane operation of the sync scheduler: start, duration, result kind or error.
+edit(
+    "src/crdt/accountSyncDriver.ts",
+    "  const clock = options.clock ?? clockDefault;\n  const batch = options.publicationBatch",
+    "  // COPY-ONLY TRACE SEAM\n  " + PUSH + "\n"
+    "  {\n"
+    "    const recv = options.receive, send = options.send;\n"
+    "    const wrap = <T extends { kind: string }>(lane: string, run: () => Promise<T>) => {\n"
+    "      const t = Date.now();\n"
+    "      return run().then(\n"
+    "        (r) => { __push({ ev: 'lane', lane, t, ms: Date.now() - t, kind: r.kind, r: String(JSON.stringify(r)).slice(0, 300) }); return r; },\n"
+    "        (e) => { __push({ ev: 'lane', lane, t, ms: Date.now() - t, error: String((e as Error)?.constructor?.name) + ': ' + String((e as Error)?.message) }); throw e; },\n"
+    "      );\n"
+    "    };\n"
+    "    options = {\n"
+    "      ...options,\n"
+    "      receive: (sendDue) => wrap('receive', () => recv(sendDue)),\n"
+    "      send: (a, b) => wrap('send', () => send(a, b)),\n"
+    "    };\n"
+    "  }\n"
+    "  const clock = options.clock ?? clockDefault;\n  const batch = options.publicationBatch",
+)
+
+# B. Expose the scheduler status, and trace history receive and each receive step.
+edit(
+    "src/crdt/accountReceive.ts",
+    "      if (automaticRetention || automaticHistory) {\n        const changed = (status: SyncStatus) => {",
+    "      // COPY-ONLY TRACE SEAM\n"
+    "      (globalThis as { __doneSync?: unknown }).__doneSync = scheduler.runtime;\n"
+    "      if (automaticRetention || automaticHistory) {\n        const changed = (status: SyncStatus) => {",
+)
+edit(
+    "src/crdt/accountReceive.ts",
+    "    const receiveHistory = async () => {\n      let bytes: Bytes | null = null;\n      try {\n        const fetched = await fetchHistory();\n        if (!fetched) return false;\n        bytes = fetched.bytes;\n        fetched.check();\n        const result = await enqueue(bytes, (evidence, promote) =>\n          installHistory(evidence, promote, fetched.check),\n        );\n        return result.kind === 'installed';\n      } finally {\n        bytes?.fill(0);\n      }\n    };",
+    "    const receiveHistory = async () => {\n"
+    "      // COPY-ONLY TRACE SEAM\n      " + PUSH + "\n"
+    "      const t = Date.now();\n      let stage = 'fetch', size = 0;\n"
+    "      let bytes: Bytes | null = null;\n      try {\n        const fetched = await fetchHistory();\n"
+    "        if (!fetched) { __push({ ev: 'history', t, ms: Date.now() - t, result: 'none' }); return false; }\n"
+    "        const ft = Date.now();\n        stage = 'install';\n"
+    "        bytes = fetched.bytes;\n        size = bytes.length;\n        fetched.check();\n        const result = await enqueue(bytes, (evidence, promote) =>\n          installHistory(evidence, promote, fetched.check),\n        );\n"
+    "        __push({ ev: 'history', t, ms: Date.now() - t, fetchMs: ft - t, size, result: result.kind });\n"
+    "        return result.kind === 'installed';\n"
+    "      } catch (e) {\n"
+    "        __push({ ev: 'history', t, ms: Date.now() - t, stage, size, error: String((e as Error)?.constructor?.name) + ': ' + String((e as Error)?.message) });\n"
+    "        throw e;\n"
+    "      } finally {\n        bytes?.fill(0);\n      }\n    };",
+)
+edit(
+    "src/crdt/accountReceive.ts",
+    "    const receiveNext = (operatorToken: AccountAccess) => {\n      if (carrier.signal.aborted)",
+    "    // COPY-ONLY TRACE SEAM\n"
+    "    const receiveNext = (operatorToken: AccountAccess) => {\n"
+    "      " + PUSH + "\n"
+    "      const t = Date.now();\n"
+    "      return receiveNextInner(operatorToken).then(\n"
+    "        (r) => { __push({ ev: 'next', t, ms: Date.now() - t, kind: r.kind, r: String(JSON.stringify(r)).slice(0, 300) }); return r; },\n"
+    "        (e) => { __push({ ev: 'next', t, ms: Date.now() - t, error: String((e as Error)?.constructor?.name) + ': ' + String((e as Error)?.message) }); throw e; },\n"
+    "      );\n"
+    "    };\n"
+    "    const receiveNextInner = (operatorToken: AccountAccess) => {\n      if (carrier.signal.aborted)",
+)
+print("instrumented", root)
