@@ -1,0 +1,336 @@
+{
+  "phase": 564,
+  "date": "2026-11-27",
+  "base": {
+    "commit": "76aade840",
+    "description": "phase 563, clean; the change was built in the delegated agent's worktree moved to this commit, because that worktree is write-isolated from the main one, and handed over as a patch"
+  },
+  "requested": [
+    "coordinating session, 2026-11-27: phase 564, repairs 1 to 3 of the 565i diagnosis; unit cases on a simulated clock failing at 76aade840; lab before and after on the patched instrumented build; records; full unit suite not run",
+    "operator via the coordinating session, 2026-11-27: \"yes 5 min is fine, but i also don't want to get into a position again where critical work is impossible because we chose a relatively arbitrary cutoff point where there may not need to be one\"; windows from measurement, no fixed ceiling before a first save, the same rule checked against phase 539's hold, a property test over setups to at least thirty minutes, and a table of every fixed bound on the reduction path",
+    "coordinating session, 2026-11-27: keep measurements reachable for phase 565 (progress display); no UI"
+  ],
+  "productCodeChanged": true,
+  "newProductStrings": [],
+  "rewordedProductStrings": [],
+  "storedOrWireFormatChanged": false,
+  "limitsChanged": false,
+  "changes": {
+    "src/crdt/automaticLocalRetention.ts": [
+      "observation routineSync: no protectedUntil while routine sync cannot run (repair 1)",
+      "idle-poll window: first window LOCAL_RETENTION_POLL_HOLD_MS until a setup is measured, then measuredNeed(setup, save) = (1 + PREPARATION_SETUP_RATIO) * (setup + save); an unsaved running attempt gets max(2 * window, need) when its window ends, without a ceiling (repair 3)",
+      "the deferral ends at the run's first save, and the yield follows; a device whose measured need exceeds what is left of the yield waits for its end",
+      "held window before its first save: budget max(LOCAL_RETENTION_HOLD_MS, need); an uncut running attempt gets max(2 * budget, need) instead of lapsing",
+      "remove(revision, report, protectedUntil?, measure?): owner measurements of setup and save; diagnostics gain setupMs, saveMs, windowEndsAt"
+    ],
+    "src/crdt/retentionPreparation.ts": [
+      "a windowed slice reserves the last measured save, else this attempt's setup (repair 2)",
+      "onFirstFresh(at) option"
+    ],
+    "src/crdt/contentStore.ts": [
+      "preparationSaveMs undefined until measured; carriedMs passed only then",
+      "measure callback reported at the first fresh check and after a save"
+    ],
+    "src/crdt/accountReceive.ts": [
+      "routineSync = gate() ready and no passkey sign-in needed",
+      "measure passed through removeLocalHistory and prepareLocalRemoval"
+    ]
+  },
+  "decisionsAmended": [
+    {
+      "decision": "phase 540: sixty-second idle-poll deferral per run, from its first slice, slices continuing at once sharing it, then the yield (recorded as unmeasured)",
+      "now": "first window only before a measured setup; later windows measured; unsaved running attempts get a growing window without ceiling; the deferral ends at the first save; a long-need device waits out the yield",
+      "measurement": "r08 574 attempts none saved -> p08 2 attempts reduced (x100); simulation 90 s setup online: nothing saved in 12 h -> reduced in 20.7 min"
+    },
+    {
+      "decision": "phase 556 change A: never planned past the moment routine sync resumes; protectedUntil now in a yield; a window reserving only a measured save",
+      "now": "no window while routine sync cannot run; an unmeasured save reserved at the setup",
+      "measurement": "r06 156 attempts 346 s -> p06 1 attempt 3.2 s (x100 offline); r14 control 2 attempts; real owner 157 attempts held to now vs 3 without a window; r07 attempt 1 lost 8,703 results to an unreserved save"
+    },
+    {
+      "decision": "phase 539 hold budget (5 min) before a window's first save, for an attempt nothing cut",
+      "now": "never below the measured need; grows instead of lapsing; parks the sender for as long as one save needs",
+      "measurement": "by the rule; p13 shows the hold path still completes (card waited 23.8 s, 22.7 s before)"
+    }
+  ],
+  "unchanged": [
+    "phase 83 (no storage path changed)",
+    "hints, input and the journal interrupt at once",
+    "the poll deferral never parks the sender",
+    "phase 546 progress rule; a cut window lapses at its budget",
+    "no stored format, wire format, service message, product string or size/count limit"
+  ],
+  "tests": {
+    "new": {
+      "test/retentionSliceWindows.test.ts": [
+        "a setup longer than sixty seconds, online with polls running, saves and finishes",
+        "with routine sync unable to run, slices are not held to the two-second floor",
+        "property: setups 30 s, 61 s, 2, 5, 10, 20, 30, 45 min online: first run saves within ceil(log2(need/60 s)) window extensions (8 cases)",
+        "unchanged: during a long window the sender is never parked and a hint still cuts at once",
+        "a routine poll waits no longer than the run takes to its first save, then gets the yield"
+      ],
+      "test/retentionSliceBudget.test.ts": [
+        "the first protected slice saves what it verified, inside its window",
+        "with no window, slices grow with the setup; held to now, they stay at the floor (measurement; passes at both trees)"
+      ]
+    },
+    "changedAssertions": 8,
+    "simulation": {
+      "after": {
+        "phoneOnline": {
+          "reducedMin": 20.7,
+          "attempts": 4,
+          "saves": 3,
+          "pollCuts": 0,
+          "maxPollGapS": 339
+        },
+        "phoneOffline": {
+          "reducedMin": 15.8,
+          "attempts": 3
+        },
+        "desktopOnline": {
+          "reducedMin": 5.5,
+          "attempts": 3,
+          "pollCuts": 0,
+          "maxPollGapS": 84
+        },
+        "desktopOffline": {
+          "reducedMin": 3.5,
+          "attempts": 3
+        }
+      },
+      "at76aade840": {
+        "phoneOnline": {
+          "reducedMin": null,
+          "attempts": 1428,
+          "saves": 0,
+          "simulatedMin": 720
+        },
+        "phoneOffline": {
+          "reducedMin": 560.3,
+          "attempts": 300
+        },
+        "desktopOnline": {
+          "reducedMin": 22.9,
+          "attempts": 56,
+          "pollCuts": 34
+        },
+        "desktopOffline": {
+          "reducedMin": 7.7,
+          "attempts": 13
+        }
+      },
+      "devices": {
+        "phone": "90 s setup, 20 s save, 600 s work, 30 s commit",
+        "desktop": "20 s setup, 5 s save, 120 s work, 10 s commit",
+        "polls": "every 17 s"
+      }
+    },
+    "realOwner": {
+      "firstProtectedSlice": {
+        "window": 6516,
+        "setup": 2606,
+        "freshAfter": 1303,
+        "setupPlusFreshAt76aade840": 6528,
+        "units": "work clock"
+      },
+      "cycles": {
+        "heldToNow": 157,
+        "noWindow": 3
+      }
+    }
+  },
+  "lab": {
+    "before": {
+      "r08": "574 attempts, all cut, never reduced (x100 online)",
+      "r06": "156 attempts, 346 s (x100 offline)",
+      "r07": "130 attempts, 104 cut, 25 saved, 179 s (x20 online)",
+      "r02": "2 attempts, 6.4 s",
+      "r10": "1 attempt, 7.8 s",
+      "r13": "card 22.7 s; reduced 35.6 s"
+    },
+    "after": {
+      "p08": "2 attempts, reduced at 6.3 s",
+      "p06": "1 attempt, 3.2 s",
+      "p07": "2 attempts, reduced at 9.8 s",
+      "p02": "1 attempt, 3.6 s",
+      "p10": "1 attempt, 8.0 s",
+      "p10on": "1 attempt, 8.0 s; longest receive gap 16.8 s",
+      "p13": "card 23.8 s; reduced 36.8 s"
+    },
+    "overlapDuringPatchedRuns": "none (pgrep before each)",
+    "rawResultSha256": {
+      "p02-1000-desktop-offline": {
+        "sha256": "a502c979e27afa572860b02727b23430f423b077c2e21f4e55a1c318e8471528",
+        "bytes": 10784
+      },
+      "p06-1000-ts100-offline": {
+        "sha256": "b816c294975df724a83097ce5c5f52acc4030673cacc5e6ca1ce0d1bc1cfba15",
+        "bytes": 10820
+      },
+      "p07-1000-ts20-online": {
+        "sha256": "2ccdb5242a16550c72bc9ba090eb41a116bcf5d374497285a0f42d8392037e46",
+        "bytes": 86990
+      },
+      "p08-1000-ts100-online": {
+        "sha256": "3f53dbb36952c906f375a34344cf2070bfc0a993ffac155f8835aa78e70f148a",
+        "bytes": 189275
+      },
+      "p10-2000-desktop-offline": {
+        "sha256": "ff319807187e3f9359e3aa753a943eb82e3839d62f3d62e30a8569433abd0af3",
+        "bytes": 11771
+      },
+      "p10on-2000-desktop-online": {
+        "sha256": "147a280851b1b07f06f05a2e3ae98683b696615f8747f01597520fbe743fe683",
+        "bytes": 36580
+      },
+      "p13-2000-online-reduce-fullcheck-send": {
+        "sha256": "bcbf625e8b6ec71eace99951827f4adf0e1a6127481c275754faa9fc3292f4aa",
+        "bytes": 218331
+      },
+      "r01-1000-desktop-offline": {
+        "sha256": "e165a8242137d84db18b4a7334ff5678185afb64a085979ca6814360bd9776ff",
+        "bytes": 1800
+      },
+      "r02-1000-desktop-offline": {
+        "sha256": "31c1cb7dbb65e278415d752f51c16656e4f2ac62c47cfbe01650bb47b8dc0acf",
+        "bytes": 18145
+      },
+      "r04-1000-ts5-offline": {
+        "sha256": "02ca2c7b347259cfaf0f957fba9b151f3984a6ac3b4e69840d327479e829d83d",
+        "bytes": 11372
+      },
+      "r05-1000-ts20-offline": {
+        "sha256": "13d6e5749c97c3bbe6c37497f3d36103fa7e07aeef4206729792e1e544fa7e6f",
+        "bytes": 18023
+      },
+      "r06-1000-ts100-offline": {
+        "sha256": "3de8664304550e394c00c484fff089007543bc343cacbd7e106cd6075b1ca010",
+        "bytes": 1165323
+      },
+      "r07-1000-ts20-online": {
+        "sha256": "7c86cce83bcc5491c23c5a10082eb30efe1b4bafe3cd4bc6e44b4036a7154425",
+        "bytes": 1515817
+      },
+      "r08-1000-ts100-online": {
+        "sha256": "d1f3d567120cc99f551a64e521afa6d9d73cf97b0fd2d5b7d18b5003aad50cac",
+        "bytes": 13205198
+      },
+      "r09-1000-ts100-online-nodeferralexpiry": {
+        "sha256": "5090cba2e46f11847ac23c59891dd6c017a9d29f94d0a8d25b90c088b183e2a9",
+        "bytes": 157467
+      },
+      "r10-2000-desktop-offline": {
+        "sha256": "32afd0418e78bf51f4c6b678f9f8031dbbffd6082c9a8f0f470a0efde78a448f",
+        "bytes": 11948
+      },
+      "r11-2000-online-noreduce-send": {
+        "sha256": "06176d6b5dd3dde7c77ff9a8bd26f79e685f8108154f8cae78f1fca576f7519b",
+        "bytes": 97520
+      },
+      "r12-2000-online-noreduce-fullcheck-send": {
+        "sha256": "7b40794bca48e16a280d04fbc122d576da7785fa36718b1d651aafc8c301e478",
+        "bytes": 263070
+      },
+      "r13-2000-online-reduce-fullcheck-send": {
+        "sha256": "4973ecf28869a62921da773cd82fe7bc731d5a3993b68e25f4874d257e1e6ee5",
+        "bytes": 283353
+      },
+      "r14-1000-ts100-offline-nowindow": {
+        "sha256": "4d713c7d9466fe34ca845a854d1b722513f8f86e21b6f7ce7a0fcf2690cd777c",
+        "bytes": 18819
+      }
+    },
+    "cannotShow": "3,999 received positions per live device, installed snapshots, 32,644 and 35,379 rows; scaling shortens clocks rather than slowing the CPU"
+  },
+  "bookkeeping": {
+    "planningInventory": "recorded three times; testFiles 772->773, requiredTestFiles 766->767; retentionSliceBudget declarations 9->11; retentionSliceWindows new, 5 declarations",
+    "manifest": "obligations 1136->1137, unresolved 561->562 (new test file blocked pending review); retentionSliceBudget expected cases 9->11; two retentionReductionHold titles",
+    "denominator": "3095 -> 3097 (general-tests.test.mjs title and count, generated-tests.test.mjs count)",
+    "runtimeCensus": "four product source hashes; site done/account-ledger-reference-mismatch accountReceive.ts 973->974; 526 sources, 201 labels/templates, 36 groups, 15 entrypoints",
+    "constructionRegistry": "docs/account-crypto/constructions.json: the same site 973->974",
+    "decision": "docs/decisions.md, 2026-11-27 phase 564 entry",
+    "backlog": [
+      "SEND-ROW-BOUND (updated)",
+      "REDUCE-FURTHER (note)",
+      "REDUCE-CYCLE-REPEAT",
+      "REDUCE-PROGRESS-LINE",
+      "BANNER-NOT-INPUT",
+      "REDUCE-COMPACTION-STALE",
+      "REDUCE-MAX-CHUNKS"
+    ]
+  },
+  "checks": {
+    "unitRelated": "25 files, 268 passed",
+    "typecheck": "tsc -b --noEmit --force exit 0",
+    "format": "oxfmt --check pass; oxlint pass (7 files)",
+    "validationInventory": "10 passed",
+    "releaseAdapters": "178 passed (3,097 denominator)",
+    "accountCryptoPrep": "matched, 6 passed",
+    "contractChecks": "vectors, retention, status, limit, authority, recipient, admission, remediation, debts, wasm: all exit 0"
+  },
+  "notRun": [
+    "full unit suite (operator, 2026-11-27)",
+    "CI packaged browser step",
+    "pnpm test:account-setup",
+    "a phone, the affected account, a seed past 32,768 real rows"
+  ],
+  "sourceSha256": {
+    "src/crdt/automaticLocalRetention.ts": "ccd49360e0edb2cc93ebbf4009cae69d491824a2fb24853c802065bfde750628",
+    "src/crdt/retentionPreparation.ts": "5196972ed05e521c058b756b0ec27d7de6918b3fbd96a19c20a8949532a971ee",
+    "src/crdt/contentStore.ts": "6982b1e8a25a835973d82d92104c4629908d52f1e91a3cd9252713827f5c836d",
+    "src/crdt/accountReceive.ts": "ddfb6b2c3768f22a6f581f4ba85b8232a51a024302d6b4bfa63efa5118cc7e4a"
+  },
+  "testSha256": {
+    "test/retentionSliceWindows.test.ts": "6b6c5e76f031caff28a08c18c9cdac86b1a2e6128f6cda6a018f3f80942de12c",
+    "test/retentionSliceBudget.test.ts": "0e158e5c4160923b238543efe7c1a7053683cf56573d9340f6e95e1313a58a24",
+    "test/retentionReductionHold.test.ts": "b071377707796f046b5975d05ee72fb0ad74888936c152980068c516b6711d63"
+  },
+  "deployed": false,
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-27",
+    "patch": {
+      "sha256": "fdc50abf0aeec79c183fc5a7c3702d0943488cf255d82df46dc568346605afea",
+      "appliedTo": "76aade840",
+      "why": "the delegated agent's session could not write to the main worktree"
+    },
+    "independentControls": [
+      {
+        "mutation": "expirePoll always ends the window (no growth)",
+        "file": "test/retentionSliceWindows.test.ts",
+        "failed": 10,
+        "passed": 2
+      },
+      {
+        "mutation": "protectedUntil given even when routine sync cannot run",
+        "files": "test/retentionSliceWindows.test.ts, test/retentionSliceBudget.test.ts",
+        "failed": 2,
+        "passed": 21
+      }
+    ],
+    "unitFiles": {
+      "files": 13,
+      "passed": 138,
+      "failed": 0
+    },
+    "typecheck": "pass",
+    "registeredAtReview": {
+      "file": "test/retentionSliceWindows.test.ts",
+      "change": "property setups written as literal milliseconds so the census resolves them; 12 cases unchanged",
+      "vitestFiles": [
+        122,
+        123
+      ],
+      "caseDenominator": [
+        3097,
+        3109
+      ],
+      "obligations": 1137,
+      "unresolved": 561
+    },
+    "notRepeated": "lab runs, simulations, base-tree failures",
+    "fullUnit": "not run; operator's decision of 2026-11-27 that it runs once before merge",
+    "exposureIntroduced": "REDUCE-WINDOW-LIVENESS: an attempt that never ends defers routine polls, or parks sending on a full-check device, until reopening",
+    "softened": "decisions entry: the phone's setup is inferred to exceed 60 s, not measured at about 90 s"
+  }
+}

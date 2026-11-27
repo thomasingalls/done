@@ -154,8 +154,9 @@ export const createContentOwner = (
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   const pendingPreparations = new Set<() => void>();
-  // Phase 556: what the last fenced preparation save cost, and whether a slice was cut short since.
-  let preparationSaveMs = 0,
+  // Phase 556: what the last fenced preparation save cost (undefined until one is measured, phase
+  // 564), and whether a slice was cut short since.
+  let preparationSaveMs: number | undefined,
     preparationInterrupted = false;
   let disposed = false;
   let witness!: ContentWitness;
@@ -893,6 +894,8 @@ export const createContentOwner = (
     // Wall-clock moment routine sync may resume and interrupt this attempt (phase 556); the
     // automatic scheduler passes it. Omitted: no known window limits the slice.
     protectedUntil?: number,
+    // The scheduler's measurements of this attempt: its setup and its save (phase 564).
+    measure?: (kind: 'setup' | 'save', ms: number) => void,
   ) => {
     // The slice budget counts everything this attempt pays before its first fresh check.
     const setupSince = performance.now();
@@ -1006,9 +1009,13 @@ export const createContentOwner = (
                   ? {}
                   : {
                       setupSince,
-                      carriedMs: preparationSaveMs,
+                      ...(preparationSaveMs === undefined ? {} : { carriedMs: preparationSaveMs }),
                       ...(deadline === undefined ? {} : { deadline }),
                     }),
+                // Measured on every attempt, also one kept to the plain target after a cut.
+                ...(measure
+                  ? { onFirstFresh: (at: number) => measure('setup', at - setupSince) }
+                  : {}),
               });
               preparation = { journal, checkpoint: read.checkpoint };
               if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
@@ -1174,6 +1181,11 @@ export const createContentOwner = (
             // The next slice pays this again, so its budget counts it (phase 556).
             preparationSaveMs = performance.now() - began;
             preparationInterrupted = false;
+            try {
+              measure?.('save', preparationSaveMs);
+            } catch {
+              /* A measurement observer cannot change the saved result. */
+            }
             return saved;
           } catch (cause) {
             if (cause instanceof MaintenanceInterrupted) preparationInterrupted = true;

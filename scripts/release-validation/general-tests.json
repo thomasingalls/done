@@ -90,6 +90,7 @@
     "test/retentionFenceCollision.test.ts",
     "test/retentionReductionHold.test.ts",
     "test/retentionSliceBudget.test.ts",
+    "test/retentionSliceWindows.test.ts",
     "test/retiredCutVerification.test.ts",
     "test/roundTrip.test.ts",
     "test/runtimeForkPreparation.test.ts",

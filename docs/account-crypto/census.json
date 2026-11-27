@@ -849,7 +849,7 @@
     },
     {
       "path": "src/crdt/accountReceive.ts",
-      "sha256": "501f9ec0a46dbdba51ba903388c5cbc8a9a5cc9d913f2edaab4ab21dcbb9a5a4"
+      "sha256": "ddfb6b2c3768f22a6f581f4ba85b8232a51a024302d6b4bfa63efa5118cc7e4a"
     },
     {
       "path": "src/crdt/accountReceiveDriver.ts",
@@ -969,7 +969,7 @@
     },
     {
       "path": "src/crdt/automaticLocalRetention.ts",
-      "sha256": "c9d62590027227b95194c4b83b512a86ef49bccf77100d324204762305530328"
+      "sha256": "ccd49360e0edb2cc93ebbf4009cae69d491824a2fb24853c802065bfde750628"
     },
     {
       "path": "src/crdt/automaticOpening.ts",
@@ -1025,7 +1025,7 @@
     },
     {
       "path": "src/crdt/contentStore.ts",
-      "sha256": "994b869381cc40e597ff9e65cfe6dd688a6409580d76f84660b4661356866865"
+      "sha256": "6982b1e8a25a835973d82d92104c4629908d52f1e91a3cd9252713827f5c836d"
     },
     {
       "path": "src/crdt/coveredLocalJournal.ts",
@@ -1473,7 +1473,7 @@
     },
     {
       "path": "src/crdt/retentionPreparation.ts",
-      "sha256": "87bb31c2fac3e23ce498162092485075daa23964bac4ac82ba643f55fd56a522"
+      "sha256": "5196972ed05e521c058b756b0ec27d7de6918b3fbd96a19c20a8949532a971ee"
     },
     {
       "path": "src/crdt/retentionPreparationBinding.ts",
@@ -2285,7 +2285,7 @@
       "sites": [
         {
           "path": "src/crdt/accountReceive.ts",
-          "line": 973
+          "line": 974
         }
       ]
     },

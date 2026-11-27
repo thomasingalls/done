@@ -1,0 +1,574 @@
+diff --git a/scripts/performance/send-cost/harness.ts b/scripts/performance/send-cost/harness.ts
+index d29fea844..9520e8c5f 100644
+--- a/scripts/performance/send-cost/harness.ts
++++ b/scripts/performance/send-cost/harness.ts
+@@ -65,6 +65,8 @@ async function launch(profile: string) {
+     baseURL: origin,
+     timezoneId: 'Europe/Paris',
+     viewport: { width: 1280, height: 900 },
++    // TEMPORARY lab 565i: keep this browser on IPv4 loopback; lab runs use [::1] at the same origin.
++    args: ['--host-resolver-rules=MAP localhost 127.0.0.1'],
+   });
+   context.setDefaultTimeout(30000);
+   context.setDefaultNavigationTimeout(30000);
+diff --git a/src/crdt/accountCapture.ts b/src/crdt/accountCapture.ts
+index 49dcb8a47..cfcd03386 100644
+--- a/src/crdt/accountCapture.ts
++++ b/src/crdt/accountCapture.ts
+@@ -12,6 +12,7 @@ import {
+ } from './contentMaintenance';
+ import { createWarmAuditScheduler, type WarmAuditOutcome } from './warmAuditScheduler';
+ import { createMaintenanceTurns } from './maintenanceTurns';
++import { lab } from './lab565';
+ import { ledgerWorkStart, measureLedgerWork, markAccountOpen } from './accountLedgerMetrics';
+ import { verifyJoinedAccount } from './joinedAccount';
+ import { historyAuthority } from '../../account-protocol/admissionHistory';
+@@ -342,6 +343,7 @@ export async function openAccountCaptureOwner(
+     preparation = false,
+     kind: 'foreground' | 'warm-audit' = 'foreground',
+   ): Promise<T> => {
++    lab('storage-run', { preparation, runKind: kind }, !preparation);
+     if (!preparation) preparationActivity = {};
+     const settleForeground =
+       !preparation && kind === 'foreground' ? auditScheduler?.foreground() : undefined;
+diff --git a/src/crdt/accountReceive.ts b/src/crdt/accountReceive.ts
+index 1ac2e5546..b3c14b47d 100644
+--- a/src/crdt/accountReceive.ts
++++ b/src/crdt/accountReceive.ts
+@@ -254,6 +254,7 @@ import {
+   type AccountWorkspaceFactory,
+ } from './accountWorkspacePort';
+ import type { AccountWorkspaceOptions } from './accountWorkspace';
++import { lab } from './lab565';
+ 
+ const ledgerMode = accountLedgerMode(import.meta.env?.['VITE_ACCOUNT_LEDGER']);
+ 
+@@ -730,6 +731,7 @@ async function openAccountReceiveOwner(
+         const syntaxTurn = createInboundReceiptTurn();
+         const began = performance.now();
+         countLedger('full');
++        lab('ledger-full-start', { records: records.length, audit });
+         const isolated = audit ? createInboundCoverage() : undefined;
+         const checking = (isolated ?? coverage).bind(records);
+         // Cached crypto checks resolve in microtasks. A real maintenance budget is needed
+@@ -864,6 +866,7 @@ async function openAccountReceiveOwner(
+           syntaxTurn.dispose();
+           isolated?.clear();
+           measureLedger('full', began);
++          lab('ledger-full-end', { ms: performance.now() - began, audit, adoptedIndexes });
+         }
+       };
+       let validationComplete = false;
+@@ -945,6 +948,7 @@ async function openAccountReceiveOwner(
+                 } finally {
+                   syntaxTurn.dispose();
+                   measureLedger('incremental', began);
++                  lab('ledger-incremental', { ms: performance.now() - began, records: records.length });
+                 }
+               }
+             : undefined,
+@@ -4445,7 +4449,13 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
+         );
+       }
+       if (automaticRetention || automaticHistory) {
++        let labSync = '';
+         const changed = (status: SyncStatus) => {
++          const labNow = `${status.send.phase}/${status.receive.phase}/${gate()}/${status.send.acceptedThrough}`;
++          if (labNow !== labSync) {
++            labSync = labNow;
++            lab('sync-status', { s: labNow });
++          }
+           const quiet = [status.send.phase, status.receive.phase].every(
+             (phase) =>
+               phase === 'idle' || phase === 'offline' || phase === 'blocked' || phase === 'closed',
+diff --git a/src/crdt/accountSyncDriver.ts b/src/crdt/accountSyncDriver.ts
+index cb67f60c5..3d13b341e 100644
+--- a/src/crdt/accountSyncDriver.ts
++++ b/src/crdt/accountSyncDriver.ts
+@@ -17,6 +17,7 @@ import {
+   recordAcceptedSend,
+ } from './accountLedgerMetrics';
+ import type { SyncRefusal } from '../account/syncRefusal';
++import { lab, labKnob } from './lab565';
+ export type SyncLane = 'send' | 'receive';
+ /** A receive condition that stays named while receiving otherwise continues. Not a halt. */
+ export type SyncStanding = 'history-unverified' | 'history-waiting';
+@@ -102,7 +103,8 @@ const clockDefault: DriverClock = {
+ const names: SyncLane[] = ['send', 'receive'];
+ /** A live hint stream can still miss its last content hint. Bound idle reconciliation too. */
+ export const idleReceiveInterval = (notificationHealthy: boolean): number =>
+-  notificationHealthy ? 15000 + Math.random() * 5000 : 5000;
++  (notificationHealthy ? 15000 + Math.random() * 5000 : 5000) /
++  ((labKnob('timeScale') as number | undefined) ?? 1);
+ export function createSyncScheduler(options: {
+   signal: AbortSignal;
+   gate(): SyncGate;
+@@ -288,6 +290,7 @@ export function createSyncScheduler(options: {
+         // A hold can engage between choosing this lane and starting it. Keep its deadline.
+         if (!ready() || lane.halt || deferred(name)) return;
+         lane.phase = 'working';
++        lab('lane-begin', { name, gate: options.gate() });
+         // Keep the deadline until after observers have had their last opportunity to pause this pass.
+         if (!ready() || lane.halt) return;
+         lane.due = undefined;
+diff --git a/src/crdt/admissionQueue.ts b/src/crdt/admissionQueue.ts
+index 3c63664af..591095c6b 100644
+--- a/src/crdt/admissionQueue.ts
++++ b/src/crdt/admissionQueue.ts
+@@ -5,6 +5,7 @@ import {
+   type AccountTextCandidate,
+ } from './accountTextPreparation';
+ import { MaintenanceInterrupted } from './contentMaintenance';
++import { lab } from './lab565';
+ import {
+   ledgerProfiling,
+   ledgerWorkStart,
+@@ -351,8 +352,21 @@ export const createAdmissionOwner = async (
+       pressure,
+       ...(maintenance ? { maintenance } : {}),
+     });
++  let labLast = '';
+   const notify = () => {
+     const value = status();
++    const labNow = `${value.state}/${value.pendingItems}/${value.durable}/${value.maintenance ?? ''}/${value.pressure?.code ?? ''}`;
++    if (labNow !== labLast) {
++      labLast = labNow;
++      lab(
++        'admission-status',
++        {
++          s: labNow,
++          kinds: queue.map((j) => j.kind).join(','),
++        },
++        value.pendingItems > 0,
++      );
++    }
+     // Observer errors cannot turn a completed carrier into a refusal or bypass the queue.
+     for (const listener of [...statusListeners]) {
+       try {
+@@ -849,6 +863,7 @@ export const createAdmissionOwner = async (
+       // flight at its next safe boundary; it never overtakes an active storage transaction.
+       const stop = new AbortController();
+       maintenanceStop = stop;
++      lab('compaction-start', { contentChanges, contentBytes });
+       const attemptedChanges = contentChanges,
+         attemptedBytes = contentBytes;
+       contentChanges = 0;
+@@ -875,10 +890,12 @@ export const createAdmissionOwner = async (
+           return carrier.compactContent!(stop.signal, fence);
+         })
+         .then((receipt) => {
++          lab('compaction-end', { status: receipt.status });
+           if (state !== 'active') return;
+           maintenance = receipt.status === 'retained' ? 'retained' : undefined;
+         })
+         .catch((error) => {
++          lab('compaction-error', { name: error?.name, code: codeOf(error), message: String(error?.message).slice(0, 200) });
+           if (state !== 'active') return;
+           maintenance = 'deferred';
+           if (error instanceof MaintenanceInterrupted) {
+diff --git a/src/crdt/admittedWorkspace.ts b/src/crdt/admittedWorkspace.ts
+index 6e8722db1..ed4565854 100644
+--- a/src/crdt/admittedWorkspace.ts
++++ b/src/crdt/admittedWorkspace.ts
+@@ -67,6 +67,7 @@ import {
+ } from './workspacePreparation';
+ import type { AdmittedTextSurface, TextAction, TextSelection } from '../editor/admittedText';
+ import { countLedgerWork } from './accountLedgerMetrics';
++import { lab } from './lab565';
+ 
+ export type { WorkspaceCommand, TextTarget } from './workspaceCommands';
+ export interface WorkspaceTicket {
+@@ -846,6 +847,7 @@ export const createAdmittedWorkspace = async (
+           cardMembershipIssues(accepted!.history.doc).length
+         ) {
+           repairQueued = true;
++          lab('membership-repair-queued', {}, true);
+           queueMicrotask(() => {
+             try {
+               if (!closed)
+diff --git a/src/crdt/automaticLocalRetention.ts b/src/crdt/automaticLocalRetention.ts
+index c967770c4..09abce0b6 100644
+--- a/src/crdt/automaticLocalRetention.ts
++++ b/src/crdt/automaticLocalRetention.ts
+@@ -9,6 +9,9 @@ import {
+ import { PreparationCapacity } from './preparationCapacity';
+ import { LocalBaselineError } from './localBaselineError';
+ import { copyRetentionDetail, type LocalRetentionDetail } from './localRetentionDetail';
++import { lab, labKnob } from './lab565';
++const labT = (ms: number) => ms / ((labKnob('timeScale') as number | undefined) ?? 1);
++const labPollHold = () => (labKnob('pollHoldMs') as number | undefined) ?? labT(LOCAL_RETENTION_POLL_HOLD_MS);
+ export type { LocalRetentionCause, LocalRetentionDetail } from './localRetentionDetail';
+ export interface LocalRetentionHint {
+   readonly revision: number;
+@@ -134,7 +137,7 @@ export function createAutomaticLocalRetention(options: {
+   let closed = false,
+     running = false,
+     halted = false;
+-  let quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS,
++  let quietUntil = Date.now() + labT(LOCAL_RETENTION_QUIET_MS),
+     notBefore = 0,
+     // The cooldown after a completed removal. A due fold skips it, at most once per retry
+     // interval and for a bounded streak (`foldStreak`), so a fold that does not clear cannot loop.
+@@ -209,6 +212,8 @@ export function createAutomaticLocalRetention(options: {
+       publishedHold === hold
+     )
+       return;
++    if (status.phase !== phase || status.reason !== reason || publishedHold !== hold)
++      lab('retention-status', { phase, reason, hold });
+     publishedHold = hold;
+     status = Object.freeze({
+       phase,
+@@ -250,8 +255,8 @@ export function createAutomaticLocalRetention(options: {
+   };
+   const startHoldBudget = () => {
+     if (holdSince !== undefined && holdTimer === undefined) {
+-      holdTimer = setTimeout(() => expireHold(), LOCAL_RETENTION_HOLD_MS);
+-      holdEndsAt = Date.now() + LOCAL_RETENTION_HOLD_MS;
++      holdTimer = setTimeout(() => expireHold(), labT(LOCAL_RETENTION_HOLD_MS));
++      holdEndsAt = Date.now() + labT(LOCAL_RETENTION_HOLD_MS);
+     }
+   };
+   const observation = () => {
+@@ -337,8 +342,9 @@ export function createAutomaticLocalRetention(options: {
+     pollTimer = undefined;
+     if (closed || pollSince === undefined) return;
+     // Liveness bound: routine polls resume even mid-attempt; the next one interrupts as before.
++    lab('poll-deferral-expired', { running });
+     releasePoll();
+-    pollYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
++    pollYieldUntil = Date.now() + labT(LOCAL_RETENTION_HOLD_YIELD_MS);
+     publish();
+   };
+   const expireHold = () => {
+@@ -347,12 +353,13 @@ export function createAutomaticLocalRetention(options: {
+     // Liveness bound: routine sync resumes even mid-attempt; its next job interrupts as before.
+     // A budget spent without progress does not come back on the same history.
+     closeWindow();
+-    holdYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
++    holdYieldUntil = Date.now() + labT(LOCAL_RETENTION_HOLD_YIELD_MS);
+     if (running) publish();
+     else schedule();
+   };
+   const attempt = async () => {
+     if (closed || halted || running) return;
++    if (labKnob('noReduce')) return;
+     const { hint, synchronized, holdable, deferrable } = observation();
+     if (!hint || hint.key === parked) return;
+     const now = Date.now();
+@@ -385,7 +392,7 @@ export function createAutomaticLocalRetention(options: {
+     ) {
+       // Any device: a routine idle poll would cancel this attempt through the storage queue.
+       pollSince = now;
+-      pollTimer = setTimeout(() => expirePoll(), LOCAL_RETENTION_POLL_HOLD_MS);
++      pollTimer = setTimeout(() => expirePoll(), labPollHold());
+     }
+     attempts++;
+     const stamp = (currentAttempt = {}),
+@@ -408,6 +415,7 @@ export function createAutomaticLocalRetention(options: {
+         attempt: attempts,
+         elapsedMs: Math.max(progress?.elapsedMs ?? 0, Date.now() - began),
+       });
++      lab('progress', { attempt: attempts, stage: next.stage, completed: next.completed, total: next.total });
+       if (!sameStage && attemptEvents.length < 16) attemptEvents.push(progress);
+       reportedAt = Date.now();
+       publish();
+@@ -426,9 +434,40 @@ export function createAutomaticLocalRetention(options: {
+           holdSince !== undefined && holdSettled
+             ? (holdEndsAt ?? now)
+             : pollSince !== undefined
+-              ? pollSince + LOCAL_RETENTION_POLL_HOLD_MS
++              ? pollSince + labPollHold()
+               : now;
+-        result = await options.remove(hint.revision, report, protectedUntil);
++        lab('attempt-start', {
++          attempt: attempts,
++          revision: hint.revision,
++          key: hint.key,
++          pollSince,
++          holdSince,
++          holdSettled,
++          pollYieldUntil,
++          holdYieldUntil,
++          protectedUntil,
++          protectedMs: protectedUntil - Date.now(),
++          deferrable,
++          synchronized,
++          holdable,
++        });
++        result = await options.remove(
++          hint.revision,
++          report,
++          labKnob('noWindow') ? undefined : protectedUntil,
++        );
++        lab('attempt-end', {
++          attempt: attempts,
++          outcome: result.kind,
++          reason: result.reason,
++          detail: JSON.stringify(result.detail ?? null),
++          elapsedMs: Date.now() - began,
++          pollSince,
++          progress: JSON.stringify(progress ?? null),
++          priorityOnly:
++            result.kind === 'skipped' &&
++            isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result)),
++        });
+       } catch (cause) {
+         // All preparation ceilings share this closed class. Saved receipts remain intact;
+         // the existing skipped path parks this exact hint behind the retry clock.
+@@ -446,7 +485,7 @@ export function createAutomaticLocalRetention(options: {
+         cooldownUntil = Date.now() + LOCAL_RETENTION_COOLDOWN_MS;
+         if (hint.fold) {
+           foldStreak++;
+-          foldNotBefore = Date.now() + LOCAL_RETENTION_RETRY_MS;
++          foldNotBefore = Date.now() + labT(LOCAL_RETENTION_RETRY_MS);
+         }
+         progressed();
+         releaseHold();
+@@ -468,7 +507,7 @@ export function createAutomaticLocalRetention(options: {
+           why === 'activity-or-journal' &&
+           isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result));
+         notBefore =
+-          Date.now() + (priorityOnly ? LOCAL_RETENTION_QUIET_MS : LOCAL_RETENTION_RETRY_MS);
++          Date.now() + (priorityOnly ? labT(LOCAL_RETENTION_QUIET_MS) : labT(LOCAL_RETENTION_RETRY_MS));
+         // Retrying an unchanged refusal cannot help. A different authenticated ledger hint
+         // permits another attempt, still behind the retry clock. A saved account attempt (a
+         // history snapshot, approval or rotation still in progress) waits the same way.
+@@ -533,7 +572,7 @@ export function createAutomaticLocalRetention(options: {
+     wake() {
+       if (closed || halted) return;
+       wakes++;
+-      quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS;
++      quietUntil = Date.now() + labT(LOCAL_RETENTION_QUIET_MS);
+       schedule();
+     },
+     // Sync readiness can change without user activity. Keep its quiet clock distinct so routine
+@@ -585,7 +624,7 @@ export function createAutomaticLocalRetention(options: {
+       holdYieldUntil = 0;
+       pollYieldUntil = 0;
+       wakes++;
+-      quietUntil = Date.now() + LOCAL_RETENTION_QUIET_MS;
++      quietUntil = Date.now() + labT(LOCAL_RETENTION_QUIET_MS);
+       schedule();
+       return true;
+     },
+diff --git a/src/crdt/contentMaintenance.ts b/src/crdt/contentMaintenance.ts
+index 8cd440e97..da3215330 100644
+--- a/src/crdt/contentMaintenance.ts
++++ b/src/crdt/contentMaintenance.ts
+@@ -1,4 +1,5 @@
+ import type { SessionTask } from './writeSession';
++import { lab } from './lab565';
+ 
+ export const RETENTION_STAGES = [
+   'durability',
+@@ -93,6 +94,7 @@ export class MaintenanceInterrupted extends Error {
+   constructor(conditions: readonly MaintenanceInterruptionConditions[] = []) {
+     super('Content maintenance yielded to foreground work.');
+     interruptionConditions.set(this, conditions.length ? conditions.map(conditionMask) : [0]);
++    lab('MaintenanceInterrupted', { conditions: JSON.stringify(conditions) }, true);
+   }
+ }
+ /** Add observed conditions when another guarded boundary is already unwinding. */
+diff --git a/src/crdt/contentStore.ts b/src/crdt/contentStore.ts
+index 6b4be2462..13ede6884 100644
+--- a/src/crdt/contentStore.ts
++++ b/src/crdt/contentStore.ts
+@@ -82,6 +82,7 @@ import {
+   type OpenedRecord,
+ } from './contentRecord';
+ import type { SessionTask } from './writeSession';
++import { lab } from './lab565';
+ import type {
+   BaselineAuthentication,
+   LocalReplayInput,
+@@ -993,6 +994,13 @@ export const createContentOwner = (
+                 unbound = true;
+                 return undefined;
+               }
++              lab('prep-journal', {
++                status: read.status,
++                preparationInterrupted,
++                carriedMs: preparationSaveMs,
++                setupMs: performance.now() - setupSince,
++                deadlineInMs: deadline === undefined ? null : deadline - performance.now(),
++              });
+               const journal = createPreparationJournal({
+                 context: bound,
+                 current: () => {
+@@ -1012,6 +1020,7 @@ export const createContentOwner = (
+               });
+               preparation = { journal, checkpoint: read.checkpoint };
+               if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
++              lab('prep-imported', { status: read.status, stats: JSON.stringify(journal.statistics) });
+               return journal;
+             }
+           : undefined,
+@@ -1127,6 +1136,12 @@ export const createContentOwner = (
+         check: checkRetained,
+       });
+     } catch (cause) {
++      lab('prep-catch', {
++        name: (cause as Error)?.name,
++        hasPreparation: !!preparation,
++        uncached: uncached(),
++        stats: JSON.stringify(preparation?.journal.statistics ?? null),
++      });
+       // A slice cut short saved nothing; keep the next one to the plain target (phase 556).
+       if (cause instanceof MaintenanceInterrupted && preparation) preparationInterrupted = true;
+       // An uncached pass leaves nothing for the next attempt to resume. If routine queued work
+@@ -1173,6 +1188,7 @@ export const createContentOwner = (
+             );
+             // The next slice pays this again, so its budget counts it (phase 556).
+             preparationSaveMs = performance.now() - began;
++            lab('prep-saved', { saveMs: preparationSaveMs });
+             preparationInterrupted = false;
+             return saved;
+           } catch (cause) {
+diff --git a/src/crdt/incrementalAccountLedger.ts b/src/crdt/incrementalAccountLedger.ts
+index 2e4f29313..e8649bab0 100644
+--- a/src/crdt/incrementalAccountLedger.ts
++++ b/src/crdt/incrementalAccountLedger.ts
+@@ -1,4 +1,5 @@
+ /** Private append continuation. A complete physical census is still required on every load. */
++import { labKnob } from './lab565';
+ import {
+   type OpenedRecord,
+   type ContentCounter,
+@@ -91,8 +92,9 @@ export interface AccountLedgerView {
+ }
+ // Bound the additional semantic indexes. The existing byte-owning carrier/view remains unchanged.
+ // Large views use the reference, rather than accumulate an additional unbounded cache.
+-const INDEX_MAX_ROWS = 32768,
++const INDEX_MAX_ROWS_DEFAULT = 32768,
+   INDEX_MAX_BYTES = 32 * 1024 * 1024;
++const labIndexMaxRows = () => (labKnob('indexMaxRows') as number | undefined) ?? INDEX_MAX_ROWS_DEFAULT;
+ export type AccountRecordOwnership = 'shared' | 'cloned';
+ /** The index gate (phase 554): the logical and physical row bounds only, with no graph walk.
+  * Since phase 538 retained bytes are reported, never a gate; the raw record byte bound stays in
+@@ -108,10 +110,10 @@ export function accountLedgerIndexBounds(
+   if (!Number.isSafeInteger(proofBytes) || proofBytes < 0)
+     captureError('Invalid index byte observation');
+   let logicalRows = records.length;
+-  if (logicalRows > INDEX_MAX_ROWS) return { logicalRows, eligible: false };
++  if (logicalRows > labIndexMaxRows()) return { logicalRows, eligible: false };
+   for (const entry of view.census.entries) {
+     logicalRows += inboundEntryExtent(entry).count - 1;
+-    if (logicalRows > INDEX_MAX_ROWS) return { logicalRows, eligible: false };
++    if (logicalRows > labIndexMaxRows()) return { logicalRows, eligible: false };
+   }
+   return { logicalRows, eligible: true };
+ }
+@@ -223,7 +225,7 @@ export async function indexVerifiedLedger(
+   if (view.census.entries.some((entry) => entry.extent) && proofBytes === undefined) return;
+   if (
+     counter.v !== 2 ||
+-    records.length > INDEX_MAX_ROWS ||
++    records.length > labIndexMaxRows() ||
+     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
+   )
+     return;
+@@ -236,7 +238,7 @@ export async function indexVerifiedLedger(
+       const x = sourceIndex(row.bytes, row.seq, route);
+       if (!sources.has(x.id)) {
+         sourceCount += x.index.sources.length;
+-        if (sourceCount > INDEX_MAX_ROWS) return;
++        if (sourceCount > labIndexMaxRows()) return;
+         sources.set(x.id, x.index);
+       }
+     }
+@@ -343,7 +345,7 @@ async function extendLedgerContinuation(
+     !old ||
+     !added ||
+     counter.v !== 2 ||
+-    records.length > INDEX_MAX_ROWS ||
++    records.length > labIndexMaxRows() ||
+     records.reduce((n, r) => n + r.bytes.length, 0) > INDEX_MAX_BYTES
+   )
+     return;
+@@ -359,7 +361,7 @@ async function extendLedgerContinuation(
+   for (const row of added)
+     if (!content(row)) {
+       logicalWork += inboundReceiptByteWork(row.bytes, base) - 1;
+-      if (logicalWork > INDEX_MAX_ROWS) return;
++      if (logicalWork > labIndexMaxRows()) return;
+     }
+   const incoming = new Map<
+     OpenedRecord,
+@@ -435,7 +437,7 @@ async function extendLedgerContinuation(
+         spool.sourceRecords.push(row);
+         if (!indexes.sources.has(x.id)) {
+           indexes.sourceCount += x.index.sources.length;
+-          if (indexes.sourceCount > INDEX_MAX_ROWS) return;
++          if (indexes.sourceCount > labIndexMaxRows()) return;
+           indexes.sources.set(x.id, x.index);
+         }
+         continue;
+diff --git a/src/crdt/localBaselineReplay.ts b/src/crdt/localBaselineReplay.ts
+index 40f740ab8..735a56b47 100644
+--- a/src/crdt/localBaselineReplay.ts
++++ b/src/crdt/localBaselineReplay.ts
+@@ -68,6 +68,7 @@ import {
+ } from './spoolRecord';
+ import { copyRecords, eraseVerified, sameBytes } from './verifiedRecords';
+ import { Y, hasPendingUpdates } from './yjs';
++import { lab } from './lab565';
+ 
+ export interface LocalBaselineContext extends InboundLifetime {
+   identity: ContentIdentity;
+@@ -286,6 +287,16 @@ async function full(
+           // Content past one preparation value has no reusable basis: check coverage uncached.
+         }
+       let basis: string | undefined;
++      if (preparation) {
++        const content = input.records.filter((r) => r.kind === 'state' || r.kind === 'update');
++        lab('coverage-basis', {
++          defined: !!basisBytes,
++          contentRecords: content.length,
++          contentBytes: content.reduce((n, r) => n + r.bytes.length, 0),
++          allRecords: input.records.length,
++          allBytes: input.records.reduce((n, r) => n + r.bytes.length, 0),
++        });
++      }
+       try {
+         if (basisBytes) basis = await hash(basisBytes);
+       } finally {
+diff --git a/src/crdt/retentionPreparation.ts b/src/crdt/retentionPreparation.ts
+index 2d2d3e121..20456028b 100644
+--- a/src/crdt/retentionPreparation.ts
++++ b/src/crdt/retentionPreparation.ts
+@@ -12,6 +12,7 @@ import { READ_COUNT_LIMIT } from '../../account-protocol/deliveryTransport';
+ import { MAX_BATCH_BYTES, MAX_BATCH_RECORDS } from './contentRecord';
+ import type { BaselineAuthentication } from './localBaselineReplay';
+ import { eraseVerified, sameBytes } from './verifiedRecords';
++import { lab, labKnob } from './lab565';
+ export { PreparationCapacity } from './preparationCapacity';
+ 
+ const DOMAIN = 'done/local-preparation/draft-1';
+@@ -392,7 +393,7 @@ export function createPreparationJournal(options: {
+   let full = false,
+     pendingBytes = 0;
+   const now = options.now ?? performance.now.bind(performance);
+-  const slice = options.sliceMs ?? PREPARATION_SLICE_MS;
++  const slice = options.sliceMs ?? PREPARATION_SLICE_MS / ((labKnob('timeScale') as number | undefined) ?? 1);
+   if (!Number.isFinite(slice) || slice <= 0) invalid();
+   const ratio = options.ratio ?? PREPARATION_SETUP_RATIO,
+     carried = options.carriedMs ?? 0;
+@@ -464,7 +465,17 @@ export function createPreparationJournal(options: {
+       }
+       const freshAt = now();
+       began ??= freshAt;
+-      limit ??= budget(freshAt);
++      if (limit === undefined) {
++        limit = budget(freshAt);
++        lab('slice-budget', {
++          limitMs: limit,
++          setupMs: options.setupSince === undefined ? null : freshAt - options.setupSince,
++          carriedMs: carried,
++          deadlineInMs: options.deadline === undefined ? null : options.deadline - freshAt,
++          hitsBeforeFirstMiss: hits,
++          entries: entries.size,
++        });
++      }
+       if (!full && pending.size && (freshAt - began >= limit || pending.size >= SLICE_ROWS))
+         throw new PreparationPause();
+       const value = await verify();

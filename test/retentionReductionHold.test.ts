@@ -183,9 +183,20 @@ it('the budget starts when sync is parked under the hold, bounds even a running 
   await f.tick(HOLD - RETRY - 1);
   expect(f.run.hold).toEqual(settled);
   await f.tick(1);
-  expect(f.run.hold).toBeUndefined();
+  // Phase 564: an attempt still running unsaved and uncut when the budget lapses gets a longer
+  // one (twice, with nothing measured) instead of losing its work to the resumed lanes.
+  expect(f.run.hold).toEqual(settled);
   expect(f.run.status.phase).toBe('running');
   f.calls[1]!.resolve({ kind: 'skipped', reason: 'activity-or-journal' });
+  await f.tick(0);
+  // Input cut it: the person is active, so the longer budget lapses as before and grows no more.
+  await f.tick(HOLD - 1);
+  expect(f.run.hold).toEqual(settled);
+  await f.tick(1);
+  expect(f.run.hold).toBeUndefined();
+  // One more retry ran inside the longer budget, after the cut; it is cut too.
+  expect(f.calls).toHaveLength(3);
+  f.calls[2]!.resolve({ kind: 'skipped', reason: 'activity-or-journal' });
   await f.tick(0);
   // Released lanes are busy again. No hold during the yield window.
   f.set({ synchronized: false });
@@ -195,7 +206,7 @@ it('the budget starts when sync is parked under the hold, bounds even a running 
   await f.tick(1);
   // Phase 546: that window ended without progress, so the same history is not held again.
   expect(f.run.hold).toBeUndefined();
-  expect(f.calls).toHaveLength(2);
+  expect(f.calls).toHaveLength(3);
   // New writing or sync changes the history; the next due attempt may hold again.
   f.set({ hint: { revision: 0, records: MIN + 1 } });
   f.run.refresh();
@@ -246,10 +257,14 @@ it('an attempt that starts late under a parked hold keeps the budget already run
   await f.tick(0);
   expect(f.calls).toHaveLength(1);
   expect(f.run.hold).toEqual(settled);
+  // The budget runs from when sync parked, not from the attempt.
+  expect(f.run.diagnostics.windowEndsAt).toBe(QUIET + HOLD);
   await f.tick(HOLD / 2 - 1);
   expect(f.run.hold).toEqual(settled);
   await f.tick(1);
-  expect(f.run.hold).toBeUndefined();
+  // Phase 564: the attempt is still running unsaved, so the budget grows from the same start.
+  expect(f.run.hold).toEqual(settled);
+  expect(f.run.diagnostics.windowEndsAt).toBe(QUIET + 2 * HOLD);
   f.run.dispose();
 });
 it('capacity and missing history spend the hold until a manual retry; ineligible only releases', async () => {
@@ -278,18 +293,22 @@ it('capacity and missing history spend the hold until a manual retry; ineligible
 it('a capacity refusal that arrives after the hold expired still spends it', async () => {
   const f = fixture();
   await settle(f);
-  // The budget lapses mid-attempt; the pass is then cut short and parks as capacity.
+  // A saved slice first, so the window has progress and its budget lapses mid-attempt (phase 564
+  // grows only a window that has not saved yet); the pass is then cut short and parks as capacity.
+  f.calls[0]!.resolve({ kind: 'preparation-saved' });
+  await f.tick(0);
+  expect(f.calls).toHaveLength(2);
   await f.tick(HOLD);
   expect(f.run.hold).toBeUndefined();
   expect(f.run.status.phase).toBe('running');
-  f.calls[0]!.resolve({ kind: 'skipped', reason: 'capacity' });
+  f.calls[1]!.resolve({ kind: 'skipped', reason: 'capacity' });
   await f.tick(0);
   // New growth permits another attempt, but holding sync for it again cannot help.
   f.set({ synchronized: false, hint: { revision: 0, records: MIN + 1 } });
   f.run.refresh();
   await f.tick(YIELD + RETRY);
   expect(f.run.hold).toBeUndefined();
-  expect(f.calls).toHaveLength(1);
+  expect(f.calls).toHaveLength(2);
   expect(f.run.retry()).toBe(true);
   await f.tick(QUIET);
   expect(f.run.hold).toEqual(engaged);
@@ -319,58 +338,68 @@ it('an ordinary device defers routine polls only while its attempt runs and neve
   f.run.dispose();
 });
 
-it('a saved slice continuing at once keeps the deferral; input that delays the next slice releases it', async () => {
+it("a run's first save ends its poll deferral; routine polls get the yield before the next window", async () => {
   const f = fixture(ordinary);
   f.run.wake();
   await f.tick(QUIET);
+  expect(f.run.hold).toEqual(polls);
   f.calls[0]!.resolve({ kind: 'preparation-saved' });
   await microtasks();
-  // Between slices: the next one is due at once, so the receive lane keeps skipping polls.
+  // Phase 564 (was: a slice continuing at once kept the deferral): the save ends the run's window.
   expect(f.calls).toHaveLength(1);
-  expect(f.run.hold).toEqual(polls);
+  expect(f.run.hold).toBeUndefined();
   await f.tick(0);
+  // The next slice still starts at once, unprotected inside the yield.
   expect(f.calls).toHaveLength(2);
-  expect(f.run.hold).toEqual(polls);
+  expect(f.run.hold).toBeUndefined();
   f.calls[1]!.resolve({ kind: 'preparation-saved' });
   await microtasks();
   f.run.wake(); // a click without a journal entry restarts quiet, so the next slice waits
   expect(f.run.hold).toBeUndefined();
   await f.tick(QUIET);
   expect(f.calls).toHaveLength(3);
-  expect(f.run.hold).toEqual(polls);
+  expect(f.run.hold).toBeUndefined(); // still inside the yield
+  f.calls[2]!.resolve(priorityOnly());
+  await f.tick(YIELD);
+  f.run.refresh();
+  await f.tick(0);
+  expect(f.calls).toHaveLength(4);
+  expect(f.run.hold).toEqual(polls); // a new window after the yield
   f.run.dispose();
 });
 
-it('the poll deferral is bounded from its first slice, announced when it lapses, then yields', async () => {
+it('a run that outlasts its poll window unsaved gets a longer one; its save ends it, announced, then yields', async () => {
   const f = fixture(ordinary);
   f.run.wake();
   await f.tick(QUIET);
-  // Slices that continue at once share one budget.
-  for (let n = 0; n < 3; n++) {
-    await f.tick(POLLS / 4);
-    f.calls.at(-1)!.resolve({ kind: 'preparation-saved' });
-    await f.tick(0);
-  }
-  expect(f.calls).toHaveLength(4);
-  await f.tick(POLLS / 4 - 1);
+  // Nothing measured yet: the first window. Phase 564 (was: polls resumed here mid-attempt).
+  expect(f.run.diagnostics.windowEndsAt).toBe(QUIET + POLLS);
+  await f.tick(POLLS);
+  expect(f.run.hold).toEqual(polls);
+  expect(f.run.status.phase).toBe('running');
+  // Twice the last, or more if the device measured it needs more; no ceiling.
+  expect(f.run.diagnostics.windowEndsAt).toBeGreaterThanOrEqual(QUIET + 2 * POLLS);
+  await f.tick(10 * POLLS);
   expect(f.run.hold).toEqual(polls);
   const before = f.notices;
-  await f.tick(1);
+  f.calls[0]!.resolve({ kind: 'preparation-saved' });
+  await microtasks();
   expect(f.run.hold).toBeUndefined();
-  expect(f.run.status.phase).toBe('running');
   expect(f.notices).toBeGreaterThan(before); // the sync scheduler must re-arm the poll
-  // The resumed poll interrupts the attempt through the storage queue, as before this change.
-  f.calls[3]!.resolve(priorityOnly());
+  // The next slice starts at once but unprotected: the resumed poll interrupts it, as before.
+  await f.tick(0);
+  expect(f.calls).toHaveLength(2);
+  f.calls[1]!.resolve(priorityOnly());
   await f.tick(0);
   f.run.refresh(); // the lanes went busy and quiet again
   await f.tick(QUIET);
-  expect(f.calls).toHaveLength(5);
+  expect(f.calls).toHaveLength(3);
   expect(f.run.hold).toBeUndefined(); // inside the yield window: unprotected
-  f.calls[4]!.resolve(priorityOnly());
+  f.calls[2]!.resolve(priorityOnly());
   await f.tick(YIELD - QUIET);
   f.run.refresh();
   await f.tick(0);
-  expect(f.calls).toHaveLength(6);
+  expect(f.calls).toHaveLength(4);
   expect(f.run.hold).toEqual(polls);
   f.run.dispose();
 });
@@ -416,11 +445,16 @@ it('a full-check device keeps its full hold, and polls stay undeferred in its yi
   const f = fixture({ deferPolls: true });
   await settle(f);
   expect(f.run.hold).toEqual(settled);
-  await f.tick(HOLD);
-  expect(f.run.hold).toBeUndefined();
+  // A saved slice, so the window has progress and its budget lapses (phase 564 grows only a
+  // window that has not saved yet).
   f.calls[0]!.resolve({ kind: 'preparation-saved' });
   await f.tick(0);
   expect(f.calls).toHaveLength(2);
+  await f.tick(HOLD);
+  expect(f.run.hold).toBeUndefined();
+  f.calls[1]!.resolve({ kind: 'preparation-saved' });
+  await f.tick(0);
+  expect(f.calls).toHaveLength(3);
   expect(f.run.hold).toBeUndefined();
   f.run.dispose();
 });
@@ -434,15 +468,21 @@ it('the lane watcher wakes the scheduler once per tier change, never synchronous
   expect(f.run.hold).toEqual(polls);
   expect(wakes).toBe(1);
   f.calls[0]!.resolve({ kind: 'preparation-saved' });
-  await f.tick(0); // the next slice: same tier, no wake
+  await f.tick(0); // phase 564: the save ends the run's window, one tier change
   expect(f.calls).toHaveLength(2);
-  expect(wakes).toBe(1);
+  expect(wakes).toBe(2);
+  f.calls[1]!.resolve(priorityOnly());
+  await f.tick(YIELD);
+  f.run.refresh();
+  await f.tick(0); // a new window after the yield
+  expect(f.run.hold).toEqual(polls);
+  expect(wakes).toBe(3);
   f.set({ deferPolls: false });
   f.run.refresh(); // released synchronously; the wake follows in a microtask
   expect(f.run.hold).toBeUndefined();
-  expect(wakes).toBe(1);
+  expect(wakes).toBe(3);
   await microtasks();
-  expect(wakes).toBe(2);
+  expect(wakes).toBe(4);
   stop();
   f.run.dispose();
 });

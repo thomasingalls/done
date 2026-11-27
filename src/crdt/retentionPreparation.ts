@@ -360,13 +360,16 @@ export function createPreparationJournal(options: {
   room?: number;
   /** When this attempt began, on `now`'s clock. Omitted: every slice keeps the plain target. */
   setupSince?: number;
-  /** How long the last fenced save took; the next save costs about as much again. */
+  /** How long the last fenced save took; the next save costs about as much again. Omitted: no
+   * save measured yet, so a window reserves this attempt's setup for it (phase 564). */
   carriedMs?: number;
   /** When routine sync may resume and interrupt, on `now`'s clock: a slice plans to pause, with
    * time for its save, before then. Omitted: no window is known and none limits the budget. */
   deadline?: number;
   /** Fresh-work budget as a multiple of the setup; `PREPARATION_SETUP_RATIO` by default. */
   ratio?: number;
+  /** Told once, with `now`, when the first fresh check ends this attempt's setup (phase 564). */
+  onFirstFresh?(at: number): void;
 }) {
   if (!hashString(options.context)) invalid();
   const room = Math.min(options.room ?? PREPARATION_VALUE_BYTES, PREPARATION_VALUE_BYTES);
@@ -412,11 +415,17 @@ export function createPreparationJournal(options: {
   let limit: number | undefined;
   const budget = (freshAt: number) => {
     if (options.setupSince === undefined) return slice;
-    const grown = ratio * (freshAt - options.setupSince + carried);
+    const setup = freshAt - options.setupSince;
+    const grown = ratio * (setup + carried);
+    // The save that ends this slice must fit inside the window too. Before any save has been
+    // measured it is reserved at this attempt's setup: a save repeats the setup's inventory read
+    // and prefix work on far fewer rows, so it is not longer (phase 564). Without a reserve the
+    // first protected slice ended at the window and lost everything to the next poll.
+    const reserve = options.carriedMs ?? setup;
     const windowed =
       options.deadline === undefined
         ? grown
-        : Math.min(grown, options.deadline - freshAt - carried);
+        : Math.min(grown, options.deadline - freshAt - reserve);
     return Math.max(slice, windowed);
   };
   const check = async <T>(
@@ -463,7 +472,14 @@ export function createPreparationJournal(options: {
         }
       }
       const freshAt = now();
-      began ??= freshAt;
+      if (began === undefined) {
+        began = freshAt;
+        try {
+          options.onFirstFresh?.(freshAt);
+        } catch {
+          /* A measurement observer cannot change verification. */
+        }
+      }
       limit ??= budget(freshAt);
       if (!full && pending.size && (freshAt - began >= limit || pending.size >= SLICE_ROWS))
         throw new PreparationPause();

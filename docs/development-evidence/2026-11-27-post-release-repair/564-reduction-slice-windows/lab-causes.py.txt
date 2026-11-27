@@ -1,0 +1,24 @@
+"""For every interruption, the ordinary storage job that replaced the preparation token just before it."""
+import json, sys, re, collections
+
+d = json.load(open(sys.argv[1]))
+ev = d['events']
+names = collections.Counter()
+lag = []
+last_run = None
+for e in ev:
+    if e['kind'] == 'storage-run' and not e.get('preparation'):
+        last_run = e
+    if e['kind'] == 'MaintenanceInterrupted':
+        if not last_run:
+            names['none'] += 1
+            continue
+        frames = [re.sub(r' \(.*', '', l.strip()[3:]) for l in last_run.get('stack', '').split('\n')]
+        frames = [f for f in frames if f and not f.startswith('http')][:4]
+        names[' < '.join(frames)] += 1
+        lag.append(e['t'] - last_run['t'])
+for k, v in names.most_common():
+    print(v, k)
+if lag:
+    lag.sort()
+    print('ms from that job to the interruption: median', lag[len(lag) // 2], 'max', lag[-1])

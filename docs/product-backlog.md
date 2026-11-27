@@ -34,7 +34,16 @@ The agents' reports behind these items are kept in
 - **HIST-REPLAY-BOUND — no snapshot can be created or verified past 4,096 positions since the last
   admitted one** (`HISTORY_REPLAY_EVENTS`, `src/crdt/historySource.ts`; verified at node level,
   4,096 replays and 4,097 is refused). Phase 547 warns before the bound. Removing it needs a larger
-  bound with memory and time evidence, or a chunked replay.
+  bound with memory and time evidence, or a chunked replay. A code trace on 2026-11-27 (read, not
+  run; made when the affected account was wrongly thought to be near the bound, it was at 242)
+  found what else stops past it: account recovery, which counts from the latest admitted snapshot
+  or from zero and refuses with the raw "Recovery history exceeds supported bounds"
+  (`src/crdt/recoverySource.ts`), and enrolling a device, where the approving device's replay
+  refuses with the raw "History replay exceeds its event bound" (`src/crdt/historySource.ts`) and
+  leaves a pending candidate that needs a removal and key rotation to clear. Ordinary send, receive
+  and local reduction do not count positions and keep working. The service and the protocol enforce
+  no position bound, and every refusal comes before any effect, so a build with a higher bound
+  brings a crossed account back.
 - **HIST-GATE-FLAG — a two-device account fetches history only because the production service
   advertises membership continuation.** *decision.* A three-device run against the production entry
   showed both outcomes: with the flag a returning device catches up; without it a two-device reader
@@ -203,6 +212,16 @@ a stall. What it left:
   until the device reduces. Phase 554's fixture writes one source per position, the fewest rows a
   position can have, and holds 7.2 physical rows per own position (21,602 at 3,000), so on that
   shape the bound sits near 4,500 own positions; positions with more sources reach it sooner.
+  **On the affected account (2026-11-27):** the desktop holds 35,379 rows, past the bound, and the
+  operator saw minutes per sent position there; the phone holds 32,644, 124 rows (about 17 sent
+  positions) below it. Phase 564's lab measured six ledger checks per sent position: with the bound
+  forced to 8,000 rows at 14,402, one card took 10.0 s (six full checks of 1.2 s) against 1.3 to
+  1.4 s indexed, and on a full-check device phase 539's hold also parks a new card while a
+  reduction attempt runs (23.8 s in the lab, until the reduction finished). The other conditions
+  that drop the indexes (`incrementalAccountLedger.ts`): more than 32 MiB of plaintext, more than
+  32,768 logical rows (each receipt's extent counted) or sources, receipt extents without a
+  proof-byte observation, and `LEDGER=reference`. The fixed bound itself is a candidate for the
+  operator's 2026-11-27 rule (phase 564 record, bounds table).
 - **SEND-REDUCED-300 — a reduced device's 300-position seed costs 266 ms per sent position**, against
   190 ms at 1,000 and 3,000, because its shape check takes 84 ms per send instead of 15 (phase 554,
   both builds). Not investigated; it is the one size where the reduced device misses 250 ms.
@@ -242,7 +261,45 @@ a stall. What it left:
   Also from phase 556's review: a device whose grown slices are all cut advances only by its
   two-second slices and loses a grown slice between each pair, so it is slower than before that
   phase (not measured; a cut could instead require more saved plain slices before growing again);
-  and a first slice capped by the window has no margin for its save.
+  and a first slice capped by the window has no margin for its save (phase 564 reserves it: the
+  last measured save, else the attempt's setup).
+- **REDUCE-CYCLE-REPEAT — every attempt re-reads every row and re-hashes every saved receipt.**
+  *decision.* Phase 556 change D decrypts every row each attempt, and the journal re-hashes every
+  saved input before its first fresh check, so a cycle's setup grows with history and with saved
+  work (lab, ×100: verify before the first miss grew from 0.6 to 1.7 s over 156 cycles). Phase 564
+  sizes windows to it but does not shrink it. Options: E from investigation 10 (saves of O(H +
+  slice), amends the exact authenticated readback decisions); checking saved receipts lazily at use
+  instead of re-hashing all of them; keeping the opened rows of a run across its saved slices
+  (crosses phase 187's rule that read evidence expires with its task).
+- **REDUCE-PROGRESS-LINE — the History panel cannot tell progress from a loop.** It shows only the
+  stage name and, while reading, the record count; a cycle that saved and one that lost its work
+  look the same. The journal's statistics already count saved receipts; a "verified N of M" line
+  (display only) would show progress. Phase 565 (progress display) is scheduled to take this up.
+- **BANNER-NOT-INPUT — "Input is waiting to be saved." shows with nobody typing.** It shows whenever
+  the page's admission queue holds a non-flush job (`admissionQueue.ts`, `pendingItems`): each
+  reduction progress save and commit (through the page's input queue), and for about 0.1 s at every
+  routine receive pass (lab, phase 564: every 16 to 18 s on an idle online device). Related to
+  REDUCE-FURTHER's "count only input jobs".
+- **REDUCE-COMPACTION-STALE — content compaction can discard saved reduction progress.** *code,
+  not observed.* The admission queue compacts content after 128 changes and 750 ms of idle; a
+  compaction rewrites rows below a saved preparation checkpoint's prefix, so the next attempt reads
+  the checkpoint as `stale` and starts over, without any message.
+- **REDUCE-MAX-CHUNKS — after about 255 saved slices the rest of a pass cannot pause.**
+  `PREPARATION_MAX_CHUNKS` = 256 chunks and deltas. Past it the journal is full: nothing more is
+  kept and the pass runs to the end in one attempt. If priority-only work cuts it there, the device
+  parks with "History maintenance was interrupted by other work on this device and had no saved
+  progress to resume from…" until new history or Check again. Phase 564's real-owner test reached
+  157 attempts held to the 2 s floor at its small history; phase 564 removes the floor offline and
+  sizes windows online, which makes this rarer, not impossible.
+- **REDUCE-WINDOW-LIVENESS — an attempt that never ends now defers routine polls, or parks
+  sending, without limit.** *review, phase 564.* Phase 564 removed the ceiling on the window before
+  a run's first save, on the operator's rule that a limit may delay reduction but not prevent it.
+  The old ceilings were also what let routine sync resume under an attempt that hung. A running
+  attempt that neither saves nor ends would now keep routine idle polls deferred, and on a
+  full-check device keep new envelopes parked, until the workspace is reopened. Hints and the
+  notification stream still arrive and input still cuts the attempt. No hang is known. A repair
+  would grow the window only while the attempt shows it is alive, which first needs every stage to
+  report (building, installing and readback report nothing while they run).
 - **REDUCE-HOLD-RESIDUAL — a held window can still recur once per history change** when every window
   is cut short (phase 546, by design). Also noted: a device on the full check holds sync while
   offline, and other fenced callers (history install, authority adoption, the "Check history" dry

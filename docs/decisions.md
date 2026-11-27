@@ -8733,3 +8733,60 @@ Recorded by the coordinating session from the operator's messages of 2026-11-27.
 - **Tests per phase.** "review ok, defer running the full suite - it takes a *very* long time, we can run a narrower set of tests and do the full suite before merge". Each phase is committed on the tests that cover it and the bookkeeping checks; the full unit suite runs once on the branch before merge. This replaces the per-commit full run of 2026-11-12.
 - **Compatibility while there are two users.** "there are only two current users of the app. they have both migrated. we can safely do less-good practices like worse backwards-compat while we get this alpha-level product closer to a beta-worthy release." The coordinating session reads this as latitude over behaviour and test claims for builds older than `913b58642`, not over anything that could lose the two users' stored writing; that reading is its own.
 
+
+### 2026-11-27 — Reduction's time windows come from what the device measured (phase 564)
+
+The operator, 2026-11-27, set the rule this phase follows: "yes 5 min is fine, but i also don't want to get into a position again where critical work is impossible because we chose a relatively arbitrary cutoff point where there may not need to be one". The coordinating session's reading of it: a limit on reduction may make progress smaller or later, but never impossible, and a limit must come from what the device measured, not from a constant. That withdrew the brief's first default for repair 3 (a deferral of at most max(60 s, 3 × setup), never more than 5 min) before it was built. The coordinating session asked for repairs 1 to 3 of the lab diagnosis, filed with the phase.
+
+On the affected account, reduction did not finish on either device. Each attempt re-reads every saved row before any new work; on the phone that setup is inferred to exceed 60 s (it had read about 29,000 of its 32,635 records when a 60 s window ended) and was not measured. Three windows were at fault:
+- **Online:** phase 540 protected an attempt from routine idle polls for a fixed 60 s. With a longer setup, every attempt was cut by the next poll and nothing was ever saved. In the lab at ×100: 574 attempts, none saved.
+- **The first protected slice:** before any save was measured, it reserved no time for its save, so the save was cut at the window.
+- **Offline:** the window still capped every slice at the 2 s floor, though nothing could interrupt. In the lab at ×100: 156 attempts, each repeating the whole setup.
+
+**Amended, phase 540's sixty-second deferral** (recorded there as unmeasured):
+- 60 s is now only a history's first window, before the owner has reported a setup.
+- After that, a run's window is (1 + `PREPARATION_SETUP_RATIO`) × (setup + save) from the device's own measurements, with an unmeasured save counted as long as the setup.
+- An attempt still running unsaved when its window ends gets twice the window or the measured need, whichever is larger. There is no ceiling, so no setup duration prevents a save.
+- The deferral ends at the run's first save, and the existing 60 s yield follows. A slice continuing at once no longer keeps it.
+- A device whose measured need exceeds what is left of the yield waits for the yield to end instead of starting attempts that a routine poll would cut.
+- Justification:
+  - lab r08 against p08: setup longer than the window, ×100, from no save in 574 attempts to reduced in 2;
+  - a composed simulation with a 90 s setup online: from nothing saved in 12 simulated hours to reduced in 20.7 min.
+- Worst-case delay of a change only a poll would find: until the run's first save, about setup + one slice + save, which is about 3 × (setup + save) after the first run, plus one poll interval. Then the yield.
+- Hints and the notification stream are never deferred.
+
+**Amended, phase 556 change A's "never planned past the moment sync resumes"** (with `protectedUntil` = now in a yield):
+- While the sync gate is not ready, routine sync never resumes, so the owner gets no window and the slice grows with the setup.
+- A slice planned against a window reserves its save: the last measured one, else this attempt's setup.
+- Justification:
+  - lab r06 offline: 156 attempts and 346 s; the r14 control without the window: 2 attempts; patched p06: 1 attempt and 3.2 s;
+  - real owner: 157 attempts held to "now" against 3 without a window;
+  - r07's first protected slice lost 8,703 results.
+
+**Phase 539's hold, checked against the rule.**
+- A device on the full check (the affected desktop, past 32,768 rows) whose setup, one slice and save exceeded the 5 min hold budget could not save while it was sending: phase 546 then stopped the hold re-engaging, and send jobs cut the unheld attempts.
+- Before a held window's first save, its budget is now never below the measured need. An attempt nothing has cut gets twice or the need instead of lapsing.
+- That hold parks sending, so on such a device new writing waits as long as the device needs to save once.
+- A window in which input or the journal cut an attempt lapses at its budget as before.
+- The 5 min budget and phase 546's progress rule are otherwise unchanged.
+
+**Unchanged:**
+- phase 83, since no storage path changed;
+- hints, input and the journal interrupt at once;
+- the poll deferral never parks the sender;
+- no stored format, wire format, service message, product string or size or count limit.
+
+The scheduler's diagnostics also carry the measured setup and save and the end of the engaged window.
+
+Tests: five new composed cases on a simulated clock, with the real sync scheduler and the real reduction scheduler. Among them is a property case over setups from 30 s to 45 min: the first run saves within ⌈log₂(need / 60 s)⌉ extensions of one window, and the case fails at `76aade840` above 60 s. There are also two new real-owner cases. Eight existing assertions changed, each listed in the record. 24 related unit files pass. The full unit suite was not run for this phase.
+
+Still exposed, in the backlog:
+- the per-cycle repeat;
+- `PREPARATION_MAX_CHUNKS`;
+- content compaction making a saved checkpoint stale;
+- the banner showing for saves and receives;
+- the full-check cliff at 32,768 rows (desktop 35,379, phone 32,644, six full checks per sent position);
+- a verified-count line.
+
+The record lists every fixed bound on the reduction path for the operator. [Evidence](development-evidence/2026-11-27-post-release-repair/564-reduction-slice-windows/README.md).
+
