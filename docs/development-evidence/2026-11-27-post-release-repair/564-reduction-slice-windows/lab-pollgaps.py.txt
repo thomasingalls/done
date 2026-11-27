@@ -1,0 +1,25 @@
+"""Receive passes and the longest gap between them, plus window events, for a lab565 run."""
+import json, sys
+
+for path in sys.argv[1:]:
+    d = json.load(open(path))
+    ev = d['events']
+    t0 = d['shellAt']
+    rec = [e['t'] for e in ev if e['kind'] == 'lane-begin' and e.get('name') == 'receive']
+    gaps = [b - a for a, b in zip(rec, rec[1:])]
+    starts = [e for e in ev if e['kind'] == 'attempt-start']
+    ends = [e for e in ev if e['kind'] == 'attempt-end']
+    ext = [round((e['t'] - t0) / 1000, 2) for e in ev if e['kind'] == 'poll-window-extended']
+    meas = [(e['kind2'] if 'kind2' in e else e.get('kind'), e.get('ms')) for e in ev if e['kind'] == 'measure']
+    print(path.split('/')[-1])
+    print('  receive passes', len(rec), 'longest gap s', round(max(gaps) / 1000, 2) if gaps else None,
+          'gaps>2s', [round(g / 1000, 2) for g in gaps if g > 2000][:12])
+    for s in starts:
+        print('  start', round((s['t'] - t0) / 1000, 2), 'protectedMs', s.get('protectedMs'), 'routineSync',
+              s.get('routineSync'), 'pollEndsIn', None if s.get('pollEndsAt') in (None,) else round((s['pollEndsAt'] - s['t']) / 1000, 2),
+              'measuredSetup', s.get('measuredSetup'), 'measuredSave', s.get('measuredSave'))
+    for e in ends:
+        print('  end', round((e['t'] - t0) / 1000, 2), e.get('outcome'), e.get('reason'), 'elapsed', e.get('elapsedMs'))
+    print('  window extensions at', ext)
+    print('  budgets', [(round(e['limitMs']), round(e['setupMs'] or 0), e.get('deadlineInMs') and round(e['deadlineInMs'])) for e in ev if e['kind'] == 'slice-budget'])
+    print('  measures', [(e.get('ms') and round(e['ms'])) for e in ev if e['kind'] == 'measure'])

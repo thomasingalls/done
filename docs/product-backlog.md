@@ -34,7 +34,16 @@ The agents' reports behind these items are kept in
 - **HIST-REPLAY-BOUND — no snapshot can be created or verified past 4,096 positions since the last
   admitted one** (`HISTORY_REPLAY_EVENTS`, `src/crdt/historySource.ts`; verified at node level,
   4,096 replays and 4,097 is refused). Phase 547 warns before the bound. Removing it needs a larger
-  bound with memory and time evidence, or a chunked replay.
+  bound with memory and time evidence, or a chunked replay. A code trace on 2026-11-27 (read, not
+  run; made when the affected account was wrongly thought to be near the bound, it was at 242)
+  found what else stops past it: account recovery, which counts from the latest admitted snapshot
+  or from zero and refuses with the raw "Recovery history exceeds supported bounds"
+  (`src/crdt/recoverySource.ts`), and enrolling a device, where the approving device's replay
+  refuses with the raw "History replay exceeds its event bound" (`src/crdt/historySource.ts`) and
+  leaves a pending candidate that needs a removal and key rotation to clear. Ordinary send, receive
+  and local reduction do not count positions and keep working. The service and the protocol enforce
+  no position bound, and every refusal comes before any effect, so a build with a higher bound
+  brings a crossed account back.
 - **HIST-GATE-FLAG — a two-device account fetches history only because the production service
   advertises membership continuation.** *decision.* A three-device run against the production entry
   showed both outcomes: with the flag a returning device catches up; without it a two-device reader
@@ -203,6 +212,16 @@ a stall. What it left:
   until the device reduces. Phase 554's fixture writes one source per position, the fewest rows a
   position can have, and holds 7.2 physical rows per own position (21,602 at 3,000), so on that
   shape the bound sits near 4,500 own positions; positions with more sources reach it sooner.
+  **On the affected account (2026-11-27):** the desktop holds 35,379 rows, past the bound, and the
+  operator saw minutes per sent position there; the phone holds 32,644, 124 rows (about 17 sent
+  positions) below it. Phase 564's lab measured six ledger checks per sent position: with the bound
+  forced to 8,000 rows at 14,402, one card took 10.0 s (six full checks of 1.2 s) against 1.3 to
+  1.4 s indexed, and on a full-check device phase 539's hold also parks a new card while a
+  reduction attempt runs (23.8 s in the lab, until the reduction finished). The other conditions
+  that drop the indexes (`incrementalAccountLedger.ts`): more than 32 MiB of plaintext, more than
+  32,768 logical rows (each receipt's extent counted) or sources, receipt extents without a
+  proof-byte observation, and `LEDGER=reference`. The fixed bound itself is a candidate for the
+  operator's 2026-11-27 rule (phase 564 record, bounds table).
 - **SEND-REDUCED-300 — a reduced device's 300-position seed costs 266 ms per sent position**, against
   190 ms at 1,000 and 3,000, because its shape check takes 84 ms per send instead of 15 (phase 554,
   both builds). Not investigated; it is the one size where the reduced device misses 250 ms.
@@ -242,7 +261,63 @@ a stall. What it left:
   Also from phase 556's review: a device whose grown slices are all cut advances only by its
   two-second slices and loses a grown slice between each pair, so it is slower than before that
   phase (not measured; a cut could instead require more saved plain slices before growing again);
-  and a first slice capped by the window has no margin for its save.
+  and a first slice capped by the window has no margin for its save (phase 564 reserves it: the
+  last measured save, else the attempt's setup).
+- **REDUCE-CYCLE-REPEAT — every attempt re-reads every row and re-hashes every saved receipt.**
+  *decision.* Phase 556 change D decrypts every row each attempt, and the journal re-hashes every
+  saved input before its first fresh check, so a cycle's setup grows with history and with saved
+  work (lab, ×100: verify before the first miss grew from 0.6 to 1.7 s over 156 cycles). Phase 564
+  sizes windows to it but does not shrink it. Options: E from investigation 10 (saves of O(H +
+  slice), amends the exact authenticated readback decisions); checking saved receipts lazily at use
+  instead of re-hashing all of them; keeping the opened rows of a run across its saved slices
+  (crosses phase 187's rule that read evidence expires with its task).
+- **REDUCE-PROGRESS-LINE — reduced by phase 565 to what remains.** The History panel now names the
+  step of three, the share of checking done across passes (saved results plus the active pass's
+  fresh ones, never re-reads) and the pass, about how long the step and the whole reduction have
+  left (from this run's measurements, "estimating" until there are some), what is saved while
+  paused, any fall as checking to be redone, and when it finished. What remains: *measured, phase
+  565.* The census total behind the percentage was exact to one result on the unit fixture and
+  about 10% high on the lab seed, and can be low when a source capsule holds several updates; it is
+  not checked on the live devices. Estimates are optimistic while a cheap family of checks runs
+  ahead of a slower one (replay r06: about five times early on), and the pass after a cut is sized
+  with the last budget though the owner keeps it to the plain target. A reduction whose counter is
+  already v5 verifies without the journal and shows no percentage. Not run online, at phone speed
+  or past 32,768 rows.
+- **LONG-OPERATION-PROGRESS — the same kind of progress on other long operations.** *not started.*
+  Phase 565's display (which step, saved progress, about how long the step and the whole have left,
+  only from what the device measured, never zero, falls shown) covers local history reduction
+  only. Candidates, by the coordinating session's reading (the operator asked for this on
+  multi-step operations in general and has not named these): creating and verifying a service
+  history snapshot (History snapshots and pruning), catching up after time away (Returning to the
+  app and start-up; catch-up), and opening. Each needs its owner to report counts and a total it
+  can stand behind; the additional device replay's progress (decision of the phase recorded at
+  transport commits `e31b5eaf` to `465c5e07`) shows stage counts with no time or overall
+  percentage, by decision, and would be amended.
+- **BANNER-NOT-INPUT — "Input is waiting to be saved." shows with nobody typing.** It shows whenever
+  the page's admission queue holds a non-flush job (`admissionQueue.ts`, `pendingItems`): each
+  reduction progress save and commit (through the page's input queue), and for about 0.1 s at every
+  routine receive pass (lab, phase 564: every 16 to 18 s on an idle online device). Related to
+  REDUCE-FURTHER's "count only input jobs".
+- **REDUCE-COMPACTION-STALE — content compaction can discard saved reduction progress.** *code,
+  not observed.* The admission queue compacts content after 128 changes and 750 ms of idle; a
+  compaction rewrites rows below a saved preparation checkpoint's prefix, so the next attempt reads
+  the checkpoint as `stale` and starts over, without any message.
+- **REDUCE-MAX-CHUNKS — after about 255 saved slices the rest of a pass cannot pause.**
+  `PREPARATION_MAX_CHUNKS` = 256 chunks and deltas. Past it the journal is full: nothing more is
+  kept and the pass runs to the end in one attempt. If priority-only work cuts it there, the device
+  parks with "History maintenance was interrupted by other work on this device and had no saved
+  progress to resume from…" until new history or Check again. Phase 564's real-owner test reached
+  157 attempts held to the 2 s floor at its small history; phase 564 removes the floor offline and
+  sizes windows online, which makes this rarer, not impossible.
+- **REDUCE-WINDOW-LIVENESS — an attempt that never ends now defers routine polls, or parks
+  sending, without limit.** *review, phase 564.* Phase 564 removed the ceiling on the window before
+  a run's first save, on the operator's rule that a limit may delay reduction but not prevent it.
+  The old ceilings were also what let routine sync resume under an attempt that hung. A running
+  attempt that neither saves nor ends would now keep routine idle polls deferred, and on a
+  full-check device keep new envelopes parked, until the workspace is reopened. Hints and the
+  notification stream still arrive and input still cuts the attempt. No hang is known. A repair
+  would grow the window only while the attempt shows it is alive, which first needs every stage to
+  report (building, installing and readback report nothing while they run).
 - **REDUCE-HOLD-RESIDUAL — a held window can still recur once per history change** when every window
   is cut short (phase 546, by design). Also noted: a device on the full check holds sync while
   offline, and other fenced callers (history install, authority adoption, the "Check history" dry
@@ -330,6 +405,11 @@ a stall. What it left:
 CI has not passed since 2026-10-16. Phase 561's investigation and CI history are in its
 [record](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/README.md); phase
 562 repaired the unit case that timed out.
+Hosted CI's unit step passed on `913b58642` on 2026-11-27 (run 45978159042), so
+that repair held on the runner; the job was still cut by its 20-minute limit. The same day the
+operator decided the shape of the repair, which is not built: the checks that the work is tracked
+properly stay in the blocking job, and product correctness, unit and integration tests move to a
+parallel job and are run locally before a release ([decision](decisions.md)).
 
 - **CI-UNIT-BUDGET — one unit case kept CI red from 2026-11-07; the cases next to it are held.**
   *decision.* `test/inboundReceiptViews.test.ts` › "all72 admitted extents expose exact positions,
@@ -374,7 +454,8 @@ CI has not passed since 2026-10-16. Phase 561's investigation and CI history are
 - **CI-JOB-LIMIT — the 20-minute job limit now cuts the packaged browser step.** *decision.* Fixing
   CI-UNIT-BUDGET alone will not make CI green. Since the last green run (2026-10-16) the
   onboarding, account compatibility and device-removal browser step has grown from 35 tests
-  (2.8 min) to 54, of which the 13 `enrollment-*` cases take about 430 s, and "Check native sync
+  (2.8 min) to 54 (56 since phase 563, whose two new cases take about 4 s each here), of which the
+  13 `enrollment-*` cases take about 430 s, and "Check native sync
   authority" (2026-10-23) added 2.2 to 4.4 min before it. Of the runs since then that passed the unit
   step, 16 ended at `timeout-minutes: 20`, 11 of them inside that browser step, and one was
   superseded. The fastest, 43072060806 on 2026-11-11, had passed 41 of 54 browser tests at the cut;
@@ -402,31 +483,37 @@ CI has not passed since 2026-10-16. Phase 561's investigation and CI history are
   stay on the page. First step: profile-only counters of every crossing per user action (key
   press, card move, open, send, receive, one reduction slice) with payload sizes, in the style of
   phase 554's timers, before any structure is proposed.
-- **SETUP-CLOSING-STUCK — removing local data in another tab leaves a sync setup on its closing
-  screen.** *decision.* A person starts Set up sync and reaches "Create your passkey", then in a
-  second tab goes to Remove local data and confirms. The setup tab shows "Locking and finishing
-  storage operations…" and "Your writing stays in this workspace." with only Back, and stays there
-  (the investigation watched it for 90 s with its Worker alive); only Back or a reload ends it. The second sentence is
-  wrong, since the writing was just removed. Nothing is lost or recreated: the saved setup attempt
-  stays empty before and after a reload, a reload shows "This workspace was removed" (or "Add
-  protection before sync" after Start fresh), and Back goes to "Choose an account". It has happened
-  since phase 226 (`98de7c303`, 2026-10-29), which moved setup's coordinator into the
-  `firstDeviceOwner` Worker. The coordinator hears the retirement notice in its own realm, closes
-  itself and publishes that closing screen (`src/account/firstDeviceSetup.ts`), but nothing tells the
-  page's owner (`src/ui/windowCeremonyUi.ts`) to finish: the Worker stays alive, no `setupClosed`
-  arrives and the Worker-lifetime watch does not fire. Phase 230 (`baa252694`) noted this
-  "forever-closing presentation" for recovery and fixed only the path where the page does drain.
-  Device enrollment and recovery use the same `windowCeremonyUi` and were not tried. A repair would
-  tell the page when the Worker's coordinator has closed itself and show a terminal "removed" or
-  "retired" alert; the failure text "The passkey step could not finish… Your saved setup and writing
-  have been kept" would be wrong after a removal too. Likely files: `src/crdt/workerCeremonyUi.ts`,
-  `src/account/firstDeviceSetup.ts`, `src/ui/windowCeremonyUi.ts`, `src/ui/firstDeviceSetupWorker.ts`
-  and the test. `test/packaged-account/removal-regressions.spec.ts` › "a delayed registration reply
-  cannot recreate removed setup" fails on it in both variants and is left failing. Its simulation of
-  a coordinator that misses the cooperative notice suppresses `BroadcastChannel('done/slot-lifecycle')`
-  in the page only, while the coordinator now listens in the Worker, so the simulation has to be
-  redefined, which changes what the test proves. From phase 561's
-  [investigation](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/investigation.md).
+- **SETUP-CLOSING-STUCK — resolved in phase 563.** A sync setup whose local data was removed in
+  another tab stayed on "Locking and finishing storage operations…" with "Your writing stays in this
+  workspace." until Back or a reload. Phase 563
+  ([record](development-evidence/2026-11-27-post-release-repair/563-setup-closing-notice/README.md))
+  ends it at once on the unlock screen with the alert "Sync setup stopped because another tab began
+  removing this device’s data. Reload this tab to continue.", and the setup Worker ends. The
+  coordinator itself now shows that notice when its slot is retired, which also covers the
+  page-hosted mode (`networkSessions` false), and the Worker tells the page with a `cause` on its
+  `setupClosed` message. Corrected dating: the stuck screen dates from `42ebdd12d` (2026-10-15),
+  which added the coordinator's retirement close in the same commit as `removal-regressions.spec.ts`;
+  that spec suppressed the notice from the start, so the cooperative path never ran in it. Phase 226
+  (`98de7c303`) only stopped the page-side suppression from hiding it. Phase 563 ran phase 225
+  (`700087b07`, coordinator still in the page: the same stuck screen) and inferred `42ebdd12d` from
+  its identical close. What remains: in the page-hosted mode the final screen's unlock form does
+  nothing, because the retired coordinator accepts no command; a reload continues, as the notice
+  says. In the Worker host a code entered there starts a fresh inspect-only Worker (phase 230). Not
+  run on a hosted runner or under CI's Node 24.22.1.
+- **CEREMONY-STALE-AFTER-REMOVAL — device enrollment and recovery stay on a live screen after their
+  local data is removed in another tab.** Seen in phase 563's probes
+  ([record](development-evidence/2026-11-27-post-release-repair/563-setup-closing-notice/README.md)),
+  one run each, not changed. With enrollment open on the existing device at "Connect devices" (the
+  invitation link, Copy link, Check again), and with recovery open on a new device at its review step
+  ("Recover on this device and disconnect the previous devices"), removing that slot's local data in
+  another tab completed ("Removed from this device"). The ceremony tab kept its live screen for the
+  20 s watched. Its next action (Check again; the Recover button) was refused, and the alert showed
+  the raw reason code "device-data-removal" instead of a sentence. Neither ceremony Worker listens on
+  `done/slot-lifecycle` (by the code, and no retirement message reached either Worker in the probe),
+  so neither closes itself the way setup does. Nothing was recreated: no database reappeared and the
+  removal page still said "Removed from this device". Recovery at its earlier save-code step had
+  nothing to remove yet ("Nothing to remove"). Not tried: enrollment's new-device side, other steps,
+  and reloading either tab.
 
 ### The affected account
 

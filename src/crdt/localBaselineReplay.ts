@@ -196,6 +196,41 @@ function documentState(records: readonly OpenedRecord[], complete: boolean): Byt
 /** Only the first full reference may consume receipts; candidate/readback replay never does. */
 export interface PreparationVerification {
   memo: VerificationMemo;
+  /** Phase 565, presentation only: told about how many results this full check makes. */
+  expect?(checks: number): void;
+}
+/** Phase 565, presentation only: about how many results a full check of this census makes, so
+ * the History panel can say how far checking has come. One result per spool event (witness),
+ * position (spool and link), retained delivery entry, inbound receipt record and installation,
+ * two for an installed successor or membership, and with a reusable coverage basis one coverage
+ * result per installation, received entry and own update (self-receive and the sources loop
+ * check the same updates, which are one result each). A source capsule holding several updates
+ * counts once, which can make it low; the panel stays below 100% until a full check completed.
+ * On the unit fixture of 96 own and 96 received positions: 1,250 against 1,249. Nothing reads it
+ * to decide anything. */
+function plannedResults(
+  census: Awaited<ReturnType<typeof inspectInboundCooperatively>>,
+  installed: boolean,
+  coverage: boolean,
+) {
+  const spool = census.delivery.spool;
+  const checks =
+    spool.events.length +
+    (installed ? 2 : 0) +
+    2 * spool.positions.length +
+    census.delivery.entries.length +
+    census.entries.length +
+    census.installations.length;
+  if (!coverage) return checks;
+  return (
+    checks +
+    census.installations.length +
+    census.entries.reduce((n, e) => n + (e.extent?.entryCount ?? 1), 0) +
+    Math.max(
+      spool.positions.reduce((n, p) => n + 1 + (p.additional?.length ?? 0), 0),
+      spool.sources.size,
+    )
+  );
 }
 async function full(
   input: ReturnType<typeof captureInput>,
@@ -230,6 +265,12 @@ async function full(
       syntaxTurn,
     );
     const reuse = preparation && { memo: preparation.memo, current: c.assertCurrent };
+    const installed = c.installation.kind === 'original' || !!c.installation.membership;
+    try {
+      preparation?.expect?.(plannedResults(census, installed, true));
+    } catch {
+      /* Presentation cannot change verification. */
+    }
     await verifySpoolWitness(census.delivery.spool, input.counter, subtle, reuse);
     if (c.installation.kind === 'original')
       await verifyInstalledSuccessor(
@@ -291,6 +332,13 @@ async function full(
       } finally {
         if (basisBytes) basisBytes.fill(0);
       }
+      // Without a reusable basis, coverage checks are not results this pass can keep (phase 565).
+      if (preparation && basis === undefined)
+        try {
+          preparation.expect?.(plannedResults(census, installed, false));
+        } catch {
+          /* Presentation cannot change verification. */
+        }
       const check = async (updates: readonly Bytes[]) => {
         if (!preparation || basis === undefined) {
           checking.check(input.records, updates);

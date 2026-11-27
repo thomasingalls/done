@@ -8710,3 +8710,104 @@ What runs differently: a failure is reported by Node's `AssertionError`, and Vit
 This is a local result on Node 26.13.1; no hosted run was made, and CI runs Node 24.22.1. At all72's recorded ratio between slow runners and this Mac (1.9 to 2.0) the case would take about 0.1 s there, an inference. CI still cannot pass while the 20-minute job limit cuts the packaged browser step (CI-JOB-LIMIT, *decision*).
 
 The next cases nearest the limit were measured and left unchanged, since the precedent covers timed-out cases only: `inboundMixedReaders.test.ts:124` and `preparationReceiptJournal.test.ts` all72 spend 68% and 66% of their time in `toEqual` on byte arrays, `inboundPageCodec.test.ts:26` 49% on bytes and 48% on a record holding them, the `inboundMixedReplay.test.ts` seeds 406 to 408 about 22% on arrays of at most 389 bytes, and `inboundStaleTurnControl.test.ts:4` and `workspaceAdmission.test.ts:1256` none. Widening the replacement is held for the operator in CI-UNIT-BUDGET (*decision*). [Evidence](development-evidence/2026-11-11-release-repair/562-receipt-view-bytes/README.md).
+
+
+### 2026-11-27 — End a sync setup on a final notice when another tab removes its data (phase 563)
+
+The operator scheduled SETUP-CLOSING-STUCK for immediately after the 2026-11-27 release. After the delegated agent's first report the coordinating session chose, without asking the operator: new copy on the cooperative path (the "removed" and "retired" alternatives were rejected, one as jargon and one as possibly untrue), a named cause on the internal `setupClosed` message (the "no wire format change" rule covers stored data and anything sent to the service, not messages between a page and the Worker script it loaded from the same build), both layers repaired, and enrollment and recovery left unchanged. The new sentence was shown to the operator the same day and awaits his review; it is one constant.
+
+A sync setup whose local data was removed in another tab stayed on "Locking and finishing storage operations…" with "Your writing stays in this workspace." until Back or a reload. There were two layers. The setup coordinator's own close on a slot-retirement notice (`src/account/firstDeviceSetup.ts`, added in `42ebdd12d`, 2026-10-15) published that closing screen and nothing after it, in either host. And in the Worker host (since phase 226) nothing told the page's owner (`src/ui/windowCeremonyUi.ts`) that the Worker's coordinator had closed, so the Worker stayed alive and the page mirrored the closing screen. This corrects phase 561's dating, which put the start at phase 226: phase 226 only stopped the test's page-side suppression from hiding it. Phase 225 (`700087b07`) shows the same screen in a browser run; `42ebdd12d` is inferred from its identical close.
+
+Layer 1: a retirement-caused close now shows the unlock screen with one alert, "Sync setup stopped because another tab began removing this device’s data. Reload this tab to continue." (the one new product string, defined once in `src/account/firstDeviceSetup.ts`), at once and never the closing screen. It is true whatever the removal then does. Such a close also no longer writes a remembered display name into the setup metadata it is retiring. The coordinator tells its host through `onRetired`. Layer 2: the Worker host flushes that final display over the acknowledged `setupState` path and only then posts `setupClosed` with `cause: 'slot-retired'`, keeping its own lifetime open. The page then drains through its ordinary close, keeps the final display instead of the closing screen and the failure display, and lets only a new command start a fresh inspect-only Worker, as phase 230 decided. The Worker's ordinary cleanup acknowledgement still follows the drain. A `setupClosed` without that cause, or with it and `ok: false`, takes the existing path unchanged. Neither side uses the cause while an account opening is handing off.
+
+Tests, each shown failing on the unfixed product or under a recorded product mutation, and passing with the repair: two cooperative browser cases (plain and after Start fresh), with no suppression, that require the exact notice, the Worker's end, the null saved attempt and that neither untrue sentence is ever shown; two missed-notice cases, now withholding the notice inside the setup Worker with a counter control, that require the durable fence's "removed" or "retired" and the null attempt; and unit cases at the coordinator, the Worker host and the page. Enrollment and recovery behave differently and are unchanged; what was seen is CEREMONY-STALE-AFTER-REMOVAL in the backlog. No stored format, service message, limit or recorded decision changes; the internal `setupClosed` message gains an optional field. The general-test case denominator moves from 3,092 to 3,095 (three cases added to `test/firstDeviceSetupAccess.test.ts`); obligations stay at 1,136 and unresolved at 561. [Evidence](development-evidence/2026-11-27-post-release-repair/563-setup-closing-notice/README.md).
+
+
+### 2026-11-27 — Operator decisions at the release of phases 535 to 562 and on the day after it shipped
+
+Recorded by the coordinating session from the operator's messages of 2026-11-27. Quotations are his words.
+
+- **Release.** The long-running publication seat ran the release with a context note from this seat, because it has run the recent ones. PR #65 merged as a merge commit (`5d0705fc2`); the operator then reported the application updated and live.
+- **CI shape (not built).** "i want to keep the 'are we keeping track of what work has been done properly' checks in the blocking ci task. product correctness / unit / integration tests can move to a parallel task. right now they're too expensive to run on my gh ci plan in any case, so our practice is to run them here before release". Which steps count as the first kind is to be confirmed with him when it is built (CI-JOB-LIMIT, CI-UNIT-BUDGET).
+- **Order after the release.** SETUP-CLOSING-STUCK and TEST-BROWSER-BASELINE immediately; then opening (START-ONE-OWNER), then sending; reduction, snapshots and the rest later, each with a reminder of its open questions. On START-ONE-OWNER he leans towards one owner with the fallback coverage check kept once at open, and has not decided.
+- **Tests per phase.** "review ok, defer running the full suite - it takes a *very* long time, we can run a narrower set of tests and do the full suite before merge". Each phase is committed on the tests that cover it and the bookkeeping checks; the full unit suite runs once on the branch before merge. This replaces the per-commit full run of 2026-11-12.
+- **Compatibility while there are two users.** "there are only two current users of the app. they have both migrated. we can safely do less-good practices like worse backwards-compat while we get this alpha-level product closer to a beta-worthy release." The coordinating session reads this as latitude over behaviour and test claims for builds older than `913b58642`, not over anything that could lose the two users' stored writing; that reading is its own.
+
+
+### 2026-11-27 — Reduction's time windows come from what the device measured (phase 564)
+
+The operator, 2026-11-27, set the rule this phase follows: "yes 5 min is fine, but i also don't want to get into a position again where critical work is impossible because we chose a relatively arbitrary cutoff point where there may not need to be one". The coordinating session's reading of it: a limit on reduction may make progress smaller or later, but never impossible, and a limit must come from what the device measured, not from a constant. That withdrew the brief's first default for repair 3 (a deferral of at most max(60 s, 3 × setup), never more than 5 min) before it was built. The coordinating session asked for repairs 1 to 3 of the lab diagnosis, filed with the phase.
+
+On the affected account, reduction did not finish on either device. Each attempt re-reads every saved row before any new work; on the phone that setup is inferred to exceed 60 s (it had read about 29,000 of its 32,635 records when a 60 s window ended) and was not measured. Three windows were at fault:
+- **Online:** phase 540 protected an attempt from routine idle polls for a fixed 60 s. With a longer setup, every attempt was cut by the next poll and nothing was ever saved. In the lab at ×100: 574 attempts, none saved.
+- **The first protected slice:** before any save was measured, it reserved no time for its save, so the save was cut at the window.
+- **Offline:** the window still capped every slice at the 2 s floor, though nothing could interrupt. In the lab at ×100: 156 attempts, each repeating the whole setup.
+
+**Amended, phase 540's sixty-second deferral** (recorded there as unmeasured):
+- 60 s is now only a history's first window, before the owner has reported a setup.
+- After that, a run's window is (1 + `PREPARATION_SETUP_RATIO`) × (setup + save) from the device's own measurements, with an unmeasured save counted as long as the setup.
+- An attempt still running unsaved when its window ends gets twice the window or the measured need, whichever is larger. There is no ceiling, so no setup duration prevents a save.
+- The deferral ends at the run's first save, and the existing 60 s yield follows. A slice continuing at once no longer keeps it.
+- A device whose measured need exceeds what is left of the yield waits for the yield to end instead of starting attempts that a routine poll would cut.
+- Justification:
+  - lab r08 against p08: setup longer than the window, ×100, from no save in 574 attempts to reduced in 2;
+  - a composed simulation with a 90 s setup online: from nothing saved in 12 simulated hours to reduced in 20.7 min.
+- Worst-case delay of a change only a poll would find: until the run's first save, about setup + one slice + save, which is about 3 × (setup + save) after the first run, plus one poll interval. Then the yield.
+- Hints and the notification stream are never deferred.
+
+**Amended, phase 556 change A's "never planned past the moment sync resumes"** (with `protectedUntil` = now in a yield):
+- While the sync gate is not ready, routine sync never resumes, so the owner gets no window and the slice grows with the setup.
+- A slice planned against a window reserves its save: the last measured one, else this attempt's setup.
+- Justification:
+  - lab r06 offline: 156 attempts and 346 s; the r14 control without the window: 2 attempts; patched p06: 1 attempt and 3.2 s;
+  - real owner: 157 attempts held to "now" against 3 without a window;
+  - r07's first protected slice lost 8,703 results.
+
+**Phase 539's hold, checked against the rule.**
+- A device on the full check (the affected desktop, past 32,768 rows) whose setup, one slice and save exceeded the 5 min hold budget could not save while it was sending: phase 546 then stopped the hold re-engaging, and send jobs cut the unheld attempts.
+- Before a held window's first save, its budget is now never below the measured need. An attempt nothing has cut gets twice or the need instead of lapsing.
+- That hold parks sending, so on such a device new writing waits as long as the device needs to save once.
+- A window in which input or the journal cut an attempt lapses at its budget as before.
+- The 5 min budget and phase 546's progress rule are otherwise unchanged.
+
+**Unchanged:**
+- phase 83, since no storage path changed;
+- hints, input and the journal interrupt at once;
+- the poll deferral never parks the sender;
+- no stored format, wire format, service message, product string or size or count limit.
+
+The scheduler's diagnostics also carry the measured setup and save and the end of the engaged window.
+
+Tests: five new composed cases on a simulated clock, with the real sync scheduler and the real reduction scheduler. Among them is a property case over setups from 30 s to 45 min: the first run saves within ⌈log₂(need / 60 s)⌉ extensions of one window, and the case fails at `76aade840` above 60 s. There are also two new real-owner cases. Eight existing assertions changed, each listed in the record. 24 related unit files pass. The full unit suite was not run for this phase.
+
+Still exposed, in the backlog:
+- the per-cycle repeat;
+- `PREPARATION_MAX_CHUNKS`;
+- content compaction making a saved checkpoint stale;
+- the banner showing for saves and receives;
+- the full-check cliff at 32,768 rows (desktop 35,379, phone 32,644, six full checks per sent position);
+- a verified-count line.
+
+The record lists every fixed bound on the reduction path for the operator. [Evidence](development-evidence/2026-11-27-post-release-repair/564-reduction-slice-windows/README.md).
+
+
+### 2026-11-27 — The History panel says where reduction is, how long it has left and what is saved (phase 565)
+
+The operator watched the "History on this device" panel for a day on two real devices. It showed a stage name and a per-pass record count that restarts on every pass, so a pass that saved its work and one that lost it looked the same. The operator's request, verbatim: "it would be extremely useful to give the user an indication of the amount of time any one of these particular steps is left. and if it's a multi-step thing, it'd be really nice to be able to give an estimate of the whole thing in addition to an estimate for the active phase, and an indicator of progress through phases". The operator confirmed three steps: check saved history (durability, reading, opening, verifying; repeats in passes), build the smaller history (building, coverage, current), save it (installing, readback).
+
+**Decision.** While a reduction runs, the panel names the step of three, and for step 1 the share of checking done across passes and the pass; it gives about how long the active step and the whole reduction have left. Paused, it says why in the existing words or "Maintenance saved its progress…", how much of the checking is saved, and about how much quiet work is left, without a countdown. Finished, it says when, for this open of the app. The per-pass record count stays as a detail line.
+
+**Wording, at review.** As delivered, a paused reduction said "{p}% is saved and will not be redone." Saved checks that cannot be reused (REDUCE-COMPACTION-STALE) are checked again, so the application could break that promise. Asked "Shorten 'is saved and will not be redone' to 'of checking is saved'?", the operator answered "Yes, shorten". The panel says "{p}% of checking is saved."
+
+**Honesty rules, each tested against a deliberately wrong variant:**
+- Every estimate comes from what this device measured in this reduction: the read, the re-check of saved results, the fresh-check rate, the slice, the save and the shortest wait between passes. Until there is a measurement the panel says it is estimating.
+- Figures read "about", seconds in tens from ten under a minute, then minutes, then hours from two hours; none is zero while work continues. A part that outlasts its estimate is called longer than expected and re-estimated as half the time it has taken so far.
+- The percentage counts saved results and the active pass's fresh ones, never re-read rows or re-checked results. A cut pass or an unusable saved checkpoint shows the fall and says that part is being redone. It stays below 100% until a full check completed, since its total is estimated from the census until then.
+- Steps 2 and 3, seen only in the final pass, are each allowed one measured full read until seen.
+- The whole-reduction figure assumes the device stays quiet and says whether it counts the pauses that let sync run (counted once one is measured online).
+
+**Amended, phase 124's "definite counts only for the record-reading subphase … an indeterminate indicator for work with no honest total"**: an overall checked percentage against the census estimate (exact once a full check completed), capped below 100% until then, and time estimates from measurements. "Without adding polling" holds: a display clock re-renders the running estimate each second and reads nothing from the Worker. The facts stay volatile, in memory per open.
+
+**Unchanged:** every refusal and capacity sentence (also while a reduction is in progress); when and whether reduction runs; no stored format, wire format, service message or limit. The status that crosses from the Worker gains one optional field, `reduction`, admitted only when well formed.
+
+Tests: a new pure-function file of 23 cases, including replays of lab runs r06 and r07 from phase 564 with a stated convergence tolerance; a real-owner case through the real scheduler across a saved slice and a cut; 15 rendered panel states. 31 recorded mutations each fail at least one new case. The packaged application on the 2,000-position seed, offline, left alone and with a card added mid-check, gives the transcript the operator can read. The full unit suite was not run for this phase. [Evidence and the full list of new product strings](development-evidence/2026-11-27-post-release-repair/565-reduction-progress-display/README.md).

@@ -1,0 +1,254 @@
+===== offline: open 5849 ms, watch ended 21055 ms after the shell, card added at None ms, other test processes at start 0 and end 0, page errors 0
+--- 0.0 s
+Automatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes.
+--- 10.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history (pass 1). Estimating the time left…
+Reading history saved on this device…
+<progress aria-label="Local history maintenance">
+--- 10.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history (pass 1). Estimating the time left…
+Reading saved history: 0 of 14402 records…
+<progress aria-label="Local history maintenance" value="0" max="14402">
+--- 12.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history (pass 1). Estimating the time left…
+Verifying saved history…
+<progress aria-label="Local history maintenance">
+--- 12.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 1). Estimating the time left…
+Verifying saved history…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 13.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 16% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="16" max="100">
+--- 13.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 32% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="32" max="100">
+--- 13.5 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 47% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="47" max="100">
+--- 13.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 52% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="52" max="100">
+--- 14.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 56% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="56" max="100">
+--- 14.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 60% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="60" max="100">
+--- 14.5 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 64% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="64" max="100">
+--- 14.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 67% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="67" max="100">
+--- 15.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 71% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="71" max="100">
+--- 15.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 75% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="75" max="100">
+--- 15.5 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 78% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="78" max="100">
+--- 15.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 81% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="81" max="100">
+--- 16.2 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 85% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="85" max="100">
+--- 16.4 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 88% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="88" max="100">
+--- 16.8 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 90% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="90" max="100">
+--- 17.2 s
+[status] Reducing saved history: step 2 of 3, building the smaller history. About 10 seconds left if this device stays quiet.
+Checking that the snapshot keeps all your writing…
+<progress aria-label="Reduction steps" value="1" max="3">
+--- 17.6 s
+[status] Reducing saved history: step 3 of 3, saving the smaller history. About 10 seconds left if this device stays quiet.
+Saving the smaller history…
+<progress aria-label="Reduction steps" value="2" max="3">
+--- 17.8 s
+[status] Reducing saved history: step 3 of 3, saving the smaller history. About 10 seconds left if this device stays quiet.
+Checking the saved result…
+<progress aria-label="Reduction steps" value="2" max="3">
+--- 18.0 s
+[status] History on this device was reduced at 6:00 PM.
+===== cut: open 6364 ms, watch ended 42175 ms after the shell, card added at 14561 ms, other test processes at start 0 and end 0, page errors 0
+--- 0.0 s
+Automatic maintenance is on for this device. It reduces technical history while keeping your tasks and notes.
+--- 10.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history (pass 1). Estimating the time left…
+Reading history saved on this device…
+<progress aria-label="Local history maintenance">
+--- 10.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history (pass 1). Estimating the time left…
+Reading saved history: 0 of 14402 records…
+<progress aria-label="Local history maintenance" value="0" max="14402">
+--- 13.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history (pass 1). Estimating the time left…
+Verifying saved history…
+<progress aria-label="Local history maintenance">
+--- 13.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 1). Estimating the time left…
+Verifying saved history…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 14.2 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 18% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="18" max="100">
+--- 14.4 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 33% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="33" max="100">
+--- 14.6 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 49% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="49" max="100">
+--- 14.6 s
+(harness: added one card)
+--- 14.8 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 53% checked (pass 1). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="53" max="100">
+--- 15.0 s
+[status] Maintenance paused to let editing or sync finish. It will retry when this device is quiet.
+Step 1 of 3. No checking is saved yet. About 20 seconds of quiet still needed.
+Some checking has to be redone: it went from 55% back to 0%.
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 25.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 2). About 10 seconds left in this step, about 20 seconds in all if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Reading history saved on this device…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 25.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 2). About 10 seconds left in this step, about 20 seconds in all if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Reading saved history: 0 of 14404 records…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 26.9 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 2). About 10 seconds left if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Reading saved history: 10208 of 14404 records…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 27.9 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 2). About 10 seconds left if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 28.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 0% checked (pass 2). This step is taking longer than expected. About 20 seconds left if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="0" max="100">
+--- 28.9 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 16% checked (pass 2). About 20 seconds left in this step, about 30 seconds in all if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="16" max="100">
+--- 29.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 31% checked (pass 2). About 10 seconds left if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="31" max="100">
+--- 29.5 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 48% checked (pass 2). About 10 seconds left if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="48" max="100">
+--- 29.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 52% checked (pass 2). About 20 seconds left in this step, about 30 seconds in all if this device stays quiet.
+Some checking has to be redone: it went from 55% back to 0%.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="52" max="100">
+--- 30.0 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 56% checked (pass 2). About 20 seconds left in this step, about 30 seconds in all if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="56" max="100">
+--- 30.2 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 60% checked (pass 2). About 20 seconds left in this step, about 30 seconds in all if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="60" max="100">
+--- 30.6 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 64% checked (pass 2). About 20 seconds left in this step, about 30 seconds in all if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="64" max="100">
+--- 30.8 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 68% checked (pass 2). About 20 seconds left in this step, about 30 seconds in all if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="68" max="100">
+--- 31.8 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 68% checked (pass 3). About 10 seconds left in this step, about 20 seconds in all if this device stays quiet.
+Reading history saved on this device…
+<progress aria-label="Saved history checked" value="68" max="100">
+--- 32.2 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 68% checked (pass 3). About 10 seconds left if this device stays quiet.
+Reading saved history: 0 of 14404 records…
+<progress aria-label="Saved history checked" value="68" max="100">
+--- 34.8 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 68% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="68" max="100">
+--- 36.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 70% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="70" max="100">
+--- 36.5 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 74% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="74" max="100">
+--- 36.7 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 78% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="78" max="100">
+--- 37.1 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 82% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="82" max="100">
+--- 37.3 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 85% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="85" max="100">
+--- 37.5 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 88% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="88" max="100">
+--- 37.9 s
+[status] Reducing saved history: step 1 of 3, checking saved history. 90% checked (pass 3). About 10 seconds left if this device stays quiet.
+Verifying saved history…
+<progress aria-label="Saved history checked" value="90" max="100">
+--- 38.1 s
+[status] Reducing saved history: step 2 of 3, building the smaller history. About 10 seconds left if this device stays quiet.
+Building a smaller history snapshot…
+<progress aria-label="Reduction steps" value="1" max="3">
+--- 38.3 s
+[status] Reducing saved history: step 2 of 3, building the smaller history. About 10 seconds left if this device stays quiet.
+Checking that the snapshot keeps all your writing…
+<progress aria-label="Reduction steps" value="1" max="3">
+--- 38.7 s
+[status] Reducing saved history: step 3 of 3, saving the smaller history. About 10 seconds left if this device stays quiet.
+Saving the smaller history…
+<progress aria-label="Reduction steps" value="2" max="3">
+--- 38.9 s
+[status] Reducing saved history: step 3 of 3, saving the smaller history. About 10 seconds left if this device stays quiet.
+Checking the saved result…
+<progress aria-label="Reduction steps" value="2" max="3">
+--- 39.1 s
+[status] History on this device was reduced at 6:01 PM.

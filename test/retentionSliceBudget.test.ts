@@ -10,11 +10,14 @@ import { extendSpoolWitness } from '../src/crdt/spoolRecord';
 import { MaintenanceInterrupted } from '../src/crdt/contentMaintenance';
 import {
   createAutomaticLocalRetention,
+  localRetentionInterrupted,
   LOCAL_RETENTION_MIN_RECORDS as MIN,
   LOCAL_RETENTION_HOLD_MS as HOLD,
   LOCAL_RETENTION_POLL_HOLD_MS as POLLS,
   LOCAL_RETENTION_QUIET_MS as QUIET,
+  type LocalRetentionStatus,
 } from '../src/crdt/automaticLocalRetention';
+import { captureAccountSessionState } from '../src/crdt/accountSessionBridge';
 import { PREPARATION_SETUP_RATIO as RATIO } from '../src/crdt/retentionPreparation';
 import { cryptFor, keys } from './local-baseline/anchor-fixture';
 import type { SessionTask } from '../src/crdt/writeSession';
@@ -101,6 +104,9 @@ vi.mock('../src/crdt/retentionPreparationStorage', async (importOriginal) => {
 
 const cleanup: (() => void)[] = [];
 afterEach(() => {
+  // A scheduler case that fails before its own cleanup must not leave fake timers to the next
+  // case, whose fake IndexedDB would then never settle.
+  vi.useRealTimers();
   cleanup.splice(0).forEach((f) => f());
   vi.restoreAllMocks();
   vi.unstubAllGlobals();
@@ -502,15 +508,18 @@ it('the scheduler tells each attempt when routine sync resumes', async () => {
   resolve({ kind: 'preparation-saved' });
   await vi.advanceTimersByTimeAsync(0);
   expect(seen).toEqual([QUIET + HOLD, QUIET + HOLD]);
-  // Without the hold (an ordinary device): the idle-poll deferral, from the run's first slice.
+  // Without the hold (an ordinary device): the end of the run's idle-poll window, which before
+  // anything is measured is the first window.
   state = { ...state, hold: false };
   run.refresh();
   resolve({ kind: 'preparation-saved' });
   await vi.advanceTimersByTimeAsync(0);
   expect(seen[2]).toBe(QUIET + POLLS);
+  // Phase 564 (was QUIET + POLLS: the slice continuing at once shared the window): the run's save
+  // ended its window, so this slice runs in the yield and keeps the plain target.
   resolve({ kind: 'preparation-saved' });
   await vi.advanceTimersByTimeAsync(0);
-  expect(seen[3]).toBe(QUIET + POLLS);
+  expect(seen[3]).toBe(Date.now());
   // Nothing holds routine sync off (for example a hidden page or a yield): now, so the slice
   // keeps the plain target.
   state = { ...state, deferPolls: false };
@@ -518,7 +527,227 @@ it('the scheduler tells each attempt when routine sync resumes', async () => {
   resolve({ kind: 'preparation-saved' });
   await vi.advanceTimersByTimeAsync(0);
   expect(seen[4]).toBe(Date.now());
+  // Phase 564: routine sync that cannot run (an unready gate) protects against nothing, so no
+  // window plans the slice, in the hold, the poll window or the yield alike.
+  state = { ...state, deferPolls: true, routineSync: false } as typeof state;
+  run.refresh();
+  resolve({ kind: 'preparation-saved' });
+  await vi.advanceTimersByTimeAsync(0);
+  expect(seen[5]).toBeUndefined();
+  expect(seen).toHaveLength(6);
+  state = { ...state, hold: true } as typeof state;
+  run.refresh();
+  resolve({ kind: 'preparation-saved' });
+  await vi.advanceTimersByTimeAsync(0);
+  expect(seen).toHaveLength(7);
+  expect(seen[6]).toBeUndefined();
   run.dispose();
   controller.abort();
   vi.useRealTimers();
 });
+
+it('the first protected slice saves what it verified, inside its window', async () => {
+  // This history's first setup, with no window and no journal yet.
+  const probeDevice = await device(LARGE);
+  const [first] = await reduce(probeDevice.owner, { limit: 1 });
+  const setup = first!.setup;
+  cleanup.splice(0).forEach((f) => f());
+  vi.restoreAllMocks();
+  // A window shorter than the grown budget (twice the setup) plus its save, as a phone's first
+  // protected attempt has. No save has been measured yet on this owner.
+  const window = 2.5 * setup;
+  const d = await device(LARGE);
+  const attempts = await reduce(d.owner, {
+    limit: 2,
+    protectedUntil: (n) => (n === 0 ? Date.now() + window : undefined),
+  });
+  const a = attempts[0]!;
+  const save = attempts[1]!.carried;
+  expect(a.kind).toBe('preparation-checkpoint');
+  expect(a.carried).toBe(0);
+  expect(save).toBeGreaterThan(probe.missCost * 4);
+  // At 76aade840 the slice planned to end at the window, leaving no time for its save, which ran
+  // past it, where the next routine poll cut it and nothing was saved. Now the unmeasured save is
+  // reserved at this attempt's setup: the slice ends a setup's length before the window. (In the
+  // browser a save measured 0.2 to 0.6 times the setup; this clock prices hashing higher.)
+  expect(a.setup + a.fresh).toBeLessThanOrEqual(window - a.setup + probe.missCost * 4);
+  expect(a.fresh).toBeGreaterThan(0);
+}, 120_000);
+
+it('phase 565: the owner’s verification counts reach the published status through the real scheduler, across a saved slice and a cut', async () => {
+  const d = await device(LARGE);
+  // Heavy fresh checks so the reduction takes several slices.
+  probe.missCost = 20;
+  vi.useFakeTimers({ toFake: ['Date', 'setTimeout', 'clearTimeout'] });
+  vi.setSystemTime(0);
+  const controller = new AbortController();
+  cleanup.push(() => controller.abort());
+  let cutAfter: number | undefined,
+    allowed = 1;
+  const run = createAutomaticLocalRetention({
+    signal: controller.signal,
+    // Offline: no window plans a slice, so slices grow with the setup (phase 564). The case lets
+    // one attempt start at a time, so it can read each pass's published status.
+    observe: () => ({
+      ready: run.diagnostics.attempts < allowed,
+      hint: { revision: 0, records: MIN },
+      routineSync: false,
+    }),
+    // As the composed owner does: one read-only slice, then its save or the commit.
+    remove: async (_revision, report, protectedUntil, measure) => {
+      Object.assign(probe, { firstMissAt: undefined, pauseAt: undefined, interrupt: false });
+      const at = cutAfter;
+      cutAfter = undefined;
+      probe.onMiss =
+        at === undefined
+          ? undefined
+          : (fresh) => {
+              if (fresh >= at) probe.interrupt = true;
+            };
+      try {
+        const prepared = await d.owner.prepareHistoryRemoval(
+          task,
+          async () => {},
+          () => {},
+          0,
+          () => {},
+          report,
+          protectedUntil,
+          measure,
+        );
+        probe.interrupt = false;
+        if (prepared.kind === 'preparation-checkpoint')
+          try {
+            return await prepared.persist(
+              plain,
+              async () => {},
+              () => {},
+            );
+          } finally {
+            prepared.dispose();
+          }
+        if (prepared.kind === 'prepared-removal')
+          try {
+            return await prepared.commit(
+              plain,
+              async () => {},
+              () => {},
+              () => {},
+            );
+          } finally {
+            prepared.dispose();
+          }
+        return prepared;
+      } catch (cause) {
+        if (cause instanceof MaintenanceInterrupted) return localRetentionInterrupted(cause);
+        throw cause;
+      }
+    },
+  });
+  const seen: LocalRetentionStatus[] = [];
+  run.onStatus(() => seen.push(run.status));
+  /** Real IndexedDB turns and the owner's zero-delay yields. Each turn moves the wall clock
+   * 100 ms, so counts are published past the scheduler's 250 ms coalescing. */
+  const settle = async (done: () => boolean) => {
+    for (let n = 0; n < 20_000 && !done(); n++) {
+      await new Promise((resolve) => setImmediate(resolve));
+      await vi.advanceTimersByTimeAsync(100);
+    }
+    expect(done()).toBe(true);
+  };
+  const ended = (attempts: number) => () =>
+    run.diagnostics.attempts === attempts && run.status.phase !== 'running';
+  const next = () => {
+    allowed++;
+    run.refresh();
+  };
+  /** The facts each running status published for pass `pass`. */
+  const counts = (pass: number) =>
+    seen
+      .filter((s) => s.phase === 'running' && s.reduction?.pass === pass)
+      .map((s) => s.reduction!)
+      .filter((f) => f.held !== undefined);
+  run.wake();
+  await vi.advanceTimersByTimeAsync(QUIET);
+  // Pass 1 saves a slice: nothing was imported, the journal's counts were published as it went.
+  await settle(ended(1));
+  expect(run.status.reason).toBe('preparation-saved');
+  const one = counts(1);
+  expect(one.length).toBeGreaterThan(1);
+  expect(one[0]).toMatchObject({ pass: 1, saved: 0, stage: 'verifying' });
+  expect(one.at(-1)!.held).toBeGreaterThan(one[0]!.held!);
+  const planned = one[0]!.planned!;
+  expect(planned).toBeGreaterThan(0);
+  const first = run.status.reduction!;
+  expect(first).toMatchObject({ pass: 1, held: first.saved });
+  expect(first.saved).toBeGreaterThan(0);
+  expect(first.freshOf).toBe(first.saved);
+  expect(first.sliceMs).toBeGreaterThan(0);
+  // The status crosses the Worker boundary with its facts intact.
+  const capture = (status: LocalRetentionStatus) =>
+    captureAccountSessionState({
+      login: 'closed',
+      sync: null,
+      local: status,
+      automatic: null,
+      devices: { remove: false, history: false, detached: false },
+    }).local!;
+  expect(capture(run.status).reduction).toEqual(first);
+  // Pass 2 imports that saved slice, checks more and is cut by queued input before it saves.
+  cutAfter = probe.slice * 3;
+  next();
+  await settle(ended(2));
+  expect(run.status.reason).toBe('activity-or-journal');
+  const two = counts(2);
+  expect(two[0]).toMatchObject({ pass: 2, saved: first.saved, held: first.saved });
+  // The cut pass's fresh results are lost: back to what was saved, and the fall is kept.
+  expect(run.status.reduction).toMatchObject({ pass: 2, saved: first.saved, held: first.saved });
+  expect(run.status.reduction!.lostFrom).toBeGreaterThan(first.saved!);
+  expect(run.status.reduction!.lostFrom).toBeGreaterThanOrEqual(two.at(-1)!.held!);
+  expect(capture(run.status).reduction).toEqual(run.status.reduction);
+  // After the priority-only retry delay, pass 3 imports the same saved slice again.
+  allowed = Infinity;
+  run.refresh();
+  await vi.advanceTimersByTimeAsync(QUIET);
+  await settle(() => run.diagnostics.completions === 1 && run.status.phase !== 'running');
+  expect(counts(3)[0]).toMatchObject({ pass: 3, saved: first.saved });
+  const done = run.status.reduction!;
+  expect(done.finishedAt).toBeDefined();
+  expect(done.pass).toBeGreaterThanOrEqual(3);
+  // The final pass checked everything: the exact count (this fixture's full check makes 1,249
+  // results; the journal reports every 32, and the owner sends the exact count when checking
+  // ends), against the census estimate (1,250).
+  expect(done.total).toBe(1249);
+  expect(planned).toBeGreaterThanOrEqual(done.total!);
+  expect(planned).toBeLessThanOrEqual(1.05 * done.total!);
+  run.dispose();
+}, 240_000);
+
+it('with no window, slices grow with the setup; held to now, they stay at the floor', async () => {
+  // Heavy fresh checks, so verification is several times one setup, as at the affected size.
+  const runs: { window: string; attempts: number; setup: number; work: number }[] = [];
+  for (const window of ['now', 'none'] as const) {
+    const d = await device(LARGE);
+    probe.missCost = 20;
+    const attempts = await reduce(d.owner, {
+      protectedUntil: () => (window === 'now' ? Date.now() : undefined),
+    });
+    expect(attempts.at(-1)!.kind).toBe('removed');
+    runs.push({
+      window,
+      attempts: attempts.length,
+      setup: attempts[0]!.setup,
+      work: attempts.reduce((n, a) => n + a.misses, 0) * probe.missCost,
+    });
+    cleanup.splice(0).forEach((f) => f());
+    vi.restoreAllMocks();
+    probe.missCost = 10;
+  }
+  const [held, free] = runs as [(typeof runs)[0], (typeof runs)[0]];
+  // At 76aade840 an offline device's slices were planned against "now" (the yield) or a window
+  // its setup had used up: the floor every time. Phase 564 passes no window when routine sync
+  // cannot run, so the budget grows to the ratio times the setup.
+  expect(held.work).toBeGreaterThan(3 * held.setup);
+  expect(held.attempts).toBeGreaterThanOrEqual(4 * free.attempts);
+  expect(free.attempts).toBeLessThanOrEqual(4);
+}, 240_000);

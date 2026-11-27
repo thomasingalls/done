@@ -2,6 +2,7 @@ import {
   PreparationCapacity,
   PreparationPause,
   createPreparationJournal,
+  type PreparationCounts,
   type PreparationJournal,
 } from './retentionPreparation';
 import { preparationContext } from './retentionPreparationBinding';
@@ -154,8 +155,9 @@ export const createContentOwner = (
     throw Error('Logical Account reads require an owned baseline verifier.');
   let db: IDBDatabase | undefined, custodyDb: IDBDatabase | undefined;
   const pendingPreparations = new Set<() => void>();
-  // Phase 556: what the last fenced preparation save cost, and whether a slice was cut short since.
-  let preparationSaveMs = 0,
+  // Phase 556: what the last fenced preparation save cost (undefined until one is measured, phase
+  // 564), and whether a slice was cut short since.
+  let preparationSaveMs: number | undefined,
     preparationInterrupted = false;
   let disposed = false;
   let witness!: ContentWitness;
@@ -893,6 +895,8 @@ export const createContentOwner = (
     // Wall-clock moment routine sync may resume and interrupt this attempt (phase 556); the
     // automatic scheduler passes it. Omitted: no known window limits the slice.
     protectedUntil?: number,
+    // The scheduler's measurements of this attempt: its setup and its save (phase 564).
+    measure?: (kind: 'setup' | 'save', ms: number) => void,
   ) => {
     // The slice budget counts everything this attempt pays before its first fresh check.
     const setupSince = performance.now();
@@ -925,6 +929,19 @@ export const createContentOwner = (
     let transferred = false;
     // Set when this pass runs past what its resumable cache can hold, so nothing carries over.
     let unbound = false;
+    // Phase 565: the journal reports only every 32 fresh results, so when checking gives way to
+    // the next stage, or the pass ends early, its exact counts reach the History panel once.
+    let finalCounts = false;
+    const reportFinalCounts = () => {
+      try {
+        const counts = !finalCounts && progress && preparation?.journal.counts();
+        if (!counts) return;
+        finalCounts = true;
+        reportRetentionProgress(progress, { stage: 'verifying', ...counts });
+      } catch {
+        /* Presentation cannot change how a pass ends. */
+      }
+    };
     const uncached = () => unbound || preparation?.journal.statistics.full === true;
     const implementation = preparationVerifierIdentity();
     try {
@@ -966,7 +983,11 @@ export const createContentOwner = (
         },
         binding,
         checkRetained,
-        progress,
+        progress &&
+          ((value) => {
+            if (value.stage !== 'verifying') reportFinalCounts();
+            progress(value);
+          }),
         implementation
           ? async (counter) => {
               const bound = await preparationContext(
@@ -1006,9 +1027,20 @@ export const createContentOwner = (
                   ? {}
                   : {
                       setupSince,
-                      carriedMs: preparationSaveMs,
+                      ...(preparationSaveMs === undefined ? {} : { carriedMs: preparationSaveMs }),
                       ...(deadline === undefined ? {} : { deadline }),
                     }),
+                // Measured on every attempt, also one kept to the plain target after a cut.
+                ...(measure
+                  ? { onFirstFresh: (at: number) => measure('setup', at - setupSince) }
+                  : {}),
+                // Phase 565: the pass's verification counts reach the History panel.
+                ...(progress
+                  ? {
+                      report: (counts: PreparationCounts) =>
+                        reportRetentionProgress(progress, { stage: 'verifying', ...counts }),
+                    }
+                  : {}),
               });
               preparation = { journal, checkpoint: read.checkpoint };
               if (read.status === 'ready') importPreparationCheckpoint(read.checkpoint, journal);
@@ -1127,6 +1159,7 @@ export const createContentOwner = (
         check: checkRetained,
       });
     } catch (cause) {
+      reportFinalCounts();
       // A slice cut short saved nothing; keep the next one to the plain target (phase 556).
       if (cause instanceof MaintenanceInterrupted && preparation) preparationInterrupted = true;
       // An uncached pass leaves nothing for the next attempt to resume. If routine queued work
@@ -1174,6 +1207,11 @@ export const createContentOwner = (
             // The next slice pays this again, so its budget counts it (phase 556).
             preparationSaveMs = performance.now() - began;
             preparationInterrupted = false;
+            try {
+              measure?.('save', preparationSaveMs);
+            } catch {
+              /* A measurement observer cannot change the saved result. */
+            }
             return saved;
           } catch (cause) {
             if (cause instanceof MaintenanceInterrupted) preparationInterrupted = true;

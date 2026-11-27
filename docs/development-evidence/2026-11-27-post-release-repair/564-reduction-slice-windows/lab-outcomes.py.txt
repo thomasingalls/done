@@ -1,0 +1,31 @@
+"""Outcome summary of a lab565 run: counts, progress kept over time, where cuts landed, completion."""
+import json, sys, collections
+
+path = sys.argv[1]
+d = json.load(open(path))
+ev = d['events']
+t0 = d['shellAt']
+rel = lambda t: round((t - t0) / 1000, 1)
+ends = [e for e in ev if e['kind'] == 'attempt-end']
+print('run', path.split('/')[-1], 'watch s', rel(d.get('endedAt', ev[-1]['t'] if ev else t0)), 'attempts', len(ends))
+print(collections.Counter(f"{e.get('outcome')}/{e.get('reason')}" for e in ends))
+imp = [(rel(e['t']), json.loads(e['stats'])['entries']) for e in ev if e['kind'] == 'prep-imported']
+step = max(1, len(imp) // 15)
+print('saved entries imported at attempt start (t, entries):', imp[::step] + imp[-1:])
+done = [rel(e['t']) for e in ev if e['kind'] == 'progress' and e['stage'] == 'complete']
+print('reduced at', done)
+cuts = []
+for e in ends:
+    if e.get('reason') == 'activity-or-journal':
+        p = json.loads(e['progress']) if e.get('progress') not in (None, 'null') else {}
+        cuts.append(f"{rel(e['t'])}:{p.get('stage', '?')}:{p.get('completed', '')}")
+print('cuts (t:stage:records):', cuts[:60])
+sends = d.get('sends') or []
+acc = [(rel(e['t']), e['s']) for e in ev if e['kind'] == 'sync-status']
+print('sends', [(rel(s['at']), s['text']) for s in sends])
+print('sync-status', acc[:60])
+full = [(rel(e['t']), e['kind'], round(e.get('ms', 0)), e.get('records'), e.get('adoptedIndexes')) for e in ev if e['kind'].startswith('ledger-')]
+print('ledger checks', full[:40])
+print('banner', [(rel(b['t']), b['on']) for b in (d.get('banner') or [])][:40])
+holds = [(rel(e['t']), e['phase'], e.get('reason'), e.get('hold')) for e in ev if e['kind'] == 'retention-status']
+print('retention-status (first 30)', holds[:30])

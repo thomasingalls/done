@@ -1,0 +1,10 @@
+import { defineConfig } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/node_modules/@playwright/test/index.mjs';
+/** TEMPORARY phase 565 lab harness config; scratch only. */
+export default defineConfig({
+  testDir: '.',
+  testMatch: 'harness.ts',
+  outputDir: './artifacts',
+  workers: 1,
+  retries: 0,
+  reporter: [['list']],
+});

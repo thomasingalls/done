@@ -9,6 +9,13 @@ import {
 import { PreparationCapacity } from './preparationCapacity';
 import { LocalBaselineError } from './localBaselineError';
 import { copyRetentionDetail, type LocalRetentionDetail } from './localRetentionDetail';
+import { PREPARATION_SETUP_RATIO } from './retentionPreparation';
+import {
+  beginReductionPass,
+  endReductionPass,
+  recordReductionProgress,
+  type LocalReductionFacts,
+} from './reductionProgress';
 export type { LocalRetentionCause, LocalRetentionDetail } from './localRetentionDetail';
 export interface LocalRetentionHint {
   readonly revision: number;
@@ -24,14 +31,24 @@ export const LOCAL_RETENTION_RETRY_MS = 60000;
 /** Consecutive completed folds that may skip the cooldown while the owner still reports one due.
  * A correct fold clears the report, so this only bounds a fold that did not carry it. */
 export const LOCAL_RETENTION_FOLD_STREAK = 3;
-/** Longest a settled hold may defer routine sync before it yields (scheduling bound, unmeasured). */
+/** A settled hold's budget (scheduling bound, unmeasured). Before a window's first save it is at
+ * least what this device measured one saved slice needs, and an attempt still running unsaved and
+ * uninterrupted when it lapses gets a longer one instead of losing its work (phase 564). */
 export const LOCAL_RETENTION_HOLD_MS = 5 * 60000;
-/** Normal sync window after a hold or poll deferral expires, before it may engage again. */
+/** Normal sync window after a hold or poll deferral ends, before it may engage again. */
 export const LOCAL_RETENTION_HOLD_YIELD_MS = 60000;
-/** Unmeasured scheduling bound: the longest a running attempt, with the saved slices it continues
- * into at once, may defer routine idle receive polls (counted from the first slice) before polls
- * resume for the yield window. Hints and other sync signals are never deferred by it. */
+/** The idle-poll deferral's first window, used only until this history has a measured setup.
+ * After that a run's window is what the device measured one saved slice needs (`measuredNeed`),
+ * and an attempt still running unsaved when its window ends gets a longer one, so no setup
+ * duration can keep a device from saving (phase 564). The deferral ends at the run's first save
+ * and the yield follows. Hints and other sync signals are never deferred by it. */
 export const LOCAL_RETENTION_POLL_HOLD_MS = 60000;
+/** What one more saved slice needs, from this device's measurements: the setup, a slice of
+ * `PREPARATION_SETUP_RATIO` times setup and save (the owner's grown budget), and the save. A save
+ * not yet measured counts as long as the setup, as the owner reserves it (phase 564). */
+export function measuredNeed(setupMs: number, saveMs?: number) {
+  return (1 + PREPARATION_SETUP_RATIO) * (setupMs + (saveMs ?? setupMs));
+}
 /** Scheduling hint for the sync lanes. Never authority: the owner still checks every effect. */
 export interface LocalRetentionHold {
   /** Do not allocate a new envelope; drive already allocated positions to acceptance. */
@@ -47,6 +64,10 @@ export interface LocalRetentionStatus {
   readonly progress?: RetentionProgress & { readonly attempt: number; readonly elapsedMs: number };
   /** Present only with reason `capacity`, when the owner knows which cause fired. */
   readonly detail?: LocalRetentionDetail;
+  /** Phase 565, presentation only: what the reduction in progress (or the one that just
+   * finished) has done and measured during this open, from the first pass that reported progress.
+   * Kept in memory; cleared when a new reduction begins after one finished. */
+  readonly reduction?: LocalReductionFacts;
 }
 /** Presentation/retry port: never exposes evidence, counters or a mutation capability. */
 export interface LocalRetentionView {
@@ -59,6 +80,11 @@ export interface LocalRetentionView {
     readonly completions: number;
     readonly events: readonly LocalRetentionStatus['progress'][];
     readonly ownerError?: string;
+    /** Longest setup and last save the owner measured on this history (phase 564). */
+    readonly setupMs?: number;
+    readonly saveMs?: number;
+    /** Wall clock at which the engaged hold or idle-poll window ends. */
+    readonly windowEndsAt?: number;
   };
 }
 export interface LocalRetentionRuntime extends LocalRetentionView {
@@ -76,7 +102,12 @@ export interface LocalRetentionObservation {
   /** Stable owner observation for any device, under the same rule as `hold`: a running attempt
    * may ask the receive lane to skip routine idle polls. Omitted means never. */
   readonly deferPolls?: boolean;
+  /** Routine sync can run now (its gate is ready). False: no window protects an attempt from
+   * anything, so its slice is not planned to end at one (phase 564). Omitted means it can. */
+  readonly routineSync?: boolean;
 }
+/** The owner's measurements of an attempt, in milliseconds (phase 564). */
+export type LocalRetentionMeasure = (kind: 'setup' | 'save', ms: number) => void;
 type Outcome = { kind: string; reason?: string; detail?: unknown };
 const interruptedOutcomes = new WeakMap<Outcome, MaintenanceInterrupted>();
 /** Native scheduling metadata only. Serialization loses it and conservatively keeps 60 seconds. */
@@ -123,11 +154,13 @@ const ownerErrorCode = (cause: unknown): string => {
 export function createAutomaticLocalRetention(options: {
   signal: AbortSignal;
   observe(): LocalRetentionObservation;
-  /** `protectedUntil` (wall clock): when routine sync may resume and interrupt this attempt. */
+  /** `protectedUntil` (wall clock): when routine sync may resume and interrupt this attempt;
+   * omitted when nothing can. `measure` receives the owner's setup and save times (phase 564). */
   remove(
     revision: number,
     report: RetentionProgressSink,
     protectedUntil?: number,
+    measure?: LocalRetentionMeasure,
   ): Promise<Outcome>;
 }) {
   let timer: ReturnType<typeof setTimeout> | undefined;
@@ -149,6 +182,8 @@ export function createAutomaticLocalRetention(options: {
     interruptions = 0,
     completions = 0;
   let progress: LocalRetentionStatus['progress'];
+  // Phase 565: this open's facts about the reduction in progress, for the History panel only.
+  let reduction: LocalReductionFacts | undefined;
   let attemptEvents: LocalRetentionStatus['progress'][] = [];
   let currentAttempt: object | undefined;
   let ownerError: string | undefined;
@@ -161,8 +196,12 @@ export function createAutomaticLocalRetention(options: {
     holdYieldUntil = 0,
     holdSpent = false,
     publishedHold = 0;
-  // When the settled hold's budget lapses and routine sync resumes (phase 556).
-  let holdEndsAt: number | undefined;
+  // When the settled hold's budget lapses and routine sync resumes (phase 556), from when it began.
+  let holdEndsAt: number | undefined,
+    holdBudgetSince: number | undefined,
+    // An attempt in this held window was cut (input or the journal): the person is active, so its
+    // budget lapses as before instead of growing (phase 564).
+    holdCut = false;
   // Holding sync is for progress (a saved slice or a completed removal). A held window that ends,
   // by its budget or by an outcome, with neither marks the history it was engaged on: no further
   // hold on that history until progress, a manual check or reopening. A saved account attempt
@@ -171,13 +210,33 @@ export function createAutomaticLocalRetention(options: {
     holdProgress = false,
     holdIdleKey: string | undefined,
     holdBlocked = false;
-  // Poll deferral, on any device without the hold: a running attempt, and the saved slice it
-  // continues into at once, ask the receive lane to skip routine idle polls. Hints still run.
-  // Any wait between slices releases it, so the deferred poll runs before the next slice.
+  // Poll deferral, on any device without the hold: a running attempt asks the receive lane to skip
+  // routine idle polls until its run's first save, then the yield follows (phase 564). Hints still
+  // run. Any other end of the attempt releases it, so the deferred poll runs before the next one.
   let pollSince: number | undefined,
+    pollEndsAt = 0,
     pollTimer: ReturnType<typeof setTimeout> | undefined,
-    pollYieldUntil = 0,
-    continuing = false;
+    pollYieldUntil = 0;
+  // What the owner measured on this history (phase 564): the longest setup and the last save. They
+  // size each window; a completed removal starts a new history and clears them.
+  let measuredSetup: number | undefined, measuredSave: number | undefined;
+  const need = () =>
+    measuredSetup === undefined ? undefined : measuredNeed(measuredSetup, measuredSave);
+  /** The next window for a running attempt that outlasted its own unsaved: twice the last, and at
+   * least what the device has measured one saved slice needs. Doubling reaches any setup. */
+  const longer = (length: number) => Math.max(2 * length, need() ?? 0);
+  /** Inside the poll yield, a device that measured it needs longer than the yield has left cannot
+   * save before a routine poll cuts it; it waits for the yield to end, when its next window starts,
+   * instead of reading every row for nothing (phase 564). Routine sync that cannot run: no wait. */
+  const yieldWait = (deferrable: boolean, routineSync: boolean) => {
+    const now = Date.now(),
+      needed = need();
+    return deferrable && routineSync && needed !== undefined && now < pollYieldUntil
+      ? needed >= pollYieldUntil - now
+        ? pollYieldUntil
+        : 0
+      : 0;
+  };
   const listeners = new Set<() => void>();
   let status: LocalRetentionStatus = Object.freeze({ phase: 'idle', reason: undefined });
   const holdLevel = () =>
@@ -187,9 +246,13 @@ export function createAutomaticLocalRetention(options: {
     pollTimer = undefined;
     pollSince = undefined;
   };
+  const armPoll = () => {
+    if (pollTimer !== undefined) clearTimeout(pollTimer);
+    pollTimer = setTimeout(() => expirePoll(), Math.max(0, pollEndsAt - Date.now()));
+  };
   const publish = () => {
-    // Every path ends here: no attempt running or continuing at once means no deferral.
-    if (pollSince !== undefined && !running && !continuing) releasePoll();
+    // Every path ends here: no attempt running means no deferral.
+    if (pollSince !== undefined && !running) releasePoll();
     const phase = closed
       ? 'closed'
       : halted
@@ -206,6 +269,7 @@ export function createAutomaticLocalRetention(options: {
       status.reason === reason &&
       status.progress === progress &&
       status.detail === shown &&
+      status.reduction === reduction &&
       publishedHold === hold
     )
       return;
@@ -215,6 +279,7 @@ export function createAutomaticLocalRetention(options: {
       reason,
       ...(progress ? { progress } : {}),
       ...(shown ? { detail: shown } : {}),
+      ...(reduction ? { reduction } : {}),
     });
     for (const listener of [...listeners]) {
       try {
@@ -233,6 +298,7 @@ export function createAutomaticLocalRetention(options: {
     if (holdTimer !== undefined) clearTimeout(holdTimer);
     holdTimer = undefined;
     holdEndsAt = undefined;
+    holdBudgetSince = undefined;
     holdSince = undefined;
     holdSettled = false;
   };
@@ -248,14 +314,20 @@ export function createAutomaticLocalRetention(options: {
     holdIdleKey = undefined;
     holdBlocked = false;
   };
+  const armHold = (length: number) => {
+    if (holdTimer !== undefined) clearTimeout(holdTimer);
+    holdEndsAt = holdBudgetSince! + length;
+    holdTimer = setTimeout(() => expireHold(), Math.max(0, holdEndsAt - Date.now()));
+  };
   const startHoldBudget = () => {
     if (holdSince !== undefined && holdTimer === undefined) {
-      holdTimer = setTimeout(() => expireHold(), LOCAL_RETENTION_HOLD_MS);
-      holdEndsAt = Date.now() + LOCAL_RETENTION_HOLD_MS;
+      holdBudgetSince = Date.now();
+      // Never shorter than what this device measured one saved slice needs (phase 564).
+      armHold(Math.max(LOCAL_RETENTION_HOLD_MS, need() ?? 0));
     }
   };
   const observation = () => {
-    const { ready, hint, synchronized, hold, deferPolls } = options.observe();
+    const { ready, hint, synchronized, hold, deferPolls, routineSync } = options.observe();
     const fold = hint?.fold === true;
     // The episode ends when the owner stops reporting a fold; the next one starts a new streak.
     if (hint && !fold) foldStreak = 0;
@@ -295,25 +367,24 @@ export function createAutomaticLocalRetention(options: {
         !holdBlocked &&
         (holdIdleKey === undefined || key !== holdIdleKey),
       deferrable: deferPolls === true,
+      routineSync: routineSync !== false,
     };
   };
   const schedule = () => {
     clear();
     if (closed || halted) {
-      continuing = false;
       publish();
       return;
     }
     // A running attempt keeps its flight, but a hidden page or cleared owner hint still releases
     // the lanes (for example so a hidden page can publish).
-    const { hint, synchronized, holdable } = observation();
+    const { hint, synchronized, holdable, deferrable, routineSync } = observation();
     if (running) {
       publish();
       return;
     }
     // Busy sync used to leave no timer. A hold-wanting owner still needs the due moment.
     if (!hint || hint.key === parked || (!synchronized && !holdable)) {
-      continuing = false;
       publish();
       return;
     }
@@ -323,27 +394,44 @@ export function createAutomaticLocalRetention(options: {
       quietUntil - Date.now(),
       hint.notBefore - Date.now(),
       yielding - Date.now(),
+      holdSince === undefined && !holdable ? yieldWait(deferrable, routineSync) - Date.now() : 0,
     );
-    // A saved slice keeps the poll deferral only while its next slice is due at once.
-    continuing &&= delay === 0;
     timer = setTimeout(() => {
       timer = undefined;
-      continuing = false;
       void attempt().finally(publish);
     }, delay);
+    publish();
+  };
+  /** The run's deferral ends: routine polls resume and the yield runs before the next window. */
+  const endPollWindow = () => {
+    releasePoll();
+    pollYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
     publish();
   };
   const expirePoll = () => {
     pollTimer = undefined;
     if (closed || pollSince === undefined) return;
-    // Liveness bound: routine polls resume even mid-attempt; the next one interrupts as before.
-    releasePoll();
-    pollYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
-    publish();
+    // An attempt still running here has not saved (a save ends the window): the window was shorter
+    // than this device needs. Cutting it would lose its work and the next window would be no
+    // longer, so it grows instead, without a fixed ceiling (phase 564). Only routine polls wait.
+    if (running) {
+      pollEndsAt = pollSince + longer(pollEndsAt - pollSince);
+      armPoll();
+      return;
+    }
+    endPollWindow();
   };
   const expireHold = () => {
     holdTimer = undefined;
     if (closed || holdSince === undefined) return;
+    // Same rule before a held window's first save, for an attempt nothing has cut: the budget
+    // grows instead of lapsing. This hold parks the sender too, so new writing waits as long as
+    // the device needs to save once (phase 564). Input in the window keeps the old bound.
+    if (running && holdSettled && !holdProgress && !holdCut && holdBudgetSince !== undefined) {
+      armHold(longer(holdEndsAt! - holdBudgetSince));
+      publish();
+      return;
+    }
     // Liveness bound: routine sync resumes even mid-attempt; its next job interrupts as before.
     // A budget spent without progress does not come back on the same history.
     closeWindow();
@@ -353,10 +441,17 @@ export function createAutomaticLocalRetention(options: {
   };
   const attempt = async () => {
     if (closed || halted || running) return;
-    const { hint, synchronized, holdable, deferrable } = observation();
+    const { hint, synchronized, holdable, deferrable, routineSync } = observation();
     if (!hint || hint.key === parked) return;
     const now = Date.now();
-    if (now < Math.max(quietUntil, hint.notBefore)) {
+    if (
+      now <
+      Math.max(
+        quietUntil,
+        hint.notBefore,
+        holdSince === undefined && !holdable ? yieldWait(deferrable, routineSync) : 0,
+      )
+    ) {
       schedule();
       return;
     }
@@ -365,6 +460,7 @@ export function createAutomaticLocalRetention(options: {
       holdSince = now;
       holdKey = hint.key;
       holdProgress = false;
+      holdCut = false;
     }
     if (!synchronized) {
       if (holdSince === undefined && holdable) schedule(); // yielding: recheck when it ends
@@ -383,52 +479,77 @@ export function createAutomaticLocalRetention(options: {
       deferrable &&
       now >= Math.max(pollYieldUntil, holdYieldUntil)
     ) {
-      // Any device: a routine idle poll would cancel this attempt through the storage queue.
+      // Any device: a routine idle poll would cancel this attempt through the storage queue. The
+      // window is what this history measured one saved slice needs (phase 564).
       pollSince = now;
-      pollTimer = setTimeout(() => expirePoll(), LOCAL_RETENTION_POLL_HOLD_MS);
+      pollEndsAt = now + (need() ?? LOCAL_RETENTION_POLL_HOLD_MS);
+      armPoll();
     }
     attempts++;
     const stamp = (currentAttempt = {}),
       began = Date.now();
+    const measure: LocalRetentionMeasure = (kind, ms) => {
+      if (closed || currentAttempt !== stamp || !Number.isFinite(ms) || ms < 0) return;
+      if (kind === 'setup') measuredSetup = Math.max(measuredSetup ?? 0, ms);
+      else if (kind === 'save') measuredSave = ms;
+    };
     let removalComplete = false;
     let reportedAt = -Infinity;
     progress = undefined;
     attemptEvents = [];
+    // Phase 565: the pass joins this reduction's facts at its first report; how it ended is
+    // folded in when the attempt settles. Presentation only: nothing below reads the facts.
+    const online = routineSync;
+    let passBegun = false,
+      passEnd: 'saved' | 'removed' | 'cut' = 'cut';
     const report: RetentionProgressSink = (value) => {
       if (closed || !running || currentAttempt !== stamp) return;
       const next = copyRetentionProgress(value);
       if (!next) return;
       if (next.stage === 'complete' && !removalComplete) return;
+      const at = Date.now();
+      if (!passBegun) {
+        passBegun = true;
+        reduction = beginReductionPass(reduction, began, online);
+      }
+      // Every report is folded in; only publishing is coalesced.
+      const counted = reduction;
+      reduction = recordReductionProgress(reduction!, next, at);
       const sameStage = progress?.stage === next.stage;
-      if (sameStage && progress?.completed === next.completed && progress?.total === next.total)
-        return;
-      if (sameStage && next.completed !== next.total && Date.now() - reportedAt < 250) return;
-      progress = Object.freeze({
-        ...next,
-        attempt: attempts,
-        elapsedMs: Math.max(progress?.elapsedMs ?? 0, Date.now() - began),
-      });
+      const sameCounts =
+        sameStage && progress?.completed === next.completed && progress?.total === next.total;
+      if (sameCounts && reduction === counted) return;
+      const final = next.completed !== undefined && next.completed === next.total;
+      if (sameStage && !final && at - reportedAt < 250) return;
+      if (!sameCounts)
+        progress = Object.freeze({
+          stage: next.stage,
+          ...(next.completed === undefined ? {} : { completed: next.completed, total: next.total }),
+          attempt: attempts,
+          elapsedMs: Math.max(progress?.elapsedMs ?? 0, at - began),
+        });
       if (!sameStage && attemptEvents.length < 16) attemptEvents.push(progress);
-      reportedAt = Date.now();
+      reportedAt = at;
       publish();
     };
     publish();
     const started = wakes;
-    let again = false,
-      saved = false;
+    let again = false;
     try {
       let result: Outcome;
       try {
         // When routine sync resumes and its next job interrupts (phase 556): the settled hold's
-        // budget, or the idle-poll deferral counted from the run's first slice. Neither (a yield):
-        // now, so the slice keeps the plain target. Hints and input still interrupt at any time.
-        const protectedUntil =
-          holdSince !== undefined && holdSettled
+        // budget, or the end of the run's idle-poll window. Neither (a yield): now, so the slice
+        // keeps the plain target. Routine sync that cannot run (an unready gate) resumes never, so
+        // no window plans the slice (phase 564). Hints and input still interrupt at any time.
+        const protectedUntil = !routineSync
+          ? undefined
+          : holdSince !== undefined && holdSettled
             ? (holdEndsAt ?? now)
             : pollSince !== undefined
-              ? pollSince + LOCAL_RETENTION_POLL_HOLD_MS
+              ? pollEndsAt
               : now;
-        result = await options.remove(hint.revision, report, protectedUntil);
+        result = await options.remove(hint.revision, report, protectedUntil, measure);
       } catch (cause) {
         // All preparation ceilings share this closed class. Saved receipts remain intact;
         // the existing skipped path parks this exact hint behind the retry clock.
@@ -440,6 +561,7 @@ export function createAutomaticLocalRetention(options: {
         completions++;
         removalComplete = true;
         if (progress) report({ stage: 'complete' });
+        passEnd = 'removed';
         reason = undefined;
         detail = undefined;
         notBefore = 0;
@@ -450,17 +572,27 @@ export function createAutomaticLocalRetention(options: {
         }
         progressed();
         releaseHold();
+        // A new, smaller history: its windows start from new measurements.
+        measuredSetup = measuredSave = undefined;
         again = true;
       } else if (result.kind === 'preparation-saved') {
         // Useful bounded work is durable. Yield before another slice; input/readiness still wins.
         reason = 'preparation-saved';
+        passEnd = 'saved';
         detail = undefined;
         notBefore = 0;
         progressed();
-        again = saved = true;
+        // The run's idle-poll window ends at its first save; routine polls get the yield before
+        // the next window (phase 564). The next slice may still start at once, unprotected.
+        if (pollSince !== undefined) {
+          releasePoll();
+          pollYieldUntil = Date.now() + LOCAL_RETENTION_HOLD_YIELD_MS;
+        }
+        again = true;
       } else if (result.kind === 'skipped') {
         const why = result.reason ?? '';
         if (why === 'activity-or-journal') interruptions++;
+        if (why === 'activity-or-journal' && holdSince !== undefined) holdCut = true;
         reason = result.reason;
         // Presentation only: which limit fired. Parking and retry timing never read it.
         detail = why === 'capacity' ? copyRetentionDetail(result.detail) : undefined;
@@ -508,12 +640,11 @@ export function createAutomaticLocalRetention(options: {
         ownerError = ownerErrorCode(cause);
       }
     } finally {
+      if (passBegun && reduction && !closed)
+        reduction = endReductionPass(reduction, passEnd, Date.now());
       if (currentAttempt === stamp) currentAttempt = undefined;
       running = false;
-      // schedule() keeps this only if the next slice is due at once; publish() then releases.
-      continuing = saved && !closed && !halted;
       if (again) schedule();
-      else continuing = false;
       publish();
     }
   };
@@ -521,7 +652,6 @@ export function createAutomaticLocalRetention(options: {
     closed = true;
     clear();
     releaseHold();
-    continuing = false;
     releasePoll();
     options.signal.removeEventListener('abort', dispose);
     publish();
@@ -566,6 +696,13 @@ export function createAutomaticLocalRetention(options: {
         completions,
         events: Object.freeze(attemptEvents.map((e) => e)),
         ...(ownerError ? { ownerError } : {}),
+        ...(measuredSetup !== undefined ? { setupMs: measuredSetup } : {}),
+        ...(measuredSave !== undefined ? { saveMs: measuredSave } : {}),
+        ...(holdSince !== undefined && holdEndsAt !== undefined
+          ? { windowEndsAt: holdEndsAt }
+          : pollSince !== undefined
+            ? { windowEndsAt: pollEndsAt }
+            : {}),
       });
     },
     onStatus(listener: () => void) {

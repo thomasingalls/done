@@ -1,0 +1,93 @@
+"""Summarize a lab565 run: per-attempt table and notable events. Usage: python3 -I summarize.py run.json [--events]"""
+import json, sys, re
+
+path = sys.argv[1]
+d = json.load(open(path))
+ev = d['events']
+t0 = d.get('shellAt') or (ev[0]['t'] if ev else 0)
+rel = lambda t: (t - t0) / 1000
+print(f"run {path.split('/')[-1]} network={d['network']} jsFlags={d.get('jsFlags')} knobs={d.get('knobs')} openMs={d.get('openMs')} watch={(d.get('endedAt',t0)-t0)/1000:.0f}s dropped={d.get('dropped')}")
+print('foreign at start:', len(d.get('foreignAtStart', [])), 'at end:', len(d.get('foreignAtEnd', [])))
+
+def frames(stack, n=6):
+    out = []
+    for line in (stack or '').split('\n'):
+        m = re.search(r'at (?:async )?([\w$.<>\[\] ]+?) \(', line)
+        name = m.group(1) if m else line.strip()[:60]
+        if 'lab' in name:
+            continue
+        out.append(name.strip())
+        if len(out) >= n:
+            break
+    return ' < '.join(out)
+
+attempts = []
+cur = None
+for e in ev:
+    k = e['kind']
+    if k == 'attempt-start':
+        cur = {'start': e['t'], 'n': e['attempt'], 'deferred': e.get('pollSince') is not None,
+               'protectedMs': e.get('protectedMs'), 'stages': [], 'pollSince': e.get('pollSince'), 'notes': []}
+        attempts.append(cur)
+    elif cur is None:
+        continue
+    elif k == 'progress':
+        st = e['stage']
+        if not cur['stages'] or cur['stages'][-1][0] != st:
+            cur['stages'].append([st, e['t'], e['t'], e.get('completed'), e.get('total')])
+        else:
+            cur['stages'][-1][2] = e['t']
+            cur['stages'][-1][3] = e.get('completed')
+    elif k == 'slice-budget':
+        cur['budget'] = e
+    elif k == 'prep-imported':
+        cur['imported'] = e
+    elif k == 'prep-journal':
+        cur['journal'] = e
+    elif k == 'prep-catch':
+        cur['catch'] = e
+    elif k == 'prep-saved':
+        cur['saveMs'] = e['saveMs']
+    elif k == 'attempt-end':
+        cur['end'] = e['t']
+        cur['result'] = f"{e.get('outcome')}/{e.get('reason')}"
+        cur['priorityOnly'] = e.get('priorityOnly')
+    elif k == 'MaintenanceInterrupted':
+        cur['notes'].append(f"INT@{rel(e['t']):.1f} {e.get('conditions')} {frames(e.get('stack'),5)}")
+    elif k == 'storage-run' and not e.get('preparation'):
+        if cur.get('end') is None:
+            cur['notes'].append(f"run@{rel(e['t']):.1f} {e.get('runKind')} {frames(e.get('stack'),5)}")
+    elif k == 'poll-deferral-expired':
+        cur['notes'].append(f"deferral-expired@{rel(e['t']):.1f} running={e.get('running')}")
+    elif k == 'membership-repair-queued':
+        cur['notes'].append(f"REPAIR@{rel(e['t']):.1f}")
+    elif k in ('compaction-start', 'compaction-end', 'compaction-error'):
+        cur['notes'].append(f"{k}@{rel(e['t']):.1f}")
+
+print(f"{'#':>3} {'start':>7} {'def':>3} {'prot':>6} {'stages (name:dur s [done/total])':<70} {'budget':>8} {'setup':>7} {'imp':>7} {'hits/miss':>13} {'save':>6} {'end':>7} result")
+for a in attempts:
+    ss = a['stages']
+    ends = [ss[i+1][1] for i in range(len(ss)-1)] + [a.get('end') or ss[-1][2] if ss else 0]
+    st = ' '.join(f"{s[0][:4]}:{(ends[i]-s[1])/1000:.1f}" + (f"[{s[3]}/{s[4]}]" if s[4] else '') for i, s in enumerate(ss))
+    b = a.get('budget') or {}
+    imp = json.loads(a['imported']['stats'])['entries'] if a.get('imported') else '-'
+    c = json.loads(a['catch']['stats']) if a.get('catch') and a['catch'].get('stats') not in (None, 'null') else None
+    hm = f"{c['hits']}/{c['misses']}" if c else '-'
+    end = a.get('end')
+    print(f"{a['n']:>3} {rel(a['start']):>7.1f} {'Y' if a['deferred'] else 'n':>3} {(a['protectedMs'] or 0)/1000:>6.1f} {st:<70} {(b.get('limitMs') or 0)/1000:>8.1f} {(b.get('setupMs') or 0)/1000:>7.1f} {imp!s:>7} {hm:>13} {(a.get('saveMs') or 0)/1000:>6.1f} {(rel(end) if end else float('nan')):>7.1f} {a.get('result')}")
+    for n in a['notes'][:12]:
+        print('      ', n)
+    if len(a['notes']) > 12:
+        print('       ... +', len(a['notes']) - 12, 'notes')
+
+print('\nUI transitions:')
+for u in d.get('ui', [])[:80]:
+    print(f"  {rel(u['t']):7.1f} {u['text'][:110]}")
+if '--events' in sys.argv:
+    for e in ev:
+        if e['kind'] in ('progress',):
+            continue
+        print(f"{rel(e['t']):8.1f} {e['kind']} {json.dumps({k:v for k,v in e.items() if k not in ('t','kind','stack')})[:200]}")
+        if e.get('stack') and '--stacks' in sys.argv:
+            print('          ', frames(e['stack'], 8))
+print('\nerrors:', d.get('errors', [])[:10])

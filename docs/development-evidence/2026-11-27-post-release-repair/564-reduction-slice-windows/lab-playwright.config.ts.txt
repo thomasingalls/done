@@ -1,0 +1,10 @@
+import { defineConfig } from '@playwright/test';
+/** TEMPORARY lab 565i harness; never committed. */
+export default defineConfig({
+  testDir: '.',
+  testMatch: 'harness.ts',
+  outputDir: '../../../test-results/lab565/artifacts',
+  workers: 1,
+  retries: 0,
+  reporter: [['list']],
+});

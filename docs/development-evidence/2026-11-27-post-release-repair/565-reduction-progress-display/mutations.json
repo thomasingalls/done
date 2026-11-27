@@ -1,0 +1,467 @@
+{
+ "asBuilt": {
+  "estimator": {
+   "seconds": 1.0,
+   "passed": 23,
+   "failed": [],
+   "skipped": 0
+  },
+  "panel": {
+   "seconds": 1.7,
+   "passed": 23,
+   "failed": [],
+   "skipped": 0
+  },
+  "plumbing": {
+   "seconds": 3.2,
+   "passed": 1,
+   "failed": [],
+   "skipped": 11
+  }
+ },
+ "mutations": [
+  {
+   "id": "E1",
+   "variant": "a fresh rate assumed before any is measured",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "until there is a measurement it says it is estimating shows no time before this device measured reading, the prefix and a fresh rate"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E2",
+   "variant": "a fixed two-second slice instead of the measured one",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 18,
+   "failed": [
+    "until there is a measurement it says it is estimating computes each figure from the measured rates (a worked example)",
+    "until there is a measurement it says it is estimating (after a cut) a pass cut before any slice was saved still sizes the work left by its measured budget",
+    "until there is a measurement it says it is estimating (after a cut) the active pass's own first results do not swing a rate earlier passes measured",
+    "waits between passes online: says waits are not counted until one is measured, then counts the shortest",
+    "replays of real multi-pass reductions (phase 564 lab runs) r06 (offline, x100, 156 passes): the percentage rises monotonically and the estimate converges"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E3",
+   "variant": "each pass's re-read saved results counted again as progress",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 17,
+   "failed": [
+    "the percentage counts saved, reusable work only re-reading rows and re-checking saved results on later passes does not move it",
+    "the percentage counts saved, reusable work only a cut pass falls back to what was saved and says the rest is being redone",
+    "the percentage counts saved, reusable work only saved progress that could not be reused (a stale checkpoint) shows the fall",
+    "steps 2 and 3 are seen only in the final pass sizes each as one measured full read until seen, then by the longest time seen",
+    "waits between passes online: says waits are not counted until one is measured, then counts the shortest",
+    "replays of real multi-pass reductions (phase 564 lab runs) r07 (online, x20, 130 attempts, 104 cut): saved progress never falls, each lost slice shows"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E4",
+   "variant": "a cut pass's unsaved results kept as if saved",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 19,
+   "failed": [
+    "until there is a measurement it says it is estimating (after a cut) a pass cut before any slice was saved still sizes the work left by its measured budget",
+    "the percentage counts saved, reusable work only a cut pass falls back to what was saved and says the rest is being redone",
+    "steps 2 and 3 are seen only in the final pass sizes each as one measured full read until seen, then by the longest time seen",
+    "replays of real multi-pass reductions (phase 564 lab runs) r07 (online, x20, 130 attempts, 104 cut): saved progress never falls, each lost slice shows"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E5",
+   "variant": "a cut silently falls back, with no redo shown",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 19,
+   "failed": [
+    "until there is a measurement it says it is estimating (after a cut) a pass cut before any slice was saved still sizes the work left by its measured budget",
+    "the percentage counts saved, reusable work only a cut pass falls back to what was saved and says the rest is being redone",
+    "steps 2 and 3 are seen only in the final pass sizes each as one measured full read until seen, then by the longest time seen",
+    "replays of real multi-pass reductions (phase 564 lab runs) r07 (online, x20, 130 attempts, 104 cut): saved progress never falls, each lost slice shows"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E6",
+   "variant": "a stale checkpoint silently starts lower",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "the percentage counts saved, reusable work only saved progress that could not be reused (a stale checkpoint) shows the fall"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E7",
+   "variant": "new history not announced",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "the percentage counts saved, reusable work only more history arriving shows as more to check, not as lost work"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E8",
+   "variant": "100% shown before a full check completed",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 21,
+   "failed": [
+    "the percentage counts saved, reusable work only stays below 100% until a full check completed, then the total is exact",
+    "steps 2 and 3 are seen only in the final pass sizes each as one measured full read until seen, then by the longest time seen"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E9",
+   "variant": "an overrun reaches zero instead of being re-estimated",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 18,
+   "failed": [
+    "an estimate never sits at zero while work continues re-reading, past the measured read: positive, re-estimated and called longer than expected",
+    "an estimate never sits at zero while work continues checking fresh results, past the census estimate: positive, re-estimated and called longer than expected",
+    "an estimate never sits at zero while work continues saving, past the measured save: positive, re-estimated and called longer than expected",
+    "an estimate never sits at zero while work continues building, past one measured read: positive, re-estimated and called longer than expected",
+    "an estimate never sits at zero while work continues saving the smaller history, past one measured read: positive, re-estimated and called longer than expected"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E10",
+   "variant": "a plain countdown clamped at zero, without re-estimate or floor",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 20,
+   "failed": [
+    "an estimate never sits at zero while work continues building, past one measured read: positive, re-estimated and called longer than expected",
+    "an estimate never sits at zero while work continues saving the smaller history, past one measured read: positive, re-estimated and called longer than expected",
+    "an estimate never sits at zero while work continues counts down without reaching zero across the final pass, its steps 2 and 3 included"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E11",
+   "variant": "steps 2 and 3 not allowed for before they are seen",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 19,
+   "failed": [
+    "until there is a measurement it says it is estimating computes each figure from the measured rates (a worked example)",
+    "until there is a measurement it says it is estimating (after a cut) a pass cut before any slice was saved still sizes the work left by its measured budget",
+    "steps 2 and 3 are seen only in the final pass sizes each as one measured full read until seen, then by the longest time seen",
+    "waits between passes online: says waits are not counted until one is measured, then counts the shortest"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E12",
+   "variant": "the mean wait between passes instead of the shortest",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "waits between passes online: says waits are not counted until one is measured, then counts the shortest"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E13",
+   "variant": "waits always claimed as included",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 20,
+   "failed": [
+    "until there is a measurement it says it is estimating computes each figure from the measured rates (a worked example)",
+    "waits between passes online: says waits are not counted until one is measured, then counts the shortest",
+    "waits between passes offline with no wait measured: no waits ahead are claimed"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E14",
+   "variant": "minutes rounded to the nearest instead of up",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "wording-ready figures rounds for reading: seconds under a minute in tens, rounded up, never zero; then minutes, then hours"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E15",
+   "variant": "zero seconds shown for a tiny estimate (no ten-second floor)",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "wording-ready figures rounds for reading: seconds under a minute in tens, rounded up, never zero; then minutes, then hours"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E27",
+   "variant": "a pass's measured budget discarded when it ends",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "until there is a measurement it says it is estimating (after a cut) a pass cut before any slice was saved still sizes the work left by its measured budget"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E28",
+   "variant": "the active pass's own first results always counted in the rate",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "until there is a measurement it says it is estimating (after a cut) the active pass's own first results do not swing a rate earlier passes measured"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E16",
+   "variant": "stage 'current' put in step 1",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "wording-ready figures maps each stage to its step"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E17",
+   "variant": "unknown fields accepted across the Worker boundary",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "wording-ready figures copies only well-formed facts across the Worker boundary"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E18",
+   "variant": "this reduction's overall fresh rate only (no recent window)",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "replays of real multi-pass reductions (phase 564 lab runs) r06 (offline, x100, 156 passes): the percentage rises monotonically and the estimate converges"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "E19",
+   "variant": "the last pass's fresh rate alone (no decaying window)",
+   "file": "src/crdt/reductionProgress.ts",
+   "tests": "test/reductionEstimate.test.ts",
+   "restored": true,
+   "seconds": 1.0,
+   "passed": 22,
+   "failed": [
+    "replays of real multi-pass reductions (phase 564 lab runs) r06 (offline, x100, 156 passes): the percentage rises monotonically and the estimate converges"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "P1",
+   "variant": "the panel ignores the reduction facts (pre-565 behaviour)",
+   "file": "src/ui/LocalHistoryMaintenance.tsx",
+   "tests": "test/localHistoryMaintenance.test.tsx",
+   "restored": true,
+   "seconds": 1.6,
+   "passed": 14,
+   "failed": [
+    "running, step 1: the step, checking done across passes, the pass and the time left",
+    "running, steps 2 and 3: each step named, with its own time and the whole",
+    "running, step 2 of a short reduction: one figure when the step and the whole read alike",
+    "running before anything is measured: says it is estimating and shows no number",
+    "running past an estimate: says it is taking longer than expected and re-estimates",
+    "paused with saved progress: why, what is saved, and the quiet work still needed",
+    "paused without saved progress: nothing saved yet, still estimating",
+    "lost progress: shows the fall and says that part is being redone",
+    "finished: says when, for this open of the app"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "P2",
+   "variant": "reduction facts replace a refusal sentence",
+   "file": "src/ui/LocalHistoryMaintenance.tsx",
+   "tests": "test/localHistoryMaintenance.test.tsx",
+   "restored": true,
+   "seconds": 1.6,
+   "passed": 18,
+   "failed": [
+    "refusal capacity keeps its sentence exactly while a reduction is in progress",
+    "refusal history-required keeps its sentence exactly while a reduction is in progress",
+    "refusal ineligible keeps its sentence exactly while a reduction is in progress",
+    "refusal durable-attempt keeps its sentence exactly while a reduction is in progress",
+    "refusal owner-error keeps its sentence exactly while a reduction is in progress"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "P3",
+   "variant": "singular units not used ('about 1 minutes')",
+   "file": "src/ui/LocalHistoryMaintenance.tsx",
+   "tests": "test/localHistoryMaintenance.test.tsx",
+   "restored": true,
+   "seconds": 1.6,
+   "passed": 21,
+   "failed": [
+    "running, steps 2 and 3: each step named, with its own time and the whole",
+    "words estimates as a person reads them, never as zero"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "P4",
+   "variant": "both figures stated even when they read alike",
+   "file": "src/ui/LocalHistoryMaintenance.tsx",
+   "tests": "test/localHistoryMaintenance.test.tsx",
+   "restored": true,
+   "seconds": 1.6,
+   "passed": 22,
+   "failed": [
+    "running, step 2 of a short reduction: one figure when the step and the whole read alike"
+   ],
+   "skipped": 0
+  },
+  {
+   "id": "W1",
+   "variant": "the scheduler folds no count-only report",
+   "file": "src/crdt/automaticLocalRetention.ts",
+   "tests": "test/retentionSliceBudget.test.ts",
+   "restored": true,
+   "seconds": 2.4,
+   "passed": 0,
+   "failed": [
+    "phase 565: the owner\u2019s verification counts reach the published status through the real scheduler, across a saved slice and a cut"
+   ],
+   "skipped": 11
+  },
+  {
+   "id": "W2",
+   "variant": "the owner does not hand the journal's counts to the sink",
+   "file": "src/crdt/contentStore.ts",
+   "tests": "test/retentionSliceBudget.test.ts",
+   "restored": true,
+   "seconds": 2.5,
+   "passed": 0,
+   "failed": [
+    "phase 565: the owner\u2019s verification counts reach the published status through the real scheduler, across a saved slice and a cut"
+   ],
+   "skipped": 11
+  },
+  {
+   "id": "W3",
+   "variant": "the Worker boundary does not admit the facts",
+   "file": "src/crdt/accountSessionBridge.ts",
+   "tests": "test/retentionSliceBudget.test.ts",
+   "restored": true,
+   "seconds": 2.5,
+   "passed": 0,
+   "failed": [
+    "phase 565: the owner\u2019s verification counts reach the published status through the real scheduler, across a saved slice and a cut"
+   ],
+   "skipped": 11
+  },
+  {
+   "id": "W4",
+   "variant": "the journal reports no imported results",
+   "file": "src/crdt/retentionPreparation.ts",
+   "tests": "test/retentionSliceBudget.test.ts",
+   "restored": true,
+   "seconds": 2.6,
+   "passed": 0,
+   "failed": [
+    "phase 565: the owner\u2019s verification counts reach the published status through the real scheduler, across a saved slice and a cut"
+   ],
+   "skipped": 11
+  },
+  {
+   "id": "W5",
+   "variant": "no exact counts when a pass ends early (a cut loses unreported results silently)",
+   "file": "src/crdt/contentStore.ts",
+   "tests": "test/retentionSliceBudget.test.ts",
+   "restored": true,
+   "seconds": 2.6,
+   "passed": 0,
+   "failed": [
+    "phase 565: the owner\u2019s verification counts reach the published status through the real scheduler, across a saved slice and a cut"
+   ],
+   "skipped": 11
+  },
+  {
+   "id": "W6",
+   "variant": "no exact counts when checking gives way to building (the total is stale)",
+   "file": "src/crdt/contentStore.ts",
+   "tests": "test/retentionSliceBudget.test.ts",
+   "restored": true,
+   "seconds": 3.4,
+   "passed": 0,
+   "failed": [
+    "phase 565: the owner\u2019s verification counts reach the published status through the real scheduler, across a saved slice and a cut"
+   ],
+   "skipped": 11
+  }
+ ]
+}

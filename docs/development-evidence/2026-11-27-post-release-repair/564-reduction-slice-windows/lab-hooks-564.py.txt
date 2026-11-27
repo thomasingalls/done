@@ -1,0 +1,98 @@
+"""Lab-only hooks on top of the phase 564 product sources (lab worktree; never product)."""
+import re
+
+p = 'src/crdt/automaticLocalRetention.ts'
+s = open(p).read()
+
+
+def rep(old, new, count=1):
+    global s
+    assert s.count(old) == count, (old[:90], s.count(old))
+    s = s.replace(old, new)
+
+
+rep("import { PREPARATION_SETUP_RATIO } from './retentionPreparation';",
+    "import { PREPARATION_SETUP_RATIO } from './retentionPreparation';\n"
+    "import { lab, labKnob } from './lab565';\n"
+    "const labT = (ms: number) => ms / ((labKnob('timeScale') as number | undefined) ?? 1);")
+# time-scaled constants inside the scheduler body (the measured need is not scaled: it is measured)
+head_end = s.index('export function createAutomaticLocalRetention(')
+body = s[head_end:]
+for name in ['LOCAL_RETENTION_HOLD_MS', 'LOCAL_RETENTION_HOLD_YIELD_MS', 'LOCAL_RETENTION_POLL_HOLD_MS']:
+    body = re.sub(r'(?<!labT\()\b' + name + r'\b', f'labT({name})', body)
+s = s[:head_end] + body
+rep("""    if (closed || halted || running) return;
+    const { hint, synchronized, holdable, deferrable, routineSync } = observation();""",
+    """    if (closed || halted || running) return;
+    if (labKnob('noReduce')) return;
+    const { hint, synchronized, holdable, deferrable, routineSync } = observation();""")
+rep("""    if (running) {
+      pollEndsAt = pollSince + longer(pollEndsAt - pollSince);
+      armPoll();
+      return;
+    }
+    endPollWindow();""", """    if (running) {
+      pollEndsAt = pollSince + longer(pollEndsAt - pollSince);
+      lab('poll-window-extended', { endsInMs: pollEndsAt - Date.now(), need: need() });
+      armPoll();
+      return;
+    }
+    lab('poll-deferral-expired', { running });
+    endPollWindow();""")
+rep("""        result = await options.remove(hint.revision, report, protectedUntil, measure);""",
+    """        lab('attempt-start', {
+          attempt: attempts,
+          revision: hint.revision,
+          key: hint.key,
+          pollSince,
+          pollEndsAt: pollSince === undefined ? null : pollEndsAt,
+          holdSince,
+          holdSettled,
+          pollYieldUntil,
+          holdYieldUntil,
+          protectedUntil: protectedUntil ?? null,
+          protectedMs: protectedUntil === undefined ? null : protectedUntil - Date.now(),
+          routineSync,
+          deferrable,
+          synchronized,
+          holdable,
+          measuredSetup: measuredSetup ?? null,
+          measuredSave: measuredSave ?? null,
+        });
+        result = await options.remove(
+          hint.revision,
+          report,
+          labKnob('noWindow') ? undefined : protectedUntil,
+          (kind, ms) => {
+            lab('measure', { kind, ms });
+            measure(kind, ms);
+          },
+        );
+        lab('attempt-end', {
+          attempt: attempts,
+          outcome: result.kind,
+          reason: result.reason,
+          detail: JSON.stringify(result.detail ?? null),
+          elapsedMs: Date.now() - began,
+          progress: JSON.stringify(progress ?? null),
+          priorityOnly:
+            result.kind === 'skipped' &&
+            isPriorityOnlyMaintenanceInterruption(interruptedOutcomes.get(result)),
+        });""")
+open(p, 'w').write(s)
+
+p = 'src/crdt/retentionPreparation.ts'
+s = open(p).read()
+rep("""      limit ??= budget(freshAt);""", """      if (limit === undefined) {
+        limit = budget(freshAt);
+        lab('slice-budget', {
+          limitMs: limit,
+          setupMs: options.setupSince === undefined ? null : freshAt - options.setupSince,
+          carriedMs: options.carriedMs ?? null,
+          deadlineInMs: options.deadline === undefined ? null : options.deadline - freshAt,
+          hitsBeforeFirstMiss: hits,
+          entries: entries.size,
+        });
+      }""")
+open(p, 'w').write(s)
+print('ok')

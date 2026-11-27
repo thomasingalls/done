@@ -1,0 +1,9 @@
+// Phase 563: write the would-be execution manifest to scratch for review; the repository is not written.
+import { readFileSync, writeFileSync } from 'node:fs';
+const root = '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/';
+const { buildInventory } = await import(root + 'scripts/release-validation/inventory.mjs');
+const { compileManifest } = await import(root + 'scripts/release-validation/manifest.mjs');
+const { manifestSnapshot } = await import(root + 'scripts/release-validation/manifest-snapshot.mjs');
+const policy = JSON.parse(readFileSync(root + 'scripts/release-validation/policy.json'));
+process.chdir(root);
+writeFileSync(process.argv[2], manifestSnapshot(compileManifest(root, buildInventory(root, policy))));

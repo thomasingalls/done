@@ -1,0 +1,138 @@
+// Phase 563 probe: what the setup Worker and page do when local data is removed in another tab.
+import { test, expect, type Page } from '@playwright/test';
+import {
+  openApp,
+  protectApp,
+  openMenuSection,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/geometry/openApp.ts';
+import {
+  startService,
+  stopService,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/packaged-account/server.ts';
+
+test.use({ serviceWorkers: 'block' });
+
+function workerProbe() {
+  const log = (...a: unknown[]) => console.log('[W]', performance.now().toFixed(0), ...a);
+  const Real = BroadcastChannel;
+  (self as unknown as { BroadcastChannel: unknown }).BroadcastChannel = class extends Real {
+    constructor(n: string) {
+      super(n);
+      if (n === 'done/slot-lifecycle') {
+        log('bc open');
+        this.addEventListener('message', (e) => log('bc message', JSON.stringify((e as MessageEvent).data)));
+      }
+    }
+  };
+  const post = self.postMessage.bind(self) as (m: unknown, ...r: unknown[]) => void;
+  (self as unknown as { postMessage: unknown }).postMessage = (m: { kind?: string; ok?: boolean }, ...r: unknown[]) => {
+    log('post', m?.kind, m?.ok);
+    return post(m, ...r);
+  };
+  const closeSelf = self.close.bind(self);
+  (self as unknown as { close: unknown }).close = () => {
+    log('self.close');
+    closeSelf();
+  };
+}
+function pageProbe() {
+  const RealWorker = Worker;
+  (window as unknown as { Worker: unknown }).Worker = class extends RealWorker {
+    constructor(url: string | URL, opts?: WorkerOptions) {
+      super(url, opts);
+      const name = String(url).match(/(\w+)\.worker/)?.[1];
+      console.log('[P]', performance.now().toFixed(0), 'worker created', name);
+      this.addEventListener('message', (e: MessageEvent) => {
+        const v = e.data;
+        if (v?.kind) console.log('[P]', performance.now().toFixed(0), 'from', name, v.kind, v.ok);
+      });
+      const t = this.terminate.bind(this);
+      this.terminate = () => {
+        console.log('[P]', performance.now().toFixed(0), 'terminate', name);
+        t();
+      };
+    }
+  };
+}
+const screen = async (page: Page) =>
+  JSON.stringify({
+    h1: await page.locator('h1').allTextContents(),
+    status: await page.locator('[role=status]').allTextContents(),
+    alert: await page.locator('[role=alert]').allTextContents(),
+    workers: page.workers().map((w) => w.url().match(/(\w+)\.worker/)?.[1]),
+  });
+
+for (const mode of ['held-begin', 'idle-passkey'] as const)
+  test(`setup mechanism ${mode}`, async ({ page, context }, info) => {
+    const service = await startService(info.outputPath('service'), undefined, true, true);
+    const lines: string[] = [];
+    const t0 = Date.now();
+    const note = (s: string) => lines.push(`${Date.now() - t0}ms ${s}`);
+    page.on('console', (m) => {
+      if (m.text().startsWith('[P]')) note(m.text());
+    });
+    page.on('worker', (w) => {
+      const name = w.url().match(/(\w+)\.worker/)?.[1];
+      note(`worker up ${name}`);
+      w.on('console', (m) => note(`${name} ${m.text()}`));
+      w.on('close', () => note(`worker closed ${name}`));
+    });
+    let release!: () => void, received!: () => void;
+    const held = new Promise<void>((yes) => (release = yes));
+    const waiting = new Promise<void>((yes) => (received = yes));
+    try {
+      await page.addInitScript(pageProbe);
+      await openApp(page);
+      await protectApp(page);
+      await page.route(/\/firstDeviceOwner\.worker-[^/]*\.js$/, async (route) => {
+        const response = await route.fetch();
+        const headers = response.headers();
+        delete headers['content-length'];
+        delete headers['content-encoding'];
+        note('routed firstDeviceOwner worker script');
+        await route.fulfill({
+          status: response.status(),
+          headers,
+          body: `(${workerProbe})();\n${await response.text()}`,
+        });
+      });
+      if (mode === 'held-begin')
+        await page.route('**/__account-setup/begin', async (route) => {
+          const response = await route.fetch();
+          received();
+          await held;
+          try {
+            await route.fulfill({ response });
+            note('begin fulfilled');
+          } catch (e) {
+            note('begin fulfill failed: ' + String(e).slice(0, 120));
+          }
+        });
+      await openMenuSection(page, 'Sync');
+      await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
+      await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
+      await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+      if (mode === 'held-begin') await waiting;
+      else await expect(page.getByRole('heading', { name: 'Create your passkey' })).toBeVisible();
+      note('before removal ' + (await screen(page)));
+      const removal = await context.newPage();
+      await removal.goto('/remove/local');
+      await removal.getByRole('button', { name: 'Continue to confirmation' }).click();
+      await removal.getByLabel('Type REMOVE to confirm').fill('REMOVE');
+      note('clicking remove');
+      await removal.getByRole('button', { name: 'Remove local data', exact: true }).click();
+      await expect(removal.getByRole('heading', { name: 'Removed from this device' })).toBeVisible();
+      note('removed ' + (await screen(page)));
+      release();
+      for (let i = 0; i < 4; i++) {
+        await page.waitForTimeout(5000);
+        note(`t+${(i + 1) * 5}s ` + (await screen(page)));
+      }
+      await removal.close();
+    } finally {
+      release();
+      await stopService(service);
+      await info.attach('timeline', { body: lines.join('\n'), contentType: 'text/plain' });
+      console.log(`---- ${mode}\n` + lines.join('\n'));
+    }
+  });

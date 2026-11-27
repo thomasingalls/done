@@ -1,0 +1,548 @@
+{
+  "phase": 565,
+  "date": "2026-11-27",
+  "base": {
+    "tree": "edaaecc314abfa1dde1cd63efc3982e8e442e2b1",
+    "description": "phase 564 as staged over 76aade840 (its signed commit awaited the operator); built in the working tree of claude/post-release-repairs; nothing staged, committed or pushed"
+  },
+  "requested": [
+    "operator, 2026-11-27, verbatim: \"it would be extremely useful to give the user an indication of the amount of time any one of these particular steps is left. and if it's a multi-step thing, it'd be really nice to be able to give an estimate of the whole thing in addition to an estimate for the active phase, and an indicator of progress through phases\"; three steps confirmed",
+    "coordinating session, 2026-11-27: phase 565, the History panel's running, paused and finished states; honesty rules each with a test; pure estimator with its own unit file and recorded mutations; plumbing through the real scheduler across a saved slice and a cut; rendered panel states; a replay of a real multi-pass reduction with a stated tolerance; a lab transcript if cheap; display and in-memory plumbing only; full unit suite not run"
+  ],
+  "productCodeChanged": true,
+  "storedOrWireFormatChanged": false,
+  "limitsChanged": false,
+  "schedulingChanged": false,
+  "statusFieldsAdded": {
+    "LocalRetentionStatus.reduction (optional, admitted by copyReductionFacts)": [
+      "since",
+      "pass",
+      "passSince",
+      "stage",
+      "stageSince",
+      "stepSince",
+      "online",
+      "endedAt?",
+      "finishedAt?",
+      "saved?",
+      "held?",
+      "planned?",
+      "total?",
+      "lostFrom?",
+      "grew?",
+      "freshSince?",
+      "countedAt?",
+      "fresh?",
+      "budgetMs?",
+      "readMs?",
+      "prefixMs?",
+      "prefixOf?",
+      "prefixBaseMs?",
+      "prefixBaseOf?",
+      "freshMs?",
+      "freshOf?",
+      "lastFreshMs?",
+      "lastFreshOf?",
+      "sliceMs?",
+      "saveMs?",
+      "waitMs?",
+      "buildMs?",
+      "storeMs?"
+    ],
+    "workerOnly": [
+      "RetentionProgress.saved/held/fresh/budget/planned (verifying only)",
+      "preparation journal option report and method expect",
+      "PreparationVerification.expect (optional)"
+    ]
+  },
+  "newProductStrings": [
+    "Reducing saved history: step 1 of 3, checking saved history. {p}% checked (pass {k}).",
+    "Reducing saved history: step 1 of 3, checking saved history (pass {k}).",
+    "Reducing saved history: step 2 of 3, building the smaller history.",
+    "Reducing saved history: step 3 of 3, saving the smaller history.",
+    "Estimating the time left…",
+    "About {t} left in this step, about {T} in all{q}.",
+    "About {t} left{q}.",
+    "About {t} left in this step; estimating the rest…",
+    "This step is taking longer than expected. ",
+    "{q}: ' if this device stays quiet' | ' if this device stays quiet, counting pauses that let sync run' | ' if this device stays quiet, not counting pauses that let sync run'",
+    "{t}: 'about N seconds' (10-50 in tens) | 'about 1 minute' | 'about N minutes' | 'about N hours' (from two hours)",
+    "Maintenance saved its progress and paused to let sync run. It will continue when this device is quiet.",
+    "Maintenance saved its progress. It will continue when this device is quiet.",
+    "Step 1 of 3. {p}% of checking is saved. | No checking is saved yet. | Some checking is saved.",
+    "About {t} of quiet still needed. | …, counting pauses that let sync run. | …, not counting pauses that let sync run. | Estimating the work left…",
+    "Some checking has to be redone: it went from {a}% back to {b}%.",
+    "More history arrived, so there is more to check.",
+    "History on this device was reduced at {time}.",
+    "progress labels: Saved history checked; Reduction steps"
+  ],
+  "rewordedProductStrings": [],
+  "reusedProductStrings": [
+    "Maintenance paused to let editing or sync finish. It will retry when this device is quiet. (now also for pending-promotion, already-preparing and other non-refusal reasons while a reduction is in progress)",
+    "every stage sentence, as a detail line while running"
+  ],
+  "changes": {
+    "src/crdt/reductionProgress.ts": [
+      "new: facts, reducer, copyReductionFacts, estimateReduction, readableDuration, reductionStep"
+    ],
+    "src/crdt/retentionPreparation.ts": [
+      "journal reports counts at its first check, first fresh check (with budget), every 32 kept or uncached fresh results and before a pause; counts(); expect(checks); no check, budget or pause changed; registered label stays on line 17"
+    ],
+    "src/crdt/localBaselineReplay.ts": [
+      "full() tells the journal the census estimate (plannedResults) before its first check"
+    ],
+    "src/crdt/contentStore.ts": [
+      "passes the journal's counts to the progress sink at verifying; once per pass sends exact counts when checking gives way to the next stage or the pass ends early"
+    ],
+    "src/crdt/contentMaintenance.ts": [
+      "optional counts on RetentionProgress, copied at verifying only"
+    ],
+    "src/crdt/automaticLocalRetention.ts": [
+      "status.reduction; every report folded, publishing still coalesced; the outcome folds how the pass ended; progress keeps its shape"
+    ],
+    "src/crdt/accountSessionBridge.ts": [
+      "admits reduction through copyReductionFacts"
+    ],
+    "src/ui/LocalHistoryMaintenance.tsx": [
+      "running, paused and finished sentences; labelled progress element; display clock while running; refusals unchanged"
+    ]
+  },
+  "decisionsAmended": [
+    {
+      "decision": "phase 124 (2026-10-27): definite counts only for the record-reading subphase; indeterminate indicator for work with no honest total",
+      "now": "overall checked percentage across passes against the census estimate (exact after a full check), capped below 100 until then; time estimates only from this run's measurements; a page display clock, nothing polls the owner; facts volatile",
+      "justification": "the operator's request; a saved pass and a lost one looked the same for a day on two devices"
+    }
+  ],
+  "unchanged": [
+    "every refusal and capacity sentence (tested with a reduction in progress)",
+    "when and whether reduction runs",
+    "status.progress shape",
+    "no stored format, wire format, service message or limit"
+  ],
+  "tests": {
+    "new": {
+      "test/reductionEstimate.test.ts": {
+        "cases": 23,
+        "declarations": 19,
+        "inventoryDeclarations": 27
+      },
+      "test/retentionSliceBudget.test.ts": {
+        "cases": 1,
+        "case": "phase 565: the owner's verification counts reach the published status through the real scheduler, across a saved slice and a cut",
+        "observed": {
+          "savedAfterPass1": 209,
+          "pass2Reached": 233,
+          "passes": 5,
+          "exactTotal": 1249,
+          "censusEstimate": 1250,
+          "asserted": "exact total 1,249; census estimate within [total, 1.05 x total]"
+        }
+      },
+      "test/localHistoryMaintenance.test.tsx": {
+        "cases": 15
+      }
+    },
+    "changedAssertions": 0,
+    "mutations": {
+      "recorded": 31,
+      "allRestoredWithHashCheck": true,
+      "asBuilt": {
+        "estimator": {
+          "passed": 23,
+          "failed": 0
+        },
+        "panel": {
+          "passed": 23,
+          "failed": 0
+        },
+        "plumbing": {
+          "passed": 1,
+          "failed": 0
+        }
+      },
+      "everyNewCaseFailedBySome": true,
+      "untrippedCases": "only the eight pre-existing panel cases",
+      "byId": {
+        "E1": {
+          "variant": "a fresh rate assumed before any is measured",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E2": {
+          "variant": "a fixed two-second slice instead of the measured one",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 5
+        },
+        "E3": {
+          "variant": "each pass's re-read saved results counted again as progress",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 6
+        },
+        "E4": {
+          "variant": "a cut pass's unsaved results kept as if saved",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 4
+        },
+        "E5": {
+          "variant": "a cut silently falls back, with no redo shown",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 4
+        },
+        "E6": {
+          "variant": "a stale checkpoint silently starts lower",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E7": {
+          "variant": "new history not announced",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E8": {
+          "variant": "100% shown before a full check completed",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 2
+        },
+        "E9": {
+          "variant": "an overrun reaches zero instead of being re-estimated",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 5
+        },
+        "E10": {
+          "variant": "a plain countdown clamped at zero, without re-estimate or floor",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 3
+        },
+        "E11": {
+          "variant": "steps 2 and 3 not allowed for before they are seen",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 4
+        },
+        "E12": {
+          "variant": "the mean wait between passes instead of the shortest",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E13": {
+          "variant": "waits always claimed as included",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 3
+        },
+        "E14": {
+          "variant": "minutes rounded to the nearest instead of up",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E15": {
+          "variant": "zero seconds shown for a tiny estimate (no ten-second floor)",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E27": {
+          "variant": "a pass's measured budget discarded when it ends",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E28": {
+          "variant": "the active pass's own first results always counted in the rate",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E16": {
+          "variant": "stage 'current' put in step 1",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E17": {
+          "variant": "unknown fields accepted across the Worker boundary",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E18": {
+          "variant": "this reduction's overall fresh rate only (no recent window)",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "E19": {
+          "variant": "the last pass's fresh rate alone (no decaying window)",
+          "file": "src/crdt/reductionProgress.ts",
+          "failed": 1
+        },
+        "P1": {
+          "variant": "the panel ignores the reduction facts (pre-565 behaviour)",
+          "file": "src/ui/LocalHistoryMaintenance.tsx",
+          "failed": 9
+        },
+        "P2": {
+          "variant": "reduction facts replace a refusal sentence",
+          "file": "src/ui/LocalHistoryMaintenance.tsx",
+          "failed": 5
+        },
+        "P3": {
+          "variant": "singular units not used ('about 1 minutes')",
+          "file": "src/ui/LocalHistoryMaintenance.tsx",
+          "failed": 2
+        },
+        "P4": {
+          "variant": "both figures stated even when they read alike",
+          "file": "src/ui/LocalHistoryMaintenance.tsx",
+          "failed": 1
+        },
+        "W1": {
+          "variant": "the scheduler folds no count-only report",
+          "file": "src/crdt/automaticLocalRetention.ts",
+          "failed": 1
+        },
+        "W2": {
+          "variant": "the owner does not hand the journal's counts to the sink",
+          "file": "src/crdt/contentStore.ts",
+          "failed": 1
+        },
+        "W3": {
+          "variant": "the Worker boundary does not admit the facts",
+          "file": "src/crdt/accountSessionBridge.ts",
+          "failed": 1
+        },
+        "W4": {
+          "variant": "the journal reports no imported results",
+          "file": "src/crdt/retentionPreparation.ts",
+          "failed": 1
+        },
+        "W5": {
+          "variant": "no exact counts when a pass ends early (a cut loses unreported results silently)",
+          "file": "src/crdt/contentStore.ts",
+          "failed": 1
+        },
+        "W6": {
+          "variant": "no exact counts when checking gives way to building (the total is stale)",
+          "file": "src/crdt/contentStore.ts",
+          "failed": 1
+        }
+      },
+      "detail": "mutations.json"
+    },
+    "replay": {
+      "data": "phase 564 per-attempt tables r06 (offline, x100, 156 passes) and r07 (online, x20, 130 attempts, 104 cut), 1,000-position seed; total taken as 10,685 (r06 last import 10,296 plus its previous pass's 389 fresh results)",
+      "toleranceR06": [
+        "checked percentage never falls",
+        "from pass 5 no rise above 30% (largest 24%, pass 74)",
+        "from pass 45 until a quarter remains, between 0.5 and 3 times the time actually left (seen 0.68 to 2.86)",
+        "falls in each of the last three passes (144, 65, 43, 21 s against 12.6, 9.4, 6.3, 3.2 s)"
+      ],
+      "r07": [
+        "saved percentage never falls",
+        "attempt 1's 8,703 lost results shown as redo 81% to 0%",
+        "each pass starts at the saved percentage"
+      ]
+    }
+  },
+  "lab": {
+    "build": "this working tree, released flags (VITE_ACCOUNT_LEDGER=incremental, VITE_ACCOUNT_BATCH=coordinated-2000, VITE_ACCOUNT_RETENTION_AUTO=1, VITE_ACCOUNT_RETENTION_RESUME=1, VITE_ACCOUNT_RANGE_RECEIVE=1, VITE_ACCOUNT_HISTORY_AUTO=0), send-cost vite config, scratch outDir",
+    "seed": "snap-2000 (2,000 own positions, 201 received, 14,402 rows), copied to scratch per run, read-only",
+    "runs": {
+      "offline": {
+        "network": "offline-before",
+        "openMs": 5849,
+        "watchEndedAfterShellMs": 21055,
+        "cardAddedAtMs": null,
+        "uiChanges": 30,
+        "pageErrors": 0,
+        "otherTestProcesses": [
+          0,
+          0
+        ]
+      },
+      "cut": {
+        "network": "offline-before",
+        "openMs": 6364,
+        "watchEndedAfterShellMs": 42175,
+        "cardAddedAtMs": 14561,
+        "uiChanges": 68,
+        "pageErrors": 0,
+        "otherTestProcesses": [
+          0,
+          0
+        ]
+      }
+    },
+    "findings": [
+      "census estimate about 10% high on the seed (90% before step 2)",
+      "steps 2 and 3 about 0.4 s each against about 2 s allowed",
+      "after a cut the next pass keeps the plain 2 s slice, and its figure switches between this pass finishing and one more pass",
+      "three faults found on the first build and fixed before the recorded runs: under-ten-seconds wording, estimating after a cut, in-pass flip from the active pass's own early rate"
+    ],
+    "files": [
+      "lab-transcripts.txt",
+      "lab-offline.json.gz",
+      "lab-cut.json.gz",
+      "lab-harness.ts.txt",
+      "lab-playwright.config.ts.txt (run beside a package.json declaring type module)"
+    ]
+  },
+  "bookkeeping": {
+    "planningInventory": "recorded after the final test edits: testFiles 773->774, requiredTestFiles 767->768; reductionEstimate new (27 declarations); retentionSliceBudget 11->12; localHistoryMaintenance 6->17",
+    "manifest": "obligations 1137->1138, unresolved 561 (unchanged: the new file is a reviewed selection); selections release, general-tests and vitest-reviewed gain reductionEstimate",
+    "registration": "scripts/release-validation/general-tests.json gains test/reductionEstimate.test.ts",
+    "denominator": "3109 -> 3133 cases (general-tests.test.mjs title and count, generated-tests.test.mjs count); reviewed Vitest files 123 -> 124; general stages 308 -> 309; vitest-reviewed stages 142 -> 143",
+    "runtimeCensus": "recorded after review of the final sources: the eight changed product sources' hashes and the new src/crdt/reductionProgress.ts (no label or crypto call); domains unchanged; 527 sources, 201 labels/templates, 36 groups, 15 entrypoints",
+    "constructionRegistry": "unchanged (no registered site moved)",
+    "decision": "docs/decisions.md, 2026-11-27 phase 565 entry, quoting the operator, amending phase 124",
+    "backlog": [
+      "REDUCE-PROGRESS-LINE (reduced to what remains)",
+      "LONG-OPERATION-PROGRESS (new)"
+    ],
+    "untouched": [
+      "docs/progress.md",
+      "docs/completed.md"
+    ]
+  },
+  "checks": {
+    "unitRelated": "60 files, 674 passed (unit-neighbours.log.gz)",
+    "typecheck": "tsc -b --noEmit --force exit 0",
+    "format": "oxfmt --check pass; oxlint --react-plugin pass (11 source and test files)",
+    "validationInventory": "10 passed",
+    "releaseValidationCheck": "check.mjs passed; plan.mjs 1,138 obligations, 561 unresolved",
+    "releaseAdapters": "178 passed (3,133 denominator)",
+    "accountCryptoPrep": "6 passed",
+    "contractChecks": "vectors, retention, status, limit, authority, recipient, admission, remediation, debts, wasm: all exit 0",
+    "build": "see README (run last)",
+    "traceCheck": "see README (run last)"
+  },
+  "notRun": [
+    "full unit suite (operator, 2026-11-27)",
+    "browser suites and the CI packaged browser step",
+    "pnpm test:account-setup",
+    "the lab online, at phone speed, past 32,768 rows, or on the affected account"
+  ],
+  "sourceSha256": {
+    "src/crdt/reductionProgress.ts": "1acf263128bbe7c2a5ca21869ec401935c20f23696518ef7d908e8fc7e1b4b1f",
+    "src/crdt/automaticLocalRetention.ts": "476775f9ba2f1b6f64592609fa28d33a3999748c6a24bbcdb94b466878a5c97a",
+    "src/crdt/accountSessionBridge.ts": "e36657674c1eb710eb18d00daf61d572310f93f5d4f6f3bd8f9a1f60c63044b9",
+    "src/crdt/contentMaintenance.ts": "4643cd66541c872402289b6c752d1a566eb14b8be7ed8db8867b2ef193228a85",
+    "src/crdt/retentionPreparation.ts": "a13d5489efbc12270b16a309292189bbc7ece48b90ee5df3b5483b587dfe3cef",
+    "src/crdt/localBaselineReplay.ts": "48b97246e50e30a96dbd081b01330b4493eba8d04b78efe54e16462aa766de61",
+    "src/crdt/contentStore.ts": "d346e402cbfb8582e79ed53266787cb1118b43b64a0f2f1158a7ba0052ae15a3",
+    "src/ui/LocalHistoryMaintenance.tsx": "3be2bbc114d16a6d449a61d6239d487e8eaba42f76ce975b701b93092fb6b3d1"
+  },
+  "testSha256": {
+    "test/reductionEstimate.test.ts": "81c00a603a75025185304f14f012a2a74abd1f8e98c459e6d2562fd69c4d612b",
+    "test/retentionSliceBudget.test.ts": "d2462b6347c098f0d5c7e7455ee4e120f31e216b2cf214e9b94feebb755b8567",
+    "test/localHistoryMaintenance.test.tsx": "b1af95ee92dbd19be7878ec7cc99b81349689cd48b25fe67887a0bf9cba126f4",
+    "test/release-validation/general-tests.test.mjs": "e41765bbd045446222a815aae1f3f32f6d64aa8819d1dee07c0c78fb043d20c5",
+    "test/release-validation/generated-tests.test.mjs": "1899f81aa5b64321bf81264336ebe5f46331f148ced515feffb74db698db01ae"
+  },
+  "deployed": false,
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-27",
+    "supersedes": "where a figure here differs from one above, this one stands",
+    "changedAtReview": [
+      "src/crdt/contentStore.ts: reportFinalCounts catches anything thrown while reporting (it runs first in the pass error handler); no behaviour change known",
+      "test/localHistoryMaintenance.test.tsx: one case added (a running attempt that has not reported does not show the ended pass as running)",
+      "test/reductionEstimate.test.ts: one case added (a pass after a finished reduction starts a new one)",
+      "docs/product-backlog.md LONG-OPERATION-PROGRESS: the named operations are the coordinating session's reading, not the operator's",
+      "src/ui/LocalHistoryMaintenance.tsx and three panel assertions: \"{p}% is saved and will not be redone.\" shortened to \"{p}% of checking is saved.\" (and \"Some checking is saved.\"), by the operator's decision (\"Yes, shorten\") on the coordinating session's recommendation, because saved checks that cannot be reused are checked again",
+      "docs/progress.md: seat document updated"
+    ],
+    "independentControls": [
+      {
+        "variant": "a saved pass is recorded as cut",
+        "file": "src/crdt/automaticLocalRetention.ts",
+        "result": "the real-owner case fails"
+      },
+      {
+        "variant": "re-checks of saved results count as held",
+        "file": "src/crdt/retentionPreparation.ts",
+        "result": "the real-owner case fails"
+      },
+      {
+        "variant": "the census estimate is half what a full check makes",
+        "file": "src/crdt/localBaselineReplay.ts",
+        "result": "the real-owner case fails"
+      },
+      {
+        "variant": "the paused figure counts down with the clock",
+        "file": "src/crdt/reductionProgress.ts",
+        "result": "3 estimator cases fail"
+      },
+      {
+        "variant": "a running attempt that has not reported shows the ended pass as the running one",
+        "file": "src/ui/LocalHistoryMaintenance.tsx",
+        "result": "no case failed as delivered; the added panel case fails"
+      },
+      {
+        "variant": "a new reduction after a finished one continues its facts",
+        "file": "src/crdt/reductionProgress.ts",
+        "result": "no case failed as delivered; the added estimator case fails"
+      }
+    ],
+    "allRestoredWithHashCheck": true,
+    "unitFiles": {
+      "neighbours": {
+        "files": 60,
+        "passed": 674,
+        "failed": 0,
+        "when": "before the two added cases"
+      },
+      "withAddedCases": {
+        "files": 2,
+        "passed": 48,
+        "failed": 0
+      }
+    },
+    "lab": {
+      "build": "final tree, same flags",
+      "seed": "snap-2000, network off, card added past 40%",
+      "runs": [
+        {
+          "viewport": "1280x900",
+          "openMs": 5845,
+          "cardAddedAtMs": 13355,
+          "endedAfterShellMs": 38991,
+          "pageErrors": 0,
+          "otherTestProcesses": [
+            0,
+            0
+          ]
+        },
+        {
+          "viewport": "390x844",
+          "openMs": 5835,
+          "cardAddedAtMs": 14361,
+          "endedAfterShellMs": 42261,
+          "pageErrors": 0,
+          "otherTestProcesses": [
+            0,
+            0
+          ]
+        }
+      ],
+      "result": "the same sentences as the cut run, in the same order; both finished; screenshots read at both widths, not filed",
+      "note": "not built again after the one-sentence change; the lab runs do not reach a pause with saved progress"
+    },
+    "figures": {
+      "reductionEstimateCases": 24,
+      "reductionEstimateInventoryDeclarations": 29,
+      "localHistoryMaintenanceInventoryDeclarations": 18,
+      "caseDenominator": [
+        3109,
+        3134
+      ],
+      "vitestFiles": 124,
+      "generalStages": 309,
+      "vitestReviewedStages": 143,
+      "obligations": 1138,
+      "unresolved": 561,
+      "runtimeCensus": "recorded again; only src/crdt/contentStore.ts moved"
+    },
+    "limitsFound": [
+      "saved checks that cannot be reused (REDUCE-COMPACTION-STALE) are checked again; the redo line says so, not in advance",
+      "a removal with no progress report (already-removed) leaves unfinished facts that a later reduction in the same open would continue",
+      "\"pass k\" counts every attempt that reported and could reach the hundreds on the affected devices",
+      "the status paragraph changes with every percentage point; a screen reader announces each change"
+    ],
+    "notRepeated": "the agent's 31 mutations, its replays and its left-alone lab run",
+    "fullUnit": "not run; operator's decision of 2026-11-27 that it runs once before merge",
+    "wording": "put to the operator before the commit with examples and screenshots; one stated decision (the shortened sentence); the rest not objected to, which is the coordinating session's reading"
+  }
+}

@@ -1,0 +1,3 @@
+dc6003f2d930e9ca82ca61e70ac113e7aeca5880 G post-release: the History panel says which step reduction is in, what is saved and about how long is left (phase 565)
+2fa1a4e78391ec4f1d135c6b8291f938e8ce7a61 G post-release: size reduction's windows from what the device measured, with no ceiling before a first save (phase 564)
+76aade84043a66e48b98a10792222187a04adfb3 G post-release: end a sync setup on a final notice when another tab removes its data (phase 563)

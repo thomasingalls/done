@@ -1,0 +1,115 @@
+// Phase 563 probe: the missed-notice path with the notice suppressed in the setup Worker.
+import { test, expect, type Page, type Worker } from '@playwright/test';
+import {
+  openApp,
+  protectApp,
+  openMenuSection,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/geometry/openApp.ts';
+import {
+  startService,
+  stopService,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/packaged-account/server.ts';
+
+test.use({ serviceWorkers: 'block' });
+
+function suppressRetirement() {
+  const Real = BroadcastChannel;
+  let suppressed = 0;
+  (self as unknown as { BroadcastChannel: unknown }).BroadcastChannel = class extends Real {
+    constructor(name: string) {
+      super(name);
+      if (name === 'done/slot-lifecycle')
+        this.addEventListener('message', (event) => {
+          suppressed++;
+          event.stopImmediatePropagation();
+        });
+    }
+  };
+  Object.defineProperty(self, '__suppressedRetirements', { get: () => suppressed });
+}
+const screen = async (page: Page) =>
+  JSON.stringify({
+    h1: await page.locator('h1').allTextContents(),
+    status: await page.locator('[role=status]').allTextContents(),
+    alert: await page.locator('[role=alert]').allTextContents(),
+  });
+
+for (const fresh of [false, true])
+  test(`missed notice in the Worker${fresh ? ' after Start fresh' : ''}`, async ({ page, context }, info) => {
+    const service = await startService(info.outputPath('service'), undefined, true, true);
+    const lines: string[] = [];
+    const t0 = Date.now();
+    const note = (s: string) => lines.push(`${Date.now() - t0}ms ${s}`);
+    let release!: () => void, received!: () => void;
+    const held = new Promise<void>((yes) => (release = yes));
+    const waiting = new Promise<void>((yes) => (received = yes));
+    let setupWorker: Worker | undefined;
+    page.on('worker', (w) => {
+      if (/firstDeviceOwner\.worker/.test(w.url())) setupWorker = w;
+    });
+    try {
+      await openApp(page);
+      await protectApp(page);
+      await page.route(/\/firstDeviceOwner\.worker-[^/]*\.js$/, async (route) => {
+        const response = await route.fetch();
+        const headers = response.headers();
+        delete headers['content-length'];
+        delete headers['content-encoding'];
+        note('routed setup worker');
+        await route.fulfill({
+          status: response.status(),
+          headers,
+          body: `(${suppressRetirement})();\n${await response.text()}`,
+        });
+      });
+      await page.route('**/__account-setup/begin', async (route) => {
+        const response = await route.fetch();
+        received();
+        await held;
+        await route.fulfill({ response }).catch((e) => note('fulfill failed ' + String(e).slice(0, 80)));
+      });
+      await openMenuSection(page, 'Sync');
+      await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
+      await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
+      await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+      await waiting;
+      note('waiting ' + (await screen(page)) + ' suppressed=' + (await setupWorker?.evaluate(() => (self as unknown as { __suppressedRetirements: number }).__suppressedRetirements)));
+      const removal = await context.newPage();
+      await removal.goto('/remove/local');
+      await removal.getByRole('button', { name: 'Continue to confirmation' }).click();
+      await removal.getByLabel('Type REMOVE to confirm').fill('REMOVE');
+      await removal.getByRole('button', { name: 'Remove local data', exact: true }).click();
+      await expect(removal.getByRole('heading', { name: 'Removed from this device' })).toBeVisible();
+      if (fresh) {
+        await removal.getByRole('button', { name: 'Start fresh', exact: true }).click();
+        await expect(removal.locator('.shell')).toBeVisible();
+      }
+      await page.waitForTimeout(1000);
+      note('removed ' + (await screen(page)) + ' suppressed=' + (await setupWorker?.evaluate(() => (self as unknown as { __suppressedRetirements: number }).__suppressedRetirements)));
+      release();
+      await page.waitForTimeout(3000);
+      note('released ' + (await screen(page)));
+      const row = await removal.evaluate(
+        () =>
+          new Promise<unknown>((resolve, reject) => {
+            const r = indexedDB.open('done.first-device-setup.v1');
+            r.onerror = () => reject(r.error);
+            r.onsuccess = () => {
+              const db = r.result,
+                tx = db.transaction('attempt'),
+                row = tx.objectStore('attempt').get('current');
+              tx.oncomplete = () => {
+                db.close();
+                resolve(row.result ?? null);
+              };
+            };
+          }),
+      );
+      note('attempt row ' + JSON.stringify(row));
+      await removal.close();
+    } finally {
+      release();
+      await stopService(service);
+      console.log(`---- missed notice fresh=${fresh}\n` + lines.join('\n'));
+    }
+  });

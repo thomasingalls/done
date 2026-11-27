@@ -1,0 +1,194 @@
+// Phase 563 probe: do device enrollment and recovery get stuck on a closing screen when their
+// slot's local data is removed in another tab, as first-device setup does?
+import { test, expect, type Page, type BrowserContext } from '@playwright/test';
+import { openMenuSection } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/geometry/openApp.ts';
+import {
+  account,
+  createdAccount,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/device-enrollment/helpers.ts';
+import {
+  credentials,
+  restoreAuthenticator,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/packaged-account/devices.ts';
+import {
+  startService,
+  stopService,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/packaged-account/server.ts';
+
+test.use({ serviceWorkers: 'block' });
+
+function workerProbe() {
+  const log = (...a: unknown[]) => console.log('[W]', performance.now().toFixed(0), ...a);
+  const Real = BroadcastChannel;
+  (self as unknown as { BroadcastChannel: unknown }).BroadcastChannel = class extends Real {
+    constructor(n: string) {
+      super(n);
+      if (n === 'done/slot-lifecycle')
+        this.addEventListener('message', (e) => log('bc message', JSON.stringify((e as MessageEvent).data)));
+    }
+  };
+  const post = self.postMessage.bind(self) as (m: unknown, ...r: unknown[]) => void;
+  (self as unknown as { postMessage: unknown }).postMessage = (m: { kind?: string; ok?: boolean }, ...r: unknown[]) => {
+    log('post', m?.kind, m?.ok);
+    return post(m, ...r);
+  };
+}
+function pageProbe() {
+  const RealWorker = Worker;
+  (window as unknown as { Worker: unknown }).Worker = class extends RealWorker {
+    constructor(url: string | URL, opts?: WorkerOptions) {
+      super(url, opts);
+      const name = String(url).match(/(\w+)\.worker/)?.[1];
+      console.log('[P]', performance.now().toFixed(0), 'worker created', name);
+      this.addEventListener('message', (e: MessageEvent) => {
+        const v = e.data;
+        if (v?.kind) console.log('[P]', performance.now().toFixed(0), 'from', name, v.kind, v.ok);
+      });
+      const t = this.terminate.bind(this);
+      this.terminate = () => {
+        console.log('[P]', performance.now().toFixed(0), 'terminate', name);
+        t();
+      };
+    }
+  };
+}
+const screen = async (page: Page) =>
+  JSON.stringify({
+    url: new URL(page.url()).pathname,
+    h1: await page.locator('h1').allTextContents(),
+    status: await page.locator('[role=status]').allTextContents(),
+    alert: await page.locator('[role=alert]').allTextContents(),
+    buttons: (await page.getByRole('button').allTextContents()).slice(0, 12),
+    workers: page.workers().map((w) => w.url().match(/(\w+)\.worker/)?.[1]),
+  });
+function instrument(page: Page, note: (s: string) => void, label: string) {
+  page.on('console', (m) => {
+    if (m.text().startsWith('[P]')) note(`${label} ${m.text()}`);
+  });
+  page.on('worker', (w) => {
+    const name = w.url().match(/(\w+)\.worker/)?.[1];
+    note(`${label} worker up ${name}`);
+    w.on('console', (m) => {
+      if (m.text().startsWith('[W]')) note(`${label} ${name} ${m.text()}`);
+    });
+    w.on('close', () => note(`${label} worker closed ${name}`));
+  });
+}
+async function routeWorkers(context: BrowserContext, note: (s: string) => void) {
+  await context.route(/\/(enrollmentOwner|recoveryOwner|firstDeviceOwner)\.worker-[^/]*\.js$/, async (route) => {
+    const response = await route.fetch();
+    const headers = response.headers();
+    delete headers['content-length'];
+    delete headers['content-encoding'];
+    note('routed ' + new URL(route.request().url()).pathname);
+    await route.fulfill({
+      status: response.status(),
+      headers,
+      body: `(${workerProbe})();\n${await response.text()}`,
+    });
+  });
+}
+async function removeIn(context: BrowserContext, slotId: string, note: (s: string) => void) {
+  const removal = await context.newPage();
+  await removal.goto('/remove/' + encodeURIComponent(slotId));
+  note('removal page ' + (await screen(removal)));
+  await removal.getByRole('button', { name: 'Continue to confirmation' }).click({ timeout: 15000 });
+  await removal.getByLabel('Type REMOVE to confirm').fill('REMOVE', { timeout: 15000 });
+  note('clicking remove');
+  await removal.getByRole('button', { name: 'Remove local data', exact: true }).click({ timeout: 15000 });
+  await expect(removal.getByRole('heading', { name: /Removed from this device|Nothing to remove/ })).toBeVisible({ timeout: 30000 });
+  note('removal done ' + (await screen(removal)));
+  return removal;
+}
+async function watch(page: Page, note: (s: string) => void) {
+  for (let i = 0; i < 4; i++) {
+    await page.waitForTimeout(5000);
+    note(`t+${(i + 1) * 5}s ` + (await screen(page)));
+  }
+}
+
+test('enrollment, existing device at the invitation step', async ({ page, context }, info) => {
+  test.setTimeout(180000);
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  const lines: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => lines.push(`${Date.now() - t0}ms ${s}`);
+  try {
+    await page.addInitScript(pageProbe);
+    instrument(page, note, 'A');
+    await routeWorkers(context, note);
+    await account(page);
+    const slotId = new URL(page.url()).searchParams.get('slot');
+    note('enrollment at ' + page.url() + ' slot ' + slotId + ' ' + (await screen(page)));
+    const removal = await removeIn(context, slotId!, note);
+    note('after removal ' + (await screen(page)));
+    await watch(page, note);
+    note('dbs before action ' + JSON.stringify((await removal.evaluate(() => indexedDB.databases())).map((d) => d.name)));
+    await page.getByRole('button', { name: 'Check again', exact: true }).click({ timeout: 15000 });
+    for (let i = 0; i < 3; i++) {
+      await page.waitForTimeout(3000);
+      note(`after Check again +${(i + 1) * 3}s ` + (await screen(page)));
+    }
+    note('dbs after action ' + JSON.stringify((await removal.evaluate(() => indexedDB.databases())).map((d) => d.name)));
+    await removal.close();
+  } finally {
+    await stopService(service);
+    console.log('---- enrollment existing\n' + lines.join('\n'));
+  }
+});
+
+test('recovery, new device at the review step', async ({ page, browser }, info) => {
+  test.setTimeout(180000);
+  const service = await startService(info.outputPath('service'), undefined, true, true);
+  const lines: string[] = [];
+  const t0 = Date.now();
+  const note = (s: string) => lines.push(`${Date.now() - t0}ms ${s}`);
+  const replacement = await browser.newContext({ serviceWorkers: 'block' });
+  try {
+    const { auth, recovery } = await createdAccount(page);
+    const passkeys = await credentials(auth);
+    const next = await replacement.newPage();
+    await next.addInitScript(pageProbe);
+    instrument(next, note, 'B');
+    await routeWorkers(replacement, note);
+    await next.goto('/');
+    await restoreAuthenticator(next, passkeys);
+    await expect(next.locator('.shell')).toBeVisible();
+    await openMenuSection(next, 'Account');
+    await next.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await expect(next.getByRole('heading', { name: 'Choose an account' })).toBeVisible();
+    await openMenuSection(next, 'Account');
+    await next.getByRole('button', { name: 'Use another account', exact: true }).click();
+    await next.getByRole('button', { name: 'Recover with a saved recovery code', exact: true }).click();
+    await next.getByRole('button', { name: 'Use account passkey', exact: true }).click();
+    await next.getByLabel('Recovery code', { exact: true }).fill(recovery);
+    await next.getByRole('button', { name: 'Continue with recovery code', exact: true }).click();
+    const code = (await next.getByLabel('Generated unlock code').textContent())!;
+    await next.getByRole('button', { name: 'I saved my unlock code' }).click();
+    await next.getByLabel('Unlock code', { exact: true }).fill(code);
+    await next.getByRole('button', { name: 'Confirm unlock code', exact: true }).click();
+    await expect(
+      next.getByRole('heading', { name: 'Recover on this device and disconnect the previous devices' }),
+    ).toBeVisible();
+    const slotId = new URL(next.url()).pathname.split('/').find((s) => /^(account|enrollment)-[a-f0-9]{32}$/.test(s));
+    note('recovery at ' + next.url() + ' slot ' + slotId + ' ' + (await screen(next)));
+    const removal = await removeIn(replacement, slotId!, note);
+    note('after removal ' + (await screen(next)));
+    await watch(next, note);
+    note('dbs before action ' + JSON.stringify((await removal.evaluate(() => indexedDB.databases())).map((d) => d.name)));
+    await next.getByRole('button', { name: 'Recover on this device and disconnect the previous devices', exact: true }).click({ timeout: 15000 });
+    for (let i = 0; i < 5; i++) {
+      await next.waitForTimeout(3000);
+      note(`after Recover +${(i + 1) * 3}s ` + (await screen(next)));
+    }
+    note('dbs after action ' + JSON.stringify((await removal.evaluate(() => indexedDB.databases())).map((d) => d.name)));
+    await removal.goto('/remove/' + encodeURIComponent(slotId!));
+    await removal.waitForTimeout(2000);
+    note('removal page revisited ' + (await screen(removal)));
+    await removal.close();
+  } finally {
+    await replacement.close();
+    await stopService(service);
+    console.log('---- recovery save-code\n' + lines.join('\n'));
+  }
+});

@@ -1,0 +1,115 @@
+// Phase 563 probe: where "Reload this tab to continue" leads after each removal outcome, and the
+// final notice in the page-hosted setup mode (networkSessions false).
+import { test, expect, type Page, type BrowserContext } from '@playwright/test';
+import {
+  openApp,
+  protectApp,
+  openMenuSection,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/geometry/openApp.ts';
+import {
+  startService,
+  stopService,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/packaged-account/server.ts';
+
+const stopped =
+  'Sync setup stopped because another tab began removing this device’s data. Reload this tab to continue.';
+const screen = async (page: Page) =>
+  JSON.stringify({
+    url: new URL(page.url()).pathname,
+    h1: await page.locator('h1').allTextContents(),
+    p: (await page.locator('main p').allTextContents()).slice(0, 4),
+    status: await page.locator('[role=status]').allTextContents(),
+    alert: await page.locator('[role=alert]').allTextContents(),
+    buttons: (await page.getByRole('button').allTextContents()).slice(0, 10),
+    workers: page.workers().map((w) => w.url().match(/(\w+)\.worker/)?.[1]),
+  });
+// Refuse the removal's first durable write, before any erasure, in the removal tab only.
+function refuseRemovalMarker() {
+  const put = IDBObjectStore.prototype.put;
+  IDBObjectStore.prototype.put = function (this: IDBObjectStore, value: unknown, key?: IDBValidKey) {
+    if ((value as { kind?: unknown } | null)?.kind === 'device-data-removal')
+      throw new DOMException('Injected removal refusal', 'UnknownError');
+    return put.call(this, value, key);
+  };
+}
+const attempt = (page: Page) =>
+  page.evaluate(
+    () =>
+      new Promise<unknown>((resolve, reject) => {
+        const r = indexedDB.open('done.first-device-setup.v1');
+        r.onerror = () => reject(r.error);
+        r.onsuccess = () => {
+          const db = r.result,
+            tx = db.transaction('attempt'),
+            row = tx.objectStore('attempt').get('current');
+          tx.oncomplete = () => {
+            db.close();
+            resolve(row.result ? 'present' : null);
+          };
+        };
+      }),
+  );
+
+async function run(
+  page: Page,
+  context: BrowserContext,
+  outcome: 'commit' | 'refuse' | 'fresh',
+  networkSessions: boolean,
+  note: (s: string) => void,
+) {
+  await openApp(page);
+  await protectApp(page);
+  await openMenuSection(page, 'Sync');
+  await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
+  await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
+  await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Create your passkey' })).toBeVisible();
+  note('at passkey ' + (await screen(page)));
+  const removal = await context.newPage();
+  if (outcome === 'refuse') await removal.addInitScript(refuseRemovalMarker);
+  await removal.goto('/remove/local');
+  await removal.getByRole('button', { name: 'Continue to confirmation' }).click();
+  await removal.getByLabel('Type REMOVE to confirm').fill('REMOVE');
+  await removal.getByRole('button', { name: 'Remove local data', exact: true }).click();
+  if (outcome === 'refuse')
+    await expect(removal.getByRole('button', { name: 'Retry removal' })).toBeVisible();
+  else await expect(removal.getByRole('heading', { name: 'Removed from this device' })).toBeVisible();
+  if (outcome === 'fresh') {
+    await removal.getByRole('button', { name: 'Start fresh', exact: true }).click();
+    await expect(removal.locator('.shell')).toBeVisible();
+  }
+  note('removal tab ' + (await screen(removal)));
+  await expect(page.locator('[role=alert]')).toHaveText(stopped);
+  await page.waitForTimeout(1000);
+  note('setup tab final ' + (await screen(page)));
+  note('attempt row ' + JSON.stringify(await attempt(removal)));
+  await removal.close();
+  await page.reload();
+  await page.waitForTimeout(3000);
+  note('setup tab after reload ' + (await screen(page)));
+}
+
+for (const outcome of ['commit', 'refuse', 'fresh'] as const)
+  test(`reload after ${outcome}`, async ({ page, context }, info) => {
+    const service = await startService(info.outputPath('service'), undefined, true, true);
+    const lines: string[] = [];
+    const note = (s: string) => lines.push(s);
+    try {
+      await run(page, context, outcome, true, note);
+    } finally {
+      await stopService(service);
+      console.log(`---- reload after ${outcome}\n` + lines.join('\n'));
+    }
+  });
+
+test('page-hosted setup (networkSessions false), plain removal', async ({ page, context }, info) => {
+  const service = await startService(info.outputPath('service'), undefined, false, false);
+  const lines: string[] = [];
+  const note = (s: string) => lines.push(s);
+  try {
+    await run(page, context, 'commit', false, note);
+  } finally {
+    await stopService(service);
+    console.log('---- page-hosted\n' + lines.join('\n'));
+  }
+});

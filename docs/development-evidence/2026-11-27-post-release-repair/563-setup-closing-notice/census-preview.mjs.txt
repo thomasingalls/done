@@ -1,0 +1,5 @@
+// Phase 563: write the would-be runtime census to scratch for review; the repository is not written.
+import { writeFileSync } from 'node:fs';
+const root = '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/';
+const { census } = await import(root + 'scripts/account-crypto-prep/census.mjs');
+writeFileSync(process.argv[2], JSON.stringify(census(root), null, 2) + '\n');

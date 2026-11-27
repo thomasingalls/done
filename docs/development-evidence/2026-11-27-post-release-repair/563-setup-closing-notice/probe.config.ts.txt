@@ -1,0 +1,10 @@
+import { defineConfig } from '@playwright/test';
+export default defineConfig({
+  testDir: '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/563/probes',
+  outputDir: '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/563/probe-out',
+  timeout: 120000,
+  workers: 1,
+  retries: 0,
+  reporter: [['list']],
+  use: { baseURL: 'http://localhost:53221', viewport: { width: 1280, height: 900 } },
+});

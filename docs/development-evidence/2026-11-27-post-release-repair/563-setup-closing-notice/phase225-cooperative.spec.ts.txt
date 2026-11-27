@@ -1,0 +1,82 @@
+// Phase 563 probe at 700087b07 (phase 225, setup coordinator still in the page): the cooperative
+// retirement notice with no suppression anywhere.
+import { test, expect, type Page } from '@playwright/test';
+import {
+  openApp,
+  protectApp,
+  openMenuSection,
+} from '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/563/at225/test/geometry/openApp.ts';
+import {
+  startService,
+  stopService,
+} from '/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/563/at225/test/packaged-account/server.ts';
+
+function pageProbe() {
+  const Real = BroadcastChannel;
+  (window as unknown as { BroadcastChannel: unknown }).BroadcastChannel = class extends Real {
+    constructor(n: string) {
+      super(n);
+      if (n === 'done/slot-lifecycle')
+        this.addEventListener('message', (e) =>
+          console.log('[P] bc message', JSON.stringify((e as MessageEvent).data)),
+        );
+    }
+  };
+}
+const screen = async (page: Page) =>
+  JSON.stringify({
+    h1: await page.locator('h1').allTextContents(),
+    status: await page.locator('[role=status]').allTextContents(),
+    alert: await page.locator('[role=alert]').allTextContents(),
+    workers: page.workers().map((w) => w.url().match(/(\w+)\.worker/)?.[1]),
+  });
+
+for (const mode of ['held-begin', 'idle-passkey'] as const)
+  test(`phase 225 cooperative ${mode}`, async ({ page, context }, info) => {
+    const service = await startService(info.outputPath('service'), undefined, true, true);
+    const lines: string[] = [];
+    const t0 = Date.now();
+    const note = (s: string) => lines.push(`${Date.now() - t0}ms ${s}`);
+    page.on('console', (m) => {
+      if (m.text().startsWith('[P]')) note(m.text());
+    });
+    let release!: () => void, received!: () => void;
+    const held = new Promise<void>((yes) => (release = yes));
+    const waiting = new Promise<void>((yes) => (received = yes));
+    try {
+      await page.addInitScript(pageProbe);
+      await openApp(page);
+      await protectApp(page);
+      if (mode === 'held-begin')
+        await page.route('**/__account-setup/begin', async (route) => {
+          const response = await route.fetch();
+          received();
+          await held;
+          await route.fulfill({ response }).catch(() => {});
+        });
+      await openMenuSection(page, 'Sync');
+      await page.getByRole('button', { name: 'Set up sync', exact: true }).click();
+      await page.getByRole('button', { name: 'Sync this list', exact: true }).click();
+      await page.getByRole('button', { name: 'Continue to passkey setup', exact: true }).click();
+      if (mode === 'held-begin') await waiting;
+      else await expect(page.getByRole('heading', { name: 'Create your passkey' })).toBeVisible();
+      note('before removal ' + (await screen(page)));
+      const removal = await context.newPage();
+      await removal.goto('/remove/local');
+      await removal.getByRole('button', { name: 'Continue to confirmation' }).click();
+      await removal.getByLabel('Type REMOVE to confirm').fill('REMOVE');
+      await removal.getByRole('button', { name: 'Remove local data', exact: true }).click();
+      await expect(removal.getByRole('heading', { name: 'Removed from this device' })).toBeVisible();
+      note('removed ' + (await screen(page)));
+      release();
+      for (let i = 0; i < 3; i++) {
+        await page.waitForTimeout(5000);
+        note(`t+${(i + 1) * 5}s ` + (await screen(page)));
+      }
+      await removal.close();
+    } finally {
+      release();
+      await stopService(service);
+      console.log(`---- 225 ${mode}\n` + lines.join('\n'));
+    }
+  });

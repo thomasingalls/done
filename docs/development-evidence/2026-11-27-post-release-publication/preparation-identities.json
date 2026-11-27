@@ -1,0 +1,38 @@
+{
+  "released": {
+    "digest": "0d1d7882771df6c0d528c803ef470ef2f86eddd5e23118c83942592f2df0d2f6",
+    "matches": [
+      "accountOwner.worker-f-s6JFJu.js",
+      "deviceDataRemoval-B_YgL_7Z.js",
+      "enrollmentOwner.worker-CwmHsqZw.js",
+      "firstDeviceOwner.worker-DY-2uJEA.js",
+      "localOwner.worker--nKi5zok.js",
+      "localStartup.worker-CoCHifiJ.js",
+      "recoveryOwner.worker-4_kmjzAJ.js"
+    ]
+  },
+  "candidate": {
+    "digest": "2072f04522293c59e2854b8bf2e0d888497fb1c6e7b13b301625879690e39a83",
+    "matches": [
+      "accountOwner.worker-BRLSavQ-.js",
+      "deviceDataRemoval-u_p1PRCR.js",
+      "enrollmentOwner.worker-DUsrPL2H.js",
+      "firstDeviceOwner.worker-vsW_UoyN.js",
+      "localOwner.worker-CjLdxPwr.js",
+      "localStartup.worker-DaEZXaM5.js",
+      "recoveryOwner.worker-TjDFziKM.js"
+    ]
+  },
+  "reader": {
+    "digest": "c4e013b0cedee365d3f66ad4b79260c7daa69313144e344bdb5b3da7cbcaa213",
+    "matches": [
+      "accountOwner.worker-CRQFe0v6.js",
+      "deviceDataRemoval-uPbN84D4.js",
+      "enrollmentOwner.worker-zs9zNQBc.js",
+      "firstDeviceOwner.worker-BmFBVpC9.js",
+      "localOwner.worker-CVI3GLG0.js",
+      "localStartup.worker-B9i6Jzru.js",
+      "recoveryOwner.worker-BgeQ_WKm.js"
+    ]
+  }
+}

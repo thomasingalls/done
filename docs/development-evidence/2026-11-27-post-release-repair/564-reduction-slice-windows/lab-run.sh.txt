@@ -1,0 +1,16 @@
+#!/bin/sh
+# lab565 one run: run.sh <name> <snapshot> <network> <watch_ms> [qos] [knobs-json] [build]
+# qos: "bg" runs the whole harness under taskpolicy -b (E-cores, phone-speed emulation)
+set -u
+S=/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/565i
+W=/Users/thomasingalls/Code/done/.claude/worktrees/agent-a758f6dbf7501f911
+NAME=$1; SNAP=$2; NET=$3; WATCH=$4; QOS=${5:-fg}; KNOBS=${6:-'{}'}; BUILD=${7:-$S/build-lab2}
+cd "$W" || exit 2
+PRE=""
+[ "$QOS" = "bg" ] && PRE="taskpolicy -b"
+echo "start $NAME $(date +%T) foreign: $(pgrep -fl 'vitest|playwright test' | grep -v lab565 | wc -l)" >> $S/runs/index.txt
+LAB_ADDRESS=::1 LAB_SERVICE_PORT=54624 LAB_SNAPSHOT=$S/lab/$SNAP LAB_BUILD=$BUILD \
+LAB_OUT=$S/runs/$NAME.json LAB_NETWORK=$NET LAB_WATCH_MS=$WATCH LAB_MENU=1 LAB_STOP_AFTER_COMPLETE=${LAB_STOP:-1} \
+LAB_KNOBS="$KNOBS" LAB_TIMEOUT_MS=$((WATCH + 600000)) \
+timeout $(( (WATCH + 900000) / 1000 )) $PRE pnpm exec playwright test --config scripts/performance/lab565/playwright.config.ts > $S/runs/$NAME.log 2>&1
+echo "end $NAME $(date +%T) exit $?" >> $S/runs/index.txt

@@ -18,6 +18,7 @@ export function createNativeFirstDeviceController(
     () => context.browser,
   );
   user.subscribe(context.publish);
+  user.onRetired(context.slotRetired);
   let inspected = false;
   return {
     snapshot: () => {

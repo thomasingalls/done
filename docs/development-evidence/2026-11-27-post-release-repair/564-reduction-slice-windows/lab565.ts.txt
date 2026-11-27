@@ -1,0 +1,20 @@
+/** TEMPORARY lab instrumentation (565i). Never committed. */
+type Store = { events: Record<string, unknown>[]; dropped: number; knobs: Record<string, unknown> };
+const g = globalThis as unknown as { __lab565?: Store };
+export const labStore = (): Store => (g.__lab565 ??= { events: [], dropped: 0, knobs: {} });
+export function lab(kind: string, data: Record<string, unknown> = {}, stack = false) {
+  const store = labStore();
+  if (store.events.length >= 60000) {
+    store.dropped++;
+    return;
+  }
+  let trace: string | undefined;
+  if (stack) {
+    const limit = Error.stackTraceLimit;
+    Error.stackTraceLimit = 25;
+    trace = new Error().stack?.split('\n').slice(2).join('\n');
+    Error.stackTraceLimit = limit;
+  }
+  store.events.push({ t: Date.now(), kind, ...data, ...(trace ? { stack: trace } : {}) });
+}
+export const labKnob = (name: string): unknown => labStore().knobs[name];

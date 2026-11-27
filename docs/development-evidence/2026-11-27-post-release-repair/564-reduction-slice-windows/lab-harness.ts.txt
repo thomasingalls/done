@@ -1,0 +1,274 @@
+/** TEMPORARY lab 565i: open a seeded unreduced device through the packaged application, take it
+ * off the network, leave it idle and record every automatic reduction attempt (Worker-side lab log).
+ *
+ * Env: LAB_SNAPSHOT (abs snapshot dir with service/A/seed.json), LAB_BUILD, LAB_OUT (abs json path),
+ * LAB_PORT (default 54611; must match the seed), LAB_NETWORK offline-before|offline-after|stopped|online,
+ * LAB_WATCH_MS (bounded watch after the shell, default 600000), LAB_JSFLAGS (renderer V8 flags),
+ * LAB_KNOBS (JSON put into the Worker's lab knobs as soon as it exists), LAB_MENU=1 opens the Data
+ * section so the History status is on screen, LAB_STOP_AFTER_COMPLETE=1 ends the watch early.
+ */
+import { test, expect, chromium, type Page, type Worker } from '@playwright/test';
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { startDevelopmentAccountServer } from '../../../account-service/development-server.ts';
+import { startAccountGateway } from '../../lib/account-gateway.mjs';
+import { restoreAuthenticator, type SavedCredential } from '../../../test/packaged-account/devices';
+
+const port = Number(process.env['LAB_PORT'] ?? 54611);
+const address = process.env['LAB_ADDRESS'] ?? '127.0.0.1';
+const servicePort = Number(process.env['LAB_SERVICE_PORT'] ?? port + 3);
+const origin = `http://localhost:${port}`;
+type Actor = { role: 'A' | 'B'; joined: boolean; code: string; credentials: SavedCredential[] };
+
+const foreign = () => {
+  try {
+    return execFileSync('pgrep', ['-fl', 'vitest|playwright test'], { encoding: 'utf8', timeout: 5000 })
+      .split('\n')
+      .filter((l) => l.trim() && !l.includes('lab565'))
+      .map((l) => l.slice(0, 140));
+  } catch {
+    return [];
+  }
+};
+
+test.setTimeout(Number(process.env['LAB_TIMEOUT_MS'] ?? 40 * 60 * 1000));
+test('lab565 idle reduction watch', async () => {
+  const snapshot = process.env['LAB_SNAPSHOT']!,
+    build = process.env['LAB_BUILD']!,
+    out = process.env['LAB_OUT']!,
+    network = process.env['LAB_NETWORK'] ?? 'offline-before',
+    watchMs = Number(process.env['LAB_WATCH_MS'] ?? 600000),
+    knobs = JSON.parse(process.env['LAB_KNOBS'] ?? '{}') as Record<string, unknown>,
+    jsFlags = process.env['LAB_JSFLAGS'];
+  for (const p of [servicePort])
+    try {
+      execFileSync('lsof', ['-nP', `-iTCP:${p}`, '-sTCP:LISTEN'], { timeout: 5000 });
+      throw Error('lab port busy: ' + p);
+    } catch (e) {
+      if ((e as Error).message.startsWith('lab port busy')) throw e;
+    }
+  const work = join(dirname(out), 'work-' + Date.now());
+  mkdirSync(work, { recursive: true });
+  for (const name of ['service', 'A', 'seed.json'])
+    cpSync(join(snapshot, name), join(work, name), { recursive: true });
+  const actor = (JSON.parse(readFileSync(join(work, 'seed.json'), 'utf8')) as { actors: Actor[] })
+    .actors.find((a) => a.role === 'A')!;
+  const backend = await startDevelopmentAccountServer({
+    directory: join(work, 'service'),
+    port: servicePort,
+    policy: { origin, rpId: 'localhost' },
+    networkSessions: true,
+    membershipContinuation: true,
+  });
+  let app: { close(): Promise<void> } | undefined = await startAccountGateway({
+    port,
+    origin,
+    servicePort,
+    packaged: build,
+    address,
+  });
+  let backendOpen = true;
+  const context = await chromium.launchPersistentContext(join(work, 'A'), {
+    headless: true,
+    baseURL: origin,
+    timezoneId: 'Europe/Paris',
+    viewport: { width: 1280, height: 900 },
+    args: [
+      ...(jsFlags ? [`--js-flags=${jsFlags}`] : []),
+      ...(address === '::1' ? ['--host-resolver-rules=MAP localhost [::1]'] : []),
+    ],
+  });
+  const result: Record<string, unknown> = {
+    snapshot,
+    network,
+    jsFlags: jsFlags ?? null,
+    knobs,
+    foreignAtStart: foreign(),
+  };
+  const ui: { t: number; text: string }[] = [];
+  const errors: string[] = [];
+  let events: Record<string, unknown>[] = [];
+  let ownerWorker: Worker | undefined;
+  const workerUrls: string[] = [];
+  try {
+    context.setDefaultTimeout(60000);
+    const page = context.pages()[0] ?? (await context.newPage());
+    page.on('pageerror', (e) => errors.push('pageerror ' + e.message));
+    page.on('console', (m) => {
+      if (m.type() === 'error') errors.push('console ' + m.text().slice(0, 300));
+    });
+    page.on('worker', (w) => {
+      workerUrls.push(w.url());
+      void w
+        .evaluate((k) => {
+          const g = globalThis as unknown as { __lab565?: { knobs: Record<string, unknown> } };
+          g.__lab565 ??= { events: [], dropped: 0, knobs: {} } as never;
+          Object.assign(g.__lab565!.knobs, k);
+          (g.__lab565 as unknown as { events: unknown[] }).events.push({
+            t: Date.now(),
+            kind: 'knobs-set',
+            knobs: JSON.stringify(k),
+          });
+        }, knobs)
+        .catch((e) => errors.push('knobs ' + String(e)));
+    });
+    await restoreAuthenticator(page, actor.credentials);
+    await page.goto('/');
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => undefined));
+    await page.reload();
+    await page.waitForFunction(() => !!navigator.serviceWorker.controller, undefined, {
+      timeout: 30000,
+    });
+    const codeEntry = page.getByLabel('Unlock code', { exact: true });
+    const saved = page.getByRole('button', { name: /^Unlock Device owner/ });
+    await expect
+      .poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible()), {
+        timeout: 60000,
+      })
+      .toBe(true);
+    if (!(await codeEntry.isVisible())) await saved.click();
+    await codeEntry.fill(actor.code);
+    if (network === 'offline-before') await context.setOffline(true);
+    const clickAt = Date.now();
+    await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
+    await page.locator('.shell').waitFor({ state: 'visible', timeout: 300000 });
+    const shellAt = Date.now();
+    result['clickAt'] = clickAt;
+    result['shellAt'] = shellAt;
+    result['openMs'] = shellAt - clickAt;
+    if (network === 'offline-after') await context.setOffline(true);
+    if (network === 'stopped') {
+      await app!.close();
+      app = undefined;
+      await backend.close();
+      backendOpen = false;
+    }
+    result['networkChangedAt'] = Date.now();
+    await page.evaluate(() => {
+      const g = globalThis as unknown as { __banner?: { t: number; on: boolean }[] };
+      g.__banner = [];
+      let on = false;
+      const check = () => {
+        const now = (document.body.innerText || '').includes('Input is waiting to be saved.');
+        if (now !== on) {
+          on = now;
+          g.__banner!.push({ t: Date.now(), on });
+        }
+      };
+      new MutationObserver(check).observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+      });
+      check();
+    });
+    const sends = (process.env['LAB_SENDS'] ?? '')
+      .split(',')
+      .filter(Boolean)
+      .map(Number)
+      .sort((a, b) => a - b);
+    const sent: { at: number; text: string }[] = [];
+    result['sends'] = sent;
+    if (process.env['LAB_MENU'] === '1') {
+      const trigger = page.getByRole('button', { name: 'Open menu' });
+      if (await trigger.isVisible()) await trigger.click();
+      await page.locator('details[data-menu-section="Data"] > summary').click();
+      result['menuOpenedAt'] = Date.now();
+    }
+    const read = async () => {
+      if (!ownerWorker) {
+        for (const w of page.workers()) {
+          const has = await w
+            .evaluate(() => {
+              const g = globalThis as unknown as { __lab565?: { events: unknown[] } };
+              return (g.__lab565?.events ?? []).some(
+                (e) => (e as { kind: string }).kind !== 'knobs-set',
+              );
+            })
+            .catch(() => false);
+          if (has) {
+            ownerWorker = w;
+            result['ownerWorkerUrl'] = w.url();
+            break;
+          }
+        }
+        if (!ownerWorker) return;
+      }
+      const next = (await ownerWorker
+        .evaluate((from) => {
+          const g = globalThis as unknown as {
+            __lab565?: { events: unknown[]; dropped: number };
+          };
+          return g.__lab565
+            ? { events: g.__lab565.events.slice(from), dropped: g.__lab565.dropped }
+            : { events: [], dropped: 0 };
+        }, events.length)
+        .catch(() => ({ events: [], dropped: 0 }))) as {
+        events: Record<string, unknown>[];
+        dropped: number;
+      };
+      events = events.concat(next.events);
+      result['dropped'] = next.dropped;
+    };
+    const deadline = Date.now() + watchMs;
+    let lastText = '';
+    let lastPartial = Date.now();
+    while (Date.now() < deadline) {
+      if (sends.length && Date.now() - shellAt >= sends[0]!) {
+        sends.shift();
+        const text = 'lab card ' + (sent.length + 1);
+        const compose = page.locator(
+          '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+        );
+        const at = Date.now();
+        await compose.fill(text);
+        await compose.press('Enter');
+        sent.push({ at, text });
+      }
+      const text = await page
+        .locator('section[aria-label="History on this device"] p.menu-note')
+        .first()
+        .textContent({ timeout: 2000 })
+        .catch(() => '(not shown)');
+      if (text !== lastText) {
+        ui.push({ t: Date.now(), text: text ?? '' });
+        lastText = text ?? '';
+      }
+      await read();
+      if (Date.now() - lastPartial > 20000) {
+        lastPartial = Date.now();
+        writeFileSync(out + '.partial', JSON.stringify({ ...result, ui, events }));
+      }
+      if (
+        process.env['LAB_STOP_AFTER_COMPLETE'] === '1' &&
+        events.some((e) => e['kind'] === 'progress' && e['stage'] === 'complete')
+      ) {
+        await new Promise((r) => setTimeout(r, 3000));
+        await read();
+        break;
+      }
+      await new Promise((r) => setTimeout(r, sends.length ? 500 : 2000));
+    }
+    await read();
+    result['endedAt'] = Date.now();
+    result['banner'] = await page
+      .evaluate(() => (globalThis as unknown as { __banner?: unknown[] }).__banner ?? [])
+      .catch(() => []);
+    result['foreignAtEnd'] = foreign();
+    result['retentionPage'] = await page
+      .evaluate(() => document.querySelector('section[aria-label="History on this device"]')?.textContent ?? null)
+      .catch(() => null);
+  } finally {
+    result['ui'] = ui;
+    result['workerUrls'] = workerUrls;
+    result['errors'] = errors.slice(0, 200);
+    result['events'] = events;
+    mkdirSync(dirname(out), { recursive: true });
+    writeFileSync(out, JSON.stringify(result, null, 1));
+    await context.close().catch(() => {});
+    await app?.close().catch(() => {});
+    if (backendOpen) await backend.close().catch(() => {});
+    rmSync(work, { recursive: true, force: true });
+  }
+});

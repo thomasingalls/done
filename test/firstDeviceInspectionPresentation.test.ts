@@ -13,6 +13,7 @@ function native() {
   const user = {
     getSnapshot: () => state,
     subscribe: vi.fn(),
+    onRetired: vi.fn(),
     visitableSteps: () => [],
     hasRecoveryDisplay: () => false,
     inspect: vi.fn(() => new Promise<void>((r) => (release = r))),

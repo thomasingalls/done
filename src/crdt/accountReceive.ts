@@ -19,6 +19,7 @@ import {
   createAutomaticLocalRetention,
   localRetentionInterrupted,
   watchLocalRetentionHold,
+  type LocalRetentionMeasure,
 } from './automaticLocalRetention';
 import { createLedgerHints } from './ledgerHints';
 import {
@@ -1123,6 +1124,7 @@ async function openAccountReceiveOwner(
     expectedRevision: number,
     progress?: RetentionProgressSink,
     protectedUntil?: number,
+    measure?: LocalRetentionMeasure,
   ) => {
     await carrier.flushJournal();
     const prepared = await runBaselineShadow(
@@ -1150,6 +1152,7 @@ async function openAccountReceiveOwner(
           checkRetained,
           progress,
           protectedUntil,
+          measure,
         );
       },
       true, // Read-only preparation yields to queued storage; final exchange below remains exclusive.
@@ -4095,6 +4098,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                           expectedRevision: number,
                           progress?: RetentionProgressSink,
                           protectedUntil?: number,
+                          measure?: LocalRetentionMeasure,
                         ) => {
                           if (removingLocalHistory)
                             return { kind: 'skipped' as const, reason: 'already-preparing' };
@@ -4109,6 +4113,7 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
                               expectedRevision,
                               progress,
                               protectedUntil,
+                              measure,
                             ).finally(() => measureLedgerWork('retentionPreparation', preparing));
                             if (prepared.kind !== 'prepared-removal') return prepared;
                             try {
@@ -4218,6 +4223,10 @@ async function composeReceivingWorkspace<W extends AccountWorkspacePort>(
           // Any device: a running attempt may skip routine idle receive polls, whose first
           // storage job would cancel it. Hints still receive at once (bounded by the owner).
           deferPolls: stable(),
+          // The sync lanes run only through a ready gate. Offline, signed out or under storage
+          // pressure no routine job can cut a slice, so none is planned to end early (phase 564).
+          routineSync:
+            gate() === 'ready' && !networkLoginNeedsPasskey(options.networkLogin?.getSnapshot()),
           hint: localRetentionHint(),
         }),
         remove: result.removeLocalHistory,

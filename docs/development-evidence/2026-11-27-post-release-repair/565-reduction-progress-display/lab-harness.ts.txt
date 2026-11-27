@@ -1,0 +1,164 @@
+/** TEMPORARY phase 565 lab (scratch only, never in the repository): open the 2,000-position seed
+ * through the packaged application, open Data, and record what the History panel says, every
+ * 200 ms, from unlock until the reduction finishes. Adapted from phase 564's lab-harness.ts.txt.
+ *
+ * Env: LAB_SNAPSHOT, LAB_BUILD, LAB_OUT (abs paths), LAB_NETWORK offline-before|online,
+ * LAB_WATCH_MS (bounded watch after the shell).
+ */
+import {
+  test,
+  expect,
+  chromium,
+} from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/node_modules/@playwright/test/index.mjs';
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { execFileSync } from 'node:child_process';
+import { startDevelopmentAccountServer } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/account-service/development-server.ts';
+import { startAccountGateway } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/scripts/lib/account-gateway.mjs';
+import { restoreAuthenticator } from '/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1/test/packaged-account/devices.ts';
+
+const port = 54611;
+const address = '::1';
+const servicePort = 54624;
+const origin = `http://localhost:${port}`;
+
+const foreign = () => {
+  try {
+    return execFileSync('pgrep', ['-fl', 'vitest|playwright test'], { encoding: 'utf8', timeout: 5000 })
+      .split('\n')
+      .filter((l) => l.trim() && !l.includes('565/lab'))
+      .map((l) => l.slice(0, 140));
+  } catch {
+    return [];
+  }
+};
+
+test.setTimeout(15 * 60 * 1000);
+test('phase 565 History panel transcript', async () => {
+  const snapshot = process.env['LAB_SNAPSHOT'];
+  const build = process.env['LAB_BUILD'];
+  const out = process.env['LAB_OUT'];
+  const network = process.env['LAB_NETWORK'] ?? 'offline-before';
+  const watchMs = Number(process.env['LAB_WATCH_MS'] ?? 300000);
+  for (const p of [port, servicePort])
+    try {
+      execFileSync('lsof', ['-nP', `-iTCP:${p}`, '-sTCP:LISTEN'], { timeout: 5000 });
+      throw Error('lab port busy: ' + p);
+    } catch (e) {
+      if ((e as Error).message.startsWith('lab port busy')) throw e;
+    }
+  const work = join(dirname(out), 'work-' + Date.now());
+  mkdirSync(work, { recursive: true });
+  for (const name of ['service', 'A', 'seed.json'])
+    cpSync(join(snapshot, name), join(work, name), { recursive: true });
+  const actor = JSON.parse(readFileSync(join(work, 'seed.json'), 'utf8')).actors.find(
+    (a) => a.role === 'A',
+  );
+  const backend = await startDevelopmentAccountServer({
+    directory: join(work, 'service'),
+    port: servicePort,
+    policy: { origin, rpId: 'localhost' },
+    networkSessions: true,
+    membershipContinuation: true,
+  });
+  const app = await startAccountGateway({ port, origin, servicePort, packaged: build, address });
+  const context = await chromium.launchPersistentContext(join(work, 'A'), {
+    headless: true,
+    baseURL: origin,
+    timezoneId: 'Europe/Paris',
+    viewport: { width: 1280, height: 900 },
+    args: ['--host-resolver-rules=MAP localhost [::1]'],
+  });
+  const result = { snapshot, network, foreignAtStart: foreign() };
+  const ui = [];
+  const errors = [];
+  try {
+    context.setDefaultTimeout(60000);
+    const page = context.pages()[0] ?? (await context.newPage());
+    page.on('pageerror', (e) => errors.push('pageerror ' + e.message));
+    page.on('console', (m) => {
+      if (m.type() === 'error') errors.push('console ' + m.text().slice(0, 300));
+    });
+    await restoreAuthenticator(page, actor.credentials);
+    await page.goto('/');
+    await page.evaluate(() => navigator.serviceWorker.ready.then(() => undefined));
+    await page.reload();
+    await page.waitForFunction(() => !!navigator.serviceWorker.controller, undefined, {
+      timeout: 30000,
+    });
+    const codeEntry = page.getByLabel('Unlock code', { exact: true });
+    const saved = page.getByRole('button', { name: /^Unlock Device owner/ });
+    await expect
+      .poll(async () => (await codeEntry.isVisible()) || (await saved.isVisible()), {
+        timeout: 60000,
+      })
+      .toBe(true);
+    if (!(await codeEntry.isVisible())) await saved.click();
+    await codeEntry.fill(actor.code);
+    if (network === 'offline-before') await context.setOffline(true);
+    const clickAt = Date.now();
+    await page.getByRole('button', { name: 'Confirm code and unlock with passkey' }).click();
+    await page.locator('.shell').waitFor({ state: 'visible', timeout: 300000 });
+    const shellAt = Date.now();
+    result['openMs'] = shellAt - clickAt;
+    const trigger = page.getByRole('button', { name: 'Open menu' });
+    if (await trigger.isVisible()) await trigger.click();
+    await page.locator('details[data-menu-section="Data"] > summary').click();
+    const deadline = Date.now() + watchMs;
+    let last = '';
+    let finishedAt = 0;
+    while (Date.now() < deadline) {
+      const seen = await page
+        .evaluate(() => {
+          const section = document.querySelector('section[aria-label="History on this device"]');
+          if (!section) return '(not shown)';
+          const lines = [...section.querySelectorAll('p')].map(
+            (p) => (p.getAttribute('role') ? '[status] ' : '') + p.textContent,
+          );
+          const bar = section.querySelector('progress');
+          if (bar)
+            lines.push(
+              `<progress aria-label="${bar.getAttribute('aria-label')}"` +
+                (bar.hasAttribute('value')
+                  ? ` value="${bar.getAttribute('value')}" max="${bar.getAttribute('max')}"`
+                  : '') +
+                '>',
+            );
+          const button = section.querySelector('button');
+          if (button) lines.push(`<button>${button.textContent}</button>`);
+          return lines.join('\n');
+        })
+        .catch(() => '(page busy)');
+      if (seen !== last) {
+        ui.push({ t: Date.now() - shellAt, text: seen });
+        last = seen;
+      }
+      // LAB_CUT_AT: add one card once checking passes this percentage (input cuts the pass).
+      const cutAt = Number(process.env['LAB_CUT_AT'] ?? 0);
+      const shown = /(\d+)% checked/.exec(seen);
+      if (cutAt && !result['cutAt'] && shown && Number(shown[1]) >= cutAt) {
+        result['cutAt'] = Date.now() - shellAt;
+        const compose = page.locator(
+          '.day-panel[data-active="true"] .collection[data-section="done"] .compose-field',
+        );
+        await compose.fill('lab card');
+        await compose.press('Enter');
+        ui.push({ t: Date.now() - shellAt, text: '(harness: added one card)' });
+      }
+      if (!finishedAt && seen.includes('was reduced at')) finishedAt = Date.now();
+      if (finishedAt && Date.now() - finishedAt > 3000) break;
+      await new Promise((r) => setTimeout(r, 200));
+    }
+    result['endedAfterMs'] = Date.now() - shellAt;
+    result['foreignAtEnd'] = foreign();
+  } finally {
+    result['ui'] = ui;
+    result['errors'] = errors.slice(0, 200);
+    mkdirSync(dirname(out), { recursive: true });
+    writeFileSync(out, JSON.stringify(result, null, 1));
+    await context.close().catch(() => {});
+    await app.close().catch(() => {});
+    await backend.close().catch(() => {});
+    rmSync(work, { recursive: true, force: true });
+  }
+});

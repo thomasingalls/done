@@ -1,0 +1,144 @@
+"""Phase 565 recorded mutations: apply one deliberately wrong variant to a product file, run the
+named unit file(s), record which cases fail, restore the file and check its hash. Run from the
+worktree root. Writes mutations-result.json next to this script."""
+import hashlib, json, os, subprocess, sys, time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+EST = ['test/reductionEstimate.test.ts']
+PANEL = ['test/localHistoryMaintenance.test.tsx']
+PLUMB = ['test/retentionSliceBudget.test.ts', '-t', 'phase 565']
+RP = 'src/crdt/reductionProgress.ts'
+M = [
+    ('E1', 'a fresh rate assumed before any is measured', RP,
+     [('const rate = overall === undefined ? undefined : Math.min(overall, recent ?? overall);',
+       'const rate = overall === undefined ? 0.05 : Math.min(overall, recent ?? overall);')], EST),
+    ('E2', 'a fixed two-second slice instead of the measured one', RP,
+     [('const slice = facts.sliceMs ?? facts.budgetMs;', 'const slice = 2000;')], EST),
+    ('E3', "each pass's re-read saved results counted again as progress", RP,
+     [('      next.saved = progress.saved;\n', '      next.saved = (facts.saved ?? 0) + progress.saved;\n')], EST),
+    ('E4', "a cut pass's unsaved results kept as if saved", RP,
+     [('    next.lostFrom = Math.max(facts.lostFrom ?? 0, facts.held);\n    next.held = facts.saved;\n',
+       '    next.saved = facts.held;\n')], EST),
+    ('E5', 'a cut silently falls back, with no redo shown', RP,
+     [('    next.lostFrom = Math.max(facts.lostFrom ?? 0, facts.held);\n', '')], EST),
+    ('E6', 'a stale checkpoint silently starts lower', RP,
+     [('        next.lostFrom = Math.max(facts.lostFrom ?? 0, facts.saved);\n', '        void 0;\n')], EST),
+    ('E7', 'new history not announced', RP,
+     [('        next.grew = true;\n', '        void 0;\n')], EST),
+    ('E8', '100% shown before a full check completed', RP,
+     [('Math.min(99, Math.floor((100 * n) / Math.max(total, 1)))',
+       'Math.min(100, Math.floor((100 * n) / Math.max(total, 1)))')], EST),
+    ('E9', 'an overrun reaches zero instead of being re-estimated', RP,
+     [('    return Math.max(REDUCTION_MIN_LEFT_MS, elapsed / 2);\n', '    return 0;\n')], EST),
+    ('E10', 'a plain countdown clamped at zero, without re-estimate or floor', RP,
+     [('stepLeft = length - elapsed > 0 ? length - elapsed : overran(elapsed);',
+       'stepLeft = Math.max(0, length - elapsed);'),
+      ('const floor = (v: number) => Math.max(REDUCTION_MIN_LEFT_MS / 10, v);',
+       'const floor = (v: number) => v;')], EST),
+    ('E11', 'steps 2 and 3 not allowed for before they are seen', RP,
+     [('const build = read === undefined ? undefined : Math.max(read, facts.buildMs ?? 0);',
+       'const build = read === undefined ? undefined : (facts.buildMs ?? 0);'),
+      ('const store = read === undefined ? undefined : Math.max(read, facts.storeMs ?? 0);',
+       'const store = read === undefined ? undefined : (facts.storeMs ?? 0);')], EST),
+    ('E12', 'the mean wait between passes instead of the shortest', RP,
+     [('next.waitMs = Math.min(prior.waitMs ?? wait, wait);',
+       'next.waitMs = Math.round(((prior.waitMs ?? wait) + wait) / 2);')], EST),
+    ('E13', 'waits always claimed as included', RP,
+     [("passesAhead === 0 || !facts.online ? 'none' : wait !== undefined ? 'included' : 'excluded',",
+       "passesAhead === 0 ? 'none' : 'included',")], EST),
+    ('E14', 'minutes rounded to the nearest instead of up', RP,
+     [('const minutes = Math.ceil(milliseconds / 60_000);', 'const minutes = Math.round(milliseconds / 60_000);')], EST),
+    ('E15', 'zero seconds shown for a tiny estimate (no ten-second floor)', RP,
+     [('const tens = Math.max(10, Math.ceil((milliseconds > 0 ? milliseconds : 0) / 10_000) * 10);',
+       'const tens = Math.ceil((milliseconds > 0 ? milliseconds : 0) / 10_000) * 10;')], EST),
+    ('E27', "a pass's measured budget discarded when it ends", RP,
+     [("  const next = without(facts, 'freshSince', 'countedAt', 'fresh');\n",
+       "  const next = without(facts, 'freshSince', 'countedAt', 'fresh', 'budgetMs');\n")], EST),
+    ('E28', "the active pass's own first results always counted in the rate", RP,
+     [('    !facts.freshOf &&\n', '')], EST),
+    ('E16', "stage 'current' put in step 1", RP,
+     [("return stage === 'building' || stage === 'coverage' || stage === 'current'",
+       "return stage === 'building' || stage === 'coverage'")], EST),
+    ('E17', 'unknown fields accepted across the Worker boundary', RP,
+     [("if (typeof key !== 'string' || !known.has(key) || !('value' in d[key]!)) return;",
+       "if (typeof key !== 'string' || !('value' in d[key]!)) return;")], EST),
+    ('E18', "this reduction's overall fresh rate only (no recent window)", RP,
+     [('const rate = overall === undefined ? undefined : Math.min(overall, recent ?? overall);',
+       'const rate = recent === undefined ? overall : overall;')], EST),
+    ('E19', "the last pass's fresh rate alone (no decaying window)", RP,
+     [('next.lastFreshMs = Math.round(0.9 * (facts.lastFreshMs ?? 0)) + live;', 'next.lastFreshMs = live;'),
+      ('next.lastFreshOf = Math.round(0.9 * (facts.lastFreshOf ?? 0)) + facts.fresh!;',
+       'next.lastFreshOf = facts.fresh!;')], EST),
+    ('P1', 'the panel ignores the reduction facts (pre-565 behaviour)', 'src/ui/LocalHistoryMaintenance.tsx',
+     [('      ? reductionMessages(status, facts, Date.now())\n', '      ? (void reductionMessages, undefined)\n')], PANEL),
+    ('P2', 'reduction facts replace a refusal sentence', 'src/ui/LocalHistoryMaintenance.tsx',
+     [('      : !refused(status) &&\n', '      : (void refused, true) &&\n')], PANEL),
+    ('P3', "singular units not used ('about 1 minutes')", 'src/ui/LocalHistoryMaintenance.tsx',
+     [('  const unit = d.unit.slice(0, -1);\n', '  const unit = d.unit;\n')], PANEL),
+    ('P4', 'both figures stated even when they read alike', 'src/ui/LocalHistoryMaintenance.tsx',
+     [("      : e.step === 3 || (e.allLeft !== undefined && aboutTime(e.allLeft) === aboutTime(e.stepLeft))\n",
+       "      : e.step === 3\n")], PANEL),
+    ('W1', 'the scheduler folds no count-only report', 'src/crdt/automaticLocalRetention.ts',
+     [('      reduction = recordReductionProgress(reduction!, next, at);\n',
+       '      if (next.held === undefined) reduction = recordReductionProgress(reduction!, next, at);\n')], PLUMB),
+    ('W2', "the owner does not hand the journal's counts to the sink", 'src/crdt/contentStore.ts',
+     [("reportRetentionProgress(progress, { stage: 'verifying', ...counts }),", 'void counts,')], PLUMB),
+    ('W3', 'the Worker boundary does not admit the facts', 'src/crdt/accountSessionBridge.ts',
+     [("fields(input, ['phase', 'reason'], ['progress', 'detail', 'reduction']);",
+       "fields(input, ['phase', 'reason'], ['progress', 'detail']);")], PLUMB),
+    ('W4', 'the journal reports no imported results', 'src/crdt/retentionPreparation.ts',
+     [('      imported = entries.size;\n', '      imported = 0;\n')], PLUMB),
+    ('W5', 'no exact counts when a pass ends early (a cut loses unreported results silently)', 'src/crdt/contentStore.ts',
+     [('    } catch (cause) {\n      reportFinalCounts();\n', '    } catch (cause) {\n')], PLUMB),
+    ('W6', 'no exact counts when checking gives way to building (the total is stale)', 'src/crdt/contentStore.ts',
+     [("            if (value.stage !== 'verifying') reportFinalCounts();\n", '')], PLUMB),
+]
+
+def sha(path):
+    return hashlib.sha256(open(path, 'rb').read()).hexdigest()
+
+def run(spec, tag):
+    out = os.path.join(HERE, f'vitest-{tag}.json')
+    if os.path.exists(out):
+        os.remove(out)
+    cmd = ['pnpm', 'exec', 'vitest', 'run', *spec, '--reporter=json', f'--outputFile={out}']
+    began = time.time()
+    try:
+        subprocess.run(cmd, capture_output=True, text=True, timeout=400)
+    except subprocess.TimeoutExpired:
+        return {'error': 'timeout'}
+    if not os.path.exists(out):
+        return {'error': 'no report (probably a compile failure)', 'seconds': round(time.time() - began, 1)}
+    data = json.load(open(out))
+    cases = [a for r in data['testResults'] for a in r['assertionResults']]
+    return {
+        'seconds': round(time.time() - began, 1),
+        'passed': sum(1 for a in cases if a['status'] == 'passed'),
+        'failed': [a['fullName'] for a in cases if a['status'] == 'failed'],
+        'skipped': sum(1 for a in cases if a['status'] in ('skipped', 'pending', 'todo')),
+    }
+
+results = {'asBuilt': {}, 'mutations': []}
+for name, spec in [('estimator', EST), ('panel', PANEL), ('plumbing', PLUMB)]:
+    results['asBuilt'][name] = run(spec, 'built-' + name)
+for mid, desc, path, edits, spec in M:
+    original = open(path).read()
+    digest = sha(path)
+    mutated = original
+    for old, new in edits:
+        if mutated.count(old) != 1:
+            print('cannot apply', mid, repr(old[:60]), file=sys.stderr)
+            sys.exit(2)
+        mutated = mutated.replace(old, new)
+    try:
+        open(path, 'w').write(mutated)
+        r = run(spec, mid)
+    finally:
+        open(path, 'w').write(original)
+    restored = sha(path) == digest
+    results['mutations'].append({'id': mid, 'variant': desc, 'file': path, 'tests': spec[0],
+                                 'restored': restored, **r})
+    print(mid, 'failed', len(r.get('failed', [])), r.get('error', ''), 'restored', restored, flush=True)
+    if not restored:
+        sys.exit(3)
+json.dump(results, open(os.path.join(HERE, 'mutations-result.json'), 'w'), indent=1)
