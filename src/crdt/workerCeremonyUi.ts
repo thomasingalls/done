@@ -68,6 +68,9 @@ export interface NativeCeremonyUiContext {
   runBackground<T>(operation: () => Promise<T>): Promise<T>;
   beforeAccountOpen(cleanup: () => Promise<void>): void;
   saveRecoveryRoute(route: RecoveryRoute): Promise<void>;
+  /** The controller closed itself because another context retired its slot. Its last published
+   * snapshot is final; `closed` settles with its own cleanup. */
+  slotRetired(closed: Promise<void>): void;
   data: unknown;
 }
 /** Trusted composition only. Commands/projections belong to fixed native factories, never messages. */
@@ -130,6 +133,34 @@ export async function startWorkerCeremonyUi(
     presentation.publish(user.snapshot());
   };
   const flush = presentation.flush;
+  let retiring = false;
+  // The Window shows the final snapshot, then drains this owner through its ordinary close, which
+  // still ends with the cleanup `setupClosed`. This notice is not that acknowledgement.
+  const slotRetired = (closed: Promise<void>) => {
+    void closed.catch(() => {});
+    if (retiring || closing || stop.signal.aborted || phase.handingOff) return;
+    retiring = true;
+    publish();
+    void (async () => {
+      try {
+        await flush();
+      } catch {
+        return; // A failed presentation already closes this owner.
+      }
+      const ok = await closed.then(
+        () => true,
+        () => false,
+      );
+      if (closing || stop.signal.aborted) return;
+      self.postMessage({
+        v: 1,
+        kind: 'setupClosed',
+        owner: m.ticket.incarnation,
+        ok,
+        cause: 'slot-retired',
+      });
+    })();
+  };
   const beforeOpening = new Set<() => Promise<void>>();
   const execution: NativeCeremonyWorkspaceExecution = {
     async open(options, _access, joined = false) {
@@ -311,6 +342,7 @@ export async function startWorkerCeremonyUi(
       await control.request('recoveryRoute', route);
       live();
     },
+    slotRetired,
     data: m.data,
   });
   root.beforeRelease(async () => {

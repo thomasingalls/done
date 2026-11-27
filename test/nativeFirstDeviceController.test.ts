@@ -3,8 +3,39 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { createNativeFirstDeviceController } from '../src/crdt/workerFirstDeviceSetup';
 import { startWorkerCeremonyUi, type NativeCeremonyUiContext } from '../src/crdt/workerCeremonyUi';
-const mocked = vi.hoisted(() => ({ create: vi.fn() }));
+import { createWorkerChannel } from '../src/crdt/workerChannel';
+const mocked = vi.hoisted(() => ({
+  create: vi.fn(),
+  root: undefined as
+    | undefined
+    | {
+        signal: AbortSignal;
+        assertCurrent(): void;
+        beforeRelease(cleanup: () => unknown): void;
+        run<T>(operation: () => Promise<T>): Promise<T>;
+        close: ReturnType<typeof vi.fn>;
+      },
+}));
 vi.mock('../src/account/firstDeviceSetup', () => ({ createFirstDeviceCoordinator: mocked.create }));
+// Fixed native lifetime stand-ins for the shared host; the channels and presentation are real.
+vi.mock('../src/crdt/ceremonyWorkerLifetime', () => ({
+  openCeremonyWorkerLifetime: async () => mocked.root,
+}));
+vi.mock('../src/crdt/workerCeremonyPhase', () => ({
+  createWorkerCeremonyPhase: () => ({
+    handingOff: false,
+    run: <T>(operation: () => Promise<T>) => operation(),
+    yieldToAccount: async () => {},
+  }),
+}));
+vi.mock('../src/crdt/ceremonyEnvironment', () => ({
+  installCeremonyEnvironment: () => ({ activity: {}, events: new EventTarget() }),
+}));
+vi.mock('../src/crdt/protectionEnvironment', () => ({ installProtectionEnvironment: () => {} }));
+vi.mock('../src/crdt/workerAccountHandoff', () => ({
+  createWorkerAccountHandoff: () => ({ prepare: vi.fn(), accept: vi.fn() }),
+}));
+vi.mock('../src/crdt/ceremonyBrowser', () => ({ createWorkerCeremonyBrowser: () => ({}) }));
 beforeEach(() => mocked.create.mockReset());
 afterEach(() => vi.unstubAllGlobals());
 function fixture() {
@@ -27,6 +58,7 @@ function fixture() {
     visitableSteps: () => [],
     hasRecoveryDisplay: () => false,
     subscribe: vi.fn(),
+    onRetired: vi.fn(),
     close: vi.fn(async () => {}),
   };
   mocked.create.mockReturnValue(user);
@@ -38,6 +70,7 @@ function fixture() {
     browser: {},
     signal: new AbortController().signal,
     publish: vi.fn(),
+    slotRetired: vi.fn(),
     data: undefined,
   } as unknown as NativeCeremonyUiContext;
   return { user, context, controller: createNativeFirstDeviceController(context) };
@@ -54,6 +87,10 @@ it('passes the original coordinator exact native configuration execution browser
   expect(args[4]()).toBe(f.context.browser);
   expect(f.user.subscribe).toHaveBeenCalledExactlyOnceWith(f.context.publish);
   expect(f.controller.close).toBe(f.user.close);
+});
+it('reports the coordinator closing itself on slot retirement to the shared host', () => {
+  const f = fixture();
+  expect(f.user.onRetired).toHaveBeenCalledExactlyOnceWith(f.context.slotRetired);
 });
 it('ordinary Start stays tracked through the original asynchronous idle barrier', async () => {
   const f = fixture();
@@ -118,4 +155,121 @@ it('shared native host refuses Window execution without reading its bootstrap or
   ).rejects.toThrow('Native public setup required');
   expect(read).not.toHaveBeenCalled();
   expect(factory).not.toHaveBeenCalled();
+});
+async function host() {
+  const incarnation = 'ab'.repeat(16),
+    events: string[] = [],
+    posted: Record<string, unknown>[] = [],
+    states: Record<string, unknown>[] = [];
+  let gate: Promise<void> = Promise.resolve();
+  mocked.root = {
+    signal: new AbortController().signal,
+    assertCurrent: () => {},
+    beforeRelease: () => {},
+    run: (operation) => operation(),
+    close: vi.fn(async () => {
+      events.push('root closed');
+    }),
+  };
+  vi.stubGlobal('self', {
+    postMessage: (message: Record<string, unknown>) => {
+      events.push(`posted ${String(message['kind'])}`);
+      posted.push(message);
+    },
+  });
+  const root = new MessageChannel(),
+    ui = new MessageChannel();
+  // The Window's side of both channels: it acknowledges each display only after `gate`.
+  const windowControl = createWorkerChannel(
+    ui.port1,
+    incarnation,
+    {
+      setupState: async (input) => {
+        await gate;
+        states.push(input as Record<string, unknown>);
+        events.push(`display ${(input as { state: string }).state}`);
+      },
+    },
+    () => {},
+  );
+  const windowRoot = createWorkerChannel(root.port1, incarnation, {}, () => {});
+  let display = 'checking',
+    context!: NativeCeremonyUiContext;
+  const controller = { snapshot: () => ({ state: display }), command: vi.fn(), close: vi.fn() };
+  await startWorkerCeremonyUi(
+    {
+      ticket: { v: 1, slotId: 'local', incarnation, windowClient: 'window' },
+      port: root.port2,
+      controlPort: ui.port2,
+      config: { networkSessions: true, pin: {} as never },
+      activity: { visibility: 'visible', online: true },
+    },
+    (value) => {
+      context = value;
+      return controller;
+    },
+  );
+  await vi.waitFor(() => expect(states).toHaveLength(1));
+  return {
+    incarnation,
+    events,
+    posted,
+    states,
+    controller,
+    windowRoot,
+    windowControl,
+    get context() {
+      return context;
+    },
+    show(value: string) {
+      display = value;
+    },
+    hold() {
+      let release!: () => void;
+      gate = new Promise((resolve) => (release = resolve));
+      return release;
+    },
+  };
+}
+it('a slot-retired controller is reported with its cause only after the Window acknowledged its final display, and the host waits for the Window to drain it', async () => {
+  const h = await host();
+  h.show('final');
+  const release = h.hold();
+  h.controller.close.mockResolvedValue(undefined);
+  h.context.slotRetired(Promise.resolve());
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  expect(h.posted.filter((m) => m['kind'] === 'setupClosed')).toEqual([]);
+  release();
+  await vi.waitFor(() => expect(h.posted.some((m) => m['kind'] === 'setupClosed')).toBe(true));
+  expect(h.posted.at(-1)).toEqual({
+    v: 1,
+    kind: 'setupClosed',
+    owner: h.incarnation,
+    ok: true,
+    cause: 'slot-retired',
+  });
+  expect(h.events.indexOf('display final')).toBeGreaterThan(-1);
+  expect(h.events.indexOf('display final')).toBeLessThan(h.events.indexOf('posted setupClosed'));
+  // The notice is not the cleanup acknowledgement: the host is still open until the Window drains.
+  expect(mocked.root!.close).not.toHaveBeenCalled();
+  h.windowRoot.close();
+  await vi.waitFor(() => expect(mocked.root!.close).toHaveBeenCalledOnce());
+  await vi.waitFor(() =>
+    expect(h.posted.filter((m) => m['kind'] === 'setupClosed').at(-1)).toEqual({
+      v: 1,
+      kind: 'setupClosed',
+      owner: h.incarnation,
+      ok: true,
+    }),
+  );
+  h.windowControl.close();
+});
+it('a slot-retired controller whose own cleanup failed reports failure with its cause', async () => {
+  const h = await host();
+  h.show('final');
+  h.context.slotRetired(Promise.reject(Error('native cleanup failed')));
+  await vi.waitFor(() => expect(h.posted.some((m) => m['kind'] === 'setupClosed')).toBe(true));
+  expect(h.posted.at(-1)).toMatchObject({ kind: 'setupClosed', ok: false, cause: 'slot-retired' });
+  h.windowRoot.close();
+  h.windowControl.close();
 });

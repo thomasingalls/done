@@ -8,7 +8,8 @@ import {
 } from '../account/setupWorkerProtocol';
 import type { NetworkLoginView } from '../crdt/accountSessionBridge';
 import { createWindowCeremonyUi, type WindowCeremonySession } from './windowCeremonyUi';
-type UiSetup = Omit<FirstDeviceSetup, 'networkLogin'> & {
+// Retirement reaches the page as the Worker's final display and `setupClosed` cause, not a hook.
+type UiSetup = Omit<FirstDeviceSetup, 'networkLogin' | 'onRetired'> & {
   readonly networkLogin: NetworkLoginView | undefined;
 };
 interface Display {

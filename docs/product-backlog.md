@@ -330,6 +330,11 @@ a stall. What it left:
 CI has not passed since 2026-10-16. Phase 561's investigation and CI history are in its
 [record](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/README.md); phase
 562 repaired the unit case that timed out.
+Hosted CI's unit step passed on `913b58642` on 2026-11-27 (run 45978159042), so
+that repair held on the runner; the job was still cut by its 20-minute limit. The same day the
+operator decided the shape of the repair, which is not built: the checks that the work is tracked
+properly stay in the blocking job, and product correctness, unit and integration tests move to a
+parallel job and are run locally before a release ([decision](decisions.md)).
 
 - **CI-UNIT-BUDGET — one unit case kept CI red from 2026-11-07; the cases next to it are held.**
   *decision.* `test/inboundReceiptViews.test.ts` › "all72 admitted extents expose exact positions,
@@ -374,7 +379,8 @@ CI has not passed since 2026-10-16. Phase 561's investigation and CI history are
 - **CI-JOB-LIMIT — the 20-minute job limit now cuts the packaged browser step.** *decision.* Fixing
   CI-UNIT-BUDGET alone will not make CI green. Since the last green run (2026-10-16) the
   onboarding, account compatibility and device-removal browser step has grown from 35 tests
-  (2.8 min) to 54, of which the 13 `enrollment-*` cases take about 430 s, and "Check native sync
+  (2.8 min) to 54 (56 since phase 563, whose two new cases take about 4 s each here), of which the
+  13 `enrollment-*` cases take about 430 s, and "Check native sync
   authority" (2026-10-23) added 2.2 to 4.4 min before it. Of the runs since then that passed the unit
   step, 16 ended at `timeout-minutes: 20`, 11 of them inside that browser step, and one was
   superseded. The fastest, 43072060806 on 2026-11-11, had passed 41 of 54 browser tests at the cut;
@@ -402,31 +408,37 @@ CI has not passed since 2026-10-16. Phase 561's investigation and CI history are
   stay on the page. First step: profile-only counters of every crossing per user action (key
   press, card move, open, send, receive, one reduction slice) with payload sizes, in the style of
   phase 554's timers, before any structure is proposed.
-- **SETUP-CLOSING-STUCK — removing local data in another tab leaves a sync setup on its closing
-  screen.** *decision.* A person starts Set up sync and reaches "Create your passkey", then in a
-  second tab goes to Remove local data and confirms. The setup tab shows "Locking and finishing
-  storage operations…" and "Your writing stays in this workspace." with only Back, and stays there
-  (the investigation watched it for 90 s with its Worker alive); only Back or a reload ends it. The second sentence is
-  wrong, since the writing was just removed. Nothing is lost or recreated: the saved setup attempt
-  stays empty before and after a reload, a reload shows "This workspace was removed" (or "Add
-  protection before sync" after Start fresh), and Back goes to "Choose an account". It has happened
-  since phase 226 (`98de7c303`, 2026-10-29), which moved setup's coordinator into the
-  `firstDeviceOwner` Worker. The coordinator hears the retirement notice in its own realm, closes
-  itself and publishes that closing screen (`src/account/firstDeviceSetup.ts`), but nothing tells the
-  page's owner (`src/ui/windowCeremonyUi.ts`) to finish: the Worker stays alive, no `setupClosed`
-  arrives and the Worker-lifetime watch does not fire. Phase 230 (`baa252694`) noted this
-  "forever-closing presentation" for recovery and fixed only the path where the page does drain.
-  Device enrollment and recovery use the same `windowCeremonyUi` and were not tried. A repair would
-  tell the page when the Worker's coordinator has closed itself and show a terminal "removed" or
-  "retired" alert; the failure text "The passkey step could not finish… Your saved setup and writing
-  have been kept" would be wrong after a removal too. Likely files: `src/crdt/workerCeremonyUi.ts`,
-  `src/account/firstDeviceSetup.ts`, `src/ui/windowCeremonyUi.ts`, `src/ui/firstDeviceSetupWorker.ts`
-  and the test. `test/packaged-account/removal-regressions.spec.ts` › "a delayed registration reply
-  cannot recreate removed setup" fails on it in both variants and is left failing. Its simulation of
-  a coordinator that misses the cooperative notice suppresses `BroadcastChannel('done/slot-lifecycle')`
-  in the page only, while the coordinator now listens in the Worker, so the simulation has to be
-  redefined, which changes what the test proves. From phase 561's
-  [investigation](development-evidence/2026-11-11-release-repair/561-stale-browser-tests/investigation.md).
+- **SETUP-CLOSING-STUCK — resolved in phase 563.** A sync setup whose local data was removed in
+  another tab stayed on "Locking and finishing storage operations…" with "Your writing stays in this
+  workspace." until Back or a reload. Phase 563
+  ([record](development-evidence/2026-11-27-post-release-repair/563-setup-closing-notice/README.md))
+  ends it at once on the unlock screen with the alert "Sync setup stopped because another tab began
+  removing this device’s data. Reload this tab to continue.", and the setup Worker ends. The
+  coordinator itself now shows that notice when its slot is retired, which also covers the
+  page-hosted mode (`networkSessions` false), and the Worker tells the page with a `cause` on its
+  `setupClosed` message. Corrected dating: the stuck screen dates from `42ebdd12d` (2026-10-15),
+  which added the coordinator's retirement close in the same commit as `removal-regressions.spec.ts`;
+  that spec suppressed the notice from the start, so the cooperative path never ran in it. Phase 226
+  (`98de7c303`) only stopped the page-side suppression from hiding it. Phase 563 ran phase 225
+  (`700087b07`, coordinator still in the page: the same stuck screen) and inferred `42ebdd12d` from
+  its identical close. What remains: in the page-hosted mode the final screen's unlock form does
+  nothing, because the retired coordinator accepts no command; a reload continues, as the notice
+  says. In the Worker host a code entered there starts a fresh inspect-only Worker (phase 230). Not
+  run on a hosted runner or under CI's Node 24.22.1.
+- **CEREMONY-STALE-AFTER-REMOVAL — device enrollment and recovery stay on a live screen after their
+  local data is removed in another tab.** Seen in phase 563's probes
+  ([record](development-evidence/2026-11-27-post-release-repair/563-setup-closing-notice/README.md)),
+  one run each, not changed. With enrollment open on the existing device at "Connect devices" (the
+  invitation link, Copy link, Check again), and with recovery open on a new device at its review step
+  ("Recover on this device and disconnect the previous devices"), removing that slot's local data in
+  another tab completed ("Removed from this device"). The ceremony tab kept its live screen for the
+  20 s watched. Its next action (Check again; the Recover button) was refused, and the alert showed
+  the raw reason code "device-data-removal" instead of a sentence. Neither ceremony Worker listens on
+  `done/slot-lifecycle` (by the code, and no retirement message reached either Worker in the probe),
+  so neither closes itself the way setup does. Nothing was recreated: no database reappeared and the
+  removal page still said "Removed from this device". Recovery at its earlier save-code step had
+  nothing to remove yet ("Nothing to remove"). Not tried: enrollment's new-device side, other steps,
+  and reloading either tab.
 
 ### The affected account
 

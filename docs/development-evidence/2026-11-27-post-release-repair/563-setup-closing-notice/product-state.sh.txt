@@ -1,0 +1,9 @@
+#!/bin/zsh
+# usage: product-state.sh base|fixed  — writes the five product files from HEAD or from the saved fixed copies.
+set -e
+R=/Users/thomasingalls/Code/done/.claude/worktrees/l2-onboarding-863db1
+S=/private/tmp/claude-502/-Users-thomasingalls-Code-done--claude-worktrees-l2-onboarding-863db1/a2cb3ea1-c2ed-4b47-b08f-dc5bb9d6e506/scratchpad/563
+for f in src/account/firstDeviceSetup.ts src/crdt/workerCeremonyUi.ts src/crdt/workerFirstDeviceSetup.ts src/ui/firstDeviceSetupWorker.ts src/ui/windowCeremonyUi.ts; do
+  if [[ $1 == base ]]; then git -C $R show HEAD:$f > $R/$f; else cp $S/fixed-product/$f $R/$f; fi
+done
+git -C $R diff --stat -- src

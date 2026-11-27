@@ -59,6 +59,9 @@ export {
 } from './setupProgress';
 class SetupNotice extends Error {}
 class SetupContinuationNotice extends Error {}
+/** Final notice when another context retires this slot. True whatever its removal then does. */
+export const setupStoppedByRemoval =
+  'Sync setup stopped because another tab began removing this device’s data. Reload this tab to continue.';
 
 export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
   input: SetupConfig,
@@ -93,6 +96,8 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
   let closing: Promise<void> | undefined;
   let unsubscribe: (() => void) | undefined;
   let ownsSetup = false;
+  let retiredBySlot = false;
+  const retirementListeners = new Set<(closed: Promise<void>) => void>();
   let takeHandoffCode = takeInitialCode;
   let promotionOpening: PromotionOpening | undefined;
   let approval: { invoke: () => void; reject: (error: Error) => void } | undefined;
@@ -628,20 +633,25 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
     deviceEnrollment = undefined;
     retireEditors();
     // This owner is retired immediately; only its successor may accept another code.
-    state = {
-      kind: 'working',
-      message: 'Locking and finishing storage operations…',
-      returning: saved?.connected === true,
-      accountName: lastName ?? saved?.name,
-      accountId: saved?.view?.stage === 'credential-confirmed' ? saved.view.accountId : undefined,
-    };
+    // A slot retirement ends on its final notice at once, never on the closing screen.
+    state = retiredBySlot
+      ? { kind: 'unlock', error: setupStoppedByRemoval }
+      : {
+          kind: 'working',
+          message: 'Locking and finishing storage operations…',
+          returning: saved?.connected === true,
+          accountName: lastName ?? saved?.name,
+          accountId:
+            saved?.view?.stage === 'credential-confirmed' ? saved.view.accountId : undefined,
+        };
     for (const listener of listeners) listener();
     unsubscribe?.();
     closing = Promise.resolve().then(async () => {
       try {
         await operation;
         await workspace?.close();
-        if (saved?.connected && lastName && saved.name !== lastName) {
+        // A retired slot's metadata belongs to its removal; do not write a display name into it.
+        if (!retiredBySlot && saved?.connected && lastName && saved.name !== lastName) {
           saved = { ...saved, name: lastName };
           await progress(saved);
         }
@@ -658,11 +668,22 @@ export function createFirstDeviceCoordinator<W extends SetupWorkspacePort>(
     return closing;
   };
   const stopRetirement = onSlotRetirement(slotId, () => {
-    void close().catch(() => {});
+    if (closing) return;
+    retiredBySlot = true;
+    const closed = close();
+    void closed.catch(() => {});
+    for (const listener of [...retirementListeners]) listener(closed);
   });
   return {
     get networkLogin() {
       return networkLogin;
+    },
+    /** Hears this owner close itself on slot retirement; `closed` settles with its cleanup. */
+    onRetired(listener: (closed: Promise<void>) => void) {
+      retirementListeners.add(listener);
+      return () => {
+        retirementListeners.delete(listener);
+      };
     },
     getSnapshot: () => state,
     whenIdle: () => operation ?? Promise.resolve(),

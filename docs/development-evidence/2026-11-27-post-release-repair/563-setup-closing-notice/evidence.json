@@ -1,0 +1,245 @@
+{
+  "phase": 563,
+  "date": "2026-11-27",
+  "base": {
+    "description": "main's merge commit of PR #65, served in production since 2026-11-27; clean tree",
+    "commit": "5d0705fc251848b2a50aa12b51c95450e9d330b9",
+    "tree": "7a770006bf39e5288c3158cf36ad6da0aeba284c"
+  },
+  "requested": [
+    "coordinating session, 2026-11-27: repair SETUP-CLOSING-STUCK; confirm the mechanism first; terminal alert, nothing recreated, page told through the existing ceremony message path; establish enrollment and recovery by a real test; cooperative and missed-notice cases, plain and after Start fresh, each failing before and passing after; records for phase 563",
+    "coordinating session, 2026-11-27, after the first report (operator's decisions): new copy on the cooperative path (A 'retired' and B 'removed' rejected); a named cause on the internal setupClosed message is allowed; repair both layers; mutation controls where the unfixed product passes; enrollment and recovery unchanged, recorded as CEREMONY-STALE-AFTER-REMOVAL; corrected dating in the record and backlog; full unit suite not run per phase (operator, 2026-11-27)"
+  ],
+  "productCodeChanged": true,
+  "newProductStrings": [
+    {
+      "text": "Sync setup stopped because another tab began removing this device’s data. Reload this tab to continue.",
+      "definedIn": "src/account/firstDeviceSetup.ts, setupStoppedByRemoval",
+      "shownAs": "the [role=alert] on the setup unlock screen after a retirement-caused close",
+      "changeFromRequest": "apostrophe U+2019 instead of the request's straight one, matching the app's copy"
+    }
+  ],
+  "rewordedProductStrings": [],
+  "cause": {
+    "layer1": "the setup coordinator's close on a slot-retirement notice (onSlotRetirement in src/account/firstDeviceSetup.ts) published 'Locking and finishing storage operations…' and nothing after it, in either host",
+    "layer2": "in the Worker host nothing connected that close to src/crdt/workerCeremonyUi.ts or to any message to src/ui/windowCeremonyUi.ts: the Worker stayed alive, no setupClosed, the page mirrored the closing screen",
+    "observed": "setup-mechanism-base.log.gz: retire message in the Worker about 20 ms after Remove, closing screen about 35 ms later, Worker alive and no setupClosed for 20 s, held-reply and idle-passkey modes"
+  },
+  "dating": {
+    "correctsPhase561": "phase 561 dated the defect from phase 226 (98de7c303); phase 226 only stopped the test's page-side suppression from hiding it",
+    "introduced": "42ebdd12d (2026-10-15), coordinator retirement close added with removal-regressions.spec.ts, which suppressed the notice from the start",
+    "ran": "700087b07 (phase 225, coordinator in the page): same stuck screen for 15 s in both modes (phase225-cooperative.log.gz)",
+    "inferred": "42ebdd12d itself: same close body; its parent has no onSlotRetirement; not run"
+  },
+  "repair": {
+    "src/account/firstDeviceSetup.ts": "a retirement-caused close sets { kind: 'unlock', error: setupStoppedByRemoval } at once instead of the closing screen; skips the remembered-name write into setup metadata; reports itself once through onRetired(listener) with its closing promise; an explicit close is unchanged",
+    "src/crdt/workerFirstDeviceSetup.ts": "wires user.onRetired to context.slotRetired",
+    "src/crdt/workerCeremonyUi.ts": "slotRetired(closed): publish, flush the acknowledged setupState, then post { v: 1, kind: 'setupClosed', owner, ok, cause: 'slot-retired' } with ok the coordinator's close result; native lifetime stays open; not while handing off",
+    "src/ui/windowCeremonyUi.ts": "on setupClosed with cause 'slot-retired' and ok true (not handing off): drain keeping the final display, then failed = true so only a new command starts a fresh inspect-only Worker (phase 230); not treated as the cleanup acknowledgement; without the cause, or with ok false, the existing path",
+    "src/ui/firstDeviceSetupWorker.ts": "leaves onRetired out of the page owner's type"
+  },
+  "unchanged": "stored formats, service messages, limits, recorded decisions; enrollment and recovery code; the internal setupClosed message gains one optional field",
+  "reloadOutcomes": {
+    "record": "reload-outcomes.log.gz (probe reload-outcomes.spec.ts.txt), one run each, repaired build",
+    "commits": "final notice, Worker gone, attempt null; reload: 'This workspace was removed'",
+    "refusesBeforeErasure": "removal's first write refused by an injected IDBObjectStore.put failure in its tab ('Removal could not finish…'); final notice; attempt present; reload: 'Unlock your workspace', setup resumes",
+    "startFresh": "final notice, attempt null; reload: 'Add protection before sync'",
+    "pageHostedMode": "networkSessions false, no Worker: final notice, attempt null; reload: 'This workspace was removed'",
+    "finalScreenForm": "Worker host: a code entered starts a fresh inspect-only Worker; page-hosted: the form does nothing (retired coordinator accepts no command)"
+  },
+  "tests": {
+    "removal-regressions.spec.ts cooperative, plain and after Start fresh (new)": {
+      "proves": "no suppression; exact notice before and after the Worker ends; setup Worker gone from page.workers() within 5 s; attempt null; neither untrue sentence ever shown (MutationObserver from the passkey step)",
+      "unfixed": "2 failed at the alert, element not found (8.4, 9.0 s)",
+      "repaired": "2 passed (3.5, 4.0 s); whole step 3.3, 4.1 s",
+      "M2": "Worker notice removed: 2 failed at the Worker poll (expected 0, received 1)",
+      "M3": "closing display during the drain, final after: 2 failed at the recorder ['Your writing stays in this workspace.']"
+    },
+    "removal-regressions.spec.ts missed-notice, plain and after Start fresh (title kept)": {
+      "proves": "notice withheld inside the setup Worker (script prefix via page.route, service workers blocked); control withheld > 0, delivered 0, tab still 'Preparing encrypted sync…'; after release 'removed' / 'retired', no untrue sentence, attempt null",
+      "unfixed": "2 passed (3.7, 4.0 s): the durable fence works without the notice",
+      "M1": "durable fence disabled (setupProgress.ts lines 105 and 125): 2 failed at the alert, element not found (8.9, 9.5 s); probe under M1: attempt recreated, tab on 'Create your passkey' (missed-notice-probe-M1.log.gz)",
+      "repaired": "2 passed (3.6, 3.9 s); whole step 3.3, 4.1 s"
+    },
+    "test/firstDeviceSetupAccess.test.ts (3 new)": {
+      "proves": "page-hosted coordinator: final notice synchronously as the only notification, unchanged after drain and close, retired owner reaches no network, attempt unchanged; onRetired once with its close; explicit close unchanged and not reported",
+      "unfixed": "3 failed (closing screen; onRetired missing twice)",
+      "repaired": "7 of 7 in the file"
+    },
+    "test/nativeFirstDeviceController.test.ts (3 new, fixture extended)": {
+      "proves": "controller wires onRetired to slotRetired; host posts the cause only after the page acknowledged the final display, keeps its lifetime until the page closes its channel, then posts the ordinary setupClosed; ok false on failed own cleanup",
+      "unfixed": "3 failed",
+      "repaired": "8 of 8 in the file"
+    },
+    "test/windowCeremonyUi.test.ts (3 new)": {
+      "proves": "cause keeps the final display through the drain, terminates and closes, requiresUnlock true, next command starts a second Worker with no initial code (retry then command); without the cause the failure display exactly as before; cause with ok false takes the failed-cleanup path",
+      "unfixed": "1 failed (failure display replaces the final one); the two unchanged-path cases pass on both texts",
+      "repaired": "6 of 6 in the file"
+    },
+    "test/firstDeviceInspectionPresentation.test.ts (fixture only)": "fake coordinator gained onRetired: vi.fn(); 2 cases failed on the repaired product before that; no assertion changed"
+  },
+  "mutations": {
+    "record": "mutations.txt",
+    "restored": "each file restored (setupProgress.ts from HEAD; the others from the saved repaired copies) and rebuilt; git diff shows no change to setupProgress.ts and no MUTATION text under src"
+  },
+  "builds": "unfixed and mutation builds: pnpm exec vite build (tsc -b typechecks the new unit tests, which do not compile against the old product); repaired: pnpm build",
+  "enrollmentAndRecovery": {
+    "record": "ceremonies.spec.ts.txt (third-run text), ceremonies-run1/2/3.log.gz; release product; one run each",
+    "enrollmentExistingAtInvitation": "removal completed; invitation screen stayed 20 s; Check again refused, alert 'device-data-removal'",
+    "recoveryNewDeviceAtReview": "removal completed; review screen stayed 20 s; Recover refused, alert 'device-data-removal', 'Start a new recovery attempt' appeared",
+    "recoveryAtSaveCode": "'Nothing to remove'",
+    "listeners": "no retirement message reached either Worker; neither opens done/slot-lifecycle (code)",
+    "recreated": "nothing: no database reappeared; removal page still 'Removed from this device'",
+    "run1": "probe looked for the enrollment slot in the path instead of the query string and timed out without a result",
+    "changed": false,
+    "backlog": "CEREMONY-STALE-AFTER-REMOVAL"
+  },
+  "inventory": {
+    "caseDenominator": [
+      3092,
+      3095
+    ],
+    "obligations": [
+      1136,
+      1136
+    ],
+    "unresolved": [
+      561,
+      561
+    ],
+    "declarations": {
+      "test/firstDeviceSetupAccess.test.ts": [
+        4,
+        7
+      ],
+      "test/nativeFirstDeviceController.test.ts": [
+        5,
+        8
+      ],
+      "test/windowCeremonyUi.test.ts": [
+        3,
+        6
+      ],
+      "test/packaged-account/removal-regressions.spec.ts": [
+        1,
+        2
+      ]
+    },
+    "recorded": "check.mjs --record twice after previewing: first the five changed test files' hashes and the four declaration counts; then the two release-validation files' hashes; plan.mjs --record twice: against base, inventoryDigest, the firstDeviceSetupAccess row 4 to 7 expected cases, and the denominator case title 3092 to 3095",
+    "registryLines": [
+      "test/release-validation/general-tests.test.mjs: case title and count 3092 to 3095",
+      "test/release-validation/generated-tests.test.mjs: count 3092 to 3095"
+    ],
+    "manifest": "the other four changed test files stay blocked pending review of their runtime denominator"
+  },
+  "runtimeCensus": {
+    "recorded": true,
+    "changed": "only the five product sources' hashes",
+    "counts": "526 sources, 201 labels/templates, 36 groups, 15 manual entrypoints",
+    "check": "pnpm account:crypto-prep matched, 6 passed"
+  },
+  "constructionRegistry": "not affected: constructions.json and registry.json name none of the changed files",
+  "decision": "docs/decisions.md, 2026-11-27, phase 563; amends nothing; keeps phase 230's new-command rule",
+  "backlogChanged": [
+    "SETUP-CLOSING-STUCK rewritten as resolved, with corrected dating and what remains",
+    "CEREMONY-STALE-AFTER-REMOVAL added",
+    "CI-JOB-LIMIT: the step's two new cases noted"
+  ],
+  "checks": {
+    "typecheck": "pnpm typecheck and tsc -b --noEmit --force: exit 0",
+    "formatAndLint": "oxfmt --check and oxlint --react-plugin on the ten changed source and test files: pass",
+    "unitChanged": "three files: unfixed 7 failed 14 passed; repaired 21 passed",
+    "unitNeighbours": "21 files, 96 passed",
+    "packagedStep": "CI's exact command: 56 passed, none failed, 10.1 min (52 of 54 at phase 561)",
+    "accountSetup": "pnpm test:account-setup: 20 passed, 1.8 min",
+    "inventory": "check.mjs and plan.mjs pass after recording",
+    "validationInventory": "10 passed",
+    "releaseAdapters": "178 passed",
+    "accountCryptoPrep": "matched, 6 passed",
+    "ciContractChecks": "vectors:check to wasm:verify all exit 0 before these records; run again after the final build",
+    "finalBuildAndTrace": "pnpm build, the contract checks and pnpm trace:check run after these records; results in the handoff report"
+  },
+  "overlap": "overlap.log: another agent's Playwright run (scripts/performance/send-cost, worktree agent-a758f6dbf7501f911) from 13:03:01Z overlapped the last ~5 min of the packaged step and all of test:account-setup; both passed; earlier runs each preceded by a count of other Playwright, Vitest and node --test processes, all 0",
+  "decidedWithoutAsking": [
+    "apostrophe U+2019 in the new sentence",
+    "retirement-caused close skips the remembered-name metadata write",
+    "cooperative cases wait idle at 'Create your passkey'; the held reply stays with the missed-notice cases",
+    "missed-notice suppression in the setup Worker only; page-side patch removed",
+    "cause ignored while handing off, on both sides (untested path, behaviour unchanged)"
+  ],
+  "notRun": [
+    "full unit suite (operator, 2026-11-27: once before merge)",
+    "any hosted CI run"
+  ],
+  "notVerified": [
+    "Node 24.22.1",
+    "42ebdd12d run (inferred)",
+    "a natural removal refusal",
+    "enrollment's new-device side, other ceremony steps, reloading the ceremony tabs",
+    "repeat runs of the probes (one each)"
+  ],
+  "scratchCopy": "phase 225 git-archive copy, 1.1 GB with dependencies, made before the 'no more whole-tree copies' instruction, deleted after use",
+  "sourceSha256": {
+    "src/account/firstDeviceSetup.ts": "addc7af7f293ad0854254f8dcfe9b6d768168828cb360353570ae37dd8189bcc",
+    "src/crdt/workerCeremonyUi.ts": "32f23504d3d9de544212d1b328cf95f4f39de96675776206b89ac8dec759b67e",
+    "src/crdt/workerFirstDeviceSetup.ts": "1d0c8fb60a9c3f88c94c24a02bbc9d70bf8243cfdc94acece1d8d64f3e338378",
+    "src/ui/firstDeviceSetupWorker.ts": "7e330c33c9377e6055e14f410eb7df2e9e4b1a634d93e3a6fd785283140a43f0",
+    "src/ui/windowCeremonyUi.ts": "9c536f3104bec28fe64c90861e502cca1a663dbf4b4b46ff8f20c9cb7becb31d",
+    "test/packaged-account/removal-regressions.spec.ts": "63a667ce1bae58d1596f701e625a2c2b763592ae00bc2b47ef0094b9aa16768c",
+    "test/firstDeviceSetupAccess.test.ts": "54300d8a6f40d7d426d0eae3537a0c3525c11eacfc574c0c863a48e7c7e0b695",
+    "test/windowCeremonyUi.test.ts": "e7173a9d4e9e56b7ebff17cbb22d55e87ce117cf9974f7c221bc04efba35e3c8",
+    "test/nativeFirstDeviceController.test.ts": "3ea712048fa9b9ccd0690342535407c92f0387a6702563682c59ffd39e5c7b64",
+    "test/firstDeviceInspectionPresentation.test.ts": "76382bc5fb71c6b94fc25ea2cdcaad3c3e2415e70bd590cc151e120dc56d2293",
+    "test/release-validation/general-tests.test.mjs": "d2ac77f573f8bfc5fd98d35b4b749b18770376e8a590c650a8f17e1991c86d7d",
+    "test/release-validation/generated-tests.test.mjs": "99827b776f5eeb17655f6adadf5a3a0ca16dfa37f597d76a955ebc7e0b153ce6"
+  },
+  "baseSourceSha256": {
+    "src/account/firstDeviceSetup.ts": "fa5c82540a4b217b6f23f0661b3a1361e1887a5fd72f0e1f50d4929c507eff44",
+    "src/crdt/workerCeremonyUi.ts": "c31490c039ca755b319b4f83978460699ab1d0812399be454e81cd69ec4d5233",
+    "src/crdt/workerFirstDeviceSetup.ts": "507c386943b7043e524bee52687c9c11eede9c5456629e0ce27d3778b4a41f03",
+    "src/ui/firstDeviceSetupWorker.ts": "894ae5d73d5f7ddd22fc9e2f5116c132eae2be90b1568ef0421672fa43b00211",
+    "src/ui/windowCeremonyUi.ts": "ab0075e479808eaf301a9e99a26f480f692c70b55b604914cf35e3d240893d22",
+    "test/packaged-account/removal-regressions.spec.ts": "e15ca40eb07354c6d6f87f36f55541c835edfab9c4416b5402a1230477c07052",
+    "test/firstDeviceSetupAccess.test.ts": "73a2b3ba507d21e66a6d7c37bacd3eb4c3065bb724cbff45a09711a5fc652247",
+    "test/windowCeremonyUi.test.ts": "452f4d71f0769f7d69a3e829c43a058d3dd8a6fd8024d5dd1e16191a8bbf02d9",
+    "test/nativeFirstDeviceController.test.ts": "75a71bbb97189c93bd57aab0c1bd95c1e19ed9f8a9a7a7be684a5a687cb9de70",
+    "test/firstDeviceInspectionPresentation.test.ts": "78655f579441153967251e36f9ab63d07ab3568a49e304da5770cd093aba7812",
+    "test/release-validation/general-tests.test.mjs": "79776ee90f046fd6d2914ee1419968a0487b37d0642f1c306593aa4da6dff9a1",
+    "test/release-validation/generated-tests.test.mjs": "a3a7e18060d87d897d616d518ac41e1285f1f9764d25a760f1deaac9b825aa17"
+  },
+  "probeSha256": {
+    "census-preview.mjs.txt": "6041dcf3d33e552339f185cf5b95d350baf0ad41fb1c7e0925af6041e725f6cd",
+    "ceremonies.spec.ts.txt": "cfbef56bd5090fc215a7a7b5cf230a0169ce085da610e8ea404853a23e6f3f4e",
+    "inventory-preview.mjs.txt": "5087a00ee19f2d8f52b44767577ef6c6608e0ebbecd263e5fe2df10024493078",
+    "manifest-preview.mjs.txt": "0dabe47355e4240e569afc6510172cc5d77175e6b265afa403dc2427ceddc016",
+    "missed-notice-probe.spec.ts.txt": "917826eadad1bb37a23630d3bbcddd584b990dd2e3c018485207c0b907f41af9",
+    "phase225-cooperative.spec.ts.txt": "bdab3893683c19c282456d3dcb7bc16b50aca985b731c1e105b1566388be0af2",
+    "phase225-probe.config.ts.txt": "a3aec897e3cf33ba501b0ff889d454d181af10f01a6cc6b9d562267bd00e6185",
+    "probe.config.ts.txt": "9466c64919af51225733603f2de69d3486743df983787c45c01ac26ad6f49101",
+    "product-state.sh.txt": "2e9bc6c3dc52dff7b5189f513039f736a83fb30f96bff3f6c84510eb472547a7",
+    "reload-outcomes.spec.ts.txt": "90b88f0983289aac2eb2b8c8d10b84374307a16321afb01623b237f7f8115903",
+    "setup-mechanism.spec.ts.txt": "4089cc8e43e73455a25263a6f3fba0fd7c60c5580def1080a24b875f55eabf8a"
+  },
+  "deployed": false,
+  "coordinatorReview": {
+    "by": "coordinating session, 2026-11-27",
+    "independentControl": "page branch for cause 'slot-retired' made never true in src/ui/windowCeremonyUi.ts: test/windowCeremonyUi.test.ts fails its retirement case, the other 5 pass; file restored",
+    "unitFiles": {
+      "files": 9,
+      "passed": 48,
+      "failed": 0
+    },
+    "browser": {
+      "spec": "test/packaged-account/removal-regressions.spec.ts",
+      "passed": 4,
+      "failed": 0,
+      "seconds": 15.2,
+      "overlap": "another session's Playwright lab run was active"
+    },
+    "notRepeated": "the whole packaged step, pnpm test:account-setup, mutations M1 to M3, reload outcomes, probes",
+    "fullUnit": "not run; operator's decision of 2026-11-27 that it runs once before merge",
+    "readNotTested": "after a retirement, ok:false or a failed page drain shows the existing failure display, whose 'Your writing has been kept' is untrue after a committed removal",
+    "corrected": "decisions entry attributed the copy, message field and scope to the operator; they were the coordinating session's, and the sentence awaits the operator's review",
+    "newSentenceReviewedByOperator": false
+  }
+}

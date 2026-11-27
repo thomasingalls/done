@@ -131,7 +131,7 @@ function createWindowCeremonyIncarnation<T>(
     if (closed) throw Error('Setup closed');
     if (poisoned) throw poisoned;
   };
-  const drain = () => {
+  const drain = (keepDisplay = false) => {
     if (closing) return closing;
     let lastName: string | undefined;
     try {
@@ -148,7 +148,7 @@ function createWindowCeremonyIncarnation<T>(
     stopConfig();
     stopBrowser();
     retire();
-    state = options.closing;
+    if (!keepDisplay) state = options.closing;
     changed();
     const request =
       control && !control.closed
@@ -180,6 +180,24 @@ function createWindowCeremonyIncarnation<T>(
         if (explicitlyClosed) return;
         failed = true;
         state = options.failure(false, terminalTransition);
+        changed();
+      },
+      (cause) => {
+        if (explicitlyClosed) return;
+        poisoned = cause;
+        state = options.failure(true);
+        changed();
+      },
+    );
+  };
+  // The Worker's controller closed itself on slot retirement after its final display was
+  // acknowledged. Keep that display through the ordinary drain; a new command renews (phase 230).
+  const end = () => {
+    if (closed || needsReboot || poisoned) return;
+    void drain(true).then(
+      () => {
+        if (explicitlyClosed) return;
+        failed = true;
         changed();
       },
       (cause) => {
@@ -378,6 +396,12 @@ function createWindowCeremonyIncarnation<T>(
           ['setupClosed', 'setupPreparationClosed'].includes(v.kind) &&
           typeof v.ok === 'boolean'
         ) {
+          // Not the cleanup acknowledgement: that still follows our drain. A failed own close
+          // takes the ordinary path below.
+          if (v.kind === 'setupClosed' && v.cause === 'slot-retired' && v.ok) {
+            if (!handingOff) end();
+            return;
+          }
           acknowledged(v.ok);
           if (!handingOff || !v.ok) fail();
         }

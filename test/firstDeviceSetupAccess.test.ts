@@ -4,6 +4,18 @@ import { IDBFactory, IDBKeyRange } from 'fake-indexeddb';
 import { beginLocalGenesis, listLocalWorkspaces } from '../src/crdt/localGenesis';
 import { createFirstDeviceSetup } from '../src/account/firstDeviceSetup';
 import { setupProgress, type SetupConfig } from '../src/account/setupProgress';
+const retirement = vi.hoisted(() => ({ listeners: new Map<() => void, string>() }));
+// Deliver the cooperative slot-retirement notice directly; the BroadcastChannel port is separate.
+vi.mock('../src/crdt/writeSession', async (actual) => ({
+  ...(await actual<typeof import('../src/crdt/writeSession')>()),
+  onSlotRetirement: (slotId: string, retire: () => void) => {
+    retirement.listeners.set(retire, slotId);
+    return () => retirement.listeners.delete(retire);
+  },
+}));
+const retireSlot = (slotId: string) => {
+  for (const [retire, id] of [...retirement.listeners]) if (id === slotId) retire();
+};
 
 const owners: ReturnType<typeof createFirstDeviceSetup>[] = [];
 beforeEach(() => {
@@ -189,4 +201,62 @@ it('does not offer an unlock form from a retired owner while its outstanding ope
   await cold.inspect();
   expect(cold.getSnapshot()).toMatchObject({ kind: 'unlock' });
   expect(request).toHaveBeenCalledTimes(1);
+});
+
+const stopped =
+  'Sync setup stopped because another tab began removing this device’s data. Reload this tab to continue.';
+it('a slot retirement ends a waiting setup on its final notice at once, never on the closing screen, and the retired owner accepts nothing', async () => {
+  const { code, owner } = await protectedSetup();
+  const before = await setupProgress();
+  let rejectRequest!: (error: Error) => void;
+  const request = vi.fn(
+    () => new Promise<Response>((_resolve, reject) => (rejectRequest = reject)),
+  );
+  vi.stubGlobal('fetch', request);
+  const waiting = owner.unlock(code);
+  await vi.waitFor(() => expect(request).toHaveBeenCalledTimes(1));
+  const shown: unknown[] = [];
+  const unsubscribe = owner.subscribe(() => shown.push(owner.getSnapshot()));
+  try {
+    retireSlot('local');
+    expect(owner.getSnapshot()).toEqual({ kind: 'unlock', error: stopped });
+    expect(shown).toEqual([{ kind: 'unlock', error: stopped }]);
+  } finally {
+    rejectRequest(new DOMException('The retired request has drained', 'AbortError'));
+    await waiting;
+  }
+  await owner.close();
+  await owner.unlock(code);
+  expect(request).toHaveBeenCalledTimes(1);
+  expect(owner.getSnapshot()).toEqual({ kind: 'unlock', error: stopped });
+  expect(shown).toEqual([{ kind: 'unlock', error: stopped }]);
+  expect(await setupProgress()).toEqual(before);
+  unsubscribe();
+});
+it('reports its own retirement close once, with that close', async () => {
+  const { owner } = await protectedSetup();
+  const heard = vi.fn();
+  owner.onRetired(heard);
+  retireSlot('local');
+  retireSlot('local');
+  expect(heard).toHaveBeenCalledOnce();
+  expect(heard.mock.calls[0]![0]).toBe(owner.close());
+  await expect(heard.mock.calls[0]![0]).resolves.toBeUndefined();
+});
+it('an explicit close still shows the closing screen and is not reported as a retirement', async () => {
+  const { owner } = await protectedSetup();
+  const heard = vi.fn();
+  owner.onRetired(heard);
+  const closing = owner.close();
+  expect(owner.getSnapshot()).toMatchObject({
+    kind: 'working',
+    message: 'Locking and finishing storage operations…',
+  });
+  retireSlot('local');
+  await closing;
+  expect(heard).not.toHaveBeenCalled();
+  expect(owner.getSnapshot()).toMatchObject({
+    kind: 'working',
+    message: 'Locking and finishing storage operations…',
+  });
 });
